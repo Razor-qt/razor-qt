@@ -12,6 +12,17 @@
 #ifndef FRAME_H
 #define FRAME_H
 
+#define TILE_NONE		0
+#define TILE_HALF_LEFT 		1
+#define TILE_HALF_RIGHT 	2
+#define TILE_QUART_LEFT_UP 	3
+#define TILE_QUART_LEFT_DOWN 	4
+#define TILE_QUART_RIGHT_UP 	5
+#define TILE_QUART_RIGHT_DOWN 	6
+
+
+
+
 #include "defs.h"
 #include "border.h"
 #include "header.h"
@@ -57,6 +68,8 @@ public:
     void get_colormaps();
     void set_colormaps(Colormap);
     void read_settings(); // from "razor.cfg"
+    int get_window_middle_x();
+    int get_window_middle_y();
     WId cl_win()
     {
         return(c_win);
@@ -111,15 +124,15 @@ public slots:
     void maximize_it();                         // maximize client
     void iconify_it();                          // iconify client
     void tile_it();				// Used for tiling to full height
-    void tile_it_hht();				// Used for tiling to half height at the top corner
-    void tile_it_hhb();				// Used for tiling to half height at the bottom corner
+    void tile_it_hhl();				// Used for tiling to half height left screenpart
+    void tile_it_hhr();				// Used for tiling to half height right screenpart
     
     void dragEnterEvent(QDragEnterEvent *);
     void dragMoveEvent(QDragMoveEvent *);
     void dropEvent(QDropEvent *);
     
 private:
-   
+    int tile;			// tiling status of the window
     WId c_win;                  // client window
     QString frame_type;         // frame type (Normal, Splash, Dialog, Desktop..)
     QString app_icon;           // default header icon used if no icon is find

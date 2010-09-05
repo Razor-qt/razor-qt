@@ -623,10 +623,10 @@ void Frame::create_borders()
     // top left (icon)
     connect(tl_bdr, SIGNAL(mouse_left_press()), this, SLOT(iconify_it()));
     connect(tl_bdr, SIGNAL(mouse_right_press()), this, SLOT(maximize_it()));
-    connect(tl_bdr, SIGNAL(mouse_mid_press()), this, SLOT(tile_it_hhb()));
+    connect(tl_bdr, SIGNAL(mouse_mid_press()), this, SLOT(tile_it_hhl()));
     // top right (icon)
     connect(tr_bdr, SIGNAL(mouse_left_press()), this, SLOT(destroy_it()));
-    connect(tr_bdr, SIGNAL(mouse_mid_press()), this, SLOT(tile_it_hht()));
+    connect(tr_bdr, SIGNAL(mouse_mid_press()), this, SLOT(tile_it_hhr()));
     // top mid (title bar)
     connect(tm_bdr, SIGNAL(mouse_double_click()), this, SLOT(iconify_it()));
     connect(tm_bdr, SIGNAL(mouse_left_press(QMouseEvent *)), this, SLOT(press_top_mid(QMouseEvent *)));
@@ -664,6 +664,7 @@ void Frame::move_top_mid(QMouseEvent *event)
 
     if(desktop->geometry().contains(p, true))
         move(p.x(), p.y());
+    tile=TILE_NONE;
 }
 
 ////////// BOTTOM LEFT RESIZE //////////////
@@ -683,6 +684,7 @@ void Frame::move_bottom_left(QMouseEvent *event)
     resize(resw, resh);
     XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
     mousepos = event->globalPos();
+    tile=TILE_NONE;
 }
 
 ////////// BOTTOM RIGHT RESIZE //////////////
@@ -702,6 +704,7 @@ void Frame::move_bottom_right(QMouseEvent *event)
     resize(resw, resh);
     XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
     mousepos = event->globalPos();
+    tile=TILE_NONE;
 }
 
 ////////// BOTTOM MID RESIZE //////////////
@@ -721,6 +724,7 @@ void Frame::move_bottom_mid(QMouseEvent *event)
     resize(resw, resh);
     XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h);
     mousepos = event->globalPos();
+    tile=TILE_NONE;
 }
 
 ////////// RIGHT RESIZE //////////////
@@ -740,6 +744,7 @@ void Frame::move_right(QMouseEvent *event)
     resize(resw, resh);
     XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
     mousepos = event->globalPos();
+    tile=TILE_NONE;
 }
 
 ////////// LEFT RESIZE //////////////
@@ -760,6 +765,7 @@ void Frame::move_left(QMouseEvent *event)
     resize(resw, resh);
     XResizeWindow(QX11Info::display(), c_win, resw-diff_border_w, resh-diff_border_h); //client
     mousepos = event->globalPos();
+    tile=TILE_NONE;
 }
 
 ////////// DESTROY WINDOW //////////////
@@ -814,53 +820,231 @@ void Frame::maximize_it()
     }
 }
 
+int Frame::get_window_middle_x()
+{
+  return x() + width()/2;
+}
+
+int Frame::get_window_middle_y()
+{
+  return y() + height()/2;
+}
+
+
+
 
 void Frame::tile_it()
 {
   m_pw=QApplication::desktop()->width()/2;
   m_ph=QApplication::desktop()->height()-dock_height;
   
-  if(dock_position == 0)
-    if (maximized)
-      move(QApplication::desktop()->width()/2,QApplication::desktop()->y());
-    else
-      move(QApplication::desktop()->x(),QApplication::desktop()->y());
+  qDebug() << "TILING!! " << get_window_middle_x() << " " << QApplication::desktop()->width()/2;
+  int newtile=TILE_NONE;
+  
+  if (dock_position==0)
+    switch(tile)
+    {
+      case TILE_HALF_LEFT:
+	move(QApplication::desktop()->width()/2,QApplication::desktop()->y());
+	newtile=TILE_HALF_RIGHT;
+	break;
+      case TILE_HALF_RIGHT:
+	move(QApplication::desktop()->x(),QApplication::desktop()->y());
+	newtile=TILE_HALF_LEFT; 
+	break;
+      case TILE_NONE:
+	if (get_window_middle_x() <= QApplication::desktop()->width()/2)
+	{
+	  move(QApplication::desktop()->x(),QApplication::desktop()->y());
+	  newtile=TILE_HALF_LEFT;
+	}
+	else
+	{
+	  move(QApplication::desktop()->width()/2,QApplication::desktop()->y());
+	  newtile=TILE_HALF_RIGHT;
+	}
+	break;
+    }
   else
-    if (maximized)
-      move(QApplication::desktop()->width()/2, QApplication::desktop()->y()+dock_height);
-    else
-      move(QApplication::desktop()->x(), QApplication::desktop()->y()+dock_height);
-      
+  {
+    switch(tile)
+    {
+      case TILE_HALF_LEFT:
+	move(QApplication::desktop()->width()/2,QApplication::desktop()->y()+dock_height);
+	newtile=TILE_HALF_RIGHT;
+	break;
+      case TILE_HALF_RIGHT:
+	move(QApplication::desktop()->x(),QApplication::desktop()->y()+dock_height);
+	newtile=TILE_HALF_LEFT; 
+	break;
+      case TILE_NONE:
+	if (get_window_middle_x() <= QApplication::desktop()->width()/2)
+	{
+	  move(QApplication::desktop()->x(),QApplication::desktop()->y()+dock_height);
+	  newtile=TILE_HALF_LEFT;
+	}
+	else
+	{
+	  move(QApplication::desktop()->width()/2,QApplication::desktop()->y()+dock_height);
+	  newtile=TILE_HALF_RIGHT;
+	}
+	break;
+    }
+  }
+
+
+  tile = newtile;  
   resize(m_pw, m_ph);
   raise();
-  
   XResizeWindow(QX11Info::display(), c_win, width()-diff_border_w, height()-diff_border_h);
   maximized=false;   
 }
 
-void Frame::tile_it_hht()
+/*
+ * this is nightmare past here!
+ * i really have to clean this up, but also i have to think of an idea how to control quartered, tiling
+ */
+
+
+void Frame::tile_it_hhl()
 {
   m_pw=QApplication::desktop()->width()/2;
-  m_ph=QApplication::desktop()->height()/2 - dock_height/2;
+  m_ph=QApplication::desktop()->height()/2 - dock_height/2;  
+  int newtile = TILE_NONE;
   
-  if(dock_position == 0)
-    if (maximized)
-      move(QApplication::desktop()->width()/2,QApplication::desktop()->y());
-    else
-      move(QApplication::desktop()->x(),QApplication::desktop()->y());
+  if (dock_position == 0)
+    switch (tile)
+    {
+      case TILE_QUART_LEFT_UP:
+	move(QApplication::desktop()->x(),QApplication::desktop()->height()/2);
+	newtile = TILE_QUART_LEFT_DOWN;
+	break;
+      case TILE_QUART_LEFT_DOWN:
+	move(QApplication::desktop()->x(), QApplication::desktop()->y());
+	newtile = TILE_QUART_LEFT_UP;
+	break;
+      case TILE_NONE:
+	if (get_window_middle_y() <= QApplication::desktop()->height()/2)
+	{
+	  move(QApplication::desktop()->x(), QApplication::desktop()->y());
+	  newtile = TILE_QUART_LEFT_UP;
+	}
+	else
+	{
+	  move(QApplication::desktop()->x(),QApplication::desktop()->height()/2);
+	  newtile = TILE_QUART_LEFT_DOWN;
+	}
+	break;
+    }
   else
-    if (maximized)
-	move(QApplication::desktop()->width()/2, QApplication::desktop()->y()+dock_height/2);
-    else
+    switch (tile)
+    {
+        case TILE_QUART_LEFT_UP:
+	move(QApplication::desktop()->x(),QApplication::desktop()->height()/2+dock_height/2);
+	newtile = TILE_QUART_LEFT_DOWN;
+	break;
+      case TILE_QUART_LEFT_DOWN:
 	move(QApplication::desktop()->x(), QApplication::desktop()->y()+dock_height/2);
+	newtile = TILE_QUART_LEFT_UP;
+	break;
+      case TILE_NONE:
+	if (get_window_middle_y() <= QApplication::desktop()->height()/2)
+	{
+	  move(QApplication::desktop()->x(), QApplication::desktop()->y()+dock_height/2);
+	  newtile = TILE_QUART_LEFT_UP;
+	}
+	else
+	{
+	  move(QApplication::desktop()->x(),QApplication::desktop()->height()/2+dock_height/2);
+	  newtile = TILE_QUART_LEFT_DOWN;
+	}
+	break;
+    }
+  tile = newtile;
+  
+  resize(m_pw, m_ph);
+  raise();
+  XResizeWindow(QX11Info::display(), c_win, width()-diff_border_w, height()-diff_border_h);
+  maximized=false; 
+}
+
+
+
+void Frame::tile_it_hhr()
+{
+  m_pw=QApplication::desktop()->width()/2;
+  m_ph=QApplication::desktop()->height()/2 - dock_height/2;  
+  int newtile = TILE_NONE;
+  
+  if (dock_position == 0)
+    switch (tile)   
+    {
+      case TILE_QUART_RIGHT_UP:
+	move(QApplication::desktop()->width()/2,QApplication::desktop()->height()/2);
+	newtile = TILE_QUART_RIGHT_DOWN;
+	break;
+      case TILE_QUART_RIGHT_DOWN:
+	move(QApplication::desktop()->width()/2, QApplication::desktop()->y());
+	newtile = TILE_QUART_RIGHT_UP;
+	break;
+      case TILE_NONE:
+	if (get_window_middle_y() <= QApplication::desktop()->height()/2)
+	{
+	  move(QApplication::desktop()->width()/2, QApplication::desktop()->y());
+	  newtile = TILE_QUART_RIGHT_UP;
+	}
+	else
+	{
+	  move(QApplication::desktop()->width()/2,QApplication::desktop()->height()/2);
+	  newtile = TILE_QUART_RIGHT_DOWN;
+	}
+	break;
+    }
+  else
+    switch (tile)
+    {
+        case TILE_QUART_RIGHT_UP:
+	move(QApplication::desktop()->width()/2,QApplication::desktop()->height()/2+dock_height/2);
+	newtile = TILE_QUART_RIGHT_DOWN;
+	break;
+      case TILE_QUART_RIGHT_DOWN:
+	move(QApplication::desktop()->width()/2, QApplication::desktop()->y()+dock_height/2);
+	newtile = TILE_QUART_RIGHT_UP;
+	break;
+      case TILE_NONE:
+	if (get_window_middle_y() <= QApplication::desktop()->height()/2)
+	{
+	  move(QApplication::desktop()->width()/2, QApplication::desktop()->y()+dock_height/2);
+	  newtile = TILE_QUART_RIGHT_UP;
+	}
+	else
+	{
+	  move(QApplication::desktop()->width()/2,QApplication::desktop()->height()/2+dock_height/2);
+	  newtile = TILE_QUART_RIGHT_DOWN;
+	}
+	break;
+    }
+    
+  tile = newtile;
   resize(m_pw, m_ph);
   raise();
   
   XResizeWindow(QX11Info::display(), c_win, width()-diff_border_w, height()-diff_border_h);
   maximized=false; 
-}
-void Frame::tile_it_hhb()
-{
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /*
   m_pw=QApplication::desktop()->width()/2;
   m_ph=QApplication::desktop()->height()/2 - dock_height/2;
   
@@ -879,6 +1063,8 @@ void Frame::tile_it_hhb()
   
   XResizeWindow(QX11Info::display(), c_win, width()-diff_border_w, height()-diff_border_h);
   maximized=false; 
+*/
+  
 }
 
 

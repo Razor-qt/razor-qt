@@ -71,3 +71,4 @@ TRANSLATIONS = language/it_IT.ts \
  language/es_ES.ts
 DEFINES = QT_FATAL_WARNINGS
 //DEFINES = QT_NO_DEBUG_OUTPUT
+LIBS += -lXext -lX11
