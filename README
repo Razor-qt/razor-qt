@@ -1,0 +1,71 @@
+Razer 0.1 Readme (an antico fork)
+*********************************
+
+Razer can always be found on: http://sourceforge.net/projects/razor-qt/
+If you got any feature-requests or bug-reports feel free to use the tracker at sf.net!
+
+
+
+
+
+Razer is lightweight and easy to use DE for developers. 
+This Release contains the following new features:
+
+* Tiling-revamped
+ 
+* A customizable favourite-menu
+
+
+
+
+
+Installation:
+
+1.) Build the binary & prepare settings
+
+first execute: qmake && make
+
+then execute: sh preparetheme.sh
+
+2.) Run the installer-script as root / via sudo
+	"sh installer" as user root or
+	"sudo sh installer" as normal user with sudo access
+
+3.) Select "Razor-Qt" in your login-manager
+
+4.) ???
+
+5.) profit!
+
+
+
+Using:
+
+=== Tiling ===
+
+Tiling is undergoing many changes now and maybe will in the future...
+projects/razor-qt)
+
+Right now tiling is working als follows:
+
+middle-click on the app-title puts the window on half of the screen. the half which is used, is determined through the window position. (i.e. a window in the left half somewhere will get the left half of the screen).
+
+middle-click a tiled-window on the title again, will make it switch screen-half (left->right and otherwise).
+
+middle-klicking on the "X" symbol does tile the window to a quarter on the right screen-half (up / down is determined again by window position if its "more up" or "more down") 
+
+middle-clickin on the "updown"-icon on the top-left-window corner does quarter-tile the window and put it on the left screen-half. (up or down is also determined by original window position)
+
+=== Favourites Menu ===
+
+You can add/remove applictions with the "manager"-app, available from the mainlauncher. 
+just do an "add-program" and select category "Favourite"
+
+
+
+
+
+
+Credits:
+	Antico was made by Guiseppe Cigala and is found here: http://www.antico.netsons.org
+	The "Heart-Icon" on the Favourite-Menu is from GNOME which is found here: www.gnome.org/
