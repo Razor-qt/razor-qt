@@ -72,3 +72,20 @@ TRANSLATIONS = language/it_IT.ts \
 DEFINES = QT_FATAL_WARNINGS
 //DEFINES = QT_NO_DEBUG_OUTPUT
 LIBS += -lXext -lX11
+
+
+desklink1.path = /etc/X11/sessions
+desklink1.files = razor-gdm.desktop
+desklink2.path = /usr/share/xsessions
+desklink2.files = razer-kdm.desktop
+desklink3.path = /usr/share/apps/kdm/sessions
+desklink3.files = razer-kdm.desktop
+trazor.path = /usr/bin
+trazor.files = razor
+INSTALLS += desklink1
+INSTALLS += desklink2
+INSTALLS += desklink3
+INSTALLS += trazor
+
+
+
