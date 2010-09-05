@@ -97,15 +97,14 @@ QMAKE_EXTRA_COMPILERS += updateqm
 
 
 
-
+lang.path = /usr/share/razor/language
+lang.files = language/*.qm
 desklink1.path = /etc/X11/sessions
 desklink1.files = razor-gdm.desktop
 desklink2.path = /usr/share/xsessions
 desklink2.files = razor-kdm.desktop
 desklink3.path = /usr/share/apps/kdm/sessions
 desklink3.files = razor-kdm.desktop
-lang.path = /usr/share/razor/language
-lang.files = language/*.qm
 theme.path = /usr/share/razor/theme
 theme.files = theme/*
 target.path = /usr/bin
@@ -113,10 +112,20 @@ target.path = /usr/bin
 INSTALLS += theme
 INSTALLS += target
 INSTALLS += lang
-INSTALLS += desklink1
-INSTALLS += desklink2
-INSTALLS += desklink3
 
+exists( /etc/X11/sessions )
+{
+	INSTALLS += desklink1
+}
+exists( /usr/share/xsessions )
+{
+	INSTALLS += desklink2
+}
+
+exists( /usr/share/apps/kdm/sessions )
+{
+	INSTALLS += desklink3
+}
 
 
 
