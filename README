@@ -25,11 +25,10 @@ Installation:
 
 first execute: qmake && make
 
-then execute: sh preparetheme.sh
 
-2.) Run the installer-script as root / via sudo
-	"sh installer" as user root or
-	"sudo sh installer" as normal user with sudo access
+2.) Install as root / sudo:
+	"make install" as root or
+	"sudo make install" as user with sudo access
 
 3.) Select "Razor-Qt" in your login-manager
 

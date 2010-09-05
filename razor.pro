@@ -1,3 +1,12 @@
+
+isEmpty(QMAKE_LRELEASE) {
+
+    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
+
+    else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
+
+}
+
 SOURCES = src/main.cpp \
  src/antico.cpp \
  src/frame.cpp \
@@ -63,33 +72,48 @@ QMAKE_CLEAN += razor
 TEMPLATE = app
 CONFIG += warn_on release
 QT += dbus
+
 TRANSLATIONS = language/it_IT.ts \
  language/cs_CZ.ts \
  language/ru_RU.ts \
  language/pl_PL.ts \
  language/de_DE.ts \
  language/es_ES.ts
+
 DEFINES = QT_FATAL_WARNINGS
 //DEFINES = QT_NO_DEBUG_OUTPUT
 LIBS += -lXext -lX11
 
 
+updateqm.input = TRANSLATIONS
+updateqm.output = language/${QMAKE_FILE_BASE}.qm
+updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm language/${QMAKE_FILE_BASE}.qm
+updateqm.CONFIG += no_link target_predeps
+
+
+QMAKE_EXTRA_COMPILERS += updateqm
+
+
+
+
+
+
 desklink1.path = /etc/X11/sessions
 desklink1.files = razor-gdm.desktop
 desklink2.path = /usr/share/xsessions
-desklink2.files = razer-kdm.desktop
+desklink2.files = razor-kdm.desktop
 desklink3.path = /usr/share/apps/kdm/sessions
-desklink3.files = razer-kdm.desktop
+desklink3.files = razor-kdm.desktop
 theme.path = /usr/share/razor/theme
 theme.files = theme/*
-trazor.path = /usr/bin
-trazor.files = razor
+target.path = /usr/bin
 
 INSTALLS += theme
+INSTALLS += target
 INSTALLS += desklink1
 INSTALLS += desklink2
 INSTALLS += desklink3
-INSTALLS += trazor
+
 
 
 

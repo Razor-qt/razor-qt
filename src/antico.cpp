@@ -1020,6 +1020,12 @@ Categorymenu * Razor::get_category_menu()
 void Razor::set_settings()
 {
     // default path
+
+    QDir razordir(QDir::homePath() + "./razor");
+    if (!razordir.exists())
+	razordir.mkpath(".");
+
+
     antico = new QSettings(QDir::homePath() + "/.razor/razor.cfg", QSettings::IniFormat, this);
     // set default style on first installation, if no "/antico.cfg" is set
     if (antico->childGroups().isEmpty())
