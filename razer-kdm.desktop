@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor
+Name=Razor-Qt4
+Comment=Qt4-X11 Desktop-Window Manager

@@ -1,0 +1,32 @@
+RoadMap for razor
+
+0.1 "basic alpha"
+Implement:
+	Basic windowtiling [done]
+	Favourites Menu [just hacked in, but all works]
+
+
+0.2 "cleanup"
+Modification:
+	Make manager and settings Applications
+		pack stuff used by them in a library
+	
+	Clean up the code, use inheritance for the classes
+	
+	
+
+0.3 "beginning razor"
+Implement:
+	Smart Windowtiling / Tilingmanager
+	Volume-control applet
+	Dockbar auto hiding
+
+
+0.4 "making of a DE"
+Add to project:
+	An own qt-only terminal (NO KDE stuff)
+	A lightweight file manager
+	A lightweight text editor
+
+
+	
