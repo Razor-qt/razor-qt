@@ -1027,7 +1027,7 @@ void Razor::set_settings()
         qDebug() << "Set default settings ...";
         antico->beginGroup("Style");
         antico->setValue("name", "default.stl");
-        antico->setValue("path", QDir::homePath() + "/.razor/theme/default/");
+        antico->setValue("path","/usr/share/razor/theme/default/");
         antico->endGroup(); //Style
         antico->sync();
     }

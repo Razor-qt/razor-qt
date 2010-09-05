@@ -80,8 +80,12 @@ desklink2.path = /usr/share/xsessions
 desklink2.files = razer-kdm.desktop
 desklink3.path = /usr/share/apps/kdm/sessions
 desklink3.files = razer-kdm.desktop
+theme.path = /usr/share/razor/theme
+theme.files = theme/*
 trazor.path = /usr/bin
 trazor.files = razor
+
+INSTALLS += theme
 INSTALLS += desklink1
 INSTALLS += desklink2
 INSTALLS += desklink3
