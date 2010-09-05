@@ -1,6 +1,12 @@
 #ifndef DOCKFAVMENU_H
 #define DOCKFAVMENU_H
-
+////////////////////////////////////////
+//  File      : dockfavmenu.h         //
+//  Written by: chris.vdop@gmail.com  //
+//  Copyright : GPL                   //
+// This is a single menu-bar launcher //
+// for the dockbar of razor			  //
+////////////////////////////////////////
 #include "defs.h"
 
 

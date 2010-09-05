@@ -1,3 +1,10 @@
+////////////////////////////////////////
+//  File      : dockfavmenu.cpp       //
+//  Written by: chris.vdop@gmail.com  //
+//  Copyright : GPL                   //
+////////////////////////////////////////
+
+
 #include "dockfavmenu.h"
 
 
