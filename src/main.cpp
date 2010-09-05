@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     
     QTranslator translator;
     qDebug() << "Language:" << QLocale::system().name();
-    translator.load(QLocale::system().name(), QCoreApplication::applicationDirPath() + "/language/");
+    translator.load(QLocale::system().name(), "/usr/share/razor/language/");
     a.installTranslator(&translator);
     
     qDebug() << "GUI creation...";

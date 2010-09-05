@@ -104,12 +104,15 @@ desklink2.path = /usr/share/xsessions
 desklink2.files = razor-kdm.desktop
 desklink3.path = /usr/share/apps/kdm/sessions
 desklink3.files = razor-kdm.desktop
+lang.path = /usr/share/razor/language
+lang.files = language/*.qm
 theme.path = /usr/share/razor/theme
 theme.files = theme/*
 target.path = /usr/bin
 
 INSTALLS += theme
 INSTALLS += target
+INSTALLS += lang
 INSTALLS += desklink1
 INSTALLS += desklink2
 INSTALLS += desklink3
