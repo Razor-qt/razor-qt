@@ -3,7 +3,7 @@
 
 #define dbg
 
-#include <stdint.h> 
+#include <stdint.h>
 #include "xfitman.h"
 
 
@@ -26,6 +26,34 @@ Xfitman::Xfitman()
 }
 
 /**
+ * @brief moves a window to a new position
+ */
+
+void Xfitman::moveWindow(Window _win, int _x, int _y)
+{
+  XMoveWindow(QX11Info::display(), _win, _x, _y);
+}
+
+
+/**
+ * @brief this sets our background to the pixmap map
+ */
+void Xfitman::setRootBackground(QPixmap _map)
+{
+    Pixmap p = _map.handle();
+    XGrabServer(QX11Info::display());
+    XChangeProperty(QX11Info::display(), root, atomMap["xrootpmap"], XA_PIXMAP, 32, PropModeReplace, (unsigned char *) &p, 1);
+    XChangeProperty(QX11Info::display(), root, atomMap["esetroot"], XA_PIXMAP, 32, PropModeReplace, (unsigned char *) &p, 1);
+    XSetCloseDownMode(QX11Info::display(), RetainPermanent);
+    XSetWindowBackgroundPixmap(QX11Info::display(), root, p);
+    XClearWindow(QX11Info::display(), root);
+    XUngrabServer(QX11Info::display());
+    XFlush(QX11Info::display());
+}
+
+
+
+/**
  * @brief this one gets the active application window - mainly determined by going up the tree till we find a window with title!
  */
 Window Xfitman::getActiveAppWindow()
@@ -38,7 +66,7 @@ Window Xfitman::getActiveAppWindow()
     //while ((getName(focuswin) == "BLAH!" || !clientList.keys().contains(focuswin) ) && (focuswin != root) )
     while ((getName(focuswin) == "BLAH!" || !clientList->contains(focuswin) ) && (focuswin != root))
     {
-      
+
         runs ++;
         Window parent=NULL;
         Window lroot=NULL;
@@ -47,13 +75,13 @@ Window Xfitman::getActiveAppWindow()
         XQueryTree(QX11Info::display(),focuswin,&lroot,&parent,&childList,&childNum);
         focuswin=parent;
         XFree(childList);
-	//buggy windows may break this loop
+        //buggy windows may break this loop
         if (runs == 9)
-	{
-	  qDebug() << "Xfitman: seems like a deadend - activating tunnel!";
-	  focuswin = root;
-	  break;
-	}
+        {
+            qDebug() << "Xfitman: seems like a deadend (should not happen, happens with buggy gtk-crappy-apps though) - activating quantum-tunnel!";
+            focuswin = root;
+            break;
+        }
     }
     qDebug() << focuswin;
     return focuswin;
@@ -322,6 +350,8 @@ void Xfitman::getAtoms()
     atomMap["net_system_tray_opcode"] = XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_OPCODE", False);
     atomMap["net_manager"] = XInternAtom(QX11Info::display(), "MANAGER", False);
     atomMap["net_message_data"] = XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_MESSAGE_DATA", False);
+    atomMap["xrootpmap"] = XInternAtom(QX11Info::display(), "_XROOTPMAP_ID", False);
+    atomMap["esetroot"] = XInternAtom(QX11Info::display(), "ESETROOT_PMAP_ID", False);
 
 
 }
@@ -359,8 +389,8 @@ QList<Window>* Xfitman::getClientlist()
     /**
      * @todo maybe support multiple desktops here!
      */
-  
-  
+
+
     QList<Window>* output = new QList<Window>;
 
     XGetWindowProperty(QX11Info::display(),root,atomMap["net_client_list"],0, 4096, FALSE, AnyPropertyType,
@@ -368,7 +398,7 @@ QList<Window>* Xfitman::getClientlist()
 
 
     for (unsigned int i = 0; i < length; i ++)
-      output->append(data[i]);
+        output->append(data[i]);
 
 
     XFree(data);

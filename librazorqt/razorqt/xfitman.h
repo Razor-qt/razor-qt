@@ -26,6 +26,8 @@ class Xfitman
   public: 
     ~Xfitman();
     Xfitman();
+    void moveWindow(Window _win, int _x, int _y);
+    void setRootBackground(QPixmap _map);
     void setStrut(Window _wid, int _height); 
     void unsetStrut(Window _wid);
     void getAtoms();
