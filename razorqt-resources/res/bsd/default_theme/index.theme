@@ -1,0 +1,63 @@
+# default razor theme.. every line not containing an equals mark will be ignored
+
+# you can set a qt-stylesheet for configuring the panel here
+# specify the path absolute please
+panel_stylesheet=default.qss
+
+# settings for the razorbar
+razorbar_height=32
+razorbar_bgcolor=black
+razorbar_textcolor=lightsteelblue
+razorbar_background=bg/bar.png
+
+
+#settings for the razor mainmenu
+
+razormainmenu_icon=icons/mainmenu.png
+razormainmenu_acticon=icons/mainmenu_act.png
+
+
+#about - dlg - stuff
+
+aboutdlg_icon=icons/about.png
+
+#taskbar-settings
+
+taskbar_background=bg/tbar.png
+
+#task-settings
+
+task_background=bg/taskbg.png
+
+
+# clocks settings
+# format can use any string described in the Qt4 docs QDateTime::fromString
+# for exampel to display time and date in 2 lines you can use:
+# hh:mm:ss<br>d MMM yy
+
+clocks_format=hh:mm:ss <br /> dd MM yy
+
+
+ #tray-stuff
+
+
+
+#tray-stuff
+
+tray_bg=bg/traybg.png
+
+
+
+#shutdown
+
+razorlogmenu_icon=icons/shutdown.png
+razorlogmenu_acticon=icons/shutdown.png
+razorlogmenu_shutdown=icons/shutdown.png
+razorlogmenu_reboot=icons/reboot.png
+razorlogmenu_logout=icons/logout.png
+razorlogmenu_about=icons/about.png
+
+
+#Desktop-background - for setting it via the qss file just leave empty
+#A selection of backgrounds you can enter is in bg/desktop/YOURSCREENRATIO/ relative to this document
+desktop_background=bg/desktop/169/water.jpg

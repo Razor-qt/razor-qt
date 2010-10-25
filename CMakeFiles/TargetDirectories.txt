@@ -1,0 +1,4 @@
+/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-desktop/CMakeFiles/razor-desktop.dir
+/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-panel/CMakeFiles/razor-panel.dir
+/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/razor-session.dir
+/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/librazorqt/CMakeFiles/razorqt.dir

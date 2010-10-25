@@ -1,0 +1,5 @@
+Razorclockgui { color: lightsteelblue;                                                                                                                         
+         background-color: black; }                                                                                                                            
+                                                                                                                                                               
+Razorbar QLabel { color: lightsteelblue;                                                                                                                       
+         background-color: black; }   

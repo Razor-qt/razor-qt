@@ -1,0 +1,12 @@
+/usr/local/lib/librazorqt.so
+/usr/local/include/razorqt/defs.h
+/usr/local/include/razorqt/readsettings.h
+/usr/local/include/razorqt/xdgautostart.h
+/usr/local/include/razorqt/xdgdesktopfile.h
+/usr/local/include/razorqt/xdgiconthemefile.h
+/usr/local/include/razorqt/xdgiconthememanager.h
+/usr/local/include/razorqt/xdgmenucross.h
+/usr/local/include/razorqt/xfitman.h
+/usr/local/bin/razor-session
+/usr/local/bin/razor-panel
+/usr/local/bin/razor-desktop

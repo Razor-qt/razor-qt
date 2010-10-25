@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+5b27b6d9a1b0740861173cc79a3931ed src/moc_razorlabel.cxx
+93d926d29cf1982945dcffe519ef4f60 src/moc_razormodman.cxx
+bdcd63f64fd97f66ef56ab5f1becf90a src/moc_razorsplash.cxx

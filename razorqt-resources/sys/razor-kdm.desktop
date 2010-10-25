@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor-session openbox
+Name=Razor-Reborn (Openbox)
+Comment=qt4 Desktop Environment

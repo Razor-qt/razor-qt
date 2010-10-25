@@ -1,0 +1,331 @@
+The system is: FreeBSD - 8.1-RELEASE - amd64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /usr/bin/gcc 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /usr/bin/c++ 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+CMakeCXXCompilerId.cpp:79: warning: deprecated conversion from string constant to 'char*'
+CMakeCXXCompilerId.cpp:192: warning: deprecated conversion from string constant to 'char*'
+CMakeCXXCompilerId.cpp:193: warning: deprecated conversion from string constant to 'char*'
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CompilerIdCXX/a.out"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/testCCompiler.c.o
+/usr/bin/gcc    -o CMakeFiles/cmTryCompileExec.dir/testCCompiler.c.o   -c /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc        CMakeFiles/cmTryCompileExec.dir/testCCompiler.c.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o
+/usr/bin/gcc    -o CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o   -c /usr/local/share/cmake/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc       -v CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec   
+Using built-in specs.
+Target: amd64-undermydesk-freebsd
+Configured with: FreeBSD/amd64 system compiler
+Thread model: posix
+gcc version 4.2.1 20070719  [FreeBSD]
+ /usr/bin/ld --eh-frame-hdr -V -dynamic-linker /libexec/ld-elf.so.1 -o cmTryCompileExec /usr/lib/crt1.o /usr/lib/crti.o /usr/lib/crtbegin.o -L/usr/lib -L/usr/lib CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/crtend.o /usr/lib/crtn.o
+GNU ld version 2.15 [FreeBSD] 2004-05-23
+  Supported emulations:
+   elf_i386_fbsd
+   elf_x86_64_fbsd
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"]
+  ignore line: [/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build]
+  ignore line: [gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/gcc    -o CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o   -c /usr/local/share/cmake/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/gcc       -v CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec   ]
+  ignore line: [Using built-in specs.]
+  ignore line: [Target: amd64-undermydesk-freebsd]
+  ignore line: [Configured with: FreeBSD/amd64 system compiler]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 4.2.1 20070719  [FreeBSD]]
+  link line: [ /usr/bin/ld --eh-frame-hdr -V -dynamic-linker /libexec/ld-elf.so.1 -o cmTryCompileExec /usr/lib/crt1.o /usr/lib/crti.o /usr/lib/crtbegin.o -L/usr/lib -L/usr/lib CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/crtend.o /usr/lib/crtn.o]
+    arg [/usr/bin/ld] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-V] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/libexec/ld-elf.so.1] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTryCompileExec] ==> ignore
+    arg [/usr/lib/crt1.o] ==> ignore
+    arg [/usr/lib/crti.o] ==> ignore
+    arg [/usr/lib/crtbegin.o] ==> ignore
+    arg [-L/usr/lib] ==> dir [/usr/lib]
+    arg [-L/usr/lib] ==> dir [/usr/lib]
+    arg [CMakeFiles/cmTryCompileExec.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/usr/lib/crtend.o] ==> ignore
+    arg [/usr/lib/crtn.o] ==> ignore
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  collapse dir [/usr/lib] ==> [/usr/lib]
+  collapse dir [/usr/lib] ==> [/usr/lib]
+  implicit libs: [c]
+  implicit dirs: [/usr/lib]
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTryCompileExec.dir/testCXXCompiler.cxx.o -c /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/c++         CMakeFiles/cmTryCompileExec.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++     -o CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/c++        -v CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec   
+Using built-in specs.
+Target: amd64-undermydesk-freebsd
+Configured with: FreeBSD/amd64 system compiler
+Thread model: posix
+gcc version 4.2.1 20070719  [FreeBSD]
+ /usr/bin/ld --eh-frame-hdr -V -dynamic-linker /libexec/ld-elf.so.1 -o cmTryCompileExec /usr/lib/crt1.o /usr/lib/crti.o /usr/lib/crtbegin.o -L/usr/lib -L/usr/lib CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/crtend.o /usr/lib/crtn.o
+GNU ld version 2.15 [FreeBSD] 2004-05-23
+  Supported emulations:
+   elf_i386_fbsd
+   elf_x86_64_fbsd
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld|ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"]
+  ignore line: [/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build]
+  ignore line: [gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp']
+  ignore line: [/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++        -v CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec   ]
+  ignore line: [Using built-in specs.]
+  ignore line: [Target: amd64-undermydesk-freebsd]
+  ignore line: [Configured with: FreeBSD/amd64 system compiler]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 4.2.1 20070719  [FreeBSD]]
+  link line: [ /usr/bin/ld --eh-frame-hdr -V -dynamic-linker /libexec/ld-elf.so.1 -o cmTryCompileExec /usr/lib/crt1.o /usr/lib/crti.o /usr/lib/crtbegin.o -L/usr/lib -L/usr/lib CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/crtend.o /usr/lib/crtn.o]
+    arg [/usr/bin/ld] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-V] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/libexec/ld-elf.so.1] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTryCompileExec] ==> ignore
+    arg [/usr/lib/crt1.o] ==> ignore
+    arg [/usr/lib/crti.o] ==> ignore
+    arg [/usr/lib/crtbegin.o] ==> ignore
+    arg [-L/usr/lib] ==> dir [/usr/lib]
+    arg [-L/usr/lib] ==> dir [/usr/lib]
+    arg [CMakeFiles/cmTryCompileExec.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/usr/lib/crtend.o] ==> ignore
+    arg [/usr/lib/crtn.o] ==> ignore
+  remove lib [gcc_s]
+  remove lib [gcc]
+  remove lib [gcc_s]
+  remove lib [gcc]
+  collapse dir [/usr/lib] ==> [/usr/lib]
+  collapse dir [/usr/lib] ==> [/usr/lib]
+  implicit libs: [stdc++;m;c]
+  implicit dirs: [/usr/lib]
+
+
+Determining if the Q_WS_X11 exist passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckSymbolExists.c.o
+/usr/bin/gcc   -I/usr/local/include/qt4   -o CMakeFiles/cmTryCompileExec.dir/CheckSymbolExists.c.o   -c /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc        CMakeFiles/cmTryCompileExec.dir/CheckSymbolExists.c.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+File /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <QtCore/qglobal.h>
+
+void cmakeRequireSymbol(int dummy,...){(void)dummy;}
+int main()
+{
+#ifndef Q_WS_X11
+  cmakeRequireSymbol(0,&Q_WS_X11);
+#endif
+  return 0;
+}
+
+Determining if the function XOpenDisplay exists in the /usr/local/lib/libX11.so;/usr/local/lib/libXext.so passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=XOpenDisplay   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=XOpenDisplay   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  -L/usr/local/lib /usr/local/lib/libX11.so /usr/local/lib/libXext.so -Wl,-rpath,/usr/local/lib 
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Determining if the function gethostbyname exists passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=gethostbyname   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=gethostbyname   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Determining if the function connect exists passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=connect   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=connect   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Determining if the function remove exists passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=remove   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=remove   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Determining if the function shmat exists passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=shmat   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=shmat   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
+Determining if the function IceConnectionNumber exists in the ICE passed with the following output:
+Change Dir: /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/local/bin/gmake "cmTryCompileExec/fast"
+/usr/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+/usr/local/bin/cmake -E cmake_progress_report /usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /usr/local/share/cmake/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=IceConnectionNumber   CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  -L/usr/local/lib -lICE -Wl,-rpath,/usr/local/lib 
+gmake[1]: Leaving directory `/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/CMakeTmp'
+
+
