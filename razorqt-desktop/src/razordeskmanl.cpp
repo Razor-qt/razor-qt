@@ -36,6 +36,10 @@ void Razordeskmanagerlegacy::getFileList()
         }
     }
     
+    qDebug() << "badnames: " << badNames;
+    qDebug() << "itemlist: " << itemList;
+    
+    
     //purge the badones
     for (int i=0; i < itemList.count(); i++)
     {
@@ -92,6 +96,7 @@ Razordeskmanagerlegacy::Razordeskmanagerlegacy(Razorworkspace* _workspace) : Raz
   updateIconList();
   showIcons();
   restoreIconState();
+  qDebug() << "initialisation done";
 }
 
 

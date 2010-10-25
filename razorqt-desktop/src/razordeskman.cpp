@@ -47,15 +47,18 @@ void Razordeskmanager::updateIconList()
 
 void Razordeskmanager::restoreIconState()
 {
+  qDebug() << "restoring icon state!";
   for (int i = 0; i < priviconList.count(); i ++)
   {
     if (deskicons->getValue(priviconList.at(i)->text()) != "")
     {
+      qDebug() << "found saved position for: " << priviconList.at(i) << " value: " << deskicons->getValue(priviconList.at(i)->text());
       QStringList explode = deskicons->getValue(priviconList.at(i)->text()).split("|");
       QPoint npos(explode.at(0).toInt(), explode.at(1).toInt());
       priviconList.at(i)->setPos(npos);
     }
   }
+  qDebug() << "restoring done";
 }
 
 

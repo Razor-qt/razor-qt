@@ -1,7 +1,7 @@
 #ifndef RAZORDESKICON_CPP
 #define RAZORDESKICON_CPP
 #include "razordeskicon.h"
-
+#include "razor.h"
 /**
  * @file razordeskicon.cpp
  * @author Christopher "VdoP" Regali
@@ -10,13 +10,27 @@
 
 void Razordeskicondata::setPos(QPoint _npos)
 {
-    gui->move(_npos);
+  // if we are in workspace-mode we can move the buttons using Qts move routine
+    if(gui->parent() != NULL)
+      gui->move(_npos);
+    else //else we need Xlib for moving, xlib is encapsulated by xfitman from librazorqt.
+      Razor::getInstance().getxfitman()->moveWindow(gui->effectiveWinId(),_npos.x(),_npos.y());
 }
 
 
 QPoint Razordeskicondata::getPosition()
 {
   return gui->pos();
+}
+
+
+/**
+ * @brief destructor
+ */
+Razordeskicondata::~Razordeskicondata()
+{
+  //TODO this is somewhat buggy - if i correctly delete the gui, then half of the icons dont appear.
+  //delete gui;
 }
 
 
@@ -84,6 +98,7 @@ void Razordeskicon::mouseReleaseEvent(QMouseEvent* _event)
 
 Razordeskicon::~Razordeskicon()
 {
+  qDebug() << text() << " beeing shredded";
 }
 
 /**
@@ -118,8 +133,8 @@ Razordeskicon::Razordeskicon(Razordeskicondata* _data, QWidget* _parent) : QTool
     setFixedSize(70,60);
 
     setIconSize(iconsize);
-    //setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
-    //setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
+    setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
     show();
 }
 

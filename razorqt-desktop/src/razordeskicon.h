@@ -19,6 +19,7 @@ class Razordeskicondata : public QAction
 Q_OBJECT
 public:
     Razordeskicondata(const QIcon& _icon, const QString& _text,QString _commentTT,  QPoint _position, QWidget* _parent);
+    ~Razordeskicondata();
     QPoint getPosition();
     QString getTT() {return commentTT;}
     Window  getWin();
