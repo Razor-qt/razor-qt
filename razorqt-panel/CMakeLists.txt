@@ -14,6 +14,7 @@ include_directories (
 set ( razor-panel_HDRS
 	src/defs.h
 	src/razor.h
+	src/razorclock.h
 	src/razoraboutdlg.h
 	src/razorgui.h
 	src/razorversion.h
@@ -60,6 +61,7 @@ set ( razor-panel_MOCS
 	src/razordeskswitch.h
 	src/razorspinbutton.h
 	src/razorbartask.h
+ 	src/razortray.h
 	)
 QT4_WRAP_CPP(MOCS ${razor-panel_MOCS})
 
