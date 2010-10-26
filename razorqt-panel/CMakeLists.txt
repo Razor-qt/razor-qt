@@ -64,5 +64,5 @@ set ( razor-panel_MOCS
 QT4_WRAP_CPP(MOCS ${razor-panel_MOCS})
 
 add_executable ( razor-panel ${razor-panel_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
-target_link_libraries ( razor-panel  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${CMAKE_SOURCE_DIR}/librazorqt/librazorqt.so )
+target_link_libraries ( razor-panel  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so )
 INSTALL(TARGETS razor-panel RUNTIME DESTINATION bin) 

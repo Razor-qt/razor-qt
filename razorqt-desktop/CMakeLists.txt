@@ -32,5 +32,5 @@ set ( razor-desktop_MOCS
 QT4_WRAP_CPP(MOCS ${razor-desktop_MOCS})
 
 add_executable ( razor-desktop ${razor-desktop_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
-target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} ${CMAKE_SOURCE_DIR}/librazorqt/librazorqt.so)
+target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so)
 INSTALL(TARGETS razor-desktop RUNTIME DESTINATION bin) 
