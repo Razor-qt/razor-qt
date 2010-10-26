@@ -71,9 +71,8 @@ int main (int argc, char* argv[])
     {
         qDebug() << "Making workspace";
         Razorworkspacemanager* workman = new Razorworkspacemanager; //theres work to be done here!
-        qDebug() << workman.getWorkSpace();
         qDebug() << "making icons";
-        Razordeskmanagerlegacy* deskman = new Razordeskmanagerlegacy(workman.getWorkSpace());
+        Razordeskmanagerlegacy* deskman = new Razordeskmanagerlegacy(workman->getWorkSpace());
     }
     return app.exec();
 }
