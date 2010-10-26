@@ -25,6 +25,7 @@ class Razortray;
 
 class Razortraygui : public QLabel
 {
+  Q_OBJECT
 public:
   Razortraygui(Razortray* _owner);
   ~Razortraygui();

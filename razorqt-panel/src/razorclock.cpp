@@ -62,9 +62,8 @@ bool Razorclock::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-Razorclockgui::Razorclockgui(Razorclock* _owner)
+Razorclockgui::Razorclockgui(Razorclock* _owner) : QLabel()
 {
-  QLabel::QLabel(NULL);
     owner=_owner;
     setAlignment(Qt::AlignCenter);
     show();

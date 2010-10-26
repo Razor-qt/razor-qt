@@ -14,6 +14,7 @@ class Razorclock;
  */
 class Razorclockgui : public QLabel
 {
+  Q_OBJECT
 public:
   Razorclockgui (Razorclock* _owner);
 

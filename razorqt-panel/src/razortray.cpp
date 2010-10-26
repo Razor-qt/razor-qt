@@ -69,7 +69,7 @@ Razortray::~Razortray()
 /**
  * @brief constructor
  */
-Razortraygui::Razortraygui(Razortray* _owner)
+Razortraygui::Razortraygui(Razortray* _owner) : QLabel()
 {
     // size of the tray is computed in updateLayout() to fit the
     // minimal required space (yes, QApplication::desktop()->width() causes
