@@ -45,6 +45,7 @@ void Razordeskmanagerlegacy::getFileList()
     {
       if (badNames.contains(itemList.at(i)->getValue("Name")))
       {
+	qDebug() << "Deleting item!";
 	delete itemList.at(i);
 	itemList.removeAt(i);
       }

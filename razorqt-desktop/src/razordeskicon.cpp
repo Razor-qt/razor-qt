@@ -29,8 +29,8 @@ QPoint Razordeskicondata::getPosition()
  */
 Razordeskicondata::~Razordeskicondata()
 {
-  //TODO this is somewhat buggy - if i correctly delete the gui, then half of the icons dont appear.
-  //delete gui;
+  qDebug() << gui->text() << " data being shredded";
+  delete gui;
 }
 
 

@@ -43,7 +43,6 @@ void legacyWallPaper()
         }
         Razor::getInstance().getxfitman()->setRootBackground(((QPixmap) finalPixmap).scaled(width,height));
     }
-
 }
 
 
@@ -66,20 +65,16 @@ int main (int argc, char* argv[])
     {
         qDebug() << "Using root-window as wallpaper-canvas";
         legacyWallPaper();
-        qDebug() << "making icons";
-        Razordeskmanagerlegacy deskman(NULL);
-	qDebug() << "Icons made!";
+        Razordeskmanagerlegacy* deskman=new Razordeskmanagerlegacy(NULL);
     }
     else
     {
         qDebug() << "Making workspace";
-        Razorworkspacemanager workman; //theres work to be done here!
+        Razorworkspacemanager* workman = new Razorworkspacemanager; //theres work to be done here!
         qDebug() << workman.getWorkSpace();
         qDebug() << "making icons";
-        Razordeskmanagerlegacy deskman(workman.getWorkSpace());
-        deskman.updateIconList();
+        Razordeskmanagerlegacy* deskman = new Razordeskmanagerlegacy(workman.getWorkSpace());
     }
-
     return app.exec();
 }
 
