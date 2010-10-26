@@ -4,6 +4,7 @@
 #include "razordeskmanl.h"
 #include "razor.h"
 #include <razorqt/xfitman.h>
+#include <razorqt/xdgiconthemefile.h>
 /**
  * @file razordeskmanl.cpp
  * @author Christopher "VdoP" Regali
@@ -76,7 +77,7 @@ void Razordeskmanagerlegacy::showIcons()
   for (int i = 0; i < itemList.count() ; i++)
   {
     QPoint pos(x,y);
-    Razordeskicondata* tmp = new Razordeskicondata((QIcon)Razor::getInstance().geticontheme()->getIconpath(itemList.at(i)->getValue("Icon"),itemList.at(i)->getOldPath()),
+    Razordeskicondata* tmp = new Razordeskicondata(Razor::getInstance().geticontheme()->getIconNG(itemList.at(i)->getValue("Icon")),
 						   itemList.at(i)->getValue("Name"),
 						   itemList.at(i)->getValue("Comment"),
 						   pos, workSpace());

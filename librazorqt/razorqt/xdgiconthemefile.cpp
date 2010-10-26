@@ -49,7 +49,7 @@ void Xdgiconthemefile::parseFile()
     for (int i=0; i < dirList.count();i++)
     {
       themefile->beginGroup(dirList.at(i));
-     // qDebug() << "Xdgicontheme: build dirlist with: " <<themefile->value("Context").toString() << " " << themefile->value("Size").toString() << " " << dirList.at(i);
+      //qDebug() << "Xdgicontheme: build dirlist with: " <<themefile->value("Context").toString() << " " << themefile->value("Size").toString() << " " << dirList.at(i);
       //this fills our contextMap with the fitting subdirs and contexts
       contextMap[themefile->value("Context").toString()][themefile->value("Size").toInt()]=themeDir+"/"+dirList.at(i);
       themefile->endGroup();
@@ -71,7 +71,15 @@ Xdgiconthemefile::Xdgiconthemefile(QString _filename)
   themeDir=tmp;
   qDebug() << "Xdgiconthemefile: initializing... "<<themeDir<< " ";
   
-  
+  tmp.chop(1);
+  while (!tmp.endsWith("/"))
+    tmp.chop(1);
+  QStringList searchpath = QIcon::themeSearchPaths();
+  searchpath.append(tmp);
+ 
+  QIcon::setThemeSearchPaths(searchpath);
+  QIcon::setThemeName(fileName.split("/").at(fileName.split("/").count()-2));
+
 }
 /**
  * @brief search the directories for icon-files
@@ -94,6 +102,7 @@ void Xdgiconthemefile::searchDirs()
     fileMap[themefile->value("Context").toString()] [themefile->value("Size").toInt()] = directory.entryList();
     themefile->endGroup();
   }
+  //qDebug() << fileMap;
 }
 
 /**
@@ -104,7 +113,7 @@ void Xdgiconthemefile::searchDirs()
  */
 
 QString Xdgiconthemefile::searchIcon(QString _name, QString _context)
-{
+{ 
   QString retval = "";
   for (int size = 128; size >= 16; size /= 2) // get the bigges and nicest icons we find
   {
