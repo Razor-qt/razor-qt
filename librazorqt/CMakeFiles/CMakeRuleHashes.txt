@@ -1,5 +1,0 @@
-# Hashes of file build rules.
-bcbdc559447b5c12479cf44dcde2c2cc razorqt/moc_xdgenv.cxx
-f0b748a5fad116da0b96bdfddb476a8a razorqt/moc_xdgmanager.cxx
-5c45220d880117c25c91c962e4a2c2f4 razorqt/moc_xdgmenu.cxx
-57e492bb495b6661c9451a9e30ff9a33 razorqt/moc_xdgreader.cxx

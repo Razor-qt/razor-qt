@@ -1,1 +1,0 @@
-/usr/home/vdop/projects/razor-release/razorqt-0.2-RC2/razorqt-modules/razorqt-session/CMakeFiles/razor-session.dir
