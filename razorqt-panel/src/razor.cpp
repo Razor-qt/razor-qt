@@ -36,8 +36,6 @@ void Razor::setupEvents(int& argc, char** argv)
 Razor::Razor()
 {
     settings = new Readsettings("razor.conf");
-    looknfeel = new Readsettings(settings->getValue("style_theme"));
-    xdgmanager = new Xdgmanager(settings->getValue("icon_theme"));
     rhandler = new Razorhandler;
 }
 
@@ -47,6 +45,9 @@ Razor::Razor()
  */
 void Razor::setupGui()
 {
+  
+    looknfeel = new Readsettings(settings->getValue("style_theme"));
+    xdgmanager = new Xdgmanager(settings->getValue("icon_theme"));
     //select stylesheet from theme
     QFile stylesheet(looknfeel->getPath() + looknfeel->getValue("panel_stylesheet"));
     QString sheet="";
