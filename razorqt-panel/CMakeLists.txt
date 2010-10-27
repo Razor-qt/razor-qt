@@ -1,6 +1,10 @@
 project( razor-panel )
 cmake_minimum_required( VERSION 2.6 )
-set ( CMAKE_BUILD_TYPE Release )
+
+if (NOT CMAKE_BUILD_TYPE)
+    set ( CMAKE_BUILD_TYPE Release )
+endif (NOT CMAKE_BUILD_TYPE)
+
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
 find_package ( X11 REQUIRED )
@@ -16,6 +20,7 @@ set ( razor-panel_HDRS
 	src/razor.h
 	src/razorclock.h
 	src/razoraboutdlg.h
+	src/razorclock.h
 	src/razorgui.h
 	src/razorversion.h
 	src/razortask.h
