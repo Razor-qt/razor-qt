@@ -140,70 +140,27 @@ void Xfitman::resizeWindow(Window _wid, int _width, int _height)
 
 bool Xfitman::getClientIcon(Window _wid, QPixmap& _pixreturn)
 {
-    qDebug() << "DOIN";
-    Atom type;
     int format;
-    ulong length, rest;
-    uint32_t *data;
-    uint32_t *p;
-    /**
-     * @todo iam not exactly sure why we have to to 3 queries here.. ive seen other guys doing it in one, but i utterly failed at the attempt!
-     */
+    ulong type, nitems, extra;
+    ulong* data = 0;
 
-    if (XGetWindowProperty(QX11Info::display(), _wid, atomMap["net_wm_icon"], 0, 1000,
-                           FALSE, AnyPropertyType,  &type, &format, &length,
-                           &rest, (unsigned char **)&data) != Success || length <= 2)
+    XGetWindowProperty(QX11Info::display(), _wid, atomMap["net_wm_icon"],
+                       0, LONG_MAX, False, AnyPropertyType,
+                       &type, &format, &nitems, &extra,
+                       (uchar**)&data);
+    if (!data)
     {
-#ifndef dbg
-        qDebug() << "Error on getting the imagewidth";
-        qDebug() << length;
-#endif
-
-        return false;
-    }
-    unsigned int width = data[0];
-    XFree(data);
-
-
-
-    if (XGetWindowProperty(QX11Info::display(), _wid, atomMap["net_wm_icon"], 1, 1000,
-                           FALSE, AnyPropertyType,  &type, &format, &length,
-                           &rest, (unsigned char **)&data) != Success || length <= 2)
-    {
-#ifndef dbg
-        qDebug() << "Error on getting the imageheight";
-        qDebug() << length;
-#endif
-
-        return false;
-    }
-    unsigned int height = data[0];
-    XFree(data);
-
-
-    if (XGetWindowProperty(QX11Info::display(), _wid, atomMap["net_wm_icon"], 1, width*height,
-                           FALSE, AnyPropertyType,  &type, &format, &length,
-                           &rest, (unsigned char **)&data) != Success || length < width*height)
-    {
-#ifndef dbg
-        qDebug() << "Error on getting the image or malformed stuff";
-        qDebug() << length;
-#endif
-
+        qDebug() << "Cannot obtain pixmap info from the window";
         return false;
     }
 
-#ifndef dbg
-    qDebug() << "img found: " << width << "x" << height<< " nice eh?";
-#endif
+    QImage img (data[0], data[1], QImage::Format_ARGB32);
+    for (int i=0; i<img.byteCount()/4; ++i)
+        ((uint*)img.bits())[i] = data[i+2];
 
-
-    QImage img((unsigned char*) data, width, height, QImage::Format_ARGB32);
     _pixreturn = QPixmap::fromImage(img);
-
-
-
     XFree(data);
+
     return true;
 }
 
