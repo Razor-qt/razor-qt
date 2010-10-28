@@ -29,7 +29,7 @@ return "";
 
 Razordev* Razordevman::getDevice ( QString _uuid )
 {
-  return deviceList.value(_uuid);
+  return NULL;
 }
 
 
