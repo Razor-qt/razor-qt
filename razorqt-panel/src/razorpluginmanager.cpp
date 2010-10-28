@@ -11,6 +11,7 @@
 #include "razorspinbutton.h"
 #include "razorlogoutmenu.h"
 #include "razorquicklaunch.h"
+#include "razordevplugin.h"
 /**
  * @file razorpluginmanager.cpp
  * @author Christopher "VdoP" Regali
@@ -97,6 +98,11 @@ void Razorpluginmanager::addPlugin(QString _plugin, int _bar)
     else if (_plugin.contains("quicklaunch"))
     {
         RazorQuickLaunch * tmp = new RazorQuickLaunch(_plugin,_bar);
+		pluginList.append(tmp);
+    }
+    else if (_plugin.contains("devicemanager"))
+    {
+        RazorDevicePlugin * tmp = new RazorDevicePlugin(_bar);
 		pluginList.append(tmp);
     }
 }

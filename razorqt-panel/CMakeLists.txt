@@ -17,6 +17,7 @@ include_directories (
 	src)
 set ( razor-panel_HDRS
 	src/defs.h
+	src/razordevplugin.h
 	src/razor.h
 	src/razorclock.h
 	src/razoraboutdlg.h
@@ -41,6 +42,7 @@ set ( razor-panel_SRCS
 	src/razorplugin.h
 	src/razorclock.cpp
 	src/razorbar.cpp
+	src/razordevplugin.cpp
 	src/razorcmd.cpp
 	src/razortray.cpp
 	src/razorgui.cpp
@@ -59,6 +61,7 @@ QT4_WRAP_UI(UIS ${razor-panel_UIS})
 
 set ( razor-panel_MOCS
 	src/razorbar.h
+	src/razordevplugin.h
 	src/razorevent.h
 	src/razorhandler.h
 	src/razormainmenu.h

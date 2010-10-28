@@ -48,7 +48,12 @@ public:
     {
         return mounted;
     }
+    bool isUseful()
+    {
+	return useful;
+    }
 private:
+    bool useful;
     bool mounted;
     QString uuid, blockDev, volume, driveType, fsType, mntDir;
 

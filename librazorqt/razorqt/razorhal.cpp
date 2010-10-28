@@ -29,19 +29,19 @@ bool Razorhaldev::umount()
 {
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
     QDBusInterface umount_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device.Volume",
-                                       QDBusConnection::systemBus(), this );
+                                      QDBusConnection::systemBus(), this );
 
     // unmount and (if CDROM) eject the device
     QDBusReply<int> umount_cmd = umount_interface.call ( "Eject","");
-    
-    if (umount_cmd)
+
+    if (!umount_cmd)
     {
-      mounted = false;
-      return true;
+        mounted = false;
+        return true;
     }
     else
     {
-      return false;
+        return false;
     }
 }
 
@@ -56,11 +56,13 @@ bool Razorhaldev::mount()
                                      QDBusConnection::systemBus(), this );
 
     // mount the device in /media/xxx
-    QDBusReply<int> mnt_cmd = mount_interface.call ( "Mount", "", fsType, "" );
+    
+    QDBusReply<int> mnt_cmd = mount_interface.call ( "Mount", "/media/", fsType, "" );
     // get the mount point
     QDBusReply<QString> mnt_point = uuid_interface.call ( "GetProperty", "volume.mount_point" );
     mntDir = mnt_point.value();
-    if ( mnt_cmd )
+    qDebug() << "mounted in: " << mntDir;
+    if ( !mnt_cmd )
     {
         mounted = true;
         return true;
@@ -78,13 +80,16 @@ bool Razorhaldev::mount()
 
 Razorhaldev::Razorhaldev ( QString _uuid )
 {
+    useful = false;
+    uuid=_uuid;
+    mounted = false;
     qDebug() << "Razordev: getting stuff from HAL for dev: " << _uuid;
+
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
     QDBusReply<bool> is_volume = uuid_interface.call ( "GetProperty", "block.is_volume" );
 
     qDebug() << "Print no interesting device: " << uuid;
 
-    uuid=_uuid;
 
 
     // this is some serious copypasta from antico - antico source never was ideal but i think this should work
@@ -131,8 +136,13 @@ Razorhaldev::Razorhaldev ( QString _uuid )
 
             qDebug() << "Deskdev added. Block device:" << blockDev << "Volume label:" << volume << "Volume fstype:"
             << fsType << "Drive type:" << driveType << "UUID:" << uuid;
+            useful = true;
 
         }
+    }
+    else
+    {
+        useful = false;
     }
 }
 
@@ -145,8 +155,13 @@ void Razorhal::addDevice ( QString _uuid )
 {
     qDebug() << "Razorhal: adding device: "<< _uuid;
     Razorhaldev* tmp = new Razorhaldev ( _uuid );
-    deviceList[_uuid]=tmp;
-    emit ( deviceAdded ( _uuid ) );
+    if (tmp->isUseful())
+    {
+        deviceList[_uuid]=tmp;
+        emit ( deviceAdded ( _uuid ) );
+    }
+    else
+        delete tmp;
 }
 
 /**
@@ -163,10 +178,11 @@ QList< QString > Razorhal::listDevices()
  */
 bool Razorhal::mount ( QString _uuid )
 {
+    qDebug() << "Razorhal: trying mount... device "<< _uuid;
     if ( deviceList.contains ( _uuid ) )
         return deviceList.value ( _uuid )->mount();
     else
-        qDebug() << "Razorhal: trying mount... device "<< _uuid <<" not in list: "<<listDevices();
+        qDebug() << "Razorhal: device "<< _uuid <<" not in list: "<<listDevices();
     return false;
 }
 
@@ -187,10 +203,12 @@ Razorhal::Razorhal ( QObject* parent ) : Razordevman ( parent )
  */
 bool Razorhal::umount ( QString _uuid )
 {
+
+    qDebug() << "Razorhal: trying umount... device "<< _uuid;
     if ( deviceList.contains ( _uuid ) )
         return  deviceList.value ( _uuid )->umount();
     else
-        qDebug() << "Razorhal:trying umount... device "<< _uuid <<" not in list: "<<listDevices();
+        qDebug() << "Razorhal: device "<< _uuid <<" not in list: "<<listDevices();
 
     return false;
 }
