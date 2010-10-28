@@ -1,7 +1,7 @@
 #ifndef RAZOR_HAL_H
 #define RAZOR_HAL_H
 #include "defs.h"
-
+#include "razordevman.h"
 
 /**
  * @file razorhal.h
@@ -14,12 +14,12 @@
 /**
  * @brief this is just a little struct-like class for holding our data
  */
-class Razordev : public QObject
+class Razorhaldev : public Razordev
 {
     Q_OBJECT
 public:
-    Razordev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType );
-    Razordev ( QString _uuid );
+    Razorhaldev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType );
+    Razorhaldev ( QString _uuid );
     bool mount();
     bool umount();
 
@@ -58,7 +58,7 @@ private:
  * @brief manages the device mounting
  */
 
-class Razorhal : public QObject
+class Razorhal : public Razordevman
 {
     Q_OBJECT
 public:
@@ -72,16 +72,13 @@ public:
         return deviceList.value ( _uuid );
     }
 private:
-    QMap<QString, Razordev*> deviceList;
+    QMap<QString, Razorhaldev*> deviceList;
     QDBusInterface* notifyDev;
 
 private slots:
     void addDevice ( QString );
     void removeDevice ( QString );
 
-signals:
-    void deviceAdded ( QString );
-    void deviceRemoved ( QString );
 
 
 };

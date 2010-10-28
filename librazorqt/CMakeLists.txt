@@ -17,6 +17,7 @@ include_directories (
 	razorqt)
 set ( razorqt_HDRS
 	razorqt/defs.h
+	razorqt/razordevman.h
 	razorqt/razorhal.h
 	razorqt/readsettings.h
 	razorqt/xdgautostart.h
@@ -28,6 +29,7 @@ set ( razorqt_HDRS
 	)
 
 set ( razorqt_SRCS
+	razorqt/razordevman.cpp
 	razorqt/razorhal.cpp
 	razorqt/readsettings.cpp
 	razorqt/xdgautostart.cpp
@@ -43,6 +45,7 @@ set ( razorqt_SRCS
 	)
 
 set ( razorqt_MOCS
+	razorqt/razordevman.h
 	razorqt/razorhal.h
 	razorqt/xdgenv.h
 	razorqt/xdgmanager.h

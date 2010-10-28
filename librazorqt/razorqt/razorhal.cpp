@@ -12,7 +12,7 @@
 /**
  * @brief simple constructor where everything is set by hand - try not to use it
  */
-Razordev::Razordev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType )
+Razorhaldev::Razorhaldev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType )
 {
     uuid = _uuid;
     blockDev = _bDev;
@@ -25,7 +25,7 @@ Razordev::Razordev ( QString _uuid, QString _bDev, QString _volume, QString _dri
  * @brief umounts the device if possible - returns false on fail
  */
 
-bool Razordev::umount()
+bool Razorhaldev::umount()
 {
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
     QDBusInterface umount_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device.Volume",
@@ -48,7 +48,7 @@ bool Razordev::umount()
 /**
  * @brief mounts the device if possible - returns false on fail
  */
-bool Razordev::mount()
+bool Razorhaldev::mount()
 {
     qDebug() << "Razordev: trying to mount: " << uuid;
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
@@ -76,7 +76,7 @@ bool Razordev::mount()
  * @brief this constructor gets its infos via hal from a given uuid.. use this
  */
 
-Razordev::Razordev ( QString _uuid )
+Razorhaldev::Razorhaldev ( QString _uuid )
 {
     qDebug() << "Razordev: getting stuff from HAL for dev: " << _uuid;
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
@@ -144,7 +144,7 @@ Razordev::Razordev ( QString _uuid )
 void Razorhal::addDevice ( QString _uuid )
 {
     qDebug() << "Razorhal: adding device: "<< _uuid;
-    Razordev* tmp = new Razordev ( _uuid );
+    Razorhaldev* tmp = new Razorhaldev ( _uuid );
     deviceList[_uuid]=tmp;
     emit ( deviceAdded ( _uuid ) );
 }
@@ -173,7 +173,7 @@ bool Razorhal::mount ( QString _uuid )
 /**
  * @brief our constructor
  */
-Razorhal::Razorhal ( QObject* parent ) : QObject ( parent )
+Razorhal::Razorhal ( QObject* parent ) : Razordevman ( parent )
 {
     qDebug() << "Razorhal: initializing...";
     //first we connect to the hal interface via DBus
