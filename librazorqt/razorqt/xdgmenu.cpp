@@ -143,6 +143,7 @@ void Xdgmenu::runCmd(QAction* _action)
  */
 bool Xdgmenu::readMenufile()
 {
+  qDebug() << "Reading Menufile!";
   qDebug() << menuEnv->getEnv("CONFIG_DIRS");
     QStringList config_dirs = menuEnv->getEnv("CONFIG_DIRS").split(":");
     qDebug() << config_dirs;
@@ -214,7 +215,7 @@ void Xdgmenu::cleanList()
  */
 void Xdgmenu::assignIcons()
 {
-    QString myicon,mypath,iconpath;
+  QString myicon,mypath,iconpath;
     qDebug() << "Xdgmenu: called assignIcons, doing for " << filelist.count() << " items";
     for (int i = 0; i < filelist.count();i++)
     {
