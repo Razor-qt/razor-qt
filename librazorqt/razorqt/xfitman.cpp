@@ -59,9 +59,9 @@ void Xfitman::setRootBackground(QPixmap _map)
 Window Xfitman::getActiveAppWindow()
 {
     int runs=0;
-    qDebug() << "Getting active Window";
+//    qDebug() << "Getting active Window";
     Window focuswin = getActiveWindow();
-    qDebug() << focuswin;
+//    qDebug() << focuswin;
     QList<Window>* clientList = getClientlist();
     //while ((getName(focuswin) == "BLAH!" || !clientList.keys().contains(focuswin) ) && (focuswin != root) )
     while ((getName(focuswin) == "BLAH!" || !clientList->contains(focuswin) ) && (focuswin != root))
@@ -83,7 +83,7 @@ Window Xfitman::getActiveAppWindow()
             break;
         }
     }
-    qDebug() << focuswin;
+    //qDebug() << focuswin;
     return focuswin;
 
 }

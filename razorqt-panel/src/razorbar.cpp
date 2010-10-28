@@ -20,6 +20,9 @@ Razorbar::Razorbar()
     */
     qDebug() << "blobb" << Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt();
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::WindowStaysOnTopHint);
+	// this enables to view tooltips if they are set in the subwidgets
+	setAttribute(Qt::WA_AlwaysShowToolTips);
+
     qDebug() << "Razorbar: initializing.." << height();
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     Layout = new QHBoxLayout;

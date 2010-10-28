@@ -27,6 +27,7 @@ set ( razor-panel_HDRS
 	src/razorplugin.h
 	src/razorpluginmanager.h
 	src/razortray.h
+	src/razorquicklaunch.h
 	)
 
 set ( razor-panel_SRCS
@@ -48,6 +49,7 @@ set ( razor-panel_SRCS
 	src/razorhandler.cpp
 	src/razormainmenu.cpp
 	src/razortask.cpp
+	src/razorquicklaunch.cpp
 	)
 
 set ( razor-panel_UIS
@@ -67,6 +69,7 @@ set ( razor-panel_MOCS
 	src/razorspinbutton.h
 	src/razorbartask.h
  	src/razortray.h
+	src/razorquicklaunch.h
 	)
 QT4_WRAP_CPP(MOCS ${razor-panel_MOCS})
 

@@ -10,6 +10,7 @@
 #include "razorcmd.h"
 #include "razorspinbutton.h"
 #include "razorlogoutmenu.h"
+#include "razorquicklaunch.h"
 /**
  * @file razorpluginmanager.cpp
  * @author Christopher "VdoP" Regali
@@ -92,6 +93,11 @@ void Razorpluginmanager::addPlugin(QString _plugin, int _bar)
     {
 	Razorlogoutmenu* tmp = new Razorlogoutmenu(_bar);
 	pluginList.append(tmp);
+    }
+    else if (_plugin.contains("quicklaunch"))
+    {
+        RazorQuickLaunch * tmp = new RazorQuickLaunch(_plugin,_bar);
+		pluginList.append(tmp);
     }
 }
 
