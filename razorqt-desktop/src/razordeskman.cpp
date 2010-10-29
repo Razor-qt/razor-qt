@@ -20,7 +20,7 @@ void Razordeskmanager::saveIconState()
     deskicons->setValue(priviconList.at(i)->text(),pos);
   }
   deskicons->debugSettings();
-  deskicons->safeSettings();
+  deskicons->saveSettings();
 }
 
 void Razordeskmanager::showIcons()
@@ -50,10 +50,10 @@ void Razordeskmanager::restoreIconState()
   qDebug() << "restoring icon state!";
   for (int i = 0; i < priviconList.count(); i ++)
   {
-    if (deskicons->getValue(priviconList.at(i)->text()) != "")
+    if (deskicons->getString(priviconList.at(i)->text()) != "")
     {
-      qDebug() << "found saved position for: " << priviconList.at(i) << " value: " << deskicons->getValue(priviconList.at(i)->text());
-      QStringList explode = deskicons->getValue(priviconList.at(i)->text()).split("|");
+      qDebug() << "found saved position for: " << priviconList.at(i) << " value: " << deskicons->getString(priviconList.at(i)->text());
+      QStringList explode = deskicons->getString(priviconList.at(i)->text()).split("|");
       QPoint npos(explode.at(0).toInt(), explode.at(1).toInt());
       priviconList.at(i)->setPos(npos);
     }
@@ -68,7 +68,7 @@ Razordeskmanager::Razordeskmanager(Razorworkspace* _workspace)
   qDebug() << "Initializing!!";
   workspace = _workspace;
   deskicons=new Readsettings("deskicons.conf");
-  
+
 }
 
 

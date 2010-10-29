@@ -40,14 +40,14 @@ Razordeskswitch::Razordeskswitch(int _bar): Razorplugin(_bar)
     gui->setMaximum(Razor::getInstance().get_Xfitman()->getNumDesktop());
     gui->setPrefix("Desktop ");
     gui->setFixedWidth(100);
-    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt()-6);
+    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     //then we connect the signal to the slot
     connect(gui,SIGNAL(changeDesk(int)),this, SLOT(switchDesktop(int)));
     //finally we add the gui to the given bar
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
     //and make us get events!
     Razor::getInstance().get_events()->registerCallback(this);
-    
+
 }
 
 /**

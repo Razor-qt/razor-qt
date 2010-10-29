@@ -25,7 +25,7 @@ Razorbartask::Razorbartask(Razorplugin* _owner)
     setScaledContents(true);
     Layout->setSpacing(0);
     Layout->setMargin(0);
-    setFixedHeight(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt()-5);
+    setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-5);
 
     // TODO: I'd like to see a dynamic resizing of this widget but it doesn't
     // work with the setSizePolicy. Dunno why. Maybe we should introduce
@@ -33,9 +33,9 @@ Razorbartask::Razorbartask(Razorplugin* _owner)
     // because thos should be only 2 widgets with variable width...
     setMinimumWidth(QApplication::desktop()->screenGeometry().width()*0.7);
     //setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-    if (!Razor::getInstance().get_looknfeel()->getValue("taskbar_background").isEmpty())
+    if (!Razor::getInstance().get_looknfeel()->getString("taskbar_background").isEmpty())
     {
-        setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getValue("taskbar_background")));
+        setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getString("taskbar_background")));
     }
 
     makeUp();
@@ -218,7 +218,7 @@ void Razorbartaskentry::makeUp()
     setFixedWidth(owner->width()/count);
 
 
-    setFixedHeight(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt()-5);
+    setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-5);
     //setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getValue("task_background")));
     QString name = QApplication::fontMetrics().elidedText(linkedTask->getTitle(), Qt::ElideRight, width()-width()/3);
     if (linkedTask->isHidden())

@@ -18,7 +18,7 @@ Razorbar::Razorbar()
     /*QDialog* bla = new QDialog(NULL,Qt::FramelessWindowHint | Qt::Dialog);
     bla->show();
     */
-    qDebug() << "blobb" << Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt();
+    qDebug() << "blobb" << Razor::getInstance().get_looknfeel()->getInt("razorbar_height");
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::WindowStaysOnTopHint);
 	// this enables to view tooltips if they are set in the subwidgets
 	setAttribute(Qt::WA_AlwaysShowToolTips);
@@ -55,7 +55,7 @@ void Razorbar::addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align)
  */
 void Razorbar::makeUp()
 {
-    setFixedHeight(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt());
+    setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height"));
 
     // width handling - current approach:
     // if there is only one physicall screen used - all size width
@@ -68,11 +68,11 @@ void Razorbar::makeUp()
     else
         setFixedWidth(dw->screenGeometry(-1).width());
 
-    if (! Razor::getInstance().get_looknfeel()->getValue("razorbar_background").isEmpty())
+    if (! Razor::getInstance().get_looknfeel()->getString("razorbar_background").isEmpty())
 
     {
-        setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getValue("razorbar_background")));
-        qDebug() << Razor::getInstance().get_looknfeel()->getValue("razorbar_background");
+        setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getString("razorbar_background")));
+        qDebug() << Razor::getInstance().get_looknfeel()->getString("razorbar_background");
     }
     move(dw->screenGeometry(-1).x(), QApplication::desktop()->height() - height());
 }

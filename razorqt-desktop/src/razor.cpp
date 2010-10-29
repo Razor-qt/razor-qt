@@ -12,10 +12,10 @@ Razor &Razor::getInstance()
 Razor::Razor()
 {
   razorSettings = new Readsettings("razor.conf");
-  themeSettings = new Readsettings(razorSettings->getValue("style_theme"));
+  themeSettings = new Readsettings(razorSettings->getString("style_theme"));
   xfitman = new Xfitman();
   xdgenv = new Xdgenv();
-  xdgicon = new Xdgiconthememanager(razorSettings->getValue("icon_theme"),xdgenv);  
+  xdgicon = new Xdgiconthememanager(razorSettings->getString("icon_theme"),xdgenv);
 }
 
 

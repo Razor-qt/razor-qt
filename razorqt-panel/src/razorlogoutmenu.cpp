@@ -51,10 +51,10 @@ void Razorlogoutmenugui::createMenus()
     // add the basic actions (shutdown and stuff)
 
     // 1 create the actions
-    shutdown = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razorlogmenu_shutdown")),tr("Shutdown"),this);
-    reboot = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razorlogmenu_reboot")),tr("Reboot"),this);
-    logout = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razorlogmenu_logout")),tr("Logout"),this);
-    about = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razorlogmenu_about")),tr("about"),this);
+    shutdown = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razorlogmenu_shutdown")),tr("Shutdown"),this);
+    reboot = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razorlogmenu_reboot")),tr("Reboot"),this);
+    logout = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razorlogmenu_logout")),tr("Logout"),this);
+    about = new QAction((QIcon)(Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razorlogmenu_about")),tr("about"),this);
 
     // 2 link with handler
     connect(shutdown, SIGNAL(triggered()), Razor::getInstance().get_handler(),SLOT(sys_shutdown()));
@@ -66,7 +66,7 @@ void Razorlogoutmenugui::createMenus()
     mainMenu->addAction(logout);
     mainMenu->addAction(reboot);
     mainMenu->addAction(shutdown);
-    
+
 }
 
 /**
@@ -98,12 +98,12 @@ Razorlogoutmenugui::~Razorlogoutmenugui()
 
 void Razorlogoutmenugui::makeUp()
 {
-    int barheight = Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt();
+    int barheight = Razor::getInstance().get_looknfeel()->getInt("razorbar_height");
     setFixedSize(barheight -3, barheight -3);
-    icon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razorlogmenu_icon");
+    icon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razorlogmenu_icon");
     //setPixmap( ((QPixmap)icon ).scaled(barheight - 5, barheight - 5));
     picon = ((QPixmap)icon ).scaled(barheight - 5, barheight - 5);
-    acticon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razorlogmenu_acticon");
+    acticon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razorlogmenu_acticon");
     //setPixmap( ((QPixmap)icon ).scaled(barheight - 5, barheight - 5));
     actpicon = ((QPixmap)acticon ).scaled(barheight-2, barheight-2);
     setPixmap(picon);

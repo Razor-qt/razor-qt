@@ -14,7 +14,7 @@ void RazorDevicePlugin::deviceMount(QAction* _action)
     QMessageBox msg_box;
 
     qDebug() << "RazorDevicePlugin: u/mount triggered! uuid: "<<_action->data();
-    
+
     if (deviceBackend->getDevice(uuid)->getMounted())
     {
         if (deviceBackend->umount(uuid))
@@ -63,8 +63,8 @@ RazorDevicePlugin::RazorDevicePlugin(int _bar): Razorplugin(_bar)
 
 
     gui = new RazorDevicePluginGui(this);
-    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt()-6);
-    gui->setFixedWidth(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt()-6);
+    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
+    gui->setFixedWidth(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 
 

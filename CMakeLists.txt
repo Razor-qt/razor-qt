@@ -11,6 +11,12 @@ include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
 	)
+
+# This allows to install and read the configs from non-standard locations
+if (CMAKE_INSTALL_PREFIX)
+    add_definitions(-DSHARE_DIR="\\"${CMAKE_INSTALL_PREFIX}/share/razor/\\"")
+endif ()
+
 add_subdirectory( librazorqt )
 add_subdirectory( razorqt-session )
 add_subdirectory( razorqt-panel )

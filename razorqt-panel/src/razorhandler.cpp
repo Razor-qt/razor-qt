@@ -9,7 +9,7 @@
  */
 void Razorhandler::gui_showabout()
 {
-    QString logo = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razormainmenu_icon");
+    QString logo = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razormainmenu_icon");
     Razoraboutdlg* aboutdlg = new Razoraboutdlg(logo);
     Q_UNUSED(aboutdlg);
 }

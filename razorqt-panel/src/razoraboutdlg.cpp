@@ -17,8 +17,8 @@
 Razoraboutdlg::Razoraboutdlg(QString _about)
 {
     Readsettings mainSettings("razor.conf");
-    Readsettings looknfeel(mainSettings.getValue("style_theme"));
-    
+    Readsettings looknfeel(mainSettings.getString("style_theme"));
+
     //razorLabel->setPixmap(_about);
     Q_UNUSED(_about);
     setupUi(this);
@@ -27,12 +27,12 @@ Razoraboutdlg::Razoraboutdlg(QString _about)
     versionLabel->setText(tmp);
     aboutText->setReadOnly(true);
     aboutText->insertPlainText("Mail me at: chris.vdop@googlemail.com \n \n");
-    aboutText->insertPlainText("Special thanks to: \n Eugene Pivnev (qtDesktop) \n Petr Vanek (for patches) \n Paul Günther (for desktop backgrounds) \n Manuel Meier (for ideas) \n Alexander Zakher (for the name) \n antico (for making me do this) \n and KDE (http://www.kde.org) \n \n \n");
+    aboutText->insertPlainText("Special thanks to: \n Eugene Pivnev (qtDesktop) \n Petr Vanek (for patches) \n Paul Gnther (for desktop backgrounds) \n Manuel Meier (for ideas) \n Alexander Zakher (for the name) \n antico (for making me do this) \n and KDE (http://www.kde.org) \n \n \n");
     aboutText->insertPlainText("License: GPL \n");
     show();
     razorLabel->setScaledContents(true);
-    qDebug() << ((looknfeel.getPath()+looknfeel.getValue("razormainmenu_icon")));
-    razorLabel->setPixmap(((QPixmap)(looknfeel.getPath()+looknfeel.getValue("razormainmenu_icon"))));
+    qDebug() << ((looknfeel.getPath()+looknfeel.getString("razormainmenu_icon")));
+    razorLabel->setPixmap(((QPixmap)(looknfeel.getPath()+looknfeel.getString("razormainmenu_icon"))));
 }
 
 

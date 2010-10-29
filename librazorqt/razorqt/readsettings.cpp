@@ -21,45 +21,47 @@ Readsettings::~Readsettings()
 /**
  * @brief this looks in all the usual system paths for our file
  */
-QString Readsettings::getSysPath(QString _file)
+QString Readsettings::getSysPath(const QString & fileName)
 {
-    if (!_file.startsWith("/"))
+    if (fileName.startsWith("/"))
     {
-        QStringList explode = _file.split("/");
-        QFile test(QDir::homePath()+"/.razor/"+explode.at(explode.count()-1));
-
-        if (test.exists())
-            return test.fileName();
-        else
-        {
-            test.setFileName("/usr/share/razor/"+explode.at(explode.count()-1));
-            if (test.exists())
-            {
-                qDebug() << test.fileName();
-                return test.fileName();
-            }
-            else
-            {
-                test.setFileName("/usr/local/share/razor/"+explode.at(explode.count()-1));
-                if (test.exists())
-                {
-
-                    qDebug() << test.fileName();
-                    return test.fileName();
-
-                }
-                else
-                {
-
-                    qDebug() << "Readsettings: could not find file " << _file;
-                    return "";
-
-                }
-            }
-        }
+        return fileName;
     }
-    else
-        return _file;
+
+    QStringList explode = fileName.split("/");
+    QString lastPart = explode.at(explode.count()-1);
+    QString pathTemplate("%1/%2");
+    QString test;
+
+    // a hack to simplify the multiple file location tests
+#define TESTFILE(prefix)                            \
+    test = pathTemplate.arg( (prefix), lastPart );  \
+    if (QFile::exists(test))                        \
+    {                                               \
+        qDebug() << "Readsettings: Config found in" << (prefix) << lastPart; \
+        return test;                                \
+    }
+
+    // home dir
+    TESTFILE(QDir::homePath() + "/.razor/");
+
+#ifdef SHARE_DIR
+    // test for non-standard install dirs - useful for development for example
+    TESTFILE(SHARE_DIR)
+#else
+#warning SHARE_DIR is not defined. Config will not be searched in the CMAKE_INSTALL_PREFIX
+    // this is ugly and it should be used only in a very special cases
+    // standard cmake build contains the SHARE_DIR defined in the top level CMakeLists.txt
+    //
+    // /usr/local/ goes first as it's usually before the /usr in the PATH etc.
+    TESTFILE("/usr/local/share/razor/");
+    TESTFILE("/usr/share/razor/")
+#endif
+
+    // die silently
+    //! \todo TODO/FIXME: shouldn't be here something like "wraning and close"?
+    qDebug() << "Readsettings: could not find file " << fileName;
+    return "";
 }
 
 
@@ -69,63 +71,71 @@ QString Readsettings::getSysPath(QString _file)
  *@brief does the actual parsing of the file
  */
 
-void Readsettings::updateMap(QString _filename)
+void Readsettings::updateMap(const QString & fileName)
 {
+    configFile = getSysPath(fileName);
+
     //it does not exist? so make it users-stuff
-    if (getSysPath(_filename)=="")
+    if (configFile.isEmpty())
     {
         //first check if path exists!
         QDir dir(QDir::homePath());
-	dir.mkdir(".razor");
-        qDebug() << "Readsettings: created " << QDir::homePath()+"/.razor/"+_filename;
-        QFile newfile(QDir::homePath()+"/.razor/"+_filename);
+        dir.mkdir(".razor");
+        qDebug() << "Readsettings: created " << QDir::homePath()+"/.razor/"+fileName;
+        QFile newfile(QDir::homePath()+"/.razor/"+fileName);
         QDateTime now = QDateTime::currentDateTime();
         newfile.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream addcomment(&newfile);
         addcomment << "# new file created by Readsettings on: " << now.toString() <<"\n";
+        //! \todo TODO/FIXME: some default config for ~ ?
         newfile.close();
     }
 
-    QFile stl_file(getSysPath(_filename));
-
-    configFile =getSysPath(_filename);
+    QSettings s(configFile, QSettings::IniFormat);
+    foreach (QString key, s.allKeys())
+    {
+        settings[key] = s.value(key);
+    }
+#if 0
+    QFile stl_file(configFile);
     stl_file.open(QIODevice::ReadOnly | QIODevice::Text);
     //create a textstream out of it and explode it into the map
     QTextStream fileStream(&stl_file);
     QString line;
     QStringList explode;
-    line=fileStream.readLine();
+    line = fileStream.readLine();
     //do the actual parsing of the file
     do
     {
         explode=line.split("=");
-        if (explode.count()>1)
-            redSettings[explode[0].trimmed()]=explode[1].trimmed();
+        if (explode.count() > 1)
+            redSettings[explode[0].trimmed()] = explode[1].trimmed();
         line = fileStream.readLine();
     }
     while (!line.isNull());
+#endif
 
-    tplPath = getSysPath(_filename);
-    while (!tplPath.endsWith("/") && tplPath.length() > 0)
-        tplPath.chop(1);
+    QFileInfo fi(configFile);
+    // all other code expects that getPath will contain the trailing /
+    tplPath = fi.absolutePath() + "/";
 }
 
 
 /**
  * @brief constructor of this class
  */
-Readsettings::Readsettings(QString _filename)
+Readsettings::Readsettings(const QString & fileName)
 {
-    qDebug() << "Readsettings: initialising... " << _filename;
-    updateMap(_filename);
+    qDebug() << "Readsettings: initialising... " << fileName;
+    updateMap(fileName);
 }
 
 /**
  * @brief writes the settings back to the file
  */
-void Readsettings::safeSettings()
+void Readsettings::saveSettings()
 {
-    QMapIterator<QString, QString> Iter(redSettings);
+    SettingsMapIterator Iter(settings);
     QFile savetoFile(configFile);
     if (savetoFile.open(QIODevice::ReadWrite | QIODevice::Text))
     {
@@ -133,11 +143,11 @@ void Readsettings::safeSettings()
         QTextStream outstream(&savetoFile);
 	//clears the file
         buffer = outstream.readAll();
-	
+
         while (Iter.hasNext())
         {
             Iter.next();
-            outstream << Iter.key() << "=" << Iter.value() << endl;
+            outstream << Iter.key() << "=" << Iter.value().toString() << endl;
         }
         savetoFile.close();
         qDebug() << "Readsettings: written to " << configFile;
@@ -151,19 +161,35 @@ void Readsettings::safeSettings()
 
 
 /**
- * @brief gives back a value by key
+ * @brief gives back a value as a string by key
  */
-QString Readsettings::getValue(QString _key)
+QString Readsettings::getString(const QString & key)
 {
-    return redSettings.value(_key);
+    return settings.value(key).toString();
+}
+
+/**
+ * @brief gives back a value as an int by key
+ */
+int Readsettings::getInt(const QString & key)
+{
+    bool ok;
+    int ret = settings.value(key).toInt(&ok);
+    if (!ok)
+    {
+        qDebug() << "Readsettings::getInt ERROR: cannot convert" << key << settings.value(key) << " to int";
+        //! \todo TODO/FIXME: some nice error handlinf would be fine...
+        return -1;
+    }
+    return ret;
 }
 
 /**
  * @brief sets a _key to _value.. creates of necessary
  */
-void Readsettings::setValue(QString _key, QString _value)
+void Readsettings::setValue(const QString & key, const QVariant & value)
 {
-    redSettings[_key] = _value;
+    settings[key] = value;
 }
 
 #endif

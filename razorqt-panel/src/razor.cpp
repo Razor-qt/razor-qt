@@ -45,11 +45,11 @@ Razor::Razor()
  */
 void Razor::setupGui()
 {
-  
-    looknfeel = new Readsettings(settings->getValue("style_theme"));
-    xdgmanager = new Xdgmanager(settings->getValue("icon_theme"));
+
+    looknfeel = new Readsettings(settings->getString("style_theme"));
+    xdgmanager = new Xdgmanager(settings->getString("icon_theme"));
     //select stylesheet from theme
-    QFile stylesheet(looknfeel->getPath() + looknfeel->getValue("panel_stylesheet"));
+    QFile stylesheet(looknfeel->getPath() + looknfeel->getString("panel_stylesheet"));
     QString sheet="";
     if (stylesheet.exists())
     {

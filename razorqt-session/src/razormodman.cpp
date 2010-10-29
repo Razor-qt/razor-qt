@@ -16,33 +16,33 @@ Razormodulemanager::Razormodulemanager(QString _modconfig, QObject* _parent)
   Q_UNUSED(_parent);
   stateMan = new Razorstate;
   modulesettings = new Readsettings(_modconfig);
-  int modcount = modulesettings->getValue("count").toInt();
+  int modcount = modulesettings->getInt("count");
   qDebug() << "Settings geladen.. module:" << modcount;
-  
-  
-  
+
+
+
   //maybe make this a config entry one day :)
   bool autorestart = true;
-  
+
+  QString num;
+  QString cmd;
   for (int i = 0; i < modcount; i ++)
   {
-    QString num;
-    QString cmd;
     int power;
     num.setNum(i);
-    cmd = modulesettings->getValue("module_"+num);
-    power = modulesettings->getValue("module_"+num+"_doespower").toInt();
-    
+    cmd = modulesettings->getString("module_"+num);
+    power = modulesettings->getInt("module_"+num+"_doespower");
+
     QProcess* tmp = new QProcess(this);
     tmp->start(cmd);
     if (power == 1)
       stateMan->addProcess(tmp);
-    
-    
-    
+
+
+
     if (autorestart)
       connect(tmp, SIGNAL(finished(int)),this,SLOT(restartModules()));
-    
+
     procMap[cmd]=tmp;
   }
 }

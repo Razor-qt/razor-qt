@@ -8,29 +8,51 @@
  */
 
 #include "defs.h"
+
+
 /**
  * @brief Manages all the config stuff
  */
 class Readsettings
 {
+
 public:
-  Readsettings(QString _filename);
-  //Readsettings(const Readsettings &cc);
-  ~Readsettings();
-  void updateMap(QString _filename);
-  QString getValue(QString _key);
-  void setValue(QString _key, QString _value);
-  void safeSettings();
-  void debugSettings() {qDebug() << redSettings;}
-  QString getPath()
-  {
-    return tplPath;
-  }
+    Readsettings(const QString & fileName);
+    //Readsettings(const Readsettings &cc);
+    ~Readsettings();
+
+    //! Get a QString from the setting map
+    QString getString(const QString & key);
+    /*! Get an int from the setting map.
+    It returns -1 and prints a debug message if there is an converion error
+    */
+    int getInt(const QString & key);
+
+    void setValue(const QString & key, const QVariant & value);
+    void saveSettings();
+
+    void debugSettings()
+    {
+        qDebug() << settings;
+    }
+
+    QString getPath()
+    {
+        return tplPath;
+    }
 private:
-  QString getSysPath(QString);
-  QString configFile;
-  QString tplPath;
-  QMap<QString, QString> redSettings;
+
+    //! Universal setting map structure
+    typedef QHash<QString, QVariant> SettingsMap;
+    //! Settings map iterator
+    typedef QHashIterator<QString, QVariant> SettingsMapIterator;
+
+    QString configFile;
+    QString tplPath;
+    SettingsMap settings;
+
+    void updateMap(const QString & fileName);
+    QString getSysPath(const QString & fileName);
 };
 
 #endif

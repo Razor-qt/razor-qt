@@ -49,7 +49,7 @@ void Razorworkspacemanager::switchDesktop(int _change)
 void Razorworkspace::wheelEvent(QWheelEvent* _ev)
 {
     int numDegrees = _ev->delta() / 8;
-    int numSteps = numDegrees / 15;    
+    int numSteps = numDegrees / 15;
     emit mouseWheeled(-numSteps);
 }
 
@@ -74,43 +74,43 @@ Razorworkspace::~Razorworkspace()
 void Razorworkspacemanager::mouseClicked(QMouseEvent* _event)
 {
   qDebug() << "click-released the workspace";
-  //maybe popup a menu or stuff - i dont know 
+  //maybe popup a menu or stuff - i dont know
 }
 
 Razorworkspacemanager::Razorworkspacemanager(QObject* parent): QObject(parent)
 {
-  
+
   //this may actually make the icon work on multihead
   QWidget* screen = QApplication::desktop()->screen(QApplication::desktop()->primaryScreen());
   workSpace = new Razorworkspace;
-  
+
   connect(workSpace, SIGNAL(mouseReleased(QMouseEvent*)),this, SLOT(mouseClicked(QMouseEvent*)));
   connect(workSpace, SIGNAL(mouseWheeled(int)), this, SLOT(switchDesktop(int)));
-  
-  
+
+
   workSpace->resize(screen->width(),screen->height());
-  
-  
-  
+
+
+
   //now we got the desktop we need to determine if the user wants a defined picture there
   Readsettings customPixmapSettings("desktop.conf");
-  QString finalPixmap = customPixmapSettings.getValue("deskPixMap");
+  QString finalPixmap = customPixmapSettings.getString("deskPixMap");
   if (finalPixmap != "internal" && finalPixmap != "")
   {qDebug() << "Pixmap-custom ok: " << finalPixmap;}
   else //now we want to use the system default - we still need to find that one out though
   {
     qDebug() << "trying to get system-defaults";
     Readsettings* styleSettings = Razor::getInstance().themesettings();
-    finalPixmap=styleSettings->getPath() + styleSettings->getValue("desktop_background");
-    
+    finalPixmap=styleSettings->getPath() + styleSettings->getString("desktop_background");
+
     qDebug() << "trying to get system-defaults" << finalPixmap;
   }
-  
+
   //now try to set it - if its not set we assume the theme stylesheet takes care of it some way (like a gradient or stuff)
   if (finalPixmap != "")
     workSpace->setPixmap(finalPixmap);
-  
-  
+
+
 }
 
 Razorworkspacemanager::~Razorworkspacemanager()

@@ -37,7 +37,7 @@ void Razorclock::updateTime()
 {
     QTime time = QTime::currentTime();
     gui->setText(QDateTime::currentDateTime().toString(
-                     Razor::getInstance().get_looknfeel()->getValue("clocks_format")
+                     Razor::getInstance().get_looknfeel()->getString("clocks_format")
                  ));
 }
 

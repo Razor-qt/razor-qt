@@ -9,23 +9,23 @@ bool Razorspinbutton::handleEvent(XEvent* _event)
 
 Razorspinbutton::Razorspinbutton(QString _cmd, int _bar): Razorplugin(_bar)
 {
-  
+
     QString cmd = _cmd;
     cmd.remove("razorspinbutton");
     settings = new Readsettings("spin"+cmd+".conf");
-    int stateCount = settings->getValue("count").toInt();
+    int stateCount = settings->getInt("count");
     gui = new Razorspinbuttongui(this);
     for (int i = 0; i < stateCount; i++)
     {
         QString s;
         s.setNum(i);
-        QStringList Explode = settings->getValue("state"+s).split("|");
+        QStringList Explode = settings->getString("state"+s).split("|");
 	QAction* tmp = new QAction((QIcon)Explode.at(2),Explode.at(1),gui);
 	tmp->setData(Explode.at(0));
 	gui->addAction(tmp);
     }
     gui->changeAction(0);
-    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt()-6);
+    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
 

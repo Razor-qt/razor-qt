@@ -26,10 +26,10 @@ Razorpluginmanager::Razorpluginmanager()
 {
     qDebug() << "Pluginmanager: initializing...";
     //get the location of the pluginconfig
-    QString configfile = Razor::getInstance().get_settings()->getPath() +  Razor::getInstance().get_settings()->getValue("plugin_config");
+    QString configfile = Razor::getInstance().get_settings()->getPath() +  Razor::getInstance().get_settings()->getString("plugin_config");
     //read the plugin config into our Readsettings
     pluginsettings = new Readsettings(configfile);
-    int num_panels = pluginsettings->getValue("num_bars").toInt();
+    int num_panels = pluginsettings->getInt("num_bars");
     qDebug() << "Pluginmanager: Making " << num_panels << " panels!";
     //make the panels!
     QString I,W;
@@ -38,12 +38,12 @@ Razorpluginmanager::Razorpluginmanager()
         Razor::getInstance().get_gui()->addPanel();
         //get the number of widgets for this panel
         I.setNum(i);
-        int num_widgets = pluginsettings->getValue("num_widgets_"+I).toInt();
+        int num_widgets = pluginsettings->getInt("num_widgets_"+I);
         qDebug() << "Pluginmanager: making " << num_widgets << " widgets of " << "num_widgets_"+I;
         for (int w = 0; w < num_widgets; w++)
         {
             W.setNum(w);
-            QString plugin = pluginsettings->getValue("bar"+I+"_widget_"+W);
+            QString plugin = pluginsettings->getString("bar"+I+"_widget_"+W);
             qDebug() << "Pluginmanager: making plugin " << plugin << " out of " "bar"+I+"_widget_"+W;
             addPlugin(plugin,i);
         }

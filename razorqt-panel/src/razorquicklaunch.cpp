@@ -7,8 +7,8 @@ RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): Razorplugin(bar)
     cmd.remove("quicklaunch");
 	//!\todo TODO/FIXME: decide if it should use its own config file
     settings = new Readsettings("spin"+cmd+".conf");
-    int stateCount = settings->getValue("count").toInt();
-	
+    int stateCount = settings->getInt("count");
+
     gui = new RazorQuickLaunchGUI(this);
 
 	/*!\todo TODO/FIXME: share the code with Razorspinbutton.
@@ -19,7 +19,7 @@ RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): Razorplugin(bar)
     {
         QString s;
         s.setNum(i);
-        QStringList Explode = settings->getValue("state"+s).split("|");
+        QStringList Explode = settings->getString("state"+s).split("|");
 		if (!QFile::exists(Explode.at(2)))
 		{
 			qDebug() << "Icon file" << Explode.at(2) << "does not exists. Skipped.";
@@ -30,7 +30,7 @@ RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): Razorplugin(bar)
 		gui->addAction(tmp);
     }
 
-	gui->setupGUI(Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt());
+	gui->setupGUI(Razor::getInstance().get_looknfeel()->getInt("razorbar_height"));
     Razor::getInstance().get_gui()->addWidget(gui, bar, 0, Qt::AlignLeft);
 }
 

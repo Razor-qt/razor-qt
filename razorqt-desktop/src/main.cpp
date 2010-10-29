@@ -10,7 +10,7 @@ void legacyWallPaper()
 {
     //now we got the desktop we need to determine if the user wants a defined picture there
     Readsettings customPixmapSettings("desktop.conf");
-    QString finalPixmap = customPixmapSettings.getValue("deskPixMap");
+    QString finalPixmap = customPixmapSettings.getString("deskPixMap");
     if (finalPixmap != "internal" && finalPixmap != "")
     {
         qDebug() << "Pixmap-custom ok: " << finalPixmap;
@@ -19,7 +19,7 @@ void legacyWallPaper()
     {
         qDebug() << "trying to get system-defaults";
         Readsettings* styleSettings = Razor::getInstance().themesettings();
-        finalPixmap=styleSettings->getPath() + styleSettings->getValue("desktop_background");
+        finalPixmap=styleSettings->getPath() + styleSettings->getString("desktop_background");
 
         qDebug() << "trying to get system-defaults" << finalPixmap;
     }
@@ -51,7 +51,7 @@ int main (int argc, char* argv[])
     //TODO make singleton QApplication that does all this shit, then make razorsettings and stylesettings available and fix all the other stuff with it
 
     QApplication app(argc,argv);
-    QFile stylesheet(Razor::getInstance().themesettings()->getPath() + Razor::getInstance().themesettings()->getValue("panel_stylesheet"));
+    QFile stylesheet(Razor::getInstance().themesettings()->getPath() + Razor::getInstance().themesettings()->getString("panel_stylesheet"));
     QString sheet="";
     if (stylesheet.exists())
     {
@@ -61,7 +61,7 @@ int main (int argc, char* argv[])
     qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
     app.setStyleSheet(sheet);
 
-    if (Razor::getInstance().razorsettings()->getValue("desktop_workspace")!= "1")
+    if (Razor::getInstance().razorsettings()->getString("desktop_workspace")!= "1")
     {
         qDebug() << "Using root-window as wallpaper-canvas";
         legacyWallPaper();

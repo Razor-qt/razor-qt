@@ -111,12 +111,12 @@ Razormainmenu::~Razormainmenu()
 
 void Razormainmenu::makeUp()
 {
-    int barheight = Razor::getInstance().get_looknfeel()->getValue("razorbar_height").toInt();
+    int barheight = Razor::getInstance().get_looknfeel()->getInt("razorbar_height");
     setFixedSize(barheight, barheight );
-    icon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razormainmenu_icon");
+    icon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razormainmenu_icon");
     //setPixmap( ((QPixmap)icon ).scaled(barheight - 5, barheight - 5));
     picon = ((QPixmap)icon ).scaled(barheight - 2, barheight - 2);
-    acticon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getValue("razormainmenu_acticon");
+    acticon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razormainmenu_acticon");
     //setPixmap( ((QPixmap)icon ).scaled(barheight - 5, barheight - 5));
     actpicon = ((QPixmap)acticon ).scaled(barheight, barheight);
     setPixmap(picon);
