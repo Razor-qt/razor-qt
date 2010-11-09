@@ -22,41 +22,41 @@ class Razorspinbutton;
 
 class Razorspinbuttongui : public QToolButton
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
     Razorspinbuttongui(Razorspinbutton* _owner);
     ~Razorspinbuttongui();
     void addAction(QAction*);
 protected:
     virtual void wheelEvent(QWheelEvent* );
-    virtual void mousePressEvent(QMouseEvent* );    
+    virtual void mousePressEvent(QMouseEvent* );
 signals:
-  void actionClicked(int);
-  void actionChanged(int);
+    void actionClicked(int);
+    void actionChanged(int);
 public slots:
-  void execAction(QAction*);
-  void changeAction(int);
-  
+    void execAction(QAction*);
+    void changeAction(int);
+
 private:
-  QTimer* hideTimer;
-  QAction* currentAction;
-  QMenu* actionChoose;
-  QList<QAction*> actionList;
-  Razorspinbutton* owner;
-  int index;
+    QTimer* hideTimer;
+    QAction* currentAction;
+    QMenu* actionChoose;
+    QList<QAction*> actionList;
+    Razorspinbutton* owner;
+    int index;
 };
 
 class Razorspinbutton :public QObject, public Razorplugin
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
     Razorspinbutton(QString _cmd, int _bar);
     ~Razorspinbutton();
     virtual bool handleEvent(XEvent* _event);
 private:
-  Razorspinbuttongui* gui;
-  Readsettings* settings;
-    
+    Razorspinbuttongui* gui;
+    Readsettings* settings;
+
 };
 
 

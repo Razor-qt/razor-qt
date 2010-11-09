@@ -24,8 +24,8 @@
  * @brief Does all the logic needed for the XDG-Standart in the menus
  */
 class Xdgmenulogic
-{	
-  public:
+{
+public:
     Xdgmenulogic(int _logic, bool _not, Xdgmenulogic* _parent);
     Xdgmenulogic();
     ~Xdgmenulogic();
@@ -44,7 +44,7 @@ class Xdgmenulogic
  */
 class Xdgmenucross
 {
-  public:
+public:
     Xdgmenucross(Xdgmenucross* _parent);
     Xdgmenucross();
     ~Xdgmenucross();
@@ -60,7 +60,7 @@ class Xdgmenucross
     QList<Xdgdesktopfile*> entries;
     QList<Xdgmenucross*> subMenu;
     void debugCross();
-  
+
 };
 
 

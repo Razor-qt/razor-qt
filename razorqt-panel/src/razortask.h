@@ -67,7 +67,7 @@ public:
 private:
     Razorbartask* gui;
     void updateMap();
-    
+
     QMap <Window, Razortask*> clientList;
 };
 

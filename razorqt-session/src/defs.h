@@ -41,7 +41,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QDir>
-#include <QDirIterator> 
+#include <QDirIterator>
 #include <QSettings>
 #include <QTabWidget>
 #include <QDirModel>

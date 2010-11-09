@@ -50,7 +50,7 @@ public:
     }
     bool isUseful()
     {
-	return useful;
+        return useful;
     }
 private:
     bool useful;

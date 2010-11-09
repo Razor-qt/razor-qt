@@ -16,21 +16,21 @@
 
 class Razormodulemanager : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
     Razormodulemanager(QString _modconfig,QObject* _parent = 0);
     virtual ~Razormodulemanager();
-    
-    
+
+
 public slots:
     void restartModules();
-    
-    
+
+
 private:
     Readsettings* modulesettings;
     Razorstate* stateMan;
     QMap<QString,QProcess*> procMap;
-    
+
 };
 
 

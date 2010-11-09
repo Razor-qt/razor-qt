@@ -14,8 +14,8 @@
 */
 void Razorlabel::mousePressEvent(QMouseEvent* _event)
 {
-  Q_UNUSED(_event);
-  emit clicked();
+    Q_UNUSED(_event);
+    emit clicked();
 }
 
 /**

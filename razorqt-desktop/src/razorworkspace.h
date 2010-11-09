@@ -43,7 +43,10 @@ public:
 
     Razorworkspacemanager(QObject* parent = 0);
     ~Razorworkspacemanager();
-    Razorworkspace* getWorkSpace() {return workSpace;}
+    Razorworkspace* getWorkSpace()
+    {
+        return workSpace;
+    }
 public slots:
     void switchDesktop(int);
     void mouseClicked(QMouseEvent*);

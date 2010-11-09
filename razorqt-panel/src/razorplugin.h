@@ -16,7 +16,8 @@
 class Razorplugin
 {
 public:
-    Razorplugin(int _bar) {
+    Razorplugin(int _bar)
+    {
         Q_UNUSED(_bar);
     };
     /**

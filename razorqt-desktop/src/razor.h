@@ -8,22 +8,37 @@
 class Razor
 {
 public:
-      static Razor& getInstance();
-      ~Razor();
-      Readsettings* razorsettings() {return razorSettings;}
-      Readsettings* themesettings() {return themeSettings;}
-      Xfitman* getxfitman() {return xfitman;}
-      Xdgenv* getxdgenv() {return xdgenv;}
-      Xdgiconthememanager* geticontheme() {return xdgicon;}
-      
+    static Razor& getInstance();
+    ~Razor();
+    Readsettings* razorsettings()
+    {
+        return razorSettings;
+    }
+    Readsettings* themesettings()
+    {
+        return themeSettings;
+    }
+    Xfitman* getxfitman()
+    {
+        return xfitman;
+    }
+    Xdgenv* getxdgenv()
+    {
+        return xdgenv;
+    }
+    Xdgiconthememanager* geticontheme()
+    {
+        return xdgicon;
+    }
+
 private:
-      Razor();
-      Razor(Razor& cc);
-      Readsettings* razorSettings;
-      Readsettings* themeSettings;
-      Xfitman*	    xfitman;
-      Xdgenv*	    xdgenv;
-      Xdgiconthememanager* xdgicon;
+    Razor();
+    Razor(Razor& cc);
+    Readsettings* razorSettings;
+    Readsettings* themeSettings;
+    Xfitman*	    xfitman;
+    Xdgenv*	    xdgenv;
+    Xdgiconthememanager* xdgicon;
 };
 
 #endif

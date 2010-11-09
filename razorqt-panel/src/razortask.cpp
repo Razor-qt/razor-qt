@@ -140,7 +140,7 @@ Razortaskmanager::Razortaskmanager(int _bar) : Razorplugin(_bar)
     // it's aligned to left and it should occypy all free space
     // in the panel.
     // TODO: it doesn't work with sizeHints and with the stretch =1 too...
-    
+
     Razor::getInstance().get_gui()->addWidget(gui,_bar, 1, Qt::AlignLeft);
 
     qDebug() << "Razortaskmanager added widget";
@@ -157,14 +157,14 @@ Razortaskmanager::Razortaskmanager(int _bar) : Razorplugin(_bar)
 void Razortaskmanager::updateMap()
 {
     QList<Window>* tmp = Razor::getInstance().get_Xfitman()->getClientlist();
-  
+
     //first we need to get rid of tasks that got closed
     QMapIterator<Window,Razortask*> iter(clientList);
     while (iter.hasNext())
     {
         iter.next();
-	if (!tmp->contains(iter.key())) 
-	{
+        if (!tmp->contains(iter.key()))
+        {
             //  qDebug() << "DELTHIS!";
             //get the pointer
             Razortask* deltask = iter.value();
@@ -172,7 +172,7 @@ void Razortaskmanager::updateMap()
             clientList.remove(iter.key());
             //free the heap
             delete deltask;
-	}
+        }
     }
 
 
@@ -189,7 +189,7 @@ void Razortaskmanager::updateMap()
     }
 
     delete tmp;
- 
+
     //then update the stuff in our gui
     gui->updateTasks(&clientList);
     gui->updateFocus();
@@ -200,8 +200,8 @@ void Razortaskmanager::updateMap()
  */
 Razortaskmanager::~Razortaskmanager()
 {
-  for (int i = 0; i < clientList.values().count(); i++)
-    delete clientList.values().at(i);
+    for (int i = 0; i < clientList.values().count(); i++)
+        delete clientList.values().at(i);
 }
 
 

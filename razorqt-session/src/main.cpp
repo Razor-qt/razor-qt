@@ -17,17 +17,17 @@
 
 int main(int argc, char **argv)
 {
-  QApplication app(argc, argv);
-  Readsettings initset("razor.conf");
+    QApplication app(argc, argv);
+    Readsettings initset("razor.conf");
 
-  Razormodulemanager modman(initset.getPath() + initset.getString("module_config"));
+    Razormodulemanager modman(initset.getPath() + initset.getString("module_config"));
 
-  //i only use stack-variables here as we kill this program anyway...
-  QString splashset = initset.getString("splashscreen");
-  Razorsplash Splash(splashset);
-
-
+    //i only use stack-variables here as we kill this program anyway...
+    QString splashset = initset.getString("splashscreen");
+    Razorsplash Splash(splashset);
 
 
-  return app.exec();
+
+
+    return app.exec();
 }

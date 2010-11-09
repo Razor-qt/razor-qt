@@ -27,20 +27,20 @@
 
 class Xdgmanager : public QObject
 {
-	Q_OBJECT
-	public:
-		Xdgmanager(QString _icontheme);
-		~Xdgmanager();
-		Xdgenv* get_xdgenv();
-		Xdgmenu* get_xdgmenu();
-		Xdgautostart* get_xdgautostart();
-		Xdgiconthememanager* get_xdgiconthememanager();
-		
-	private:
-		Xdgenv* xdgenv;
-		Xdgmenu* xdgmenu;
-		Xdgautostart* xdgautostart;
-		Xdgiconthememanager* xdgiconthememanager;
+    Q_OBJECT
+public:
+    Xdgmanager(QString _icontheme);
+    ~Xdgmanager();
+    Xdgenv* get_xdgenv();
+    Xdgmenu* get_xdgmenu();
+    Xdgautostart* get_xdgautostart();
+    Xdgiconthememanager* get_xdgiconthememanager();
+
+private:
+    Xdgenv* xdgenv;
+    Xdgmenu* xdgmenu;
+    Xdgautostart* xdgautostart;
+    Xdgiconthememanager* xdgiconthememanager;
 };
 
 

@@ -17,14 +17,14 @@
 
 QIcon Xdgiconthememanager::getIconNG(QString _iconname)
 {
-   //if the names like bla.png - remove the .png
+    //if the names like bla.png - remove the .png
     if (_iconname.contains("."))
     {
-      QStringList tmp = _iconname.split(".");
-      tmp.removeLast();
-      return getIconNG(tmp.join("."));
+        QStringList tmp = _iconname.split(".");
+        tmp.removeLast();
+        return getIconNG(tmp.join("."));
     }
-    
+
     qDebug() << "Trying NG-Iconget: " << _iconname << theme;
     QStringList searchpath = QIcon::themeSearchPaths();
     if (!searchpath.contains(themePath))
@@ -45,20 +45,20 @@ QIcon Xdgiconthememanager::getIconNG(QString _iconname)
     {
         QIcon::setThemeName("hicolor");
         if (QIcon::hasThemeIcon(_iconname))
-	{
-	  
-        qDebug() << "took from fallback theme";
+        {
+
+            qDebug() << "took from fallback theme";
             return QIcon::fromTheme(_iconname);
-	}
+        }
         else
-	{
-	  
-        qDebug() << "took from legacy map";
-	if (legacyMap.value(_iconname) != "" || _iconname == "system-run")
-            return (QIcon) legacyMap.value(_iconname);
-	else
-	    return getIconNG("system-run");
-	}
+        {
+
+            qDebug() << "took from legacy map";
+            if (legacyMap.value(_iconname) != "" || _iconname == "system-run")
+                return (QIcon) legacyMap.value(_iconname);
+            else
+                return getIconNG("system-run");
+        }
     }
 }
 

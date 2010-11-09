@@ -12,9 +12,9 @@
 */
 Razorstate::Razorstate()
 {
-  power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
-			     "org.freedesktop.Hal.Device.SystemPowerManagement",
-			     QDBusConnection::systemBus());
+    power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
+                               "org.freedesktop.Hal.Device.SystemPowerManagement",
+                               QDBusConnection::systemBus());
 }
 
 /**
@@ -22,7 +22,7 @@ Razorstate::Razorstate()
 */
 Razorstate::~Razorstate()
 {
- delete power;
+    delete power;
 }
 
 /**
@@ -30,8 +30,8 @@ Razorstate::~Razorstate()
  */
 void Razorstate::addProcess(QProcess* _proc)
 {
-  processList.append(_proc);
-  connect(_proc, SIGNAL(readyRead()),this,SLOT(parseState()));
+    processList.append(_proc);
+    connect(_proc, SIGNAL(readyRead()),this,SLOT(parseState()));
 }
 
 
@@ -41,15 +41,15 @@ void Razorstate::addProcess(QProcess* _proc)
 */
 void Razorstate::doOperation(QString _cmd)
 {
-  QString cmd = _cmd;
-  cmd.chop(1);
-  qDebug() << "Razorstate: got output: " << cmd;
-  if (cmd =="RAZOR_DO_LOGOUT")
-    logout();
-  else if (cmd == "RAZOR_DO_SHUTDOWN")
-    shutdown();
-  else if (cmd == "RAZOR_DO_REBOOT")
-    reboot();
+    QString cmd = _cmd;
+    cmd.chop(1);
+    qDebug() << "Razorstate: got output: " << cmd;
+    if (cmd =="RAZOR_DO_LOGOUT")
+        logout();
+    else if (cmd == "RAZOR_DO_SHUTDOWN")
+        shutdown();
+    else if (cmd == "RAZOR_DO_REBOOT")
+        reboot();
 }
 
 
@@ -58,9 +58,9 @@ void Razorstate::doOperation(QString _cmd)
 */
 void Razorstate::parseState()
 {
-  qDebug() << "parsestate!";
-  for (int i=0; i < processList.count();i++)
-    doOperation(processList.at(i)->readLine());
+    qDebug() << "parsestate!";
+    for (int i=0; i < processList.count(); i++)
+        doOperation(processList.at(i)->readLine());
 }
 
 /**
@@ -68,9 +68,9 @@ void Razorstate::parseState()
 **/
 void Razorstate::logout()
 {
-  for (int i=0; i < processList.count(); i++)
-    processList.at(i)->terminate();
-  QApplication::quit();
+    for (int i=0; i < processList.count(); i++)
+        processList.at(i)->terminate();
+    QApplication::quit();
 }
 
 /**
@@ -79,7 +79,7 @@ void Razorstate::logout()
 
 void Razorstate::reboot()
 {
- power->call("Reboot");
+    power->call("Reboot");
 }
 
 /**
@@ -88,9 +88,9 @@ void Razorstate::reboot()
 
 void Razorstate::shutdown()
 {
-  //qDebug() << "Would have shut down now";
-  //debug!! no real shutdown while testing :)
-  power->call("Shutdown");
+    //qDebug() << "Would have shut down now";
+    //debug!! no real shutdown while testing :)
+    power->call("Shutdown");
 }
 
 

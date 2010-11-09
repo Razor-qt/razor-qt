@@ -17,13 +17,13 @@
 */
 class Razorlabel : public QLabel
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     Razorlabel( QWidget* _parent=0);
-    ~Razorlabel(){}
-  signals:
+    ~Razorlabel() {}
+signals:
     void clicked();
-  protected:
+protected:
     void mousePressEvent(QMouseEvent* _event);
 };
 

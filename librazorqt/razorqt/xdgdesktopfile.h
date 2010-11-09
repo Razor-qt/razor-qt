@@ -15,8 +15,8 @@
  */
 class Xdgdesktopfile
 {
-  
-  public:
+
+public:
     Xdgdesktopfile(QString _filename);
     Xdgdesktopfile();
     void setFilename(QString _filename);
@@ -29,7 +29,7 @@ class Xdgdesktopfile
     QStringList categories;
     bool useable;
     void setValue(QString _key, QString _value);
-  private:
+private:
     QString oldPath;
     QFile* deskFile;
     QMap<QString, QString> data;

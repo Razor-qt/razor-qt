@@ -19,8 +19,8 @@
  */
 Xdgenv::Xdgenv()
 {
-	qDebug() << "Xdgenv: initialising...";
-	updateEnv();
+    qDebug() << "Xdgenv: initialising...";
+    updateEnv();
 }
 
 /**
@@ -39,7 +39,7 @@ Xdgenv::~Xdgenv()
  */
 QString Xdgenv::getEnv(QString _name)
 {
-	return envStore[_name];
+    return envStore[_name];
 }
 
 
@@ -50,28 +50,28 @@ QString Xdgenv::getEnv(QString _name)
 //updates the map of the env-variables
 void Xdgenv::updateEnv()
 {
-	qDebug() << "Xdgenv: updating Environmentals";
-	//try getting the correct XDG-ENVs
-	//if not set, use the defaults from the XDG-Standart	
-	envStore["DATA_HOME"]=getenv("XDG_DATA_HOME");
-	if (envStore["DATA_HOME"]=="")
-		envStore["DATA_HOME"]=QDir::homePath() + "/.local/share/";
-	
-	envStore["CONFIG_HOME"] = getenv("XDG_CONFIG_HOME");
-	if (envStore["CONFIG_HOME"] == "")
-		envStore["CONFIG_HOME"] = QDir::homePath() + "/.config/";
-	
-	envStore["DATA_DIRS"] = getenv("XDG_DATA_DIRS");
-	if (envStore["DATA_DIRS"]=="")
-		envStore["DATA_DIRS"] = "/usr/local/share/:/usr/share/";
-	
-	envStore["CONFIG_DIRS"] = getenv("XDG_CONFIG_DIRS");
-	if(envStore["CONFIG_DIRS"]=="")
-		envStore["CONFIG_DIRS"] = "/usr/local/etc/xdg:/etc/xdg/";
-	
-	envStore["CACHE_HOME"] = getenv("XDG_CACHE_HOME");
-	if(envStore["CACHE_HOME"]=="")
-		envStore["CACHE_HOME"] = QDir::homePath() + "/.cache/";
+    qDebug() << "Xdgenv: updating Environmentals";
+    //try getting the correct XDG-ENVs
+    //if not set, use the defaults from the XDG-Standart
+    envStore["DATA_HOME"]=getenv("XDG_DATA_HOME");
+    if (envStore["DATA_HOME"]=="")
+        envStore["DATA_HOME"]=QDir::homePath() + "/.local/share/";
+
+    envStore["CONFIG_HOME"] = getenv("XDG_CONFIG_HOME");
+    if (envStore["CONFIG_HOME"] == "")
+        envStore["CONFIG_HOME"] = QDir::homePath() + "/.config/";
+
+    envStore["DATA_DIRS"] = getenv("XDG_DATA_DIRS");
+    if (envStore["DATA_DIRS"]=="")
+        envStore["DATA_DIRS"] = "/usr/local/share/:/usr/share/";
+
+    envStore["CONFIG_DIRS"] = getenv("XDG_CONFIG_DIRS");
+    if (envStore["CONFIG_DIRS"]=="")
+        envStore["CONFIG_DIRS"] = "/usr/local/etc/xdg:/etc/xdg/";
+
+    envStore["CACHE_HOME"] = getenv("XDG_CACHE_HOME");
+    if (envStore["CACHE_HOME"]=="")
+        envStore["CACHE_HOME"] = QDir::homePath() + "/.cache/";
 }
 
 
@@ -83,9 +83,9 @@ void Xdgenv::updateEnv()
  */
 void Xdgenv::setEnv()
 {
-	qDebug() << "Xdgenv: setting menu prefix!";
-	setenv("XDG_MENU_PREFIX","razor",1);
-	envStore["MENU_PREFIX"]="razor";
+    qDebug() << "Xdgenv: setting menu prefix!";
+    setenv("XDG_MENU_PREFIX","razor",1);
+    envStore["MENU_PREFIX"]="razor";
 }
 
 
@@ -94,15 +94,15 @@ void Xdgenv::setEnv()
  */
 void Xdgenv::debugEnv()
 {
-	qDebug()<<"Xdgenv: Starting dump of stored variables";
-	qDebug()<<"------------------------------------------";
-	QMapIterator<QString, QString> i(envStore);
-	while (i.hasNext())
-	{
-		i.next();
-		qDebug() << i.key() << ": " << i.value();
-	}
-	qDebug()<<"------------------------------------------";
+    qDebug()<<"Xdgenv: Starting dump of stored variables";
+    qDebug()<<"------------------------------------------";
+    QMapIterator<QString, QString> i(envStore);
+    while (i.hasNext())
+    {
+        i.next();
+        qDebug() << i.key() << ": " << i.value();
+    }
+    qDebug()<<"------------------------------------------";
 }
 
 

@@ -27,14 +27,14 @@
 
 class Xdgmenu : public QObject
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     Xdgmenu(Xdgenv* _env, Xdgiconthememanager* _iconman);
     Xdgmenu();
     ~Xdgmenu();
     QVector<Xdgdesktopfile*>* get_xdgfilelist();
     void cleanList();
-    
+
     //these should be called in this order!
     bool readMenufile();
     void getFilelist();
@@ -42,11 +42,11 @@ class Xdgmenu : public QObject
     QMenu* get_QMenus();
     void assignIcons();
     void getDirlist();
-  public slots:
+public slots:
     void runCmd(QAction* _action);
-    
-  private:
-    
+
+private:
+
     QMenu* qMenu;
     QList<QMenu*> qMenulist;
     Xdgmenucross mainMenu;
@@ -54,12 +54,12 @@ class Xdgmenu : public QObject
     Xdgreader* menuReader;
     QVector<Xdgdesktopfile*> filelist;
     QMap <QString, QString> dirMap;
-    QVector<Xdgdesktopfile*> dirList; 
+    QVector<Xdgdesktopfile*> dirList;
     Xdgenv* menuEnv;
     Xdgiconthememanager* menuIcon;
     QStringList pathList;
     QStringList badNames;
-    
+
     //QStringList fileList;
 };
 

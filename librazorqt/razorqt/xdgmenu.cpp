@@ -143,8 +143,8 @@ void Xdgmenu::runCmd(QAction* _action)
  */
 bool Xdgmenu::readMenufile()
 {
-  qDebug() << "Reading Menufile!";
-  qDebug() << menuEnv->getEnv("CONFIG_DIRS");
+    qDebug() << "Reading Menufile!";
+    qDebug() << menuEnv->getEnv("CONFIG_DIRS");
     QStringList config_dirs = menuEnv->getEnv("CONFIG_DIRS").split(":");
     qDebug() << config_dirs;
     bool gotMenu = false;
@@ -168,10 +168,10 @@ bool Xdgmenu::readMenufile()
         else
             gotMenu=true;
     }
-    if(gotMenu == false)
+    if (gotMenu == false)
     {
-      qDebug() << "[!!] Xdgmenu: NO USEABLE MENUCONFIGS FOUND - THIS IS CRITICAL! disable this widget!!";
-      return false;
+        qDebug() << "[!!] Xdgmenu: NO USEABLE MENUCONFIGS FOUND - THIS IS CRITICAL! disable this widget!!";
+        return false;
     }
     menuReader = new Xdgreader(menufile.fileName(),mainMenu, NULL);
     qDebug() << "Xdgmenu: found useable menu " << menufile.fileName() << " and parsed it";
@@ -187,7 +187,7 @@ void Xdgmenu::getFilelist()
 {
     qDebug()<< "Xdgmenu: getting configpaths";
     QStringList pathList = menuEnv->getEnv("DATA_DIRS").split(":");
-    for (int i=0; i< pathList.length();i++)
+    for (int i=0; i< pathList.length(); i++)
     {
         parseFiles(pathList.at(i));
     }
@@ -215,9 +215,9 @@ void Xdgmenu::cleanList()
  */
 void Xdgmenu::assignIcons()
 {
-  QString myicon,mypath,iconpath;
+    QString myicon,mypath,iconpath;
     qDebug() << "Xdgmenu: called assignIcons, doing for " << filelist.count() << " items";
-    for (int i = 0; i < filelist.count();i++)
+    for (int i = 0; i < filelist.count(); i++)
     {
         myicon = filelist.at(i)->getValue("Icon");
         mypath = filelist.at(i)->getOldPath();

@@ -23,35 +23,35 @@
  */
 Xdgmanager::Xdgmanager(QString _icontheme)
 {
-	qDebug() << "Xdgmanager: Initialising..." << _icontheme;
-	//set and get variables first
-	xdgenv = new Xdgenv();
-	xdgenv->setEnv();
-	
-	/**
-	 * @todo here can maybe sometime follow a nicer implementation using the environmentals and stuff
-	 */
-	QFile* testfile = new QFile(_icontheme);
-	if (testfile->exists())
-	  xdgiconthememanager = new Xdgiconthememanager(_icontheme,xdgenv);
-	else
-	{
-	  delete testfile;
-	  testfile = new QFile("/usr/share/icons/nuvola/index.theme");
-	  if (testfile->exists())
-	    xdgiconthememanager = new Xdgiconthememanager("/usr/share/icons/nuvola/index.theme",xdgenv);
-	  else
-	  {
-	    delete testfile;
-	    testfile = new QFile("/usr/share/icons/gnome/index.theme");
-	    if (testfile->exists())
-	      xdgiconthememanager = new Xdgiconthememanager("/usr/share/icons/gnome/index.theme",xdgenv);
-	  } 
-	}
-	xdgmenu = new Xdgmenu(xdgenv, xdgiconthememanager);
-	xdgautostart = new Xdgautostart(xdgenv);
-	delete testfile;
-	
+    qDebug() << "Xdgmanager: Initialising..." << _icontheme;
+    //set and get variables first
+    xdgenv = new Xdgenv();
+    xdgenv->setEnv();
+
+    /**
+     * @todo here can maybe sometime follow a nicer implementation using the environmentals and stuff
+     */
+    QFile* testfile = new QFile(_icontheme);
+    if (testfile->exists())
+        xdgiconthememanager = new Xdgiconthememanager(_icontheme,xdgenv);
+    else
+    {
+        delete testfile;
+        testfile = new QFile("/usr/share/icons/nuvola/index.theme");
+        if (testfile->exists())
+            xdgiconthememanager = new Xdgiconthememanager("/usr/share/icons/nuvola/index.theme",xdgenv);
+        else
+        {
+            delete testfile;
+            testfile = new QFile("/usr/share/icons/gnome/index.theme");
+            if (testfile->exists())
+                xdgiconthememanager = new Xdgiconthememanager("/usr/share/icons/gnome/index.theme",xdgenv);
+        }
+    }
+    xdgmenu = new Xdgmenu(xdgenv, xdgiconthememanager);
+    xdgautostart = new Xdgautostart(xdgenv);
+    delete testfile;
+
 }
 
 /**
@@ -59,7 +59,7 @@ Xdgmanager::Xdgmanager(QString _icontheme)
  */
 Xdgautostart* Xdgmanager::get_xdgautostart()
 {
-  return xdgautostart;
+    return xdgautostart;
 }
 
 
@@ -72,11 +72,11 @@ Xdgautostart* Xdgmanager::get_xdgautostart()
 
 Xdgmanager::~Xdgmanager()
 {
-	qDebug() << "Xdgmanager: dying";
-	delete xdgiconthememanager;
-	delete xdgmenu;
-	delete xdgautostart;
-	delete xdgenv;
+    qDebug() << "Xdgmanager: dying";
+    delete xdgiconthememanager;
+    delete xdgmenu;
+    delete xdgautostart;
+    delete xdgenv;
 }
 
 
@@ -85,7 +85,7 @@ Xdgmanager::~Xdgmanager()
  */
 Xdgenv* Xdgmanager::get_xdgenv()
 {
-	return xdgenv;
+    return xdgenv;
 }
 
 /**
@@ -94,13 +94,13 @@ Xdgenv* Xdgmanager::get_xdgenv()
 
 Xdgmenu* Xdgmanager::get_xdgmenu()
 {
-	return xdgmenu;
+    return xdgmenu;
 }
 
 
 Xdgiconthememanager* Xdgmanager::get_xdgiconthememanager()
 {
-	return xdgiconthememanager;
+    return xdgiconthememanager;
 }
 
 

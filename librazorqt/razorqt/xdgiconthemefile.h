@@ -17,14 +17,14 @@
 */
 class Xdgiconthemefile
 {
-  public:
+public:
     Xdgiconthemefile(QString _filename);
     ~Xdgiconthemefile();
     void parseFile();
     void searchDirs();
     QString searchIcon(QString _name, QString _context);
     QString getName();
-  private:
+private:
     QString themeDir;
     QString fileName;
     QString themeName;

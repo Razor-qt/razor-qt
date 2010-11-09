@@ -21,16 +21,16 @@
  */
 class Xdgenv : public QObject
 {
-	Q_OBJECT
-	public:
-		Xdgenv();
-		~Xdgenv();
-		void updateEnv();
-		QString getEnv(QString _name);
-		void setEnv();
-		void debugEnv();
-	private:
-		QMap<QString, QString> envStore;
+    Q_OBJECT
+public:
+    Xdgenv();
+    ~Xdgenv();
+    void updateEnv();
+    QString getEnv(QString _name);
+    void setEnv();
+    void debugEnv();
+private:
+    QMap<QString, QString> envStore;
 };
 
 

@@ -20,22 +20,22 @@
  */
 class Xdgiconthememanager
 {
-  public:
+public:
     Xdgiconthememanager(QString _filename,Xdgenv* _env);
     ~Xdgiconthememanager();
     Xdgiconthemefile* get_activeTheme();
     QIcon getIconNG(QString _iconname);
     QString getIconpath(QString _iconfield, QString _desktopfilepath, QString _category="Applications");
-     QMap<QString, QString> legacyMap;
-  private:
+    QMap<QString, QString> legacyMap;
+private:
     QString theme;
     QString themePath;
-      QString legacydir;
+    QString legacydir;
     QStringList foundThemes;
     Xdgiconthemefile* activeTheme;
     Xdgiconthemefile* fallbackTheme;
     Xdgenv* iconEnv;
-  
+
 };
 
 

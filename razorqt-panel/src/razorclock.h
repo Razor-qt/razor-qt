@@ -14,12 +14,12 @@ class Razorclock;
  */
 class Razorclockgui : public QLabel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  Razorclockgui (Razorclock* _owner);
+    Razorclockgui (Razorclock* _owner);
 
 private:
-  Razorclock* owner;
+    Razorclock* owner;
 };
 
 /**
@@ -27,18 +27,18 @@ private:
  */
 class Razorclock : public QObject ,public Razorplugin
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
     Razorclock(int _bar);
     ~Razorclock();
     virtual bool handleEvent(XEvent* _event);
 
 private:
-  QTimer* clocktimer;
-  Razorclockgui* gui;
-  
+    QTimer* clocktimer;
+    Razorclockgui* gui;
+
 public slots:
-  void updateTime();
+    void updateTime();
 };
 
 

@@ -17,17 +17,17 @@
 */
 class Razorsplash:public QObject
 {
-  Q_OBJECT
-  public:
+    Q_OBJECT
+public:
     Razorsplash(QString _splashtheme);
     ~Razorsplash();
-    
-  private:
+
+private:
     QTimer* timeout;
     QDialog* splashscreen;
     Razorlabel* splashgfx;
     Readsettings* settings;
-    
+
 };
 
 

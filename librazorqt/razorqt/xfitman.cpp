@@ -31,7 +31,7 @@ Xfitman::Xfitman()
 
 void Xfitman::moveWindow(Window _win, int _x, int _y)
 {
-  XMoveWindow(QX11Info::display(), _win, _x, _y);
+    XMoveWindow(QX11Info::display(), _win, _x, _y);
 }
 
 

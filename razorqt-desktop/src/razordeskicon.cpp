@@ -10,17 +10,17 @@
 
 void Razordeskicondata::setPos(QPoint _npos)
 {
-  // if we are in workspace-mode we can move the buttons using Qts move routine
-    if(gui->parent() != NULL)
-      gui->move(_npos);
+    // if we are in workspace-mode we can move the buttons using Qts move routine
+    if (gui->parent() != NULL)
+        gui->move(_npos);
     else //else we need Xlib for moving, xlib is encapsulated by xfitman from librazorqt.
-      Razor::getInstance().getxfitman()->moveWindow(gui->effectiveWinId(),_npos.x(),_npos.y());
+        Razor::getInstance().getxfitman()->moveWindow(gui->effectiveWinId(),_npos.x(),_npos.y());
 }
 
 
 QPoint Razordeskicondata::getPosition()
 {
-  return gui->pos();
+    return gui->pos();
 }
 
 
@@ -29,8 +29,8 @@ QPoint Razordeskicondata::getPosition()
  */
 Razordeskicondata::~Razordeskicondata()
 {
-  qDebug() << gui->text() << " data being shredded";
-  delete gui;
+    qDebug() << gui->text() << " data being shredded";
+    delete gui;
 }
 
 
@@ -98,7 +98,7 @@ void Razordeskicon::mouseReleaseEvent(QMouseEvent* _event)
 
 Razordeskicon::~Razordeskicon()
 {
-  qDebug() << text() << " beeing shredded";
+    qDebug() << text() << " beeing shredded";
 }
 
 /**

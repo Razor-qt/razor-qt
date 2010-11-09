@@ -141,7 +141,7 @@ void Readsettings::saveSettings()
     {
         QString buffer;
         QTextStream outstream(&savetoFile);
-	//clears the file
+        //clears the file
         buffer = outstream.readAll();
 
         while (Iter.hasNext())

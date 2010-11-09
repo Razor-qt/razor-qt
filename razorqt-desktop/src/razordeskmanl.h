@@ -25,7 +25,7 @@
 
 class Razordeskmanagerlegacy:public Razordeskmanager
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
     Razordeskmanagerlegacy(Razorworkspace* _workspace);
     ~Razordeskmanagerlegacy();

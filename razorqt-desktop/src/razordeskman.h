@@ -15,7 +15,7 @@
  */
 class Razordeskmanager : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
     ~Razordeskmanager();
     Razordeskmanager(Razorworkspace* _workspace);
@@ -23,16 +23,22 @@ public:
     virtual void showIcons();
     virtual QList<Razordeskicondata*>* iconList();
     void restoreIconState();
-    Razorworkspace* workSpace() {return workspace;}
-    QList<Razordeskicondata*>* privIconList() {return &priviconList;}
-    
+    Razorworkspace* workSpace()
+    {
+        return workspace;
+    }
+    QList<Razordeskicondata*>* privIconList()
+    {
+        return &priviconList;
+    }
+
 public slots:
-  void saveIconState();
-  
+    void saveIconState();
+
 private:
-  Readsettings *deskicons;
-  Razorworkspace * workspace;
-  QList<Razordeskicondata*> priviconList;
+    Readsettings *deskicons;
+    Razorworkspace * workspace;
+    QList<Razordeskicondata*> priviconList;
 };
 
 

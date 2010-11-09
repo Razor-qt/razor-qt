@@ -53,8 +53,8 @@ void Razor::setupGui()
     QString sheet="";
     if (stylesheet.exists())
     {
-      stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
-      sheet=stylesheet.readAll();
+        stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
+        sheet=stylesheet.readAll();
     }
     qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
     razorevent->setStyleSheet(sheet);

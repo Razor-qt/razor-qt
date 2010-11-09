@@ -23,12 +23,12 @@
  */
 class Xfitman
 {
-  public: 
+public:
     ~Xfitman();
     Xfitman();
     void moveWindow(Window _win, int _x, int _y);
     void setRootBackground(QPixmap _map);
-    void setStrut(Window _wid, int _height); 
+    void setStrut(Window _wid, int _height);
     void unsetStrut(Window _wid);
     void getAtoms();
     QList<Window>* getClientlist();
@@ -42,21 +42,27 @@ class Xfitman
     void raiseWindow(Window _wid);
     void resizeWindow(Window _wid, int _height, int _width);
     void setActiveDesktop(int _desktop);
-    void mapRaised(Window _wid){XMapRaised(QX11Info::display(), _wid);};
+    void mapRaised(Window _wid)
+    {
+        XMapRaised(QX11Info::display(), _wid);
+    };
     bool isHidden(Window _wid);
     int getActiveDesktop();
     Window getActiveAppWindow();
     Window getActiveWindow();
     int getNumDesktop();
     QString getName(Window _wid);
-    Atom getAtom(QString _key) { return atomMap.value(_key);}
+    Atom getAtom(QString _key)
+    {
+        return atomMap.value(_key);
+    }
     bool acceptWindow(Window _wid);
-    
-  private:
+
+private:
     int clientMessage(Window _wid, Atom _msg, long unsigned int data0, long unsigned int data1, long unsigned int data2, long unsigned int data3, long unsigned int data4);
     QString displayName;
     Window  root; //the actual root window on the used screen
-    int screen; //the actual used screen 
+    int screen; //the actual used screen
     int screencount;
     unsigned long strutsize;
     unsigned long desstrut[12];

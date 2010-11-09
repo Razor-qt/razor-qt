@@ -22,7 +22,7 @@
 
 class Xdgautostart
 {
-  public:
+public:
     Xdgautostart(Xdgenv* _env);
     Xdgautostart();
     ~Xdgautostart();
@@ -31,12 +31,12 @@ class Xdgautostart
     void addDirtoList(QString _dir);
     void debugAutostart();
     void cleanList();
-    
-  private:
+
+private:
     QVector<Xdgdesktopfile> autoList;
     Xdgenv* autoEnv;
     QStringList badNames;
-    
+
 };
 
 

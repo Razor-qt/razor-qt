@@ -13,19 +13,19 @@ class RazorQuickLaunch;
 */
 class RazorQuickLaunchGUI : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
     RazorQuickLaunchGUI(RazorQuickLaunch * _owner);
     ~RazorQuickLaunchGUI();
 
 public slots:
-	//! run command in the action
-	void execAction(QAction*);
-	//! Arrange actions in the grid
-	void setupGUI(int height);
-  
+    //! run command in the action
+    void execAction(QAction*);
+    //! Arrange actions in the grid
+    void setupGUI(int height);
+
 private:
-	RazorQuickLaunch * owner;
+    RazorQuickLaunch * owner;
 };
 
 
@@ -34,7 +34,7 @@ private:
 */
 class RazorQuickLaunch :public QObject, public Razorplugin
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
     RazorQuickLaunch(QString cmd, int bar);
@@ -42,8 +42,8 @@ public:
     virtual bool handleEvent(XEvent* _event);
 
 private:
-	RazorQuickLaunchGUI * gui;
-	Readsettings * settings;    
+    RazorQuickLaunchGUI * gui;
+    Readsettings * settings;
 };
 
 #endif

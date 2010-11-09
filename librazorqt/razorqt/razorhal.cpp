@@ -56,7 +56,7 @@ bool Razorhaldev::mount()
                                      QDBusConnection::systemBus(), this );
 
     // mount the device in /media/xxx
-    
+
     QDBusReply<int> mnt_cmd = mount_interface.call ( "Mount", "/media/", fsType, "" );
     // get the mount point
     QDBusReply<QString> mnt_point = uuid_interface.call ( "GetProperty", "volume.mount_point" );

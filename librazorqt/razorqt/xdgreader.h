@@ -23,24 +23,24 @@
 
 class Xdghandler : public QXmlDefaultHandler
 {
-	public:
-		Xdghandler(Xdgmenucross* _tree);
-		bool startElement(	const QString& _nameuri,
-						    const QString& _localname,
-						    const QString& _qName,
-							const QXmlAttributes& _attributes);
-	
-		bool endElement(	const QString& _nameuri,
-							const QString& _localname,
-							const QString& _qName);
-		bool characters(const QString& _str);
-		bool fatalError(const QXmlParseException& _exception);
-	
-	
-	private:
-		Xdgmenucross* 	currentTree;
-		Xdgmenulogic* currentItem;
-		QString		 	currentText;
+public:
+    Xdghandler(Xdgmenucross* _tree);
+    bool startElement(	const QString& _nameuri,
+                       const QString& _localname,
+                       const QString& _qName,
+                       const QXmlAttributes& _attributes);
+
+    bool endElement(	const QString& _nameuri,
+                     const QString& _localname,
+                     const QString& _qName);
+    bool characters(const QString& _str);
+    bool fatalError(const QXmlParseException& _exception);
+
+
+private:
+    Xdgmenucross* 	currentTree;
+    Xdgmenulogic* currentItem;
+    QString		 	currentText;
 
 };
 
@@ -51,16 +51,16 @@ class Xdghandler : public QXmlDefaultHandler
 class Xdgreader : public QObject
 {
     Q_OBJECT
-	public:
-		Xdgreader(QString _filename, Xdgmenucross& _mainmenu ,QObject* _parent=0);
-		~Xdgreader();
-		Xdgmenucross*			 mainMenu;
-	
-	private:
-		QXmlInputSource*   		 xdgfile;
-		QXmlSimpleReader*		 xdgreader;
-		Xdghandler* 			 xdghandler;	
-		QFile* 					 qfilehandler;
+public:
+    Xdgreader(QString _filename, Xdgmenucross& _mainmenu ,QObject* _parent=0);
+    ~Xdgreader();
+    Xdgmenucross*			 mainMenu;
+
+private:
+    QXmlInputSource*   		 xdgfile;
+    QXmlSimpleReader*		 xdgreader;
+    Xdghandler* 			 xdghandler;
+    QFile* 					 qfilehandler;
 };
 
 

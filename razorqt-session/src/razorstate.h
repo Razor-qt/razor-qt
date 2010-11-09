@@ -17,23 +17,23 @@
 class Razorstate : public QObject
 {
 
-  Q_OBJECT
+    Q_OBJECT
 
-  public:
+public:
     Razorstate();
     ~Razorstate();
     void addProcess(QProcess* _proc);
-    
+
     void doOperation(QString _cmd);
-  public slots:
+public slots:
     void parseState();
-    
-  private:
+
+private:
     QList<QProcess*> processList;
     QDBusInterface* power;
     void logout();
     void shutdown();
-    void reboot();  
+    void reboot();
 };
 
 

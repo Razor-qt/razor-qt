@@ -21,21 +21,21 @@
 
 void Xdgautostart::updateList()
 {
-  qDebug()<< "Xdgautostart: getting configpaths";
-  QStringList pathList;
-  QStringList config_dirs = autoEnv->getEnv("CONFIG_DIRS").split(":");
-  for (int i = 0; i < config_dirs.count();i++)
-    pathList.append(config_dirs.at(i)+"/autostart/");
-  pathList.push_back(autoEnv->getEnv("CONFIG_HOME")+"/autostart/");
-  
-  qDebug() << "Xdgautostart: beginning building list";
-  
-  for (int i=0; i< pathList.length();i++)
-  {
-    addDirtoList(pathList.at(i));
-  }
-  qDebug() << "Xdgautostart: found "<<autoList.count()<< " items for the autostart...";
-  cleanList();
+    qDebug()<< "Xdgautostart: getting configpaths";
+    QStringList pathList;
+    QStringList config_dirs = autoEnv->getEnv("CONFIG_DIRS").split(":");
+    for (int i = 0; i < config_dirs.count(); i++)
+        pathList.append(config_dirs.at(i)+"/autostart/");
+    pathList.push_back(autoEnv->getEnv("CONFIG_HOME")+"/autostart/");
+
+    qDebug() << "Xdgautostart: beginning building list";
+
+    for (int i=0; i< pathList.length(); i++)
+    {
+        addDirtoList(pathList.at(i));
+    }
+    qDebug() << "Xdgautostart: found "<<autoList.count()<< " items for the autostart...";
+    cleanList();
 }
 
 /**
@@ -44,23 +44,23 @@ void Xdgautostart::updateList()
  **/
 void Xdgautostart::addDirtoList(QString _dir)
 {
-  qDebug() << "Xdgautostart: adding "<<_dir << " to list!";
-  //this is probably small so no dir-iterator.. just list them and work the list!
-  QDir directory(_dir);
-  QStringList filters;
-  filters<<"*.desktop";
-  directory.setNameFilters(filters); //filter the .desktop files only
-  QStringList filelist = directory.entryList();
-  for (int i =0; i < filelist.count(); i++)
-  {
-    Xdgdesktopfile myfile(_dir+filelist.at(i));
-    myfile.parseFile();
-    if (myfile.getValue("Hidden")=="true" || myfile.getValue("NotShowIn")=="razor" || 
-	    ((myfile.getValue("OnlyShowIn") != "") && !myfile.getValue("OnlyShowIn").contains("razor")) )
-      badNames.push_back(myfile.getValue("Name")); //this is needed as std says all with the same name get removed by one entry with these flags too
-    else
-      autoList.push_back(myfile);
-  }
+    qDebug() << "Xdgautostart: adding "<<_dir << " to list!";
+    //this is probably small so no dir-iterator.. just list them and work the list!
+    QDir directory(_dir);
+    QStringList filters;
+    filters<<"*.desktop";
+    directory.setNameFilters(filters); //filter the .desktop files only
+    QStringList filelist = directory.entryList();
+    for (int i =0; i < filelist.count(); i++)
+    {
+        Xdgdesktopfile myfile(_dir+filelist.at(i));
+        myfile.parseFile();
+        if (myfile.getValue("Hidden")=="true" || myfile.getValue("NotShowIn")=="razor" ||
+                ((myfile.getValue("OnlyShowIn") != "") && !myfile.getValue("OnlyShowIn").contains("razor")) )
+            badNames.push_back(myfile.getValue("Name")); //this is needed as std says all with the same name get removed by one entry with these flags too
+        else
+            autoList.push_back(myfile);
+    }
 }
 
 /**
@@ -71,10 +71,10 @@ void Xdgautostart::debugAutostart()
 {
     for (int i = 0; i < autoList.count(); i++)
     {
-      Xdgdesktopfile tmp = autoList.at(i);
- 	qDebug() <<tmp.getValue("Name");
+        Xdgdesktopfile tmp = autoList.at(i);
+        qDebug() <<tmp.getValue("Name");
     }
-      
+
 }
 
 
@@ -99,14 +99,14 @@ Xdgautostart::~Xdgautostart()
 
 void Xdgautostart::cleanList()
 {
-  qDebug() << "Xdgautostart: cleaning house! (" << badNames.count() << " bad Names )";
-  for (int i = 0; i < autoList.count(); i++)
-  {
-    Xdgdesktopfile tmp = autoList.at(i);
-    if (badNames.contains(tmp.getValue("Name")))
-      autoList.remove(i);
-  }
-  qDebug() << "Xdgautostart: after cleaning: " << autoList.count()<< " items left.";
+    qDebug() << "Xdgautostart: cleaning house! (" << badNames.count() << " bad Names )";
+    for (int i = 0; i < autoList.count(); i++)
+    {
+        Xdgdesktopfile tmp = autoList.at(i);
+        if (badNames.contains(tmp.getValue("Name")))
+            autoList.remove(i);
+    }
+    qDebug() << "Xdgautostart: after cleaning: " << autoList.count()<< " items left.";
 }
 
 
@@ -118,8 +118,8 @@ void Xdgautostart::cleanList()
 
 Xdgautostart::Xdgautostart(Xdgenv* _env)
 {
-  qDebug() << "Xdgautostart: initialising with given Xdgenv...";
-  autoEnv= _env;
+    qDebug() << "Xdgautostart: initialising with given Xdgenv...";
+    autoEnv= _env;
 }
 
 
@@ -130,8 +130,8 @@ Xdgautostart::Xdgautostart(Xdgenv* _env)
 
 Xdgautostart::Xdgautostart()
 {
-  qDebug() << "Xdgautostart: initialising with on Xdgenv...";
-  autoEnv = new Xdgenv;
+    qDebug() << "Xdgautostart: initialising with on Xdgenv...";
+    autoEnv = new Xdgenv;
 }
 
 
@@ -142,7 +142,7 @@ Xdgautostart::Xdgautostart()
 
 QVector< Xdgdesktopfile >* Xdgautostart::get_List()
 {
-  return &autoList;
+    return &autoList;
 }
 
 

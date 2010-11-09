@@ -20,9 +20,9 @@ Razorspinbutton::Razorspinbutton(QString _cmd, int _bar): Razorplugin(_bar)
         QString s;
         s.setNum(i);
         QStringList Explode = settings->getString("state"+s).split("|");
-	QAction* tmp = new QAction((QIcon)Explode.at(2),Explode.at(1),gui);
-	tmp->setData(Explode.at(0));
-	gui->addAction(tmp);
+        QAction* tmp = new QAction((QIcon)Explode.at(2),Explode.at(1),gui);
+        tmp->setData(Explode.at(0));
+        gui->addAction(tmp);
     }
     gui->changeAction(0);
     gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
@@ -58,8 +58,8 @@ Razorspinbuttongui::Razorspinbuttongui(Razorspinbutton* _owner)
 
 void Razorspinbuttongui::addAction(QAction* _entrytoadd)
 {
-   actionList.append(_entrytoadd);
-   actionChoose->addAction(_entrytoadd);
+    actionList.append(_entrytoadd);
+    actionChoose->addAction(_entrytoadd);
 }
 
 void Razorspinbuttongui::changeAction(int _newstate)
@@ -72,11 +72,11 @@ void Razorspinbuttongui::changeAction(int _newstate)
 
 void Razorspinbuttongui::execAction(QAction* _action)
 {
-  qDebug() << "execAction triggered with" << _action->data();
-  QProcess::startDetached(_action->data().toString());
-  setDefaultAction(_action);
-  index = actionList.indexOf(_action);
-  emit actionChanged(index);
+    qDebug() << "execAction triggered with" << _action->data();
+    QProcess::startDetached(_action->data().toString());
+    setDefaultAction(_action);
+    index = actionList.indexOf(_action);
+    emit actionChanged(index);
 }
 
 
@@ -84,9 +84,9 @@ void Razorspinbuttongui::execAction(QAction* _action)
 void Razorspinbuttongui::wheelEvent(QWheelEvent* _event)
 {
     if (menu()->isHidden())
-      menu()->show();
+        menu()->show();
     if (hideTimer->isActive())
-      hideTimer->stop();
+        hideTimer->stop();
     hideTimer->start(700);
     int numDegrees = _event->delta() / 8;
     int numSteps = numDegrees / 15;
@@ -115,7 +115,7 @@ void Razorspinbuttongui::wheelEvent(QWheelEvent* _event)
         else if (index == 0)
         {
             index = actionList.count();
-	    index--;
+            index--;
             changeAction(index);
         }
 
@@ -124,12 +124,12 @@ void Razorspinbuttongui::wheelEvent(QWheelEvent* _event)
 
 Razorspinbuttongui::~Razorspinbuttongui()
 {
-  delete hideTimer;
-  for (int i=0; i < actionList.count(); i++)
-  {
-    delete actionList.at(i);
-  }
-  delete actionChoose;
+    delete hideTimer;
+    for (int i=0; i < actionList.count(); i++)
+    {
+        delete actionList.at(i);
+    }
+    delete actionChoose;
 }
 
 

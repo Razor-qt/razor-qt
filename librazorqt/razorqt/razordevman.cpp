@@ -14,66 +14,66 @@ Razordev::Razordev ( QObject* parent ) : QObject ( parent )
 
 QString Razordev::getblockDev()
 {
-  return "";
+    return "";
 }
 
 QString Razordev::getdriveType()
 {
-  return "";
+    return "";
 }
 
 QString Razordev::getfsType()
 {
-return "";
+    return "";
 }
 
 Razordev* Razordevman::getDevice ( QString _uuid )
 {
-  return NULL;
+    return NULL;
 }
 
 
 
 bool Razordev::getMounted()
 {
-return false;
+    return false;
 }
 
 
 QString Razordev::getuuid()
 {
-return "";
+    return "";
 }
 
 QString Razordev::getvolume()
 {
-return "";
+    return "";
 }
 
 bool Razordev::mount()
 {
-  return false;
+    return false;
 }
 
 bool Razordev::umount()
 {
-  return false;
+    return false;
 }
 
 QList< QString > Razordevman::listDevices()
 {
-  QList < QString> tmp;
-  return tmp;
+    QList < QString> tmp;
+    return tmp;
 }
 
 bool Razordevman::mount ( QString _uuid )
 {
-  return false;
+    return false;
 }
 
 bool Razordevman::umount ( QString _uuid )
 {
-  return false;
+    return false;
 }
 
 

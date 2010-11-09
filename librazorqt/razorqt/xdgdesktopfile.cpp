@@ -17,22 +17,22 @@
  */
 Xdgdesktopfile::Xdgdesktopfile(QString _filename)
 {
-  //qDebug() << "Xdgdesktopfile: initialising...";
-  deskFile = new QFile(_filename);
-  if (deskFile->exists())
-  {
-  deskFile->open(QIODevice::ReadOnly | QIODevice::Text);    
-  oldPath = _filename;
-  while (!oldPath.endsWith("/") && oldPath.length()!=0)
-    oldPath.chop(1);
-  useable=true;
-  }
-  else
-  {
-    useable=false;
+    //qDebug() << "Xdgdesktopfile: initialising...";
+    deskFile = new QFile(_filename);
+    if (deskFile->exists())
+    {
+        deskFile->open(QIODevice::ReadOnly | QIODevice::Text);
+        oldPath = _filename;
+        while (!oldPath.endsWith("/") && oldPath.length()!=0)
+            oldPath.chop(1);
+        useable=true;
+    }
+    else
+    {
+        useable=false;
 
-  }
-    
+    }
+
 }
 
 /**
@@ -42,7 +42,7 @@ Xdgdesktopfile::Xdgdesktopfile(QString _filename)
 
 Xdgdesktopfile::Xdgdesktopfile()
 {
-  
+
 }
 
 
@@ -51,7 +51,7 @@ Xdgdesktopfile::Xdgdesktopfile()
  */
 bool Xdgdesktopfile::isUseable()
 {
-  return useable;
+    return useable;
 }
 
 
@@ -62,21 +62,21 @@ bool Xdgdesktopfile::isUseable()
 
 void Xdgdesktopfile::debugDesktopFile()
 {
-  qDebug() << "Xdgdesktopfile: starting debug output!";
-  qDebug()<<"------------------------------------------";
-  QMapIterator<QString, QString> i(data);
-  while (i.hasNext())
-  {
-	  i.next();
-	qDebug() << i.key() << ": " << i.value();
-  }
-  qDebug()<<"------------------------------------------";	
-  qDebug()<<"Its placed in the Categories:";
-  QStringListIterator a(categories);
-  while (a.hasNext())
-  {
-    qDebug()<< a.next();
-  }
+    qDebug() << "Xdgdesktopfile: starting debug output!";
+    qDebug()<<"------------------------------------------";
+    QMapIterator<QString, QString> i(data);
+    while (i.hasNext())
+    {
+        i.next();
+        qDebug() << i.key() << ": " << i.value();
+    }
+    qDebug()<<"------------------------------------------";
+    qDebug()<<"Its placed in the Categories:";
+    QStringListIterator a(categories);
+    while (a.hasNext())
+    {
+        qDebug()<< a.next();
+    }
     qDebug()<<"------------------------------------------";
 }
 
@@ -85,21 +85,21 @@ void Xdgdesktopfile::debugDesktopFile()
  */
 void Xdgdesktopfile::setFilename(QString _filename)
 {
-  deskFile = new QFile(_filename);
-  if (deskFile->exists())
-  {
-  deskFile->open(QIODevice::ReadOnly | QIODevice::Text);
-  oldPath = _filename;
-  while (!oldPath.endsWith("/"))
-    oldPath.chop(1);
-  }
-    
-  
+    deskFile = new QFile(_filename);
+    if (deskFile->exists())
+    {
+        deskFile->open(QIODevice::ReadOnly | QIODevice::Text);
+        oldPath = _filename;
+        while (!oldPath.endsWith("/"))
+            oldPath.chop(1);
+    }
+
+
 }
 
 Xdgdesktopfile::~Xdgdesktopfile()
 {
-  //qDebug() << "Xdgdesktopfile: dying";
+    //qDebug() << "Xdgdesktopfile: dying";
 }
 
 /**
@@ -108,35 +108,35 @@ Xdgdesktopfile::~Xdgdesktopfile()
 
 void Xdgdesktopfile::parseFile()
 {
-  QTextStream fileStream(deskFile);
-  QString deskline;  
-  QStringList explode;
-  deskline=fileStream.readLine();  
-  //do the actual parsing of the file
-  //is a pretty ugly xdg-1.0 implementation but itll do the job
-  do
-  {
-    //if its categories stuff, split them up and add them to the catlist
-    if (deskline.startsWith("Categories="))
+    QTextStream fileStream(deskFile);
+    QString deskline;
+    QStringList explode;
+    deskline=fileStream.readLine();
+    //do the actual parsing of the file
+    //is a pretty ugly xdg-1.0 implementation but itll do the job
+    do
     {
-      deskline.remove("Categories=");
-      categories = deskline.split(";");
-    }
-    else
-      explode=deskline.split("=");
-	if (explode.count()>1)
-	{
-	  /**
-	   * @todo ugly hack to not care about exec clags - needs cleaning
-	   */
-	  if (explode[1].contains("%"))
-	    explode[1].chop(explode[1].length()  - explode[1].indexOf("%"));
+        //if its categories stuff, split them up and add them to the catlist
+        if (deskline.startsWith("Categories="))
+        {
+            deskline.remove("Categories=");
+            categories = deskline.split(";");
+        }
+        else
+            explode=deskline.split("=");
+        if (explode.count()>1)
+        {
+            /**
+             * @todo ugly hack to not care about exec clags - needs cleaning
+             */
+            if (explode[1].contains("%"))
+                explode[1].chop(explode[1].length()  - explode[1].indexOf("%"));
 
-	  data[explode[0].trimmed()]=explode[1].trimmed();
-	} //the rest is just pushed into the map!
-      deskline = fileStream.readLine();
-  }
-  while (!deskline.isNull());
+            data[explode[0].trimmed()]=explode[1].trimmed();
+        } //the rest is just pushed into the map!
+        deskline = fileStream.readLine();
+    }
+    while (!deskline.isNull());
 }
 /**
  * @brief gets a value from the class
@@ -145,7 +145,7 @@ void Xdgdesktopfile::parseFile()
  */
 QString Xdgdesktopfile::getValue(QString _key)
 {
-  return data.value(_key);
+    return data.value(_key);
 }
 
 /**
@@ -156,7 +156,7 @@ QString Xdgdesktopfile::getValue(QString _key)
 
 void Xdgdesktopfile::setValue(QString _key, QString _value)
 {
-  data[_key]=_value;
+    data[_key]=_value;
 }
 
 /**
@@ -164,7 +164,7 @@ void Xdgdesktopfile::setValue(QString _key, QString _value)
  */
 QString Xdgdesktopfile::getOldPath()
 {
-  return oldPath;
+    return oldPath;
 }
 
 

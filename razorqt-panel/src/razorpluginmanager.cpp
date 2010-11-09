@@ -73,37 +73,37 @@ void Razorpluginmanager::addPlugin(QString _plugin, int _bar)
     else if (_plugin =="clock")
     {
         Razorclock* tmp = new Razorclock(_bar);
-	pluginList.append(tmp);
+        pluginList.append(tmp);
     }
     else if (_plugin =="traybar")
     {
         Razortray* tmp = new Razortray(_bar);
-	pluginList.append(tmp);
+        pluginList.append(tmp);
     }
     else if (_plugin =="razorcmd")
     {
-	Razorcmd* tmp = new Razorcmd(_bar);
-	pluginList.append(tmp);
+        Razorcmd* tmp = new Razorcmd(_bar);
+        pluginList.append(tmp);
     }
     else if (_plugin.contains("razorspinbutton"))
     {
         Razorspinbutton* tmp = new Razorspinbutton(_plugin,_bar);
-	pluginList.append(tmp);
+        pluginList.append(tmp);
     }
     else if (_plugin =="logoutmenu")
     {
-	Razorlogoutmenu* tmp = new Razorlogoutmenu(_bar);
-	pluginList.append(tmp);
+        Razorlogoutmenu* tmp = new Razorlogoutmenu(_bar);
+        pluginList.append(tmp);
     }
     else if (_plugin.contains("quicklaunch"))
     {
         RazorQuickLaunch * tmp = new RazorQuickLaunch(_plugin,_bar);
-		pluginList.append(tmp);
+        pluginList.append(tmp);
     }
     else if (_plugin.contains("devicemanager"))
     {
         RazorDevicePlugin * tmp = new RazorDevicePlugin(_bar);
-		pluginList.append(tmp);
+        pluginList.append(tmp);
     }
 }
 

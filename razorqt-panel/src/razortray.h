@@ -12,7 +12,7 @@
  * @file razortray.h
  * @author Christopher "VdoP" Regali
  * @brief declares Razortray - the Razorbar Tray-Plugin and Razortraygui - the gui for the plugin
- * 
+ *
  */
 #include "razorplugin.h"
 
@@ -25,15 +25,15 @@ class Razortray;
 
 class Razortraygui : public QLabel
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  Razortraygui(Razortray* _owner);
-  ~Razortraygui();
-  void swallowXEmbed(Window _wid);
-  void updateLayout();
+    Razortraygui(Razortray* _owner);
+    ~Razortraygui();
+    void swallowXEmbed(Window _wid);
+    void updateLayout();
 private:
-  QHBoxLayout* layout;
-  Razortray* owner;
+    QHBoxLayout* layout;
+    Razortray* owner;
 };
 
 /**
