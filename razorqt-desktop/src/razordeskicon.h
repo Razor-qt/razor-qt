@@ -41,8 +41,10 @@ private:
 
 /**
  * @brief this class represents a single desktop-icon - GUI
+ * "Icon" is QAbstractButton based now to simplufy QSS styling
+ * and implementation of well-behaved minimal widgets too.
  */
-class Razordeskicon : public QToolButton
+class Razordeskicon : public QAbstractButton
 {
     Q_OBJECT
 public:
@@ -50,10 +52,15 @@ public:
     Razordeskicon(Razordeskicondata* _data, QWidget* _parent);
     ~Razordeskicon();
 
+    QSize sizeHint() const;
+
 protected:
     void  mousePressEvent(QMouseEvent* _event);
     void  mouseMoveEvent(QMouseEvent* _event);
     void  mouseReleaseEvent(QMouseEvent* _event);
+
+    virtual void paintEvent(QPaintEvent * event);
+
 signals:
     void  moved(QPoint);
 private:

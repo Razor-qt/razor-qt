@@ -51,7 +51,7 @@ void Razordeskicon::mouseMoveEvent(QMouseEvent* _event)
         {
             qDebug() << "Razordeskicon: MOVING TO:" << _event->globalPos();
             move(_event->globalPos()-firstPos);
-            QToolButton::mouseMoveEvent(_event);
+            QAbstractButton::mouseMoveEvent(_event);
             movedMe = true;
         }
     }
@@ -67,7 +67,7 @@ void Razordeskicon::mousePressEvent(QMouseEvent* _event)
     movedMe = false;
     moveMe = true;
     firstGrab = true;
-    QToolButton::mousePressEvent(_event);
+    QAbstractButton::mousePressEvent(_event);
 }
 
 
@@ -88,7 +88,7 @@ void Razordeskicon::mouseReleaseEvent(QMouseEvent* _event)
     else
     {
         emit moved(pos());
-        QToolButton::setDown(false);
+        QAbstractButton::setDown(false);
     }
 }
 
@@ -115,27 +115,61 @@ Window Razordeskicondata::getWin()
  * @brief constructor of the gui class
  */
 
-Razordeskicon::Razordeskicon(Razordeskicondata* _data, QWidget* _parent) : QToolButton(_parent)
+Razordeskicon::Razordeskicon(Razordeskicondata* _data, QWidget* _parent) : QAbstractButton(_parent)
 {
     qDebug() << "Razordeskicon: initialising..." << _parent;
-    setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    //setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     data=_data;
     moveMe = false;
     movedMe = false;
-    QString name = QApplication::fontMetrics().elidedText(data->text(), Qt::ElideRight, 65);
-    setText(name);
+    //QString name = QApplication::fontMetrics().elidedText(data->text(), Qt::ElideRight, 65);
+    setText(data->text());
 
     setToolTip(data->getTT());
     setIcon(data->icon());
 
     //TODO make this portable, red from config or anything else!
     QSize iconsize(32,32);
-    setFixedSize(70,60);
+    setFixedSize(70,70);
 
     setIconSize(iconsize);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+
     show();
+}
+
+QSize Razordeskicon::sizeHint() const
+{
+    return QSize(width(), height());
+}
+
+/*! \brief Custom and minimal painting for desktop icon.
+ * Fine tuning design will be performed in the qss stylesheed
+ */
+void Razordeskicon::paintEvent(QPaintEvent* event)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setPen(Qt::NoPen);
+    painter.fillRect(QRect(0,0,width(),height()), Qt::transparent);
+
+    // now the icon
+    QPixmap pm = icon().pixmap(iconSize(), isDown() ? QIcon::Selected : QIcon::Selected);
+    QRect source(0, 0, 32, 32);
+    int w = width() / 2;
+    int h = height() / 2;
+    int iw = iconSize().width() / 2;
+    int ih = iconSize().height() / 2;
+    QRect target(w - iw, h - ih - 10,
+                 iconSize().width(), iconSize().height());
+    //qDebug() << target << w << h << iw << ih;
+    painter.drawPixmap(target, pm, source);
+    // text now
+    painter.setPen(Qt::black);
+    painter.drawText(QRectF(2, h+ih-10, width()-4, height()-h-ih+10),
+                     Qt::AlignCenter | Qt::TextWordWrap | Qt::TextIncludeTrailingSpaces,
+                     text());
 }
 
 /**
