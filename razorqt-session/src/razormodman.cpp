@@ -52,9 +52,16 @@ Razormodulemanager::Razormodulemanager(QString _modconfig, QObject* _parent)
  */
 void Razormodulemanager::restartModules()
 {
+    qDebug() << "void Razormodulemanager::restartModules() called and it's wrong. Something is failing";
     for (int i = 0; i < procMap.values().count(); i++)
+    {
+        qDebug() << procMap.keys().at(i) << procMap.values().at(i);
         if (procMap.values().at(i)->state() == QProcess::NotRunning)
+        {
+            qDebug() << "    has been restarted";
             procMap.values().at(i)->start(procMap.keys().at(i));
+        }
+    }
 }
 
 
