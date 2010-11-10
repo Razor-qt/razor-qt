@@ -29,6 +29,8 @@ Razorbar::Razorbar()
     setScaledContents(true);
     Layout->setSpacing(1);
     Layout->setMargin(1);
+    setLayout(Layout);
+
     makeUp();
     show();
     //Razor::getInstance().get_Xfitman()->moveWindowtoDesktop(effectiveWinId(),1);
@@ -41,10 +43,6 @@ void Razorbar::addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align)
 {
     //add the new widget
     Layout->addWidget(_widget, _stretch, _align);
-    // DEBUG: _widget->setStyleSheet("background-color: red");
-    //_widget->setFixedSize(height()-1, height()-1);
-    // set the new / old layout
-    setLayout(Layout);
     //save this widget in the barItems list
     barItems.append(_widget);
 
