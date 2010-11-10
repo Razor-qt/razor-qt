@@ -27,6 +27,8 @@ Razorclock::Razorclock(int _bar): Razorplugin(_bar)
     clocktimer->start(1000);
     //gui-element hinzufügen
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignRight);
+    // ensure wi will not have moving widgets in the panel waiting for timer shot
+    updateTime();
 }
 
 /**
