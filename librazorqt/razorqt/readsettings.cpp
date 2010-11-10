@@ -96,24 +96,6 @@ void Readsettings::updateMap(const QString & fileName)
     {
         settings[key] = s.value(key);
     }
-#if 0
-    QFile stl_file(configFile);
-    stl_file.open(QIODevice::ReadOnly | QIODevice::Text);
-    //create a textstream out of it and explode it into the map
-    QTextStream fileStream(&stl_file);
-    QString line;
-    QStringList explode;
-    line = fileStream.readLine();
-    //do the actual parsing of the file
-    do
-    {
-        explode=line.split("=");
-        if (explode.count() > 1)
-            redSettings[explode[0].trimmed()] = explode[1].trimmed();
-        line = fileStream.readLine();
-    }
-    while (!line.isNull());
-#endif
 
     QFileInfo fi(configFile);
     // all other code expects that getPath will contain the trailing /
@@ -135,27 +117,15 @@ Readsettings::Readsettings(const QString & fileName)
  */
 void Readsettings::saveSettings()
 {
+    QSettings s(configFile, QSettings::IniFormat);
     SettingsMapIterator Iter(settings);
-    QFile savetoFile(configFile);
-    if (savetoFile.open(QIODevice::ReadWrite | QIODevice::Text))
-    {
-        QString buffer;
-        QTextStream outstream(&savetoFile);
-        //clears the file
-        buffer = outstream.readAll();
 
-        while (Iter.hasNext())
-        {
-            Iter.next();
-            outstream << Iter.key() << "=" << Iter.value().toString() << endl;
-        }
-        savetoFile.close();
-        qDebug() << "Readsettings: written to " << configFile;
-    }
-    else
+    while (Iter.hasNext())
     {
-        qDebug() << "Readsettings: couldnt write to " << configFile;
+        Iter.next();
+        s.setValue(Iter.key(), Iter.value());
     }
+    qDebug() << "Readsettings: written to " << configFile;
 }
 
 
@@ -178,7 +148,7 @@ int Readsettings::getInt(const QString & key)
     if (!ok)
     {
         qDebug() << "Readsettings::getInt ERROR: cannot convert" << key << settings.value(key) << " to int";
-        //! \todo TODO/FIXME: some nice error handlinf would be fine...
+        //! \todo TODO/FIXME: some nice error handling would be fine...
         return -1;
     }
     return ret;
