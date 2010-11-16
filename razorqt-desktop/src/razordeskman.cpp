@@ -1,12 +1,12 @@
 #ifndef RAZORDESKMAN_CPP
 #define RAZORDESKMAN_CPP
 #include "razordeskman.h"
-QList< Razordeskicondata* >* Razordeskmanager::iconList()
+QList< RazorDeskIconData* >* RazorDeskManager::iconList()
 {
     return NULL;
 }
 
-void Razordeskmanager::saveIconState()
+void RazorDeskManager::saveIconState()
 {
     qDebug() << priviconList;
     for (int i = 0; i < priviconList.count(); i++)
@@ -23,12 +23,12 @@ void Razordeskmanager::saveIconState()
     deskicons->saveSettings();
 }
 
-void Razordeskmanager::showIcons()
+void RazorDeskManager::showIcons()
 {
 
 }
 
-Razordeskmanager::~Razordeskmanager()
+RazorDeskManager::~RazorDeskManager()
 {
     for (int i = 0; i < priviconList.count(); i ++)
     {
@@ -40,12 +40,12 @@ Razordeskmanager::~Razordeskmanager()
 
 
 
-void Razordeskmanager::updateIconList()
+void RazorDeskManager::updateIconList()
 {
 
 }
 
-void Razordeskmanager::restoreIconState()
+void RazorDeskManager::restoreIconState()
 {
     qDebug() << "restoring icon state!";
     for (int i = 0; i < priviconList.count(); i ++)
@@ -63,11 +63,11 @@ void Razordeskmanager::restoreIconState()
 
 
 
-Razordeskmanager::Razordeskmanager(Razorworkspace* _workspace)
+RazorDeskManager::RazorDeskManager(RazorWorkSpace* _workspace)
 {
     qDebug() << "Initializing!!";
     workspace = _workspace;
-    deskicons=new Readsettings("deskicons.conf");
+    deskicons=new ReadSettings("deskicons.conf");
 
 }
 

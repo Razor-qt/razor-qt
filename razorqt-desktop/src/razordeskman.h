@@ -13,21 +13,21 @@
 /**
  * @brief all the iconManagers are derived from this!
  */
-class Razordeskmanager : public QObject
+class RazorDeskManager : public QObject
 {
     Q_OBJECT
 public:
-    ~Razordeskmanager();
-    Razordeskmanager(Razorworkspace* _workspace);
+    ~RazorDeskManager();
+    RazorDeskManager(RazorWorkSpace* _workspace);
     virtual void updateIconList();
     virtual void showIcons();
-    virtual QList<Razordeskicondata*>* iconList();
+    virtual QList<RazorDeskIconData*>* iconList();
     void restoreIconState();
-    Razorworkspace* workSpace()
+    RazorWorkSpace* workSpace()
     {
         return workspace;
     }
-    QList<Razordeskicondata*>* privIconList()
+    QList<RazorDeskIconData*>* privIconList()
     {
         return &priviconList;
     }
@@ -36,9 +36,9 @@ public slots:
     void saveIconState();
 
 private:
-    Readsettings *deskicons;
-    Razorworkspace * workspace;
-    QList<Razordeskicondata*> priviconList;
+    ReadSettings *deskicons;
+    RazorWorkSpace * workspace;
+    QList<RazorDeskIconData*> priviconList;
 };
 
 

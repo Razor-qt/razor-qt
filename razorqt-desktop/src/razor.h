@@ -10,23 +10,23 @@ class Razor
 public:
     static Razor& getInstance();
     ~Razor();
-    Readsettings* razorsettings()
+    ReadSettings* razorsettings()
     {
         return razorSettings;
     }
-    Readsettings* themesettings()
+    ReadSettings* themesettings()
     {
         return themeSettings;
     }
-    Xfitman* getxfitman()
+    XfitMan* getxfitman()
     {
         return xfitman;
     }
-    Xdgenv* getxdgenv()
+    XdgEnv* getxdgenv()
     {
         return xdgenv;
     }
-    Xdgiconthememanager* geticontheme()
+    XdgIconThemeManager* geticontheme()
     {
         return xdgicon;
     }
@@ -34,11 +34,11 @@ public:
 private:
     Razor();
     Razor(Razor& cc);
-    Readsettings* razorSettings;
-    Readsettings* themeSettings;
-    Xfitman*	    xfitman;
-    Xdgenv*	    xdgenv;
-    Xdgiconthememanager* xdgicon;
+    ReadSettings* razorSettings;
+    ReadSettings* themeSettings;
+    XfitMan*	    xfitman;
+    XdgEnv*	    xdgenv;
+    XdgIconThemeManager* xdgicon;
 };
 
 #endif

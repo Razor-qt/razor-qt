@@ -32,7 +32,7 @@ private:
 /*! \brief Loader for "quick launcher" icons in the panel.
 \author Petr Vanek <petr@scribus.info>
 */
-class RazorQuickLaunch :public QObject, public Razorplugin
+class RazorQuickLaunch :public QObject, public RazorPlugin
 {
     Q_OBJECT
 
@@ -43,7 +43,7 @@ public:
 
 private:
     RazorQuickLaunchGUI * gui;
-    Readsettings * settings;
+    ReadSettings * settings;
 };
 
 #endif

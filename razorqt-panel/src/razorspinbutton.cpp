@@ -2,19 +2,19 @@
 #define RAZORSPINBUTTON_CPP
 #include "razorspinbutton.h"
 #include "razor.h"
-bool Razorspinbutton::handleEvent(XEvent* _event)
+bool RazorSpinButton::handleEvent(XEvent* _event)
 {
-    return Razorplugin::handleEvent(_event);
+    return RazorPlugin::handleEvent(_event);
 }
 
-Razorspinbutton::Razorspinbutton(QString _cmd, int _bar): Razorplugin(_bar)
+RazorSpinButton::RazorSpinButton(QString _cmd, int _bar): RazorPlugin(_bar)
 {
 
     QString cmd = _cmd;
     cmd.remove("razorspinbutton");
-    settings = new Readsettings("spin"+cmd+".conf");
+    settings = new ReadSettings("spin"+cmd+".conf");
     int stateCount = settings->getInt("count");
-    gui = new Razorspinbuttongui(this);
+    gui = new RazorSpinButtonGUI(this);
     for (int i = 0; i < stateCount; i++)
     {
         QString s;
@@ -29,18 +29,18 @@ Razorspinbutton::Razorspinbutton(QString _cmd, int _bar): Razorplugin(_bar)
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
 
-Razorspinbutton::~Razorspinbutton()
+RazorSpinButton::~RazorSpinButton()
 {
     delete gui;
     delete settings;
 }
 
-void Razorspinbuttongui::mousePressEvent(QMouseEvent* _event)
+void RazorSpinButtonGUI::mousePressEvent(QMouseEvent* _event)
 {
     QToolButton::mousePressEvent(_event);
 }
 
-Razorspinbuttongui::Razorspinbuttongui(Razorspinbutton* _owner)
+RazorSpinButtonGUI::RazorSpinButtonGUI(RazorSpinButton* _owner)
 {
     actionChoose = new QMenu(this);
     hideTimer = new QTimer(this);
@@ -56,13 +56,13 @@ Razorspinbuttongui::Razorspinbuttongui(Razorspinbutton* _owner)
     show();
 }
 
-void Razorspinbuttongui::addAction(QAction* _entrytoadd)
+void RazorSpinButtonGUI::addAction(QAction* _entrytoadd)
 {
     actionList.append(_entrytoadd);
     actionChoose->addAction(_entrytoadd);
 }
 
-void Razorspinbuttongui::changeAction(int _newstate)
+void RazorSpinButtonGUI::changeAction(int _newstate)
 {
     currentAction = actionList.at(_newstate);
     menu()->setActiveAction(actionList.at(index));
@@ -70,7 +70,7 @@ void Razorspinbuttongui::changeAction(int _newstate)
     emit actionChanged(_newstate);
 }
 
-void Razorspinbuttongui::execAction(QAction* _action)
+void RazorSpinButtonGUI::execAction(QAction* _action)
 {
     qDebug() << "execAction triggered with" << _action->data();
     QProcess::startDetached(_action->data().toString());
@@ -81,7 +81,7 @@ void Razorspinbuttongui::execAction(QAction* _action)
 
 
 
-void Razorspinbuttongui::wheelEvent(QWheelEvent* _event)
+void RazorSpinButtonGUI::wheelEvent(QWheelEvent* _event)
 {
     if (menu()->isHidden())
         menu()->show();
@@ -122,7 +122,7 @@ void Razorspinbuttongui::wheelEvent(QWheelEvent* _event)
     }
 }
 
-Razorspinbuttongui::~Razorspinbuttongui()
+RazorSpinButtonGUI::~RazorSpinButtonGUI()
 {
     delete hideTimer;
     for (int i=0; i < actionList.count(); i++)

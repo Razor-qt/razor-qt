@@ -10,7 +10,7 @@
 /**
 * @brief constructor, makes the DBus connection
 */
-Razorstate::Razorstate()
+RazorState::RazorState()
 {
     power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
                                "org.freedesktop.Hal.Device.SystemPowerManagement",
@@ -20,7 +20,7 @@ Razorstate::Razorstate()
 /**
 * @brief destructor
 */
-Razorstate::~Razorstate()
+RazorState::~RazorState()
 {
     delete power;
 }
@@ -28,7 +28,7 @@ Razorstate::~Razorstate()
 /**
  * @brief adds a process to the list and connects it correctly with our slot
  */
-void Razorstate::addProcess(QProcess* _proc)
+void RazorState::addProcess(QProcess* _proc)
 {
     processList.append(_proc);
     connect(_proc, SIGNAL(readyRead()),this,SLOT(parseState()));
@@ -39,7 +39,7 @@ void Razorstate::addProcess(QProcess* _proc)
 /**
 * @brief does the actual work
 */
-void Razorstate::doOperation(QString _cmd)
+void RazorState::doOperation(QString _cmd)
 {
     QString cmd = _cmd;
     cmd.chop(1);
@@ -56,7 +56,7 @@ void Razorstate::doOperation(QString _cmd)
 /**
 * @brief parses the output of the Process for RAZOR_DO commands
 */
-void Razorstate::parseState()
+void RazorState::parseState()
 {
     qDebug() << "parsestate!";
     for (int i=0; i < processList.count(); i++)
@@ -66,7 +66,7 @@ void Razorstate::parseState()
 /**
 * @brief this logs us out by terminating our session
 **/
-void Razorstate::logout()
+void RazorState::logout()
 {
     for (int i=0; i < processList.count(); i++)
         processList.at(i)->terminate();
@@ -77,7 +77,7 @@ void Razorstate::logout()
 * @brief reboot via Dbus
 **/
 
-void Razorstate::reboot()
+void RazorState::reboot()
 {
     power->call("Reboot");
 }
@@ -86,7 +86,7 @@ void Razorstate::reboot()
 * @brief shutdown via Dbus
 **/
 
-void Razorstate::shutdown()
+void RazorState::shutdown()
 {
     //qDebug() << "Would have shut down now";
     //debug!! no real shutdown while testing :)

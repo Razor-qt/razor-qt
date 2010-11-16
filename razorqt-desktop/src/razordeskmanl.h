@@ -23,19 +23,19 @@
  * @brief this desktop-manager is pretty well known - it displays every .desktop file in ~/Desktop
  */
 
-class Razordeskmanagerlegacy:public Razordeskmanager
+class RazorDeskManagerLegacy:public RazorDeskManager
 {
     Q_OBJECT
 public:
-    Razordeskmanagerlegacy(Razorworkspace* _workspace);
-    ~Razordeskmanagerlegacy();
+    RazorDeskManagerLegacy(RazorWorkSpace* _workspace);
+    ~RazorDeskManagerLegacy();
     virtual void updateIconList();
-    virtual QList< Razordeskicondata* >* iconList();
+    virtual QList< RazorDeskIconData* >* iconList();
     virtual void showIcons();
 
 private:
     void getFileList();
-    QList<Xdgdesktopfile*> itemList;
+    QList<XdgDesktopFile*> itemList;
 };
 
 

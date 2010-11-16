@@ -17,37 +17,37 @@
 #include "razorplugin.h"
 
 
-class Razortray;
+class RazorTray;
 
 /**
  * @brief manages the display-stuff of the traybar
  */
 
-class Razortraygui : public QLabel
+class RazorTrayGUI : public QLabel
 {
     Q_OBJECT
 public:
-    Razortraygui(Razortray* _owner);
-    ~Razortraygui();
+    RazorTrayGUI(RazorTray* _owner);
+    ~RazorTrayGUI();
     void swallowXEmbed(Window _wid);
     void updateLayout();
 private:
     QHBoxLayout* layout;
-    Razortray* owner;
+    RazorTray* owner;
 };
 
 /**
  * @brief This makes our trayplugin
  */
 
-class Razortray: public Razorplugin
+class RazorTray: public RazorPlugin
 {
 public:
-    Razortray(int _bar);
-    ~Razortray();
+    RazorTray(int _bar);
+    ~RazorTray();
     virtual bool handleEvent(XEvent* _event);
 private:
-    Razortraygui* gui;
+    RazorTrayGUI* gui;
     Atom traycode;
 };
 

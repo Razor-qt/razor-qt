@@ -17,7 +17,7 @@
 /**
  * @brief constructor: gets Display vars and registers us
  */
-Xfitman::Xfitman()
+XfitMan::XfitMan()
 {
     getAtoms();
     screen = DefaultScreen(QX11Info::display());
@@ -29,7 +29,7 @@ Xfitman::Xfitman()
  * @brief moves a window to a new position
  */
 
-void Xfitman::moveWindow(Window _win, int _x, int _y)
+void XfitMan::moveWindow(Window _win, int _x, int _y)
 {
     XMoveWindow(QX11Info::display(), _win, _x, _y);
 }
@@ -38,7 +38,7 @@ void Xfitman::moveWindow(Window _win, int _x, int _y)
 /**
  * @brief this sets our background to the pixmap map
  */
-void Xfitman::setRootBackground(QPixmap _map)
+void XfitMan::setRootBackground(QPixmap _map)
 {
     Pixmap p = _map.handle();
     XGrabServer(QX11Info::display());
@@ -56,7 +56,7 @@ void Xfitman::setRootBackground(QPixmap _map)
 /**
  * @brief this one gets the active application window - mainly determined by going up the tree till we find a window with title!
  */
-Window Xfitman::getActiveAppWindow()
+Window XfitMan::getActiveAppWindow()
 {
     int runs=0;
 //    qDebug() << "Getting active Window";
@@ -94,7 +94,7 @@ Window Xfitman::getActiveAppWindow()
  * @brief this makes the wm send Windowevents to us which normally do not belong to zs
  */
 
-void Xfitman::setEventRoute()
+void XfitMan::setEventRoute()
 {
     XSelectInput(QX11Info::display(), root, StructureNotifyMask | SubstructureNotifyMask);
 }
@@ -102,7 +102,7 @@ void Xfitman::setEventRoute()
 /**
  * @brief returns the window that currently has inputfocus
  */
-Window Xfitman::getActiveWindow()
+Window XfitMan::getActiveWindow()
 {
     Window wid;
     int revert;
@@ -115,7 +115,7 @@ Window Xfitman::getActiveWindow()
  * @brief Get the number of desktops
  */
 
-int Xfitman::getNumDesktop()
+int XfitMan::getNumDesktop()
 {
     int  format;
     unsigned long type, length, rest, *data;
@@ -127,7 +127,7 @@ int Xfitman::getNumDesktop()
 /**
  * @brief resizes a window to the given dimensions
  */
-void Xfitman::resizeWindow(Window _wid, int _width, int _height)
+void XfitMan::resizeWindow(Window _wid, int _width, int _height)
 {
     XResizeWindow(QX11Info::display(), _wid, _width, _height);
 }
@@ -138,7 +138,7 @@ void Xfitman::resizeWindow(Window _wid, int _width, int _height)
  * @brief gets a windowpixmap from a window
  */
 
-bool Xfitman::getClientIcon(Window _wid, QPixmap& _pixreturn)
+bool XfitMan::getClientIcon(Window _wid, QPixmap& _pixreturn)
 {
     int format;
     ulong type, nitems, extra;
@@ -169,7 +169,7 @@ bool Xfitman::getClientIcon(Window _wid, QPixmap& _pixreturn)
 /**
  * @brief destructor
  */
-Xfitman::~Xfitman()
+XfitMan::~XfitMan()
 {
 }
 /**
@@ -177,7 +177,7 @@ Xfitman::~Xfitman()
  */
 
 //i got the idea for this from taskbar-plugin of LXPanel - so credits fly out :)
-QString Xfitman::getName(Window _wid)
+QString XfitMan::getName(Window _wid)
 {
     QString name = "";
     //first try the modern net-wm ones
@@ -223,7 +223,7 @@ QString Xfitman::getName(Window _wid)
  * @param[in] _atomcode the QString-code for atomMap - state
  * @param[in] _action the action to do (add 1, remove 0, toggle 2)
  */
-void Xfitman::setClientStateFlag(Window _wid, QString _atomcode, int _action)
+void XfitMan::setClientStateFlag(Window _wid, QString _atomcode, int _action)
 {
     clientMessage(_wid, atomMap["net_wm_state"],_action,atomMap[_atomcode],0,0,0);
 }
@@ -231,7 +231,7 @@ void Xfitman::setClientStateFlag(Window _wid, QString _atomcode, int _action)
 /**
  * @brief sends a clientmessage to a window
  */
-int Xfitman::clientMessage(Window _wid, Atom _msg, unsigned long data0, unsigned long data1, unsigned long data2, unsigned long data3, unsigned long data4)
+int XfitMan::clientMessage(Window _wid, Atom _msg, unsigned long data0, unsigned long data1, unsigned long data2, unsigned long data3, unsigned long data4)
 {
     XClientMessageEvent msg;
     msg.window = _wid;
@@ -254,7 +254,7 @@ int Xfitman::clientMessage(Window _wid, Atom _msg, unsigned long data0, unsigned
  * @brief returns true if a window has its hidden_flag set
  */
 
-bool Xfitman::isHidden(Window _wid)
+bool XfitMan::isHidden(Window _wid)
 {
     int  format;
     unsigned long type, length, rest, *data;
@@ -279,7 +279,7 @@ bool Xfitman::isHidden(Window _wid)
 /**
  * @brief gets the used atoms into a QMap for further usage
  */
-void Xfitman::getAtoms()
+void XfitMan::getAtoms()
 {
     atomMap["net_wm_strut"] = XInternAtom(QX11Info::display(), "_NET_WM_STRUT", False);
     atomMap["net_wm_strut_partial"] = XInternAtom(QX11Info::display(), "_NET_WM_STRUT_PARTIAL", False);
@@ -316,7 +316,7 @@ void Xfitman::getAtoms()
 /**
  * @brief rejects a window from beeing listed
  */
-bool Xfitman::acceptWindow(Window _wid)
+bool XfitMan::acceptWindow(Window _wid)
 {
     int  format;
     unsigned long type, length, rest, *data;
@@ -336,7 +336,7 @@ bool Xfitman::acceptWindow(Window _wid)
 /**
  * @brief gets a client list
  */
-QList<Window>* Xfitman::getClientlist()
+QList<Window>* XfitMan::getClientlist()
 {
     //initialize the parameters for the XGetWindowProperty call
     int  format;
@@ -365,7 +365,7 @@ QList<Window>* Xfitman::getClientlist()
 /**
  * @brief returns the current desktop
  */
-int Xfitman::getActiveDesktop()
+int XfitMan::getActiveDesktop()
 {
     int  format;
     unsigned long type, length, rest, *data;
@@ -378,7 +378,7 @@ int Xfitman::getActiveDesktop()
 /**
  * @brief gets the desktop of the windows _wid
  */
-int Xfitman::getWindowDesktop(Window _wid)
+int XfitMan::getWindowDesktop(Window _wid)
 {
     int  format;
     unsigned long type, length, rest, *data;
@@ -397,7 +397,7 @@ int Xfitman::getWindowDesktop(Window _wid)
  * @brief moves a window to a specified desktop
  */
 
-void Xfitman::moveWindowtoDesktop(Window _wid, int _display)
+void XfitMan::moveWindowtoDesktop(Window _wid, int _display)
 {
     clientMessage(_wid,atomMap["net_wm_desktop"],(unsigned long) _display,0,0,0,0);
 }
@@ -405,7 +405,7 @@ void Xfitman::moveWindowtoDesktop(Window _wid, int _display)
 /**
  * @brief raises windows _wid
  */
-void Xfitman::raiseWindow(Window _wid)
+void XfitMan::raiseWindow(Window _wid)
 {
     //change current desktop to app_desktop if it isnt the same!
     qDebug() << "Xfitman::raiseWindow screen:" << getActiveDesktop();
@@ -426,7 +426,7 @@ void Xfitman::raiseWindow(Window _wid)
 /**
  * @brief changes active desktop to _desktop
  */
-void Xfitman::setActiveDesktop(int _desktop)
+void XfitMan::setActiveDesktop(int _desktop)
 {
     screen = _desktop;
     clientMessage(root,atomMap["net_current_desktop"],(unsigned long) _desktop,0,0,0,0);
@@ -435,7 +435,7 @@ void Xfitman::setActiveDesktop(int _desktop)
 /**
  * @brief this sets a window as selection owner for a specified atom - checks for success then sends the clientmessage
  */
-void Xfitman::setSelectionOwner(Window _wid, QString _selection,QString _manager)
+void XfitMan::setSelectionOwner(Window _wid, QString _selection,QString _manager)
 {
     XSetSelectionOwner(QX11Info::display(), atomMap.value(_selection), _wid, CurrentTime);
     if (getSelectionOwner(_selection)== _wid)
@@ -445,7 +445,7 @@ void Xfitman::setSelectionOwner(Window _wid, QString _selection,QString _manager
 /**
  * @brief returns the owning window of selection _selection
  */
-Window Xfitman::getSelectionOwner(QString _selection)
+Window XfitMan::getSelectionOwner(QString _selection)
 {
     return XGetSelectionOwner(QX11Info::display(), atomMap.value(_selection));
 }
@@ -456,7 +456,7 @@ Window Xfitman::getSelectionOwner(QString _selection)
 /**
  * @brief sets net_wm_strut_partial = our reserved panelspace for the mainbar!
  */
-void Xfitman::setStrut(Window _wid,int _height)
+void XfitMan::setStrut(Window _wid,int _height)
 {
     qDebug() << "Xfitman: Trying to set STRUT_PARTIAL for panel!";
     //prepare strutsize
@@ -494,7 +494,7 @@ void Xfitman::setStrut(Window _wid,int _height)
 /**
  * @brief this unsets the strut set for panel
  */
-void Xfitman::unsetStrut(Window _wid)
+void XfitMan::unsetStrut(Window _wid)
 {
     XDeleteProperty(QX11Info::display(), _wid, atomMap["net_wm_strut"]);
     XDeleteProperty(QX11Info::display(), _wid, atomMap["net_wm_strut_partial"]);

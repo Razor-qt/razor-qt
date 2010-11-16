@@ -15,12 +15,12 @@
 /**
 * @brief does emit a clicked() event on click - thats the difference!
 */
-class Razorlabel : public QLabel
+class RazorLabel : public QLabel
 {
     Q_OBJECT
 public:
-    Razorlabel( QWidget* _parent=0);
-    ~Razorlabel() {}
+    RazorLabel( QWidget* _parent=0);
+    ~RazorLabel() {}
 signals:
     void clicked();
 protected:

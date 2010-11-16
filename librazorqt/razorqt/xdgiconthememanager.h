@@ -18,12 +18,12 @@
  * @brief shall manage the icon-themes and select the active one
  * @todo this class is a stub now.. needs some work
  */
-class Xdgiconthememanager
+class XdgIconThemeManager
 {
 public:
-    Xdgiconthememanager(QString _filename,Xdgenv* _env);
-    ~Xdgiconthememanager();
-    Xdgiconthemefile* get_activeTheme();
+    XdgIconThemeManager(QString _filename,XdgEnv* _env);
+    ~XdgIconThemeManager();
+    XdgIconThemeFile* get_activeTheme();
     QIcon getIconNG(QString _iconname);
     QString getIconpath(QString _iconfield, QString _desktopfilepath, QString _category="Applications");
     QMap<QString, QString> legacyMap;
@@ -32,9 +32,9 @@ private:
     QString themePath;
     QString legacydir;
     QStringList foundThemes;
-    Xdgiconthemefile* activeTheme;
-    Xdgiconthemefile* fallbackTheme;
-    Xdgenv* iconEnv;
+    XdgIconThemeFile* activeTheme;
+    XdgIconThemeFile* fallbackTheme;
+    XdgEnv* iconEnv;
 
 };
 

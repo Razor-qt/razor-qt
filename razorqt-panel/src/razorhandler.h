@@ -13,13 +13,13 @@
 /**
  * @brief this is a simple class to just collect the slots often used in the system
  */
-class Razorhandler : public QObject
+class RazorHandler : public QObject
 {
     Q_OBJECT
 
 public:
-    Razorhandler();
-    ~Razorhandler();
+    RazorHandler();
+    ~RazorHandler();
 
 
 public slots:

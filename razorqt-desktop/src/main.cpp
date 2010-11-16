@@ -9,7 +9,7 @@
 void legacyWallPaper()
 {
     //now we got the desktop we need to determine if the user wants a defined picture there
-    Readsettings customPixmapSettings("desktop.conf");
+    ReadSettings customPixmapSettings("desktop.conf");
     QString finalPixmap = customPixmapSettings.getString("deskPixMap");
     if (finalPixmap != "internal" && finalPixmap != "")
     {
@@ -18,7 +18,7 @@ void legacyWallPaper()
     else //now we want to use the system default - we still need to find that one out though
     {
         qDebug() << "trying to get system-defaults";
-        Readsettings* styleSettings = Razor::getInstance().themesettings();
+        ReadSettings* styleSettings = Razor::getInstance().themesettings();
         finalPixmap=styleSettings->getPath() + styleSettings->getString("desktop_background");
 
         qDebug() << "trying to get system-defaults" << finalPixmap;
@@ -65,14 +65,14 @@ int main (int argc, char* argv[])
     {
         qDebug() << "Using root-window as wallpaper-canvas";
         legacyWallPaper();
-        Razordeskmanagerlegacy* deskman=new Razordeskmanagerlegacy(NULL);
+        RazorDeskManagerLegacy* deskman=new RazorDeskManagerLegacy(NULL);
     }
     else
     {
         qDebug() << "Making workspace";
-        Razorworkspacemanager* workman = new Razorworkspacemanager; //theres work to be done here!
+        RazorWorkSpaceManager* workman = new RazorWorkSpaceManager; //theres work to be done here!
         qDebug() << "making icons";
-        Razordeskmanagerlegacy* deskman = new Razordeskmanagerlegacy(workman->getWorkSpace());
+        RazorDeskManagerLegacy* deskman = new RazorDeskManagerLegacy(workman->getWorkSpace());
     }
     return app.exec();
 }

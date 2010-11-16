@@ -13,7 +13,7 @@
  * @return the name of the theme
  */
 
-QString Xdgiconthemefile::getName()
+QString XdgIconThemeFile::getName()
 {
     return themeName;
 }
@@ -23,7 +23,7 @@ QString Xdgiconthemefile::getName()
 /**
  * @brief does the actual parsing of the file
  */
-void Xdgiconthemefile::parseFile()
+void XdgIconThemeFile::parseFile()
 {
     QSettings* themefile = new QSettings(fileName, QSettings::IniFormat);
     QString lang = QLocale::system().name(); // (it_IT)
@@ -60,7 +60,7 @@ void Xdgiconthemefile::parseFile()
  * @brief constructor with params
  * @param[in] _filename the .theme file you want to parse
  */
-Xdgiconthemefile::Xdgiconthemefile(QString _filename)
+XdgIconThemeFile::XdgIconThemeFile(QString _filename)
 {
     fileName=_filename;
     themeName="";
@@ -85,7 +85,7 @@ Xdgiconthemefile::Xdgiconthemefile(QString _filename)
  * @brief search the directories for icon-files
  */
 
-void Xdgiconthemefile::searchDirs()
+void XdgIconThemeFile::searchDirs()
 {
     QSettings* themefile = new QSettings(fileName, QSettings::IniFormat);
     QStringList dirlist = themefile->allKeys();
@@ -112,7 +112,7 @@ void Xdgiconthemefile::searchDirs()
  * @return an absolute filepath to the most fitting icon
  */
 
-QString Xdgiconthemefile::searchIcon(QString _name, QString _context)
+QString XdgIconThemeFile::searchIcon(QString _name, QString _context)
 {
     QString retval = "";
     for (int size = 128; size >= 16; size /= 2) // get the bigges and nicest icons we find
@@ -146,7 +146,7 @@ QString Xdgiconthemefile::searchIcon(QString _name, QString _context)
 /**
  *@brief the destructor
  */
-Xdgiconthemefile::~Xdgiconthemefile()
+XdgIconThemeFile::~XdgIconThemeFile()
 {
 
 }

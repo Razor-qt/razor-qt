@@ -13,13 +13,13 @@
 /**
  * @brief Manages all the config stuff
  */
-class Readsettings
+class ReadSettings
 {
 
 public:
-    Readsettings(const QString & fileName);
+    ReadSettings(const QString & fileName);
     //Readsettings(const Readsettings &cc);
-    ~Readsettings();
+    ~ReadSettings();
 
     //! Get a QString from the setting map
     QString getString(const QString & key);

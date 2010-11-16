@@ -13,7 +13,7 @@
 /**
  * @brief This inherits QApplication and therefore does our X11 event-handling
  */
-class Razorevent : public QApplication
+class RazorEvent : public QApplication
 {
     Q_OBJECT
 
@@ -21,12 +21,12 @@ protected:
     virtual bool x11EventFilter(XEvent *);
 
 public:
-    Razorevent(int& _argc, char** _argv);
-    ~Razorevent();
-    void registerCallback(Razorplugin* _callbackClass);
-    void unregisterCallback(Razorplugin* _callbackClass);
+    RazorEvent(int& _argc, char** _argv);
+    ~RazorEvent();
+    void registerCallback(RazorPlugin* _callbackClass);
+    void unregisterCallback(RazorPlugin* _callbackClass);
 private:
-    QList<Razorplugin*> callbackList;
+    QList<RazorPlugin*> callbackList;
 };
 
 

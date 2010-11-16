@@ -25,22 +25,22 @@
  * @brief manages all the xdg-components and subsystems
  */
 
-class Xdgmanager : public QObject
+class XdgManager : public QObject
 {
     Q_OBJECT
 public:
-    Xdgmanager(QString _icontheme);
-    ~Xdgmanager();
-    Xdgenv* get_xdgenv();
-    Xdgmenu* get_xdgmenu();
-    Xdgautostart* get_xdgautostart();
-    Xdgiconthememanager* get_xdgiconthememanager();
+    XdgManager(QString _icontheme);
+    ~XdgManager();
+    XdgEnv* get_xdgenv();
+    XdgMenu* get_xdgmenu();
+    XdgAutoStart* get_xdgautostart();
+    XdgIconThemeManager* get_xdgiconthememanager();
 
 private:
-    Xdgenv* xdgenv;
-    Xdgmenu* xdgmenu;
-    Xdgautostart* xdgautostart;
-    Xdgiconthememanager* xdgiconthememanager;
+    XdgEnv* xdgenv;
+    XdgMenu* xdgmenu;
+    XdgAutoStart* xdgautostart;
+    XdgIconThemeManager* xdgiconthememanager;
 };
 
 

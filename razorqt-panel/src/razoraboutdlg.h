@@ -12,10 +12,10 @@
 /**
  * @brief displays a simple about dialog
  */
-class Razoraboutdlg: public Ui_about, public QDialog
+class RazorAboutDLG: public Ui_about, public QDialog
 {
 public:
-    Razoraboutdlg(QString _about);
+    RazorAboutDLG(QString _about);
 };
 
 

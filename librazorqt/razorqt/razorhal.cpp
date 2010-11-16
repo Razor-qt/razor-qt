@@ -12,7 +12,7 @@
 /**
  * @brief simple constructor where everything is set by hand - try not to use it
  */
-Razorhaldev::Razorhaldev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType )
+RazorHalDev::RazorHalDev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType )
 {
     uuid = _uuid;
     blockDev = _bDev;
@@ -25,7 +25,7 @@ Razorhaldev::Razorhaldev ( QString _uuid, QString _bDev, QString _volume, QStrin
  * @brief umounts the device if possible - returns false on fail
  */
 
-bool Razorhaldev::umount()
+bool RazorHalDev::umount()
 {
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
     QDBusInterface umount_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device.Volume",
@@ -48,7 +48,7 @@ bool Razorhaldev::umount()
 /**
  * @brief mounts the device if possible - returns false on fail
  */
-bool Razorhaldev::mount()
+bool RazorHalDev::mount()
 {
     qDebug() << "Razordev: trying to mount: " << uuid;
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
@@ -78,7 +78,7 @@ bool Razorhaldev::mount()
  * @brief this constructor gets its infos via hal from a given uuid.. use this
  */
 
-Razorhaldev::Razorhaldev ( QString _uuid )
+RazorHalDev::RazorHalDev ( QString _uuid )
 {
     useful = false;
     uuid=_uuid;
@@ -151,10 +151,10 @@ Razorhaldev::Razorhaldev ( QString _uuid )
 /**
  * @brief this is calles by the dbus-stuff when we get a new device
  */
-void Razorhal::addDevice ( QString _uuid )
+void RazorHal::addDevice ( QString _uuid )
 {
     qDebug() << "Razorhal: adding device: "<< _uuid;
-    Razorhaldev* tmp = new Razorhaldev ( _uuid );
+    RazorHalDev* tmp = new RazorHalDev ( _uuid );
     if (tmp->isUseful())
     {
         deviceList[_uuid]=tmp;
@@ -167,7 +167,7 @@ void Razorhal::addDevice ( QString _uuid )
 /**
  * @brief returns a uuid-list of plugged devices
  */
-QList< QString > Razorhal::listDevices()
+QList< QString > RazorHal::listDevices()
 {
     return deviceList.keys();
 }
@@ -176,7 +176,7 @@ QList< QString > Razorhal::listDevices()
 /**
  * @brief mounts a drive with a given uuid - returns true on success
  */
-bool Razorhal::mount ( QString _uuid )
+bool RazorHal::mount ( QString _uuid )
 {
     qDebug() << "Razorhal: trying mount... device "<< _uuid;
     if ( deviceList.contains ( _uuid ) )
@@ -189,7 +189,7 @@ bool Razorhal::mount ( QString _uuid )
 /**
  * @brief our constructor
  */
-Razorhal::Razorhal ( QObject* parent ) : Razordevman ( parent )
+RazorHal::RazorHal ( QObject* parent ) : RazorDevMan ( parent )
 {
     qDebug() << "Razorhal: initializing...";
     //first we connect to the hal interface via DBus
@@ -201,7 +201,7 @@ Razorhal::Razorhal ( QObject* parent ) : Razordevman ( parent )
 /**
  * @brief unmounts a given uuid
  */
-bool Razorhal::umount ( QString _uuid )
+bool RazorHal::umount ( QString _uuid )
 {
 
     qDebug() << "Razorhal: trying umount... device "<< _uuid;
@@ -216,7 +216,7 @@ bool Razorhal::umount ( QString _uuid )
 /**
  * @brief our destructor
  */
-Razorhal::~Razorhal()
+RazorHal::~RazorHal()
 {
     for ( int i=0; i < deviceList.values().count(); i++ )
         delete deviceList.values().at ( i );
@@ -226,7 +226,7 @@ Razorhal::~Razorhal()
 /**
  * @brief this is called on device-removal
  */
-void Razorhal::removeDevice ( QString _uuid )
+void RazorHal::removeDevice ( QString _uuid )
 {
     qDebug() << "Razorhal: removed Device: "<< _uuid;
     if ( deviceList.contains ( _uuid ) )

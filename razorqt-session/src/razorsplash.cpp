@@ -13,10 +13,10 @@
 *@brief constructs everything and shows the splash
 *@todo create a class derived from QLabel that emits a clicked() event!
 */
-Razorsplash::Razorsplash(QString _splashtheme)
+RazorSplash::RazorSplash(QString _splashtheme)
 {
     //read settings from given theme
-    settings = new Readsettings(_splashtheme);
+    settings = new ReadSettings(_splashtheme);
 
     QString splashpic = settings->getPath() +  settings->getString("splashpic");
     int splashtimeout = settings->getInt("splashtime");
@@ -32,7 +32,7 @@ Razorsplash::Razorsplash(QString _splashtheme)
     splashscreen->move((QApplication::desktop()->width()-splashscreen->width())/2, (QApplication::desktop()->height()-splashscreen->height())/2);
     splashscreen->show();
 
-    splashgfx = new Razorlabel(splashscreen);
+    splashgfx = new RazorLabel(splashscreen);
     splashgfx->move(0,0);
     splashgfx->setFixedSize(splashscreen->width(),splashscreen->height());
 
@@ -53,7 +53,7 @@ Razorsplash::Razorsplash(QString _splashtheme)
 /**
 *@brief cleans up the mess
 */
-Razorsplash::~Razorsplash()
+RazorSplash::~RazorSplash()
 {
     splashscreen->hide();
     delete splashgfx;

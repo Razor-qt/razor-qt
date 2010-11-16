@@ -12,15 +12,15 @@
 /**
  * @brief This makes the gui
  */
-class Razorlogoutmenugui : public QLabel
+class RazorLogoutMenuGUI : public QLabel
 {
     Q_OBJECT
 public:
-    Razorlogoutmenugui(Razorplugin* _owner);
-    ~Razorlogoutmenugui();
+    RazorLogoutMenuGUI(RazorPlugin* _owner);
+    ~RazorLogoutMenuGUI();
     void makeUp();
 private:
-    Razorplugin* owner;
+    RazorPlugin* owner;
     QAction* shutdown;
 
     QAction* reboot;
@@ -43,14 +43,14 @@ protected:
 /**
  * @brief the plugin-class for the logoutmenu
  */
-class Razorlogoutmenu : public Razorplugin
+class RazorLogoutMenu : public RazorPlugin
 {
 public:
-    Razorlogoutmenu(int _bar);
-    ~Razorlogoutmenu();
+    RazorLogoutMenu(int _bar);
+    ~RazorLogoutMenu();
     bool eventHandler(XEvent*);
 private:
-    Razorlogoutmenugui* gui;
+    RazorLogoutMenuGUI* gui;
 };
 
 

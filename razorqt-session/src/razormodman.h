@@ -14,12 +14,12 @@
  * @brief this one manages the processes of the session and which modules of razor are to load
  */
 
-class Razormodulemanager : public QObject
+class RazorModuleManager : public QObject
 {
     Q_OBJECT
 public:
-    Razormodulemanager(QString _modconfig,QObject* _parent = 0);
-    virtual ~Razormodulemanager();
+    RazorModuleManager(QString _modconfig,QObject* _parent = 0);
+    virtual ~RazorModuleManager();
 
 
 public slots:
@@ -27,8 +27,8 @@ public slots:
 
 
 private:
-    Readsettings* modulesettings;
-    Razorstate* stateMan;
+    ReadSettings* modulesettings;
+    RazorState* stateMan;
     QMap<QString,QProcess*> procMap;
 
 };

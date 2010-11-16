@@ -14,15 +14,15 @@
 /**
  * @brief manages the plugins
  */
-class Razorpluginmanager
+class RazorPluginManager
 {
 public:
-    Razorpluginmanager();
-    ~Razorpluginmanager();
+    RazorPluginManager();
+    ~RazorPluginManager();
     void addPlugin(QString _plugin, int _bar);
 private:
-    Readsettings* pluginsettings;
-    QList<Razorplugin*> pluginList;
+    ReadSettings* pluginsettings;
+    QList<RazorPlugin*> pluginList;
 };
 
 

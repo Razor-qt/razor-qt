@@ -12,13 +12,13 @@
 /**
  * @brief a simple QSpinBox derivative for switching desktops
  */
-class Razordeskswitchgui: public QSpinBox
+class RazorDeskSwitchGUI: public QSpinBox
 {
     Q_OBJECT
 public:
-    Razordeskswitchgui(Razorplugin* _owner);
+    RazorDeskSwitchGUI(RazorPlugin* _owner);
 private:
-    Razorplugin* owner;
+    RazorPlugin* owner;
 
 signals:
     void changeDesk(int);
@@ -31,17 +31,17 @@ protected:
 /**
  * @brief the plugin for switching Desktops via Razorbar
  */
-class Razordeskswitch:  public QObject,public Razorplugin
+class RazorDeskSwitch:  public QObject,public RazorPlugin
 {
     Q_OBJECT
 public:
-    Razordeskswitch(int _bar);
-    ~Razordeskswitch();
+    RazorDeskSwitch(int _bar);
+    ~RazorDeskSwitch();
     virtual bool handleEvent(XEvent* _event);
 
 private:
     int desktop;
-    Razordeskswitchgui* gui;
+    RazorDeskSwitchGUI* gui;
 public slots:
     void switchDesktop(int);
 

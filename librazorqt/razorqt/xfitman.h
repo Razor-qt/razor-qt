@@ -21,11 +21,11 @@
 /**
  * @brief manages the Xlib apicalls
  */
-class Xfitman
+class XfitMan
 {
 public:
-    ~Xfitman();
-    Xfitman();
+    ~XfitMan();
+    XfitMan();
     void moveWindow(Window _win, int _x, int _y);
     void setRootBackground(QPixmap _map);
     void setStrut(Window _wid, int _height);

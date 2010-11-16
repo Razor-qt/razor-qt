@@ -11,11 +11,11 @@
 /**
  * @brief the constructor, needs a valid modules.conf
  */
-Razormodulemanager::Razormodulemanager(QString _modconfig, QObject* _parent)
+RazorModuleManager::RazorModuleManager(QString _modconfig, QObject* _parent)
 {
     Q_UNUSED(_parent);
-    stateMan = new Razorstate;
-    modulesettings = new Readsettings(_modconfig);
+    stateMan = new RazorState;
+    modulesettings = new ReadSettings(_modconfig);
     int modcount = modulesettings->getInt("count");
     qDebug() << "Settings geladen.. module:" << modcount;
 
@@ -50,7 +50,7 @@ Razormodulemanager::Razormodulemanager(QString _modconfig, QObject* _parent)
 /**
  * @brief this slot is called by the QProcesses if they end - they should NOT! so they get restarted here
  */
-void Razormodulemanager::restartModules()
+void RazorModuleManager::restartModules()
 {
     qDebug() << "void Razormodulemanager::restartModules() called and it's wrong. Something is failing";
     for (int i = 0; i < procMap.values().count(); i++)
@@ -68,7 +68,7 @@ void Razormodulemanager::restartModules()
 /**
  * @brief the destructor, cleans up our mess
  */
-Razormodulemanager::~Razormodulemanager()
+RazorModuleManager::~RazorModuleManager()
 {
     delete modulesettings;
     for (int i = 0; i < procMap.values().count(); i ++)

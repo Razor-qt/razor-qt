@@ -19,18 +19,18 @@
  * @brief this is a single Razorbartask-entry
  */
 
-class Razorbartaskentry : public QToolButton
+class RazorBarTaskEntry : public QToolButton
 {
     Q_OBJECT
 public:
-    Razorbartaskentry(Razortask* _linkedtask, Razorbartask* _owner);
-    ~Razorbartaskentry();
+    RazorBarTaskEntry(RazorTask* _linkedtask, RazorBarTask* _owner);
+    ~RazorBarTaskEntry();
     void makeUp();
 
 
 private:
-    Razorbartask* owner;
-    Razortask* linkedTask;
+    RazorBarTask* owner;
+    RazorTask* linkedTask;
     QPixmap qpm;
 
 public slots:
@@ -46,13 +46,13 @@ public slots:
 /**
  * @brief Is the gui-element of Razortaskmanager
  */
-class Razorbartask :public QLabel
+class RazorBarTask :public QLabel
 {
     Q_OBJECT
 public:
-    Razorbartask(Razorplugin* _owner);
-    ~Razorbartask();
-    void updateTasks(QMap<Window, Razortask*>* _list);
+    RazorBarTask(RazorPlugin* _owner);
+    ~RazorBarTask();
+    void updateTasks(QMap<Window, RazorTask*>* _list);
     void makeUp();
     void updateFocus();
     bool handleEvent(XEvent* _event);
@@ -63,9 +63,9 @@ public:
 private:
     Window active;
     //returns a pointer to the plugin owning this gui-widget
-    Razorplugin* owner;
+    RazorPlugin* owner;
     //maps a WindowId to the corresponding bartaskentry
-    QMap<Window,Razorbartaskentry*> taskMap;
+    QMap<Window,RazorBarTaskEntry*> taskMap;
     //makes our layout
     QHBoxLayout* Layout;
     QString pixm;

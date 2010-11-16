@@ -19,7 +19,7 @@
  * gets a list of paths and calls addDirtoList for each path!
  */
 
-void Xdgautostart::updateList()
+void XdgAutoStart::updateList()
 {
     qDebug()<< "Xdgautostart: getting configpaths";
     QStringList pathList;
@@ -42,7 +42,7 @@ void Xdgautostart::updateList()
  * @brief adds a given dir to the autostartlist
  * @param[in] _dir the directory to search for files
  **/
-void Xdgautostart::addDirtoList(QString _dir)
+void XdgAutoStart::addDirtoList(QString _dir)
 {
     qDebug() << "Xdgautostart: adding "<<_dir << " to list!";
     //this is probably small so no dir-iterator.. just list them and work the list!
@@ -53,7 +53,7 @@ void Xdgautostart::addDirtoList(QString _dir)
     QStringList filelist = directory.entryList();
     for (int i =0; i < filelist.count(); i++)
     {
-        Xdgdesktopfile myfile(_dir+filelist.at(i));
+        XdgDesktopFile myfile(_dir+filelist.at(i));
         myfile.parseFile();
         if (myfile.getValue("Hidden")=="true" || myfile.getValue("NotShowIn")=="razor" ||
                 ((myfile.getValue("OnlyShowIn") != "") && !myfile.getValue("OnlyShowIn").contains("razor")) )
@@ -67,11 +67,11 @@ void Xdgautostart::addDirtoList(QString _dir)
  *@brief puts some output to qDebug()
  */
 
-void Xdgautostart::debugAutostart()
+void XdgAutoStart::debugAutostart()
 {
     for (int i = 0; i < autoList.count(); i++)
     {
-        Xdgdesktopfile tmp = autoList.at(i);
+        XdgDesktopFile tmp = autoList.at(i);
         qDebug() <<tmp.getValue("Name");
     }
 
@@ -88,7 +88,7 @@ void Xdgautostart::debugAutostart()
  */
 
 
-Xdgautostart::~Xdgautostart()
+XdgAutoStart::~XdgAutoStart()
 {
 
 }
@@ -97,12 +97,12 @@ Xdgautostart::~Xdgautostart()
  * @brief does clean the list according to the XDG-Standards
  */
 
-void Xdgautostart::cleanList()
+void XdgAutoStart::cleanList()
 {
     qDebug() << "Xdgautostart: cleaning house! (" << badNames.count() << " bad Names )";
     for (int i = 0; i < autoList.count(); i++)
     {
-        Xdgdesktopfile tmp = autoList.at(i);
+        XdgDesktopFile tmp = autoList.at(i);
         if (badNames.contains(tmp.getValue("Name")))
             autoList.remove(i);
     }
@@ -116,7 +116,7 @@ void Xdgautostart::cleanList()
  * @param[in] _env The Xdgenv instance to use in this class
  */
 
-Xdgautostart::Xdgautostart(Xdgenv* _env)
+XdgAutoStart::XdgAutoStart(XdgEnv* _env)
 {
     qDebug() << "Xdgautostart: initialising with given Xdgenv...";
     autoEnv= _env;
@@ -128,10 +128,10 @@ Xdgautostart::Xdgautostart(Xdgenv* _env)
  * Useful for using this class alone without a manager.
  */
 
-Xdgautostart::Xdgautostart()
+XdgAutoStart::XdgAutoStart()
 {
     qDebug() << "Xdgautostart: initialising with on Xdgenv...";
-    autoEnv = new Xdgenv;
+    autoEnv = new XdgEnv;
 }
 
 
@@ -140,7 +140,7 @@ Xdgautostart::Xdgautostart()
  */
 
 
-QVector< Xdgdesktopfile >* Xdgautostart::get_List()
+QVector< XdgDesktopFile >* XdgAutoStart::get_List()
 {
     return &autoList;
 }

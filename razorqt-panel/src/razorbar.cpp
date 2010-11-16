@@ -13,7 +13,7 @@
 /**
  * @brief constructor
  */
-Razorbar::Razorbar()
+RazorBar::RazorBar()
 {
     /*QDialog* bla = new QDialog(NULL,Qt::FramelessWindowHint | Qt::Dialog);
     bla->show();
@@ -39,7 +39,7 @@ Razorbar::Razorbar()
 /**
  * @brief adds a widget to the bar
  */
-void Razorbar::addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align)
+void RazorBar::addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align)
 {
     //add the new widget
     Layout->addWidget(_widget, _stretch, _align);
@@ -51,7 +51,7 @@ void Razorbar::addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align)
 /**
  * @brief makes up our style
  */
-void Razorbar::makeUp()
+void RazorBar::makeUp()
 {
     setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height"));
 
@@ -79,7 +79,7 @@ void Razorbar::makeUp()
 /**
  * @brief destructor
  */
-Razorbar::~Razorbar()
+RazorBar::~RazorBar()
 {
     delete Layout;
 }

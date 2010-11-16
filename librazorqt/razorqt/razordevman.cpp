@@ -3,75 +3,75 @@
 
 #include "razordevman.h"
 
-Razordevman::Razordevman ( QObject* parent ) : QObject ( parent )
+RazorDevMan::RazorDevMan ( QObject* parent ) : QObject ( parent )
 {
 }
 
-Razordev::Razordev ( QObject* parent ) : QObject ( parent )
+RazorDev::RazorDev ( QObject* parent ) : QObject ( parent )
 {
 
 }
 
-QString Razordev::getblockDev()
-{
-    return "";
-}
-
-QString Razordev::getdriveType()
+QString RazorDev::getblockDev()
 {
     return "";
 }
 
-QString Razordev::getfsType()
+QString RazorDev::getdriveType()
 {
     return "";
 }
 
-Razordev* Razordevman::getDevice ( QString _uuid )
+QString RazorDev::getfsType()
+{
+    return "";
+}
+
+RazorDev* RazorDevMan::getDevice ( QString _uuid )
 {
     return NULL;
 }
 
 
 
-bool Razordev::getMounted()
+bool RazorDev::getMounted()
 {
     return false;
 }
 
 
-QString Razordev::getuuid()
+QString RazorDev::getuuid()
 {
     return "";
 }
 
-QString Razordev::getvolume()
+QString RazorDev::getvolume()
 {
     return "";
 }
 
-bool Razordev::mount()
+bool RazorDev::mount()
 {
     return false;
 }
 
-bool Razordev::umount()
+bool RazorDev::umount()
 {
     return false;
 }
 
-QList< QString > Razordevman::listDevices()
+QList< QString > RazorDevMan::listDevices()
 {
     QList < QString> tmp;
     return tmp;
 }
 
-bool Razordevman::mount ( QString _uuid )
+bool RazorDevMan::mount ( QString _uuid )
 {
     return false;
 }
 
-bool Razordevman::umount ( QString _uuid )
+bool RazorDevMan::umount ( QString _uuid )
 {
     return false;
 }

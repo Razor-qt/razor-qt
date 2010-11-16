@@ -12,7 +12,7 @@
  */
 
 
-void Razordeskmanagerlegacy::getFileList()
+void RazorDeskManagerLegacy::getFileList()
 {
     itemList.clear();
     QList<QString> badNames;
@@ -26,7 +26,7 @@ void Razordeskmanagerlegacy::getFileList()
             continue;
         if (desktop_file_iter.filePath().endsWith(".desktop")) //only use .desktop files!
         {
-            Xdgdesktopfile* tmp = new Xdgdesktopfile(desktop_file_iter.filePath());
+            XdgDesktopFile* tmp = new XdgDesktopFile(desktop_file_iter.filePath());
             tmp->parseFile();
 
             if (tmp->getValue("Hidden")=="true" || tmp->getValue("NotShowIn")=="razor" ||
@@ -55,20 +55,20 @@ void Razordeskmanagerlegacy::getFileList()
 
 }
 
-void Razordeskmanagerlegacy::updateIconList()
+void RazorDeskManagerLegacy::updateIconList()
 {
     getFileList();
 }
 
 
-QList< Razordeskicondata* >* Razordeskmanagerlegacy::iconList()
+QList< RazorDeskIconData* >* RazorDeskManagerLegacy::iconList()
 {
     return privIconList();
 }
 
 
 // create the desktop icons and link them with action!
-void Razordeskmanagerlegacy::showIcons()
+void RazorDeskManagerLegacy::showIcons()
 {
     int x,y;
     x=0;
@@ -77,7 +77,7 @@ void Razordeskmanagerlegacy::showIcons()
     for (int i = 0; i < itemList.count() ; i++)
     {
         QPoint pos(x,y);
-        Razordeskicondata* tmp = new Razordeskicondata(Razor::getInstance().geticontheme()->getIconNG(itemList.at(i)->getValue("Icon")),
+        RazorDeskIconData* tmp = new RazorDeskIconData(Razor::getInstance().geticontheme()->getIconNG(itemList.at(i)->getValue("Icon")),
                 itemList.at(i)->getValue("Name"),
                 itemList.at(i)->getValue("Comment"),
                 pos, workSpace());
@@ -89,11 +89,11 @@ void Razordeskmanagerlegacy::showIcons()
     }
 }
 
-Razordeskmanagerlegacy::~Razordeskmanagerlegacy()
+RazorDeskManagerLegacy::~RazorDeskManagerLegacy()
 {
 }
 
-Razordeskmanagerlegacy::Razordeskmanagerlegacy(Razorworkspace* _workspace) : Razordeskmanager(_workspace)
+RazorDeskManagerLegacy::RazorDeskManagerLegacy(RazorWorkSpace* _workspace) : RazorDeskManager(_workspace)
 {
     updateIconList();
     showIcons();

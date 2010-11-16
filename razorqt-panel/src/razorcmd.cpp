@@ -3,19 +3,19 @@
 #include "razorcmd.h"
 #include "razor.h"
 
-bool Razorcmd::handleEvent(XEvent* _event)
+bool RazorCmd::handleEvent(XEvent* _event)
 {
-    return Razorplugin::handleEvent(_event);
+    return RazorPlugin::handleEvent(_event);
 }
 
-Razorcmd::Razorcmd(int _bar): Razorplugin(_bar)
+RazorCmd::RazorCmd(int _bar): RazorPlugin(_bar)
 {
-    gui = new Razorcmdgui(this);
+    gui = new RazorCmdGUI(this);
     //now add us to the bar
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
 
-Razorcmd::~Razorcmd()
+RazorCmd::~RazorCmd()
 {
     delete gui;
 }
@@ -23,7 +23,7 @@ Razorcmd::~Razorcmd()
 /**
  * @todo Read the comments in razorcmd.cpp ! there seems to be a real problem here
  */
-Razorcmdgui::Razorcmdgui(Razorcmd* _owner)
+RazorCmdGUI::RazorCmdGUI(RazorCmd* _owner)
 {
     /* This Plugin is actually NOT working! The question is why! it seems to have something todo with the _NET_WM_WINDOW_TYPE_DOCK flag beeing set for the dock
      * It makes openbox and other wms treat this panel right, but also disables any keyboard input so that this widget cannot work as planned - maybe there is a workaround as this plugin is already finished.
@@ -36,24 +36,24 @@ Razorcmdgui::Razorcmdgui(Razorcmd* _owner)
     show();
 }
 
-Razorcmdgui::~Razorcmdgui()
+RazorCmdGUI::~RazorCmdGUI()
 {
 
 }
 
-void Razorcmd::executeCmd(QString _cmd)
+void RazorCmd::executeCmd(QString _cmd)
 {
     QProcess::startDetached(_cmd);
     oldCmd.append(_cmd);
 }
 
-Razorcmdgui::Razorcmdgui(QWidget* parent): QLineEdit(parent)
+RazorCmdGUI::RazorCmdGUI(QWidget* parent): QLineEdit(parent)
 {
 
 }
 
 
-void Razorcmdgui::keyPressEvent(QKeyEvent* _event)
+void RazorCmdGUI::keyPressEvent(QKeyEvent* _event)
 {
     qDebug() << "keyPressed!";
     if (_event->key() == Qt::Key_Return)
@@ -82,7 +82,7 @@ void Razorcmdgui::keyPressEvent(QKeyEvent* _event)
     QLineEdit::keyPressEvent(_event);
 }
 
-void Razorcmdgui::wheelEvent(QWheelEvent* _event)
+void RazorCmdGUI::wheelEvent(QWheelEvent* _event)
 {
     int numDegrees = _event->delta() / 8;
     int numSteps = numDegrees / 15;

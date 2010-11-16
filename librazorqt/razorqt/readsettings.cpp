@@ -13,7 +13,7 @@
 /**
  * @brief destructor
  */
-Readsettings::~Readsettings()
+ReadSettings::~ReadSettings()
 {
 
 }
@@ -21,7 +21,7 @@ Readsettings::~Readsettings()
 /**
  * @brief this looks in all the usual system paths for our file
  */
-QString Readsettings::getSysPath(const QString & fileName)
+QString ReadSettings::getSysPath(const QString & fileName)
 {
     if (fileName.startsWith("/"))
     {
@@ -71,7 +71,7 @@ QString Readsettings::getSysPath(const QString & fileName)
  *@brief does the actual parsing of the file
  */
 
-void Readsettings::updateMap(const QString & fileName)
+void ReadSettings::updateMap(const QString & fileName)
 {
     configFile = getSysPath(fileName);
 
@@ -106,7 +106,7 @@ void Readsettings::updateMap(const QString & fileName)
 /**
  * @brief constructor of this class
  */
-Readsettings::Readsettings(const QString & fileName)
+ReadSettings::ReadSettings(const QString & fileName)
 {
     qDebug() << "Readsettings: initialising... " << fileName;
     updateMap(fileName);
@@ -115,7 +115,7 @@ Readsettings::Readsettings(const QString & fileName)
 /**
  * @brief writes the settings back to the file
  */
-void Readsettings::saveSettings()
+void ReadSettings::saveSettings()
 {
     QSettings s(configFile, QSettings::IniFormat);
     SettingsMapIterator Iter(settings);
@@ -133,7 +133,7 @@ void Readsettings::saveSettings()
 /**
  * @brief gives back a value as a string by key
  */
-QString Readsettings::getString(const QString & key)
+QString ReadSettings::getString(const QString & key)
 {
     return settings.value(key).toString();
 }
@@ -141,7 +141,7 @@ QString Readsettings::getString(const QString & key)
 /**
  * @brief gives back a value as an int by key
  */
-int Readsettings::getInt(const QString & key)
+int ReadSettings::getInt(const QString & key)
 {
     bool ok;
     int ret = settings.value(key).toInt(&ok);
@@ -157,7 +157,7 @@ int Readsettings::getInt(const QString & key)
 /**
  * @brief sets a _key to _value.. creates of necessary
  */
-void Readsettings::setValue(const QString & key, const QVariant & value)
+void ReadSettings::setValue(const QString & key, const QVariant & value)
 {
     settings[key] = value;
 }

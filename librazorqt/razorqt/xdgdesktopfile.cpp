@@ -15,7 +15,7 @@
  * @brief constructor of the class
  * @param[in] _filename The .desktop file to open and parse
  */
-Xdgdesktopfile::Xdgdesktopfile(QString _filename)
+XdgDesktopFile::XdgDesktopFile(QString _filename)
 {
     //qDebug() << "Xdgdesktopfile: initialising...";
     deskFile = new QFile(_filename);
@@ -40,7 +40,7 @@ Xdgdesktopfile::Xdgdesktopfile(QString _filename)
  * only needed for use in QVector and QList
  */
 
-Xdgdesktopfile::Xdgdesktopfile()
+XdgDesktopFile::XdgDesktopFile()
 {
 
 }
@@ -49,7 +49,7 @@ Xdgdesktopfile::Xdgdesktopfile()
 /**
  * @brief returns if the Xdgdesktopfile is useable
  */
-bool Xdgdesktopfile::isUseable()
+bool XdgDesktopFile::isUseable()
 {
     return useable;
 }
@@ -60,7 +60,7 @@ bool Xdgdesktopfile::isUseable()
  * @brief Puts the saved information to qDebug()
  */
 
-void Xdgdesktopfile::debugDesktopFile()
+void XdgDesktopFile::debugDesktopFile()
 {
     qDebug() << "Xdgdesktopfile: starting debug output!";
     qDebug()<<"------------------------------------------";
@@ -83,7 +83,7 @@ void Xdgdesktopfile::debugDesktopFile()
 /**
  * @brief sets the filename if it was not given in the constructor
  */
-void Xdgdesktopfile::setFilename(QString _filename)
+void XdgDesktopFile::setFilename(QString _filename)
 {
     deskFile = new QFile(_filename);
     if (deskFile->exists())
@@ -97,7 +97,7 @@ void Xdgdesktopfile::setFilename(QString _filename)
 
 }
 
-Xdgdesktopfile::~Xdgdesktopfile()
+XdgDesktopFile::~XdgDesktopFile()
 {
     //qDebug() << "Xdgdesktopfile: dying";
 }
@@ -106,7 +106,7 @@ Xdgdesktopfile::~Xdgdesktopfile()
  * @brief does the actual parsing of the .desktop file
  */
 
-void Xdgdesktopfile::parseFile()
+void XdgDesktopFile::parseFile()
 {
     QTextStream fileStream(deskFile);
     QString deskline;
@@ -143,7 +143,7 @@ void Xdgdesktopfile::parseFile()
  * @param[in] _key the key to the info wanted, that is stored in a QMap
  * @returns the wanted info from the QMap
  */
-QString Xdgdesktopfile::getValue(QString _key)
+QString XdgDesktopFile::getValue(QString _key)
 {
     return data.value(_key);
 }
@@ -154,7 +154,7 @@ QString Xdgdesktopfile::getValue(QString _key)
  *@param[in] _value the new value of the key
  */
 
-void Xdgdesktopfile::setValue(QString _key, QString _value)
+void XdgDesktopFile::setValue(QString _key, QString _value)
 {
     data[_key]=_value;
 }
@@ -162,7 +162,7 @@ void Xdgdesktopfile::setValue(QString _key, QString _value)
 /**
  * @brief returns the old local path of the .desktop file
  */
-QString Xdgdesktopfile::getOldPath()
+QString XdgDesktopFile::getOldPath()
 {
     return oldPath;
 }

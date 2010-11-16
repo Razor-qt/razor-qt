@@ -50,11 +50,11 @@ void RazorDevicePlugin::deviceRemoved(QString _uuid)
     gui->addDevice(_uuid);
 }
 
-RazorDevicePlugin::RazorDevicePlugin(int _bar): Razorplugin(_bar)
+RazorDevicePlugin::RazorDevicePlugin(int _bar): RazorPlugin(_bar)
 {
 
     //first select the backend, since we only have HAL for now - we use hal in any situation
-    deviceBackend = new Razorhal();
+    deviceBackend = new RazorHal();
 
 
     //now we connect it to the right signals
@@ -62,7 +62,7 @@ RazorDevicePlugin::RazorDevicePlugin(int _bar): Razorplugin(_bar)
     connect (deviceBackend, SIGNAL(deviceRemoved(QString)), this, SLOT(deviceAdded(QString)));
 
 
-    gui = new RazorDevicePluginGui(this);
+    gui = new RazorDevicePluginGUI(this);
     gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     gui->setFixedWidth(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
@@ -76,7 +76,7 @@ RazorDevicePlugin::RazorDevicePlugin(int _bar): Razorplugin(_bar)
 
 
 
-void RazorDevicePluginGui::addDevice(QString _uuid)
+void RazorDevicePluginGUI::addDevice(QString _uuid)
 {
     if (!deviceList.contains(_uuid))
     {
@@ -90,7 +90,7 @@ void RazorDevicePluginGui::addDevice(QString _uuid)
 //TODO we need to setup some icons for this class :)
 // like device, device mounted, device unmounted and stuff
 
-RazorDevicePluginGui::RazorDevicePluginGui(RazorDevicePlugin* _owner): QToolButton(NULL)
+RazorDevicePluginGUI::RazorDevicePluginGUI(RazorDevicePlugin* _owner): QToolButton(NULL)
 {
     owner = _owner;
 
@@ -108,7 +108,7 @@ RazorDevicePluginGui::RazorDevicePluginGui(RazorDevicePlugin* _owner): QToolButt
 }
 
 
-void RazorDevicePluginGui::removeDevice(QString _uuid)
+void RazorDevicePluginGUI::removeDevice(QString _uuid)
 {
     if (deviceList.contains(_uuid))
     {
@@ -118,7 +118,7 @@ void RazorDevicePluginGui::removeDevice(QString _uuid)
     }
 }
 
-RazorDevicePluginGui::~RazorDevicePluginGui()
+RazorDevicePluginGUI::~RazorDevicePluginGUI()
 {
     delete deviceMenu;
 }

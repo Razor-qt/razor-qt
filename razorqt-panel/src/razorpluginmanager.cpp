@@ -22,13 +22,13 @@
 /**
  * @brief constructor - initializes everything with the plugins
  */
-Razorpluginmanager::Razorpluginmanager()
+RazorPluginManager::RazorPluginManager()
 {
     qDebug() << "Pluginmanager: initializing...";
     //get the location of the pluginconfig
     QString configfile = Razor::getInstance().get_settings()->getPath() +  Razor::getInstance().get_settings()->getString("plugin_config");
     //read the plugin config into our Readsettings
-    pluginsettings = new Readsettings(configfile);
+    pluginsettings = new ReadSettings(configfile);
     int num_panels = pluginsettings->getInt("num_bars");
     qDebug() << "Pluginmanager: Making " << num_panels << " panels!";
     //make the panels!
@@ -53,46 +53,46 @@ Razorpluginmanager::Razorpluginmanager()
 /**
  * @brief adds a plugin to a bar
  */
-void Razorpluginmanager::addPlugin(QString _plugin, int _bar)
+void RazorPluginManager::addPlugin(QString _plugin, int _bar)
 {
     if (_plugin=="mainmenu")
     {
-        Razormenu*  tmp = new Razormenu(_bar);
+        RazorMenu*  tmp = new RazorMenu(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin=="taskmanager")
     {
-        Razortaskmanager* tmp = new Razortaskmanager(_bar);
+        RazorTaskManager* tmp = new RazorTaskManager(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin =="desktopswitcher")
     {
-        Razordeskswitch* tmp = new Razordeskswitch(_bar);
+        RazorDeskSwitch* tmp = new RazorDeskSwitch(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin =="clock")
     {
-        Razorclock* tmp = new Razorclock(_bar);
+        RazorClock* tmp = new RazorClock(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin =="traybar")
     {
-        Razortray* tmp = new Razortray(_bar);
+        RazorTray* tmp = new RazorTray(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin =="razorcmd")
     {
-        Razorcmd* tmp = new Razorcmd(_bar);
+        RazorCmd* tmp = new RazorCmd(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin.contains("razorspinbutton"))
     {
-        Razorspinbutton* tmp = new Razorspinbutton(_plugin,_bar);
+        RazorSpinButton* tmp = new RazorSpinButton(_plugin,_bar);
         pluginList.append(tmp);
     }
     else if (_plugin =="logoutmenu")
     {
-        Razorlogoutmenu* tmp = new Razorlogoutmenu(_bar);
+        RazorLogoutMenu* tmp = new RazorLogoutMenu(_bar);
         pluginList.append(tmp);
     }
     else if (_plugin.contains("quicklaunch"))
@@ -115,7 +115,7 @@ void Razorpluginmanager::addPlugin(QString _plugin, int _bar)
 /**
  * @brief destructor
  */
-Razorpluginmanager::~Razorpluginmanager()
+RazorPluginManager::~RazorPluginManager()
 {
 
 }

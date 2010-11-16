@@ -12,7 +12,7 @@
 /**
  * @brief the x11 eventhandler.. not needed here
  */
-bool Razorlogoutmenu::eventHandler(XEvent* _event)
+bool RazorLogoutMenu::eventHandler(XEvent* _event)
 {
     Q_UNUSED(_event);
     return false;
@@ -21,10 +21,10 @@ bool Razorlogoutmenu::eventHandler(XEvent* _event)
 /**
  * @brief the constructor
  */
-Razorlogoutmenu::Razorlogoutmenu(int _bar) : Razorplugin(_bar)
+RazorLogoutMenu::RazorLogoutMenu(int _bar) : RazorPlugin(_bar)
 {
     //we only need to make the gui
-    gui = new Razorlogoutmenugui(this);
+    gui = new RazorLogoutMenuGUI(this);
     //and then add it to the first bar
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
@@ -32,7 +32,7 @@ Razorlogoutmenu::Razorlogoutmenu(int _bar) : Razorplugin(_bar)
 /**
  * @brief the destructor
  */
-Razorlogoutmenu::~Razorlogoutmenu()
+RazorLogoutMenu::~RazorLogoutMenu()
 {
     //todo here: remove the widget cleanly too
     delete gui;
@@ -44,7 +44,7 @@ Razorlogoutmenu::~Razorlogoutmenu()
 /**
  * @brief this creates our mainmenu and gets the xdg-menus for it
  */
-void Razorlogoutmenugui::createMenus()
+void RazorLogoutMenuGUI::createMenus()
 {
     //make the menu
     mainMenu = new QMenu;
@@ -72,7 +72,7 @@ void Razorlogoutmenugui::createMenus()
 /**
  * @brief this initializes us
  */
-Razorlogoutmenugui::Razorlogoutmenugui(Razorplugin* _owner)
+RazorLogoutMenuGUI::RazorLogoutMenuGUI(RazorPlugin* _owner)
 {
     makeUp();
     createMenus();
@@ -82,7 +82,7 @@ Razorlogoutmenugui::Razorlogoutmenugui(Razorplugin* _owner)
 /**
  * @brief cleans up our mess
  */
-Razorlogoutmenugui::~Razorlogoutmenugui()
+RazorLogoutMenuGUI::~RazorLogoutMenuGUI()
 {
     delete mainMenu;
     delete logout;
@@ -96,7 +96,7 @@ Razorlogoutmenugui::~Razorlogoutmenugui()
  * @brief makes up the menu and style
  */
 
-void Razorlogoutmenugui::makeUp()
+void RazorLogoutMenuGUI::makeUp()
 {
     int barheight = Razor::getInstance().get_looknfeel()->getInt("razorbar_height");
     setFixedSize(barheight -3, barheight -3);
@@ -114,7 +114,7 @@ void Razorlogoutmenugui::makeUp()
  * @brief makes the menu popup
  */
 
-void Razorlogoutmenugui::mousePressEvent(QMouseEvent* _event)
+void RazorLogoutMenuGUI::mousePressEvent(QMouseEvent* _event)
 {
     if (_event->button() == Qt::LeftButton)
     {
@@ -129,7 +129,7 @@ void Razorlogoutmenugui::mousePressEvent(QMouseEvent* _event)
  * @brief makes the menu glow on mouseover
  */
 
-void Razorlogoutmenugui::enterEvent(QEvent* _event)
+void RazorLogoutMenuGUI::enterEvent(QEvent* _event)
 {
     Q_UNUSED(_event);
     setPixmap(actpicon);
@@ -140,7 +140,7 @@ void Razorlogoutmenugui::enterEvent(QEvent* _event)
  * @brief makes the menu glow on mouseover
  */
 
-void Razorlogoutmenugui::leaveEvent(QEvent* _event)
+void RazorLogoutMenuGUI::leaveEvent(QEvent* _event)
 {
     Q_UNUSED(_event);
     setPixmap(picon);

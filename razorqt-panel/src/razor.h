@@ -25,35 +25,35 @@ public:
     void setupEvents(int& argc, char** argv);
     static Razor& getInstance();
 
-    Xfitman* get_Xfitman()
+    XfitMan* get_Xfitman()
     {
         return xman;
     }
-    Xdgmanager* get_Xdgmanager()
+    XdgManager* get_Xdgmanager()
     {
         return xdgmanager;
     }
-    Readsettings* get_settings()
+    ReadSettings* get_settings()
     {
         return settings;
     }
-    Readsettings* get_looknfeel()
+    ReadSettings* get_looknfeel()
     {
         return looknfeel;
     }
-    Razorhandler* get_handler()
+    RazorHandler* get_handler()
     {
         return rhandler;
     }
-    Razorgui* get_gui()
+    RazorGUI* get_gui()
     {
         return razorgui;
     }
-    Razorevent* get_events()
+    RazorEvent* get_events()
     {
         return razorevent;
     }
-    Razorpluginmanager* get_plugins()
+    RazorPluginManager* get_plugins()
     {
         return pluginmanager;
     }
@@ -62,14 +62,14 @@ private:
     char** argv;
     Razor();
     Razor(Razor& cc);
-    Razorhandler* rhandler;
-    Readsettings* settings;
-    Readsettings* looknfeel;
-    Xfitman* xman;
-    Xdgmanager* xdgmanager;
-    Razorgui* razorgui;
-    Razorevent* razorevent;
-    Razorpluginmanager* pluginmanager;
+    RazorHandler* rhandler;
+    ReadSettings* settings;
+    ReadSettings* looknfeel;
+    XfitMan* xman;
+    XdgManager* xdgmanager;
+    RazorGUI* razorgui;
+    RazorEvent* razorevent;
+    RazorPluginManager* pluginmanager;
 
 };
 

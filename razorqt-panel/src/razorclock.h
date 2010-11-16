@@ -8,34 +8,34 @@
  * @author Christopher "VdoP" Regali
  */
 
-class Razorclock;
+class RazorClock;
 /**
  * @brief a simple QLabel-derivative for displaying the time
  */
-class Razorclockgui : public QLabel
+class RazorClockGUI : public QLabel
 {
     Q_OBJECT
 public:
-    Razorclockgui (Razorclock* _owner);
+    RazorClockGUI (RazorClock* _owner);
 
 private:
-    Razorclock* owner;
+    RazorClock* owner;
 };
 
 /**
  * @brief the clock-plugin for razorbar
  */
-class Razorclock : public QObject ,public Razorplugin
+class RazorClock : public QObject ,public RazorPlugin
 {
     Q_OBJECT
 public:
-    Razorclock(int _bar);
-    ~Razorclock();
+    RazorClock(int _bar);
+    ~RazorClock();
     virtual bool handleEvent(XEvent* _event);
 
 private:
     QTimer* clocktimer;
-    Razorclockgui* gui;
+    RazorClockGUI* gui;
 
 public slots:
     void updateTime();

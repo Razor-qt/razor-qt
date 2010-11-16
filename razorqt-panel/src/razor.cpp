@@ -25,7 +25,7 @@ void Razor::setupEvents(int& argc, char** argv)
 {
 
     //startup a QApp-inheritor to parse them
-    razorevent = new Razorevent(argc, argv);
+    razorevent = new RazorEvent(argc, argv);
 }
 
 
@@ -35,8 +35,8 @@ void Razor::setupEvents(int& argc, char** argv)
  */
 Razor::Razor()
 {
-    settings = new Readsettings("razor.conf");
-    rhandler = new Razorhandler;
+    settings = new ReadSettings("razor.conf");
+    rhandler = new RazorHandler;
 }
 
 
@@ -46,8 +46,8 @@ Razor::Razor()
 void Razor::setupGui()
 {
 
-    looknfeel = new Readsettings(settings->getString("style_theme"));
-    xdgmanager = new Xdgmanager(settings->getString("icon_theme"));
+    looknfeel = new ReadSettings(settings->getString("style_theme"));
+    xdgmanager = new XdgManager(settings->getString("icon_theme"));
     //select stylesheet from theme
     QFile stylesheet(looknfeel->getPath() + looknfeel->getString("panel_stylesheet"));
     QString sheet="";
@@ -59,12 +59,12 @@ void Razor::setupGui()
     qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
     razorevent->setStyleSheet(sheet);
     //make an xfitman and set the correct events for us to be parsed
-    xman = new Xfitman;
+    xman = new XfitMan;
     xman->setEventRoute();
     //ok gui setup
-    razorgui = new Razorgui;
+    razorgui = new RazorGUI;
     //now load the plugins
-    pluginmanager = new Razorpluginmanager;
+    pluginmanager = new RazorPluginManager;
 }
 
 /**

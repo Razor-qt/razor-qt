@@ -14,10 +14,10 @@
  * @brief prepares the data to show and fills the form, then shows.
  */
 
-Razoraboutdlg::Razoraboutdlg(QString _about)
+RazorAboutDLG::RazorAboutDLG(QString _about)
 {
-    Readsettings mainSettings("razor.conf");
-    Readsettings looknfeel(mainSettings.getString("style_theme"));
+    ReadSettings mainSettings("razor.conf");
+    ReadSettings looknfeel(mainSettings.getString("style_theme"));
 
     //razorLabel->setPixmap(_about);
     Q_UNUSED(_about);

@@ -13,7 +13,7 @@
 /**
  * @brief constructor
  */
-Razortask::Razortask(Window _id, int _screen)
+RazorTask::RazorTask(Window _id, int _screen)
 {
     client=_id;
     onScreen = _screen;
@@ -32,7 +32,7 @@ Razortask::Razortask(Window _id, int _screen)
 /**
  * @brief returns the task-title
  */
-QString Razortask::getTitle()
+QString RazorTask::getTitle()
 {
     title = Razor::getInstance().get_Xfitman()->getName(client);
     return title;
@@ -41,7 +41,7 @@ QString Razortask::getTitle()
 /**
  * @brief raises the window
  */
-void Razortask::raiseMe()
+void RazorTask::raiseMe()
 {
     Razor::getInstance().get_Xfitman()->raiseWindow(client);
 }
@@ -51,7 +51,7 @@ void Razortask::raiseMe()
 /**
  * @brief requests Xfitman to toggle minimalize-flag for this tasks window!
  */
-void Razortask::toogleMin()
+void RazorTask::toogleMin()
 {
     hidden = Razor::getInstance().get_Xfitman()->isHidden(client);
     qDebug() << "Razortask::toggleMin, hidden:" << hidden;
@@ -65,7 +65,7 @@ void Razortask::toogleMin()
 /**
  * @brief returns if the window has hiddenflag turned on
  */
-bool Razortask::isHidden()
+bool RazorTask::isHidden()
 {
     hidden = Razor::getInstance().get_Xfitman()->isHidden(client);
     return hidden;
@@ -74,7 +74,7 @@ bool Razortask::isHidden()
 /**
  * @brief returns true if task has inputfocus
  */
-bool Razortask::isActive()
+bool RazorTask::isActive()
 {
     return (Razor::getInstance().get_Xfitman()->getActiveAppWindow()==client);
 }
@@ -83,7 +83,7 @@ bool Razortask::isActive()
 /**
  * @brief requests Xfitman to set the window to fullscreen (UNTESTED!)
  */
-void Razortask::setFullscreen()
+void RazorTask::setFullscreen()
 {
     //first remove hidden-flag so make us visible / unminimize
     Razor::getInstance().get_Xfitman()->setClientStateFlag(client,"net_wm_state_hidden",0);
@@ -96,7 +96,7 @@ void Razortask::setFullscreen()
 /**
  * @brief destructor
  */
-Razortask::~Razortask()
+RazorTask::~RazorTask()
 {
 
 }
@@ -104,7 +104,7 @@ Razortask::~Razortask()
 /**
  * @brief gets the client icon, if we have one!
  */
-bool Razortask::getIcon(QPixmap& _pixm)
+bool RazorTask::getIcon(QPixmap& _pixm)
 {
     qDebug() << "Has this client an Icon?" <<  hasIcon << title;
     if (hasIcon)
@@ -115,7 +115,7 @@ bool Razortask::getIcon(QPixmap& _pixm)
 /**
  * @brief handles the X events and sets client - gui states
  */
-bool Razortaskmanager::handleEvent(XEvent* _event)
+bool RazorTaskManager::handleEvent(XEvent* _event)
 {
     //destroy or create windows? thats whats interesting.. we dont care about the rest!
     //so we just fetch "propertynotify" events
@@ -127,11 +127,11 @@ bool Razortaskmanager::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-Razortaskmanager::Razortaskmanager(int _bar) : Razorplugin(_bar)
+RazorTaskManager::RazorTaskManager(int _bar) : RazorPlugin(_bar)
 {
     qDebug() << "Razortaskmanager init";
     //now we setup our gui element
-    gui = new Razorbartask(this);
+    gui = new RazorBarTask(this);
     //now we need an updated map for the clients running
     //updateMap();
 
@@ -154,12 +154,12 @@ Razortaskmanager::Razortaskmanager(int _bar) : Razorplugin(_bar)
 /**
  * @brief updates our clientmap
  */
-void Razortaskmanager::updateMap()
+void RazorTaskManager::updateMap()
 {
     QList<Window>* tmp = Razor::getInstance().get_Xfitman()->getClientlist();
 
     //first we need to get rid of tasks that got closed
-    QMapIterator<Window,Razortask*> iter(clientList);
+    QMapIterator<Window,RazorTask*> iter(clientList);
     while (iter.hasNext())
     {
         iter.next();
@@ -167,7 +167,7 @@ void Razortaskmanager::updateMap()
         {
             //  qDebug() << "DELTHIS!";
             //get the pointer
-            Razortask* deltask = iter.value();
+            RazorTask* deltask = iter.value();
             //remove the link from the list
             clientList.remove(iter.key());
             //free the heap
@@ -182,7 +182,7 @@ void Razortaskmanager::updateMap()
         //add new clients to the list making new entries for the new windows
         if (!clientList.contains(tmp->at(i)) && Razor::getInstance().get_Xfitman()->acceptWindow(tmp->at(i)))
         {
-            Razortask* rtask = new Razortask(tmp->at(i),Razor::getInstance().get_Xfitman()->getWindowDesktop(tmp->at(i)));
+            RazorTask* rtask = new RazorTask(tmp->at(i),Razor::getInstance().get_Xfitman()->getWindowDesktop(tmp->at(i)));
             qDebug() << "title: " <<rtask->getTitle();
             clientList[tmp->at(i)]=rtask;
         }
@@ -198,7 +198,7 @@ void Razortaskmanager::updateMap()
 /**
  * @brief destructor
  */
-Razortaskmanager::~Razortaskmanager()
+RazorTaskManager::~RazorTaskManager()
 {
     for (int i = 0; i < clientList.values().count(); i++)
         delete clientList.values().at(i);

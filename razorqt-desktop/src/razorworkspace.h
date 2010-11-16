@@ -15,12 +15,12 @@
  * @brief This one is the actual workspace
  */
 
-class Razorworkspace : public QLabel
+class RazorWorkSpace : public QLabel
 {
     Q_OBJECT
 public:
-    Razorworkspace(QWidget* _parent = 0, Qt::WindowFlags _f = 0);
-    ~Razorworkspace();
+    RazorWorkSpace(QWidget* _parent = 0, Qt::WindowFlags _f = 0);
+    ~RazorWorkSpace();
 signals:
     void mouseReleased(QMouseEvent*);
     void mouseWheeled(int);
@@ -36,14 +36,14 @@ protected:
  * @brief this class does all the managing, like looking in the settings for a wallpaper
  */
 
-class Razorworkspacemanager : public QObject
+class RazorWorkSpaceManager : public QObject
 {
     Q_OBJECT
 public:
 
-    Razorworkspacemanager(QObject* parent = 0);
-    ~Razorworkspacemanager();
-    Razorworkspace* getWorkSpace()
+    RazorWorkSpaceManager(QObject* parent = 0);
+    ~RazorWorkSpaceManager();
+    RazorWorkSpace* getWorkSpace()
     {
         return workSpace;
     }
@@ -51,7 +51,7 @@ public slots:
     void switchDesktop(int);
     void mouseClicked(QMouseEvent*);
 private:
-    Razorworkspace* workSpace;
+    RazorWorkSpace* workSpace;
 
 };
 

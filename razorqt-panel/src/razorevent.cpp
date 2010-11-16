@@ -12,7 +12,7 @@
 /**
  * @brief the constructor
  */
-Razorevent::Razorevent(int& _argc, char** _argv): QApplication(_argc, _argv)
+RazorEvent::RazorEvent(int& _argc, char** _argv): QApplication(_argc, _argv)
 {
 
 }
@@ -22,7 +22,7 @@ Razorevent::Razorevent(int& _argc, char** _argv): QApplication(_argc, _argv)
  * @brief the destructor
  */
 
-Razorevent::~Razorevent()
+RazorEvent::~RazorEvent()
 {
 
 }
@@ -30,10 +30,10 @@ Razorevent::~Razorevent()
 /**
  * @brief hands over the events to the plugin-handlers
  */
-bool Razorevent::x11EventFilter(XEvent* _event)
+bool RazorEvent::x11EventFilter(XEvent* _event)
 {
     //qDebug() << _event->type;
-    QListIterator<Razorplugin*> iter(callbackList);
+    QListIterator<RazorPlugin*> iter(callbackList);
     while (iter.hasNext())
     {
         if (iter.next()->handleEvent(_event))
@@ -48,7 +48,7 @@ bool Razorevent::x11EventFilter(XEvent* _event)
 /**
  * @brief registers a new callback to where the events are forwarded
  */
-void Razorevent::registerCallback(Razorplugin* _callbackClass)
+void RazorEvent::registerCallback(RazorPlugin* _callbackClass)
 {
     callbackList.append(_callbackClass);
 }
@@ -57,7 +57,7 @@ void Razorevent::registerCallback(Razorplugin* _callbackClass)
  * @brief unregisters a callback that was previously registered
  */
 
-void Razorevent::unregisterCallback(Razorplugin* _callbackClass)
+void RazorEvent::unregisterCallback(RazorPlugin* _callbackClass)
 {
     if (callbackList.contains(_callbackClass))
         callbackList.removeAll(_callbackClass);

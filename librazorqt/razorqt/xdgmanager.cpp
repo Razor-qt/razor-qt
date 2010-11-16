@@ -21,11 +21,11 @@
  * @brief The constructor of the class,
  * initializes the components and sets our xdg-variables
  */
-Xdgmanager::Xdgmanager(QString _icontheme)
+XdgManager::XdgManager(QString _icontheme)
 {
     qDebug() << "Xdgmanager: Initialising..." << _icontheme;
     //set and get variables first
-    xdgenv = new Xdgenv();
+    xdgenv = new XdgEnv();
     xdgenv->setEnv();
 
     /**
@@ -33,23 +33,23 @@ Xdgmanager::Xdgmanager(QString _icontheme)
      */
     QFile* testfile = new QFile(_icontheme);
     if (testfile->exists())
-        xdgiconthememanager = new Xdgiconthememanager(_icontheme,xdgenv);
+        xdgiconthememanager = new XdgIconThemeManager(_icontheme,xdgenv);
     else
     {
         delete testfile;
         testfile = new QFile("/usr/share/icons/nuvola/index.theme");
         if (testfile->exists())
-            xdgiconthememanager = new Xdgiconthememanager("/usr/share/icons/nuvola/index.theme",xdgenv);
+            xdgiconthememanager = new XdgIconThemeManager("/usr/share/icons/nuvola/index.theme",xdgenv);
         else
         {
             delete testfile;
             testfile = new QFile("/usr/share/icons/gnome/index.theme");
             if (testfile->exists())
-                xdgiconthememanager = new Xdgiconthememanager("/usr/share/icons/gnome/index.theme",xdgenv);
+                xdgiconthememanager = new XdgIconThemeManager("/usr/share/icons/gnome/index.theme",xdgenv);
         }
     }
-    xdgmenu = new Xdgmenu(xdgenv, xdgiconthememanager);
-    xdgautostart = new Xdgautostart(xdgenv);
+    xdgmenu = new XdgMenu(xdgenv, xdgiconthememanager);
+    xdgautostart = new XdgAutoStart(xdgenv);
     delete testfile;
 
 }
@@ -57,7 +57,7 @@ Xdgmanager::Xdgmanager(QString _icontheme)
 /**
  * @brief returns a pointer to the xdgautostart subsystem
  */
-Xdgautostart* Xdgmanager::get_xdgautostart()
+XdgAutoStart* XdgManager::get_xdgautostart()
 {
     return xdgautostart;
 }
@@ -70,7 +70,7 @@ Xdgautostart* Xdgmanager::get_xdgautostart()
  * @brief The destructor, deletes our stuff again
  */
 
-Xdgmanager::~Xdgmanager()
+XdgManager::~XdgManager()
 {
     qDebug() << "Xdgmanager: dying";
     delete xdgiconthememanager;
@@ -83,7 +83,7 @@ Xdgmanager::~Xdgmanager()
 /**
  * @brief returns a pointer to the xdgenv subsystem
  */
-Xdgenv* Xdgmanager::get_xdgenv()
+XdgEnv* XdgManager::get_xdgenv()
 {
     return xdgenv;
 }
@@ -92,13 +92,13 @@ Xdgenv* Xdgmanager::get_xdgenv()
  * @brief returns a pointer to the xdgmenu subsystem
  */
 
-Xdgmenu* Xdgmanager::get_xdgmenu()
+XdgMenu* XdgManager::get_xdgmenu()
 {
     return xdgmenu;
 }
 
 
-Xdgiconthememanager* Xdgmanager::get_xdgiconthememanager()
+XdgIconThemeManager* XdgManager::get_xdgiconthememanager()
 {
     return xdgiconthememanager;
 }

@@ -15,18 +15,18 @@
 /**
 *@brief manages the splash-screen
 */
-class Razorsplash:public QObject
+class RazorSplash:public QObject
 {
     Q_OBJECT
 public:
-    Razorsplash(QString _splashtheme);
-    ~Razorsplash();
+    RazorSplash(QString _splashtheme);
+    ~RazorSplash();
 
 private:
     QTimer* timeout;
     QDialog* splashscreen;
-    Razorlabel* splashgfx;
-    Readsettings* settings;
+    RazorLabel* splashgfx;
+    ReadSettings* settings;
 
 };
 

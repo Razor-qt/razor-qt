@@ -15,13 +15,13 @@
  */
 
 
-class Razorbartask;
+class RazorBarTask;
 
-class Razortask
+class RazorTask
 {
 public:
-    Razortask(Window _id, int _screen);
-    ~Razortask();
+    RazorTask(Window _id, int _screen);
+    ~RazorTask();
     Window get_client()
     {
         return client;
@@ -57,18 +57,18 @@ private:
  * @brief this manages the running tasks
  */
 
-class Razortaskmanager : public Razorplugin
+class RazorTaskManager : public RazorPlugin
 {
 public:
-    Razortaskmanager(int _bar);
-    ~Razortaskmanager();
+    RazorTaskManager(int _bar);
+    ~RazorTaskManager();
     bool handleEvent(XEvent* );
 
 private:
-    Razorbartask* gui;
+    RazorBarTask* gui;
     void updateMap();
 
-    QMap <Window, Razortask*> clientList;
+    QMap <Window, RazorTask*> clientList;
 };
 
 

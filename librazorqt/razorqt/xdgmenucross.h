@@ -23,42 +23,42 @@
 /**
  * @brief Does all the logic needed for the XDG-Standart in the menus
  */
-class Xdgmenulogic
+class XdgMenuLogic
 {
 public:
-    Xdgmenulogic(int _logic, bool _not, Xdgmenulogic* _parent);
-    Xdgmenulogic();
-    ~Xdgmenulogic();
-    QList<Xdgmenulogic*> children;
+    XdgMenuLogic(int _logic, bool _not, XdgMenuLogic* _parent);
+    XdgMenuLogic();
+    ~XdgMenuLogic();
+    QList<XdgMenuLogic*> children;
     QStringList cat_list;
     int logic;
-    Xdgmenulogic* parent;
+    XdgMenuLogic* parent;
     bool hasParent;
-    bool validate(Xdgdesktopfile* _item);
-    int makeChild(int _logic, bool _not, Xdgmenulogic* _parent);
+    bool validate(XdgDesktopFile* _item);
+    int makeChild(int _logic, bool _not, XdgMenuLogic* _parent);
     bool not_;
 };
 
 /**
  * @brief Is used to build up a double-linked tree which represents the menu-structure wanted
  */
-class Xdgmenucross
+class XdgMenuCross
 {
 public:
-    Xdgmenucross(Xdgmenucross* _parent);
-    Xdgmenucross();
-    ~Xdgmenucross();
+    XdgMenuCross(XdgMenuCross* _parent);
+    XdgMenuCross();
+    ~XdgMenuCross();
     QString name;
-    Xdgmenucross* parent;
+    XdgMenuCross* parent;
     bool hasParent;
     QStringList usedNames;
     bool hasInclude;
     void fillQMenu(QMenu* _target, QList< QMenu* >& _list);
     QString directory;
-    Xdgmenulogic* inc_categories;
-    bool fitsHere(Xdgdesktopfile* _item);
-    QList<Xdgdesktopfile*> entries;
-    QList<Xdgmenucross*> subMenu;
+    XdgMenuLogic* inc_categories;
+    bool fitsHere(XdgDesktopFile* _item);
+    QList<XdgDesktopFile*> entries;
+    QList<XdgMenuCross*> subMenu;
     void debugCross();
 
 };

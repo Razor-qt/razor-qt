@@ -16,10 +16,10 @@
 /**
  * @brief The constructor of the class making a new instance of Xdgenv, if u use the menu class without a manager
  */
-Xdgmenu::Xdgmenu()
+XdgMenu::XdgMenu()
 {
     qDebug() << "Xdgmenu: Initialising... making new Xdgenv";
-    menuEnv = new Xdgenv;
+    menuEnv = new XdgEnv;
     getDirlist();
 }
 
@@ -29,7 +29,7 @@ Xdgmenu::Xdgmenu()
  * This is used by Xdgmanager or can be used by any other class alike
  */
 
-Xdgmenu::Xdgmenu(Xdgenv* _env, Xdgiconthememanager* _iconman)
+XdgMenu::XdgMenu(XdgEnv* _env, XdgIconThemeManager* _iconman)
 {
     qDebug() << "Xdgmenu: Initialising... using given Xdgenv";
     menuEnv = _env;
@@ -43,7 +43,7 @@ Xdgmenu::Xdgmenu(Xdgenv* _env, Xdgiconthememanager* _iconman)
  */
 
 
-Xdgmenu::~Xdgmenu()
+XdgMenu::~XdgMenu()
 {
     qDebug() << "Xdgmenu: Initialising...";
 }
@@ -52,7 +52,7 @@ Xdgmenu::~Xdgmenu()
  * @brief Returns a QVector of Xdgdesktopfiles
  * use this if u need direct access to the displayed items
  */
-QVector<Xdgdesktopfile*>* Xdgmenu::get_xdgfilelist()
+QVector<XdgDesktopFile*>* XdgMenu::get_xdgfilelist()
 {
     return &filelist;
 }
@@ -61,7 +61,7 @@ QVector<Xdgdesktopfile*>* Xdgmenu::get_xdgfilelist()
  * @brief Gets the std datadirs and returns a list of all .directory files
  */
 
-void Xdgmenu::getDirlist()
+void XdgMenu::getDirlist()
 {
     QStringList pathList = menuEnv->getEnv("DATA_DIRS").split(":");
     for (int i = 0; i < pathList.count(); i++)
@@ -84,7 +84,7 @@ void Xdgmenu::getDirlist()
  * @brief Returns the menu entries as QList of QMenu!
  */
 
-QMenu* Xdgmenu::get_QMenus()
+QMenu* XdgMenu::get_QMenus()
 {
     QString lang = QLocale::system().name(); // (it_IT)
     QString country = lang.section('_', 0, 0); // (it_IT -> it)
@@ -103,7 +103,7 @@ QMenu* Xdgmenu::get_QMenus()
     for (int i = 1; i < qMenulist.count(); i++)
     {
         qDebug() << "Xdgmenu: trying to parse file: " << dirMap[qMenulist.at(i)->title()];
-        Xdgdesktopfile* menuParse = new Xdgdesktopfile(dirMap[qMenulist.at(i)->title()]);
+        XdgDesktopFile* menuParse = new XdgDesktopFile(dirMap[qMenulist.at(i)->title()]);
         if (!menuParse->isUseable())
             qDebug() << "Xdgmenu: couldnt find .directory file: " << dirMap[qMenulist.at(i)->title()];
         else
@@ -128,7 +128,7 @@ QMenu* Xdgmenu::get_QMenus()
  * @brief this slot just executes the given command from the submenu, all submenus should be connected to this!
  */
 
-void Xdgmenu::runCmd(QAction* _action)
+void XdgMenu::runCmd(QAction* _action)
 {
     QString cmd = _action->data().toString();
     QProcess::startDetached(cmd);
@@ -141,7 +141,7 @@ void Xdgmenu::runCmd(QAction* _action)
  * It then instances a new Xdgreader with the path of the menufile to use
  * @return true if menufile was found and parsed successfully, false if no useable menufile was found
  */
-bool Xdgmenu::readMenufile()
+bool XdgMenu::readMenufile()
 {
     qDebug() << "Reading Menufile!";
     qDebug() << menuEnv->getEnv("CONFIG_DIRS");
@@ -173,7 +173,7 @@ bool Xdgmenu::readMenufile()
         qDebug() << "[!!] Xdgmenu: NO USEABLE MENUCONFIGS FOUND - THIS IS CRITICAL! disable this widget!!";
         return false;
     }
-    menuReader = new Xdgreader(menufile.fileName(),mainMenu, NULL);
+    menuReader = new XdgReader(menufile.fileName(),mainMenu, NULL);
     qDebug() << "Xdgmenu: found useable menu " << menufile.fileName() << " and parsed it";
 
     return true;
@@ -183,7 +183,7 @@ bool Xdgmenu::readMenufile()
  * @brief Gets the XDG_CONFIG_PATHS from an Xdgenv and uses them.
  * It splits them into a QStringList and then calls parseFiles for every Item
  */
-void Xdgmenu::getFilelist()
+void XdgMenu::getFilelist()
 {
     qDebug()<< "Xdgmenu: getting configpaths";
     QStringList pathList = menuEnv->getEnv("DATA_DIRS").split(":");
@@ -199,12 +199,12 @@ void Xdgmenu::getFilelist()
  */
 
 
-void Xdgmenu::cleanList()
+void XdgMenu::cleanList()
 {
     qDebug() << "Xdgmenu: cleaning house! (" << badNames.count() << " bad Names )";
     for (int i = 0; i < filelist.count(); i++)
     {
-        Xdgdesktopfile* tmp = filelist.at(i);
+        XdgDesktopFile* tmp = filelist.at(i);
         if (badNames.contains(tmp->getValue("Name")))
             filelist.remove(i);
     }
@@ -213,7 +213,7 @@ void Xdgmenu::cleanList()
 /**
  * @brief assigns all of the menu-elements their respective icons!
  */
-void Xdgmenu::assignIcons()
+void XdgMenu::assignIcons()
 {
     QString myicon,mypath,iconpath;
     qDebug() << "Xdgmenu: called assignIcons, doing for " << filelist.count() << " items";
@@ -233,7 +233,7 @@ void Xdgmenu::assignIcons()
  * @param[in] _dir the directory that will be searched for .desktop files
  */
 
-void Xdgmenu::parseFiles(QString _dir)
+void XdgMenu::parseFiles(QString _dir)
 {
     qDebug()<<"Xdgmenu: parsing stuff in" << _dir;
     QDirIterator desktop_file_iter(_dir + "/applications/", QDirIterator::Subdirectories);
@@ -246,7 +246,7 @@ void Xdgmenu::parseFiles(QString _dir)
             continue;
         if (desktop_file_iter.filePath().endsWith(".desktop")) //only use .desktop files!
         {
-            Xdgdesktopfile* tmp = new Xdgdesktopfile(desktop_file_iter.filePath());
+            XdgDesktopFile* tmp = new XdgDesktopFile(desktop_file_iter.filePath());
             tmp->parseFile();
 
             //do some standart-exclusions here
@@ -268,13 +268,13 @@ void Xdgmenu::parseFiles(QString _dir)
  * @brief feeds all of the found desktopfiles in the filelist to the menu-tree
  */
 
-void Xdgmenu::feedTree()
+void XdgMenu::feedTree()
 {
     qDebug() << "Xdgmenu: beginning feeding tree!";
     int i =0;
     for (i = 0; i < filelist.count(); i++)
     {
-        Xdgdesktopfile* testfile = filelist.at(i);
+        XdgDesktopFile* testfile = filelist.at(i);
         mainMenu.fitsHere(testfile);
     }
 

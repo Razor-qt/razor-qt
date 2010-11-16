@@ -7,17 +7,17 @@
 /**
  * @brief shows the about-dlg
  */
-void Razorhandler::gui_showabout()
+void RazorHandler::gui_showabout()
 {
     QString logo = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razormainmenu_icon");
-    Razoraboutdlg* aboutdlg = new Razoraboutdlg(logo);
+    RazorAboutDLG* aboutdlg = new RazorAboutDLG(logo);
     Q_UNUSED(aboutdlg);
 }
 
 /**
 *@brief constructor sets up our handler
 */
-Razorhandler::Razorhandler()
+RazorHandler::RazorHandler()
 {
     sessionCom = new QTextStream(stdout);
 }
@@ -27,7 +27,7 @@ Razorhandler::Razorhandler()
  * @brief Logs the user out
  */
 
-void Razorhandler::sys_logout()
+void RazorHandler::sys_logout()
 {
     *sessionCom << "RAZOR_DO_LOGOUT" << endl;
 }
@@ -36,7 +36,7 @@ void Razorhandler::sys_logout()
  * @brief Reboots the system
  *
  */
-void Razorhandler::sys_reboot()
+void RazorHandler::sys_reboot()
 {
 
     *sessionCom << "RAZOR_DO_REBOOT" << endl;
@@ -45,7 +45,7 @@ void Razorhandler::sys_reboot()
 /**
  * @brief Shuts down the system
  */
-void Razorhandler::sys_shutdown()
+void RazorHandler::sys_shutdown()
 {
 
     *sessionCom << "RAZOR_DO_SHUTDOWN" << endl;
@@ -55,7 +55,7 @@ void Razorhandler::sys_shutdown()
 /**
  * @brief also needed for stable linking
  */
-Razorhandler::~Razorhandler()
+RazorHandler::~RazorHandler()
 {
     delete sessionCom;
 }

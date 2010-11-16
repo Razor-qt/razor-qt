@@ -21,10 +21,10 @@
 * @brief Handles all of our XML-Parsers Calls
 */
 
-class Xdghandler : public QXmlDefaultHandler
+class XdgHandler : public QXmlDefaultHandler
 {
 public:
-    Xdghandler(Xdgmenucross* _tree);
+    XdgHandler(XdgMenuCross* _tree);
     bool startElement(	const QString& _nameuri,
                        const QString& _localname,
                        const QString& _qName,
@@ -38,8 +38,8 @@ public:
 
 
 private:
-    Xdgmenucross* 	currentTree;
-    Xdgmenulogic* currentItem;
+    XdgMenuCross* 	currentTree;
+    XdgMenuLogic* currentItem;
     QString		 	currentText;
 
 };
@@ -48,18 +48,18 @@ private:
 * @brief Does the actual parsing of the XML files
 */
 //now we actually need to read that stuff
-class Xdgreader : public QObject
+class XdgReader : public QObject
 {
     Q_OBJECT
 public:
-    Xdgreader(QString _filename, Xdgmenucross& _mainmenu ,QObject* _parent=0);
-    ~Xdgreader();
-    Xdgmenucross*			 mainMenu;
+    XdgReader(QString _filename, XdgMenuCross& _mainmenu ,QObject* _parent=0);
+    ~XdgReader();
+    XdgMenuCross*			 mainMenu;
 
 private:
     QXmlInputSource*   		 xdgfile;
     QXmlSimpleReader*		 xdgreader;
-    Xdghandler* 			 xdghandler;
+    XdgHandler* 			 xdghandler;
     QFile* 					 qfilehandler;
 };
 

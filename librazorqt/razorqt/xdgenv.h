@@ -19,12 +19,12 @@
 /**
  * @brief Does all the Handling for the XDG-Environmental Variables
  */
-class Xdgenv : public QObject
+class XdgEnv : public QObject
 {
     Q_OBJECT
 public:
-    Xdgenv();
-    ~Xdgenv();
+    XdgEnv();
+    ~XdgEnv();
     void updateEnv();
     QString getEnv(QString _name);
     void setEnv();

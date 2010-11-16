@@ -20,21 +20,21 @@
  * @brief manages the xdg-correct autostart stuff
  **/
 
-class Xdgautostart
+class XdgAutoStart
 {
 public:
-    Xdgautostart(Xdgenv* _env);
-    Xdgautostart();
-    ~Xdgautostart();
-    QVector<Xdgdesktopfile>* get_List();
+    XdgAutoStart(XdgEnv* _env);
+    XdgAutoStart();
+    ~XdgAutoStart();
+    QVector<XdgDesktopFile>* get_List();
     void updateList();
     void addDirtoList(QString _dir);
     void debugAutostart();
     void cleanList();
 
 private:
-    QVector<Xdgdesktopfile> autoList;
-    Xdgenv* autoEnv;
+    QVector<XdgDesktopFile> autoList;
+    XdgEnv* autoEnv;
     QStringList badNames;
 
 };

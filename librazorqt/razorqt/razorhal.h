@@ -14,12 +14,12 @@
 /**
  * @brief this is just a little struct-like class for holding our data
  */
-class Razorhaldev : public Razordev
+class RazorHalDev : public RazorDev
 {
     Q_OBJECT
 public:
-    Razorhaldev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType );
-    Razorhaldev ( QString _uuid );
+    RazorHalDev ( QString _uuid, QString _bDev, QString _volume, QString _driveType, QString _fsType );
+    RazorHalDev ( QString _uuid );
     bool mount();
     bool umount();
 
@@ -63,21 +63,21 @@ private:
  * @brief manages the device mounting
  */
 
-class Razorhal : public Razordevman
+class RazorHal : public RazorDevMan
 {
     Q_OBJECT
 public:
-    Razorhal ( QObject* parent = 0 );
-    ~Razorhal();
+    RazorHal ( QObject* parent = 0 );
+    ~RazorHal();
     bool mount ( QString _uuid );
     bool umount ( QString _uuid );
     QList<QString> listDevices();
-    Razordev* getDevice ( QString _uuid )
+    RazorDev* getDevice ( QString _uuid )
     {
         return deviceList.value ( _uuid );
     }
 private:
-    QMap<QString, Razorhaldev*> deviceList;
+    QMap<QString, RazorHalDev*> deviceList;
     QDBusInterface* notifyDev;
 
 private slots:

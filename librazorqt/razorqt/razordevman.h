@@ -2,11 +2,11 @@
 #define RAZORDEVMAN_H
 #include "defs.h"
 
-class Razordev: public QObject
+class RazorDev: public QObject
 {
     Q_OBJECT
 public:
-    Razordev ( QObject* parent = 0 );
+    RazorDev ( QObject* parent = 0 );
     virtual bool mount();
     virtual bool umount();
     virtual bool getMounted();
@@ -20,15 +20,15 @@ public:
 
 
 
-class Razordevman: public QObject
+class RazorDevMan: public QObject
 {
     Q_OBJECT
 public:
-    Razordevman ( QObject* parent = 0 );
+    RazorDevMan ( QObject* parent = 0 );
     virtual bool mount (QString _uuid);
     virtual bool umount (QString _uuid);
     virtual QList<QString> listDevices();
-    virtual Razordev* getDevice(QString _uuid);
+    virtual RazorDev* getDevice(QString _uuid);
 
 signals:
     void deviceAdded ( QString );

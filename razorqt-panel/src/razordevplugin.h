@@ -5,19 +5,19 @@
 #include <razorqt/razordevman.h>
 #include <razorqt/razorhal.h>
 
-class RazorDevicePluginGui;
-class RazorDevicePlugin :public QObject, public Razorplugin
+class RazorDevicePluginGUI;
+class RazorDevicePlugin :public QObject, public RazorPlugin
 {
     Q_OBJECT
 public:
     RazorDevicePlugin(int _bar);
-    Razordevman* backEnd()
+    RazorDevMan* backEnd()
     {
         return deviceBackend;
     }
 private:
-    Razordevman* deviceBackend;
-    RazorDevicePluginGui* gui;
+    RazorDevMan* deviceBackend;
+    RazorDevicePluginGUI* gui;
 private slots:
     void deviceAdded(QString);
     void deviceRemoved(QString);
@@ -31,12 +31,12 @@ signals:
 };
 
 
-class RazorDevicePluginGui : public QToolButton
+class RazorDevicePluginGUI : public QToolButton
 {
     Q_OBJECT
 public:
-    RazorDevicePluginGui(RazorDevicePlugin* _owner);
-    ~RazorDevicePluginGui();
+    RazorDevicePluginGUI(RazorDevicePlugin* _owner);
+    ~RazorDevicePluginGUI();
     void addDevice(QString);
     void removeDevice(QString);
 private:

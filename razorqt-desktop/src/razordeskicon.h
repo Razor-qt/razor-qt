@@ -9,17 +9,17 @@
  * @brief declares the classes Razordeskicon and Razordeskicondata
  */
 
-class Razordeskicon;
+class RazorDeskIcon;
 /**
  * @brief stores the data used for the desktop icon
  */
 
-class Razordeskicondata : public QAction
+class RazorDeskIconData : public QAction
 {
     Q_OBJECT
 public:
-    Razordeskicondata(const QIcon& _icon, const QString& _text,QString _commentTT,  QPoint _position, QWidget* _parent);
-    ~Razordeskicondata();
+    RazorDeskIconData(const QIcon& _icon, const QString& _text,QString _commentTT,  QPoint _position, QWidget* _parent);
+    ~RazorDeskIconData();
     QPoint getPosition();
     QString getTT()
     {
@@ -35,7 +35,7 @@ signals:
 private:
     QString commentTT;
     QPoint* position;
-    Razordeskicon* gui;
+    RazorDeskIcon* gui;
 };
 
 
@@ -44,13 +44,13 @@ private:
  * "Icon" is QAbstractButton based now to simplufy QSS styling
  * and implementation of well-behaved minimal widgets too.
  */
-class Razordeskicon : public QAbstractButton
+class RazorDeskIcon : public QAbstractButton
 {
     Q_OBJECT
 public:
-    Razordeskicon(QWidget* parent = 0);
-    Razordeskicon(Razordeskicondata* _data, QWidget* _parent);
-    ~Razordeskicon();
+    RazorDeskIcon(QWidget* parent = 0);
+    RazorDeskIcon(RazorDeskIconData* _data, QWidget* _parent);
+    ~RazorDeskIcon();
 
     QSize sizeHint() const;
 
@@ -68,7 +68,7 @@ private:
     bool movedMe;
     bool firstGrab;
     QPoint firstPos;
-    Razordeskicondata* data;
+    RazorDeskIconData* data;
 };
 
 #endif

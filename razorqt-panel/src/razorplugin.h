@@ -13,10 +13,10 @@
  * @brief declares Razorplugin, a baseclass for all the plugins
  */
 
-class Razorplugin
+class RazorPlugin
 {
 public:
-    Razorplugin(int _bar)
+    RazorPlugin(int _bar)
     {
         Q_UNUSED(_bar);
     };

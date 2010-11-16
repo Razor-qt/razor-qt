@@ -9,25 +9,25 @@
 #include "razor.h"
 #include <razorqt/readsettings.h>
 
-void Razorworkspace::mouseMoveEvent(QMouseEvent* _ev)
+void RazorWorkSpace::mouseMoveEvent(QMouseEvent* _ev)
 {
     QLabel::mouseMoveEvent(_ev);
 }
 
-void Razorworkspace::mousePressEvent(QMouseEvent* _ev)
+void RazorWorkSpace::mousePressEvent(QMouseEvent* _ev)
 {
     QLabel::mousePressEvent(_ev);
 }
 
-void Razorworkspace::mouseReleaseEvent(QMouseEvent* _ev)
+void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 {
     emit mouseReleased(_ev);
     QLabel::mouseReleaseEvent(_ev);
 }
 
-void Razorworkspacemanager::switchDesktop(int _change)
+void RazorWorkSpaceManager::switchDesktop(int _change)
 {
-    Xfitman* xfitman = Razor::getInstance().getxfitman();
+    XfitMan* xfitman = Razor::getInstance().getxfitman();
     int num_desks = xfitman->getNumDesktop();
     if (_change > 0)
     {
@@ -46,7 +46,7 @@ void Razorworkspacemanager::switchDesktop(int _change)
 }
 
 
-void Razorworkspace::wheelEvent(QWheelEvent* _ev)
+void RazorWorkSpace::wheelEvent(QWheelEvent* _ev)
 {
     int numDegrees = _ev->delta() / 8;
     int numSteps = numDegrees / 15;
@@ -57,7 +57,7 @@ void Razorworkspace::wheelEvent(QWheelEvent* _ev)
 
 
 
-Razorworkspace::Razorworkspace(QWidget* _parent, Qt::WindowFlags _f): QLabel(_parent, _f)
+RazorWorkSpace::RazorWorkSpace(QWidget* _parent, Qt::WindowFlags _f): QLabel(_parent, _f)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
@@ -66,23 +66,23 @@ Razorworkspace::Razorworkspace(QWidget* _parent, Qt::WindowFlags _f): QLabel(_pa
     show();
 }
 
-Razorworkspace::~Razorworkspace()
+RazorWorkSpace::~RazorWorkSpace()
 {
 
 }
 
-void Razorworkspacemanager::mouseClicked(QMouseEvent* _event)
+void RazorWorkSpaceManager::mouseClicked(QMouseEvent* _event)
 {
     qDebug() << "click-released the workspace";
     //maybe popup a menu or stuff - i dont know
 }
 
-Razorworkspacemanager::Razorworkspacemanager(QObject* parent): QObject(parent)
+RazorWorkSpaceManager::RazorWorkSpaceManager(QObject* parent): QObject(parent)
 {
 
     //this may actually make the icon work on multihead
     QWidget* screen = QApplication::desktop()->screen(QApplication::desktop()->primaryScreen());
-    workSpace = new Razorworkspace;
+    workSpace = new RazorWorkSpace;
 
     connect(workSpace, SIGNAL(mouseReleased(QMouseEvent*)),this, SLOT(mouseClicked(QMouseEvent*)));
     connect(workSpace, SIGNAL(mouseWheeled(int)), this, SLOT(switchDesktop(int)));
@@ -93,7 +93,7 @@ Razorworkspacemanager::Razorworkspacemanager(QObject* parent): QObject(parent)
 
 
     //now we got the desktop we need to determine if the user wants a defined picture there
-    Readsettings customPixmapSettings("desktop.conf");
+    ReadSettings customPixmapSettings("desktop.conf");
     QString finalPixmap = customPixmapSettings.getString("deskPixMap");
     if (finalPixmap != "internal" && finalPixmap != "")
     {
@@ -102,7 +102,7 @@ Razorworkspacemanager::Razorworkspacemanager(QObject* parent): QObject(parent)
     else //now we want to use the system default - we still need to find that one out though
     {
         qDebug() << "trying to get system-defaults";
-        Readsettings* styleSettings = Razor::getInstance().themesettings();
+        ReadSettings* styleSettings = Razor::getInstance().themesettings();
         finalPixmap=styleSettings->getPath() + styleSettings->getString("desktop_background");
 
         qDebug() << "trying to get system-defaults" << finalPixmap;
@@ -115,7 +115,7 @@ Razorworkspacemanager::Razorworkspacemanager(QObject* parent): QObject(parent)
 
 }
 
-Razorworkspacemanager::~Razorworkspacemanager()
+RazorWorkSpaceManager::~RazorWorkSpaceManager()
 {
     delete workSpace;
 }

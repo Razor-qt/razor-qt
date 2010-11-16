@@ -12,7 +12,7 @@
 /**
 *@brief does the "magic" of emitting clicked on click!
 */
-void Razorlabel::mousePressEvent(QMouseEvent* _event)
+void RazorLabel::mousePressEvent(QMouseEvent* _event)
 {
     Q_UNUSED(_event);
     emit clicked();
@@ -21,7 +21,7 @@ void Razorlabel::mousePressEvent(QMouseEvent* _event)
 /**
 *@brief the constructor
 */
-Razorlabel::Razorlabel( QWidget* _parent) : QLabel(_parent)
+RazorLabel::RazorLabel( QWidget* _parent) : QLabel(_parent)
 {
 
 }

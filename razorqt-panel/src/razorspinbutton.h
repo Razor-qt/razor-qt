@@ -11,7 +11,7 @@
  */
 
 
-class Razorspinbutton;
+class RazorSpinButton;
 
 /*struct Razorspinbuttonentry
 {
@@ -20,12 +20,12 @@ class Razorspinbutton;
   QString icon;
 };*/
 
-class Razorspinbuttongui : public QToolButton
+class RazorSpinButtonGUI : public QToolButton
 {
     Q_OBJECT
 public:
-    Razorspinbuttongui(Razorspinbutton* _owner);
-    ~Razorspinbuttongui();
+    RazorSpinButtonGUI(RazorSpinButton* _owner);
+    ~RazorSpinButtonGUI();
     void addAction(QAction*);
 protected:
     virtual void wheelEvent(QWheelEvent* );
@@ -42,20 +42,20 @@ private:
     QAction* currentAction;
     QMenu* actionChoose;
     QList<QAction*> actionList;
-    Razorspinbutton* owner;
+    RazorSpinButton* owner;
     int index;
 };
 
-class Razorspinbutton :public QObject, public Razorplugin
+class RazorSpinButton :public QObject, public RazorPlugin
 {
     Q_OBJECT
 public:
-    Razorspinbutton(QString _cmd, int _bar);
-    ~Razorspinbutton();
+    RazorSpinButton(QString _cmd, int _bar);
+    ~RazorSpinButton();
     virtual bool handleEvent(XEvent* _event);
 private:
-    Razorspinbuttongui* gui;
-    Readsettings* settings;
+    RazorSpinButtonGUI* gui;
+    ReadSettings* settings;
 
 };
 

@@ -19,7 +19,7 @@
  * initializes the new menu-crosspoint
  * @param[in] _parent The parent menucross if there is any
  */
-Xdgmenucross::Xdgmenucross(Xdgmenucross* _parent)
+XdgMenuCross::XdgMenuCross(XdgMenuCross* _parent)
 {
     qDebug() << "Xdgmenucross: initialising with parent...";
     parent=_parent;
@@ -32,7 +32,7 @@ Xdgmenucross::Xdgmenucross(Xdgmenucross* _parent)
  * Initializes a new parent-less menu-crosspoint (best for creating a root-point)
  */
 
-Xdgmenucross::Xdgmenucross()
+XdgMenuCross::XdgMenuCross()
 {
     qDebug() << "Xdgmenucross: initialising without parent...";
     parent=NULL;
@@ -44,7 +44,7 @@ Xdgmenucross::Xdgmenucross()
  * @brief The destructor
  * @todo needs to be done!
  */
-Xdgmenucross::~Xdgmenucross()
+XdgMenuCross::~XdgMenuCross()
 {
 }
 
@@ -54,7 +54,7 @@ Xdgmenucross::~Xdgmenucross()
  * @param[in] _list a pointerlist that stores all the pointers to the newly created menus.. useful since qt does not provide it directly elsewhere
  */
 
-void Xdgmenucross::fillQMenu(QMenu* _target, QList< QMenu* >& _list)
+void XdgMenuCross::fillQMenu(QMenu* _target, QList< QMenu* >& _list)
 {
     QString lang = QLocale::system().name(); // (it_IT)
     QString country = lang.section('_', 0, 0); // (it_IT -> it)
@@ -69,7 +69,7 @@ void Xdgmenucross::fillQMenu(QMenu* _target, QList< QMenu* >& _list)
     _list.append(newCurrent);
     for (int i = 0; i < entries.count(); i++)
     {
-        Xdgdesktopfile* tmp = entries.at(i);
+        XdgDesktopFile* tmp = entries.at(i);
         QAction* newact;
 
         if (tmp->getValue("Name["+country+"]") != "")
@@ -100,7 +100,7 @@ void Xdgmenucross::fillQMenu(QMenu* _target, QList< QMenu* >& _list)
  * @brief puts some info out on qDebug();
  * Puts name, submenus and if the crosspoint has includes out on qDebug()
  */
-void Xdgmenucross::debugCross()
+void XdgMenuCross::debugCross()
 {
     qDebug() << "Name: " << name;
     if (hasInclude)
@@ -116,7 +116,7 @@ void Xdgmenucross::debugCross()
  * Checks if _item fits on this menu-crosspoint or any of its children
  * @param[in] _item a pointer to an Xdgdesktopfile you want to fit in the menu-tree
  */
-bool Xdgmenucross::fitsHere(Xdgdesktopfile* _item)
+bool XdgMenuCross::fitsHere(XdgDesktopFile* _item)
 {
     //check for fittage in sub-menus for the whole tree
     for (int i=0; i < subMenu.count(); i++)
@@ -167,7 +167,7 @@ bool Xdgmenucross::fitsHere(Xdgdesktopfile* _item)
  */
 
 
-Xdgmenulogic::Xdgmenulogic(int _logic, bool _not, Xdgmenulogic* _parent)
+XdgMenuLogic::XdgMenuLogic(int _logic, bool _not, XdgMenuLogic* _parent)
 {
     qDebug() << "Xdgmenulogic: initialising...";
     logic = _logic;
@@ -181,7 +181,7 @@ Xdgmenulogic::Xdgmenulogic(int _logic, bool _not, Xdgmenulogic* _parent)
  * @brief The destructor of the class Xdgmenulogic
  * @todo Do This!
  */
-Xdgmenulogic::~Xdgmenulogic()
+XdgMenuLogic::~XdgMenuLogic()
 {
     qDebug() << "Xdgmenulogic: initialising... bad";
 }
@@ -191,7 +191,7 @@ Xdgmenulogic::~Xdgmenulogic()
  * @brief The constructor-stub of Xdgmenulogic
  * This is a stub for making this class QList compatible!
  */
-Xdgmenulogic::Xdgmenulogic()
+XdgMenuLogic::XdgMenuLogic()
 {
 }
 
@@ -205,10 +205,10 @@ Xdgmenulogic::Xdgmenulogic()
  *
  */
 
-int Xdgmenulogic::makeChild(int _logic, bool _not, Xdgmenulogic* _parent)
+int XdgMenuLogic::makeChild(int _logic, bool _not, XdgMenuLogic* _parent)
 {
     qDebug() << "Xdgmenulogic: making Child";
-    Xdgmenulogic* pushit = new Xdgmenulogic(_logic, _not, _parent);
+    XdgMenuLogic* pushit = new XdgMenuLogic(_logic, _not, _parent);
     pushit->hasParent=true;
     children.push_back(pushit);
     parent = _parent;
@@ -223,7 +223,7 @@ int Xdgmenulogic::makeChild(int _logic, bool _not, Xdgmenulogic* _parent)
  */
 
 
-bool Xdgmenulogic::validate(Xdgdesktopfile* _item)
+bool XdgMenuLogic::validate(XdgDesktopFile* _item)
 {
 #ifndef QNODEBUGCROSS
     if (cat_list.count() > 0)

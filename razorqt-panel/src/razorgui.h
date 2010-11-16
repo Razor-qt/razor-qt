@@ -16,11 +16,11 @@
  * @brief manages all the gui stuff
  */
 
-class Razorgui
+class RazorGUI
 {
 public:
-    Razorgui();
-    ~Razorgui();
+    RazorGUI();
+    ~RazorGUI();
     int addPanel();
     void addWidget(QWidget* _widget,int _barnum, int _stretch, Qt::Alignment _align);
     /**
@@ -32,7 +32,7 @@ public:
     }
 private:
     QList<Window> windowList;
-    QList<Razorbar*> panelList;
+    QList<RazorBar*> panelList;
     QMap<int, QWidget> widgetList;
 };
 #endif

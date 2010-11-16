@@ -14,11 +14,11 @@
 /**
  * @brief constructor
  */
-Razorclock::Razorclock(int _bar): Razorplugin(_bar)
+RazorClock::RazorClock(int _bar): RazorPlugin(_bar)
 {
     qDebug() << "Razorclock loading";
     //gui machen
-    gui = new Razorclockgui(this);
+    gui = new RazorClockGUI(this);
     //timer machen
     clocktimer = new QTimer;
     //timer mit uhrupdate verbinden
@@ -35,7 +35,7 @@ Razorclock::Razorclock(int _bar): Razorplugin(_bar)
  * @brief updates the time
  * Color and font settings can be configured in Qt CSS
  */
-void Razorclock::updateTime()
+void RazorClock::updateTime()
 {
     QTime time = QTime::currentTime();
     gui->setText(QDateTime::currentDateTime().toString(
@@ -46,7 +46,7 @@ void Razorclock::updateTime()
 /**
  * @brief destructor
  */
-Razorclock::~Razorclock()
+RazorClock::~RazorClock()
 {
     delete clocktimer;
     delete gui;
@@ -55,7 +55,7 @@ Razorclock::~Razorclock()
 /**
  * @brief eventhandler.. not needed but needs to be implemented
  */
-bool Razorclock::handleEvent(XEvent* _event)
+bool RazorClock::handleEvent(XEvent* _event)
 {
     Q_UNUSED(_event);
     return false;
@@ -64,7 +64,7 @@ bool Razorclock::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-Razorclockgui::Razorclockgui(Razorclock* _owner) : QLabel()
+RazorClockGUI::RazorClockGUI(RazorClock* _owner) : QLabel()
 {
     owner=_owner;
     setAlignment(Qt::AlignCenter);

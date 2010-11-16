@@ -10,12 +10,12 @@
 /**
  * @brief This manages the panel (bar)
  */
-class Razorbar : public QLabel
+class RazorBar : public QLabel
 {
     Q_OBJECT
 public:
-    Razorbar();
-    ~Razorbar();
+    RazorBar();
+    ~RazorBar();
     void addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align);
     void makeUp();
 private:

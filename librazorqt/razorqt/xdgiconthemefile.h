@@ -15,11 +15,11 @@
 /**
 *@brief handles a single iconthemefile
 */
-class Xdgiconthemefile
+class XdgIconThemeFile
 {
 public:
-    Xdgiconthemefile(QString _filename);
-    ~Xdgiconthemefile();
+    XdgIconThemeFile(QString _filename);
+    ~XdgIconThemeFile();
     void parseFile();
     void searchDirs();
     QString searchIcon(QString _name, QString _context);

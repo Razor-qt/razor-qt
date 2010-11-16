@@ -9,24 +9,24 @@
  * @brief declares Razorcmd and Razorcmdgui
  */
 
-class Razorcmd;
+class RazorCmd;
 
 /**
  * @brief The gui-element of Razorcmd
  */
-class Razorcmdgui : public QLineEdit
+class RazorCmdGUI : public QLineEdit
 {
     Q_OBJECT
 public:
-    Razorcmdgui(Razorcmd* _owner);
-    Razorcmdgui(QWidget* parent = 0);
-    ~Razorcmdgui();
+    RazorCmdGUI(RazorCmd* _owner);
+    RazorCmdGUI(QWidget* parent = 0);
+    ~RazorCmdGUI();
 protected:
     void keyPressEvent (QKeyEvent* _event);
     void wheelEvent(QWheelEvent* _event);
 private:
     int index;
-    Razorcmd* owner;
+    RazorCmd* owner;
 };
 
 
@@ -34,11 +34,11 @@ private:
 /**
  * @brief a little textedit-based applauncher for systems without XDG (like *BSD or *NIX or old linux)
  */
-class Razorcmd : public Razorplugin
+class RazorCmd : public RazorPlugin
 {
 public:
-    Razorcmd(int _bar);
-    ~Razorcmd();
+    RazorCmd(int _bar);
+    ~RazorCmd();
     virtual bool handleEvent(XEvent* _event);
     void executeCmd(QString _cmd);
     int getOldCmdCount()
@@ -50,7 +50,7 @@ public:
         return oldCmd.at(_index);
     }
 private:
-    Razorcmdgui* gui;
+    RazorCmdGUI* gui;
     QList<QString> oldCmd;
 };
 

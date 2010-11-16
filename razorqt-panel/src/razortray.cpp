@@ -12,7 +12,7 @@
 /**
  * @brief this handles the events we get from the Razorplugin subsystem
  */
-bool Razortray::handleEvent(XEvent* _event)
+bool RazorTray::handleEvent(XEvent* _event)
 {
     //we are waiting for a clientmessage
     if (_event->type == ClientMessage)
@@ -32,7 +32,7 @@ bool Razortray::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-Razortray::Razortray(int _bar): Razorplugin(_bar)
+RazorTray::RazorTray(int _bar): RazorPlugin(_bar)
 {
     qDebug() << "Razortray: initializing";
     //first we try to set "us" (meaning the razorbar we are in!) as selection owner for tray stuff, forcing the events to the bar-window
@@ -46,7 +46,7 @@ Razortray::Razortray(int _bar): Razorplugin(_bar)
     traycode = Razor::getInstance().get_Xfitman()->getAtom("net_system_tray_opcode");
 
     //and dont forget to make the gui
-    gui = new Razortraygui(this);
+    gui = new RazorTrayGUI(this);
 
     //now register us for the incoming events! (make razorevent delivarrrr)
     Razor::getInstance().get_events()->registerCallback(this);
@@ -61,7 +61,7 @@ Razortray::Razortray(int _bar): Razorplugin(_bar)
 /**
  * @brief destructor
  */
-Razortray::~Razortray()
+RazorTray::~RazorTray()
 {
     delete gui;
 }
@@ -69,7 +69,7 @@ Razortray::~Razortray()
 /**
  * @brief constructor
  */
-Razortraygui::Razortraygui(Razortray* _owner) : QLabel()
+RazorTrayGUI::RazorTrayGUI(RazorTray* _owner) : QLabel()
 {
     // size of the tray is computed in updateLayout() to fit the
     // minimal required space (yes, QApplication::desktop()->width() causes
@@ -88,7 +88,7 @@ Razortraygui::Razortraygui(Razortray* _owner) : QLabel()
 /**
  * @brief this makes the tray swallow an XEmbed into a new QX11EmbedContainer
  */
-void Razortraygui::swallowXEmbed(Window _wid)
+void RazorTrayGUI::swallowXEmbed(Window _wid)
 {
     qDebug() << "Razortraygui: swallowing client: " << _wid;
     QX11EmbedContainer* embed = new QX11EmbedContainer(this);
@@ -106,7 +106,7 @@ void Razortraygui::swallowXEmbed(Window _wid)
 /**
  * @brief destructor
  */
-Razortraygui::~Razortraygui()
+RazorTrayGUI::~RazorTrayGUI()
 {
     delete layout;
 }
@@ -114,7 +114,7 @@ Razortraygui::~Razortraygui()
 /**
  * @brief just updates the Layout
  */
-void Razortraygui::updateLayout()
+void RazorTrayGUI::updateLayout()
 {
     setLayout(layout);
     // grow the width as required

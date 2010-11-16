@@ -15,7 +15,7 @@
  * @brief this uses the internal QIcon::fromTheme for getting the icons - the problem is: its qt 4.6 or later only!
  */
 
-QIcon Xdgiconthememanager::getIconNG(QString _iconname)
+QIcon XdgIconThemeManager::getIconNG(QString _iconname)
 {
     //if the names like bla.png - remove the .png
     if (_iconname.contains("."))
@@ -68,7 +68,7 @@ QIcon Xdgiconthememanager::getIconNG(QString _iconname)
  *@brief constructor with env and currently filename
  *@todo remove _filename parameter and make this thing search all paths for themes
  */
-Xdgiconthememanager::Xdgiconthememanager(QString _filename, Xdgenv* _env)
+XdgIconThemeManager::XdgIconThemeManager(QString _filename, XdgEnv* _env)
 {
     qDebug() << "Xdgiconthememanager: initialising...";
     iconEnv=_env;
@@ -84,16 +84,16 @@ Xdgiconthememanager::Xdgiconthememanager(QString _filename, Xdgenv* _env)
 
 
 
-    activeTheme=new Xdgiconthemefile(_filename);
+    activeTheme=new XdgIconThemeFile(_filename);
     activeTheme->parseFile();
     activeTheme->searchDirs();
     //this is for fallback but needs also to be set via xdgenv!
     //actually hacked for bsd-compat
     QFile test("/usr/share/icons/");
     if (test.exists())
-        fallbackTheme= new Xdgiconthemefile("/usr/share/icons/hicolor/index.theme");
+        fallbackTheme= new XdgIconThemeFile("/usr/share/icons/hicolor/index.theme");
     else
-        fallbackTheme= new Xdgiconthemefile("/usr/local/share/icons/hicolor/index.theme");
+        fallbackTheme= new XdgIconThemeFile("/usr/local/share/icons/hicolor/index.theme");
 
     fallbackTheme->parseFile();
     fallbackTheme->searchDirs();
@@ -135,7 +135,7 @@ Xdgiconthememanager::Xdgiconthememanager(QString _filename, Xdgenv* _env)
 /**
  * @brief destructor
  */
-Xdgiconthememanager::~Xdgiconthememanager()
+XdgIconThemeManager::~XdgIconThemeManager()
 {
 }
 
@@ -143,7 +143,7 @@ Xdgiconthememanager::~Xdgiconthememanager()
  * @brief does the actual search for an icon by name or whatever!
  */
 
-QString Xdgiconthememanager::getIconpath(QString _iconfield, QString _desktopfilepath, QString _category)
+QString XdgIconThemeManager::getIconpath(QString _iconfield, QString _desktopfilepath, QString _category)
 {
     qDebug() << _iconfield << "  " << _desktopfilepath;
     if (_iconfield=="")
@@ -196,7 +196,7 @@ QString Xdgiconthememanager::getIconpath(QString _iconfield, QString _desktopfil
 /**
  *@brief returns a pointer to the currently active theme
  */
-Xdgiconthemefile* Xdgiconthememanager::get_activeTheme()
+XdgIconThemeFile* XdgIconThemeManager::get_activeTheme()
 {
     return activeTheme;
 }

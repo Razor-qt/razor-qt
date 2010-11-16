@@ -2,11 +2,11 @@
 #include "razor.h"
 
 
-RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): Razorplugin(bar)
+RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): RazorPlugin(bar)
 {
     cmd.remove("quicklaunch");
     //!\todo TODO/FIXME: decide if it should use its own config file
-    settings = new Readsettings("spin"+cmd+".conf");
+    settings = new ReadSettings("spin"+cmd+".conf");
     int stateCount = settings->getInt("count");
 
     gui = new RazorQuickLaunchGUI(this);
@@ -42,7 +42,7 @@ RazorQuickLaunch::~RazorQuickLaunch()
 
 bool RazorQuickLaunch::handleEvent(XEvent* _event)
 {
-    return Razorplugin::handleEvent(_event);
+    return RazorPlugin::handleEvent(_event);
 }
 
 

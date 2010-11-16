@@ -15,7 +15,7 @@
  * @brief constructor, initializes the parts of the razor gui
  */
 
-Razorgui::Razorgui()
+RazorGUI::RazorGUI()
 {
     qDebug() << "Razorgui: initializing... ";
 }
@@ -25,9 +25,9 @@ Razorgui::Razorgui()
  * @brief adds a new Razorbar panel
  * @return the number of the created panel
  */
-int Razorgui::addPanel()
+int RazorGUI::addPanel()
 {
-    Razorbar* newpanel = new Razorbar;
+    RazorBar* newpanel = new RazorBar;
     Window wid = newpanel->effectiveWinId();
     windowList.append(wid);
     //reserve our space on the screen
@@ -44,9 +44,9 @@ int Razorgui::addPanel()
  * @param[in] _stretch the stretch-factor (see qt manual)
  * @param[in] _align the alignment (see qt manual)
  */
-void Razorgui::addWidget(QWidget* _widget, int _barnum, int _stretch, Qt::Alignment _align)
+void RazorGUI::addWidget(QWidget* _widget, int _barnum, int _stretch, Qt::Alignment _align)
 {
-    Razorbar* addto = panelList.at(_barnum);
+    RazorBar* addto = panelList.at(_barnum);
     addto->addWidget(_widget,_stretch,_align);
 }
 
@@ -57,7 +57,7 @@ void Razorgui::addWidget(QWidget* _widget, int _barnum, int _stretch, Qt::Alignm
 /**
  * @brief destructor, deletes the razorgui
  */
-Razorgui::~Razorgui()
+RazorGUI::~RazorGUI()
 {
     qDebug() << "Razorgui Dying";
 

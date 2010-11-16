@@ -15,7 +15,7 @@
 /**
  * @brief constructor
  */
-Razorbartask::Razorbartask(Razorplugin* _owner)
+RazorBarTask::RazorBarTask(RazorPlugin* _owner)
 {
     qDebug() << "Razorbartask initializing...";
 
@@ -44,7 +44,7 @@ Razorbartask::Razorbartask(Razorplugin* _owner)
 /**
  * @brief updates the focused window and makes the entries look accordingly
  */
-void Razorbartask::updateFocus()
+void RazorBarTask::updateFocus()
 {
     active = Razor::getInstance().get_Xfitman()->getActiveAppWindow();
     for (int i=0; i < taskMap.values().count(); i++)
@@ -60,7 +60,7 @@ void Razorbartask::updateFocus()
  * @brief adds this to our Layout and resets it
  */
 
-void Razorbartask::addItem(QWidget* _newtaskentry)
+void RazorBarTask::addItem(QWidget* _newtaskentry)
 {
     Q_UNUSED(_newtaskentry);
 }
@@ -69,7 +69,7 @@ void Razorbartask::addItem(QWidget* _newtaskentry)
 /**
  * @brief makes up our style
  */
-void Razorbartask::makeUp()
+void RazorBarTask::makeUp()
 {
     //setLayout(Layout);
     show();
@@ -82,7 +82,7 @@ void Razorbartask::makeUp()
 /**
  * @brief destructor
  */
-Razorbartask::~Razorbartask()
+RazorBarTask::~RazorBarTask()
 {
 
 }
@@ -90,10 +90,10 @@ Razorbartask::~Razorbartask()
 /**
  * @brief updates our shown tasks according to the tasklist
  */
-void Razorbartask::updateTasks(QMap<Window, Razortask*>* _list)
+void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
 {
     //we need to get gui and backbone in sync so first get the actual clientlist we dont care how its updated or stuff
-    QMapIterator<Window, Razorbartaskentry*> iter (taskMap);
+    QMapIterator<Window, RazorBarTaskEntry*> iter (taskMap);
     //now at first we purge the list
     while (iter.hasNext())
     {
@@ -102,7 +102,7 @@ void Razorbartask::updateTasks(QMap<Window, Razortask*>* _list)
         if (!_list->contains(iter.key()))
         {
             //this means we have found an unused but existing Razorbartaskentry.. try to kick it :)
-            Razorbartaskentry* todel = iter.value();
+            RazorBarTaskEntry* todel = iter.value();
             //remove it from layout, so the user doenst see shit going on
             layout()->removeWidget(todel);
             //now remove it from our shadowlayout
@@ -115,14 +115,14 @@ void Razorbartask::updateTasks(QMap<Window, Razortask*>* _list)
     }
 
     //after purging we create the missing items
-    QMapIterator<Window, Razortask*> clientIter (*_list);
+    QMapIterator<Window, RazorTask*> clientIter (*_list);
     while (clientIter.hasNext())
     {
         clientIter.next();
         if (!taskMap.contains(clientIter.key()))
         {
             //prepare it
-            Razorbartaskentry* newitem = new Razorbartaskentry(clientIter.value(), this);
+            RazorBarTaskEntry* newitem = new RazorBarTaskEntry(clientIter.value(), this);
             //add it to our internal list
             taskMap[clientIter.key()] = newitem;
 
@@ -141,7 +141,7 @@ void Razorbartask::updateTasks(QMap<Window, Razortask*>* _list)
      * if we use it, we possibly would crash razor!
      */
 
-    QMapIterator<Window, Razorbartaskentry*> newiter (taskMap);
+    QMapIterator<Window, RazorBarTaskEntry*> newiter (taskMap);
     while (newiter.hasNext())
     {
         newiter.next();
@@ -154,7 +154,7 @@ void Razorbartask::updateTasks(QMap<Window, Razortask*>* _list)
 /**
  * @brief destructor
  */
-Razorbartaskentry::~Razorbartaskentry()
+RazorBarTaskEntry::~RazorBarTaskEntry()
 {
 
 }
@@ -163,7 +163,7 @@ Razorbartaskentry::~Razorbartaskentry()
 /**
  * @brief constructor
  */
-Razorbartaskentry::Razorbartaskentry(Razortask* _linkedtask, Razorbartask* _owner)
+RazorBarTaskEntry::RazorBarTaskEntry(RazorTask* _linkedtask, RazorBarTask* _owner)
 {
     connect(this, SIGNAL(clicked(bool)),this, SLOT(doAction(bool)));
     owner=_owner;
@@ -187,7 +187,7 @@ Razorbartaskentry::Razorbartaskentry(Razortask* _linkedtask, Razorbartask* _owne
 /**
  * @brief handles the clicks and does the manipulation of the linked task
  */
-void Razorbartaskentry::doAction(bool _checked)
+void RazorBarTaskEntry::doAction(bool _checked)
 {
     Q_UNUSED(_checked);
     qDebug() << "Razortaskbarentry: ACTION!";
@@ -206,7 +206,7 @@ void Razorbartaskentry::doAction(bool _checked)
 /**
  * @brief this makes up the style of the single item
  */
-void Razorbartaskentry::makeUp()
+void RazorBarTaskEntry::makeUp()
 {
 
     //set width - first get the count of the entries

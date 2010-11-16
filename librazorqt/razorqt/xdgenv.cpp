@@ -17,7 +17,7 @@
  * @brief Constructor
  * Does automatically call updateEnv()
  */
-Xdgenv::Xdgenv()
+XdgEnv::XdgEnv()
 {
     qDebug() << "Xdgenv: initialising...";
     updateEnv();
@@ -27,7 +27,7 @@ Xdgenv::Xdgenv()
  * @brief the destructor
  * @todo Do This!
  */
-Xdgenv::~Xdgenv()
+XdgEnv::~XdgEnv()
 {
 }
 
@@ -37,7 +37,7 @@ Xdgenv::~Xdgenv()
  * @param[in] _name the name of the Variable that is wanted
  * @return the value of the environmental variable
  */
-QString Xdgenv::getEnv(QString _name)
+QString XdgEnv::getEnv(QString _name)
 {
     return envStore[_name];
 }
@@ -48,7 +48,7 @@ QString Xdgenv::getEnv(QString _name)
  * updates the variables via getenv, if they are not set, sets them to the standard-values according to XDG-Standard
  */
 //updates the map of the env-variables
-void Xdgenv::updateEnv()
+void XdgEnv::updateEnv()
 {
     qDebug() << "Xdgenv: updating Environmentals";
     //try getting the correct XDG-ENVs
@@ -81,7 +81,7 @@ void Xdgenv::updateEnv()
 /**
  * @brief sets the XDG_MENU_PREFIX
  */
-void Xdgenv::setEnv()
+void XdgEnv::setEnv()
 {
     qDebug() << "Xdgenv: setting menu prefix!";
     setenv("XDG_MENU_PREFIX","razor",1);
@@ -92,7 +92,7 @@ void Xdgenv::setEnv()
 /**
  * @brief puts some debug Information to qDebug()
  */
-void Xdgenv::debugEnv()
+void XdgEnv::debugEnv()
 {
     qDebug()<<"Xdgenv: Starting dump of stored variables";
     qDebug()<<"------------------------------------------";

@@ -14,14 +14,14 @@
 */
 
 
-class Razorstate : public QObject
+class RazorState : public QObject
 {
 
     Q_OBJECT
 
 public:
-    Razorstate();
-    ~Razorstate();
+    RazorState();
+    ~RazorState();
     void addProcess(QProcess* _proc);
 
     void doOperation(QString _cmd);

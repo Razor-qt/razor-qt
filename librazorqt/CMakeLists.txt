@@ -22,6 +22,7 @@ set ( razorqt_HDRS
 	razorqt/readsettings.h
 	razorqt/xdgautostart.h
 	razorqt/xdgdesktopfile.h
+	razorqt/xdgenv.h
 	razorqt/xdgiconthemefile.h
 	razorqt/xdgiconthememanager.h
 	razorqt/xdgmenucross.h

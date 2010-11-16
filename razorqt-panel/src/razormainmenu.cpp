@@ -12,7 +12,7 @@
 /**
  * @brief the x11 eventhandler.. not needed here
  */
-bool Razormenu::eventHandler(XEvent* _event)
+bool RazorMenu::eventHandler(XEvent* _event)
 {
     Q_UNUSED(_event);
     return false;
@@ -21,10 +21,10 @@ bool Razormenu::eventHandler(XEvent* _event)
 /**
  * @brief the constructor
  */
-Razormenu::Razormenu(int _bar) : Razorplugin(_bar)
+RazorMenu::RazorMenu(int _bar) : RazorPlugin(_bar)
 {
     //we only need to make the gui
-    gui = new Razormainmenu(this);
+    gui = new RazorMainMenu(this);
     //and then add it to the first bar
     Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
@@ -32,7 +32,7 @@ Razormenu::Razormenu(int _bar) : Razorplugin(_bar)
 /**
  * @brief the destructor
  */
-Razormenu::~Razormenu()
+RazorMenu::~RazorMenu()
 {
     //todo here: remove the widget cleanly too
     delete gui;
@@ -44,7 +44,7 @@ Razormenu::~Razormenu()
 /**
  * @brief this creates our mainmenu and gets the xdg-menus for it
  */
-void Razormainmenu::createMenus()
+void RazorMainMenu::createMenus()
 {
     //make the menu
     mainMenu = new QMenu;
@@ -85,7 +85,7 @@ void Razormainmenu::createMenus()
 /**
  * @brief this initializes us
  */
-Razormainmenu::Razormainmenu(Razorplugin* _owner)
+RazorMainMenu::RazorMainMenu(RazorPlugin* _owner)
 {
     makeUp();
     createMenus();
@@ -95,7 +95,7 @@ Razormainmenu::Razormainmenu(Razorplugin* _owner)
 /**
  * @brief cleans up our mess
  */
-Razormainmenu::~Razormainmenu()
+RazorMainMenu::~RazorMainMenu()
 {
     delete mainMenu;
     delete logout;
@@ -109,7 +109,7 @@ Razormainmenu::~Razormainmenu()
  * @brief makes up the menu and style
  */
 
-void Razormainmenu::makeUp()
+void RazorMainMenu::makeUp()
 {
     int barheight = Razor::getInstance().get_looknfeel()->getInt("razorbar_height");
     setFixedSize(barheight, barheight );
@@ -127,7 +127,7 @@ void Razormainmenu::makeUp()
  * @brief makes the menu popup
  */
 
-void Razormainmenu::mousePressEvent(QMouseEvent* _event)
+void RazorMainMenu::mousePressEvent(QMouseEvent* _event)
 {
     if (_event->button() == Qt::LeftButton)
     {
@@ -142,7 +142,7 @@ void Razormainmenu::mousePressEvent(QMouseEvent* _event)
  * @brief makes the menu glow on mouseover
  */
 
-void Razormainmenu::enterEvent(QEvent* _event)
+void RazorMainMenu::enterEvent(QEvent* _event)
 {
     Q_UNUSED(_event);
     setPixmap(actpicon);
@@ -153,7 +153,7 @@ void Razormainmenu::enterEvent(QEvent* _event)
  * @brief makes the menu glow on mouseover
  */
 
-void Razormainmenu::leaveEvent(QEvent* _event)
+void RazorMainMenu::leaveEvent(QEvent* _event)
 {
     Q_UNUSED(_event);
     setPixmap(picon);

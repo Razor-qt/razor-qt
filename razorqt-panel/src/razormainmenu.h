@@ -12,15 +12,15 @@
 /**
  * @brief This makes the menugui - uses the xdgmanager for it
  */
-class Razormainmenu : public QLabel
+class RazorMainMenu : public QLabel
 {
     Q_OBJECT
 public:
-    Razormainmenu(Razorplugin* _owner);
-    ~Razormainmenu();
+    RazorMainMenu(RazorPlugin* _owner);
+    ~RazorMainMenu();
     void makeUp();
 private:
-    Razorplugin* owner;
+    RazorPlugin* owner;
     QAction* shutdown;
 
     QAction* reboot;
@@ -43,14 +43,14 @@ protected:
 /**
  * @brief the plugin-class for the mainmenu
  */
-class Razormenu : public Razorplugin
+class RazorMenu : public RazorPlugin
 {
 public:
-    Razormenu(int _bar);
-    ~Razormenu();
+    RazorMenu(int _bar);
+    ~RazorMenu();
     bool eventHandler(XEvent*);
 private:
-    Razormainmenu* gui;
+    RazorMainMenu* gui;
 };
 
 

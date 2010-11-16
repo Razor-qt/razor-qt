@@ -13,14 +13,14 @@
 /**
  * @brief Is used to parse .desktop file and store the parsed information
  */
-class Xdgdesktopfile
+class XdgDesktopFile
 {
 
 public:
-    Xdgdesktopfile(QString _filename);
-    Xdgdesktopfile();
+    XdgDesktopFile(QString _filename);
+    XdgDesktopFile();
     void setFilename(QString _filename);
-    ~Xdgdesktopfile();
+    ~XdgDesktopFile();
     void parseFile();
     QString getValue(QString _key);
     bool isUseable();

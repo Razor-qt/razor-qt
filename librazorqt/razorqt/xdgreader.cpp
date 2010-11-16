@@ -21,7 +21,7 @@
  * @param[in] _parent The QObject* which is the parent of the instance (not needed)
  */
 
-Xdgreader::Xdgreader(QString _filename,Xdgmenucross& _mainmenu , QObject* _parent)
+XdgReader::XdgReader(QString _filename,XdgMenuCross& _mainmenu , QObject* _parent)
 {
     Q_UNUSED(_parent);
     qDebug() << "Xdgreader: initialising...";
@@ -29,7 +29,7 @@ Xdgreader::Xdgreader(QString _filename,Xdgmenucross& _mainmenu , QObject* _paren
     mainMenu=&_mainmenu;
     qfilehandler = new QFile(_filename);
     xdgfile = new QXmlInputSource(qfilehandler);
-    xdghandler = new Xdghandler(mainMenu);
+    xdghandler = new XdgHandler(mainMenu);
     xdgreader = new QXmlSimpleReader();
 
     //setting the handler
@@ -41,7 +41,7 @@ Xdgreader::Xdgreader(QString _filename,Xdgmenucross& _mainmenu , QObject* _paren
 /**
  * @brief The destructor
  */
-Xdgreader::~Xdgreader()
+XdgReader::~XdgReader()
 {
     qDebug() << "Xdgreader: dying";
     delete xdgfile;
@@ -57,7 +57,7 @@ Xdgreader::~Xdgreader()
  * @param[in] _tree the root-node (Xdgmenucross*) to fill
  */
 //Implementation of the Event Handler
-Xdghandler::Xdghandler(Xdgmenucross* _tree)
+XdgHandler::XdgHandler(XdgMenuCross* _tree)
 {
     qDebug() << "Xdghandler: initialising...";
     currentTree = _tree;
@@ -74,7 +74,7 @@ Xdghandler::Xdghandler(Xdgmenucross* _tree)
  * @param[in] _str The text found by the Xdgreader
  */
 
-bool Xdghandler::characters(const QString& _str)
+bool XdgHandler::characters(const QString& _str)
 {
     currentText += _str;
     return true;
@@ -87,7 +87,7 @@ bool Xdghandler::characters(const QString& _str)
  * @todo make this use the MsgBox-Class of the Razor-Qt project
  */
 
-bool Xdghandler::fatalError(const QXmlParseException& _exception)
+bool XdgHandler::fatalError(const QXmlParseException& _exception)
 {
     //todo: make this stuff use msgbox-class
 
@@ -107,7 +107,7 @@ bool Xdghandler::fatalError(const QXmlParseException& _exception)
  */
 
 
-bool Xdghandler::startElement(  const QString& _nameuri,
+bool XdgHandler::startElement(  const QString& _nameuri,
                                 const QString& _localname,
                                 const QString& _qName,
                                 const QXmlAttributes& _attributes)
@@ -119,7 +119,7 @@ bool Xdghandler::startElement(  const QString& _nameuri,
 
     if (_qName == "Menu")
     {
-        Xdgmenucross* newMenu = new Xdgmenucross(currentTree);
+        XdgMenuCross* newMenu = new XdgMenuCross(currentTree);
         newMenu->hasParent=true;
         currentTree->subMenu.append(newMenu);
         currentTree=newMenu;
@@ -136,7 +136,7 @@ bool Xdghandler::startElement(  const QString& _nameuri,
     }
     else if (_qName == "Include")
     {
-        currentTree->inc_categories = new Xdgmenulogic(XDGMENULOGIC_AND, false, NULL);
+        currentTree->inc_categories = new XdgMenuLogic(XDGMENULOGIC_AND, false, NULL);
         currentTree->inc_categories->hasParent = false; //this is the fucking root-include
         currentTree->hasInclude=true;
         currentItem=currentTree->inc_categories;
@@ -184,7 +184,7 @@ bool Xdghandler::startElement(  const QString& _nameuri,
  * Read the QT-Manual for more info about the params
  */
 
-bool Xdghandler::endElement(	const QString& _nameuri,
+bool XdgHandler::endElement(	const QString& _nameuri,
                              const QString& _localname,
                              const QString& _qName)
 {
