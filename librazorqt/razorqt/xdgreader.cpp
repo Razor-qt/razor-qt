@@ -185,8 +185,8 @@ bool XdgHandler::startElement(  const QString& _nameuri,
  */
 
 bool XdgHandler::endElement(	const QString& _nameuri,
-                             const QString& _localname,
-                             const QString& _qName)
+                                const QString& _localname,
+                                const QString& _qName)
 {
 
     Q_UNUSED(_localname);

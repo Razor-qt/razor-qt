@@ -135,7 +135,7 @@ RazorHalDev::RazorHalDev ( QString _uuid )
             }
 
             qDebug() << "Deskdev added. Block device:" << blockDev << "Volume label:" << volume << "Volume fstype:"
-            << fsType << "Drive type:" << driveType << "UUID:" << uuid;
+                     << fsType << "Drive type:" << driveType << "UUID:" << uuid;
             useful = true;
 
         }

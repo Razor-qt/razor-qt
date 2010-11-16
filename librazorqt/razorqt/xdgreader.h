@@ -26,13 +26,13 @@ class XdgHandler : public QXmlDefaultHandler
 public:
     XdgHandler(XdgMenuCross* _tree);
     bool startElement(	const QString& _nameuri,
-                       const QString& _localname,
-                       const QString& _qName,
-                       const QXmlAttributes& _attributes);
+                        const QString& _localname,
+                        const QString& _qName,
+                        const QXmlAttributes& _attributes);
 
     bool endElement(	const QString& _nameuri,
-                     const QString& _localname,
-                     const QString& _qName);
+                        const QString& _localname,
+                        const QString& _qName);
     bool characters(const QString& _str);
     bool fatalError(const QXmlParseException& _exception);
 

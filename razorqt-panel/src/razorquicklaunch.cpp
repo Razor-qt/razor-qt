@@ -48,8 +48,8 @@ bool RazorQuickLaunch::handleEvent(XEvent* _event)
 
 
 RazorQuickLaunchGUI::RazorQuickLaunchGUI(RazorQuickLaunch * _owner)
-        : QWidget(),
-        owner(_owner)
+    : QWidget(),
+      owner(_owner)
 {
     show();
 }
