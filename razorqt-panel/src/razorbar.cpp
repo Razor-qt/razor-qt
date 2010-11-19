@@ -67,7 +67,6 @@ void RazorBar::makeUp()
         setFixedWidth(dw->screenGeometry(-1).width());
 
     if (! Razor::getInstance().get_looknfeel()->getString("razorbar_background").isEmpty())
-
     {
         setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getString("razorbar_background")));
         qDebug() << Razor::getInstance().get_looknfeel()->getString("razorbar_background");

@@ -12,6 +12,12 @@ RazorDev::RazorDev ( QObject* parent ) : QObject ( parent )
 
 }
 
+QString RazorDev::getMountPoint()
+{
+  return "";
+}
+
+
 QString RazorDev::getblockDev()
 {
     return "";

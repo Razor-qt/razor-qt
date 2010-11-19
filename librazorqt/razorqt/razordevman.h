@@ -15,6 +15,7 @@ public:
     virtual QString getvolume();
     virtual QString getdriveType();
     virtual QString getfsType();
+    virtual QString getMountPoint();
 
 };
 

@@ -31,7 +31,7 @@ void RazorDevicePlugin::deviceMount(QAction* _action)
     {
         if (deviceBackend->mount(uuid))
         {
-            msg_box.setText("Device mounted!");
+            msg_box.setText("Device mounted! ("+deviceBackend->getDevice(uuid)->getMountPoint()+")");
         }
         else
         {
@@ -80,7 +80,7 @@ void RazorDevicePluginGUI::addDevice(QString _uuid)
 {
     if (!deviceList.contains(_uuid))
     {
-        QAction* tmp = new QAction((QIcon) "", owner->backEnd()->getDevice(_uuid)->getblockDev(), deviceMenu);
+        QAction* tmp = new QAction((QIcon) "", owner->backEnd()->getDevice(_uuid)->getvolume()+"  ("+ owner->backEnd()->getDevice(_uuid)->getblockDev()+")", deviceMenu);
         tmp->setData(_uuid);
         deviceMenu->addAction(tmp);
         deviceList[_uuid]=tmp;

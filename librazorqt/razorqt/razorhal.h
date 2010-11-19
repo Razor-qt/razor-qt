@@ -52,6 +52,8 @@ public:
     {
         return useful;
     }
+    QString getMountPoint();
+    
 private:
     bool useful;
     bool mounted;

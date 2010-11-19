@@ -8,8 +8,6 @@ panel_stylesheet=default.qss
 razorbar_height=32
 razorbar_bgcolor=black
 razorbar_textcolor=lightsteelblue
-razorbar_background=bg/bar.png
-
 
 #settings for the razor mainmenu
 
@@ -23,12 +21,7 @@ aboutdlg_icon=icons/about.png
 
 #taskbar-settings
 
-taskbar_background=bg/tbar.png
-
-#task-settings
-
-task_background=bg/taskbg.png
-
+#ask-settings
 
 # clocks settings
 # format can use any string described in the Qt4 docs QDateTime::fromString

@@ -26,7 +26,7 @@ public:
     RazorBarTaskEntry(RazorTask* _linkedtask, RazorBarTask* _owner);
     ~RazorBarTaskEntry();
     void makeUp();
-
+    void focusGlow();
 
 private:
     RazorBarTask* owner;

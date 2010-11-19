@@ -272,6 +272,22 @@ bool XfitMan::isHidden(Window _wid)
 
 }
 
+bool XfitMan::requiresAttention(Window _wid)
+{
+    int  format;
+    unsigned long type, length, rest, *data;
+    if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["net_wm_state"],0, 4096, FALSE, AnyPropertyType,
+                           &type, &format, &length, &rest,(unsigned char**) &data) != Success)
+        return false;
+
+    for (unsigned int i = 0; i < length; i++)
+    {
+        // qDebug() << data[i] << " | " << atomMap["net_wm_state_hidden"];
+        if (data[i] == atomMap["net_wm_window_demands_attention"])
+            return true;
+    }
+    return false;
+}
 
 
 
@@ -309,7 +325,7 @@ void XfitMan::getAtoms()
     atomMap["net_message_data"] = XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_MESSAGE_DATA", False);
     atomMap["xrootpmap"] = XInternAtom(QX11Info::display(), "_XROOTPMAP_ID", False);
     atomMap["esetroot"] = XInternAtom(QX11Info::display(), "ESETROOT_PMAP_ID", False);
-
+    atomMap["net_wm_window_demands_attention"] = XInternAtom(QX11Info::display(), "_NET_WM_STATE_DEMANDS_ATTENTION", False);
 
 }
 

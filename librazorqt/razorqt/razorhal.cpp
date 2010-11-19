@@ -22,25 +22,51 @@ RazorHalDev::RazorHalDev ( QString _uuid, QString _bDev, QString _volume, QStrin
 }
 
 /**
+ * @brief this gets the current mountpoint of the device and returns it
+ */
+QString RazorHalDev::getMountPoint()
+{
+    QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
+    QDBusReply<QString> mnt_point = uuid_interface.call ( "GetProperty", "volume.mount_point" );
+    
+    if (mnt_point.isValid() && !mnt_point.value().isEmpty())
+    {
+      mntDir = mnt_point.value();
+      qDebug() << "mounted in: " << mntDir;
+    }
+    else
+    {
+      qDebug() << "could not get mount-point: " << mnt_point.error();
+      qDebug() << "setting it by hand to /media/" << volume;
+      mntDir = "/media/"+volume;
+    }
+    return mntDir;
+}
+
+
+
+/**
  * @brief umounts the device if possible - returns false on fail
  */
 
 bool RazorHalDev::umount()
 {
+    QStringList opts;
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
     QDBusInterface umount_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device.Volume",
                                       QDBusConnection::systemBus(), this );
 
     // unmount and (if CDROM) eject the device
-    QDBusReply<int> umount_cmd = umount_interface.call ( "Eject","");
+    QDBusReply<int> umount_cmd = umount_interface.call ( "Eject", opts );
 
-    if (!umount_cmd)
+    if (umount_cmd.isValid())
     {
         mounted = false;
         return true;
     }
     else
     {
+        qDebug() << "could not unmount: " << umount_cmd.error();
         return false;
     }
 }
@@ -50,25 +76,40 @@ bool RazorHalDev::umount()
  */
 bool RazorHalDev::mount()
 {
+    QStringList opts;
     qDebug() << "Razordev: trying to mount: " << uuid;
     QDBusInterface uuid_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device", QDBusConnection::systemBus(), this );
     QDBusInterface mount_interface ( "org.freedesktop.Hal", uuid, "org.freedesktop.Hal.Device.Volume",
                                      QDBusConnection::systemBus(), this );
 
     // mount the device in /media/xxx
+    qDebug() << "Trying to mount: " << uuid << " with fstype: " << fsType << " and volume: " << volume;
+    QDBusReply<int> mnt_cmd = mount_interface.call ( "Mount", volume, fsType, opts );
 
-    QDBusReply<int> mnt_cmd = mount_interface.call ( "Mount", "/media/", fsType, "" );
     // get the mount point
     QDBusReply<QString> mnt_point = uuid_interface.call ( "GetProperty", "volume.mount_point" );
-    mntDir = mnt_point.value();
-    qDebug() << "mounted in: " << mntDir;
-    if ( !mnt_cmd )
+    
+    if (mnt_point.isValid() && !mnt_point.value().isEmpty())
+    {
+      mntDir = mnt_point.value();
+      qDebug() << "mounted in: " << mntDir;
+    }
+    else
+    {
+      qDebug() << "could not get mount-point: " << mnt_point.error();
+      qDebug() << "setting it by hand to /media/" << volume;
+      mntDir = "/media/"+volume;
+    }
+    
+    
+    if ( mnt_cmd.isValid() )
     {
         mounted = true;
         return true;
     }
     else
     {
+        qDebug() << "Mount failed: " << mnt_cmd.error();
         return false;
     }
 }
@@ -109,6 +150,7 @@ RazorHalDev::RazorHalDev ( QString _uuid )
 
             if ( volume_lab.isValid() && !volume_lab.value().isEmpty() )
                 volume = volume_lab;
+	    
 
             QDBusReply<QString> volume_fs_type = uuid_interface.call ( "GetProperty", "volume.fstype" );
 
@@ -137,6 +179,12 @@ RazorHalDev::RazorHalDev ( QString _uuid )
             qDebug() << "Deskdev added. Block device:" << blockDev << "Volume label:" << volume << "Volume fstype:"
                      << fsType << "Drive type:" << driveType << "UUID:" << uuid;
             useful = true;
+	    
+	    
+	    if (volume.isEmpty() && !props.value().value("storage.model").toString().isEmpty())
+	      volume = props.value().value("storage.model").toString();
+	    else if (volume.isEmpty() && !driveType.isEmpty() )
+	      volume=driveType;
 
         }
     }

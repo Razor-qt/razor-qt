@@ -41,12 +41,14 @@ public:
     void moveWindowtoDesktop(Window _wid, int _display);
     void raiseWindow(Window _wid);
     void resizeWindow(Window _wid, int _height, int _width);
+    
     void setActiveDesktop(int _desktop);
     void mapRaised(Window _wid)
     {
         XMapRaised(QX11Info::display(), _wid);
     };
     bool isHidden(Window _wid);
+    bool requiresAttention(Window _wid);
     int getActiveDesktop();
     Window getActiveAppWindow();
     Window getActiveWindow();

@@ -42,7 +42,7 @@ RazorBarTask::RazorBarTask(RazorPlugin* _owner)
 }
 
 /**
- * @brief updates the focused window and makes the entries look accordingly
+ * @brief updates the focused window and makes the entries look accordingly also sets the glow for windows that require attention
  */
 void RazorBarTask::updateFocus()
 {
@@ -51,8 +51,25 @@ void RazorBarTask::updateFocus()
         taskMap.values().at(i)->setChecked(false);
     if (taskMap.contains(active))
         taskMap.value(active)->setChecked(true);
+    
+    //glow for windows that want attention
+    for (int i=0; i < taskMap.values().count(); i++)
+      if (Razor::getInstance().get_Xfitman()->requiresAttention(taskMap.keys().at(i)))
+	taskMap.values().at(i)->focusGlow();
+    
+   
 
 }
+
+/**
+ * @brief this gives the button the glow it also gets when is has focus
+ */
+
+void RazorBarTaskEntry::focusGlow()
+{
+  QToolButton::focusInEvent(NULL);
+}
+
 
 
 
