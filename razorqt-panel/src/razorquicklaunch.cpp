@@ -2,14 +2,13 @@
 #include "razor.h"
 
 
-RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): RazorPlugin(bar)
+RazorQuickLaunch::RazorQuickLaunch(QString cmd, RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
 {
     cmd.remove("quicklaunch");
     //!\todo TODO/FIXME: decide if it should use its own config file
     settings = new ReadSettings("spin"+cmd+".conf");
     int stateCount = settings->getInt("count");
 
-    gui = new RazorQuickLaunchGUI(this);
 
     /*!\todo TODO/FIXME: share the code with Razorspinbutton.
     		 And maybe change the configuration file syntax - it's annoying
@@ -25,13 +24,13 @@ RazorQuickLaunch::RazorQuickLaunch(QString cmd, int bar): RazorPlugin(bar)
             qDebug() << "Icon file" << Explode.at(2) << "does not exists. Skipped.";
             continue;
         }
-        QAction* tmp = new QAction((QIcon)Explode.at(2),Explode.at(1), gui);
+        QAction* tmp = new QAction((QIcon)Explode.at(2),Explode.at(1), this);
         tmp->setData(Explode.at(0));
-        gui->addAction(tmp);
+        addAction(tmp);
     }
 
-    gui->setupGUI(Razor::getInstance().get_looknfeel()->getInt("razorbar_height"));
-    Razor::getInstance().get_gui()->addWidget(gui, bar, 0, Qt::AlignLeft);
+    setupGUI(Razor::getInstance().get_looknfeel()->getInt("razorbar_height"));
+//    Razor::getInstance().get_gui()->addWidget(gui, bar, 0, Qt::AlignLeft);
 }
 
 RazorQuickLaunch::~RazorQuickLaunch()
@@ -40,21 +39,7 @@ RazorQuickLaunch::~RazorQuickLaunch()
     delete settings;
 }
 
-bool RazorQuickLaunch::handleEvent(XEvent* _event)
-{
-    return RazorPlugin::handleEvent(_event);
-}
-
-
-
-RazorQuickLaunchGUI::RazorQuickLaunchGUI(RazorQuickLaunch * _owner)
-    : QWidget(),
-      owner(_owner)
-{
-    show();
-}
-
-void RazorQuickLaunchGUI::setupGUI(int height)
+void RazorQuickLaunch::setupGUI(int height)
 {
     /*! \todo TODO/FIXME: here it should be decided how to
     		  organize it - horizontally/vertically. Panel
@@ -100,15 +85,8 @@ void RazorQuickLaunchGUI::setupGUI(int height)
     setLayout(layout);
 }
 
-void RazorQuickLaunchGUI::execAction(QAction* _action)
+void RazorQuickLaunch::execAction(QAction* _action)
 {
     qDebug() << "RazorQuickLaunchGUI::execAction execAction triggered with" << _action->data();
     QProcess::startDetached(_action->data().toString());
-}
-
-
-RazorQuickLaunchGUI::~RazorQuickLaunchGUI()
-{
-    // no need to delete anything as all is parented in QWidget (this)
-    // to be deleted automagically
 }

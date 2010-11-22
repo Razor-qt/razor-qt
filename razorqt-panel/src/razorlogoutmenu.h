@@ -8,6 +8,20 @@
  * @author Christopher "VdoP" Regali
  */
 
+class RazorLogoutMenuGUI;
+
+/**
+ * @brief the plugin-class for the logoutmenu
+ */
+class RazorLogoutMenu : public RazorPluginSquare
+{
+    Q_OBJECT
+public:
+    RazorLogoutMenu(RazorBar * panel, QWidget * parent);
+    ~RazorLogoutMenu();
+private:
+    RazorLogoutMenuGUI* gui;
+};
 
 /**
  * @brief This makes the gui
@@ -16,11 +30,10 @@ class RazorLogoutMenuGUI : public QLabel
 {
     Q_OBJECT
 public:
-    RazorLogoutMenuGUI(RazorPlugin* _owner);
+    RazorLogoutMenuGUI(RazorLogoutMenu * parent);
     ~RazorLogoutMenuGUI();
     void makeUp();
 private:
-    RazorPlugin* owner;
     QAction* shutdown;
 
     QAction* reboot;
@@ -39,21 +52,5 @@ protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
 };
-
-/**
- * @brief the plugin-class for the logoutmenu
- */
-class RazorLogoutMenu : public RazorPlugin
-{
-public:
-    RazorLogoutMenu(int _bar);
-    ~RazorLogoutMenu();
-    bool eventHandler(XEvent*);
-private:
-    RazorLogoutMenuGUI* gui;
-};
-
-
-
 
 #endif

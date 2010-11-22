@@ -16,11 +16,10 @@ class RazorMainMenu : public QLabel
 {
     Q_OBJECT
 public:
-    RazorMainMenu(RazorPlugin* _owner);
+    RazorMainMenu(RazorPluginSquare* _owner);
     ~RazorMainMenu();
     void makeUp();
 private:
-    RazorPlugin* owner;
     QAction* shutdown;
 
     QAction* reboot;
@@ -43,12 +42,12 @@ protected:
 /**
  * @brief the plugin-class for the mainmenu
  */
-class RazorMenu : public RazorPlugin
+class RazorMenu : public RazorPluginSquare
 {
+    Q_OBJECT
 public:
-    RazorMenu(int _bar);
+    RazorMenu(RazorBar * panel, QWidget * parent);
     ~RazorMenu();
-    bool eventHandler(XEvent*);
 private:
     RazorMainMenu* gui;
 };

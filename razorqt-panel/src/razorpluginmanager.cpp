@@ -1,5 +1,6 @@
 #ifndef RAZORPLUGINMANAGER_CPP
 #define RAZORPLUGINMANAGER_CPP
+#include "razorplugin.h"
 #include "razorpluginmanager.h"
 #include "razor.h"
 #include "razormainmenu.h"
@@ -12,6 +13,7 @@
 #include "razorlogoutmenu.h"
 #include "razorquicklaunch.h"
 #include "razordevplugin.h"
+#include "razorbar.h"
 /**
  * @file razorpluginmanager.cpp
  * @author Christopher "VdoP" Regali
@@ -38,6 +40,7 @@ RazorPluginManager::RazorPluginManager()
         Razor::getInstance().get_gui()->addPanel();
         //get the number of widgets for this panel
         I.setNum(i);
+        RazorBar * panel = Razor::getInstance().get_gui()->panel(i);
         int num_widgets = pluginsettings->getInt("num_widgets_"+I);
         qDebug() << "Pluginmanager: making " << num_widgets << " widgets of " << "num_widgets_"+I;
         for (int w = 0; w < num_widgets; w++)
@@ -45,66 +48,72 @@ RazorPluginManager::RazorPluginManager()
             W.setNum(w);
             QString plugin = pluginsettings->getString("bar"+I+"_widget_"+W);
             qDebug() << "Pluginmanager: making plugin " << plugin << " out of " "bar"+I+"_widget_"+W;
-            addPlugin(plugin,i);
+            addPlugin(plugin, panel);
         }
+        // ensure all will be layouted correctly
+        panel->pluginSizeChanged();
     }
 }
 
 /**
  * @brief adds a plugin to a bar
  */
-void RazorPluginManager::addPlugin(QString _plugin, int _bar)
+void RazorPluginManager::addPlugin(QString _plugin, RazorBar * panel)
 {
+    RazorPlugin * plug;
     if (_plugin=="mainmenu")
     {
-        RazorMenu*  tmp = new RazorMenu(_bar);
-        pluginList.append(tmp);
+        plug = new RazorMenu(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin=="taskmanager")
     {
-        RazorTaskManager* tmp = new RazorTaskManager(_bar);
-        pluginList.append(tmp);
+        plug = new RazorTaskManager(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin =="desktopswitcher")
     {
-        RazorDeskSwitch* tmp = new RazorDeskSwitch(_bar);
-        pluginList.append(tmp);
+        plug = new RazorDeskSwitch(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin =="clock")
     {
-        RazorClock* tmp = new RazorClock(_bar);
-        pluginList.append(tmp);
+        plug = new RazorClock(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin =="traybar")
     {
-        RazorTray* tmp = new RazorTray(_bar);
-        pluginList.append(tmp);
+        plug = new RazorTray(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin =="razorcmd")
     {
-        RazorCmd* tmp = new RazorCmd(_bar);
-        pluginList.append(tmp);
+        plug = new RazorCmd(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin.contains("razorspinbutton"))
     {
-        RazorSpinButton* tmp = new RazorSpinButton(_plugin,_bar);
-        pluginList.append(tmp);
+        plug = new RazorSpinButton(_plugin, panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin =="logoutmenu")
     {
-        RazorLogoutMenu* tmp = new RazorLogoutMenu(_bar);
-        pluginList.append(tmp);
+        plug = new RazorLogoutMenu(panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin.contains("quicklaunch"))
     {
-        RazorQuickLaunch * tmp = new RazorQuickLaunch(_plugin,_bar);
-        pluginList.append(tmp);
+        plug = new RazorQuickLaunch(_plugin, panel, panel);
+        pluginList.append(plug);
     }
     else if (_plugin.contains("devicemanager"))
     {
-        RazorDevicePlugin * tmp = new RazorDevicePlugin(_bar);
-        pluginList.append(tmp);
+        plug = new RazorDevicePlugin(panel, panel);
+        pluginList.append(plug);
     }
+    // now add the plug into the panel's layout.
+    // it's easier to do it here instead to handle it in plugin itself
+    panel->addWidget(plug, 0, Qt::AlignLeft);
 }
 
 

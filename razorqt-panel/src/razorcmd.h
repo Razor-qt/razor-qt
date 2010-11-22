@@ -18,15 +18,25 @@ class RazorCmdGUI : public QLineEdit
 {
     Q_OBJECT
 public:
-    RazorCmdGUI(RazorCmd* _owner);
-    RazorCmdGUI(QWidget* parent = 0);
+    RazorCmdGUI(RazorCmd* parent);
     ~RazorCmdGUI();
 protected:
     void keyPressEvent (QKeyEvent* _event);
     void wheelEvent(QWheelEvent* _event);
 private:
     int index;
-    RazorCmd* owner;
+    QList<QString> oldCmd;
+
+    int getOldCmdCount()
+    {
+        return oldCmd.count();
+    }
+
+    QString getOldCmd(int _index)
+    {
+        return oldCmd.at(_index);
+    }
+    void executeCmd(QString _cmd);
 };
 
 
@@ -36,22 +46,26 @@ private:
  */
 class RazorCmd : public RazorPlugin
 {
+    Q_OBJECT
 public:
-    RazorCmd(int _bar);
+    RazorCmd(RazorBar * panel, QWidget * parent);
     ~RazorCmd();
-    virtual bool handleEvent(XEvent* _event);
-    void executeCmd(QString _cmd);
-    int getOldCmdCount()
+
+    int widthForHeight(int h)
     {
-        return oldCmd.count();
+        return width();
     }
-    QString getOldCmd(int _index)
+    int heightForWidth(int w)
     {
-        return oldCmd.at(_index);
+        return w;
     }
+    RazorPlugin::RazorPluginSizing sizePriority()
+    {
+        return RazorPlugin::Static;
+    }
+
 private:
     RazorCmdGUI* gui;
-    QList<QString> oldCmd;
 };
 
 

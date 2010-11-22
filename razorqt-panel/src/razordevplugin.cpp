@@ -50,7 +50,7 @@ void RazorDevicePlugin::deviceRemoved(QString _uuid)
     gui->addDevice(_uuid);
 }
 
-RazorDevicePlugin::RazorDevicePlugin(int _bar): RazorPlugin(_bar)
+RazorDevicePlugin::RazorDevicePlugin(RazorBar * panel, QWidget * parent): RazorPluginSquare(panel, parent)
 {
 
     //first select the backend, since we only have HAL for now - we use hal in any situation
@@ -63,9 +63,14 @@ RazorDevicePlugin::RazorDevicePlugin(int _bar): RazorPlugin(_bar)
 
 
     gui = new RazorDevicePluginGUI(this);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
     gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     gui->setFixedWidth(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
+    //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 
 
 }
@@ -90,9 +95,9 @@ void RazorDevicePluginGUI::addDevice(QString _uuid)
 //TODO we need to setup some icons for this class :)
 // like device, device mounted, device unmounted and stuff
 
-RazorDevicePluginGUI::RazorDevicePluginGUI(RazorDevicePlugin* _owner): QToolButton(NULL)
+RazorDevicePluginGUI::RazorDevicePluginGUI(RazorDevicePlugin* parent): QToolButton(NULL)
 {
-    owner = _owner;
+    owner = parent;
 
     setToolButtonStyle(Qt::ToolButtonIconOnly);
     setPopupMode(QToolButton::InstantPopup);

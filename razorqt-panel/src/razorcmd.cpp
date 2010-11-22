@@ -3,16 +3,15 @@
 #include "razorcmd.h"
 #include "razor.h"
 
-bool RazorCmd::handleEvent(XEvent* _event)
-{
-    return RazorPlugin::handleEvent(_event);
-}
 
-RazorCmd::RazorCmd(int _bar): RazorPlugin(_bar)
+RazorCmd::RazorCmd(RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
 {
     gui = new RazorCmdGUI(this);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->addWidget(gui);
+    setLayout(layout);
     //now add us to the bar
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
+ //   Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
 
 RazorCmd::~RazorCmd()
@@ -23,7 +22,8 @@ RazorCmd::~RazorCmd()
 /**
  * @todo Read the comments in razorcmd.cpp ! there seems to be a real problem here
  */
-RazorCmdGUI::RazorCmdGUI(RazorCmd* _owner)
+RazorCmdGUI::RazorCmdGUI(RazorCmd* parent)
+    : QLineEdit(parent)
 {
     /* This Plugin is actually NOT working! The question is why! it seems to have something todo with the _NET_WM_WINDOW_TYPE_DOCK flag beeing set for the dock
      * It makes openbox and other wms treat this panel right, but also disables any keyboard input so that this widget cannot work as planned - maybe there is a workaround as this plugin is already finished.
@@ -31,7 +31,6 @@ RazorCmdGUI::RazorCmdGUI(RazorCmd* _owner)
      */
 
     setAttribute(Qt::WA_X11NetWmWindowTypeDialog);
-    owner = _owner;
     index=0;
     show();
 }
@@ -41,16 +40,12 @@ RazorCmdGUI::~RazorCmdGUI()
 
 }
 
-void RazorCmd::executeCmd(QString _cmd)
+void RazorCmdGUI::executeCmd(QString _cmd)
 {
     QProcess::startDetached(_cmd);
     oldCmd.append(_cmd);
 }
 
-RazorCmdGUI::RazorCmdGUI(QWidget* parent): QLineEdit(parent)
-{
-
-}
 
 
 void RazorCmdGUI::keyPressEvent(QKeyEvent* _event)
@@ -59,15 +54,15 @@ void RazorCmdGUI::keyPressEvent(QKeyEvent* _event)
     if (_event->key() == Qt::Key_Return)
     {
         QString cmd = text();
-        owner->executeCmd(cmd);
+        executeCmd(cmd);
         setText("");
         index=0;
     }
     else if (_event->key() == Qt::Key_PageUp)
     {
-        if (index <= owner->getOldCmdCount())
+        if (index <= getOldCmdCount())
         {
-            setText(owner->getOldCmd(index));
+            setText(getOldCmd(index));
             index++;
         }
     }
@@ -75,7 +70,7 @@ void RazorCmdGUI::keyPressEvent(QKeyEvent* _event)
     {
         if (index > 0)
         {
-            setText(owner->getOldCmd(index));
+            setText(getOldCmd(index));
             index--;
         }
     }
@@ -86,19 +81,19 @@ void RazorCmdGUI::wheelEvent(QWheelEvent* _event)
 {
     int numDegrees = _event->delta() / 8;
     int numSteps = numDegrees / 15;
-    if (numSteps < 0 && owner->getOldCmdCount()>0)
+    if (numSteps < 0 && getOldCmdCount()>0)
     {
-        if (index <= owner->getOldCmdCount())
+        if (index <= getOldCmdCount())
         {
-            setText(owner->getOldCmd(index));
+            setText(getOldCmd(index));
             index++;
         }
     }
-    else if (numSteps > 0 && owner->getOldCmdCount()>0)
+    else if (numSteps > 0 && getOldCmdCount()>0)
     {
         if (index > 0)
         {
-            setText(owner->getOldCmd(index));
+            setText(getOldCmd(index));
             index--;
         }
     }

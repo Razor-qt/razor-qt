@@ -1,6 +1,9 @@
 #ifndef RAZORTASK_H
 #define RAZORTASK_H
 #include "defs.h"
+
+
+class RazorBarTask;
 #include "razorplugin.h"
 
 /**
@@ -15,7 +18,6 @@
  */
 
 
-class RazorBarTask;
 
 class RazorTask
 {
@@ -59,10 +61,15 @@ private:
 
 class RazorTaskManager : public RazorPlugin
 {
+    Q_OBJECT
 public:
-    RazorTaskManager(int _bar);
+    RazorTaskManager(RazorBar * panel, QWidget * parent);
     ~RazorTaskManager();
     bool handleEvent(XEvent* );
+
+    int widthForHeight(int h);
+    int heightForWidth(int w);
+    RazorPlugin::RazorPluginSizing sizePriority();
 
 private:
     RazorBarTask* gui;

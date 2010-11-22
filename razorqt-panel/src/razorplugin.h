@@ -3,7 +3,6 @@
 
 #include "defs.h"
 
-class RazorPluginGUI;
 class RazorBar;
 
 /**
@@ -12,30 +11,6 @@ class RazorBar;
  * @author Christopher "VdoP" Regali
  */
 
-/**
- * @brief declares Razorplugin, a baseclass for all the plugins
- * See RazorPluginGUI for RazorPlugin GUI implementation.
- */
-
-class RazorPlugin
-{
-public:
-    RazorPlugin(int _bar)
-    {
-        Q_UNUSED(_bar);
-    };
-    /**
-     * @brief this is called by Razorevent when x11 events get in and the derived class is registered!
-     */
-    virtual bool handleEvent(XEvent* _event)
-    {
-        Q_UNUSED(_event);
-        return false;
-    }
-private:
-    RazorPluginGUI* gui;
-
-};
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -44,7 +19,7 @@ The main issues I want to solve are:
 - horizontal or vertical panel
 - task panel should take all space available
 
-All plugins GUI will use one base class, the RazorPluginGUI.
+All plugins will use one base class, the RazorPlugin.
 This class provides some basic API and inherited/implemented
 plugins GUIs will be responsible on the functionality itself.
 
@@ -62,10 +37,10 @@ position of the panel (top, bottom, left, right) and panel size (height,
 width). Parent not necessarily will be panel, say for quicklaunch
 buttons parent may be some subpanel etc.
 
-See also RazorPluginGUISquare, a helper class to provide square,
+See also RazorPluginUISquare, a helper class to provide square,
 non-resizing plugin base.
 */
-class RazorPluginGUI : public QWidget
+class RazorPlugin : public QWidget
 {
     Q_OBJECT
 
@@ -83,7 +58,7 @@ public:
         Expanding
     };
 
-    RazorPluginGUI(const RazorBar* panel,
+    RazorPlugin(const RazorBar* panel,
                    QWidget* parent=0,
                    Qt::WindowFlags f=0)
             : QWidget(parent)
@@ -95,7 +70,13 @@ public:
     //! return the widget's height if is the panel vertically layouted
     virtual int heightForWidth(int w) = 0;
     //! return the resize behavior description
-    virtual RazorPluginGUI::RazorPluginSizing sizePriority() = 0;
+    virtual RazorPlugin::RazorPluginSizing sizePriority() = 0;
+
+    virtual bool handleEvent(XEvent* _event)
+    {
+        Q_UNUSED(_event);
+        return false;
+    }
 
 signals:
     /*! Plugin has to emit this signal in any case when it
@@ -104,18 +85,18 @@ signals:
     void sizeChanged();
 };
 
-/*! A helper plugin GUI base class to simplify implementation
+/*! A helper plugin base class to simplify implementation
 of square, non-expandable plugin/widget.
 */
-class RazorPluginGUISquare : public RazorPluginGUI
+class RazorPluginSquare : public RazorPlugin
 {
     Q_OBJECT
 
 public:
-    RazorPluginGUISquare(const RazorBar* panel,
+    RazorPluginSquare(const RazorBar* panel,
                          QWidget* parent=0,
                          Qt::WindowFlags f=0)
-            : RazorPluginGUI(panel, parent, f)
+            : RazorPlugin(panel, parent, f)
     {
     }
 
@@ -127,9 +108,9 @@ public:
     {
         return w;
     }
-    RazorPluginGUI::RazorPluginSizing sizePriority()
+    RazorPlugin::RazorPluginSizing sizePriority()
     {
-        return RazorPluginGUI::Static;
+        return RazorPlugin::Static;
     }
 };
 

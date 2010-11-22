@@ -14,19 +14,26 @@
 /**
  * @brief constructor
  */
-RazorClock::RazorClock(int _bar): RazorPlugin(_bar)
+RazorClock::RazorClock(RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
 {
     qDebug() << "Razorclock loading";
     //gui machen
-    gui = new RazorClockGUI(this);
+    gui = new QLabel(this);
+    gui->setAlignment(Qt::AlignCenter);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
+
     //timer machen
-    clocktimer = new QTimer;
+    clocktimer = new QTimer(this);
     //timer mit uhrupdate verbinden
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
     //timer starten
     clocktimer->start(1000);
     //gui-element hinzufügen
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignRight);
+    //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignRight);
     // ensure wi will not have moving widgets in the panel waiting for timer shot
     updateTime();
 }
@@ -48,29 +55,6 @@ void RazorClock::updateTime()
  */
 RazorClock::~RazorClock()
 {
-    delete clocktimer;
-    delete gui;
 }
-
-/**
- * @brief eventhandler.. not needed but needs to be implemented
- */
-bool RazorClock::handleEvent(XEvent* _event)
-{
-    Q_UNUSED(_event);
-    return false;
-}
-
-/**
- * @brief constructor
- */
-RazorClockGUI::RazorClockGUI(RazorClock* _owner) : QLabel()
-{
-    owner=_owner;
-    setAlignment(Qt::AlignCenter);
-    show();
-}
-
-
 
 #endif

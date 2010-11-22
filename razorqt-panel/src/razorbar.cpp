@@ -1,8 +1,9 @@
 #ifndef RAZORBAR_CPP
 #define RAZORBAR_CPP
 
-#include "razor.h"
 #include "razorbar.h"
+#include "razor.h"
+
 /**
  * @file razorbar.cpp
  * @brief implements Razorbar, the bar-menu on the bottom
@@ -39,13 +40,13 @@ RazorBar::RazorBar()
 /**
  * @brief adds a widget to the bar
  */
-void RazorBar::addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align)
+void RazorBar::addWidget(RazorPlugin* _widget,int _stretch, Qt::Alignment _align)
 {
     //add the new widget
     Layout->addWidget(_widget, _stretch, _align);
     //save this widget in the barItems list
-    barItems.append(_widget);
-
+    barItems[_widget] = 0; //_widget->widthForHeight(height());
+    connect(_widget, SIGNAL(sizeChanged()), this, SLOT(pluginSizeChanged()));
 }
 
 /**
@@ -74,6 +75,48 @@ void RazorBar::makeUp()
     move(dw->screenGeometry(-1).x(), QApplication::desktop()->height() - height());
 }
 
+void RazorBar::pluginSizeChanged()
+{
+    qDebug() << sender() << " asked for relayout";
+    qDebug() << "    panel items=" << barItems;
+    int widthAvail = width();
+    qDebug() << "    panel width=" << widthAvail;
+    QWidgetList wToGrowth;
+
+    foreach(RazorPlugin * w, barItems.keys())
+    {
+        widthAvail -= Layout->spacing();
+        int newDimension = w->widthForHeight(height());
+        if (barItems[w] == newDimension)
+        {
+            qDebug() << w << "the same size";
+            widthAvail -= barItems[w];
+            continue;
+        }
+        if (w->sizePriority() == RazorPlugin::Static)
+        {
+            qDebug() << w << "new size" << newDimension;
+            barItems[w] = newDimension;
+            widthAvail -= newDimension;
+            w->setMaximumWidth(newDimension);
+            w->setMinimumWidth(newDimension);
+            continue;
+        }
+        qDebug() << w << "new dynamic";
+        wToGrowth.append(w);
+    }
+
+    if (wToGrowth.size() == 0)
+        return;
+
+    double res = widthAvail / wToGrowth.size();
+    foreach(QWidget * w, wToGrowth)
+    {
+        qDebug() << w << "expanding:" << res;
+        w->setMaximumWidth(res);
+        w->setMinimumWidth(res);
+    }
+}
 
 /**
  * @brief destructor

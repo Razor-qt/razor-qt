@@ -2,12 +2,8 @@
 #define RAZORSPINBUTTON_CPP
 #include "razorspinbutton.h"
 #include "razor.h"
-bool RazorSpinButton::handleEvent(XEvent* _event)
-{
-    return RazorPlugin::handleEvent(_event);
-}
 
-RazorSpinButton::RazorSpinButton(QString _cmd, int _bar): RazorPlugin(_bar)
+RazorSpinButton::RazorSpinButton(QString _cmd, RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
 {
 
     QString cmd = _cmd;
@@ -15,6 +11,13 @@ RazorSpinButton::RazorSpinButton(QString _cmd, int _bar): RazorPlugin(_bar)
     settings = new ReadSettings("spin"+cmd+".conf");
     int stateCount = settings->getInt("count");
     gui = new RazorSpinButtonGUI(this);
+
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
+
     for (int i = 0; i < stateCount; i++)
     {
         QString s;
@@ -26,12 +29,12 @@ RazorSpinButton::RazorSpinButton(QString _cmd, int _bar): RazorPlugin(_bar)
     }
     gui->changeAction(0);
     gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
+    //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
 
 RazorSpinButton::~RazorSpinButton()
 {
-    delete gui;
+//    delete gui;
     delete settings;
 }
 
@@ -40,7 +43,7 @@ void RazorSpinButtonGUI::mousePressEvent(QMouseEvent* _event)
     QToolButton::mousePressEvent(_event);
 }
 
-RazorSpinButtonGUI::RazorSpinButtonGUI(RazorSpinButton* _owner)
+RazorSpinButtonGUI::RazorSpinButtonGUI(RazorSpinButton* parent)
 {
     actionChoose = new QMenu(this);
     hideTimer = new QTimer(this);
@@ -51,7 +54,6 @@ RazorSpinButtonGUI::RazorSpinButtonGUI(RazorSpinButton* _owner)
     setPopupMode(QToolButton::MenuButtonPopup);
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     index = 0;
-    owner = _owner;
     setFixedWidth(100);
     show();
 }

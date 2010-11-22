@@ -9,6 +9,8 @@
  */
 #include "razor.h"
 
+class RazorDeskSwitch;
+
 /**
  * @brief a simple QSpinBox derivative for switching desktops
  */
@@ -16,12 +18,7 @@ class RazorDeskSwitchGUI: public QSpinBox
 {
     Q_OBJECT
 public:
-    RazorDeskSwitchGUI(RazorPlugin* _owner);
-private:
-    RazorPlugin* owner;
-
-signals:
-    void changeDesk(int);
+    RazorDeskSwitchGUI(RazorDeskSwitch* parent);
 
 protected:
     void wheelEvent(QWheelEvent* _event);
@@ -31,20 +28,30 @@ protected:
 /**
  * @brief the plugin for switching Desktops via Razorbar
  */
-class RazorDeskSwitch:  public QObject,public RazorPlugin
+class RazorDeskSwitch: public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorDeskSwitch(int _bar);
+    RazorDeskSwitch(RazorBar * panel, QWidget * parent);
     ~RazorDeskSwitch();
-    virtual bool handleEvent(XEvent* _event);
+    bool handleEvent(XEvent* _event);
+
+    int widthForHeight(int h)
+    {
+        return 100;//gui->width();
+    }
+    int heightForWidth(int w)
+    {
+        return gui->height();
+    }
+    RazorPlugin::RazorPluginSizing sizePriority()
+    {
+        return RazorPlugin::Static;
+    }
 
 private:
     int desktop;
     RazorDeskSwitchGUI* gui;
-public slots:
-    void switchDesktop(int);
-
 };
 
 

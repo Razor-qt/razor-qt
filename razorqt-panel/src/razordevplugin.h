@@ -6,11 +6,12 @@
 #include <razorqt/razorhal.h>
 
 class RazorDevicePluginGUI;
-class RazorDevicePlugin :public QObject, public RazorPlugin
+
+class RazorDevicePlugin : public RazorPluginSquare
 {
     Q_OBJECT
 public:
-    RazorDevicePlugin(int _bar);
+    RazorDevicePlugin(RazorBar * panel, QWidget * parent);
     RazorDevMan* backEnd()
     {
         return deviceBackend;
@@ -35,7 +36,7 @@ class RazorDevicePluginGUI : public QToolButton
 {
     Q_OBJECT
 public:
-    RazorDevicePluginGUI(RazorDevicePlugin* _owner);
+    RazorDevicePluginGUI(RazorDevicePlugin* parent);
     ~RazorDevicePluginGUI();
     void addDevice(QString);
     void removeDevice(QString);

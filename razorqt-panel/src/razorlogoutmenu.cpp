@@ -9,24 +9,19 @@
  * @author Christopher "VdoP" Regali
  */
 
-/**
- * @brief the x11 eventhandler.. not needed here
- */
-bool RazorLogoutMenu::eventHandler(XEvent* _event)
-{
-    Q_UNUSED(_event);
-    return false;
-}
 
 /**
  * @brief the constructor
  */
-RazorLogoutMenu::RazorLogoutMenu(int _bar) : RazorPlugin(_bar)
+RazorLogoutMenu::RazorLogoutMenu(RazorBar * panel, QWidget * parent) : RazorPluginSquare(panel, parent)
 {
     //we only need to make the gui
     gui = new RazorLogoutMenuGUI(this);
-    //and then add it to the first bar
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
 }
 
 /**
@@ -34,8 +29,6 @@ RazorLogoutMenu::RazorLogoutMenu(int _bar) : RazorPlugin(_bar)
  */
 RazorLogoutMenu::~RazorLogoutMenu()
 {
-    //todo here: remove the widget cleanly too
-    delete gui;
 }
 
 
@@ -72,11 +65,10 @@ void RazorLogoutMenuGUI::createMenus()
 /**
  * @brief this initializes us
  */
-RazorLogoutMenuGUI::RazorLogoutMenuGUI(RazorPlugin* _owner)
+RazorLogoutMenuGUI::RazorLogoutMenuGUI(RazorLogoutMenu * parent)
 {
     makeUp();
     createMenus();
-    owner = _owner;
 }
 
 /**

@@ -1,7 +1,6 @@
 #ifndef RAZOREVENT_H
 #define RAZOREVENT_H
 #include "defs.h"
-
 #include "razorplugin.h"
 
 /**

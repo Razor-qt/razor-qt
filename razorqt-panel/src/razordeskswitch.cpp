@@ -28,24 +28,16 @@ bool RazorDeskSwitch::handleEvent(XEvent* _event)
  * @brief the constructor
  */
 
-RazorDeskSwitch::RazorDeskSwitch(int _bar): RazorPlugin(_bar)
+RazorDeskSwitch::RazorDeskSwitch(RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
 {
     //first we make th  e gui
     gui = new RazorDeskSwitchGUI(this);
-    //then we get an actual screen to set the gui right
-    desktop = Razor::getInstance().get_Xfitman()->getActiveDesktop() + 1;
-    //now we set the gui to the appropriate values
-    gui->setValue(desktop);
-    gui->setMinimum(1);
-    gui->setMaximum(Razor::getInstance().get_Xfitman()->getNumDesktop());
-    gui->setPrefix("Desktop ");
-    gui->setFixedWidth(100);
-    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
-    //then we connect the signal to the slot
-    connect(gui,SIGNAL(changeDesk(int)),this, SLOT(switchDesktop(int)));
-    //finally we add the gui to the given bar
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
-    //and make us get events!
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
+
     Razor::getInstance().get_events()->registerCallback(this);
 
 }
@@ -59,21 +51,28 @@ RazorDeskSwitch::~RazorDeskSwitch()
     delete gui;
 }
 
-/**
- * @brief this switches our desktop to the given one
- */
-void RazorDeskSwitch::switchDesktop(int _newdesk)
-{
-    Razor::getInstance().get_Xfitman()->setActiveDesktop(_newdesk - 1);
-}
+///**
+// * @brief this switches our desktop to the given one
+// */
+//void RazorDeskSwitch::switchDesktop(int _newdesk)
+//{
+//    Razor::getInstance().get_Xfitman()->setActiveDesktop(_newdesk - 1);
+//}
 
 
 /**
  * @brief constructor for gui
  */
-RazorDeskSwitchGUI::RazorDeskSwitchGUI(RazorPlugin* _owner)
+RazorDeskSwitchGUI::RazorDeskSwitchGUI(RazorDeskSwitch* parent)
+    : QSpinBox(parent)
 {
-    owner = _owner;
+    //then we get an actual screen to set the gui right
+    int desktop = Razor::getInstance().get_Xfitman()->getActiveDesktop() + 1;
+    //now we set the gui to the appropriate values
+    setValue(desktop);
+    setMinimum(1);
+    setMaximum(Razor::getInstance().get_Xfitman()->getNumDesktop());
+    setPrefix("Desktop ");
 }
 
 /**
@@ -88,7 +87,8 @@ void RazorDeskSwitchGUI::wheelEvent(QWheelEvent* _event)
         numSteps %= (maximum() - minimum());
     int newval = oldval + numSteps;
     setValue(newval);
-    emit changeDesk(newval);
+//    emit changeDesk(newval);
+    Razor::getInstance().get_Xfitman()->setActiveDesktop(newval - 1);
 }
 
 

@@ -2,8 +2,9 @@
 #define RAZORBARTASK_H
 
 #include "defs.h"
-#include "razortask.h"
-#include "razorplugin.h"
+
+class RazorTask;
+class RazorPlugin;
 
 /**
  * @file razorbartask.h
@@ -13,7 +14,7 @@
 
 
 
-
+class RazorBarTask;
 
 /**
  * @brief this is a single Razorbartask-entry

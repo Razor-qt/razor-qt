@@ -30,10 +30,22 @@ public:
     RazorTrayGUI(RazorTray* _owner);
     ~RazorTrayGUI();
     void swallowXEmbed(Window _wid);
+
+    int widthForHeight(int h)
+    {
+        int ret = layout->count() * h;
+        return ret ? ret : h;
+    }
+
+signals:
+    void sizeChanged();
+public slots:
     void updateLayout();
 private:
     QHBoxLayout* layout;
     RazorTray* owner;
+private slots:
+    void closeEmbed();
 };
 
 /**
@@ -42,10 +54,25 @@ private:
 
 class RazorTray: public RazorPlugin
 {
+    Q_OBJECT
 public:
-    RazorTray(int _bar);
+    RazorTray( RazorBar * panel, QWidget * parent);
     ~RazorTray();
-    virtual bool handleEvent(XEvent* _event);
+    bool handleEvent(XEvent* _event);
+
+    int widthForHeight(int h)
+    {
+        return gui->widthForHeight(h);
+    }
+    int heightForWidth(int w)
+    {
+        return w;
+    }
+    RazorPlugin::RazorPluginSizing sizePriority()
+    {
+        return RazorPlugin::Static;
+    }
+
 private:
     RazorTrayGUI* gui;
     Atom traycode;

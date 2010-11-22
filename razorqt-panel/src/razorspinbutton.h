@@ -24,7 +24,7 @@ class RazorSpinButtonGUI : public QToolButton
 {
     Q_OBJECT
 public:
-    RazorSpinButtonGUI(RazorSpinButton* _owner);
+    RazorSpinButtonGUI(RazorSpinButton* parent);
     ~RazorSpinButtonGUI();
     void addAction(QAction*);
 protected:
@@ -42,17 +42,29 @@ private:
     QAction* currentAction;
     QMenu* actionChoose;
     QList<QAction*> actionList;
-    RazorSpinButton* owner;
     int index;
 };
 
-class RazorSpinButton :public QObject, public RazorPlugin
+class RazorSpinButton : public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorSpinButton(QString _cmd, int _bar);
+    RazorSpinButton(QString _cmd, RazorBar * panel, QWidget * parent);
     ~RazorSpinButton();
-    virtual bool handleEvent(XEvent* _event);
+
+    int widthForHeight(int h)
+    {
+        return width();
+    }
+    int heightForWidth(int w)
+    {
+        return w;
+    }
+    RazorPlugin::RazorPluginSizing sizePriority()
+    {
+        return RazorPlugin::Static;
+    }
+
 private:
     RazorSpinButtonGUI* gui;
     ReadSettings* settings;

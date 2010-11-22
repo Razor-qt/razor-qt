@@ -4,6 +4,7 @@
 #include "razor.h"
 #include "razorgui.h"
 #include "razormainmenu.h"
+#include "razorbar.h"
 /**
  * @file razorgui.cpp
  * @brief implements class Razorgui
@@ -44,7 +45,7 @@ int RazorGUI::addPanel()
  * @param[in] _stretch the stretch-factor (see qt manual)
  * @param[in] _align the alignment (see qt manual)
  */
-void RazorGUI::addWidget(QWidget* _widget, int _barnum, int _stretch, Qt::Alignment _align)
+void RazorGUI::addWidget(RazorPlugin* _widget, int _barnum, int _stretch, Qt::Alignment _align)
 {
     RazorBar* addto = panelList.at(_barnum);
     addto->addWidget(_widget,_stretch,_align);

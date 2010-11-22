@@ -9,24 +9,21 @@
  * @author Christopher "VdoP" Regali
  */
 
-/**
- * @brief the x11 eventhandler.. not needed here
- */
-bool RazorMenu::eventHandler(XEvent* _event)
-{
-    Q_UNUSED(_event);
-    return false;
-}
 
 /**
  * @brief the constructor
  */
-RazorMenu::RazorMenu(int _bar) : RazorPlugin(_bar)
+RazorMenu::RazorMenu(RazorBar * panel, QWidget * parent) : RazorPluginSquare(panel, parent)
 {
     //we only need to make the gui
     gui = new RazorMainMenu(this);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
     //and then add it to the first bar
-    Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
+    //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }
 
 /**
@@ -35,7 +32,7 @@ RazorMenu::RazorMenu(int _bar) : RazorPlugin(_bar)
 RazorMenu::~RazorMenu()
 {
     //todo here: remove the widget cleanly too
-    delete gui;
+    //delete gui;
 }
 
 
@@ -85,11 +82,11 @@ void RazorMainMenu::createMenus()
 /**
  * @brief this initializes us
  */
-RazorMainMenu::RazorMainMenu(RazorPlugin* _owner)
+RazorMainMenu::RazorMainMenu(RazorPluginSquare* parent)
+    : QLabel(parent)
 {
     makeUp();
     createMenus();
-    owner = _owner;
 }
 
 /**

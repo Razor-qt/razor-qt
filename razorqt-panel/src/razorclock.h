@@ -2,46 +2,37 @@
 #define RAZORCLOCK_H
 #include "defs.h"
 #include "razorplugin.h"
-/**
- * @file razorclock.h
- * @brief declares Razorclock and Razorclockgui
- * @author Christopher "VdoP" Regali
- */
 
-class RazorClock;
-/**
- * @brief a simple QLabel-derivative for displaying the time
- */
-class RazorClockGUI : public QLabel
-{
-    Q_OBJECT
-public:
-    RazorClockGUI (RazorClock* _owner);
-
-private:
-    RazorClock* owner;
-};
 
 /**
  * @brief the clock-plugin for razorbar
  */
-class RazorClock : public QObject ,public RazorPlugin
+class RazorClock : public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorClock(int _bar);
+    RazorClock(RazorBar * panel, QWidget * parent);
     ~RazorClock();
-    virtual bool handleEvent(XEvent* _event);
 
-private:
-    QTimer* clocktimer;
-    RazorClockGUI* gui;
+    int widthForHeight(int h)
+    {
+        return width();
+    }
+    int heightForWidth(int w)
+    {
+        return w;
+    }
+    RazorPlugin::RazorPluginSizing sizePriority()
+    {
+        return RazorPlugin::Static;
+    }
 
 public slots:
     void updateTime();
+
+private:
+    QTimer* clocktimer;
+    QLabel * gui;
 };
-
-
-
 
 #endif

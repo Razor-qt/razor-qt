@@ -8,6 +8,7 @@
  */
 
 #include "razortask.h"
+#include "razorbartask.h"
 #include "razor.h"
 
 /**
@@ -127,11 +128,17 @@ bool RazorTaskManager::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-RazorTaskManager::RazorTaskManager(int _bar) : RazorPlugin(_bar)
+RazorTaskManager::RazorTaskManager(RazorBar * panel, QWidget * parent) : RazorPlugin(panel, parent)
 {
     qDebug() << "Razortaskmanager init";
     //now we setup our gui element
     gui = new RazorBarTask(this);
+    QHBoxLayout * layout = new QHBoxLayout();
+    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(gui);
+    setLayout(layout);
+
     //now we need an updated map for the clients running
     //updateMap();
 
@@ -141,7 +148,7 @@ RazorTaskManager::RazorTaskManager(int _bar) : RazorPlugin(_bar)
     // in the panel.
     // TODO: it doesn't work with sizeHints and with the stretch =1 too...
 
-    Razor::getInstance().get_gui()->addWidget(gui,_bar, 1, Qt::AlignLeft);
+//    Razor::getInstance().get_gui()->addWidget(gui,_bar, 1, Qt::AlignLeft);
 
     qDebug() << "Razortaskmanager added widget";
     //we need the events so we can process the tasks correctly
@@ -193,6 +200,20 @@ void RazorTaskManager::updateMap()
     //then update the stuff in our gui
     gui->updateTasks(&clientList);
     gui->updateFocus();
+}
+
+
+int RazorTaskManager::widthForHeight(int h)
+{
+    return gui->width();
+}
+int RazorTaskManager::heightForWidth(int w)
+{
+    return gui->height();
+}
+RazorPlugin::RazorPluginSizing RazorTaskManager::sizePriority()
+{
+    return RazorPlugin::Expanding;
 }
 
 /**

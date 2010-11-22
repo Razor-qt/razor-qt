@@ -2,7 +2,9 @@
 #define RAZORBARTASK_CPP
 
 #include "razorbartask.h"
+#include "razortask.h"
 #include "razor.h"
+#include "razorplugin.h"
 
 
 /**
@@ -51,13 +53,13 @@ void RazorBarTask::updateFocus()
         taskMap.values().at(i)->setChecked(false);
     if (taskMap.contains(active))
         taskMap.value(active)->setChecked(true);
-    
+
     //glow for windows that want attention
     for (int i=0; i < taskMap.values().count(); i++)
       if (Razor::getInstance().get_Xfitman()->requiresAttention(taskMap.keys().at(i)))
 	taskMap.values().at(i)->focusGlow();
-    
-   
+
+
 
 }
 

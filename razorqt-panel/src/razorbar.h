@@ -1,6 +1,9 @@
 #ifndef RAZORBAR_H
 #define RAZORBAR_H
 #include "defs.h"
+class RazorPlugin;
+#include "razorplugin.h"
+
 /**
  * @file razorbar.h
  * @brief declares Razorbar class
@@ -16,10 +19,15 @@ class RazorBar : public QLabel
 public:
     RazorBar();
     ~RazorBar();
-    void addWidget(QWidget* _widget,int _stretch, Qt::Alignment _align);
+    void addWidget(RazorPlugin* _widget,int _stretch, Qt::Alignment _align);
     void makeUp();
+
+public slots:
+    void pluginSizeChanged();
+
 private:
-    QList<QWidget*> barItems;
+    // plugin - its size
+    QMap<RazorPlugin*, int> barItems;
     QHBoxLayout* Layout;
 };
 

@@ -19,7 +19,7 @@ class RazorPluginManager
 public:
     RazorPluginManager();
     ~RazorPluginManager();
-    void addPlugin(QString _plugin, int _bar);
+    void addPlugin(QString _plugin, RazorBar * panel);
 private:
     ReadSettings* pluginsettings;
     QList<RazorPlugin*> pluginList;
