@@ -56,6 +56,7 @@ bool Razor::setupGui()
     //select stylesheet from theme
     QFile stylesheet(looknfeel->getPath() + looknfeel->getString("panel_stylesheet"));
     QString sheet="";
+    QString dirName = QFileInfo(stylesheet).canonicalPath();
     if (stylesheet.exists())
     {
         stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -63,6 +64,7 @@ bool Razor::setupGui()
         // TODO/FIXME: consult stylesheet variables usage
         qDebug() << Razor::getInstance().get_looknfeel()->getString("razorbar_height");
         sheet = sheet.replace("<PANEL_HEIGHT>", Razor::getInstance().get_looknfeel()->getString("razorbar_height") + "px");
+        sheet.replace(QRegExp("url.[ \\t\\s]*", Qt::CaseInsensitive, QRegExp::RegExp2), "url(" + dirName + "/");
     }
     qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
     razorevent->setStyleSheet(sheet);

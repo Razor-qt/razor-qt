@@ -16,7 +16,7 @@ public:
 
     int widthForHeight(int h)
     {
-        gui->sizeHint().width();
+        return gui->sizeHint().width();
     }
     int heightForWidth(int w)
     {
