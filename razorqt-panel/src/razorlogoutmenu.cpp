@@ -17,11 +17,7 @@ RazorLogoutMenu::RazorLogoutMenu(RazorBar * panel, QWidget * parent) : RazorPlug
 {
     //we only need to make the gui
     gui = new RazorLogoutMenuGUI(this);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
 }
 
 /**

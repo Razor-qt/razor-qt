@@ -43,10 +43,15 @@ Razor::Razor()
 /**
  * @brief do the gui stuff here
  */
-void Razor::setupGui()
+bool Razor::setupGui()
 {
-
     looknfeel = new ReadSettings(settings->getString("style_theme"));
+    if (looknfeel->hasError())
+    {
+        QMessageBox::warning(0, "Razor Panel GUI init failed", looknfeel->error());
+        return false;
+    }
+
     xdgmanager = new XdgManager(settings->getString("icon_theme"));
     //select stylesheet from theme
     QFile stylesheet(looknfeel->getPath() + looknfeel->getString("panel_stylesheet"));
@@ -55,6 +60,9 @@ void Razor::setupGui()
     {
         stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
         sheet=stylesheet.readAll();
+        // TODO/FIXME: consult stylesheet variables usage
+        qDebug() << Razor::getInstance().get_looknfeel()->getString("razorbar_height");
+        sheet = sheet.replace("<PANEL_HEIGHT>", Razor::getInstance().get_looknfeel()->getString("razorbar_height") + "px");
     }
     qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
     razorevent->setStyleSheet(sheet);
@@ -65,6 +73,8 @@ void Razor::setupGui()
     razorgui = new RazorGUI;
     //now load the plugins
     pluginmanager = new RazorPluginManager;
+
+    return true;
 }
 
 /**

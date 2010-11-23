@@ -17,13 +17,7 @@ RazorMenu::RazorMenu(RazorBar * panel, QWidget * parent) : RazorPluginSquare(pan
 {
     //we only need to make the gui
     gui = new RazorMainMenu(this);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
-    //and then add it to the first bar
-    //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
+    mainLayout()->addWidget(gui);
 }
 
 /**

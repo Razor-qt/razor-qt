@@ -40,6 +40,16 @@ public:
     {
         return tplPath;
     }
+
+    bool hasError()
+    {
+        return !errMsg.isNull() || !errMsg.isEmpty();
+    }
+    QString error()
+    {
+        return errMsg;
+    }
+
 private:
 
     //! Universal setting map structure
@@ -50,6 +60,8 @@ private:
     QString configFile;
     QString tplPath;
     SettingsMap settings;
+
+    QString errMsg;
 
     void updateMap(const QString & fileName);
     QString getSysPath(const QString & fileName);

@@ -12,11 +12,7 @@ RazorSpinButton::RazorSpinButton(QString _cmd, RazorBar * panel, QWidget * paren
     int stateCount = settings->getInt("count");
     gui = new RazorSpinButtonGUI(this);
 
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
 
     for (int i = 0; i < stateCount; i++)
     {

@@ -39,7 +39,6 @@ set ( razor-panel_SRCS
 	src/razorlogoutmenu.cpp
 	src/razoraboutdlg.cpp
 	src/razorpluginmanager.cpp
-	src/razorplugin.h
 	src/razorclock.cpp
 	src/razorbar.cpp
 	src/razordevplugin.cpp
@@ -60,6 +59,7 @@ set ( razor-panel_UIS
 QT4_WRAP_UI(UIS ${razor-panel_UIS})
 
 set ( razor-panel_MOCS
+    src/razorplugin.h
 	src/razorbar.h
 	src/razordevplugin.h
 	src/razorevent.h
@@ -71,6 +71,7 @@ set ( razor-panel_MOCS
 	src/razordeskswitch.h
 	src/razorspinbutton.h
 	src/razorbartask.h
+    src/razortask.h
  	src/razortray.h
 	src/razorquicklaunch.h
 	)
@@ -78,4 +79,4 @@ QT4_WRAP_CPP(MOCS ${razor-panel_MOCS})
 
 add_executable ( razor-panel ${razor-panel_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 target_link_libraries ( razor-panel  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so )
-INSTALL(TARGETS razor-panel RUNTIME DESTINATION bin) 
+INSTALL(TARGETS razor-panel RUNTIME DESTINATION bin)

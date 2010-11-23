@@ -63,13 +63,9 @@ RazorDevicePlugin::RazorDevicePlugin(RazorBar * panel, QWidget * parent): RazorP
 
 
     gui = new RazorDevicePluginGUI(this);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
-    gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
-    gui->setFixedWidth(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
+    mainLayout()->addWidget(gui);
+    //gui->setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
+    //gui->setFixedWidth(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-6);
     //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 
 

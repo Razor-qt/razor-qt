@@ -32,11 +32,7 @@ RazorDeskSwitch::RazorDeskSwitch(RazorBar * panel, QWidget * parent): RazorPlugi
 {
     //first we make th  e gui
     gui = new RazorDeskSwitchGUI(this);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
 
     Razor::getInstance().get_events()->registerCallback(this);
 

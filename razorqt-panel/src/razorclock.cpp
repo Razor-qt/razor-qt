@@ -20,11 +20,7 @@ RazorClock::RazorClock(RazorBar * panel, QWidget * parent): RazorPlugin(panel, p
     //gui machen
     gui = new QLabel(this);
     gui->setAlignment(Qt::AlignCenter);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
 
     //timer machen
     clocktimer = new QTimer(this);
@@ -32,8 +28,6 @@ RazorClock::RazorClock(RazorBar * panel, QWidget * parent): RazorPlugin(panel, p
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
     //timer starten
     clocktimer->start(1000);
-    //gui-element hinzufügen
-    //Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignRight);
     // ensure wi will not have moving widgets in the panel waiting for timer shot
     updateTime();
 }

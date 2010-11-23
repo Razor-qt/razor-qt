@@ -21,7 +21,7 @@ class Razor
 {
 public:
     ~Razor();
-    void setupGui();
+    bool setupGui();
     void setupEvents(int& argc, char** argv);
     static Razor& getInstance();
 

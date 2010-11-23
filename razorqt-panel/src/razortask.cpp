@@ -133,11 +133,7 @@ RazorTaskManager::RazorTaskManager(RazorBar * panel, QWidget * parent) : RazorPl
     qDebug() << "Razortaskmanager init";
     //now we setup our gui element
     gui = new RazorBarTask(this);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
 
     //now we need an updated map for the clients running
     //updateMap();

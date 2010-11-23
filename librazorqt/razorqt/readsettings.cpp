@@ -81,14 +81,21 @@ void ReadSettings::updateMap(const QString & fileName)
         //first check if path exists!
         QDir dir(QDir::homePath());
         dir.mkdir(".razor");
-        qDebug() << "Readsettings: created " << QDir::homePath()+"/.razor/"+fileName;
-        QFile newfile(QDir::homePath()+"/.razor/"+fileName);
+        QString localFName(QDir::homePath()+"/.razor/"+fileName);
+        qDebug() << "Readsettings: created " << localFName;
+        QFile newfile(localFName);
         QDateTime now = QDateTime::currentDateTime();
         newfile.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream addcomment(&newfile);
         addcomment << "# new file created by Readsettings on: " << now.toString() <<"\n";
         //! \todo TODO/FIXME: some default config for ~ ?
         newfile.close();
+    }
+
+    if (! QFile::exists(configFile))
+    {
+        errMsg = "File does not exists: " + configFile;
+        return;
     }
 
     QSettings s(configFile, QSettings::IniFormat);

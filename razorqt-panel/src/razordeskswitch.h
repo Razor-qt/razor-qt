@@ -38,7 +38,7 @@ public:
 
     int widthForHeight(int h)
     {
-        return 100;//gui->width();
+        return gui->width();
     }
     int heightForWidth(int w)
     {

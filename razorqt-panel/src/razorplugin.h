@@ -72,6 +72,20 @@ public:
     //! return the resize behavior description
     virtual RazorPlugin::RazorPluginSizing sizePriority() = 0;
 
+    /*! Base layout for plugin "background", content holder.
+    This (optional) layout is the main layout with no margins, no padding etc.
+    Custom widgets are just appended with addWidget(). Painting
+    and displaying is usually done in the custom widget.
+    */
+    virtual QLayout* mainLayout()
+    {
+        QHBoxLayout * layout = new QHBoxLayout();
+        layout->setSpacing(0);
+        layout->setContentsMargins(0, 0, 0, 0);
+        setLayout(layout);
+        return layout;
+    }
+
     virtual bool handleEvent(XEvent* _event)
     {
         Q_UNUSED(_event);

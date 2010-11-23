@@ -13,6 +13,9 @@ int main (int argc, char* argv[])
 {
     Razor* myinst = &Razor::getInstance();
     myinst->setupEvents(argc, argv);
-    myinst->setupGui();
+
+    if (! myinst->setupGui())
+        return 1;
+
     return myinst->get_events()->exec();
 }

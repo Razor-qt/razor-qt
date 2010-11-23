@@ -48,11 +48,7 @@ RazorTray::RazorTray( RazorBar * panel, QWidget * parent): RazorPlugin(panel, pa
     //and dont forget to make the gui
     gui = new RazorTrayGUI(this);
     connect(gui, SIGNAL(sizeChanged()), this, SIGNAL(sizeChanged()));
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
 
     //now register us for the incoming events! (make razorevent delivarrrr)
     Razor::getInstance().get_events()->registerCallback(this);
