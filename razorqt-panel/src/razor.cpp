@@ -61,9 +61,7 @@ bool Razor::setupGui()
     {
         stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
         sheet=stylesheet.readAll();
-        // TODO/FIXME: consult stylesheet variables usage
         qDebug() << Razor::getInstance().get_looknfeel()->getString("razorbar_height");
-        sheet = sheet.replace("<PANEL_HEIGHT>", Razor::getInstance().get_looknfeel()->getString("razorbar_height") + "px");
         sheet.replace(QRegExp("url.[ \\t\\s]*", Qt::CaseInsensitive, QRegExp::RegExp2), "url(" + dirName + "/");
     }
     qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;

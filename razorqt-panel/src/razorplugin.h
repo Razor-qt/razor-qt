@@ -77,7 +77,7 @@ public:
     Custom widgets are just appended with addWidget(). Painting
     and displaying is usually done in the custom widget.
     */
-    virtual QLayout* mainLayout()
+    virtual QBoxLayout* mainLayout()
     {
         QHBoxLayout * layout = new QHBoxLayout();
         layout->setSpacing(0);

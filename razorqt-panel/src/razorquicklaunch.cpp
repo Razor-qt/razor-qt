@@ -47,6 +47,7 @@ void RazorQuickLaunch::setupGUI(int height)
      */
     QGridLayout * layout = new QGridLayout(this);
     layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     //! \todo TODO/FIXME: make it (the size) configurable?
     // now do some layouting magic to save space (rows, columns)
@@ -82,7 +83,7 @@ void RazorQuickLaunch::setupGUI(int height)
     }
 
     //setMinimumWidth(ix * 32);
-    setLayout(layout);
+    mainLayout()->addLayout(layout);
 }
 
 void RazorQuickLaunch::execAction(QAction* _action)
