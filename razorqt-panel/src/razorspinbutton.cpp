@@ -3,7 +3,16 @@
 #include "razorspinbutton.h"
 #include "razor.h"
 
-RazorSpinButton::RazorSpinButton(QString _cmd, RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorSpinButton * ret = new RazorSpinButton(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
+
+
+RazorSpinButton::RazorSpinButton(RazorBar * panel, QWidget * parent, const QString & _cmd)
+    : RazorPlugin(panel, parent, _cmd)
 {
 
     QString cmd = _cmd;

@@ -13,7 +13,7 @@ class RazorQuickLaunch : public RazorPlugin
     Q_OBJECT
 
 public:
-    RazorQuickLaunch(QString cmd, RazorBar * panel, QWidget * parent);
+    RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorQuickLaunch();
 
     int widthForHeight(int h)
@@ -38,5 +38,7 @@ private slots:
     //! run command in the action
     void execAction(QAction*);
 };
+
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

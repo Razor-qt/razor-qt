@@ -48,12 +48,12 @@ class RazorCmd : public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorCmd(RazorBar * panel, QWidget * parent);
+    RazorCmd(RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorCmd();
 
     int widthForHeight(int h)
     {
-        return width();
+        return gui->width();
     }
     int heightForWidth(int w)
     {
@@ -68,5 +68,6 @@ private:
     RazorCmdGUI* gui;
 };
 
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

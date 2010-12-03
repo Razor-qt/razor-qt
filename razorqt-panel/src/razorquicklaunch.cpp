@@ -1,12 +1,21 @@
 #include "razorquicklaunch.h"
 #include "razor.h"
 
-
-RazorQuickLaunch::RazorQuickLaunch(QString cmd, RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
 {
-    cmd.remove("quicklaunch");
+    RazorQuickLaunch * ret = new RazorQuickLaunch(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
+
+
+RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPlugin(panel, parent, name)
+{
+    QString nameIx(name);
+    nameIx.remove("quicklaunch");
     //!\todo TODO/FIXME: decide if it should use its own config file
-    settings = new ReadSettings("spin"+cmd+".conf");
+    settings = new ReadSettings("spin"+nameIx+".conf");
     int stateCount = settings->getInt("count");
 
 

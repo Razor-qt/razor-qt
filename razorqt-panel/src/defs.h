@@ -91,6 +91,7 @@
 #include <QFileSystemModel>
 #include <QFontDatabase>
 #include <QDockWidget>
+#include <QLibrary>
 
 #include "razorversion.h"
 

@@ -27,14 +27,7 @@ RazorBarTask::RazorBarTask(RazorPlugin* _owner)
     setScaledContents(true);
     Layout->setSpacing(0);
     Layout->setMargin(0);
-    setFixedHeight(Razor::getInstance().get_looknfeel()->getInt("razorbar_height")-5);
 
-    // TODO: I'd like to see a dynamic resizing of this widget but it doesn't
-    // work with the setSizePolicy. Dunno why. Maybe we should introduce
-    // a manually sent signals between systray and taskbar to sync their sizes
-    // because thos should be only 2 widgets with variable width...
-    setMinimumWidth(QApplication::desktop()->screenGeometry().width()*0.7);
-    //setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     if (!Razor::getInstance().get_looknfeel()->getString("taskbar_background").isEmpty())
     {
         setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getString("taskbar_background")));
@@ -93,10 +86,6 @@ void RazorBarTask::makeUp()
     //setLayout(Layout);
     show();
 }
-
-
-
-
 
 /**
  * @brief destructor

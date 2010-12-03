@@ -3,13 +3,19 @@
 #include "razorcmd.h"
 #include "razor.h"
 
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorCmd * ret = new RazorCmd(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
 
-RazorCmd::RazorCmd(RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
+
+RazorCmd::RazorCmd(RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPlugin(panel, parent, name)
 {
     gui = new RazorCmdGUI(this);
-    QHBoxLayout * layout = new QHBoxLayout();
-    layout->addWidget(gui);
-    setLayout(layout);
+    mainLayout()->addWidget(gui);
     //now add us to the bar
  //   Razor::getInstance().get_gui()->addWidget(gui,_bar,0,Qt::AlignLeft);
 }

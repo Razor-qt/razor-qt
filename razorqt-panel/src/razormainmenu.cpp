@@ -8,12 +8,18 @@
  * @brief implements the classes Razormainmenu and Razormenu
  * @author Christopher "VdoP" Regali
  */
-
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorMenu *ret = new RazorMenu(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
 
 /**
  * @brief the constructor
  */
-RazorMenu::RazorMenu(RazorBar * panel, QWidget * parent) : RazorPluginSquare(panel, parent)
+RazorMenu::RazorMenu(RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPluginSquare(panel, parent, name)
 {
     //we only need to make the gui
     gui = new RazorMainMenu(this);

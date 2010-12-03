@@ -61,6 +61,7 @@ public:
     {
         return taskMap.count();
     }
+
 private:
     Window active;
     //returns a pointer to the plugin owning this gui-widget

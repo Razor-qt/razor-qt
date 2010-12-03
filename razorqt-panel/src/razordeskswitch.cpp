@@ -7,6 +7,12 @@
  * @author Christopher "VdoP" Regali
  * @brief implements Razordeskswitch and Razordeskswitchgui
  */
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorDeskSwitch * ret = new RazorDeskSwitch(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
 
 /**
  * @brief the event handler
@@ -28,7 +34,8 @@ bool RazorDeskSwitch::handleEvent(XEvent* _event)
  * @brief the constructor
  */
 
-RazorDeskSwitch::RazorDeskSwitch(RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
+RazorDeskSwitch::RazorDeskSwitch(RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPlugin(panel, parent, name)
 {
     //first we make th  e gui
     gui = new RazorDeskSwitchGUI(this);

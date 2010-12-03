@@ -11,7 +11,7 @@ class RazorDevicePlugin : public RazorPluginSquare
 {
     Q_OBJECT
 public:
-    RazorDevicePlugin(RazorBar * panel, QWidget * parent);
+    RazorDevicePlugin(RazorBar * panel, QWidget * parent, const QString & name);
     RazorDevMan* backEnd()
     {
         return deviceBackend;
@@ -46,6 +46,6 @@ private:
     QMenu* deviceMenu;
 };
 
-
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

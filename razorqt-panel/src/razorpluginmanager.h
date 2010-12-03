@@ -4,6 +4,7 @@
 #include "defs.h"
 #include <razorqt/readsettings.h>
 #include "razorplugin.h"
+
 /**
  * @file razorpluginmanager.cpp
  * @author Christopher "VdoP" Regali
@@ -22,7 +23,7 @@ public:
     void addPlugin(QString _plugin, RazorBar * panel);
 private:
     ReadSettings* pluginsettings;
-    QList<RazorPlugin*> pluginList;
+    QList<QLibrary*> dllList;
 };
 
 

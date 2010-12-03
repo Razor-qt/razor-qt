@@ -63,7 +63,7 @@ class RazorTaskManager : public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorTaskManager(RazorBar * panel, QWidget * parent);
+    RazorTaskManager(RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorTaskManager();
     bool handleEvent(XEvent* );
 
@@ -78,8 +78,6 @@ private:
     QMap <Window, RazorTask*> clientList;
 };
 
-
-
-
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

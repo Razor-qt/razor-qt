@@ -17,7 +17,7 @@ class RazorLogoutMenu : public RazorPluginSquare
 {
     Q_OBJECT
 public:
-    RazorLogoutMenu(RazorBar * panel, QWidget * parent);
+    RazorLogoutMenu(RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorLogoutMenu();
 private:
     RazorLogoutMenuGUI* gui;
@@ -52,5 +52,7 @@ protected:
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
 };
+
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

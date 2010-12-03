@@ -4,6 +4,8 @@
 #include "defs.h"
 
 class RazorBar;
+class RazorPlugin;
+
 
 /**
  * @file razorplugin.h
@@ -11,6 +13,27 @@ class RazorBar;
  * @author Christopher "VdoP" Regali
  */
 
+/*! Razor panel plugins are standalone sharedlibraries
+(*.so) located in PLUGIN_DIR (define provided by CMakeLists.txt).
+Name of the plugin library is in this form:
+
+    librazorpanel_<pluginname>.so
+
+The <pluginname> variable is the same string as it's used
+in plugins.conf file. Plugins are loaded on demand. See
+RazorPluginManager::addPlugin().
+
+Plugins like spinbutton, usually configured like spinbutton0,
+spinbutton1, ..., spinButtonN does not contain numbers in
+the library name. The config-number is provided to the plugin
+as in the "name" constructor's argument.
+*/
+
+/*! Prototype for plugin's init() function
+ */
+typedef RazorPlugin* (*PluginInitFunction)(const RazorBar* panel,
+                                           QWidget* parent,
+                                           const QString & name);
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -58,9 +81,18 @@ public:
         Expanding
     };
 
+    /*! Standard plugin constructor.
+    \param panel a reference to the RazorBar, panel.
+    \param parent a reference to the QWidget parent. It might be a RazorBar, but
+                    it can be any QWidget.
+    \param name a plugin name as it's provided from config file. Including
+                optional string suffixes ("quicklaunch0" for quicklaunch plug etc.)
+    \param f unused for now.
+    */
     RazorPlugin(const RazorBar* panel,
-                   QWidget* parent=0,
-                   Qt::WindowFlags f=0)
+                QWidget* parent=0,
+                const QString & name = 0,
+                Qt::WindowFlags f=0)
             : QWidget(parent)
     {
     }
@@ -92,6 +124,17 @@ public:
         return false;
     }
 
+    void setWidth(int w)
+    {
+        setMaximumWidth(w);
+        setMinimumWidth(w);
+    }
+    void setHeight(int h)
+    {
+        setMaximumHeight(h);
+        setMinimumHeight(h);
+    }
+
 signals:
     /*! Plugin has to emit this signal in any case when it
     	changes its size.
@@ -108,9 +151,10 @@ class RazorPluginSquare : public RazorPlugin
 
 public:
     RazorPluginSquare(const RazorBar* panel,
-                         QWidget* parent=0,
-                         Qt::WindowFlags f=0)
-            : RazorPlugin(panel, parent, f)
+                      QWidget* parent=0,
+                      const QString & name = 0,
+                      Qt::WindowFlags f=0)
+            : RazorPlugin(panel, parent, name, f)
     {
     }
 

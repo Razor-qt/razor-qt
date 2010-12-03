@@ -2,6 +2,14 @@
 #define RAZORDEVPLUGIN_CPP
 #include "razordevplugin.h"
 #include "razor.h"
+
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorDevicePlugin * ret = new RazorDevicePlugin(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
+
 void RazorDevicePlugin::deviceAdded(QString _uuid)
 {
     qDebug() << "RazorDevicePlugin: add triggered!";
@@ -50,7 +58,7 @@ void RazorDevicePlugin::deviceRemoved(QString _uuid)
     gui->addDevice(_uuid);
 }
 
-RazorDevicePlugin::RazorDevicePlugin(RazorBar * panel, QWidget * parent): RazorPluginSquare(panel, parent)
+RazorDevicePlugin::RazorDevicePlugin(RazorBar * panel, QWidget * parent, const QString & name): RazorPluginSquare(panel, parent, name)
 {
 
     //first select the backend, since we only have HAL for now - we use hal in any situation

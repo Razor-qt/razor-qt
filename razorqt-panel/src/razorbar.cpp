@@ -81,7 +81,7 @@ void RazorBar::pluginSizeChanged()
     qDebug() << "    panel items=" << barItems;
     int widthAvail = width();
     qDebug() << "    panel width=" << widthAvail;
-    QWidgetList wToGrowth;
+    QList<RazorPlugin*> wToGrowth;
 
     foreach(RazorPlugin * w, barItems.keys())
     {
@@ -98,8 +98,7 @@ void RazorBar::pluginSizeChanged()
             qDebug() << w << "new size" << newDimension;
             barItems[w] = newDimension;
             widthAvail -= newDimension;
-            w->setMaximumWidth(newDimension);
-            w->setMinimumWidth(newDimension);
+            w->setWidth(newDimension);
             continue;
         }
         qDebug() << w << "new dynamic";
@@ -110,11 +109,10 @@ void RazorBar::pluginSizeChanged()
         return;
 
     double res = widthAvail / wToGrowth.size();
-    foreach(QWidget * w, wToGrowth)
+    foreach(RazorPlugin * w, wToGrowth)
     {
         qDebug() << w << "expanding:" << res;
-        w->setMaximumWidth(res);
-        w->setMinimumWidth(res);
+        w->setWidth(res);
     }
 }
 

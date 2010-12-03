@@ -1,18 +1,9 @@
 #ifndef RAZORPLUGINMANAGER_CPP
 #define RAZORPLUGINMANAGER_CPP
+
 #include "razorplugin.h"
 #include "razorpluginmanager.h"
 #include "razor.h"
-#include "razormainmenu.h"
-#include "razortask.h"
-#include "razordeskswitch.h"
-#include "razorclock.h"
-#include "razortray.h"
-#include "razorcmd.h"
-#include "razorspinbutton.h"
-#include "razorlogoutmenu.h"
-#include "razorquicklaunch.h"
-#include "razordevplugin.h"
 #include "razorbar.h"
 /**
  * @file razorpluginmanager.cpp
@@ -61,75 +52,49 @@ RazorPluginManager::RazorPluginManager()
 void RazorPluginManager::addPlugin(QString _plugin, RazorBar * panel)
 {
     RazorPlugin * plug;
-    if (_plugin=="mainmenu")
+    // remove numbers from the name to get raw library name.
+    // Potential number goes into plugin in the "name" argument.
+    QString strippedName(_plugin);
+    strippedName.replace(QRegExp("[0-9]*"), "");
+    // setup whole path to the library
+    QString plugName(PLUGIN_DIR + QString("librazorpanel_") + strippedName + ".so");
+    qDebug() << "PLUGIN: Loading plugin" << plugName;
+
+    // check if the file exists. Probably debug only.
+    QFileInfo fi(plugName);
+    if (!fi.exists())
     {
-        plug = new RazorMenu(panel, panel);
-        pluginList.append(plug);
+        qDebug() << "PLUGIN: MISSING FILE";
+        return;
     }
-    else if (_plugin=="taskmanager")
+
+    QLibrary * dll = new QLibrary(plugName);
+    PluginInitFunction initFunc = (PluginInitFunction) dll->resolve("init");
+    if (!initFunc)
     {
-        plug = new RazorTaskManager(panel, panel);
-        pluginList.append(plug);
+        qDebug() << "PLUGIN: plugin: MISSING init()";
+        delete dll;
+        return;
     }
-    else if (_plugin =="desktopswitcher")
-    {
-        plug = new RazorDeskSwitch(panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin =="clock")
-    {
-        plug = new RazorClock(panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin =="traybar")
-    {
-        plug = new RazorTray(panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin =="razorcmd")
-    {
-        plug = new RazorCmd(panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin.contains("razorspinbutton"))
-    {
-        plug = new RazorSpinButton(_plugin, panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin =="logoutmenu")
-    {
-        plug = new RazorLogoutMenu(panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin.contains("quicklaunch"))
-    {
-        plug = new RazorQuickLaunch(_plugin, panel, panel);
-        pluginList.append(plug);
-    }
-    else if (_plugin.contains("devicemanager"))
-    {
-        plug = new RazorDevicePlugin(panel, panel);
-        pluginList.append(plug);
-    }
+
+    plug = initFunc(panel, panel, _plugin);
+    Q_ASSERT(plug);
     // now add the plug into the panel's layout.
     // it's easier to do it here instead to handle it in plugin itself
     panel->addWidget(plug, 0, Qt::AlignLeft);
+    dllList.append(dll);
 }
-
-
-
-
-
 
 /**
  * @brief destructor
  */
 RazorPluginManager::~RazorPluginManager()
 {
-
+    foreach(QLibrary *dll, dllList)
+    {
+        qDebug() << "DELETE dll" << dll->fileName();
+        delete dll;
+    }
 }
-
-
-
 
 #endif

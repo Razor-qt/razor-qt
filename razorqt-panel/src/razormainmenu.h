@@ -46,13 +46,12 @@ class RazorMenu : public RazorPluginSquare
 {
     Q_OBJECT
 public:
-    RazorMenu(RazorBar * panel, QWidget * parent);
+    RazorMenu(RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorMenu();
 private:
     RazorMainMenu* gui;
 };
 
-
-
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

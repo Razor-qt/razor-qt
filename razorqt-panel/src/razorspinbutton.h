@@ -49,7 +49,7 @@ class RazorSpinButton : public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorSpinButton(QString _cmd, RazorBar * panel, QWidget * parent);
+    RazorSpinButton(RazorBar * panel, QWidget * parent, const QString & _cmd);
     ~RazorSpinButton();
 
     int widthForHeight(int h)
@@ -71,5 +71,6 @@ private:
 
 };
 
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

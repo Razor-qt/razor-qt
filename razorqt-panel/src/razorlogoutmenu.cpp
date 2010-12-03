@@ -9,11 +9,18 @@
  * @author Christopher "VdoP" Regali
  */
 
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorLogoutMenu * ret = new RazorLogoutMenu(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
 
 /**
  * @brief the constructor
  */
-RazorLogoutMenu::RazorLogoutMenu(RazorBar * panel, QWidget * parent) : RazorPluginSquare(panel, parent)
+RazorLogoutMenu::RazorLogoutMenu(RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPluginSquare(panel, parent, name)
 {
     //we only need to make the gui
     gui = new RazorLogoutMenuGUI(this);

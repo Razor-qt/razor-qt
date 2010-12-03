@@ -11,7 +11,7 @@ class RazorClock : public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorClock(RazorBar * panel, QWidget * parent);
+    RazorClock(RazorBar * panel, QWidget * parent, const QString & name=0);
     ~RazorClock();
 
     int widthForHeight(int h)
@@ -34,5 +34,7 @@ private:
     QTimer* clocktimer;
     QLabel * gui;
 };
+
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

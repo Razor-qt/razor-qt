@@ -10,6 +10,12 @@
 #include "razortask.h"
 #include "razorbartask.h"
 #include "razor.h"
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorTaskManager * ret = new RazorTaskManager(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
 
 /**
  * @brief constructor
@@ -128,7 +134,8 @@ bool RazorTaskManager::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-RazorTaskManager::RazorTaskManager(RazorBar * panel, QWidget * parent) : RazorPlugin(panel, parent)
+RazorTaskManager::RazorTaskManager(RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPlugin(panel, parent, name)
 {
     qDebug() << "Razortaskmanager init";
     //now we setup our gui element

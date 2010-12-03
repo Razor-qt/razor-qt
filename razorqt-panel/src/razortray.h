@@ -56,7 +56,7 @@ class RazorTray: public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorTray( RazorBar * panel, QWidget * parent);
+    RazorTray( RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorTray();
     bool handleEvent(XEvent* _event);
 
@@ -77,5 +77,7 @@ private:
     RazorTrayGUI* gui;
     Atom traycode;
 };
+
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif

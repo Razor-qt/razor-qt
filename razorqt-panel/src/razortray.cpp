@@ -9,6 +9,13 @@
 #include "razortray.h"
 #include "razor.h"
 
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorTray * ret = new RazorTray(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
+
 /**
  * @brief this handles the events we get from the Razorplugin subsystem
  */
@@ -32,7 +39,8 @@ bool RazorTray::handleEvent(XEvent* _event)
 /**
  * @brief constructor
  */
-RazorTray::RazorTray( RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
+RazorTray::RazorTray( RazorBar * panel, QWidget * parent, const QString & name)
+    : RazorPlugin(panel, parent, name)
 {
     qDebug() << "Razortray: initializing";
     //first we try to set "us" (meaning the razorbar we are in!) as selection owner for tray stuff, forcing the events to the bar-window

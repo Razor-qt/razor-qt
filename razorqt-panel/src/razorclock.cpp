@@ -9,12 +9,17 @@
  * @brief implements Razorclock and Razorclockgui
  * @author Christopher "VdoP" Regali
  */
-
+RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
+{
+    RazorClock * ret = new RazorClock(panel, parent, name);
+    Q_ASSERT(ret);
+    return ret;
+}
 
 /**
  * @brief constructor
  */
-RazorClock::RazorClock(RazorBar * panel, QWidget * parent): RazorPlugin(panel, parent)
+RazorClock::RazorClock(RazorBar * panel, QWidget * parent, const QString & name): RazorPlugin(panel, parent, name)
 {
     qDebug() << "Razorclock loading";
     //gui machen

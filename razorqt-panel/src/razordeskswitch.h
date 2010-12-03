@@ -32,7 +32,7 @@ class RazorDeskSwitch: public RazorPlugin
 {
     Q_OBJECT
 public:
-    RazorDeskSwitch(RazorBar * panel, QWidget * parent);
+    RazorDeskSwitch(RazorBar * panel, QWidget * parent, const QString & name);
     ~RazorDeskSwitch();
     bool handleEvent(XEvent* _event);
 
@@ -54,6 +54,6 @@ private:
     RazorDeskSwitchGUI* gui;
 };
 
-
+extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
 
 #endif
