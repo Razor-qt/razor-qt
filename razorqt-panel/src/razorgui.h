@@ -21,7 +21,7 @@ class RazorGUI
 public:
     RazorGUI();
     ~RazorGUI();
-    int addPanel();
+    int addPanel(const QString & configId);
     void addWidget(RazorPlugin* _widget,int _barnum, int _stretch, Qt::Alignment _align);
 //    /**
 //     * @brief returns a list of all razor-windows to be hidden from clientlist for taskbar-reasons

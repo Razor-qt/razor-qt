@@ -20,10 +20,12 @@ class RazorPluginManager
 public:
     RazorPluginManager();
     ~RazorPluginManager();
-    void addPlugin(QString _plugin, RazorBar * panel);
+    void addPlugin(const QString & plugin, const QString & configId, RazorBar * panel);
 private:
-    ReadSettings* pluginsettings;
+    ReadSettings* cfg;
     QList<QLibrary*> dllList;
+
+    void createPanel(const QString & configId);
 };
 
 

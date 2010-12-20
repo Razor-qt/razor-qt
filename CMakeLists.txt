@@ -14,7 +14,7 @@ include_directories (
 
 # This allows to install and read the configs from non-standard locations
 if (CMAKE_INSTALL_PREFIX)
-    add_definitions(-DSHARE_DIR="\\"${CMAKE_INSTALL_PREFIX}/share/razor/\\"")
+    add_definitions(-DSHARE_DIR=\"${CMAKE_INSTALL_PREFIX}/share/razor/\")
 endif ()
 
 add_subdirectory( librazorqt )

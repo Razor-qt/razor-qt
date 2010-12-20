@@ -18,47 +18,63 @@
 RazorPluginManager::RazorPluginManager()
 {
     qDebug() << "Pluginmanager: initializing...";
-    //get the location of the pluginconfig
-    QString configfile = Razor::getInstance().get_settings()->getPath() +  Razor::getInstance().get_settings()->getString("plugin_config");
     //read the plugin config into our Readsettings
-    pluginsettings = new ReadSettings(configfile);
-    int num_panels = pluginsettings->getInt("num_bars");
-    qDebug() << "Pluginmanager: Making " << num_panels << " panels!";
-    //make the panels!
-    QString I,W;
-    for (int i=0; i < num_panels; i++)
+    cfg = new ReadSettings("panel");
+    QStringList panelNames = cfg->settings()->childGroups();
+    if (panelNames.count() == 0)
+        panelNames << "default";
+
+    foreach (QString panel, panelNames)
     {
-        Razor::getInstance().get_gui()->addPanel();
-        //get the number of widgets for this panel
-        I.setNum(i);
-        RazorBar * panel = Razor::getInstance().get_gui()->panel(i);
-        int num_widgets = pluginsettings->getInt("num_widgets_"+I);
-        qDebug() << "Pluginmanager: making " << num_widgets << " widgets of " << "num_widgets_"+I;
-        for (int w = 0; w < num_widgets; w++)
-        {
-            W.setNum(w);
-            QString plugin = pluginsettings->getString("bar"+I+"_widget_"+W);
-            qDebug() << "Pluginmanager: making plugin " << plugin << " out of " "bar"+I+"_widget_"+W;
-            addPlugin(plugin, panel);
-        }
-        // ensure all will be layouted correctly
-        panel->pluginSizeChanged();
+        qDebug() << "Pluginmanager: Making panels:" << panel;
+        createPanel(panel);
     }
+}
+
+void RazorPluginManager::createPanel(const QString & configId)
+{
+    int panelID = Razor::getInstance().get_gui()->addPanel(configId);
+    qDebug() << "ID" << panelID;
+    // TODO/FIXME: indexing is illogicall
+    RazorBar * panel = Razor::getInstance().get_gui()->panel(panelID-1);
+
+    QSettings * s = cfg->settings();
+    s->beginGroup(configId);
+    int count = s->beginReadArray("plugins");
+    QString dll;
+    QString dllConfigId;
+
+    for (int i = 0; i < count; ++i)
+    {
+        s->setArrayIndex(i);
+        dll = s->value("name", "").toString();
+        dllConfigId = s->value("config", "").toString();
+        addPlugin(dll, dllConfigId, panel);
+    }
+    s->endArray();
+
+    // simple defaults - to show something only if there is no config...
+    if (count == 0)
+    {
+        qDebug() << "No plugins in config id:" << configId << "using defaults";
+        addPlugin("desktopswitcher", "default", panel);
+        addPlugin("taskmanager", "default", panel);
+        addPlugin("clock", "default", panel);
+    }
+    // ensure all will be layouted correctly
+    panel->pluginSizeChanged();
+    s->endGroup();
 }
 
 /**
  * @brief adds a plugin to a bar
  */
-void RazorPluginManager::addPlugin(QString _plugin, RazorBar * panel)
+void RazorPluginManager::addPlugin(const QString & plugin, const QString & configId, RazorBar * panel)
 {
     RazorPlugin * plug;
-    // remove numbers from the name to get raw library name.
-    // Potential number goes into plugin in the "name" argument.
-    QString strippedName(_plugin);
-    strippedName.replace(QRegExp("[0-9]*"), "");
     // setup whole path to the library
-    QString plugName(PLUGIN_DIR + QString("librazorpanel_") + strippedName + ".so");
-    qDebug() << "PLUGIN: Loading plugin" << plugName;
+    QString plugName(PLUGIN_DIR + QString("librazorpanel_") + plugin + ".so");
+    qDebug() << "PLUGIN: Loading plugin" << plugName << "config id:" << configId;
 
     // check if the file exists. Probably debug only.
     QFileInfo fi(plugName);
@@ -77,7 +93,7 @@ void RazorPluginManager::addPlugin(QString _plugin, RazorBar * panel)
         return;
     }
 
-    plug = initFunc(panel, panel, _plugin);
+    plug = initFunc(panel, panel, configId);
     Q_ASSERT(plug);
     // now add the plug into the panel's layout.
     // it's easier to do it here instead to handle it in plugin itself

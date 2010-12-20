@@ -21,11 +21,13 @@
 class XdgIconThemeManager
 {
 public:
-    XdgIconThemeManager(QString _filename,XdgEnv* _env);
+    XdgIconThemeManager(const QString & _filename,XdgEnv* _env);
     ~XdgIconThemeManager();
     XdgIconThemeFile* get_activeTheme();
-    QIcon getIconNG(QString _iconname);
-    QString getIconpath(QString _iconfield, QString _desktopfilepath, QString _category="Applications");
+    QIcon getIconNG(const QString & _iconname);
+    QString getIconpath(const QString & _iconfield,
+                        const QString & _desktopfilepath,
+                        const QString & _category="Applications");
     QMap<QString, QString> legacyMap;
 private:
     QString theme;

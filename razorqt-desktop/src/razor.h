@@ -14,7 +14,7 @@ public:
     {
         return razorSettings;
     }
-    ReadSettings* themesettings()
+    ReadTheme* themesettings()
     {
         return themeSettings;
     }
@@ -35,7 +35,7 @@ private:
     Razor();
     Razor(Razor& cc);
     ReadSettings* razorSettings;
-    ReadSettings* themeSettings;
+    ReadTheme* themeSettings;
     XfitMan*	    xfitman;
     XdgEnv*	    xdgenv;
     XdgIconThemeManager* xdgicon;

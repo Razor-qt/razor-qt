@@ -15,7 +15,7 @@
  * @brief this uses the internal QIcon::fromTheme for getting the icons - the problem is: its qt 4.6 or later only!
  */
 
-QIcon XdgIconThemeManager::getIconNG(QString _iconname)
+QIcon XdgIconThemeManager::getIconNG(const QString & _iconname)
 {
     //if the names like bla.png - remove the .png
     if (_iconname.contains("."))
@@ -68,7 +68,7 @@ QIcon XdgIconThemeManager::getIconNG(QString _iconname)
  *@brief constructor with env and currently filename
  *@todo remove _filename parameter and make this thing search all paths for themes
  */
-XdgIconThemeManager::XdgIconThemeManager(QString _filename, XdgEnv* _env)
+XdgIconThemeManager::XdgIconThemeManager(const QString & _filename, XdgEnv* _env)
 {
     qDebug() << "Xdgiconthememanager: initialising...";
     iconEnv=_env;
@@ -143,7 +143,9 @@ XdgIconThemeManager::~XdgIconThemeManager()
  * @brief does the actual search for an icon by name or whatever!
  */
 
-QString XdgIconThemeManager::getIconpath(QString _iconfield, QString _desktopfilepath, QString _category)
+QString XdgIconThemeManager::getIconpath(const QString & _iconfield,
+                                         const QString & _desktopfilepath,
+                                         const QString & _category)
 {
     qDebug() << _iconfield << "  " << _desktopfilepath;
     if (_iconfield=="")

@@ -17,10 +17,10 @@ void RazorDeskManager::saveIconState()
         QString pos = x + "|" + y;
 
         qDebug() << pos;
-        deskicons->setValue(priviconList.at(i)->text(),pos);
+        //deskicons->setValue(priviconList.at(i)->text(),pos);
     }
-    deskicons->debugSettings();
-    deskicons->saveSettings();
+    //deskicons->debugSettings();
+    //deskicons->saveSettings();
 }
 
 void RazorDeskManager::showIcons()
@@ -50,6 +50,7 @@ void RazorDeskManager::restoreIconState()
     qDebug() << "restoring icon state!";
     for (int i = 0; i < priviconList.count(); i ++)
     {
+#if 0
         if (deskicons->getString(priviconList.at(i)->text()) != "")
         {
             qDebug() << "found saved position for: " << priviconList.at(i) << " value: " << deskicons->getString(priviconList.at(i)->text());
@@ -57,6 +58,7 @@ void RazorDeskManager::restoreIconState()
             QPoint npos(explode.at(0).toInt(), explode.at(1).toInt());
             priviconList.at(i)->setPos(npos);
         }
+#endif
     }
     qDebug() << "restoring done";
 }
@@ -67,8 +69,7 @@ RazorDeskManager::RazorDeskManager(RazorWorkSpace* _workspace)
 {
     qDebug() << "Initializing!!";
     workspace = _workspace;
-    deskicons=new ReadSettings("deskicons.conf");
-
+    deskicons = new ReadSettings("deskicons");
 }
 
 

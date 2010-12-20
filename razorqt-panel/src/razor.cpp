@@ -35,7 +35,8 @@ void Razor::setupEvents(int& argc, char** argv)
  */
 Razor::Razor()
 {
-    settings = new ReadSettings("razor.conf");
+    cfg = new ReadSettings("razor");
+    m_theme = new ReadTheme(cfg->settings()->value("theme", "").toString());
     rhandler = new RazorHandler;
 }
 
@@ -45,27 +46,10 @@ Razor::Razor()
  */
 bool Razor::setupGui()
 {
-    looknfeel = new ReadSettings(settings->getString("style_theme"));
-    if (looknfeel->hasError())
-    {
-        QMessageBox::warning(0, "Razor Panel GUI init failed", looknfeel->error());
-        return false;
-    }
+    xdgmanager = new XdgManager(cfg->settings()->value("icon_theme", "").toString());
+    ReadTheme theme(cfg->settings()->value("theme", "").toString());
+    razorevent->setStyleSheet(theme.qss());
 
-    xdgmanager = new XdgManager(settings->getString("icon_theme"));
-    //select stylesheet from theme
-    QFile stylesheet(looknfeel->getPath() + looknfeel->getString("panel_stylesheet"));
-    QString sheet="";
-    QString dirName = QFileInfo(stylesheet).canonicalPath();
-    if (stylesheet.exists())
-    {
-        stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
-        sheet=stylesheet.readAll();
-        qDebug() << Razor::getInstance().get_looknfeel()->getString("razorbar_height");
-        sheet.replace(QRegExp("url.[ \\t\\s]*", Qt::CaseInsensitive, QRegExp::RegExp2), "url(" + dirName + "/");
-    }
-    qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
-    razorevent->setStyleSheet(sheet);
     //make an xfitman and set the correct events for us to be parsed
     xman = new XfitMan;
     xman->setEventRoute();
@@ -85,8 +69,7 @@ Razor::~Razor()
     delete razorgui;
     delete xman;
     delete xdgmanager;
-    delete looknfeel;
-    delete settings;
+    delete cfg;
 }
 
 

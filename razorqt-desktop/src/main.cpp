@@ -9,18 +9,14 @@
 void legacyWallPaper()
 {
     //now we got the desktop we need to determine if the user wants a defined picture there
-    ReadSettings customPixmapSettings("desktop.conf");
-    QString finalPixmap = customPixmapSettings.getString("deskPixMap");
+    QString finalPixmap = Razor::getInstance().razorsettings()->settings()->value("background_image", "").toString();
     if (finalPixmap != "internal" && finalPixmap != "")
     {
         qDebug() << "Pixmap-custom ok: " << finalPixmap;
     }
     else //now we want to use the system default - we still need to find that one out though
     {
-        qDebug() << "trying to get system-defaults";
-        ReadSettings* styleSettings = Razor::getInstance().themesettings();
-        finalPixmap=styleSettings->getPath() + styleSettings->getString("desktop_background");
-
+        finalPixmap = Razor::getInstance().themesettings()->desktopBackground();
         qDebug() << "trying to get system-defaults" << finalPixmap;
     }
 
@@ -51,29 +47,24 @@ int main (int argc, char* argv[])
     //TODO make singleton QApplication that does all this shit, then make razorsettings and stylesettings available and fix all the other stuff with it
 
     QApplication app(argc,argv);
-    QFile stylesheet(Razor::getInstance().themesettings()->getPath() + Razor::getInstance().themesettings()->getString("panel_stylesheet"));
-    QString sheet="";
-    if (stylesheet.exists())
-    {
-        stylesheet.open(QIODevice::ReadOnly | QIODevice::Text);
-        sheet=stylesheet.readAll();
-    }
-    qDebug() << "loading sheet: " << stylesheet.fileName() << " with content: " << sheet;
-    app.setStyleSheet(sheet);
+    app.setStyleSheet(Razor::getInstance().themesettings()->qss());
 
-    if (Razor::getInstance().razorsettings()->getString("desktop_workspace")!= "1")
+    if (! Razor::getInstance().razorsettings()->settings()->value("desktop_workspace", false).toBool())
     {
         qDebug() << "Using root-window as wallpaper-canvas";
         legacyWallPaper();
         RazorDeskManagerLegacy* deskman=new RazorDeskManagerLegacy(NULL);
+        Q_UNUSED(deskman);
     }
     else
     {
         qDebug() << "Making workspace";
-        RazorWorkSpaceManager* workman = new RazorWorkSpaceManager; //theres work to be done here!
+        RazorWorkSpaceManager* workman = new RazorWorkSpaceManager(); //theres work to be done here!
         qDebug() << "making icons";
         RazorDeskManagerLegacy* deskman = new RazorDeskManagerLegacy(workman->getWorkSpace());
+        Q_UNUSED(deskman);
     }
+
     return app.exec();
 }
 

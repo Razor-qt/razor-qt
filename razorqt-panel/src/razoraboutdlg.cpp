@@ -14,13 +14,11 @@
  * @brief prepares the data to show and fills the form, then shows.
  */
 
-RazorAboutDLG::RazorAboutDLG(QString _about)
+RazorAboutDLG::RazorAboutDLG()
 {
-    ReadSettings mainSettings("razor.conf");
-    ReadSettings looknfeel(mainSettings.getString("style_theme"));
+    //ReadSettings mainSettings("razor.conf");
+    //ReadSettings looknfeel(mainSettings.getString("style_theme"));
 
-    //razorLabel->setPixmap(_about);
-    Q_UNUSED(_about);
     setupUi(this);
     QString tmp = "Version: ";
     tmp.append(RAZOR_VERSION);
@@ -31,8 +29,9 @@ RazorAboutDLG::RazorAboutDLG(QString _about)
     aboutText->insertPlainText("License: GPL \n");
     show();
     razorLabel->setScaledContents(true);
-    qDebug() << ((looknfeel.getPath()+looknfeel.getString("razormainmenu_icon")));
-    razorLabel->setPixmap(((QPixmap)(looknfeel.getPath()+looknfeel.getString("razormainmenu_icon"))));
+    // TODO/FIXME: icon from theme
+    //qDebug() << ((looknfeel.getPath()+looknfeel.getString("razormainmenu_icon")));
+    //razorLabel->setPixmap(((QPixmap)(looknfeel.getPath()+looknfeel.getString("razormainmenu_icon"))));
 }
 
 

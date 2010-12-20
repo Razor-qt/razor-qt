@@ -1,0 +1,9 @@
+stylesheet=default.qss
+desktop_background=bg/desktop/169/water.jpg
+splashscreen=splashscreen.png
+
+[icons]
+shutdown=icons/shutdown.png
+reboot=icons/reboot.png
+logout=icons/logout.png
+bout=icons/about.png

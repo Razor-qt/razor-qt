@@ -77,7 +77,8 @@ void RazorWorkSpaceManager::mouseClicked(QMouseEvent* _event)
     //maybe popup a menu or stuff - i dont know
 }
 
-RazorWorkSpaceManager::RazorWorkSpaceManager(QObject* parent): QObject(parent)
+RazorWorkSpaceManager::RazorWorkSpaceManager(QObject* parent)
+    : QObject(parent)
 {
 
     //this may actually make the icon work on multihead
@@ -93,18 +94,14 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(QObject* parent): QObject(parent)
 
 
     //now we got the desktop we need to determine if the user wants a defined picture there
-    ReadSettings customPixmapSettings("desktop.conf");
-    QString finalPixmap = customPixmapSettings.getString("deskPixMap");
+    QString finalPixmap = Razor::getInstance().razorsettings()->settings()->value("background_image", "").toString();
     if (finalPixmap != "internal" && finalPixmap != "")
     {
         qDebug() << "Pixmap-custom ok: " << finalPixmap;
     }
     else //now we want to use the system default - we still need to find that one out though
     {
-        qDebug() << "trying to get system-defaults";
-        ReadSettings* styleSettings = Razor::getInstance().themesettings();
-        finalPixmap=styleSettings->getPath() + styleSettings->getString("desktop_background");
-
+        finalPixmap = Razor::getInstance().themesettings()->desktopBackground();
         qDebug() << "trying to get system-defaults" << finalPixmap;
     }
 

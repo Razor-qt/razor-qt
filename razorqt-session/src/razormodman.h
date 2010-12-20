@@ -10,6 +10,14 @@
  * @brief declares class Razormodulemanager
  */
 
+    struct Module
+    {
+        bool power;
+        QProcess * process;
+    };
+    typedef QMap<QString,Module> ModulesMap;
+    typedef QMapIterator<QString,Module> ModulesMapIterator;
+
 /**
  * @brief this one manages the processes of the session and which modules of razor are to load
  */
@@ -18,18 +26,19 @@ class RazorModuleManager : public QObject
 {
     Q_OBJECT
 public:
-    RazorModuleManager(QString _modconfig,QObject* _parent = 0);
+    RazorModuleManager(QObject * parent = 0);
     virtual ~RazorModuleManager();
 
 
 public slots:
     void restartModules();
 
-
 private:
-    ReadSettings* modulesettings;
+    bool autorestart;
+    ReadSettings* cfg;
     RazorState* stateMan;
-    QMap<QString,QProcess*> procMap;
+
+    ModulesMap procMap;
 
 };
 

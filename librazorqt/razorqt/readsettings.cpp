@@ -1,21 +1,56 @@
-#ifndef READSETTINGS_CPP
-#define READSETTINGS_CPP
+#include <QDir>
+#include <QtDebug>
 #include "readsettings.h"
 
+#define RAZOR_HOME_CFG QDir::homePath() + "/.razor/"
 
-/**
- * @file readsettings.cpp
- * @author Christopher "VdoP" Regali
- * @brief implements the Readsettings class
- */
-
-
-/**
- * @brief destructor
- */
-ReadSettings::~ReadSettings()
+ReadSettings::ReadSettings(const QString & module, QObject * parent)
+    : QObject(parent),
+      m_module(module)
 {
+    if (!checkConfigDir())
+    {
+        qDebug() << "Cannot create user config dir";
+        Q_ASSERT(0);
+    }
 
+    QString homeFile(RAZOR_HOME_CFG + module + ".conf");
+
+    if (! QFile::exists(homeFile))
+    {
+        QString path(getSysPath(module + ".conf"));
+        if (path.isEmpty())
+        {
+            QFile f(homeFile);
+            if (! f.open(QIODevice::WriteOnly))
+            {
+                qDebug() << "Cannot open file" << path << "err:" << f.error();
+                Q_ASSERT(0);
+            }
+            f.close();
+        }
+        else
+        {
+            QFile f(path);
+            if (! f.copy(homeFile))
+            {
+                qDebug() << "Cannot copy file from:" << path << "to:" << RAZOR_HOME_CFG;
+                Q_ASSERT(0);
+            }
+            qDebug() << "Copied file:" << path << "into" << RAZOR_HOME_CFG;
+        }
+    }
+    else
+        qDebug() << "Config found in home dir:" << homeFile;
+
+    m_settings = new QSettings(homeFile, QSettings::IniFormat, this);
+}
+
+QSettings* ReadSettings::settings()
+{
+    if (! m_settings)
+        qDebug() << __FILE__ << ":" << __LINE__ << " ReadSettings::settings() settings instance is not initialized.";
+    return m_settings;
 }
 
 /**
@@ -23,27 +58,23 @@ ReadSettings::~ReadSettings()
  */
 QString ReadSettings::getSysPath(const QString & fileName)
 {
-    if (fileName.startsWith("/"))
-    {
-        return fileName;
-    }
+    qDebug() << "ssss" << fileName;
 
-    QStringList explode = fileName.split("/");
-    QString lastPart = explode.at(explode.count()-1);
     QString pathTemplate("%1/%2");
     QString test;
 
     // a hack to simplify the multiple file location tests
 #define TESTFILE(prefix)                            \
-    test = pathTemplate.arg( (prefix), lastPart );  \
+    qDebug() << "searching in" << (prefix) << fileName; \
+    test = pathTemplate.arg( (prefix), fileName );  \
+    qDebug() << "    test " << test; \
     if (QFile::exists(test))                        \
     {                                               \
-        qDebug() << "Readsettings: Config found in" << (prefix) << lastPart; \
+        qDebug() << "Readsettings: Config found in" << (prefix) << fileName; \
         return test;                                \
     }
 
-    // home dir
-    TESTFILE(QDir::homePath() + "/.razor/");
+    TESTFILE(RAZOR_HOME_CFG);
 
 #ifdef SHARE_DIR
     // test for non-standard install dirs - useful for development for example
@@ -60,113 +91,79 @@ QString ReadSettings::getSysPath(const QString & fileName)
 
     // die silently
     //! \todo TODO/FIXME: shouldn't be here something like "wraning and close"?
-    qDebug() << "Readsettings: could not find file " << fileName;
+    qDebug() << "ReadSettings: could not find file " << fileName;
     return "";
+}
+#include <QDir>
+bool ReadSettings::checkConfigDir()
+{
+    if ( !QFile::exists(RAZOR_HOME_CFG))
+    {
+        QDir d(QDir::home());
+        return d.mkdir(".razor");
+    }
+    return true;
 }
 
 
-
-
-/**
- *@brief does the actual parsing of the file
- */
-
-void ReadSettings::updateMap(const QString & fileName)
+ReadTheme::ReadTheme(const QString & name, QObject * parent)
+    : QObject(parent)
 {
-    configFile = getSysPath(fileName);
-
-    //it does not exist? so make it users-stuff
-    if (configFile.isEmpty())
+    QString path(ReadSettings::getSysPath(name));
+    if (path.isEmpty())
     {
-        //first check if path exists!
-        QDir dir(QDir::homePath());
-        dir.mkdir(".razor");
-        QString localFName(QDir::homePath()+"/.razor/"+fileName);
-        qDebug() << "Readsettings: created " << localFName;
-        QFile newfile(localFName);
-        QDateTime now = QDateTime::currentDateTime();
-        newfile.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream addcomment(&newfile);
-        addcomment << "# new file created by Readsettings on: " << now.toString() <<"\n";
-        //! \todo TODO/FIXME: some default config for ~ ?
-        newfile.close();
-    }
-
-    if (! QFile::exists(configFile))
-    {
-        errMsg = "File does not exists: " + configFile;
+        qDebug() << "Theme" << name << "cannot be found in any location";
         return;
     }
 
-    QSettings s(configFile, QSettings::IniFormat);
-    foreach (QString key, s.allKeys())
+    QString indexName(path + "/index.theme");
+    QSettings s(indexName, QSettings::IniFormat, this);
+
+    m_desktopBackground = s.value("desktop_background", "").toString();
+    if (!m_desktopBackground.isEmpty())
+        m_desktopBackground = path + "/" + m_desktopBackground;
+    qDebug() << "Theme: desktop_background = " << m_desktopBackground;
+
+    m_splashScreen = s.value("splashscreen", "").toString();
+    if (!m_splashScreen.isEmpty())
+        m_splashScreen = path + "/" + m_splashScreen;
+    qDebug() << "Theme: splashscreen = " << m_splashScreen;
+
+    m_qssPath = s.value("stylesheet", "").toString();
+    if ( !m_qssPath.isEmpty())
     {
-        settings[key] = s.value(key);
+        m_qssPath = path + "/" + m_qssPath;
+        if (!QFile::exists(m_qssPath))
+        {
+            qDebug() << "Theme: file does not exist" << m_qssPath;
+            return;
+        }
+
+        qDebug() << "Theme: Reading QSS from" << m_qssPath;
+        QFile f(m_qssPath);
+        if (! f.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            qDebug() << "Theme: Canot open file for reading:" << m_qssPath;
+            return;
+        }
+        m_qss = f.readAll();
+        f.close();
+        // handle relative paths
+        if (! m_qss.isEmpty())
+        {
+            qDebug() << "Theme: replace paths";
+            QString dirName = QFileInfo(m_qssPath).canonicalPath();
+            m_qss.replace(QRegExp("url.[ \\t\\s]*", Qt::CaseInsensitive, QRegExp::RegExp2), "url(" + dirName + "/");
+        }
     }
+    else
+        qDebug() << "Theme: QSS is not defined in the style";
 
-    QFileInfo fi(configFile);
-    // all other code expects that getPath will contain the trailing /
-    tplPath = fi.absolutePath() + "/";
-}
-
-
-/**
- * @brief constructor of this class
- */
-ReadSettings::ReadSettings(const QString & fileName)
-{
-    qDebug() << "Readsettings: initialising... " << fileName;
-    updateMap(fileName);
-}
-
-/**
- * @brief writes the settings back to the file
- */
-void ReadSettings::saveSettings()
-{
-    QSettings s(configFile, QSettings::IniFormat);
-    SettingsMapIterator Iter(settings);
-
-    while (Iter.hasNext())
+    s.beginGroup("icons");
+    foreach (QString key, s.childKeys())
     {
-        Iter.next();
-        s.setValue(Iter.key(), Iter.value());
+        m_icons[key] = path + "/" + s.value(key, "").toString();
+        qDebug() << "Theme: icon" << key << "=" << m_icons[key];
     }
-    qDebug() << "Readsettings: written to " << configFile;
+    s.endGroup();
 }
-
-
-
-/**
- * @brief gives back a value as a string by key
- */
-QString ReadSettings::getString(const QString & key)
-{
-    return settings.value(key).toString();
-}
-
-/**
- * @brief gives back a value as an int by key
- */
-int ReadSettings::getInt(const QString & key)
-{
-    bool ok;
-    int ret = settings.value(key).toInt(&ok);
-    if (!ok)
-    {
-        qDebug() << "Readsettings::getInt ERROR: cannot convert" << key << settings.value(key) << " to int";
-        //! \todo TODO/FIXME: some nice error handling would be fine...
-        return -1;
-    }
-    return ret;
-}
-
-/**
- * @brief sets a _key to _value.. creates of necessary
- */
-void ReadSettings::setValue(const QString & key, const QVariant & value)
-{
-    settings[key] = value;
-}
-
-#endif

@@ -48,39 +48,23 @@ message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 
 set ( razor-panel_HDRS
 	src/defs.h
-	#src/razordevplugin.h
 	src/razor.h
-	#src/razorclock.h
 	src/razoraboutdlg.h
 	src/razorgui.h
 	src/razorversion.h
-	#src/razortask.h
 	src/razorplugin.h
 	src/razorpluginmanager.h
-	#src/razortray.h
-	#src/razorquicklaunch.h
 	)
 
 set ( razor-panel_SRCS
 	src/main.cpp
 	src/razor.cpp
 	src/razorevent.cpp
-	#src/razorbartask.cpp
-	#src/razorlogoutmenu.cpp
 	src/razoraboutdlg.cpp
 	src/razorpluginmanager.cpp
-	#src/razorclock.cpp
 	src/razorbar.cpp
-	#src/razordevplugin.cpp
-	#src/razorcmd.cpp
-	#src/razortray.cpp
 	src/razorgui.cpp
-	#src/razorspinbutton.cpp
-	#src/razordeskswitch.cpp
 	src/razorhandler.cpp
-	#src/razormainmenu.cpp
-	#src/razortask.cpp
-	#src/razorquicklaunch.cpp
 	)
 
 set ( razor-panel_UIS
@@ -91,19 +75,8 @@ QT4_WRAP_UI(UIS ${razor-panel_UIS})
 set ( razor-panel_MOCS
     src/razorplugin.h
 	src/razorbar.h
-	#src/razordevplugin.h
 	src/razorevent.h
 	src/razorhandler.h
-	#src/razormainmenu.h
-	#src/razorlogoutmenu.h
-	#src/razorclock.h
-	#src/razorcmd.h
-	#src/razordeskswitch.h
-	#src/razorspinbutton.h
-	#src/razorbartask.h
-    #src/razortask.h
- 	#src/razortray.h
-	#src/razorquicklaunch.h
 	)
 QT4_WRAP_CPP(MOCS ${razor-panel_MOCS})
 
@@ -112,53 +85,58 @@ target_link_libraries ( razor-panel  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${
 INSTALL(TARGETS razor-panel RUNTIME DESTINATION bin)
 
 #dev plugin
-QT4_WRAP_CPP(devplugin_moc src/razordevplugin.h)
-add_library(razorpanel_devplugin SHARED ${devplugin_moc} src/razordevplugin.cpp)
+QT4_WRAP_CPP(devplugin_moc plugin-devplugin/razordevplugin.h)
+add_library(razorpanel_devplugin SHARED ${devplugin_moc} plugin-devplugin/razordevplugin.cpp)
 target_link_libraries(razorpanel_devplugin ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_devplugin DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(clock_moc src/razorclock.h)
-add_library(razorpanel_clock SHARED ${clock_moc} src/razorclock.cpp)
+QT4_WRAP_CPP(clock_moc plugin-clock/razorclock.h)
+add_library(razorpanel_clock SHARED ${clock_moc} plugin-clock/razorclock.cpp)
 target_link_libraries(razorpanel_clock ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_clock DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(deskswitch_moc src/razordeskswitch.h)
-add_library(razorpanel_desktopswitcher SHARED ${deskswitch_moc} src/razordeskswitch.cpp)
+QT4_WRAP_CPP(deskswitch_moc plugin-deskswitch/razordeskswitch.h)
+add_library(razorpanel_desktopswitcher SHARED ${deskswitch_moc} plugin-deskswitch/razordeskswitch.cpp)
 target_link_libraries(razorpanel_desktopswitcher ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_desktopswitcher DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(logoutmenu_moc src/razorlogoutmenu.h)
-add_library(razorpanel_logoutmenu SHARED ${logoutmenu_moc} src/razorlogoutmenu.cpp)
+QT4_WRAP_CPP(logoutmenu_moc plugin-logoutmenu/razorlogoutmenu.h)
+add_library(razorpanel_logoutmenu SHARED ${logoutmenu_moc} plugin-logoutmenu/razorlogoutmenu.cpp)
 target_link_libraries(razorpanel_logoutmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_logoutmenu DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(quicklaunch_moc src/razorquicklaunch.h)
-add_library(razorpanel_quicklaunch SHARED ${quicklaunch_moc} src/razorquicklaunch.cpp)
+QT4_WRAP_CPP(quicklaunch_moc plugin-quicklaunch/razorquicklaunch.h)
+add_library(razorpanel_quicklaunch SHARED ${quicklaunch_moc} plugin-quicklaunch/razorquicklaunch.cpp)
 target_link_libraries(razorpanel_quicklaunch ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_quicklaunch DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(spinbutton_moc src/razorspinbutton.h)
-add_library(razorpanel_razorspinbutton SHARED ${spinbutton_moc} src/razorspinbutton.cpp)
+QT4_WRAP_CPP(spinbutton_moc plugin-spinbutton/razorspinbutton.h)
+add_library(razorpanel_razorspinbutton SHARED ${spinbutton_moc} plugin-spinbutton/razorspinbutton.cpp)
 target_link_libraries(razorpanel_razorspinbutton ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_razorspinbutton DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(tray_moc src/razortray.h)
-add_library(razorpanel_traybar SHARED ${tray_moc} src/razortray.cpp)
+QT4_WRAP_CPP(tray_moc plugin-tray/razortray.h)
+add_library(razorpanel_traybar SHARED ${tray_moc} plugin-tray/razortray.cpp)
 target_link_libraries(razorpanel_traybar ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_traybar DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(mainmenu_moc src/razormainmenu.h)
-add_library(razorpanel_mainmenu SHARED ${mainmenu_moc} src/razormainmenu.cpp)
-target_link_libraries(razorpanel_mainmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-install(TARGETS razorpanel_mainmenu DESTINATION ${PLUGIN_DIR})
+# to be replaced with alex's stuff
+#QT4_WRAP_CPP(mainmenu_moc src/razormainmenu.h)
+#add_library(razorpanel_mainmenu SHARED ${mainmenu_moc} src/razormainmenu.cpp)
+#target_link_libraries(razorpanel_mainmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+#install(TARGETS razorpanel_mainmenu DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(cmd_moc src/razorcmd.h)
-add_library(razorpanel_cmd SHARED ${cmd_moc} src/razorcmd.cpp)
+QT4_WRAP_CPP(cmd_moc plugin-command/razorcmd.h)
+add_library(razorpanel_cmd SHARED ${cmd_moc} plugin-command/razorcmd.cpp)
 target_link_libraries(razorpanel_cmd ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_cmd DESTINATION ${PLUGIN_DIR})
 
-QT4_WRAP_CPP(taskmanager_moc src/razortask.h src/razorbartask.h)
-add_library(razorpanel_taskmanager SHARED ${taskmanager_moc} src/razortask.cpp src/razorbartask.cpp)
+QT4_WRAP_CPP(taskmanager_moc plugin-taskbar/razortask.h plugin-taskbar/razorbartask.h)
+add_library(razorpanel_taskmanager SHARED ${taskmanager_moc} plugin-taskbar/razortask.cpp plugin-taskbar/razorbartask.cpp)
 target_link_libraries(razorpanel_taskmanager ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_taskmanager DESTINATION ${PLUGIN_DIR})
 
+QT4_WRAP_CPP(spacer_moc plugin-spacer/spacer.h)
+add_library(razorpanel_spacer SHARED ${spacer_moc} plugin-spacer/spacer.cpp)
+target_link_libraries(razorpanel_spacer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+install(TARGETS razorpanel_spacer DESTINATION ${PLUGIN_DIR})

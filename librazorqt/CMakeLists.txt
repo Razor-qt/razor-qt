@@ -52,6 +52,7 @@ set ( razorqt_MOCS
 	razorqt/xdgmanager.h
 	razorqt/xdgmenu.h
 	razorqt/xdgreader.h
+    razorqt/readsettings.h
 	)
 QT4_WRAP_CPP(MOCS ${razorqt_MOCS})
 

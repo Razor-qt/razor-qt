@@ -3,7 +3,7 @@
 
 #include "razor.h"
 #include "razorgui.h"
-#include "razormainmenu.h"
+//#include "razormainmenu.h"
 #include "razorbar.h"
 /**
  * @file razorgui.cpp
@@ -26,9 +26,9 @@ RazorGUI::RazorGUI()
  * @brief adds a new Razorbar panel
  * @return the number of the created panel
  */
-int RazorGUI::addPanel()
+int RazorGUI::addPanel(const QString & configId)
 {
-    RazorBar* newpanel = new RazorBar;
+    RazorBar* newpanel = new RazorBar(configId);
     Window wid = newpanel->effectiveWinId();
     windowList.append(wid);
     //reserve our space on the screen

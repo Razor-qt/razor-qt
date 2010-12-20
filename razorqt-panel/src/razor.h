@@ -33,14 +33,6 @@ public:
     {
         return xdgmanager;
     }
-    ReadSettings* get_settings()
-    {
-        return settings;
-    }
-    ReadSettings* get_looknfeel()
-    {
-        return looknfeel;
-    }
     RazorHandler* get_handler()
     {
         return rhandler;
@@ -57,14 +49,18 @@ public:
     {
         return pluginmanager;
     }
+    ReadTheme * theme()
+    {
+        return m_theme;
+    }
 private:
     int argc;
     char** argv;
     Razor();
     Razor(Razor& cc);
     RazorHandler* rhandler;
-    ReadSettings* settings;
-    ReadSettings* looknfeel;
+    ReadSettings* cfg;
+    ReadTheme * m_theme;
     XfitMan* xman;
     XdgManager* xdgmanager;
     RazorGUI* razorgui;

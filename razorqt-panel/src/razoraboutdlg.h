@@ -15,7 +15,7 @@
 class RazorAboutDLG: public Ui_about, public QDialog
 {
 public:
-    RazorAboutDLG(QString _about);
+    RazorAboutDLG();
 };
 
 

@@ -11,11 +11,14 @@ Razor &Razor::getInstance()
 
 Razor::Razor()
 {
-    razorSettings = new ReadSettings("razor.conf");
-    themeSettings = new ReadSettings(razorSettings->getString("style_theme"));
+    razorSettings = new ReadSettings("razor");
+    themeSettings = new ReadTheme(razorSettings->settings()->value("theme", "").toString());
     xfitman = new XfitMan();
     xdgenv = new XdgEnv();
-    xdgicon = new XdgIconThemeManager(razorSettings->getString("icon_theme"),xdgenv);
+    QString iconTheme(razorSettings->settings()->value("icon_theme", "").toString());
+    if (iconTheme.isEmpty())
+        Q_ASSERT_X(0, "iconTheme is empty", "cannot continue without icon_theme in razor.conf!");
+    xdgicon = new XdgIconThemeManager(iconTheme, xdgenv);
 }
 
 

@@ -18,16 +18,17 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    ReadSettings initset("razor.conf");
+    ReadSettings cfg("razor");
+    ReadTheme theme(cfg.settings()->value("theme", "").toString());
 
-    RazorModuleManager modman(initset.getPath() + initset.getString("module_config"));
+    QString splashPixmap(theme.splashScreen());
+    if (!splashPixmap.isEmpty())
+    {
+        QSplashScreen splash(splashPixmap);
+    }
 
-    //i only use stack-variables here as we kill this program anyway...
-    QString splashset = initset.getString("splashscreen");
-    RazorSplash Splash(splashset);
-
-
-
-
+    RazorModuleManager modman;
+    // TODO/FIXME: there was waiting for 5 sec to show splash longer...
+    // personally I don't like it, but it;s no prob to return it again
     return app.exec();
 }

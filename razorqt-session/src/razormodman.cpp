@@ -11,40 +11,41 @@
 /**
  * @brief the constructor, needs a valid modules.conf
  */
-RazorModuleManager::RazorModuleManager(QString _modconfig, QObject* _parent)
+RazorModuleManager::RazorModuleManager(QObject* parent)
+    : QObject(parent)
 {
-    Q_UNUSED(_parent);
     stateMan = new RazorState;
-    modulesettings = new ReadSettings(_modconfig);
-    int modcount = modulesettings->getInt("count");
-    qDebug() << "Settings geladen.. module:" << modcount;
+    cfg = new ReadSettings("session", this);
 
+    QSettings * s = cfg->settings();
+    autorestart = s->value("autorestart", true).toBool();
 
-
-    //maybe make this a config entry one day :)
-    bool autorestart = true;
-
-    QString num;
+    int count = s->beginReadArray("modules");
     QString cmd;
-    for (int i = 0; i < modcount; i ++)
+    for (int i = 0; i < count; ++i)
     {
-        int power;
-        num.setNum(i);
-        cmd = modulesettings->getString("module_"+num);
-        power = modulesettings->getInt("module_"+num+"_doespower");
+        s->setArrayIndex(i);
+        cmd = s->value("exec", "").toString();
+        if (cmd.isEmpty())
+        {
+            qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
+            continue;
+        }
+        bool power = s->value("power", false).toBool();
 
         QProcess* tmp = new QProcess(this);
         tmp->start(cmd);
-        if (power == 1)
+        if (power)
             stateMan->addProcess(tmp);
-
-
 
         if (autorestart)
             connect(tmp, SIGNAL(finished(int)),this,SLOT(restartModules()));
-
-        procMap[cmd]=tmp;
+        Module m;
+        m.power = power;
+        m.process = tmp;
+        procMap[cmd] = m;
     }
+    s->endArray();
 }
 
 /**
@@ -53,13 +54,14 @@ RazorModuleManager::RazorModuleManager(QString _modconfig, QObject* _parent)
 void RazorModuleManager::restartModules()
 {
     qDebug() << "void Razormodulemanager::restartModules() called and it's wrong. Something is failing";
-    for (int i = 0; i < procMap.values().count(); i++)
-    {
-        qDebug() << procMap.keys().at(i) << procMap.values().at(i);
-        if (procMap.values().at(i)->state() == QProcess::NotRunning)
+
+    ModulesMapIterator i(procMap);
+    while (i.hasNext()) {
+        i.next();
+        if (i.value().process->state() == QProcess::NotRunning)
         {
-            qDebug() << "    has been restarted";
-            procMap.values().at(i)->start(procMap.keys().at(i));
+            qDebug() << i.key() << "has been restarted";
+            i.value().process->start(i.key());
         }
     }
 }
@@ -70,9 +72,20 @@ void RazorModuleManager::restartModules()
  */
 RazorModuleManager::~RazorModuleManager()
 {
-    delete modulesettings;
-    for (int i = 0; i < procMap.values().count(); i ++)
-        delete procMap.values().at(i);
+    QSettings * s = cfg->settings();
+    s->setValue("autorestart", autorestart);
+    s->beginWriteArray("modules");
+    ModulesMapIterator i(procMap);
+    int ix = 0;
+    while (i.hasNext()) {
+        i.next();
+        s->setArrayIndex(ix);
+        s->setValue("exec_name", i.key());
+        s->setValue("power", i.value().power);
+        ++ix;
+        delete i.value().process;
+    }
+    //
     delete stateMan;
 }
 
