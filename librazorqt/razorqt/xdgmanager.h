@@ -29,7 +29,7 @@ class XdgManager : public QObject
 {
     Q_OBJECT
 public:
-    XdgManager(QString _icontheme);
+    XdgManager(const QString & _icontheme);
     ~XdgManager();
     XdgEnv* get_xdgenv();
     XdgMenu* get_xdgmenu();

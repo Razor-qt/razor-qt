@@ -58,8 +58,6 @@ QSettings* ReadSettings::settings()
  */
 QString ReadSettings::getSysPath(const QString & fileName)
 {
-    qDebug() << "ssss" << fileName;
-
     QString pathTemplate("%1/%2");
     QString test;
 

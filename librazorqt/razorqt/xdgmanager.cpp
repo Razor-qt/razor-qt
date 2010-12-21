@@ -21,7 +21,7 @@
  * @brief The constructor of the class,
  * initializes the components and sets our xdg-variables
  */
-XdgManager::XdgManager(QString _icontheme)
+XdgManager::XdgManager(const QString & _icontheme)
 {
     qDebug() << "Xdgmanager: Initialising..." << _icontheme;
     //set and get variables first
@@ -31,27 +31,30 @@ XdgManager::XdgManager(QString _icontheme)
     /**
      * @todo here can maybe sometime follow a nicer implementation using the environmentals and stuff
      */
-    QFile* testfile = new QFile(_icontheme);
-    if (testfile->exists())
+    if (QFile::exists(_icontheme))
         xdgiconthememanager = new XdgIconThemeManager(_icontheme,xdgenv);
     else
     {
-        delete testfile;
-        testfile = new QFile("/usr/share/icons/nuvola/index.theme");
-        if (testfile->exists())
-            xdgiconthememanager = new XdgIconThemeManager("/usr/share/icons/nuvola/index.theme",xdgenv);
-        else
+        QStringList failback;
+        failback << "/usr/share/icons/oxygen/index.theme"
+                 << "/usr/share/icons/Tango/index.theme"
+                 << "/usr/share/icons/nuvola/index.theme"
+                 << "/usr/share/icons/hicolor/index.theme";
+        foreach (QString theme, failback)
         {
-            delete testfile;
-            testfile = new QFile("/usr/share/icons/gnome/index.theme");
-            if (testfile->exists())
-                xdgiconthememanager = new XdgIconThemeManager("/usr/share/icons/gnome/index.theme",xdgenv);
+            qDebug() << "Looking for failback icon theme:" << theme;
+            if (QFile::exists(theme))
+            {
+                xdgiconthememanager = new XdgIconThemeManager(theme, xdgenv);
+                qDebug() << "    LOADED";
+                break;
+            }
+            else
+                qDebug() << "    skipped - not found";
         }
     }
     xdgmenu = new XdgMenu(xdgenv, xdgiconthememanager);
     xdgautostart = new XdgAutoStart(xdgenv);
-    delete testfile;
-
 }
 
 /**
