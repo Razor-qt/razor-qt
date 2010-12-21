@@ -4,6 +4,7 @@
 #include "defs.h"
 
 class RazorTask;
+class RazorBar;
 class RazorPlugin;
 
 /**
@@ -51,7 +52,7 @@ class RazorBarTask :public QLabel
 {
     Q_OBJECT
 public:
-    RazorBarTask(RazorPlugin* _owner);
+    RazorBarTask(RazorPlugin* _owner, RazorBar * panel);
     ~RazorBarTask();
     void updateTasks(QMap<Window, RazorTask*>* _list);
     void makeUp();
@@ -66,10 +67,11 @@ private:
     Window active;
     //returns a pointer to the plugin owning this gui-widget
     RazorPlugin* owner;
+    RazorBar * m_panel;
     //maps a WindowId to the corresponding bartaskentry
     QMap<Window,RazorBarTaskEntry*> taskMap;
     //makes our layout
-    QHBoxLayout* Layout;
+    QBoxLayout* Layout;
     QString pixm;
     QPixmap qpm;
     void addItem(QWidget* _newtaskentry);

@@ -139,7 +139,7 @@ RazorTaskManager::RazorTaskManager(RazorBar * panel, QWidget * parent, const QSt
 {
     qDebug() << "Razortaskmanager init";
     //now we setup our gui element
-    gui = new RazorBarTask(this);
+    gui = new RazorBarTask(this, panel);
     mainLayout()->addWidget(gui);
 
     //now we need an updated map for the clients running

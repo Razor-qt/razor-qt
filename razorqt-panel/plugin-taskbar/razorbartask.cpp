@@ -5,6 +5,7 @@
 #include "razortask.h"
 #include "razor.h"
 #include "razorplugin.h"
+#include "razorbar.h"
 
 
 /**
@@ -17,21 +18,22 @@
 /**
  * @brief constructor
  */
-RazorBarTask::RazorBarTask(RazorPlugin* _owner)
+RazorBarTask::RazorBarTask(RazorPlugin* _owner, RazorBar * panel)
+    : QLabel(_owner),
+      owner(_owner),
+      m_panel(panel)
 {
     qDebug() << "Razorbartask initializing...";
 
-    owner=  _owner;
-
-    Layout = new QHBoxLayout;
-    setScaledContents(true);
+    if (m_panel->topbottom())
+        Layout = new QHBoxLayout();
+    else
+        Layout = new QVBoxLayout();
+    //setScaledContents(true);
     Layout->setSpacing(0);
     Layout->setMargin(0);
-
-//    if (!Razor::getInstance().get_looknfeel()->getString("taskbar_background").isEmpty())
-//    {
-//        setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getString("taskbar_background")));
-//    }
+    // automatic spacer at the end is handled in updateTasks()
+    Layout->addStretch();
 
     makeUp();
 }
@@ -51,9 +53,6 @@ void RazorBarTask::updateFocus()
     for (int i=0; i < taskMap.values().count(); i++)
       if (Razor::getInstance().get_Xfitman()->requiresAttention(taskMap.keys().at(i)))
 	taskMap.values().at(i)->focusGlow();
-
-
-
 }
 
 /**
@@ -100,6 +99,10 @@ RazorBarTask::~RazorBarTask()
  */
 void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
 {
+    // at first - we have to remove auto-spacer. It's re-appended at
+    // the end of this method.
+    delete Layout->takeAt(Layout->count()-1);
+
     //we need to get gui and backbone in sync so first get the actual clientlist we dont care how its updated or stuff
     QMapIterator<Window, RazorBarTaskEntry*> iter (taskMap);
     //now at first we purge the list
@@ -131,6 +134,19 @@ void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
         {
             //prepare it
             RazorBarTaskEntry* newitem = new RazorBarTaskEntry(clientIter.value(), this);
+            // Some layout settings has to be done here (removed from RazorBarTaskEntry)
+            if (m_panel->topbottom())
+            {
+                newitem->setFixedHeight(owner->height());
+                // here simulate legacy "divide by 3 at least" splitting
+                newitem->setMaximumWidth(owner->width()/qMin(_list->count(), 3));
+                newitem->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+            }
+            else
+            {
+                newitem->setFixedWidth(owner->width());
+                newitem->setMaximumHeight(m_panel->width());
+            }
             //add it to our internal list
             taskMap[clientIter.key()] = newitem;
 
@@ -155,6 +171,9 @@ void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
         newiter.next();
         taskMap.value(newiter.key())->makeUp();
     }
+
+    //! Re-append the auto spacer.
+    Layout->addStretch();
 }
 
 
@@ -216,18 +235,6 @@ void RazorBarTaskEntry::doAction(bool _checked)
  */
 void RazorBarTaskEntry::makeUp()
 {
-
-    //set width - first get the count of the entries
-    int count = owner->getEntryCount();
-    //we dont want the buttons to get too fat so if there are less than 3 buttons - assume there are 3 anyway
-    if (count < 3)
-        count = 3;
-    //leave some space for deco but else just use all the space we get
-    setFixedWidth(owner->width()/count);
-
-
-    setFixedHeight(owner->height()-5);
-    //setPixmap((QPixmap)(Razor::getInstance().get_looknfeel()->getPath() +  Razor::getInstance().get_looknfeel()->getValue("task_background")));
     QString name = QApplication::fontMetrics().elidedText(linkedTask->getTitle(), Qt::ElideRight, width()-width()/3);
     if (linkedTask->isHidden())
     {

@@ -89,20 +89,26 @@ void RazorBar::addWidget(RazorPlugin* _widget,int _stretch, Qt::Alignment _align
     //save this widget in the barItems list
     barItems[_widget] = 0; //_widget->widthForHeight(height());
     connect(_widget, SIGNAL(sizeChanged()), this, SLOT(pluginSizeChanged()));
+
+    if (topbottom())
+        _widget->setFixedHeight(size);
+    else
+        _widget->setFixedWidth(size);
 }
 
 void RazorBar::pluginSizeChanged()
 {
     qDebug() << sender() << " asked for relayout";
     qDebug() << "    panel items=" << barItems;
-    int widthAvail = width();
+    int widthAvail = topbottom() ? width() : height();
     qDebug() << "    panel width=" << widthAvail;
     QList<RazorPlugin*> wToGrowth;
 
     foreach(RazorPlugin * w, barItems.keys())
     {
         widthAvail -= Layout->spacing();
-        int newDimension = w->widthForHeight(height());
+        int newDimension = topbottom() ? w->widthForHeight(height())
+                                       : w->heightForWidth(width());
         if (barItems[w] == newDimension)
         {
             qDebug() << w << "the same size";
@@ -114,7 +120,10 @@ void RazorBar::pluginSizeChanged()
             qDebug() << w << "new size" << newDimension;
             barItems[w] = newDimension;
             widthAvail -= newDimension;
-            w->setWidth(newDimension);
+            if (topbottom())
+                w->setWidth(newDimension);
+            else
+                w->setHeight(newDimension);
             continue;
         }
         qDebug() << w << "new dynamic";
@@ -128,7 +137,10 @@ void RazorBar::pluginSizeChanged()
     foreach(RazorPlugin * w, wToGrowth)
     {
         qDebug() << w << "expanding:" << res;
-        w->setWidth(res);
+        if (topbottom())
+            w->setWidth(res);
+        else
+            w->setHeight(res);
     }
 }
 
