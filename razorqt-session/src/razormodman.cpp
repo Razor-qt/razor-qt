@@ -31,7 +31,7 @@ RazorModuleManager::RazorModuleManager(QObject* parent)
             qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
             continue;
         }
-        bool power = s->value("power", false).toBool();
+        bool power = s->value("doespower", false).toBool();
 
         QProcess* tmp = new QProcess(this);
         tmp->start(cmd);
@@ -58,7 +58,8 @@ void RazorModuleManager::restartModules()
     ModulesMapIterator i(procMap);
     while (i.hasNext()) {
         i.next();
-        if (i.value().process->state() == QProcess::NotRunning)
+        if (i.value().power
+            && i.value().process->state() == QProcess::NotRunning)
         {
             qDebug() << i.key() << "has been restarted";
             i.value().process->start(i.key());
