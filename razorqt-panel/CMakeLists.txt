@@ -140,3 +140,6 @@ QT4_WRAP_CPP(spacer_moc plugin-spacer/spacer.h)
 add_library(razorpanel_spacer SHARED ${spacer_moc} plugin-spacer/spacer.cpp)
 target_link_libraries(razorpanel_spacer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 install(TARGETS razorpanel_spacer DESTINATION ${PLUGIN_DIR})
+
+
+add_subdirectory( plugin-battery )
