@@ -45,7 +45,6 @@ HEADERS += src/defs.h \
 SOURCES += src/readsettings.cpp \
            src/xdgautostart.cpp \
            src/xdgdesktopfile.cpp \
-           src/xdgenv.cpp \
            src/xdgiconthemefile.cpp \
            src/xdgiconthememanager.cpp \
            src/xdgmanager.cpp \

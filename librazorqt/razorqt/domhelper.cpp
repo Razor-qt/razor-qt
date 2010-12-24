@@ -16,33 +16,29 @@
 
 *********************************************************************/
 
-#ifndef RAZOR_MAINMENU_H
-#define RAZOR_MAINMENU_H
+#ifndef DOMHELPER_H
+#define DOMHELPER_H
 
-#include "defs.h"
-#include "razorplugin.h"
-#include <QPushButton>
+#include <QtCore/QDebug>
+#include <QtXml/QDomElement>
+#include <QtXml/QDomNode>
 
-class RazorMainMenu : public RazorPlugin
+
+/************************************************
+
+ ************************************************/
+QDebug operator<<(QDebug dbg, const QDomElement &el)
 {
-    Q_OBJECT
-public:
-    RazorMainMenu(RazorBar * panel, QWidget * parent, const QString & name=0);
-    ~RazorMainMenu();
+    QDomNamedNodeMap map = el.attributes();
 
-    int widthForHeight(int h) { return mButton.sizeHint().width(); }
-    int heightForWidth(int w) { return w; }
-    RazorPlugin::RazorPluginSizing sizePriority() { return RazorPlugin::Static; }
+    QString args;
+    for (int i=0; i<map.count(); ++i)
+        args += " " + map.item(i).nodeName() + "='" + map.item(i).nodeValue() + "'";
 
-signals:
+    dbg.nospace() << QString("<%1%2>%3</%1>").arg(el.tagName()).arg(args).arg(el.text());
+    return dbg.space();
+}
 
-protected:
-    QPushButton mButton;
 
-private slots:
-    void showMenu();
-};
 
-extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);
-
-#endif
+#endif // DOMHELPER_H

@@ -3,6 +3,7 @@
 
 
 #include "xdgmanager.h"
+#include "xdgenv.h"
 
 /**
  * @file xdgmanager.cpp
@@ -25,14 +26,15 @@ XdgManager::XdgManager(const QString & _icontheme)
 {
     qDebug() << "Xdgmanager: Initialising..." << _icontheme;
     //set and get variables first
-    xdgenv = new XdgEnv();
-    xdgenv->setEnv();
+    //TODO: Is this need?
+    //xdgenv = new XdgEnv();
+    //xdgenv->setEnv();
 
     /**
      * @todo here can maybe sometime follow a nicer implementation using the environmentals and stuff
      */
     if (QFile::exists(_icontheme))
-        xdgiconthememanager = new XdgIconThemeManager(_icontheme,xdgenv);
+        xdgiconthememanager = new XdgIconThemeManager(_icontheme);
     else
     {
         QStringList failback;
@@ -45,7 +47,7 @@ XdgManager::XdgManager(const QString & _icontheme)
             qDebug() << "Looking for failback icon theme:" << theme;
             if (QFile::exists(theme))
             {
-                xdgiconthememanager = new XdgIconThemeManager(theme, xdgenv);
+                xdgiconthememanager = new XdgIconThemeManager(theme);
                 qDebug() << "    LOADED";
                 break;
             }
@@ -53,8 +55,7 @@ XdgManager::XdgManager(const QString & _icontheme)
                 qDebug() << "    skipped - not found";
         }
     }
-    xdgmenu = new XdgMenu(xdgenv, xdgiconthememanager);
-    xdgautostart = new XdgAutoStart(xdgenv);
+    xdgautostart = new XdgAutoStart();
 }
 
 /**
@@ -77,27 +78,7 @@ XdgManager::~XdgManager()
 {
     qDebug() << "Xdgmanager: dying";
     delete xdgiconthememanager;
-    delete xdgmenu;
     delete xdgautostart;
-    delete xdgenv;
-}
-
-
-/**
- * @brief returns a pointer to the xdgenv subsystem
- */
-XdgEnv* XdgManager::get_xdgenv()
-{
-    return xdgenv;
-}
-
-/**
- * @brief returns a pointer to the xdgmenu subsystem
- */
-
-XdgMenu* XdgManager::get_xdgmenu()
-{
-    return xdgmenu;
 }
 
 

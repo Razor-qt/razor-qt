@@ -27,24 +27,22 @@ void RazorDeskManagerLegacy::getFileList()
         if (desktop_file_iter.filePath().endsWith(".desktop")) //only use .desktop files!
         {
             XdgDesktopFile* tmp = new XdgDesktopFile(desktop_file_iter.filePath());
-            tmp->parseFile();
 
-            if (tmp->getValue("Hidden")=="true" || tmp->getValue("NotShowIn")=="razor" ||
-                    ((tmp->getValue("OnlyShowIn") != "") && !tmp->getValue("OnlyShowIn").contains("razor")) )
-                badNames.push_back(tmp->getValue("Name")); //this is needed as std says all with the same name get removed by one entry with these flags too
-            else
+            if (tmp->isShow())
                 itemList.append(tmp);
+            else
+                badNames.push_back(tmp->value("Name").toString()); //this is needed as std says all with the same name get removed by one entry with these flags too
         }
     }
 
     qDebug() << "badnames: " << badNames;
-    qDebug() << "itemlist: " << itemList;
+    //qDebug() << "itemlist: " << itemList;
 
 
     //purge the badones
     for (int i=0; i < itemList.count(); i++)
     {
-        if (badNames.contains(itemList.at(i)->getValue("Name")))
+        if (badNames.contains(itemList.at(i)->value("Name").toString()))
         {
             qDebug() << "Deleting item!";
             delete itemList.at(i);
@@ -77,11 +75,11 @@ void RazorDeskManagerLegacy::showIcons()
     for (int i = 0; i < itemList.count() ; i++)
     {
         QPoint pos(x,y);
-        RazorDeskIconData* tmp = new RazorDeskIconData(Razor::getInstance().geticontheme()->getIconNG(itemList.at(i)->getValue("Icon")),
-                itemList.at(i)->getValue("Name"),
-                itemList.at(i)->getValue("Comment"),
+        RazorDeskIconData* tmp = new RazorDeskIconData(Razor::getInstance().geticontheme()->getIconNG(itemList.at(i)->value("Icon").toString()),
+                itemList.at(i)->value("Name").toString(),
+                itemList.at(i)->value("Comment").toString(),
                 pos, workSpace());
-        tmp->setData(itemList.at(i)->getValue("Exec"));
+        tmp->setData(itemList.at(i)->value("Exec").toString());
         connect(tmp, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
         //iconplacer.moveWindowtoDesktop(tmp->getWin(),-1);
         y += 100;

@@ -1,37 +1,88 @@
+/********************************************************************
+  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License.
+  version 2 as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software Foundation,
+  Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+*********************************************************************/
+
 #ifndef XDGENV_H
 #define XDGENV_H
 
-#include "defs.h"
-#include <stdio.h>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <stdlib.h>
-//2010 Chris "VdoP" Regali
-//sets and gets Environmental variables of XDG
 
-
-/**
- * @file xdgenv.h
- * @brief Declares the class Xdgenv
- * @date 9.9.2010 (DDMMYYYY)
- * @author Christopher "VdoP" Regali
-  */
-
-
-/**
- * @brief Does all the Handling for the XDG-Environmental Variables
- */
-class XdgEnv : public QObject
+class XdgEnv
 {
-    Q_OBJECT
 public:
-    XdgEnv();
-    ~XdgEnv();
-    void updateEnv();
-    QString getEnv(QString _name);
-    void setEnv();
-    void debugEnv();
-private:
-    QMap<QString, QString> envStore;
+    /************************************************
+     *
+     ************************************************/
+    static
+    QString configDirs()
+    {
+        QStringList dirs = QString(getenv("XDG_CONFIG_DIRS")).split(':', QString::SkipEmptyParts);
+        if (!dirs.isEmpty())
+        {
+            for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
+            {
+                if ((*i).startsWith('~'))
+                    *i = QString(getenv("HOME")) + (*i).mid(1);
+            }
+
+            return dirs.join(":");
+        }
+
+        return "/etc/xdg";
+    }
+
+
+    /************************************************
+     *
+     ************************************************/
+    static
+    QString configHome()
+    {
+        QString result(getenv("XDG_CONFIG_HOME"));
+        if (!result.isEmpty())
+            return result;
+
+        return QString("%1/.config").arg(getenv("HOME"));
+    }
+
+
+    /************************************************
+     *
+     ************************************************/
+    static
+    QString dataDirs()
+    {
+        QStringList dirs = QString(getenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
+        if (!dirs.isEmpty())
+        {
+            for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
+            {
+                if ((*i).startsWith('~'))
+                    *i = QString(getenv("HOME")) + (*i).mid(1);
+            }
+
+            return dirs.join(":");
+        }
+
+        return "/usr/local/share/:/usr/share/";
+    }
+
 };
 
-
-#endif
+#endif // XDGENV_H

@@ -10,6 +10,7 @@
   */
 
 #include "xdgiconthememanager.h"
+#include "xdgenv.h"
 
 /**
  * @brief this uses the internal QIcon::fromTheme for getting the icons - the problem is: its qt 4.6 or later only!
@@ -65,13 +66,12 @@ QIcon XdgIconThemeManager::getIconNG(const QString & _iconname)
 
 
 /**
- *@brief constructor with env and currently filename
+ *@brief constructor with currently filename
  *@todo remove _filename parameter and make this thing search all paths for themes
  */
-XdgIconThemeManager::XdgIconThemeManager(const QString & _filename, XdgEnv* _env)
+XdgIconThemeManager::XdgIconThemeManager(const QString & _filename)
 {
     qDebug() << "Xdgiconthememanager: initialising...";
-    iconEnv=_env;
 
     //prepare this for getIconNG
 

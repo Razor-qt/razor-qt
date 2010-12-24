@@ -1,161 +1,63 @@
-#ifndef RAZOR_MAINMENU_CPP
-#define RAZOR_MAINMENU_CPP
+/********************************************************************
+  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License.
+  version 2 as published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software Foundation,
+  Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+*********************************************************************/
+
 #include "razormainmenu.h"
 #include "razor.h"
+#include <QDebug>
+#include <razorqt/xdgdesktopfile.h>
 
-/**
- * @file razormainmenu.cpp
- * @brief implements the classes Razormainmenu and Razormenu
- * @author Christopher "VdoP" Regali
- */
+
+/************************************************
+
+ ************************************************/
 RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
 {
-    RazorMenu *ret = new RazorMenu(panel, parent, name);
+    RazorMainMenu * ret = new RazorMainMenu(panel, parent, name);
     Q_ASSERT(ret);
     return ret;
 }
 
-/**
- * @brief the constructor
- */
-RazorMenu::RazorMenu(RazorBar * panel, QWidget * parent, const QString & name)
-    : RazorPluginSquare(panel, parent, name)
-{
-    //we only need to make the gui
-    gui = new RazorMainMenu(this);
-    mainLayout()->addWidget(gui);
-}
 
-/**
- * @brief the destructor
- */
-RazorMenu::~RazorMenu()
+/************************************************
+
+ ************************************************/
+RazorMainMenu::RazorMainMenu(RazorBar * panel, QWidget * parent, const QString & name):
+    RazorPlugin(panel, parent, name)
 {
-    //todo here: remove the widget cleanly too
-    //delete gui;
+    mainLayout()->addWidget(&mButton);
+    connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+    mButton.setText("Razor");
 }
 
 
+/************************************************
 
-
-/**
- * @brief this creates our mainmenu and gets the xdg-menus for it
- */
-void RazorMainMenu::createMenus()
-{
-    //make the menu
-    mainMenu = new QMenu;
-    // add the basic actions (shutdown and stuff)
-
-    // 1 create the actions
-    shutdown = new QAction((QIcon)Razor::getInstance().get_Xdgmanager()->get_xdgiconthememanager()->getIconpath("system-shutdown","","Actions"), tr("Shutdown"),this);
-    reboot = new QAction((QIcon)Razor::getInstance().get_Xdgmanager()->get_xdgiconthememanager()->getIconpath("system-reboot","","Actions"), tr("Reboot"),this);
-    logout = new QAction((QIcon)Razor::getInstance().get_Xdgmanager()->get_xdgiconthememanager()->getIconpath("system-logout","","Actions"), tr("Logout"),this);
-    about = new QAction((QIcon)Razor::getInstance().get_Xdgmanager()->get_xdgiconthememanager()->getIconpath("help-about","","Actions"), tr("about"),this);
-
-    // 2 link with handler
-    connect(shutdown, SIGNAL(triggered()), Razor::getInstance().get_handler(),SLOT(sys_shutdown()));
-
-    connect(reboot, SIGNAL(triggered()), Razor::getInstance().get_handler(),SLOT(sys_reboot()));
-    connect(logout, SIGNAL(triggered()), Razor::getInstance().get_handler(),SLOT(sys_logout()));
-    connect(about, SIGNAL(triggered()), Razor::getInstance().get_handler(),SLOT(gui_showabout()));
-
-
-    //add the xdg-menu
-    //prepare it first
-    Razor::getInstance().get_Xdgmanager()->get_xdgmenu()->getFilelist();
-    Razor::getInstance().get_Xdgmanager()->get_xdgmenu()->readMenufile();
-    Razor::getInstance().get_Xdgmanager()->get_xdgmenu()->assignIcons();
-    Razor::getInstance().get_Xdgmanager()->get_xdgmenu()->feedTree();
-    // then add it
-    mainMenu->addMenu(Razor::getInstance().get_Xdgmanager()->get_xdgmenu()->get_QMenus());
-    mainMenu->addSeparator();
-    // 3 add our custom actions
-    mainMenu->addAction(about);
-    mainMenu->addAction(logout);
-    mainMenu->addAction(reboot);
-    mainMenu->addAction(shutdown);
-
-
-}
-
-/**
- * @brief this initializes us
- */
-RazorMainMenu::RazorMainMenu(RazorPluginSquare* parent)
-    : QLabel(parent)
-{
-    makeUp();
-    createMenus();
-}
-
-/**
- * @brief cleans up our mess
- */
+ ************************************************/
 RazorMainMenu::~RazorMainMenu()
 {
-    delete mainMenu;
-    delete logout;
-    delete reboot;
-    delete shutdown;
-    delete about;
 }
 
 
-/**
- * @brief makes up the menu and style
- */
+/************************************************
 
-void RazorMainMenu::makeUp()
+ ************************************************/
+void RazorMainMenu::showMenu()
 {
-    int barheight = Razor::getInstance().get_looknfeel()->getInt("razorbar_height");
-    setFixedSize(barheight, barheight );
-    icon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razormainmenu_icon");
-    //setPixmap( ((QPixmap)icon ).scaled(barheight - 5, barheight - 5));
-    picon = ((QPixmap)icon ).scaled(barheight - 2, barheight - 2);
-    acticon = Razor::getInstance().get_looknfeel()->getPath() + Razor::getInstance().get_looknfeel()->getString("razormainmenu_acticon");
-    //setPixmap( ((QPixmap)icon ).scaled(barheight - 5, barheight - 5));
-    actpicon = ((QPixmap)acticon ).scaled(barheight, barheight);
-    setPixmap(picon);
-    show();
+    XdgDesktopFile::execute("konsole");
 }
 
-/**
- * @brief makes the menu popup
- */
-
-void RazorMainMenu::mousePressEvent(QMouseEvent* _event)
-{
-    if (_event->button() == Qt::LeftButton)
-    {
-        QPoint popuppos = mapToGlobal(QPoint(0,0));
-        popuppos.setY(popuppos.y()-mainMenu->sizeHint().height()-5);
-        mainMenu->popup(popuppos);
-    }
-}
-
-
-/**
- * @brief makes the menu glow on mouseover
- */
-
-void RazorMainMenu::enterEvent(QEvent* _event)
-{
-    Q_UNUSED(_event);
-    setPixmap(actpicon);
-
-}
-
-/**
- * @brief makes the menu glow on mouseover
- */
-
-void RazorMainMenu::leaveEvent(QEvent* _event)
-{
-    Q_UNUSED(_event);
-    setPixmap(picon);
-}
-
-
-
-#endif

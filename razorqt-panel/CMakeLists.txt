@@ -121,8 +121,8 @@ target_link_libraries(razorpanel_traybar ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY
 install(TARGETS razorpanel_traybar DESTINATION ${PLUGIN_DIR})
 
 # to be replaced with alex's stuff
-#QT4_WRAP_CPP(mainmenu_moc src/razormainmenu.h)
-#add_library(razorpanel_mainmenu SHARED ${mainmenu_moc} src/razormainmenu.cpp)
+#QT4_WRAP_CPP(mainmenu_moc plugin-mainmenu/razormainmenu.h)
+#add_library(razorpanel_mainmenu SHARED ${mainmenu_moc} plugin-mainmenu/razormainmenu.cpp)
 #target_link_libraries(razorpanel_mainmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #install(TARGETS razorpanel_mainmenu DESTINATION ${PLUGIN_DIR})
 

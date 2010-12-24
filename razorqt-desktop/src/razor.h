@@ -2,7 +2,6 @@
 #define RAZOR_H
 #include <razorqt/readsettings.h>
 #include <razorqt/xfitman.h>
-#include <razorqt/xdgenv.h>
 #include <razorqt/xdgiconthememanager.h>
 
 class Razor
@@ -22,10 +21,6 @@ public:
     {
         return xfitman;
     }
-    XdgEnv* getxdgenv()
-    {
-        return xdgenv;
-    }
     XdgIconThemeManager* geticontheme()
     {
         return xdgicon;
@@ -37,7 +32,6 @@ private:
     ReadSettings* razorSettings;
     ReadTheme* themeSettings;
     XfitMan*	    xfitman;
-    XdgEnv*	    xdgenv;
     XdgIconThemeManager* xdgicon;
 };
 

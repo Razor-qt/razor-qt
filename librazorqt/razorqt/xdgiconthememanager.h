@@ -11,7 +11,6 @@
 
 #include "defs.h"
 #include "xdgiconthemefile.h"
-#include "xdgenv.h"
 
 
 /**
@@ -21,7 +20,7 @@
 class XdgIconThemeManager
 {
 public:
-    XdgIconThemeManager(const QString & _filename,XdgEnv* _env);
+    XdgIconThemeManager(const QString & _filename);
     ~XdgIconThemeManager();
     XdgIconThemeFile* get_activeTheme();
     QIcon getIconNG(const QString & _iconname);
@@ -36,7 +35,6 @@ private:
     QStringList foundThemes;
     XdgIconThemeFile* activeTheme;
     XdgIconThemeFile* fallbackTheme;
-    XdgEnv* iconEnv;
 
 };
 

@@ -13,7 +13,6 @@
   **/
 
 #include "defs.h"
-#include "xdgenv.h"
 #include "xdgdesktopfile.h"
 
 /**
@@ -23,7 +22,6 @@
 class XdgAutoStart
 {
 public:
-    XdgAutoStart(XdgEnv* _env);
     XdgAutoStart();
     ~XdgAutoStart();
     QVector<XdgDesktopFile>* get_List();
@@ -34,7 +32,6 @@ public:
 
 private:
     QVector<XdgDesktopFile> autoList;
-    XdgEnv* autoEnv;
     QStringList badNames;
 
 };
