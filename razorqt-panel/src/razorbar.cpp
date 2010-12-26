@@ -23,6 +23,8 @@ RazorBar::RazorBar(const QString & configId)
     s->beginGroup(m_configId);
     size = s->value("size", 32).toInt();
     m_position = (Position)(s->value("position", 0).toInt());
+    m_align = (Alignment)(s->value("align", 1).toInt());
+    m_screen = s->value("screen", -1).toInt();
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::WindowStaysOnTopHint);
     // this enables to view tooltips if they are set in the subwidgets
@@ -51,28 +53,53 @@ RazorBar::RazorBar(const QString & configId)
     // the panel (full width). It prevents over-monitors-broken task manager
     // TODO: it canm be configured in the theme of course. But no high priority.
     QDesktopWidget * dw = QApplication::desktop();
-    if (dw->screenCount() == 1)
+    if (m_screen > dw->screenCount()-1)
     {
-        //! \todo TODO/FIXME - align (left, right, center) and something like KDE3 panel "arrow"
-        sizeLimit = s->value("size_limit", topbottom() ? dw->width() : dw->height()).toInt();
-        topbottom() ? setFixedWidth(sizeLimit)
-                    : setFixedHeight(sizeLimit);
-        if (m_position == Bottom)
-            move(dw->screenGeometry(-1).x(), QApplication::desktop()->height() - height());
-        else
-            move(dw->screenGeometry(-1).x(), 0);
+        qDebug() << "Panel cfg requests screen" << m_screen << "but system has only" << dw->screenCount();
+        qDebug() << "    resetting to -1";
+        m_screen = -1;
     }
-    else
+
+    sizeLimit = s->value("size_limit", topbottom() ? dw->screenGeometry(m_screen).width()
+                                                   : dw->screenGeometry(m_screen).height()).toInt();
+    topbottom() ? setFixedWidth(sizeLimit)
+                : setFixedHeight(sizeLimit);
+    int pos;
+    switch (m_align)
     {
-        sizeLimit = s->value("size_limit", topbottom() ? dw->screenGeometry(-1).width()
-                                                       : dw->screenGeometry(-1).height()).toInt();
-        topbottom() ? setFixedWidth(sizeLimit)
-                    : setFixedHeight(sizeLimit);
-        if (m_position == Left)
-            move(dw->screenGeometry(-1).x(), 0);
-        else
-            move(dw->screenGeometry(-1).x()+dw->screenGeometry(-1).width()-size, 0);
+        case TopLeft:
+            pos = 0;
+            break;
+        case BottomRight:
+            if (topbottom())
+                pos = dw->screenGeometry(m_screen).width() - width();
+            else
+                pos = dw->screenGeometry(m_screen).height() - height();
+            break;
+        case Center:
+            if (topbottom())
+                pos = (dw->screenGeometry(m_screen).width()/2) - (width()/2);
+            else
+                pos = (dw->screenGeometry(m_screen).height()/2) - (height()/2);
+            break;
     }
+    switch (m_position)
+    {
+        case Left:
+            move(dw->screenGeometry(m_screen).x(), pos);
+            break;
+        case Right:
+            move(dw->screenGeometry(m_screen).x() + dw->screenGeometry(m_screen).width() - size,
+                 pos);
+            break;
+        case Top:
+            move(dw->screenGeometry(m_screen).x() + pos, 0);
+            break;
+        case Bottom:
+            move(dw->screenGeometry(m_screen).x() + pos,
+                 dw->screenGeometry(m_screen).height() - size);
+            break;
+    };
     qDebug() << "Panel size limit:" << sizeLimit;
 
     s->endGroup();

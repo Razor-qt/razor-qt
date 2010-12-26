@@ -27,6 +27,13 @@ public:
         Right
     };
 
+    enum Alignment
+    {
+        TopLeft = 0,
+        Center,
+        BottomRight
+    };
+
     RazorBar(const QString & configId);
     ~RazorBar();
     void addWidget(RazorPlugin* _widget,int _stretch, Qt::Alignment _align);
@@ -53,6 +60,8 @@ private:
     //! width for top/bottom, height for left/right
     int sizeLimit;
     Position m_position;
+    Alignment m_align;
+    int m_screen;
 
     // plugin - its size
     QMap<RazorPlugin*, int> barItems;
