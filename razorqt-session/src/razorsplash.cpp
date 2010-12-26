@@ -1,53 +1,19 @@
-#ifndef RAZORSPLASH_CPP
-#define RAZORSPLASH_CPP
 #include "razorsplash.h"
-/**
-*@file razorsplash.cpp
-*@brief implements class Razorsplash
-*@author Christopher "VdoP" Regali
-*/
 
+#include <QTimer>
+#include <QtDebug>
 
-
-/**
-*@brief constructs everything and shows the splash
-*@todo create a class derived from QLabel that emits a clicked() event!
-*/
-RazorSplash::RazorSplash(QString _splashtheme)
+RazorSplash::RazorSplash(const QString & paper, int sec)
+    : QSplashScreen(paper)
 {
-    //read settings from given theme
-    settings = new ReadSettings(_splashtheme);
-
-    QString splashpic = settings->getPath() +  settings->getString("splashpic");
-    int splashtimeout = settings->getInt("splashtime");
-    int hideonclick = settings->getInt("hideonclick");
-
-    splashscreen = new QDialog;
-    splashscreen->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::WindowStaysOnTopHint);
-    splashscreen->setAttribute(Qt::WA_X11NetWmWindowTypeSplash);
-
-    //now set a size of the splashscreen
-    splashscreen->setFixedHeight(QApplication::desktop()->height()*.25);
-    splashscreen->setFixedWidth(2*splashscreen->height());
-    splashscreen->move((QApplication::desktop()->width()-splashscreen->width())/2, (QApplication::desktop()->height()-splashscreen->height())/2);
-    splashscreen->show();
-
-    splashgfx = new RazorLabel(splashscreen);
-    splashgfx->move(0,0);
-    splashgfx->setFixedSize(splashscreen->width(),splashscreen->height());
-
-    splashgfx->setPixmap(((QPixmap)splashpic).scaled(splashscreen->width(),splashscreen->height()));
-    splashgfx->show();
+    qDebug() << "Splash: init" << paper << "for" << sec << "seconds";
+    show();
 
     //setup the timing
-    timeout = new QTimer;
+    timeout = new QTimer(this);
     timeout->setSingleShot(true);
-    connect (timeout, SIGNAL(timeout()),splashscreen,SLOT(hide()));
-    timeout->start(splashtimeout);
-    //hide on click!
-    if (hideonclick != 0)
-        connect(splashgfx,SIGNAL(clicked()),splashscreen,SLOT(hide()));
-
+    connect (timeout, SIGNAL(timeout()), this, SLOT(hide()));
+    timeout->start(sec * 1000);
 }
 
 /**
@@ -55,12 +21,5 @@ RazorSplash::RazorSplash(QString _splashtheme)
 */
 RazorSplash::~RazorSplash()
 {
-    splashscreen->hide();
-    delete splashgfx;
-    delete timeout;
-    delete splashscreen;
-    delete settings;
+    hide();
 }
-
-
-#endif

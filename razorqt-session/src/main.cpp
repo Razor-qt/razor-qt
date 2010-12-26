@@ -24,11 +24,12 @@ int main(int argc, char **argv)
     QString splashPixmap(theme.splashScreen());
     if (!splashPixmap.isEmpty())
     {
-        QSplashScreen splash(splashPixmap);
+        // TODO/FIXME: personally I don't like it's waiting here. Configurable?
+        // we are fast so there is no reason for splash at all
+        // -- petr
+        RazorSplash * splash = new RazorSplash(splashPixmap, 5);
     }
 
     RazorModuleManager modman;
-    // TODO/FIXME: there was waiting for 5 sec to show splash longer...
-    // personally I don't like it, but it;s no prob to return it again
     return app.exec();
 }

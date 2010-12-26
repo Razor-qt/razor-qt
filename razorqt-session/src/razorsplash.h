@@ -1,33 +1,21 @@
 #ifndef RAZORSPLASH_H
 #define RAZORSPLASH_H
 
-#include "defs.h"
-#include <razorqt/readsettings.h>
-#include "razorlabel.h"
-
-/**
-*@file razorsplash.h
-*@brief declares class Razorsplash
-*@author Christopher "VdoP" Regali
-*/
+#include <QSplashScreen>
 
 
 /**
-*@brief manages the splash-screen
+*@brief constructs everything and shows the splash
 */
-class RazorSplash:public QObject
+class RazorSplash : public QSplashScreen
 {
     Q_OBJECT
 public:
-    RazorSplash(QString _splashtheme);
+    RazorSplash(const QString & paper, int sec);
     ~RazorSplash();
 
 private:
     QTimer* timeout;
-    QDialog* splashscreen;
-    RazorLabel* splashgfx;
-    ReadSettings* settings;
-
 };
 
 
