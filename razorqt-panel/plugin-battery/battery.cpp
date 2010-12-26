@@ -13,6 +13,7 @@ Battery::Battery(RazorBar * panel, QWidget * parent, const QString & name)
 {
     info = new QSystemDeviceInfo(this);
     gui = new QLabel(this);
+    gui->setScaledContents(true);
     mainLayout()->addWidget(gui);
 
     connect(info, SIGNAL(batteryLevelChanged(int)),

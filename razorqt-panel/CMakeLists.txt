@@ -9,7 +9,7 @@ endif (NOT CMAKE_BUILD_TYPE)
 macro( setByDefault VAR_NAME VAR_VALUE )
   if (NOT DEFINED ${VAR_NAME})
     set (${VAR_NAME} ${VAR_VALUE})
-  endif (NOT DEFINED ${VAR_NAME})  
+  endif (NOT DEFINED ${VAR_NAME})
 endmacro()
 
 
@@ -30,7 +30,7 @@ setByDefault(MAINMENU_PLUGIN    No  )
 setByDefault(COMMAND_PLUGIN     Yes )
 setByDefault(TASKBAR_PLUGIN     Yes )
 setByDefault(SPACER_PLUGIN      Yes )
-setByDefault(BATTARY_PLUGIN     No  )
+setByDefault(BATTERY_PLUGIN     No  )
 
 # *******************************************************************
 
@@ -216,13 +216,13 @@ if (SPACER_PLUGIN)
 endif (SPACER_PLUGIN)
 
 
-if (BATTARY_PLUGIN)
-  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Battary")
+if (BATTERY_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Battery")
   add_subdirectory( plugin-battery )
-endif (BATTARY_PLUGIN)
+endif (BATTERY_PLUGIN)
 
 message(STATUS  "***************************************")
-message(STATUS  "Will be built following plugins:") 
+message(STATUS  "Will be built following plugins:")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
   message(STATUS   "    * ${PLUGIN_STR}")
 endforeach()
