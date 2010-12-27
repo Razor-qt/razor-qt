@@ -46,6 +46,30 @@ RazorModuleManager::RazorModuleManager(QObject* parent)
         procMap[cmd] = m;
     }
     s->endArray();
+	
+	int delay = s->value("autostart_delay", 1).toInt();
+	QTimer::singleShot(delay * 1000, this, SLOT(autoStartSingleShot()));
+}
+
+void RazorModuleManager::autoStartSingleShot()
+{
+    QSettings * s = cfg->settings();
+    int count = s->beginReadArray("autostart");
+	QString cmd;
+    for (int i = 0; i < count; ++i)
+    {
+        s->setArrayIndex(i);
+        cmd = s->value("exec", "").toString();
+        if (cmd.isEmpty())
+        {
+            qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
+            continue;
+        }
+        QProcess* tmp = new QProcess(this);
+        tmp->start(cmd);
+		autostartList << tmp;
+    }
+    s->endArray();
 }
 
 /**
@@ -73,19 +97,32 @@ void RazorModuleManager::restartModules()
  */
 RazorModuleManager::~RazorModuleManager()
 {
-    QSettings * s = cfg->settings();
-    s->setValue("autorestart", autorestart);
-    s->beginWriteArray("modules");
+//    QSettings * s = cfg->settings();
+//    s->setValue("autorestart", autorestart);
+//    s->beginWriteArray("modules");
+	// modules
     ModulesMapIterator i(procMap);
-    int ix = 0;
-    while (i.hasNext()) {
+//    int ix = 0;
+    while (i.hasNext())
+	{
         i.next();
-        s->setArrayIndex(ix);
-        s->setValue("exec_name", i.key());
-        s->setValue("power", i.value().power);
-        ++ix;
-        delete i.value().process;
+//        s->setArrayIndex(ix);
+//        s->setValue("exec_name", i.key());
+//        s->setValue("power", i.value().power);
+//        ++ix;
+		QProcess * p = i.value().process;
+		if (!p->waitForFinished())
+			qDebug() << "Module" << p << "rejected to close correctly. Kill it down.";
+        delete p;
     }
+	// autostart
+	foreach (QProcess * p, autostartList)
+	{
+		p->terminate();
+		if (!p->waitForFinished())
+			qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
+		delete p;
+	}
     //
     delete stateMan;
 }

@@ -22,14 +22,14 @@ set ( razor-session_SRCS
 	src/main.cpp
 	src/razorsplash.cpp
 	src/razormodman.cpp
-	src/razorlabel.cpp
+	#src/razorlabel.cpp
 	src/razorstate.cpp
 	)
 
 set ( razor-session_MOCS
     src/razorstate.h
 	src/razorsplash.h
-	src/razorlabel.h
+	#src/razorlabel.h
 	src/razormodman.h
 	)
 QT4_WRAP_CPP(MOCS ${razor-session_MOCS})

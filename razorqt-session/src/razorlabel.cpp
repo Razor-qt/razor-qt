@@ -1,6 +1,6 @@
 #ifndef RAZORLABEL_CPP
 #define RAZORLABEL_CPP
-
+#if 0
 #include "razorlabel.h"
 /**
 *@file razorlabel.cpp
@@ -27,5 +27,5 @@ RazorLabel::RazorLabel( QWidget* _parent) : QLabel(_parent)
 }
 
 
-
+#endif
 #endif

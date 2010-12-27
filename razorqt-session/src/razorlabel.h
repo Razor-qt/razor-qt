@@ -1,5 +1,6 @@
 #ifndef RAZORLABEL_H
 #define RAZORLABEL_H
+#if 0
 #include <QString>
 #include <QLabel>
 #include <QWidget>
@@ -27,5 +28,5 @@ protected:
     void mousePressEvent(QMouseEvent* _event);
 };
 
-
+#endif
 #endif
