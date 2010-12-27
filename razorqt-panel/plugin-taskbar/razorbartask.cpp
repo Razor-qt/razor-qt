@@ -162,8 +162,8 @@ void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
         {
             item->setFixedHeight(owner->height());
             // here simulate legacy "divide by 3 at least" splitting
-            item->setMaximumWidth(owner->width()/qMin(_list->count(), 3));
-            item->setMinimumWidth(owner->width()/qMin(_list->count(), 3));
+            item->setMaximumWidth(owner->width()/qMax(_list->count(), 3));
+            item->setMinimumWidth(owner->width()/qMax(_list->count(), 3));
             item->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
         }
         else
