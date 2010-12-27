@@ -2,6 +2,8 @@ cmake_minimum_required( VERSION 2.6 )
 
 install(DIRECTORY config/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
 # TODO/FIXME: install kdm/gdm files too
+# this file should be enough but it needs testing...
+install(FILES sys/razor.desktop DESTINATION share/xsessions)
 
 #
 #IF (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")

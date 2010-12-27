@@ -134,20 +134,6 @@ void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
         {
             //prepare it
             RazorBarTaskEntry* newitem = new RazorBarTaskEntry(clientIter.value(), this);
-            // Some layout settings has to be done here (removed from RazorBarTaskEntry)
-            if (m_panel->topbottom())
-            {
-                newitem->setFixedHeight(owner->height());
-                // here simulate legacy "divide by 3 at least" splitting
-                newitem->setMaximumWidth(owner->width()/qMin(_list->count(), 3));
-                newitem->setMinimumWidth(owner->width()/qMin(_list->count(), 3));
-                newitem->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-            }
-            else
-            {
-                newitem->setFixedWidth(owner->width());
-                newitem->setMaximumHeight(m_panel->width());
-            }
             //add it to our internal list
             taskMap[clientIter.key()] = newitem;
 
@@ -170,7 +156,23 @@ void RazorBarTask::updateTasks(QMap<Window, RazorTask*>* _list)
     while (newiter.hasNext())
     {
         newiter.next();
-        taskMap.value(newiter.key())->makeUp();
+		RazorBarTaskEntry * item = taskMap.value(newiter.key());
+            // Some layout settings has to be done here (removed from RazorBarTaskEntry)
+        if (m_panel->topbottom())
+        {
+            item->setFixedHeight(owner->height());
+            // here simulate legacy "divide by 3 at least" splitting
+            item->setMaximumWidth(owner->width()/qMin(_list->count(), 3));
+            item->setMinimumWidth(owner->width()/qMin(_list->count(), 3));
+            item->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+        }
+        else
+        {
+            item->setFixedWidth(owner->width());
+            item->setMaximumHeight(m_panel->width());
+        }
+
+        item->makeUp();
     }
 
     //! Re-append the auto spacer.

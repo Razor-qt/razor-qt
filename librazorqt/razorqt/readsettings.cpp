@@ -92,7 +92,7 @@ QString ReadSettings::getSysPath(const QString & fileName)
     qDebug() << "ReadSettings: could not find file " << fileName;
     return "";
 }
-#include <QDir>
+
 bool ReadSettings::checkConfigDir()
 {
     if ( !QFile::exists(RAZOR_HOME_CFG))
