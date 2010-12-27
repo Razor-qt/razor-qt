@@ -70,23 +70,29 @@ QIcon XdgIconThemeManager::getIconNG(const QString & _iconname)
  *@todo remove _filename parameter and make this thing search all paths for themes
  */
 XdgIconThemeManager::XdgIconThemeManager(const QString & _filename)
+	: activeTheme(0),
+	  fallbackTheme(0)
 {
     qDebug() << "Xdgiconthememanager: initialising...";
 
     //prepare this for getIconNG
+	
+	if (! _filename.isEmpty())
+	{
+		QStringList tmp = _filename.split("/");
+		tmp.removeLast();
+		theme = tmp.last();
+		tmp.removeLast();
+		themePath = tmp.join("/");
 
-    QStringList tmp = _filename.split("/");
-    tmp.removeLast();
-    theme = tmp.last();
-    tmp.removeLast();
-    themePath = tmp.join("/");
-
-
-
-
-    activeTheme=new XdgIconThemeFile(_filename);
-    activeTheme->parseFile();
-    activeTheme->searchDirs();
+		activeTheme=new XdgIconThemeFile(_filename);
+		activeTheme->parseFile();
+		activeTheme->searchDirs();
+	}
+	else
+	{
+		theme = "hicolor";
+	}
     //this is for fallback but needs also to be set via xdgenv!
     //actually hacked for bsd-compat
     QFile test("/usr/share/icons/");
@@ -137,6 +143,8 @@ XdgIconThemeManager::XdgIconThemeManager(const QString & _filename)
  */
 XdgIconThemeManager::~XdgIconThemeManager()
 {
+	if (activeTheme) delete activeTheme;
+    if (fallbackTheme) delete fallbackTheme;
 }
 
 /**
@@ -171,16 +179,24 @@ QString XdgIconThemeManager::getIconpath(const QString & _iconfield,
             return pixmaptest.fileName();
     }
 
+	QString icon_file;
+
     //forth try get it from active theme!
-    QString icon_file = activeTheme->searchIcon(iconpurged,_category);
-    if (icon_file != "")
-        return icon_file;
+	if (activeTheme)
+	{
+		icon_file = activeTheme->searchIcon(iconpurged,_category);
+		if (icon_file != "")
+			return icon_file;
+	}
 
     //fifth try: use fallback theme!
 
-    icon_file = fallbackTheme->searchIcon(iconpurged, _category);
-    if (icon_file != "")
-        return icon_file;
+	if (fallbackTheme)
+	{
+		icon_file = fallbackTheme->searchIcon(iconpurged, _category);
+		if (icon_file != "")
+			return icon_file;
+	}
 
     // ok the standard officially ends here.. lets try our legacyMap!
 
@@ -198,10 +214,10 @@ QString XdgIconThemeManager::getIconpath(const QString & _iconfield,
 /**
  *@brief returns a pointer to the currently active theme
  */
-XdgIconThemeFile* XdgIconThemeManager::get_activeTheme()
-{
-    return activeTheme;
-}
+//XdgIconThemeFile* XdgIconThemeManager::get_activeTheme()
+//{
+//    return activeTheme;
+//}
 
 
 #endif

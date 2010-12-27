@@ -22,7 +22,7 @@ class XdgIconThemeManager
 public:
     XdgIconThemeManager(const QString & _filename);
     ~XdgIconThemeManager();
-    XdgIconThemeFile* get_activeTheme();
+    //XdgIconThemeFile* get_activeTheme();
     QIcon getIconNG(const QString & _iconname);
     QString getIconpath(const QString & _iconfield,
                         const QString & _desktopfilepath,
@@ -37,7 +37,5 @@ private:
     XdgIconThemeFile* fallbackTheme;
 
 };
-
-
 
 #endif

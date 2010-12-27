@@ -16,7 +16,7 @@ Razor::Razor()
     xfitman = new XfitMan();
     QString iconTheme(razorSettings->settings()->value("icon_theme", "").toString());
     if (iconTheme.isEmpty())
-        Q_ASSERT_X(0, "iconTheme is empty", "cannot continue without icon_theme in razor.conf!");
+        qDebug() << "razor.conf: icon_theme is empty";
     xdgicon = new XdgIconThemeManager(iconTheme);
 }
 
