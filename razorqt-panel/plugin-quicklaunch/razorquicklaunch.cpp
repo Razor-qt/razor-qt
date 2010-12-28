@@ -20,15 +20,24 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     s->beginGroup(name);
     int count = s->beginReadArray("apps");
 
+    QString desktop;
     QString execname;
     QString exec;
     QString icon;
     for (int i = 0; i < count; ++i)
     {
         s->setArrayIndex(i);
-        execname = s->value("name", "").toString();
-        exec = s->value("exec", "").toString();
-        icon = s->value("icon", "").toString();
+        desktop = s->value("desktop", "").toString();
+        if (! desktop.isEmpty())
+        {
+            // todo
+        }
+        else
+        {
+            execname = s->value("name", "").toString();
+            exec = s->value("exec", "").toString();
+            icon = s->value("icon", "").toString();
+        }
         m_icons[name] = icon;
 
         if (!QFile::exists(icon))
