@@ -8,7 +8,7 @@
  */
 
 #include "defs.h"
-#include "razoraboutdlg.h"
+#include <razorqt/razoraboutdlg.h>
 
 /**
  * @brief this is a simple class to just collect the slots often used in the system

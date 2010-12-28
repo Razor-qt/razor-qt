@@ -21,6 +21,7 @@ include_directories (
 	razorqt)
 set ( razorqt_HDRS
 	razorqt/defs.h
+	razorqt/razoraboutdlg.h
 	razorqt/razordevman.h
 	razorqt/razorhal.h
 	razorqt/readsettings.h
@@ -35,6 +36,7 @@ set ( razorqt_HDRS
 	)
 
 set ( razorqt_SRCS
+	razorqt/razoraboutdlg.cpp
 	razorqt/razordevman.cpp
 	razorqt/razorhal.cpp
 	razorqt/readsettings.cpp
@@ -53,6 +55,7 @@ set ( razorqt_SRCS
 	)
 
 set ( razorqt_MOCS
+	razorqt/razoraboutdlg.h
 	razorqt/razordevman.h
 	razorqt/razorhal.h
 	razorqt/xdgmanager.h
@@ -64,7 +67,16 @@ set ( razorqt_MOCS
 	razorqt/xdgmenureader.h
 	razorqt/xdgmenurules.h
 	)
+
 QT4_WRAP_CPP(MOCS ${razorqt_MOCS})
+
+
+set ( razorqt_UIS
+        razorqt/aboutdlg.ui
+        )
+
+QT4_WRAP_UI(UIS ${razorqt_UIS})
+
 
 # some system (rpm builds) setup LIB_SUFFIX for cmake. If there is no set, try to get it from system
 IF (NOT LIB_SUFFIX)

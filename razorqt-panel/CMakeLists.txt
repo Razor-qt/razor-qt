@@ -80,7 +80,6 @@ message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 set ( razor-panel_HDRS
 	src/defs.h
 	src/razor.h
-	src/razoraboutdlg.h
 	src/razorgui.h
 	src/razorversion.h
 	src/razorplugin.h
@@ -91,17 +90,12 @@ set ( razor-panel_SRCS
 	src/main.cpp
 	src/razor.cpp
 	src/razorevent.cpp
-	src/razoraboutdlg.cpp
 	src/razorpluginmanager.cpp
 	src/razorbar.cpp
 	src/razorgui.cpp
 	src/razorhandler.cpp
 	)
 
-set ( razor-panel_UIS
-	src/aboutdlg.ui
-	)
-QT4_WRAP_UI(UIS ${razor-panel_UIS})
 
 set ( razor-panel_MOCS
     src/razorplugin.h
