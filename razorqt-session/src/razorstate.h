@@ -24,7 +24,7 @@ public:
     ~RazorState();
     void addProcess(QProcess* _proc);
 
-    void doOperation(QString _cmd);
+    void doOperation(const QString & _cmd);
 public slots:
     void parseState();
 

@@ -39,7 +39,7 @@ void RazorState::addProcess(QProcess* _proc)
 /**
 * @brief does the actual work
 */
-void RazorState::doOperation(QString _cmd)
+void RazorState::doOperation(const QString  & _cmd)
 {
     QString cmd = _cmd;
     cmd.chop(1);

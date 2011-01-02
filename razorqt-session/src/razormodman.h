@@ -31,7 +31,7 @@ public:
 
 
 public slots:
-    void restartModules();
+    void restartModules(int exitCode, QProcess::ExitStatus exitStatus);
 
 private:
     bool autorestart;
