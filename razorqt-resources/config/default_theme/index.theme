@@ -6,4 +6,4 @@ splashscreen=splashscreen.png
 shutdown=icons/shutdown.png
 reboot=icons/reboot.png
 logout=icons/logout.png
-bout=icons/about.png
+about=icons/about.png
