@@ -1,6 +1,11 @@
-#ifndef RAZORMODMAN_CPP
-#define RAZORMODMAN_CPP
 #include "razormodman.h"
+#include <razorqt/readsettings.h>
+
+#include <QtDebug>
+#include <QDBusInterface>
+#include <QTimer>
+#include <QCoreApplication>
+
 /**
  * @file razormodman.cpp
  * @author Christopher "VdoP" Regali
@@ -14,7 +19,10 @@
 RazorModuleManager::RazorModuleManager(QObject* parent)
     : QObject(parent)
 {
-    stateMan = new RazorState;
+    power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
+                               "org.freedesktop.Hal.Device.SystemPowerManagement",
+                               QDBusConnection::systemBus());
+
     cfg = new ReadSettings("session", this);
 
     QSettings * s = cfg->settings();
@@ -36,7 +44,9 @@ RazorModuleManager::RazorModuleManager(QObject* parent)
         QProcess* tmp = new QProcess(this);
         tmp->start(cmd);
         if (power)
-            stateMan->addProcess(tmp);
+        {
+            connect(tmp, SIGNAL(readyRead()), this, SLOT(parseState()));
+        }
 
         connect(tmp, SIGNAL(finished(int, QProcess::ExitStatus)),
                 this,SLOT(restartModules(int, QProcess::ExitStatus)));
@@ -46,7 +56,7 @@ RazorModuleManager::RazorModuleManager(QObject* parent)
         procMap[cmd] = m;
     }
     s->endArray();
-    
+
     int delay = s->value("autostart_delay", 1).toInt();
     QTimer::singleShot(delay * 1000, this, SLOT(autoStartSingleShot()));
 }
@@ -72,9 +82,6 @@ void RazorModuleManager::autoStartSingleShot()
     s->endArray();
 }
 
-/**
- * @brief this slot is called by the QProcesses if they end - they should NOT! so they get restarted here
- */
 void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qDebug() << "void RazorModuleManager::restartModules() called and it's wrong. Something is failing";
@@ -84,7 +91,8 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
     bool power = false;
 
     ModulesMapIterator i(procMap);
-    while (i.hasNext()) {
+    while (i.hasNext())
+    {
         i.next();
         if (i.value().process == proc)
         {
@@ -93,37 +101,13 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
             break;
         }
     }
-    
+
     switch (exitStatus)
     {
         case QProcess::NormalExit:
             if (! power)
             {
-                // autostart
-                foreach (QProcess * p, autostartList)
-                {
-                    p->blockSignals(true);
-                    p->terminate();
-                    if (!p->waitForFinished())
-                        qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
-                    delete p;
-                }
-
-                // modules
-                ModulesMapIterator i(procMap);
-                while (i.hasNext())
-                {
-                    i.next();
-                    QProcess * p = i.value().process;
-                    p->blockSignals(true);
-                    p->terminate();
-                    if (!p->waitForFinished())
-                        qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
-                }
-		// WTF?! why it does not do all I need?
-		// I think I simulate RAZOR_DO_LOGOUT above...
-                stateMan->doOperation("RAZOR_DO_LOGOUT");
-		QCoreApplication::exit(0);
+                logout();
             }
             break;
         case QProcess::CrashExit:
@@ -137,36 +121,78 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
 
 }
 
-
-
 /**
- * @brief the destructor, cleans up our mess
- */
-RazorModuleManager::~RazorModuleManager()
+* @brief parses the output of the Process for RAZOR_DO commands
+*/
+void RazorModuleManager::parseState()
 {
-//    ModulesMapIterator i(procMap);
-//    while (i.hasNext())
-//    {
-//        i.next();
-//        QProcess * p = i.value().process;
-//        if (!p->waitForFinished())
-//            qDebug() << "Module" << p << "rejected to close correctly. Kill it down.";
-//        delete p;
-//    }
-    // autostart
-//    foreach (QProcess * p, autostartList)
-//    {
-//        p->terminate();
-//        if (!p->waitForFinished())
-//            qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
-//        delete p;
-//    }
-    //
-    delete stateMan;
+    qDebug() << "parsestate!";
+    QProcess * p = qobject_cast<QProcess*>(sender());
+    Q_ASSERT(p);
+    doOperation(p->readLine());
 }
 
+RazorModuleManager::~RazorModuleManager()
+{
+    delete power;
+}
 
+void RazorModuleManager::doOperation(const QString  & _cmd)
+{
+    QString cmd(_cmd.trimmed());
+    qDebug() << "Razorstate: got output: " << cmd;
+    if (cmd =="RAZOR_DO_LOGOUT")
+        logout();
+    else if (cmd == "RAZOR_DO_SHUTDOWN")
+        shutdown();
+    else if (cmd == "RAZOR_DO_REBOOT")
+        reboot();
+}
 
+/**
+* @brief this logs us out by terminating our session
+**/
+void RazorModuleManager::logout()
+{
+    // autostart
+    foreach (QProcess * p, autostartList)
+    {
+        p->blockSignals(true);
+        p->terminate();
+        if (!p->waitForFinished())
+            qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
+        delete p;
+    }
+    // modules
+    ModulesMapIterator i(procMap);
+    while (i.hasNext())
+    {
+        i.next();
+        QProcess * p = i.value().process;
+        p->blockSignals(true);
+        p->terminate();
+        if (!p->waitForFinished())
+            qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
+    }
+    QCoreApplication::exit(0);
+}
 
+/**
+* @brief reboot via Dbus
+**/
 
-#endif
+void RazorModuleManager::reboot()
+{
+    power->call("Reboot");
+}
+
+/**
+* @brief shutdown via Dbus
+**/
+
+void RazorModuleManager::shutdown()
+{
+    //qDebug() << "Would have shut down now";
+    //debug!! no real shutdown while testing :)
+    power->call("Shutdown");
+}
