@@ -18,6 +18,8 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     QSettings *s = cfg->settings();
 
     s->beginGroup(name);
+    int preferedSize = s->value("size", 32).toInt();
+
     int count = s->beginReadArray("apps");
 
     QString desktop;
@@ -60,9 +62,8 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    //! \todo TODO/FIXME: make it (the size) configurable?
     // now do some layouting magic to save space (rows, columns)
-    int maxSize = qMin(panel->height(), 32);
+    int maxSize = qMin(panel->height(), preferedSize);
     int rows = panel->height() / maxSize;
     // add 1 to columns if there is more actions in one row
     int addon = ((actions().count() % rows) > 0) ? 1 : 0;
@@ -76,7 +77,8 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
         // "icon exists" check is performed in the RazorQuickLaunch constructor
         QToolButton * btn = new QToolButton(this);
         btn->setMaximumSize(maxSize, maxSize);
-        //btn->setMinimumSize(maxSize, maxSize);
+        btn->setMinimumSize(maxSize, maxSize);
+        btn->setIconSize(QSize(maxSize*0.6, maxSize*0.6));
 
         btn->setDefaultAction(a);
         btn->setToolTip(a->data().toString());
@@ -93,7 +95,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
         }
     }
 
-    //setMinimumWidth(ix * 32);
+    setMinimumWidth(layout->columnCount() * maxSize);
     mainLayout()->addLayout(layout);
 }
 
