@@ -12,79 +12,59 @@
  */
 
 
-void RazorDeskManagerLegacy::getFileList()
-{
-    itemList.clear();
-    QList<QString> badNames;
-    QDirIterator desktop_file_iter(QDir::homePath()+"/Desktop/", QDirIterator::Subdirectories);
-    int i = 0;
-    while (desktop_file_iter.hasNext())
-    {
-        i++;
-        desktop_file_iter.next();
-        if (desktop_file_iter.fileName() == "." || desktop_file_iter.fileName() == "..")
-            continue;
-        if (desktop_file_iter.filePath().endsWith(".desktop")) //only use .desktop files!
-        {
-            XdgDesktopFile* tmp = new XdgDesktopFile(desktop_file_iter.filePath());
-
-            if (tmp->isShow())
-                itemList.append(tmp);
-            else
-                badNames.push_back(tmp->value("Name").toString()); //this is needed as std says all with the same name get removed by one entry with these flags too
-        }
-    }
-
-    qDebug() << "badnames: " << badNames;
-    //qDebug() << "itemlist: " << itemList;
-
-
-    //purge the badones
-    for (int i=0; i < itemList.count(); i++)
-    {
-        if (badNames.contains(itemList.at(i)->value("Name").toString()))
-        {
-            qDebug() << "Deleting item!";
-            delete itemList.at(i);
-            itemList.removeAt(i);
-        }
-    }
-    qDebug() << "Razordeskmanl: found " << itemList.count() << " usable desktop-entries";
-
-}
-
 void RazorDeskManagerLegacy::updateIconList()
 {
-    getFileList();
+    int maxHeight = QApplication::desktop()->screenGeometry().height();
+    privIconList.clear();
+    QDirIterator dirIter(QDir::homePath()+"/Desktop/",
+                         //QDir::NoDotAndDotDot,
+                         QDirIterator::Subdirectories);
+
+    int x = 0;
+    int y = 30;
+    while (dirIter.hasNext())
+    {
+        dirIter.next();
+        qDebug() << dirIter.filePath();
+
+        if (dirIter.filePath().endsWith(".desktop")) //only use .desktop files!
+        {
+            XdgDesktopFile* tmp = new XdgDesktopFile(dirIter.filePath());
+
+            if (tmp->isShow())
+            {
+                QPoint pos(x, y);
+                RazorDeskIconData* idata = new RazorDeskIconData(
+                            Razor::getInstance().geticontheme()->getIconNG(tmp->value("Icon").toString()),
+                            tmp->value("Name").toString(),
+                            tmp->value("Comment").toString(),
+                            pos, workSpace()
+                        );
+                idata->setData(tmp->value("Exec").toString());
+                connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
+                privIconList.append(idata);
+
+                // HACK: there should be better algorithm for this.
+                // and it does not count with panels...
+                y += 100;
+                if (y > maxHeight-60)
+                {
+                    y = 30;
+                    x += 90;
+                }
+
+            }
+            delete tmp;
+        }
+    }
+
+    qDebug() << "Razordeskmanl: found " << privIconList.count() << " usable desktop-entries";
 }
 
 
 QList< RazorDeskIconData* > RazorDeskManagerLegacy::iconList()
 {
-    return privIconList();
-}
-
-
-// create the desktop icons and link them with action!
-void RazorDeskManagerLegacy::showIcons()
-{
-    int x,y;
-    x=0;
-    y=30;
-    //Xfitman iconplacer;
-    for (int i = 0; i < itemList.count() ; i++)
-    {
-        QPoint pos(x,y);
-        RazorDeskIconData* tmp = new RazorDeskIconData(Razor::getInstance().geticontheme()->getIconNG(itemList.at(i)->value("Icon").toString()),
-                itemList.at(i)->value("Name").toString(),
-                itemList.at(i)->value("Comment").toString(),
-                pos, workSpace());
-        tmp->setData(itemList.at(i)->value("Exec").toString());
-        connect(tmp, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
-        //iconplacer.moveWindowtoDesktop(tmp->getWin(),-1);
-        y += 100;
-        privIconList().append(tmp);
-    }
+    return privIconList;
 }
 
 RazorDeskManagerLegacy::~RazorDeskManagerLegacy()
@@ -94,7 +74,6 @@ RazorDeskManagerLegacy::~RazorDeskManagerLegacy()
 RazorDeskManagerLegacy::RazorDeskManagerLegacy(RazorWorkSpace* _workspace) : RazorDeskManager(_workspace)
 {
     updateIconList();
-    showIcons();
     restoreIconState();
     qDebug() << "initialisation done";
 }

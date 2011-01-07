@@ -5,47 +5,53 @@
 
 void RazorDeskManager::saveIconState()
 {
-    qDebug() << priviconList;
-    for (int i = 0; i < priviconList.count(); i++)
+    qDebug() << "saveIconState" << privIconList;
+    QSettings * s = deskicons->settings();
+    s->beginWriteArray("icons");
+    for (int i = 0; i < privIconList.count(); i++)
     {
-        QString x,y;
-        x.setNum(priviconList.at(i)->getPosition().x());
-        y.setNum(priviconList.at(i)->getPosition().y());
-        QString pos = x + "|" + y;
-
-        qDebug() << pos;
-        //deskicons->setValue(priviconList.at(i)->text(),pos);
+        s->setArrayIndex(i);
+        s->setValue("name", privIconList.at(i)->text());
+        s->setValue("point", privIconList.at(i)->getPosition());
     }
-    //deskicons->debugSettings();
-    //deskicons->saveSettings();
+    s->endArray();
 }
 
 
 RazorDeskManager::~RazorDeskManager()
 {
-    for (int i = 0; i < priviconList.count(); i ++)
+    for (int i = 0; i < privIconList.count(); i ++)
     {
-        delete priviconList.at(i);
-        priviconList.removeAt(i);
+        delete privIconList.at(i);
+        privIconList.removeAt(i);
     }
-    delete deskicons;
 }
 
 
 void RazorDeskManager::restoreIconState()
 {
     qDebug() << "restoring icon state!";
-    for (int i = 0; i < priviconList.count(); i ++)
+    // map icon name to its position. It's used to restore position
+    // later with privIconList merge
+    QMap<QString,QPoint> positions;
+
+    QSettings * s = deskicons->settings();
+    int count = s->beginReadArray("icons");
+
+    for (int i = 0; i < count; ++i)
     {
-#if 0
-        if (deskicons->getString(priviconList.at(i)->text()) != "")
-        {
-            qDebug() << "found saved position for: " << priviconList.at(i) << " value: " << deskicons->getString(priviconList.at(i)->text());
-            QStringList explode = deskicons->getString(priviconList.at(i)->text()).split("|");
-            QPoint npos(explode.at(0).toInt(), explode.at(1).toInt());
-            priviconList.at(i)->setPos(npos);
-        }
-#endif
+        s->setArrayIndex(i);
+        positions[s->value("name", "").toString()] = s->value("point").value<QPoint>();
+    }
+    s->endArray();
+
+    for (int i = 0; i < privIconList.count(); i ++)
+    {
+        if (! positions.contains(privIconList.at(i)->text()) )
+            continue;
+
+        qDebug() << "found saved position for: " << privIconList.at(i);
+        privIconList.at(i)->setPos(positions[privIconList.at(i)->text()]);
     }
     qDebug() << "restoring done";
 }
@@ -56,7 +62,7 @@ RazorDeskManager::RazorDeskManager(RazorWorkSpace* _workspace)
 {
     qDebug() << "Initializing!!";
     workspace = _workspace;
-    deskicons = new ReadSettings("deskicons");
+    deskicons = new ReadSettings("deskicons", this);
 }
 
 

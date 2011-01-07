@@ -29,13 +29,8 @@ class RazorDeskManagerLegacy:public RazorDeskManager
 public:
     RazorDeskManagerLegacy(RazorWorkSpace* _workspace);
     ~RazorDeskManagerLegacy();
-    virtual void updateIconList();
-    virtual QList< RazorDeskIconData* > iconList();
-    virtual void showIcons();
-
-private:
-    void getFileList();
-    QList<XdgDesktopFile*> itemList;
+    void updateIconList();
+    QList< RazorDeskIconData* > iconList();
 };
 
 

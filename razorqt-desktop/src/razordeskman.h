@@ -25,22 +25,18 @@ public slots:
 
 protected:
     virtual void updateIconList() = 0;
-    virtual void showIcons() = 0;
     virtual QList<RazorDeskIconData*> iconList() = 0;
     void restoreIconState();
     RazorWorkSpace* workSpace()
     {
         return workspace;
     }
-    QList<RazorDeskIconData*> privIconList()
-    {
-        return priviconList;
-    }
+
+    QList<RazorDeskIconData*> privIconList;
 
 private:
     ReadSettings *deskicons;
     RazorWorkSpace * workspace;
-    QList<RazorDeskIconData*> priviconList;
 };
 
 
