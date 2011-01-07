@@ -59,7 +59,7 @@ void RazorDeskManagerLegacy::updateIconList()
 }
 
 
-QList< RazorDeskIconData* >* RazorDeskManagerLegacy::iconList()
+QList< RazorDeskIconData* > RazorDeskManagerLegacy::iconList()
 {
     return privIconList();
 }
@@ -83,7 +83,7 @@ void RazorDeskManagerLegacy::showIcons()
         connect(tmp, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
         //iconplacer.moveWindowtoDesktop(tmp->getWin(),-1);
         y += 100;
-        privIconList()->append(tmp);
+        privIconList().append(tmp);
     }
 }
 

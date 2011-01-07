@@ -19,21 +19,23 @@ class RazorDeskManager : public QObject
 public:
     ~RazorDeskManager();
     RazorDeskManager(RazorWorkSpace* _workspace);
-    virtual void updateIconList();
-    virtual void showIcons();
-    virtual QList<RazorDeskIconData*>* iconList();
+
+public slots:
+    void saveIconState();
+
+protected:
+    virtual void updateIconList() = 0;
+    virtual void showIcons() = 0;
+    virtual QList<RazorDeskIconData*> iconList() = 0;
     void restoreIconState();
     RazorWorkSpace* workSpace()
     {
         return workspace;
     }
-    QList<RazorDeskIconData*>* privIconList()
+    QList<RazorDeskIconData*> privIconList()
     {
-        return &priviconList;
+        return priviconList;
     }
-
-public slots:
-    void saveIconState();
 
 private:
     ReadSettings *deskicons;

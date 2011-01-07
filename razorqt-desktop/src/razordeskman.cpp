@@ -1,10 +1,7 @@
 #ifndef RAZORDESKMAN_CPP
 #define RAZORDESKMAN_CPP
 #include "razordeskman.h"
-QList< RazorDeskIconData* >* RazorDeskManager::iconList()
-{
-    return NULL;
-}
+
 
 void RazorDeskManager::saveIconState()
 {
@@ -23,10 +20,6 @@ void RazorDeskManager::saveIconState()
     //deskicons->saveSettings();
 }
 
-void RazorDeskManager::showIcons()
-{
-
-}
 
 RazorDeskManager::~RazorDeskManager()
 {
@@ -38,12 +31,6 @@ RazorDeskManager::~RazorDeskManager()
     delete deskicons;
 }
 
-
-
-void RazorDeskManager::updateIconList()
-{
-
-}
 
 void RazorDeskManager::restoreIconState()
 {
