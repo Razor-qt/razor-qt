@@ -30,7 +30,7 @@ public:
     RazorDeskManagerLegacy(RazorWorkSpace* _workspace);
     ~RazorDeskManagerLegacy();
     void updateIconList();
-    QList< RazorDeskIconData* > iconList();
+    QList< RazorDeskIcon* > iconList();
 };
 
 

@@ -12,7 +12,7 @@ void RazorDeskManager::saveIconState()
     {
         s->setArrayIndex(i);
         s->setValue("name", privIconList.at(i)->text());
-        s->setValue("point", privIconList.at(i)->getPosition());
+        s->setValue("point", privIconList.at(i)->pos());
     }
     s->endArray();
 }

@@ -83,7 +83,7 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(QObject* parent)
 
     //this may actually make the icon work on multihead
     QWidget* screen = QApplication::desktop()->screen(QApplication::desktop()->primaryScreen());
-    workSpace = new RazorWorkSpace;
+    workSpace = new RazorWorkSpace(screen);
 
     connect(workSpace, SIGNAL(mouseReleased(QMouseEvent*)),this, SLOT(mouseClicked(QMouseEvent*)));
     connect(workSpace, SIGNAL(mouseWheeled(int)), this, SLOT(switchDesktop(int)));

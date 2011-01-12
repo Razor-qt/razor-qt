@@ -34,13 +34,14 @@ void RazorDeskManagerLegacy::updateIconList()
             if (tmp->isShow())
             {
                 QPoint pos(x, y);
-                RazorDeskIconData* idata = new RazorDeskIconData(
+                RazorDeskIcon* idata = new RazorDeskIcon(
+                            tmp->value("Exec").toString(),
                             Razor::getInstance().geticontheme()->getIconNG(tmp->value("Icon").toString()),
                             tmp->value("Name").toString(),
                             tmp->value("Comment").toString(),
-                            pos, workSpace()
+                            pos,
+                            workSpace()
                         );
-                idata->setData(tmp->value("Exec").toString());
                 connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
                 privIconList.append(idata);
 
@@ -62,7 +63,7 @@ void RazorDeskManagerLegacy::updateIconList()
 }
 
 
-QList< RazorDeskIconData* > RazorDeskManagerLegacy::iconList()
+QList< RazorDeskIcon* > RazorDeskManagerLegacy::iconList()
 {
     return privIconList;
 }

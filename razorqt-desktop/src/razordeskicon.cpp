@@ -1,5 +1,3 @@
-#ifndef RAZORDESKICON_CPP
-#define RAZORDESKICON_CPP
 #include "razordeskicon.h"
 #include "razor.h"
 /**
@@ -8,36 +6,60 @@
  * @brief implements the class Razordeskicon
  */
 
-void RazorDeskIconData::setPos(QPoint _npos)
+
+RazorDeskIcon::RazorDeskIcon(const QString & exec,
+                             const QIcon & icon,
+                             const QString & text,
+                             const QString & comment,
+                             const QPoint & position,
+                             QWidget * parent)
+    : QAbstractButton(parent),
+      m_exec(exec)
+{
+    setAttribute(Qt::WA_AlwaysShowToolTips);
+
+    qDebug() << "Razordeskicon: initialising..." << parent;
+    //setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    moveMe = false;
+    movedMe = false;
+    //QString name = QApplication::fontMetrics().elidedText(data->text(), Qt::ElideRight, 65);
+    setText(text);
+
+    setToolTip(comment);
+    setIcon(icon);
+
+    //TODO make this portable, red from config or anything else!
+    QSize iconsize(32,32);
+    setFixedSize(70,70);
+
+    setIconSize(iconsize);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
+    setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+
+    connect(this, SIGNAL(clicked(bool)), this, SLOT(launchApp()));
+
+    show();
+}
+
+RazorDeskIcon::~RazorDeskIcon()
+{
+    qDebug() << text() << " beeing shredded";
+}
+
+QSize RazorDeskIcon::sizeHint() const
+{
+    return QSize(width(), height());
+}
+
+void RazorDeskIcon::setPos(const QPoint & npos)
 {
     // if we are in workspace-mode we can move the buttons using Qts move routine
-    if (gui->parent() != NULL)
-        gui->move(_npos);
+    if (parent() != NULL)
+        move(npos);
     else //else we need Xlib for moving, xlib is encapsulated by xfitman from librazorqt.
-        Razor::getInstance().getxfitman()->moveWindow(gui->effectiveWinId(),_npos.x(),_npos.y());
+        Razor::getInstance().getxfitman()->moveWindow(effectiveWinId(), npos.x(), npos.y());
 }
 
-
-QPoint RazorDeskIconData::getPosition()
-{
-    return gui->pos();
-}
-
-
-/**
- * @brief destructor
- */
-RazorDeskIconData::~RazorDeskIconData()
-{
-    qDebug() << gui->text() << " data being shredded";
-    delete gui;
-}
-
-
-
-/**
- * @brief this is used to drag-move the button and emit a new-pos event
- */
 void RazorDeskIcon::mouseMoveEvent(QMouseEvent* _event)
 {
     if (moveMe)
@@ -49,7 +71,7 @@ void RazorDeskIcon::mouseMoveEvent(QMouseEvent* _event)
         }
         else
         {
-            qDebug() << "Razordeskicon: MOVING TO:" << _event->globalPos();
+            //qDebug() << "Razordeskicon: MOVING TO:" << _event->globalPos();
             move(_event->globalPos()-firstPos);
             QAbstractButton::mouseMoveEvent(_event);
             movedMe = true;
@@ -57,9 +79,6 @@ void RazorDeskIcon::mouseMoveEvent(QMouseEvent* _event)
     }
 }
 
-/**
- * @brief triggered on click, resets the move variables
- */
 void RazorDeskIcon::mousePressEvent(QMouseEvent* _event)
 {
     qDebug() << "Razordeskicon: clicked!";
@@ -70,10 +89,6 @@ void RazorDeskIcon::mousePressEvent(QMouseEvent* _event)
     QAbstractButton::mousePressEvent(_event);
 }
 
-
-/**
- * @brief triggered on release, if we did not get moved, it was a click and we behave accordingly
- */
 void RazorDeskIcon::mouseReleaseEvent(QMouseEvent* _event)
 {
     Q_UNUSED(_event);
@@ -92,61 +107,6 @@ void RazorDeskIcon::mouseReleaseEvent(QMouseEvent* _event)
     }
 }
 
-/**
- * @brief destructor of the gui class
- */
-
-RazorDeskIcon::~RazorDeskIcon()
-{
-    qDebug() << text() << " beeing shredded";
-}
-
-/**
- * @brief returns the effective winId of the gui
- */
-Window RazorDeskIconData::getWin()
-{
-    return gui->effectiveWinId();
-}
-
-
-
-/**
- * @brief constructor of the gui class
- */
-
-RazorDeskIcon::RazorDeskIcon(RazorDeskIconData* _data, QWidget* _parent) : QAbstractButton(_parent)
-{
-    qDebug() << "Razordeskicon: initialising..." << _parent;
-    //setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    data=_data;
-    moveMe = false;
-    movedMe = false;
-    //QString name = QApplication::fontMetrics().elidedText(data->text(), Qt::ElideRight, 65);
-    setText(data->text());
-
-    setToolTip(data->getTT());
-    setIcon(data->icon());
-
-    //TODO make this portable, red from config or anything else!
-    QSize iconsize(32,32);
-    setFixedSize(70,70);
-
-    setIconSize(iconsize);
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
-    setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
-
-    show();
-}
-
-QSize RazorDeskIcon::sizeHint() const
-{
-    return QSize(width(), height());
-}
-
-/*! \brief Custom and minimal painting for desktop icon.
- * Fine tuning design will be performed in the qss stylesheed
- */
 void RazorDeskIcon::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
@@ -172,39 +132,8 @@ void RazorDeskIcon::paintEvent(QPaintEvent* event)
                      text());
 }
 
-/**
- * @brief is called if the gui-button is clicked, only does start the command now - can maybe be used to start other stuff too
- */
-void RazorDeskIconData::doAction()
+void RazorDeskIcon::launchApp()
 {
-    qDebug() << "ACTION!";
-    QProcess::startDetached(data().toString());
+    qDebug() << "RazorDeskIcon::launchApp()" << m_exec;
+    QProcess::startDetached(m_exec);
 }
-
-/**
- * @brief Constructor of the data
- */
-RazorDeskIconData::RazorDeskIconData(const QIcon& _icon, const QString& _text, QString _commentTT, QPoint _position, QWidget* _parent): QAction(_icon, _text, _parent)
-{
-    qDebug() << "Razordeskicondata: initialising...("<<_text<<","<<_position<<")" << _parent;;
-    position = new QPoint(_position);
-    gui = new RazorDeskIcon(this,_parent);
-    commentTT = _commentTT;
-    gui->move(_position);
-    connect (gui, SIGNAL(clicked(bool)), this, SLOT(doAction()));
-    connect (gui, SIGNAL(moved(QPoint)), this, SLOT(updatePosition(QPoint)));
-}
-
-/**
- * @brief atm does nothing, but can be used to store the oldpos and then restore it!
- */
-void RazorDeskIconData::updatePosition(QPoint _point)
-{
-    emit moved(_point);
-    qDebug() << "Moved: " << _point;
-}
-
-
-
-
-#endif
