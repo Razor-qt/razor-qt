@@ -22,7 +22,7 @@
 #include <QString>
 #include <QVariant>
 #include <QStringList>
-
+#include <QIcon>
 
 class XdgDesktopFilePrivate;
 
@@ -51,6 +51,8 @@ public:
 
     bool startDetached(const QStringList& urls) const;
     bool startDetached(const QString& url="") const;
+
+    QIcon const icon(int size, const QIcon& fallback = QIcon()) const;
 
 private:
     XdgDesktopFilePrivate* const d_ptr;

@@ -65,7 +65,7 @@ XdgIcon::~XdgIcon()
 
 
 /************************************************
-
+ Returns the name of the current icon theme.
  ************************************************/
 QString XdgIcon::themeName()
 {
@@ -74,7 +74,7 @@ QString XdgIcon::themeName()
 
 
 /************************************************
-
+ Sets the current icon theme to name.
  ************************************************/
 void XdgIcon::setThemeName(const QString& themeName)
 {
@@ -83,7 +83,8 @@ void XdgIcon::setThemeName(const QString& themeName)
 
 
 /************************************************
-
+ Returns the QIcon corresponding to name in the current icon theme. If no such icon
+ is found in the current theme fallback is return instead.
  ************************************************/
 QIcon const XdgIcon::fromTheme(const QString& iconName, int size, const QIcon& fallback)
 {
@@ -96,7 +97,8 @@ QIcon const XdgIcon::fromTheme(const QString& iconName, int size, const QIcon& f
 
 
 /************************************************
-
+ Returns the QIcon corresponding to names in the current icon theme. If no such icon
+ is found in the current theme fallback is return instead.
  ************************************************/
 QIcon const XdgIcon::fromTheme(const QStringList& iconNames, int size, const QIcon& fallback)
 {

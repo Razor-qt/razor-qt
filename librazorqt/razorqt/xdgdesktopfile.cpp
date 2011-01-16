@@ -30,7 +30,7 @@
 // For XdgDesktopFilePrivate
 #include <QStack>
 #include <QUrl>
-
+#include "xdgicon.h"
 
 class XdgDesktopFilePrivate {
 public:
@@ -54,6 +54,8 @@ public:
     bool isShow(const QString& environment) const;
 
     bool startDetached(const QStringList& urls) const;
+
+    QIcon const icon(int size, const QIcon& fallback = QIcon()) const;
 
 protected:
     bool checkTryExec(const QString& progName) const;
@@ -297,6 +299,14 @@ bool XdgDesktopFile::startDetached(const QString& url) const
         return d->startDetached(QStringList(url));
 }
 
+/************************************************
+  Returns an icon specified in this file.
+ ************************************************/
+QIcon const XdgDesktopFile::icon(int size, const QIcon& fallback) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->icon(size, fallback);
+}
 
 
 /************************************************
@@ -930,3 +940,10 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 }
 
 
+/************************************************
+
+ ************************************************/
+QIcon const XdgDesktopFilePrivate::icon(int size, const QIcon& fallback) const
+{
+    return XdgIcon::fromTheme(value("Icon").toString(), size, fallback);
+}

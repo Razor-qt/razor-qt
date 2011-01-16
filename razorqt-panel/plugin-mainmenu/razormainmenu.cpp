@@ -209,7 +209,6 @@ void RazorMainMenu::buildMenuLevel(QMenu* menu, const QDomElement& element)
             action->setText(title);
 
             action->setToolTip(e.attribute("comment"));
-            //action->setData(e.attribute("exec"));
             action->setData(e.attribute("desktopFile"));
             action->setIconText(e.attribute("icon"));
 
@@ -267,7 +266,14 @@ void RazorMainMenu::setMenuIcons(QMenu* parent)
 
         QAction* a=qobject_cast<QAction*>(*i);
         if (a && !a->iconText().isEmpty() && a->icon().isNull())
-            a->setIcon(XdgIcon::fromTheme(a->iconText(), 48, parent->icon()));
+        {
+            a->setIcon(XdgIcon::fromTheme(QStringList()
+                                          << a->iconText()
+                                          << "application-x-executable",
+                                          48
+                                          )
+                       );
+        }
      }
 }
 
