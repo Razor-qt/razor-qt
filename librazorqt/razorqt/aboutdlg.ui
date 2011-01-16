@@ -150,7 +150,7 @@
    <sender>closeButton</sender>
    <signal>clicked()</signal>
    <receiver>about</receiver>
-   <slot>hide()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>273</x>

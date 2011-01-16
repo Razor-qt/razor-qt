@@ -1,8 +1,9 @@
 #ifndef RAZORABOUTDLG_CPP
 #define RAZORABOUTDLG_CPP
 #include "razoraboutdlg.h"
+#include "ui_aboutdlg.h"
 #include <razorqt/readsettings.h>
-
+#include <QDebug>
 /**
  * @file razoraboutdlg.cpp
  * @author Christopher "VdoP" Regali
@@ -12,8 +13,15 @@
 /**
  * @brief prepares the data to show and fills the form, then shows.
  */
+class RazorAboutDLGPrivate: public Ui_about, public QDialog
+{
+public:
+    RazorAboutDLGPrivate();
+};
 
-RazorAboutDLG::RazorAboutDLG()
+
+//
+RazorAboutDLGPrivate::RazorAboutDLGPrivate()
 {
     //ReadSettings mainSettings("razor.conf");
     //ReadSettings looknfeel(mainSettings.getString("style_theme"));
@@ -33,6 +41,8 @@ RazorAboutDLG::RazorAboutDLG()
     
     aboutText->insertPlainText("Special thanks to: \n Eugene Pivnev (qtDesktop) \n Paul Gnther (for desktop backgrounds) \n Manuel Meier (for ideas) \n Alexander Zakher (for the name) \n and KDE (http://www.kde.org) \n \n \n");
     aboutText->insertPlainText("License: GPL \n");
+
+    this->setAttribute(Qt::WA_DeleteOnClose);
     show();
     razorLabel->setScaledContents(true);
     // TODO/FIXME: icon from theme
@@ -40,6 +50,11 @@ RazorAboutDLG::RazorAboutDLG()
     //razorLabel->setPixmap(((QPixmap)(looknfeel.getPath()+looknfeel.getString("razormainmenu_icon"))));
 }
 
+
+RazorAboutDLG::RazorAboutDLG()
+{
+    d_ptr = new RazorAboutDLGPrivate();
+}
 
 
 

@@ -1,7 +1,7 @@
 #ifndef RAZORABOUTDLG_H
 #define RAZORABOUTDLG_H
 #include "defs.h"
-#include "ui_aboutdlg.h"
+
 
 /**
  * @file razoraboutdlg.n
@@ -12,10 +12,15 @@
 /**
  * @brief displays a simple about dialog
  */
-class RazorAboutDLG: public Ui_about, public QDialog
+
+class RazorAboutDLGPrivate;
+
+class RazorAboutDLG: public QDialog
 {
 public:
     RazorAboutDLG();
+private:
+    RazorAboutDLGPrivate * d_ptr;
 };
 
 
