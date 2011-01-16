@@ -50,6 +50,12 @@ public:
     QStringList& environments() { return mEnvironments; }
 
     const QString errorString() const { return mErrorString; }
+    const QString logDir() const { return mLogDir; }
+    void setLogDir(const QString& directory);
+
+    static QString getMenuFileName(const QString& baseName = "applications.menu");
+    
+    
 signals:
 
 public slots:
@@ -76,6 +82,7 @@ private:
     void appendChilds(QDomElement& srcElement, QDomElement& destElement);
     QStringList mEnvironments;
     QString mErrorString;
+    QString mLogDir;
 };
 
 

@@ -98,7 +98,7 @@ set ( razor-panel_SRCS
 
 
 set ( razor-panel_MOCS
-    src/razorplugin.h
+	src/razorplugin.h
 	src/razorbar.h
 	src/razorevent.h
 	src/razorhandler.h
@@ -176,10 +176,7 @@ endif (TRAY_PLUGIN)
 
 if (MAINMENU_PLUGIN)
   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Main menu")
-  QT4_WRAP_CPP(mainmenu_moc plugin-mainmenu/razormainmenu.h)
-  add_library(razorpanel_mainmenu SHARED ${mainmenu_moc} plugin-mainmenu/razormainmenu.cpp)
-  target_link_libraries(razorpanel_mainmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-  install(TARGETS razorpanel_mainmenu DESTINATION ${PLUGIN_DIR})
+  add_subdirectory( plugin-mainmenu )
 endif (MAINMENU_PLUGIN)
 
 
@@ -215,9 +212,9 @@ if (BATTERY_PLUGIN)
   add_subdirectory( plugin-battery )
 endif (BATTERY_PLUGIN)
 
-message(STATUS  "***************************************")
-message(STATUS  "Will be built following plugins:")
+message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
-  message(STATUS   "    * ${PLUGIN_STR}")
+  message(STATUS   "  ${PLUGIN_STR}")
 endforeach()
-message(STATUS   "***************************************")
+message(STATUS  "*********************************************************************")
+

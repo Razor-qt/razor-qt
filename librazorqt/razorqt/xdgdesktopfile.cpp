@@ -27,37 +27,154 @@
 #include <QDebug>
 #include <QHash>
 #include <QProcess>
+// For XdgDesktopFilePrivate
+#include <QStack>
+#include <QUrl>
+
+
+class XdgDesktopFilePrivate {
+public:
+    XdgDesktopFilePrivate(XdgDesktopFile* parent);
+
+    QString prefix() const { return mPrefix; }
+    void setPrefix(const QString& prefix);
+
+    QString fileName() const { return mFileName; }
+    void setFileName(const QString& fileName) { mFileName = fileName; }
+
+    XdgDesktopFilePrivate& operator=(const XdgDesktopFilePrivate& other);
+    bool read();
+
+    bool isValid() const { return mIsValid; }
+
+    QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
+    QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
+
+    bool contains(const QString& key) const;
+    bool isShow(const QString& environment) const;
+
+    bool startDetached(const QStringList& urls) const;
+
+protected:
+    bool checkTryExec(const QString& progName) const;
+    QString expandExecString(const QStringList& urls) const;
+    int expandMacro(const QString &str, int pos, const QStringList& urls, QStringList &ret) const;
+
+private:
+    XdgDesktopFile* const q_ptr;
+    Q_DECLARE_PUBLIC(XdgDesktopFile);
+    QString mPrefix;
+    QString mFileName;
+    bool    mIsValid;
+    QMap<QString, QVariant> mItems;
+    mutable short   mIsShow;
+
+private:
+    enum Quoting
+    {
+        noquote,
+        singlequote,
+        doublequote,
+        dollarquote,
+        paren,
+        subst,
+        group,
+        math
+    };
+
+    typedef struct
+    {
+        Quoting current;
+        bool dquote;
+    } State;
+
+    typedef struct
+    {
+        QString str;
+        int pos;
+    } Save;
+
+};
+
 
 /************************************************
 
  ************************************************/
-XdgDesktopFile::XdgDesktopFile(QObject *parent) :
-QObject(parent)
+inline static bool isSpecial( QChar cUnicode )
 {
-    mPrefix = "Desktop Entry/";
-    mIsValid = false;
-    mIsShow = -1;
+    static const uchar iqm[] = {
+        0xff, 0xff, 0xff, 0xff, 0xdf, 0x07, 0x00, 0xd8,
+        0x00, 0x00, 0x00, 0x38, 0x01, 0x00, 0x00, 0x78
+    }; // 0-32 \'"$`<>|;&(){}*?#!~[]
+
+    uint c = cUnicode.unicode ();
+    return (c < sizeof(iqm) * 8) && (iqm[c / 8] & (1 << (c & 7)));
 }
 
 
 /************************************************
 
  ************************************************/
-XdgDesktopFile::XdgDesktopFile(const QString & fileName, QObject *parent) :
-QObject(parent)
+QString quoteArg( const QString &arg )
 {
-    mFileName = fileName;
-    mPrefix = "Desktop Entry/";
-    mIsValid = read();
-    mIsShow = -1;
+    if (!arg.length())
+        return QString::fromLatin1("''");
+    for (int i = 0; i < arg.length(); i++)
+        if (isSpecial( arg.unicode()[i] )) {
+            QChar q( QLatin1Char('\'') );
+            return QString( arg ).replace( q, QLatin1String("'\\''") ).prepend( q ).append( q );
+        }
+    return arg;
 }
 
 
 /************************************************
 
  ************************************************/
-XdgDesktopFile::XdgDesktopFile(const XdgDesktopFile & other, QObject *parent) :
-QObject(parent)
+QString joinArgs( const QStringList &args )
+{
+    QString ret;
+    for (QStringList::ConstIterator it = args.begin(); it != args.end(); ++it) {
+        if (!ret.isEmpty())
+            ret.append(QLatin1Char(' '));
+        ret.append(quoteArg(*it));
+    }
+    return ret;
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile(QObject *parent, const QString& prefix) :
+    QObject(parent),
+    d_ptr(new XdgDesktopFilePrivate(this))
+{
+    Q_D(XdgDesktopFile);
+    d->setPrefix(prefix);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile(const QString & fileName, QObject *parent, const QString& prefix) :
+    QObject(parent),
+    d_ptr(new XdgDesktopFilePrivate(this))
+{
+    Q_D(XdgDesktopFile);
+    d->setPrefix(prefix);
+    d->setFileName(fileName);
+    d->read();
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile(const XdgDesktopFile& other, QObject *parent) :
+    QObject(parent),
+    d_ptr(new XdgDesktopFilePrivate(this))
 {
     this->operator=(other);
 }
@@ -68,11 +185,8 @@ QObject(parent)
  ************************************************/
 XdgDesktopFile& XdgDesktopFile::operator=(const XdgDesktopFile& other)
 {
-    mFileName = other.mFileName;
-    mPrefix = other.mPrefix;
-    mIsValid = other.mIsValid;
-    mItems = other.mItems; // This copy map values
-    mIsShow = other.mIsShow;
+    Q_D(XdgDesktopFile);
+    d->operator =(*(other.d_func()));
     return *this;
 }
 
@@ -88,7 +202,143 @@ XdgDesktopFile::~XdgDesktopFile()
 /************************************************
 
  ************************************************/
-bool XdgDesktopFile::read()
+bool XdgDesktopFile::isValid() const
+{
+    Q_D(const XdgDesktopFile);
+    return d->isValid();
+}
+
+/************************************************
+
+ ************************************************/
+QString XdgDesktopFile::fileName() const
+{
+    Q_D(const XdgDesktopFile);
+    return d->fileName();
+}
+
+
+/************************************************
+
+ ************************************************/
+QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->value(key, defaultValue);
+}
+
+
+/************************************************
+
+ ************************************************/
+QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->localizedValue(key, defaultValue);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFile::contains(const QString& key) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->contains(key);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFile::isShow(const QString& environment) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->isShow(environment);
+}
+
+
+/************************************************
+
+ ************************************************/
+QString XdgDesktopFile::expandExecString(const QStringList& urls) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->expandExecString(urls);
+}
+
+
+/************************************************
+ Starts the program defined in this desktop file in a new process, and detaches
+ from it. Returns true on success; otherwise returns false. If the calling process
+ exits, the detached process will continue to live.
+
+ Urls - the list of URLs or files to open, can be empty (app launched without
+  argument)
+ If the function is successful then *pid is set to the process identifier of the
+ started process.
+ ************************************************/
+bool XdgDesktopFile::startDetached(const QStringList& urls) const
+{
+    Q_D(const XdgDesktopFile);
+    return d->startDetached(urls);
+}
+
+
+/************************************************
+ This is an overloaded function.
+ ************************************************/
+bool XdgDesktopFile::startDetached(const QString& url) const
+{
+    Q_D(const XdgDesktopFile);
+    if (url.isEmpty())
+        return d->startDetached(QStringList());
+    else
+        return d->startDetached(QStringList(url));
+}
+
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFilePrivate::XdgDesktopFilePrivate(XdgDesktopFile* parent):
+    q_ptr(parent)
+{
+    mIsValid = false;
+    mPrefix = "";
+    mFileName = "";
+    mIsShow = false;
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgDesktopFilePrivate::setPrefix(const QString& prefix)
+{
+    mPrefix = prefix + (prefix.endsWith('/')? "" : "/");
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFilePrivate& XdgDesktopFilePrivate::operator=(const XdgDesktopFilePrivate& other)
+{
+    mFileName = other.mFileName;
+    mPrefix = other.mPrefix;
+    mIsValid = other.mIsValid;
+    mItems = other.mItems; // This copy map values
+    mIsShow = other.mIsShow;
+    return *this;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFilePrivate::read()
 {
     QFile file(mFileName);
 
@@ -130,6 +380,7 @@ bool XdgDesktopFile::read()
         mItems[section + "/" + key] = QVariant(value);
     }
 
+    mIsValid = valid;
     return valid;
 }
 
@@ -137,21 +388,22 @@ bool XdgDesktopFile::read()
 /************************************************
 
  ************************************************/
-QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue) const
+QVariant XdgDesktopFilePrivate::value(const QString& key, const QVariant& defaultValue) const
 {
+    //qDebug() << "XdgDesktopFilePrivate::value mPrefix + key" << mPrefix + key;
     return mItems.value(mPrefix + key, defaultValue);
 }
 
 
-/************************************************
- LC_MESSAGES value	Possible keys in order of matching
- lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
-                        default value
- lang_COUNTRY	        lang_COUNTRY, lang, default value
- lang@MODIFIER	        lang@MODIFIER, lang, default value
- lang	                lang, default value
- ************************************************/
-QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
+///************************************************
+// LC_MESSAGES value	Possible keys in order of matching
+// lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
+//                        default value
+// lang_COUNTRY	        lang_COUNTRY, lang, default value
+// lang@MODIFIER	        lang@MODIFIER, lang, default value
+// lang	                lang, default value
+// ************************************************/
+QVariant XdgDesktopFilePrivate::localizedValue(const QString& key, const QVariant& defaultValue) const
 {
     QString lang = getenv("LC_MESSAGES");
 
@@ -219,7 +471,7 @@ QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defa
 /************************************************
 
  ************************************************/
-bool XdgDesktopFile::contains(const QString& key) const
+bool XdgDesktopFilePrivate::contains(const QString& key) const
 {
     return mItems.contains(mPrefix + key);
 }
@@ -228,7 +480,7 @@ bool XdgDesktopFile::contains(const QString& key) const
 /************************************************
 
  ************************************************/
-bool XdgDesktopFile::isShow(const QString& environment) const
+bool XdgDesktopFilePrivate::isShow(const QString& environment) const
 {
     if (mIsShow > -1)
         return mIsShow > 0;
@@ -275,7 +527,7 @@ bool XdgDesktopFile::isShow(const QString& environment) const
 /************************************************
  Check if the program is actually installed.
  ************************************************/
-bool XdgDesktopFile::checkTryExec(const QString& progName) const
+bool XdgDesktopFilePrivate::checkTryExec(const QString& progName) const
 {
     if (progName.startsWith(QDir::separator()))
         return QFileInfo(progName).isExecutable();
@@ -292,42 +544,370 @@ bool XdgDesktopFile::checkTryExec(const QString& progName) const
 }
 
 /************************************************
- Starts the program with the arguments in a new process, and detaches from it.
- ExecString argument consists of an executable program optionally followed by
- one or more arguments.
- Returns true on success; otherwise returns false.
- See http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s06.html
+
  ************************************************/
-bool XdgDesktopFile::execute(const QString& execString)
+QString XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
 {
-    /**********************************
-     TODO: Sokoloff
-     This is a very dirty implementation, I promise to rewrite it :)
-     **********************************/
-    /*
-    %f	 A single file name
-    %F	 A list of files.
-    %u	 A single URL.
-    %U	 A list of URLs.
-    %c	 The translated name.
-    %k	 The location of the desktop file.
+    int len;
+    int pos2;
+    ushort ec = '%';
+    State state = { noquote, false };
+    QStack<State> sstack;
+    QStack<Save> ostack;
+    QStringList rst;
+    QString rsts;
 
-    %d	 Deprecated.
-    %D	 Deprecated.
-    %n	 Deprecated.
-    %N	 Deprecated.
-    %v	 Deprecated.
-    %m	 Deprecated.
-    */
+    int pos = 0;
+    QString str = value("Exec").toString();
 
-    QString cmd = execString;
+    while (pos < str.length()) {
+        ushort cc = str.unicode()[pos].unicode();
+        if (cc != ec)
+            goto nohit;
 
-    cmd.remove("%i");
-    cmd.remove("%d");
-    cmd.remove("%U");
-    cmd.remove("%u");
-    cmd.remove("%F");
-    cmd.remove("%f");
+        if (!(len = expandMacro( str, pos, urls, rst )))
+            goto nohit;
+
+        if (len < 0)
+        {
+            pos -= len;
+            continue;
+        }
+
+        if (state.dquote)
+        {
+            rsts = rst.join( QLatin1String(" ") );
+            rsts.replace( QRegExp(QLatin1String("([$`\"\\\\])")), QLatin1String("\\\\1") );
+        }
+        else if (state.current == dollarquote)
+        {
+            rsts = rst.join( QLatin1String(" ") );
+            rsts.replace( QRegExp(QLatin1String("(['\\\\])")), QLatin1String("\\\\1") );
+        }
+        else if (state.current == singlequote)
+        {
+            rsts = rst.join( QLatin1String(" ") );
+            rsts.replace( QLatin1Char('\''), QLatin1String("'\\''") );
+        }
+        else
+        {
+            if (rst.isEmpty())
+            {
+                str.remove( pos, len );
+                continue;
+            }
+            else
+            {
+                rsts = joinArgs( rst );
+            }
+        }
+        rst.clear();
+        str.replace( pos, len, rsts );
+        pos += rsts.length();
+        continue;
+
+    nohit:
+        if (state.current == singlequote)
+        {
+            if (cc == '\'')
+                state = sstack.pop();
+        }
+        else if (cc == '\\')
+        {
+            // always swallow the char -> prevent anomalies due to expansion
+            pos += 2;
+            continue;
+        }
+        else if (state.current == dollarquote)
+        {
+            if (cc == '\'')
+                state = sstack.pop();
+        }
+        else if (cc == '$')
+        {
+            cc = str.unicode()[++pos].unicode();
+            if (cc == '(')
+            {
+                sstack.push( state );
+                if (str.unicode()[pos + 1].unicode() == '(')
+                {
+                    Save sav = { str, pos + 2 };
+                    ostack.push( sav );
+                    state.current = math;
+                    pos += 2;
+                    continue;
+                }
+                else
+                {
+                    state.current = paren;
+                    state.dquote = false;
+                }
+            }
+            else if (cc == '{')
+            {
+                sstack.push( state );
+                state.current = subst;
+            }
+            else if (!state.dquote)
+            {
+                if (cc == '\'')
+                {
+                    sstack.push( state );
+                    state.current = dollarquote;
+                }
+                else if (cc == '"')
+                {
+                    sstack.push( state );
+                    state.current = doublequote;
+                    state.dquote = true;
+                }
+            }
+            // always swallow the char -> prevent anomalies due to expansion
+        }
+        else if (cc == '`')
+        {
+            str.replace( pos, 1, QLatin1String("$( " )); // add space -> avoid creating $((
+            pos2 = pos += 3;
+            for (;;)
+            {
+                if (pos2 >= str.length())
+                {
+                    pos = pos2;
+                    return false;
+                }
+                cc = str.unicode()[pos2].unicode();
+                if (cc == '`')
+                    break;
+                if (cc == '\\')
+                {
+                    cc = str.unicode()[++pos2].unicode();
+                    if (cc == '$' || cc == '`' || cc == '\\' ||
+                        (cc == '"' && state.dquote))
+                    {
+                        str.remove( pos2 - 1, 1 );
+                        continue;
+                    }
+                }
+                pos2++;
+            }
+            str[pos2] = QLatin1Char(')');
+            sstack.push( state );
+            state.current = paren;
+            state.dquote = false;
+            continue;
+        }
+        else if (state.current == doublequote)
+        {
+            if (cc == '"')
+                state = sstack.pop();
+        }
+        else if (cc == '\'')
+        {
+            if (!state.dquote)
+            {
+                sstack.push( state );
+                state.current = singlequote;
+            }
+        }
+        else if (cc == '"')
+        {
+            if (!state.dquote)
+            {
+                sstack.push( state );
+                state.current = doublequote;
+                state.dquote = true;
+            }
+        }
+        else if (state.current == subst)
+        {
+            if (cc == '}')
+                state = sstack.pop();
+        }
+        else if (cc == ')')
+        {
+            if (state.current == math)
+            {
+                if (str.unicode()[pos + 1].unicode() == ')')
+                {
+                    state = sstack.pop();
+                    pos += 2;
+                }
+                else
+                {
+                    // false hit: the $(( was a $( ( in fact
+                    // ash does not care, but bash does
+                    pos = ostack.top().pos;
+                    str = ostack.top().str;
+                    ostack.pop();
+                    state.current = paren;
+                    state.dquote = false;
+                    sstack.push( state );
+                }
+                continue;
+            }
+            else if (state.current == paren)
+                state = sstack.pop();
+            else
+                break;
+        }
+        else if (cc == '}')
+        {
+            if (state.current == group)
+                state = sstack.pop();
+            else
+                break;
+        }
+        else if (cc == '(')
+        {
+            sstack.push( state );
+            state.current = paren;
+        }
+        else if (cc == '{')
+        {
+            sstack.push( state );
+            state.current = group;
+        }
+        pos++;
+    }
+
+    if (sstack.empty())
+        return str;
+    else
+        return QString();
+}
+
+
+/************************************************
+
+ ************************************************/
+int XdgDesktopFilePrivate::expandMacro(const QString &str, int pos, const QStringList& urls, QStringList &ret) const
+{
+    uint option = str[pos + 1].unicode();
+    switch (option)
+    {
+        // ----------------------------------------------------------
+        // A single file name, even if multiple files are selected.
+        case 'f':
+        {
+            if (!urls.isEmpty())
+                ret << urls.at(0);
+            break;
+        }
+
+        // ----------------------------------------------------------
+        // A list of files. Use for apps that can open several local files at once.
+        // Each file is passed as a separate argument to the executable program.
+        case 'F':
+        {
+            ret << urls;
+            break;
+        }
+
+        // ----------------------------------------------------------
+        // A single URL. Local files may either be passed as file: URLs or as file path.
+        case 'u':
+        {
+            if (urls.isEmpty())
+                break;
+
+            QUrl url;
+            url.setUrl(urls.at(0));
+            ret << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
+            break;
+        }
+
+        // ----------------------------------------------------------
+        // A list of URLs. Each URL is passed as a separate argument to the executable
+        // program. Local files may either be passed as file: URLs or as file path.
+        case 'U':
+        {
+            foreach (QString s, urls)
+            {
+                QUrl url(s);
+                ret << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
+            }
+            break;
+        }
+
+        // ----------------------------------------------------------
+        // The Icon key of the desktop entry expanded as two arguments, first --icon
+        // and then the value of the Icon key. Should not expand to any arguments if
+        // the Icon key is empty or missing.
+        case 'i':
+        {
+            QString icon = value("Icon").toString();
+            if (!icon.isEmpty())
+                ret << "-icon" << icon.replace('%', "%%");
+
+            break;
+        }
+
+
+        // ----------------------------------------------------------
+        // The translated name of the application as listed in the appropriate Name key
+        // in the desktop entry.
+        case 'c':
+        {
+            ret << localizedValue("Name").toString().replace('%', "%%");
+            break;
+        }
+
+        // ----------------------------------------------------------
+        // The location of the desktop file as either a URI (if for example gotten from
+        // the vfolder system) or a local filename or empty if no location is known.
+        case 'k':
+        {
+            ret << fileName().replace('%', "%%");
+            break;
+        }
+
+        // ----------------------------------------------------------
+        // Deprecated.
+        // Deprecated field codes should be removed from the command line and ignored.
+        case 'd':
+        case 'D':
+        case 'n':
+        case 'N':
+        case 'v':
+        case 'm':
+            return -2;
+
+        // ----------------------------------------------------------
+        case '%':
+            ret = QStringList(QLatin1String("%"));
+            break;
+
+        // ----------------------------------------------------------
+        default:
+            return -2; // subst with same and skip
+    }
+
+    return 2;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFilePrivate::startDetached(const QStringList& urls) const
+{
+    //qDebug() << "XdgDesktopFilePrivate::startDetached: fileName" << fileName();
+    qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
+    QString cmd = expandExecString(urls);
+    //qDebug() << "XdgDesktopFilePrivate.startDetached: cmd=" << cmd;
+    if (cmd.isEmpty())
+        return false;
+
+    if (value("Terminal").toBool())
+    {
+        QString term = getenv("TERM");
+        if (term.isEmpty())
+            term = "xterm";
+
+        cmd = QString("%1 -e %2").arg(term, cmd);
+    }
+
+    qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << cmd;
 
     return QProcess::startDetached(cmd);
 }
@@ -342,15 +922,11 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
     if (mDesktopFiles.contains(fileName))
          return mDesktopFiles.value(fileName);
 
-     XdgDesktopFile* desktopFile = new XdgDesktopFile(fileName);
-//     if (!desktopFile->isValid())
-//     {
-//         delete desktopFile;
-//         return 0;
-//     }
+    //qDebug() << "XdgDesktopFileCache: add new file" << fileName;
+    XdgDesktopFile* desktopFile = new XdgDesktopFile(fileName);
 
-     mDesktopFiles.insert(fileName, desktopFile);
-     return desktopFile;
+    mDesktopFiles.insert(fileName, desktopFile);
+    return desktopFile;
 }
 
 

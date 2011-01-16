@@ -21,40 +21,40 @@
 #include <QObject>
 #include <QString>
 #include <QVariant>
+#include <QStringList>
+
+
+class XdgDesktopFilePrivate;
 
 class XdgDesktopFile : protected QObject
 {
     Q_OBJECT
 public:
-    explicit XdgDesktopFile(QObject *parent = 0);
-    explicit XdgDesktopFile(const QString& fileName, QObject *parent = 0);
+    explicit XdgDesktopFile(QObject *parent = 0, const QString& prefix="Desktop Entry");
+    explicit XdgDesktopFile(const QString& fileName, QObject *parent = 0, const QString& prefix="Desktop Entry");
     XdgDesktopFile(const XdgDesktopFile& other, QObject *parent = 0);
+
     virtual ~XdgDesktopFile();
+    XdgDesktopFile& operator=(const XdgDesktopFile& other);
 
     QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
     QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
 
     bool contains(const QString& key) const;
 
-    bool isValid() const { return mIsValid; }
-    QString fileName() const { return mFileName; }
-
-    XdgDesktopFile& operator=(const XdgDesktopFile& other);
+    bool isValid() const;
+    QString fileName() const;
 
     bool isShow(const QString& environment = "RAZOR") const;
 
-    static bool execute(const QString& execString);
+    QString expandExecString(const QStringList& urls = QStringList()) const;
 
-protected:
-    bool read();
-    bool checkTryExec(const QString& progName) const;
+    bool startDetached(const QStringList& urls) const;
+    bool startDetached(const QString& url="") const;
 
 private:
-    QString mPrefix;
-    QString mFileName;
-    bool    mIsValid;
-    QMap<QString, QVariant> mItems;
-    mutable short   mIsShow;
+    XdgDesktopFilePrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(XdgDesktopFile);
 };
 
 typedef QList<XdgDesktopFile*> XdgDesktopFileList;

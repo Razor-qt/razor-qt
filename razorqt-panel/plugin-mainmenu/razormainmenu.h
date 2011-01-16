@@ -19,9 +19,14 @@
 #ifndef RAZOR_MAINMENU_H
 #define RAZOR_MAINMENU_H
 
-#include "defs.h"
+#include "razorqt/defs.h"
 #include "razorplugin.h"
 #include <QPushButton>
+#include <QDomElement>
+#include "menustyle.h"
+
+class QMenu;
+class RazorBar;
 
 class RazorMainMenu : public RazorPlugin
 {
@@ -34,13 +39,27 @@ public:
     int heightForWidth(int w) { return w; }
     RazorPlugin::RazorPluginSizing sizePriority() { return RazorPlugin::Static; }
 
+
 signals:
 
-protected:
+private:
     QPushButton mButton;
+    QString mLogDir;
+    QString mMenuFile;
+    RazorBar* mPanel;
+    QMenu* mMenu;
+    MenuStyle mTopMenuStyle;
+    MenuStyle mMenuStyle;
+
+    void buildMenu();
+    void buildMenuLevel(QMenu* menu, const QDomElement& element);
+    void setMenuIcons(QMenu* parent);
 
 private slots:
     void showMenu();
+    void settingsChanged();
+    void runConmmand();
+    void menuAboutToShow();
 };
 
 extern "C" RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name);

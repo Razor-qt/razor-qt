@@ -179,6 +179,7 @@ void XdgMenuApplinkProcessor::step2()
         appLink.setAttribute("startupNotify", file->value("StartupNotify").toBool());
         appLink.setAttribute("path", file->value("Path").toString());
         appLink.setAttribute("icon", file->value("Icon").toString());
+        appLink.setAttribute("desktopFile", file->fileName());
 
         mElement.appendChild(appLink);
 

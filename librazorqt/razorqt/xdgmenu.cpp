@@ -21,6 +21,7 @@
 #include "domhelper.h"
 #include "xdgmenurules.h"
 #include "xdgmenuapplinkprocessor.h"
+#include "xdgenv.h"
 
 #include <QDebug>
 #include <QtXml/QDomElement>
@@ -40,6 +41,7 @@ XdgMenu::XdgMenu(const QString& menuFileName, QObject *parent) :
     QObject(parent)
 {
     mMenuFileName = menuFileName;
+    mLogDir = "";
 }
 
 
@@ -48,6 +50,14 @@ XdgMenu::XdgMenu(const QString& menuFileName, QObject *parent) :
  ************************************************/
 XdgMenu::~XdgMenu()
 {
+}
+
+/************************************************
+
+ ************************************************/
+void XdgMenu::setLogDir(const QString& directory)
+{
+    mLogDir = directory;
 }
 
 
@@ -67,32 +77,40 @@ bool XdgMenu::read()
 
     mXml = *(reader.xml());
     QDomElement root = mXml.documentElement();
-    save("00-reader.xml");
+    if (!mLogDir.isEmpty())
+      save(mLogDir + "/00-reader.xml");
 
     simplify(root);
-    save("01-simplify.xml");
+    if (!mLogDir.isEmpty())
+      save(mLogDir + "/01-simplify.xml");
 
     mergeMenus(root);
-    save("02-mergeMenus.xml");
+    if (!mLogDir.isEmpty())
+      save(mLogDir + "/02-mergeMenus.xml");
 
     moveMenus(root);
-    save("03-moveMenus.xml");
+    if (!mLogDir.isEmpty())
+          save(mLogDir + "/03-moveMenus.xml");
 
     mergeMenus(root);
-    save("04-mergeMenus.xml");
+    if (!mLogDir.isEmpty())
+          save(mLogDir + "/04-mergeMenus.xml");
 
     deleteDeletedMenus(root);
-    save("05-deleteDeletedMenus.xml");
+    if (!mLogDir.isEmpty())
+          save(mLogDir + "/05-deleteDeletedMenus.xml");
 
     processDirectoryEntries(root, QStringList());
-    save("06-processDirectoryEntries.xml");
+    if (!mLogDir.isEmpty())
+          save(mLogDir + "/06-processDirectoryEntries.xml");
 
     processApps(root);
-    save("07-processApps.xml");
+    if (!mLogDir.isEmpty())
+          save(mLogDir + "/07-processApps.xml");
 
     deleteEmpty(root);
-    save("08-deleteEmpty.xml");
-
+    if (!mLogDir.isEmpty())
+          save(mLogDir + "/08-deleteEmpty.xml");
 
     return true;
 }
@@ -472,4 +490,21 @@ void XdgMenu::deleteEmpty(QDomElement& element)
 }
 
 
+/************************************************
+ $XDG_CONFIG_DIRS/menus/${XDG_MENU_PREFIX}applications.menu
+ The first file found in the search path should be used; other files are ignored.
+ ************************************************/
+QString XdgMenu::getMenuFileName(const QString& baseName)
+{
+    QStringList configDirs = XdgEnv::configDirs().split(":", QString::SkipEmptyParts);
+    QString menuPrefix = getenv("XDG_MENU_PREFIX");
 
+    foreach(QString configDir, configDirs)
+    {
+        QFileInfo file(QString("%1/menus/%2%3").arg(configDir, menuPrefix, baseName));
+        if (file.exists())
+            return file.filePath();
+    }
+
+    return "";
+}

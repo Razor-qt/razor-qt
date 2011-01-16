@@ -33,6 +33,7 @@ set ( razorqt_HDRS
 	razorqt/domhelper.h
 	razorqt/xdgdesktopfile.h
 	razorqt/xdgmenu.h
+	razorqt/xdgicon.h
 	)
 
 set ( razorqt_SRCS
@@ -51,7 +52,7 @@ set ( razorqt_SRCS
 	razorqt/xdgmenuapplinkprocessor.cpp
 	razorqt/xdgmenureader.cpp
 	razorqt/xdgmenurules.cpp
-
+	razorqt/xdgicon.cpp
 	)
 
 set ( razorqt_MOCS
