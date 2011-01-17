@@ -65,6 +65,7 @@ RazorMainMenu::RazorMainMenu(RazorBar* panel, QWidget* parent, const QString& na
     QSizePolicy sp = mButton.sizePolicy();
     sp.setVerticalPolicy(QSizePolicy::Minimum);
     mButton.setSizePolicy(sp);
+
 }
 
 
@@ -159,6 +160,21 @@ void RazorMainMenu::buildMenu()
     buildMenuLevel(mMenu, rootElement);
     mMenu->setStyle(&mTopMenuStyle);
     setMenuIcons(mMenu);
+
+    mMenu->addSeparator();
+
+    QMenu* leaveMenu = mMenu->addMenu(XdgIcon::fromTheme("system-shutdown", 48), tr("Leave"));
+
+    QAction* act;
+    act = leaveMenu->addAction(XdgIcon::fromTheme("system-log-out", 48), tr("End session"));
+    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_logout()));
+
+    act = leaveMenu->addAction(XdgIcon::fromTheme("system-reboot", 48), tr("Restart computer"));
+    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_reboot()));
+
+
+    act = leaveMenu->addAction(XdgIcon::fromTheme("system-shutdown", 48), tr("Tur off computer"));
+    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_shutdown()));
 }
 
 

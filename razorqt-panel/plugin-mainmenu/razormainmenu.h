@@ -21,8 +21,11 @@
 
 #include "razorqt/defs.h"
 #include "razorplugin.h"
+
 #include <QPushButton>
 #include <QDomElement>
+#include <QAction>
+
 #include "menustyle.h"
 
 class QMenu;
@@ -51,9 +54,11 @@ private:
     MenuStyle mTopMenuStyle;
     MenuStyle mMenuStyle;
 
+
     void buildMenu();
     void buildMenuLevel(QMenu* menu, const QDomElement& element);
     void setMenuIcons(QMenu* parent);
+
 
 private slots:
     void showMenu();
