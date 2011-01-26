@@ -129,6 +129,7 @@ void RazorModuleManager::parseState()
     qDebug() << "parsestate!";
     QProcess * p = qobject_cast<QProcess*>(sender());
     Q_ASSERT(p);
+//    QMessageBox::information(0, "RazorModuleManager", "parseState");
     doOperation(p->readLine());
 }
 
@@ -141,6 +142,7 @@ void RazorModuleManager::doOperation(const QString  & _cmd)
 {
     QString cmd(_cmd.trimmed());
     qDebug() << "Razorstate: got output: " << cmd;
+//    QMessageBox::information(0, "RazorModuleManager", cmd);
     if (cmd =="RAZOR_DO_LOGOUT")
         logout();
     else if (cmd == "RAZOR_DO_SHUTDOWN")
@@ -157,6 +159,7 @@ void RazorModuleManager::logout()
     // autostart
     foreach (QProcess * p, autostartList)
     {
+        qDebug() << "Autostart logout:" << p;
         p->blockSignals(true);
         p->terminate();
         if (!p->waitForFinished())
@@ -168,11 +171,12 @@ void RazorModuleManager::logout()
     while (i.hasNext())
     {
         i.next();
+        qDebug() << "Module logout" << i.key();
         QProcess * p = i.value().process;
         p->blockSignals(true);
         p->terminate();
         if (!p->waitForFinished())
-            qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
+            qDebug() << "Module" << p << "rejected to close correctly. Kill it down.";
     }
     QCoreApplication::exit(0);
 }
