@@ -93,7 +93,7 @@ public:
                 QWidget* parent=0,
                 const QString & name = 0,
                 Qt::WindowFlags f=0)
-            : QWidget(parent)
+            : QWidget(parent), m_panel(panel)
     {
     }
 
@@ -134,12 +134,20 @@ public:
         setMaximumHeight(h);
         setMinimumHeight(h);
     }
+    
+    const RazorBar* panel()
+    {
+        return m_panel;
+    }
 
 signals:
     /*! Plugin has to emit this signal in any case when it
     	changes its size.
     */
     void sizeChanged();
+    
+private:
+    const RazorBar* m_panel;
 };
 
 /*! A helper plugin base class to simplify implementation

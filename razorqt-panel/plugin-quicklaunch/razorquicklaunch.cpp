@@ -2,6 +2,7 @@
 #include "razor.h"
 #include "razorbar.h"
 
+
 RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
 {
     RazorQuickLaunch * ret = new RazorQuickLaunch(panel, parent, name);
@@ -18,7 +19,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     QSettings *s = cfg->settings();
 
     s->beginGroup(name);
-    int preferedSize = s->value("size", 32).toInt();
+    int prefrerredSize = s->value("size", 32).toInt();
 
     int count = s->beginReadArray("apps");
 
@@ -54,24 +55,34 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     s->endArray();
     s->endGroup();
 
-    /*! \todo TODO/FIXME: here it should be decided how to
-    		  organize it - horizontally/vertically. Panel
-    		  supports horizontal layout only for now
-     */
     QGridLayout * layout = new QGridLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    // now do some layouting magic to save space (rows, columns)
-    int maxSize = qMin(panel->height(), preferedSize);
-    int rows = panel->height() / maxSize;
-    // add 1 to columns if there is more actions in one row
-    int addon = ((actions().count() % rows) > 0) ? 1 : 0;
-    int cols = actions().count() / rows + addon;
-    //qDebug() << actions().count() << height << maxSize << rows << cols << addon;
+    int maxRows, maxColumns, maxSize;
+    count = actions().count();
+    int size;
+    if (panel->topbottom())
+    {
+        size = panel->height();
+        maxSize = qMin(size, prefrerredSize);
+        maxRows = size / maxSize;
+        int addon = ((count % maxRows) > 0) ? 1 : 0;
+        maxColumns = count / maxRows + addon;
+    }
+    else
+    {
+        size = panel->width();
+        maxSize = qMin(size, prefrerredSize);
+        maxColumns = size / maxSize;
+        int addon = ((count % maxColumns) > 0) ? 1 : 0;
+        maxRows = count / maxColumns + addon;
+    }
+
 
     int row = 0;
     int col = 0;
+
     foreach (QAction * a, actions())
     {
         // "icon exists" check is performed in the RazorQuickLaunch constructor
@@ -88,7 +99,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
 
         layout->addWidget(btn, row, col);
         ++col;
-        if (col >= cols)
+        if (col >= maxColumns)
         {
             col = 0;
             ++row;
@@ -105,6 +116,6 @@ RazorQuickLaunch::~RazorQuickLaunch()
 
 void RazorQuickLaunch::execAction(QAction* _action)
 {
-    qDebug() << "RazorQuickLaunchGUI::execAction execAction triggered with" << _action->data();
+    qDebug() << "RazorQuickLaunch::execAction execAction triggered with" << _action->data();
     QProcess::startDetached(_action->data().toString());
 }
