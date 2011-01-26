@@ -106,7 +106,8 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
         }
     }
 
-    setMinimumWidth(layout->columnCount() * maxSize);
+    setMinimumWidth(maxColumns * maxSize);
+    setMinimumHeight(maxRows * maxSize);
     mainLayout()->addLayout(layout);
 }
 

@@ -22,7 +22,7 @@ public:
     }
     int heightForWidth(int w)
     {
-        return w;
+        return height();
     }
     RazorPlugin::RazorPluginSizing sizePriority()
     {
