@@ -17,11 +17,12 @@ public:
 
     int widthForHeight(int h)
     {
-        return gui->sizeHint().width();
+        //return gui->sizeHint().width();
+        return gui->width();
     }
     int heightForWidth(int w)
     {
-        return w;
+        return gui->height();
     }
     RazorPlugin::RazorPluginSizing sizePriority()
     {
