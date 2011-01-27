@@ -69,6 +69,10 @@ RazorClock::RazorClock(RazorBar * panel, QWidget * parent, const QString & name)
             gui->setFont(font);
             continue;
         }
+        //setMaximumWidth(bbox.width());
+        //setMaximumHeight(bbox.height());
+        gui->setMaximumWidth(bbox.width());
+        gui->setMaximumHeight(bbox.height());
         break;
     }
 
