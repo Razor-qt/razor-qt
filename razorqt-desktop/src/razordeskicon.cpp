@@ -35,6 +35,7 @@ RazorDeskIcon::RazorDeskIcon(const QString & exec,
     setIconSize(iconsize);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+    setAttribute(Qt::WA_TranslucentBackground);
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(launchApp()));
 

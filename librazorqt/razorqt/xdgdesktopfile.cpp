@@ -63,15 +63,11 @@ protected:
     int expandMacro(const QString &str, int pos, const QStringList& urls, QStringList &ret) const;
 
 private:
-    XdgDesktopFile* const q_ptr;
-    Q_DECLARE_PUBLIC(XdgDesktopFile);
-    QString mPrefix;
-    QString mFileName;
-    bool    mIsValid;
-    QMap<QString, QVariant> mItems;
-    mutable short   mIsShow;
-
-private:
+    enum IsShow {
+        ShowUndefined,
+        ShowEnabled,
+        ShowDisabled
+    };
     enum Quoting
     {
         noquote,
@@ -95,6 +91,14 @@ private:
         QString str;
         int pos;
     } Save;
+
+    XdgDesktopFile* const q_ptr;
+    Q_DECLARE_PUBLIC(XdgDesktopFile);
+    QString mPrefix;
+    QString mFileName;
+    bool    mIsValid;
+    QMap<QString, QVariant> mItems;
+    mutable IsShow   mIsShow;
 
 };
 
@@ -318,7 +322,7 @@ XdgDesktopFilePrivate::XdgDesktopFilePrivate(XdgDesktopFile* parent):
     mIsValid = false;
     mPrefix = "";
     mFileName = "";
-    mIsShow = false;
+    mIsShow = XdgDesktopFilePrivate::ShowUndefined;
 }
 
 
@@ -492,11 +496,10 @@ bool XdgDesktopFilePrivate::contains(const QString& key) const
  ************************************************/
 bool XdgDesktopFilePrivate::isShow(const QString& environment) const
 {
-    if (mIsShow > -1)
-        return mIsShow > 0;
+    if (mIsShow != XdgDesktopFilePrivate::ShowUndefined)
+        return mIsShow == XdgDesktopFilePrivate::ShowEnabled;
 
-    mIsShow = 0;
-
+    mIsShow = XdgDesktopFilePrivate::ShowDisabled;
     // Means "this application exists, but don't display it in the menus".
     if (value("NoDisplay").toBool())
         return false;
@@ -529,7 +532,7 @@ bool XdgDesktopFilePrivate::isShow(const QString& environment) const
     if (!s.isEmpty() && ! this->checkTryExec(s))
         return false;
 
-    mIsShow = 1;
+    mIsShow = XdgDesktopFilePrivate::ShowEnabled;
     return true;
 }
 

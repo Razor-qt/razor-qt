@@ -33,6 +33,7 @@ void RazorDeskManagerLegacy::updateIconList()
 
             if (tmp->isShow())
             {
+                qDebug() << "ISSHOW";
                 QPoint pos(x, y);
                 RazorDeskIcon* idata = new RazorDeskIcon(
                             tmp->value("Exec").toString(),
