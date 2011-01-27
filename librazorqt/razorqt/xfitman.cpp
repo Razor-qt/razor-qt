@@ -401,8 +401,21 @@ int XfitMan::getWindowDesktop(Window _wid)
     //so we try to use net_wm_desktop first, but if the system does not use net_wm standard we use win_workspace!
     if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["net_wm_desktop"],0, 4096, FALSE, XA_CARDINAL,
                            &type, &format, &length, &rest,(unsigned char**) &data) != Success)
-        XGetWindowProperty(QX11Info::display(),_wid,atomMap["_win_workspace"],0, 4096, FALSE, XA_CARDINAL,
-                           &type, &format, &length, &rest,(unsigned char**) &data);
+    {
+        qDebug() << "XfitMan::getWindowDesktop() NET_WM_DESKTOP is not set ("<<atomMap["net_wm_desktop"]<<")";
+        if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["_win_workspace"],0, 4096, FALSE, XA_CARDINAL,
+                           &type, &format, &length, &rest,(unsigned char**) &data) != Success)
+        {
+            qDebug() << "XfitMan::getWindowDesktop() FAILBACK: Window" << _wid << "does not have set NET_WM_DESKTOP ("<<atomMap["net_wm_desktop"]<<") or _WIN_WORKSPACE (" <<atomMap["_win_workspace"]<<")";
+            return -1;
+        }
+    }
+    qDebug() << "XfitMan::getWindowDesktop() desktop should be known";
+    if (!data)
+    {
+        qDebug() << "XfitMan::getWindowDesktop() WARNING *data is empty (uninitialized). And it's wrong!";
+        return -1;
+    }
     int desktop = data[0];
     XFree(data);
     return desktop;
