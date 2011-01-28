@@ -31,7 +31,7 @@ public:
     void setStrut(Window _wid, int _height);
     void unsetStrut(Window _wid);
     void getAtoms();
-    QList<Window>* getClientlist();
+    QList<Window> getClientList();
     bool getClientIcon(Window _wid, QPixmap& _pixreturn);
     void setEventRoute();
     void setClientStateFlag(Window _wid, QString _atomcode, int _action);
@@ -41,7 +41,7 @@ public:
     void moveWindowtoDesktop(Window _wid, int _display);
     void raiseWindow(Window _wid);
     void resizeWindow(Window _wid, int _height, int _width);
-    
+
     void setActiveDesktop(int _desktop);
     void mapRaised(Window _wid)
     {

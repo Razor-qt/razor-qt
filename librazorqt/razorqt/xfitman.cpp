@@ -62,9 +62,9 @@ Window XfitMan::getActiveAppWindow()
 //    qDebug() << "Getting active Window";
     Window focuswin = getActiveWindow();
 //    qDebug() << focuswin;
-    QList<Window>* clientList = getClientlist();
+    QList<Window> clientList = getClientList();
     //while ((getName(focuswin) == "BLAH!" || !clientList.keys().contains(focuswin) ) && (focuswin != root) )
-    while ((getName(focuswin) == "BLAH!" || !clientList->contains(focuswin) ) && (focuswin != root))
+    while ((getName(focuswin) == "BLAH!" || !clientList.contains(focuswin) ) && (focuswin != root))
     {
 
         runs ++;
@@ -352,7 +352,7 @@ bool XfitMan::acceptWindow(Window _wid)
 /**
  * @brief gets a client list
  */
-QList<Window>* XfitMan::getClientlist()
+QList<Window> XfitMan::getClientList()
 {
     //initialize the parameters for the XGetWindowProperty call
     int  format;
@@ -364,14 +364,14 @@ QList<Window>* XfitMan::getClientlist()
      */
 
 
-    QList<Window>* output = new QList<Window>;
+    QList<Window> output;
 
     XGetWindowProperty(QX11Info::display(),root,atomMap["net_client_list"],0, 4096, FALSE, AnyPropertyType,
                        &type, &format, &length, &rest,(unsigned char**) &data);
 
 
     for (unsigned int i = 0; i < length; i ++)
-        output->append(data[i]);
+        output.append(data[i]);
 
 
     XFree(data);

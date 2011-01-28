@@ -24,6 +24,7 @@ add_subdirectory( librazorqt )
 add_subdirectory( razorqt-session )
 add_subdirectory( razorqt-panel )
 add_subdirectory( razorqt-desktop )
+add_subdirectory( razorqt-appswitcher )
 add_subdirectory( razorqt-resources )
 
 
