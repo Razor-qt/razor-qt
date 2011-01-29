@@ -58,6 +58,12 @@ XdgMenuReader::~XdgMenuReader()
  ************************************************/
 bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
 {
+    if (fileName.isEmpty())
+    {
+        mErrorStr = "Menu file not defined.";
+        return false;
+    }
+
     QFileInfo fileInfo(QDir(baseDir), fileName);
 
     mFileName = fileInfo.canonicalFilePath();
@@ -70,7 +76,8 @@ bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
 
     QFile file(mFileName);
 
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {
         mErrorStr = tr("%1 not loading: %2").arg(fileName).arg(file.errorString());
         return false;
     }

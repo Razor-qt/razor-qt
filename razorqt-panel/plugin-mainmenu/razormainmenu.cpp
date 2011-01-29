@@ -125,16 +125,20 @@ void RazorMainMenu::settingsChanged()
     ReadSettings readSettings("mainmenu");
     QSettings *settings = readSettings.settings();
 
-    mButton.setText(settings->value("Text", "").toString());
-    mLogDir = settings->value("Log dir", "").toString();
+    mButton.setText(settings->value("text", "").toString());
+    mLogDir = settings->value("log_dir", "").toString();
 
-    mMenuStyle.setIconSize(settings->value("Icon size", 16).toInt());
-    mTopMenuStyle.setIconSize(settings->value("Top icon size", 16).toInt());
+    mMenuStyle.setIconSize(settings->value("icon_size", 16).toInt());
+    mTopMenuStyle.setIconSize(settings->value("top_icon_size", 16).toInt());
 
 
-    mMenuFile = settings->value("Menu File", "").toString();
+    mMenuFile = settings->value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
+
+    QIcon icon =  XdgIcon::fromTheme(settings->value("button_icon").toString(), 48);
+    if (!icon.isNull())
+        mButton.setIcon(icon);
 
 }
 
@@ -147,19 +151,20 @@ void RazorMainMenu::buildMenu()
     XdgMenu xdgMenu(mMenuFile);
     xdgMenu.setLogDir(mLogDir);
 
+    mMenu = new QMenu(this);
+
     bool res = xdgMenu.read();
     if (!res)
     {
         QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
-        return;
     }
-
-    mMenu = new QMenu(this);
-
-    QDomElement rootElement = xdgMenu.xml().documentElement();
-    buildMenuLevel(mMenu, rootElement);
-    mMenu->setStyle(&mTopMenuStyle);
-    setMenuIcons(mMenu);
+    else
+    {
+        QDomElement rootElement = xdgMenu.xml().documentElement();
+        buildMenuLevel(mMenu, rootElement);
+        mMenu->setStyle(&mTopMenuStyle);
+        setMenuIcons(mMenu);
+    }
 
     mMenu->addSeparator();
 

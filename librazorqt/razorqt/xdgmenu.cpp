@@ -66,7 +66,6 @@ void XdgMenu::setLogDir(const QString& directory)
  ************************************************/
 bool XdgMenu::read()
 {
-
     XdgMenuReader reader;
     if (!reader.load(mMenuFileName))
     {
@@ -505,6 +504,22 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
         if (file.exists())
             return file.filePath();
     }
+
+    QStringList wellKnownFiles;
+    wellKnownFiles << "kde4-applications.menu";
+    wellKnownFiles << "gnome-applications.menu";
+    wellKnownFiles << "lxde-applications.menu";
+
+    foreach(QString configDir, configDirs)
+    {
+        foreach (QString f, wellKnownFiles)
+        {
+            QFileInfo file(QString("%1/menus/%2").arg(configDir, f));
+            if (file.exists())
+                return file.filePath();
+        }
+    }
+
 
     return "";
 }
