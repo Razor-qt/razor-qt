@@ -166,14 +166,14 @@ RazorTaskManager::RazorTaskManager(RazorBar * panel, QWidget * parent, const QSt
  */
 void RazorTaskManager::updateMap()
 {
-    QList<Window>* tmp = Razor::getInstance().get_Xfitman()->getClientlist();
+    QList<Window> tmp = Razor::getInstance().get_Xfitman()->getClientList();
 
     //first we need to get rid of tasks that got closed
     QMapIterator<Window,RazorTask*> iter(clientList);
     while (iter.hasNext())
     {
         iter.next();
-        if (!tmp->contains(iter.key()))
+        if (!tmp.contains(iter.key()))
         {
             //  qDebug() << "DELTHIS!";
             //get the pointer
@@ -187,18 +187,16 @@ void RazorTaskManager::updateMap()
 
 
     //now we got the window-ids and we got the count so we get through all of them
-    for (int i = 0; i < tmp->count(); i++)
+    for (int i = 0; i < tmp.count(); i++)
     {
         //add new clients to the list making new entries for the new windows
-        if (!clientList.contains(tmp->at(i)) && Razor::getInstance().get_Xfitman()->acceptWindow(tmp->at(i)))
+        if (!clientList.contains(tmp.at(i)) && Razor::getInstance().get_Xfitman()->acceptWindow(tmp.at(i)))
         {
-            RazorTask* rtask = new RazorTask(tmp->at(i),Razor::getInstance().get_Xfitman()->getWindowDesktop(tmp->at(i)));
+            RazorTask* rtask = new RazorTask(tmp.at(i),Razor::getInstance().get_Xfitman()->getWindowDesktop(tmp.at(i)));
             qDebug() << "title: " <<rtask->getTitle();
-            clientList[tmp->at(i)]=rtask;
+            clientList[tmp.at(i)]=rtask;
         }
     }
-
-    delete tmp;
 
     //then update the stuff in our gui
     gui->updateTasks(&clientList);
