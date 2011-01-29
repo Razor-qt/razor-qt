@@ -83,6 +83,10 @@ RazorDeskSwitchGUI::RazorDeskSwitchGUI(RazorDeskSwitch* parent)
  */
 void RazorDeskSwitchGUI::wheelEvent(QWheelEvent* _event)
 {
+    // do nothing if there is only one desktop
+    if (maximum() == minimum())
+        return;
+
     int numDegrees = _event->delta() / 8;
     int numSteps = numDegrees / 15;
     int oldval = value();
