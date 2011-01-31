@@ -112,8 +112,11 @@ void RazorDeskIcon::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::NoPen);
-    painter.fillRect(QRect(0,0,width(),height()), Qt::transparent);
+
+
+    QStyleOption opt;
+    opt.init(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     // now the icon
     QPixmap pm = icon().pixmap(iconSize(), isDown() ? QIcon::Selected : QIcon::Selected);
@@ -126,8 +129,8 @@ void RazorDeskIcon::paintEvent(QPaintEvent* event)
                  iconSize().width(), iconSize().height());
     //qDebug() << target << w << h << iw << ih;
     painter.drawPixmap(target, pm, source);
-    // text now
-    painter.setPen(Qt::black);
+    // text now - it has to follow potential QSS
+    painter.setPen(opt.palette.color(QPalette::Normal, QPalette::Text));
     painter.drawText(QRectF(2, h+ih-10, width()-4, height()-h-ih+10),
                      Qt::AlignCenter | Qt::TextWordWrap | Qt::TextIncludeTrailingSpaces,
                      text());
