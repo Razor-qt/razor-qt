@@ -32,7 +32,6 @@ public:
 private:
     ReadSettings * cfg;
     QString m_configId;
-    QMap<QString,QString> m_icons;
 
 private slots:
     //! run command in the action

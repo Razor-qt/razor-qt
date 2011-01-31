@@ -1,6 +1,7 @@
 #include "razorquicklaunch.h"
 #include "razor.h"
 #include "razorbar.h"
+#include <razorqt/xdgdesktopfile.h>
 
 
 RazorPlugin* init(RazorBar* panel, QWidget* parent, const QString & name)
@@ -26,29 +27,40 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     QString desktop;
     QString execname;
     QString exec;
-    QString icon;
+    QIcon icon;
     for (int i = 0; i < count; ++i)
     {
         s->setArrayIndex(i);
         desktop = s->value("desktop", "").toString();
         if (! desktop.isEmpty())
         {
-            // todo
+            XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
+            if (!xdg->isValid())
+            {
+                qDebug() << "XdgDesktopFile" << desktop << "is not valid";
+                continue;
+            }
+            //qDebug() << "Reading XdgDesktopFile" << xdg->localizedValue("Name").toString() << xdg->localizedValue("Genericname").toString() << xdg->localizedValue("Exec").toString();
+            execname = xdg->localizedValue("Name").toString();
+            QString gn(xdg->localizedValue("Genericname").toString());
+            if (!gn.isEmpty())
+                execname += " (" + gn + ")";
+            exec = xdg->localizedValue("Exec").toString();
+            icon = xdg->icon(128, QIcon());
         }
         else
         {
             execname = s->value("name", "").toString();
             exec = s->value("exec", "").toString();
-            icon = s->value("icon", "").toString();
+            icon = QIcon(s->value("icon", "").toString());
         }
-        m_icons[name] = icon;
 
-        if (!QFile::exists(icon))
+        if (icon.isNull())
         {
-            qDebug() << "Icon file" << icon << "does not exists. Skipped.";
+            qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
             continue;
         }
-        QAction* tmp = new QAction(QIcon(icon), execname, this);
+        QAction* tmp = new QAction(icon, execname, this);
         tmp->setData(exec);
         addAction(tmp);
     }
@@ -92,7 +104,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
         btn->setIconSize(QSize(maxSize*0.6, maxSize*0.6));
 
         btn->setDefaultAction(a);
-        btn->setToolTip(a->data().toString());
+        btn->setToolTip(a->text());
         qDebug() << "tooltop" << a->data().toString();
         connect(btn, SIGNAL(triggered(QAction*)),
                 this, SLOT(execAction(QAction*)));
