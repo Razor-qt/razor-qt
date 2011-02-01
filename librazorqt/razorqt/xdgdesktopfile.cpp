@@ -31,6 +31,7 @@
 #include <QStack>
 #include <QUrl>
 #include "xdgicon.h"
+#include "xdgenv.h"
 
 class XdgDesktopFilePrivate {
 public:
@@ -929,17 +930,82 @@ bool XdgDesktopFilePrivate::startDetached(const QStringList& urls) const
 /************************************************
 
  ************************************************/
+QString findDesktopFile(const QString& dirName, const QString& desktopName)
+{
+    QDir dir(dirName);
+    QFileInfo fi(dir, desktopName);
+
+    if (fi.exists())
+        return fi.canonicalFilePath();
+
+    // Working recursively ............
+    QFileInfoList dirs = dir.entryInfoList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot);
+    foreach (QFileInfo d, dirs)
+    {
+        QString f = findDesktopFile(d.canonicalFilePath(), desktopName);
+        if (!f.isEmpty())
+            return f;
+    }
+
+    return "";
+}
+
+
+/************************************************
+
+ ************************************************/
+QString findDesktopFile(const QString& desktopName)
+{
+    QStringList dataDirs = XdgEnv::dataDirs().split(":", QString::SkipEmptyParts);
+
+    foreach (QString dirName, dataDirs)
+    {
+        QString f = findDesktopFile(dirName + "/applications", desktopName);
+        if (!f.isEmpty())
+            return f;
+    }
+
+    return "";
+}
+
+
+/************************************************
+
+ ************************************************/
 XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 {
     static QHash<QString, XdgDesktopFile*> mDesktopFiles;
     if (mDesktopFiles.contains(fileName))
          return mDesktopFiles.value(fileName);
 
-    //qDebug() << "XdgDesktopFileCache: add new file" << fileName;
-    XdgDesktopFile* desktopFile = new XdgDesktopFile(fileName);
 
-    mDesktopFiles.insert(fileName, desktopFile);
-    return desktopFile;
+    if (fileName.startsWith(QDir::separator()))
+    {
+        // Absolute path ........................
+        //qDebug() << "XdgDesktopFileCache: add new file" << fileName;
+        XdgDesktopFile* desktopFile = new XdgDesktopFile(fileName);
+        mDesktopFiles.insert(fileName, desktopFile);
+        return desktopFile;
+    }
+    else
+    {
+        // Search desktop file ..................
+        QString filePath = findDesktopFile(fileName);
+        qDebug() << "Sokoloff XdgDesktopFileCache::getFile found fileName" << fileName << filePath;
+        XdgDesktopFile* desktopFile;
+
+        if (!mDesktopFiles.contains(filePath))
+        {
+            desktopFile = new XdgDesktopFile(filePath);
+            mDesktopFiles.insert(filePath, desktopFile);
+        }
+        else
+            desktopFile = mDesktopFiles.value(filePath);
+
+
+        mDesktopFiles.insert(fileName, desktopFile);
+        return desktopFile;
+    }
 }
 
 

@@ -26,6 +26,15 @@
 
 class XdgDesktopFilePrivate;
 
+/**
+ \brief Desktop files handling.
+ XdgDesktopFile class gives the interface for reading the values from the XDG .desktop file.
+ The format .desktop a file is described on http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
+
+ The interface of this class is similar on QSettings.
+ \author Petr Vanek <petr@scribus.info>
+ */
+
 class XdgDesktopFile : protected QObject
 {
     Q_OBJECT
