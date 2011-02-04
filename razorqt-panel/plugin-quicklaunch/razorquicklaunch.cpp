@@ -20,7 +20,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     QSettings *s = cfg->settings();
 
     s->beginGroup(name);
-    int prefrerredSize = s->value("size", 32).toInt();
+    int preferredSize = s->value("size", 32).toInt();
 
     int count = s->beginReadArray("apps");
 
@@ -34,36 +34,23 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
         desktop = s->value("desktop", "").toString();
         if (! desktop.isEmpty())
         {
-            XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
-            if (!xdg->isValid())
-            {
-                qDebug() << "XdgDesktopFile" << desktop << "is not valid";
-                continue;
-            }
-            //qDebug() << "Reading XdgDesktopFile" << xdg->localizedValue("Name").toString() << xdg->localizedValue("Genericname").toString() << xdg->localizedValue("Exec").toString();
-            execname = xdg->localizedValue("Name").toString();
-            QString gn(xdg->localizedValue("Genericname").toString());
-            if (!gn.isEmpty())
-                execname += " (" + gn + ")";
-            exec = xdg->localizedValue("Exec").toString();
-            icon = xdg->icon(128, QIcon());
+            addAction(new RazorQuickLaunchAction(desktop, this));
         }
         else
         {
             execname = s->value("name", "").toString();
             exec = s->value("exec", "").toString();
             icon = QIcon(s->value("icon", "").toString());
+            if (icon.isNull())
+            {
+                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
+                continue;
+            }
+            addAction(new RazorQuickLaunchAction(execname, exec, icon, this));
         }
 
-        if (icon.isNull())
-        {
-            qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
-            continue;
-        }
-        QAction* tmp = new QAction(icon, execname, this);
-        tmp->setData(exec);
-        addAction(tmp);
     }
+
     s->endArray();
     s->endGroup();
 
@@ -77,7 +64,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     if (panel->topbottom())
     {
         size = panel->height();
-        maxSize = qMin(size, prefrerredSize);
+        maxSize = qMin(size, preferredSize);
         maxRows = size / maxSize;
         int addon = ((count % maxRows) > 0) ? 1 : 0;
         maxColumns = count / maxRows + addon;
@@ -85,7 +72,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
     else
     {
         size = panel->width();
-        maxSize = qMin(size, prefrerredSize);
+        maxSize = qMin(size, preferredSize);
         maxColumns = size / maxSize;
         int addon = ((count % maxColumns) > 0) ? 1 : 0;
         maxRows = count / maxColumns + addon;
@@ -97,6 +84,11 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
 
     foreach (QAction * a, actions())
     {
+        if (! qobject_cast<RazorQuickLaunchAction*>(a)->isValid())
+        {
+            qDebug() << "Action" << a << " is not valid. Skipping.";
+            continue;
+        }
         // "icon exists" check is performed in the RazorQuickLaunch constructor
         QToolButton * btn = new QToolButton(this);
         btn->setMaximumSize(maxSize, maxSize);
@@ -105,9 +97,6 @@ RazorQuickLaunch::RazorQuickLaunch(RazorBar * panel, QWidget * parent, const QSt
 
         btn->setDefaultAction(a);
         btn->setToolTip(a->text());
-        qDebug() << "tooltop" << a->data().toString();
-        connect(btn, SIGNAL(triggered(QAction*)),
-                this, SLOT(execAction(QAction*)));
 
         layout->addWidget(btn, row, col);
         ++col;
@@ -127,8 +116,60 @@ RazorQuickLaunch::~RazorQuickLaunch()
 {
 }
 
-void RazorQuickLaunch::execAction(QAction* _action)
+RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & name,
+                                               const QString & exec,
+                                               const QIcon & icon,
+                                               QWidget * parent)
+    : QAction(icon, name, parent),
+      m_valid(true)
 {
-    qDebug() << "RazorQuickLaunch::execAction execAction triggered with" << _action->data();
-    QProcess::startDetached(_action->data().toString());
+    m_type = ActionLegacy;
+
+    setData(exec);
+    connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
+}
+
+RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & desktop,
+                                               QWidget * parent)
+    : QAction(parent),
+      m_valid(true)
+{
+    m_type = ActionXdg;
+
+    XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
+    if (!xdg->isValid())
+    {
+        qDebug() << "XdgDesktopFile" << desktop << "is not valid";
+        m_valid = false;
+        return;
+    }
+
+    QString title(xdg->localizedValue("Name").toString());
+    QString gn(xdg->localizedValue("GenericName").toString());
+    if (!gn.isEmpty())
+        title += " (" + gn + ")";
+    setText(title);
+    
+    setIcon(xdg->icon(128, QIcon()));
+    
+    setData(desktop);
+    connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
+}
+
+void RazorQuickLaunchAction::execAction()
+{
+    QString exec(data().toString());
+    switch (m_type)
+    {
+        case ActionLegacy:
+            QProcess::startDetached(exec);
+            break;
+        case ActionXdg:
+        {
+            XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(exec);
+            if (xdg->isValid())
+                xdg->startDetached();
+            break;
+        }
+    }
 }
