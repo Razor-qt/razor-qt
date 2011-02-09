@@ -1,6 +1,6 @@
 #include <QApplication>
-#include "appswitcher.h"
-#include "razorqt/readsettings.h"
+#include "application.h"
+
 
 /*! \mainpage razor-appswitcher, lightweight "alt+tab" application switcher
 
@@ -14,16 +14,8 @@ But you can find it useful in other minimalistic WMs
 */
 int main(int argc, char **argv)
 {
-    QApplication a(argc, argv);
+    RazorAppSwitcher::Application a(argc, argv);
     a.setQuitOnLastWindowClosed(false);
 
-    ReadSettings cfg("razor");
-    ReadTheme theme(cfg.settings()->value("theme", "").toString());
-    a.setStyleSheet(theme.qss());
-
-    RazorAppSwitcher::AppSwitcher * as = new RazorAppSwitcher::AppSwitcher();
-    int ret = a.exec();
-
-    delete as;
-    return ret;
+    return a.exec();
 }

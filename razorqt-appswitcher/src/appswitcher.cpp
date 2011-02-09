@@ -7,7 +7,8 @@
 
 
 RazorAppSwitcher::AppSwitcher::AppSwitcher()
-    : QWidget(0, Qt::FramelessWindowHint | Qt::Tool)
+    : QWidget(0, Qt::FramelessWindowHint | Qt::Tool),
+      m_x(0)
 {
     setupUi(this);
     installEventFilter(this);
@@ -22,15 +23,13 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
 
     m_key = new QxtGlobalShortcut(this);
 
-    //QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_T);
     QKeySequence ks(Qt::ALT + Qt::Key_Tab);
     if (! m_key->setShortcut(ks))
     {
         QMessageBox::information(this, tr("Global keyboard shortcut"),
                                  tr("Global shorcut: '%1' cannot be registered").arg(ks.toString()));
-        qApp->exit(1);
+        exit(1);
     }
-
     m_localKey = new QShortcut(ks, this, SLOT(selectNextItem()), SLOT(selectNextItem()));
 
     connect(m_key, SIGNAL(activated()), this, SLOT(handleApps()));
@@ -38,7 +37,6 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
 
 void RazorAppSwitcher::AppSwitcher::handleApps()
 {
-    qDebug() << "AppSwitcher::handleApps() start";
     if (!isVisible())
     {
         QRect desktop = QApplication::desktop()->availableGeometry(m_x->getActiveDesktop());
@@ -46,7 +44,6 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
         x = desktop.width()/2 - width() / 2;
         y = desktop.height()/2 - height() / 2;
         move(x, y);
-        qDebug() << "PARENT" << parent() << desktop << x << y;
         show();
     }
 
@@ -55,7 +52,6 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
         QLayoutItem * item;
         while ((item = m_layout->takeAt(0)) != 0)
         {
-            qDebug() << "Cleaning layout" << item;
             item->widget()->hide();
             delete item;
         }
@@ -63,17 +59,30 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
     m_list.clear();
 
     QList<Window> l = m_x->getClientList();
+    QList<Window> merge;
     Window actWin = m_x->getActiveWindow();
     bool setImplicitFocus = true;
+    // setup already used windows
+    foreach (Window w, m_orderedWindows)
+    {
+        if (l.contains(w))
+        {
+            merge.append(w);
+            l.removeAll(w);
+        }
+        else
+            m_orderedWindows.removeAll(w);
+    }
+    // rest at the end
+    merge += l;
+   
     // setup new windows
-    foreach (Window w, l)
+    foreach (Window w, merge)
     {
         if (!m_x->acceptWindow(w))
         {
-            qDebug() << "Skipped due props:" << m_x->getName(w);
             continue;
         }
-        qDebug() << "Append to layout:" << w << m_x->getName(w);
         QPixmap pm;
         if (! m_x->getClientIcon(w, pm))
             qDebug() << "No icon for:" << w << m_x->getName(w);
@@ -93,6 +102,7 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
 
     if (setImplicitFocus)
         selectNextItem();
+    
 }
 
 void RazorAppSwitcher::AppSwitcher::hideEvent(QHideEvent *e)
@@ -109,7 +119,6 @@ void RazorAppSwitcher::AppSwitcher::showEvent(QShowEvent *e)
 
 void RazorAppSwitcher::AppSwitcher::keyPressEvent(QKeyEvent * e)
 {
-    qDebug() << "AppSwitcher::keyPressEvent" << e << e->key() << e->modifiers();;
     switch (e->key())
     {
         case Qt::Key_Escape:
@@ -148,6 +157,27 @@ bool RazorAppSwitcher::AppSwitcher::eventFilter(QObject * o, QEvent * e)
         return true;
     }
     return QWidget::eventFilter(o, e);
+}
+
+bool RazorAppSwitcher::AppSwitcher::handleEvent(XEvent * e)
+{
+    if (e->type == PropertyNotify)
+    {
+        if (!this || !m_x)
+            return false;
+
+        Window w = m_x->getActiveWindow();
+        if (m_orderedWindows.contains(w))
+        {
+            int ix = m_orderedWindows.indexOf(w);
+            if (ix != -1)
+            {
+                m_orderedWindows.removeAt(ix);
+            }
+        }
+        m_orderedWindows.prepend(w);
+    }
+    return false;
 }
 
 void RazorAppSwitcher::AppSwitcher::selectNextItem()

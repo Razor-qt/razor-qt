@@ -43,6 +43,13 @@ class AppSwitcher : public QWidget, public Ui::AppSwitcher
 public:
     AppSwitcher();
 
+    /*! \brief Catch X11 events to track changes in window orders.
+    Windows last usages is recorded in m_orderedWindows list. Then
+    it is merged with all windows to create logical order of applications
+    in widget (last used first... later used next) in handleApps()
+    */
+    bool handleEvent(XEvent * e);
+
 private:
     XfitMan * m_x;
     //! 3rd party class to handle global keyboard shortcut
@@ -50,6 +57,9 @@ private:
     /*! Ambiguous shortcut, similar to m_key to handle switches when is
         user in the dialog - m_key is blocked in this case */
     QShortcut * m_localKey;
+
+    //! Keep history of used windows
+    QList<Window> m_orderedWindows;
 
     //! List to keep items mapping
     QList<SwitcherItem*> m_list;
@@ -70,6 +80,7 @@ private:
         It makes sense to close window when user activates another app.
     */
     bool eventFilter(QObject * o, QEvent * e);
+
 
 private slots:
     //! Setup m_layout and m_list - called by m_key
