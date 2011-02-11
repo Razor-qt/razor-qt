@@ -11,6 +11,7 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
       m_x(0)
 {
     setupUi(this);
+
     installEventFilter(this);
 
     m_layout = new QHBoxLayout();
@@ -24,6 +25,7 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     m_key = new QxtGlobalShortcut(this);
 
     QKeySequence ks(Qt::ALT + Qt::Key_Tab);
+    //QKeySequence ks(Qt::ALT + Qt::CTRL + Qt::Key_T);
     if (! m_key->setShortcut(ks))
     {
         QMessageBox::information(this, tr("Global keyboard shortcut"),
@@ -37,15 +39,7 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
 
 void RazorAppSwitcher::AppSwitcher::handleApps()
 {
-    if (!isVisible())
-    {
-        QRect desktop = QApplication::desktop()->availableGeometry(m_x->getActiveDesktop());
-        int x, y;
-        x = desktop.width()/2 - width() / 2;
-        y = desktop.height()/2 - height() / 2;
-        move(x, y);
-        show();
-    }
+    qDebug() << "RazorAppSwitcher::AppSwitcher::handleApps()";
 
     if (m_layout->count())
     {
@@ -60,8 +54,6 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
 
     QList<Window> l = m_x->getClientList();
     QList<Window> merge;
-    Window actWin = m_x->getActiveWindow();
-    bool setImplicitFocus = true;
     // setup already used windows
     foreach (Window w, m_orderedWindows)
     {
@@ -90,19 +82,37 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
         SwitcherItem * item = new SwitcherItem(w, m_x->getName(w), pm, this);
         connect(item, SIGNAL(infoChanged(const QString&)),
                 infoLabel, SLOT(setText(const QString&)));
+        connect(item, SIGNAL(activateXWindow()), this, SLOT(activateXWindow()));
         m_list.append(item);
         m_layout->addWidget(item);
-
-        if (w == actWin)
-        {
-            item->setFocus(Qt::OtherFocusReason);
-            setImplicitFocus = false;
-        }
     }
 
-    if (setImplicitFocus)
-        selectNextItem();
+    selectNextItem();
     
+    // Warning: show() has to be called *after* setting focus. Dunno why
+    // but it works now.
+    if (!isVisible())
+    {
+        QRect desktop = QApplication::desktop()->availableGeometry(m_x->getActiveDesktop());
+        int x, y;
+        x = desktop.width()/2 - width() / 2;
+        y = desktop.height()/2 - height() / 2;
+        move(x, y);
+        show();
+    }
+
+}
+
+void RazorAppSwitcher::AppSwitcher::activateXWindow()
+{
+    SwitcherItem * item = qobject_cast<SwitcherItem*>(QApplication::focusWidget());
+    if (! item)
+    {
+        qDebug() << "AppSwitcher::activateXWindow activation. Something is wrong - focus widget is not on SwitcherItem!";
+        return;
+    }
+    m_x->raiseWindow(item->window());
+    close();
 }
 
 void RazorAppSwitcher::AppSwitcher::hideEvent(QHideEvent *e)
@@ -119,6 +129,7 @@ void RazorAppSwitcher::AppSwitcher::showEvent(QShowEvent *e)
 
 void RazorAppSwitcher::AppSwitcher::keyPressEvent(QKeyEvent * e)
 {
+    qDebug() << "RazorAppSwitcher::AppSwitcher::keyPressEvent()" << e;
     switch (e->key())
     {
         case Qt::Key_Escape:
@@ -127,17 +138,21 @@ void RazorAppSwitcher::AppSwitcher::keyPressEvent(QKeyEvent * e)
         case Qt::Key_Enter:
         case Qt::Key_Return:
         {
-            SwitcherItem * item = qobject_cast<SwitcherItem*>(QApplication::focusWidget());
-            if (! item)
-            {
-                qDebug() << "AppSwitcher::keyPressEvent activation. Something is wrong - focus widget is not on SwitcherItem!";
-                return;
-            }
-            m_x->raiseWindow(item->window());
-            close();
+            activateXWindow();
             break;
         }
     };
+//
+// TODO/FIXME: dunno why it does not work...
+//    // Let's assume that switch shortcut is always something like "alt+tab".
+//    // So at least one of ctrl. alt, or meta key *has* to be pressed.
+//    // If there is not any - apply focused window and close.
+//    qDebug() << e->modifiers() << Qt::ControlModifier <<  Qt::AltModifier << Qt::MetaModifier;
+//    if (e->modifiers() & (Qt::ControlModifier || Qt::AltModifier || Qt::MetaModifier))
+//    {
+//        qDebug() << "RazorAppSwitcher::AppSwitcher::keyPressEvent no 'meta' key pressed. Closing.";
+//        activateXWindow();
+//    }
 
     QWidget::keyPressEvent(e);
 }
@@ -182,6 +197,7 @@ bool RazorAppSwitcher::AppSwitcher::handleEvent(XEvent * e)
 
 void RazorAppSwitcher::AppSwitcher::selectNextItem()
 {
+    qDebug() << "RazorAppSwitcher::AppSwitcher::selectNextItem()";
     if (m_list.count() == 0)
     {
         qDebug() << "AppSwitcher::selectItem m_list is empty. No action";
@@ -191,8 +207,17 @@ void RazorAppSwitcher::AppSwitcher::selectNextItem()
     SwitcherItem * item = qobject_cast<SwitcherItem*>(QApplication::focusWidget());
     if (! item)
     {
-        qDebug() << "AppSwitcher::selectItem implicit item (0) ";
-        item = m_list.at(0);
+        if (m_list.count() > 1)
+        {
+            qDebug() << "AppSwitcher::selectItem implicit item (1) ";
+            qDebug() << m_list;
+            item = m_list.at(1);
+        }
+        else
+        {
+            qDebug() << "AppSwitcher::selectItem implicit item (0) ";
+            item = m_list.at(0);
+        }
     }
     else
     {
@@ -209,18 +234,20 @@ void RazorAppSwitcher::AppSwitcher::selectNextItem()
         item = m_list.at(index);
     }
 
-    //infoLabel->setText(item->text());
-    item->setFocus(Qt::OtherFocusReason);
+    item->setFocus(Qt::TabFocusReason);
 }
 
 
-RazorAppSwitcher::SwitcherItem::SwitcherItem(Window window, const QString & text, const QPixmap & pixmap, QWidget * parent)
+RazorAppSwitcher::SwitcherItem::SwitcherItem(Window window, const QString & text,
+                                             const QPixmap & pixmap, QWidget * parent)
     : QToolButton(parent),
       m_window(window)
 {
     setObjectName("SwitcherItem '" + text + "'");
-    setFocusPolicy(Qt::WheelFocus);
-    setFocusProxy(0);
+    //setFocusPolicy(Qt::WheelFocus);
+    // needed for focus changing by mouse (macosx like)
+    setMouseTracking(true);
+
     setMaximumSize(64, 64);
     setMinimumSize(64, 64);
     setToolButtonStyle(Qt::ToolButtonIconOnly);
@@ -233,7 +260,18 @@ RazorAppSwitcher::SwitcherItem::SwitcherItem(Window window, const QString & text
 
 void RazorAppSwitcher::SwitcherItem::focusInEvent(QFocusEvent * e)
 {
-    qDebug() << "SwitcherItem::focusInEvent" << e;
+    qDebug() << "SwitcherItem::focusInEvent" << e << objectName();
     emit infoChanged(text());
     QToolButton::focusInEvent(e);
+}
+
+void RazorAppSwitcher::SwitcherItem::mouseMoveEvent(QMouseEvent * e)
+{
+    if (! hasFocus())
+        setFocus(Qt::MouseFocusReason);
+}
+
+void RazorAppSwitcher::SwitcherItem::mouseReleaseEvent(QMouseEvent * e)
+{
+    emit activateXWindow();
 }

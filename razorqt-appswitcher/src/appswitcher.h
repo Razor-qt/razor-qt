@@ -26,12 +26,19 @@ public:
     Window window() { return m_window; }
 
 signals:
+    //! Inform parent that info label has to be changed with text
     void infoChanged(const QString & text);
+    //! Sent by mouseReleaseEvent - to change X11 window by mouse
+    void activateXWindow();
 
 private:
     Window m_window;
-
+    //! Just change parent's info label with item's title
     void focusInEvent(QFocusEvent * e);
+    //! Allow to change focus/active button with mouse move over item
+    void mouseMoveEvent(QMouseEvent * e);
+    //! Allow to change apps by mouse too
+    void mouseReleaseEvent(QMouseEvent * e);
 };
 
 /*! \brief Main switcher window. It's a borderless window (no title etc).
@@ -87,6 +94,8 @@ private slots:
     void handleApps();
     //! Just change focus in items layout - called by m_localKey or keyPressEvent()
     void selectNextItem();
+    //! Activate X11 window and close appswitcher
+    void activateXWindow();
 };
 
 }; // namespace
