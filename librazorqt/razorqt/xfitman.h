@@ -28,7 +28,18 @@ public:
     XfitMan();
     void moveWindow(Window _win, int _x, int _y);
     void setRootBackground(QPixmap _map);
-    void setStrut(Window _wid, int _height);
+
+    // See
+    void setStrut(Window _wid,
+                  int left, int right,
+                  int top,  int bottom,
+
+                  int leftStartY,   int leftEndY,
+                  int rightStartY,  int rightEndY,
+                  int topStartX,    int topEndX,
+                  int bottomStartX, int bottomEndX
+                  );
+
     void unsetStrut(Window _wid);
     void getAtoms();
     QList<Window> getClientList();

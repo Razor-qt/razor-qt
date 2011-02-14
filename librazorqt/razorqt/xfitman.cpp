@@ -480,16 +480,21 @@ Window XfitMan::getSelectionOwner(QString _selection)
 }
 
 
-
-
 /**
  * @brief sets net_wm_strut_partial = our reserved panelspace for the mainbar!
  */
-void XfitMan::setStrut(Window _wid,int _height)
+void XfitMan::setStrut(Window _wid,
+                       int left, int right,
+                       int top,  int bottom,
+
+                       int leftStartY,   int leftEndY,
+                       int rightStartY,  int rightEndY,
+                       int topStartX,    int topEndX,
+                       int bottomStartX, int bottomEndX
+                       )
 {
     qDebug() << "Xfitman: Trying to set STRUT_PARTIAL for panel!";
     //prepare strutsize
-    strutsize = _height;
     memset(desstrut,0,sizeof(desstrut));
     //prepare the array
     //it has format:
@@ -502,11 +507,22 @@ void XfitMan::setStrut(Window _wid,int _height)
     //so we use bottom (index 3) bottom_start_x (index 10) and bottom_start_y (index 11)
 
     //so we take our panelsize from the bottom up
-    desstrut[3]=strutsize;
-    //we begin at pixel 0 left
-    desstrut[10]=0;
-    //and claim all the way throuth to the end
-    desstrut[11]=QApplication::desktop()->width();
+    desstrut[0] = left;
+    desstrut[1] = right;
+    desstrut[2] = top;
+    desstrut[3] = bottom;
+
+    desstrut[4] = leftStartY;
+    desstrut[5] = leftEndY;
+
+    desstrut[6] = rightStartY;
+    desstrut[7] = rightEndY;
+
+    desstrut[8] = topStartX;
+    desstrut[9] = topEndX;
+
+    desstrut[10] = bottomStartX;
+    desstrut[11] = bottomEndX;
 
     //now we can change that property right
     XChangeProperty(QX11Info::display(), _wid , atomMap["net_wm_strut_partial"],
