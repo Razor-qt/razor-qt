@@ -1,0 +1,113 @@
+#RazorBar {
+    background-color: #535c83;
+    
+/*    spacing: 0;*/
+}
+
+#RazorBar * {
+  color: #c6d0eb;
+}
+
+QToolBar {
+    spacing: 6px;
+    margin: 4px;
+    padding: 3px;
+    border: 1px solid #2c3552;
+    border-radius: 4px;
+}
+
+QToolBar::handle {
+    background-color: #535c83; 
+    width: 8px;
+
+}
+
+
+QToolButton {
+    padding: 1px;
+}
+
+
+QToolButton:hover{
+    background: #6a768e;
+    border: 1px solid #b4bfd3;
+    border-radius: 3px;        
+}
+
+
+#QuickLaunch {
+/*     border: 1px dotted red; */
+
+
+}
+
+
+
+
+#TaskBar {
+    
+/*     border: 1px dotted red; */
+    
+}
+
+#TaskBar {
+
+}
+
+#TaskBar QToolButton{
+    border: 1px solid #b4bfd3;
+    border-radius: 3px;
+    width: 200px;
+}
+
+#TaskBar QToolButton:on{
+    background: #6a768e;
+    color: #e1eaf9;
+    font-weight: bold;
+}
+
+
+
+/* Clock ************************************* */
+#Clock *{
+   
+}
+
+#MainMenu {
+    background: #6a768e;
+    border: 1px solid #b4bfd3;
+}
+
+#MainMenu QPushButton {
+    color: #2c3552;
+    border: 1px solid transparent;  
+    padding-left: 8px;
+    padding-right: 8px;
+    font-weight: bold;
+}
+
+
+QMenu{
+   color: #FFFFFF;
+   background-color: #535c83;
+   padding: 4px; 
+   border: 1px solid #2c3552;
+/*   height: 50px; */
+}
+
+
+QMenu::item {
+  padding: 2px 20px 2px 30px;
+  margin: 1px;
+  border-radius: 3px;
+}
+
+
+QMenu::item:selected { 
+  background-color: #545353;
+  background: #6a768e;  
+}
+
+
+
+    
