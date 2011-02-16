@@ -72,11 +72,11 @@ void Battery::handleIcon()
     if (level <= 100 && level > 80)
         fileLevel = "100";
     else if (level <= 80 && level > 60)
-        fileLevel = "80";
+        fileLevel = "080";
     else if (level <= 60 && level > 40)
-        fileLevel = "60";
+        fileLevel = "060";
     else if (level <= 40 && level > 3)
-        fileLevel = "40";
+        fileLevel = "040";
     else
         fileLevel = "low";
 
