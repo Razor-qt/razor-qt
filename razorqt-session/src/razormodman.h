@@ -44,7 +44,7 @@ class RazorModuleManager : public QObject
 
 public:
     //! \brief Construct RazorModuleManager, read configuration, and start processes.
-    RazorModuleManager(QObject * parent = 0);
+    RazorModuleManager(const QString & config, QObject * parent = 0);
     virtual ~RazorModuleManager();
 
 private:

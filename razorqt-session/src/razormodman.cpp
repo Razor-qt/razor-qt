@@ -16,14 +16,15 @@
 /**
  * @brief the constructor, needs a valid modules.conf
  */
-RazorModuleManager::RazorModuleManager(QObject* parent)
+RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
     : QObject(parent)
 {
     power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
                                "org.freedesktop.Hal.Device.SystemPowerManagement",
                                QDBusConnection::systemBus());
 
-    cfg = new ReadSettings("session", this);
+    qDebug() << __FILE__ << ":" << __LINE__ << "Session" << config << "about to launch (deafult 'session')";
+    cfg = new ReadSettings(config.isEmpty() ? "session" : config, this);
 
     QSettings * s = cfg->settings();
     autorestart = s->value("autorestart", true).toBool();
@@ -84,7 +85,7 @@ void RazorModuleManager::autoStartSingleShot()
 
 void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    qDebug() << "void RazorModuleManager::restartModules() called and it's wrong. Something is failing";
+    qDebug() << "void RazorModuleManager::restartModules() called and it's wrong. Something is failing" << sender();
     QProcess * proc = qobject_cast<QProcess*>(sender());
     Q_ASSERT(proc);
     QString procName;

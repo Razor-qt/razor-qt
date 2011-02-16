@@ -1,0 +1,6 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor-session -c session-openbox
+Name=Razor Desktop (Openbox)
+Comment=Qt4 Desktop
