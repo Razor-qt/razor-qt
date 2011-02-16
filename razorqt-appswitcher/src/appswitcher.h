@@ -81,7 +81,8 @@ private:
 
     //! Handle Escape (close()) or Enter (activate window) keys
     void keyPressEvent(QKeyEvent * e);
-    //void keyReleaseEvent(QKeyEvent * e);
+    //! Handle window closing when user releases ctrl or alt
+    void keyReleaseEvent(QKeyEvent * e);
 
     /*! Filter events to close the window when it gets QEvent::WindowDeactivate.
         It makes sense to close window when user activates another app.

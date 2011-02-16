@@ -67,7 +67,7 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
     }
     // rest at the end
     merge += l;
-   
+
     // setup new windows
     foreach (Window w, merge)
     {
@@ -88,7 +88,7 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
     }
 
     selectNextItem();
-    
+
     // Warning: show() has to be called *after* setting focus. Dunno why
     // but it works now.
     if (!isVisible())
@@ -142,26 +142,22 @@ void RazorAppSwitcher::AppSwitcher::keyPressEvent(QKeyEvent * e)
             break;
         }
     };
-//
-// TODO/FIXME: dunno why it does not work...
-//    // Let's assume that switch shortcut is always something like "alt+tab".
-//    // So at least one of ctrl. alt, or meta key *has* to be pressed.
-//    // If there is not any - apply focused window and close.
-//    qDebug() << e->modifiers() << Qt::ControlModifier <<  Qt::AltModifier << Qt::MetaModifier;
-//    if (e->modifiers() & (Qt::ControlModifier || Qt::AltModifier || Qt::MetaModifier))
-//    {
-//        qDebug() << "RazorAppSwitcher::AppSwitcher::keyPressEvent no 'meta' key pressed. Closing.";
-//        activateXWindow();
-//    }
 
     QWidget::keyPressEvent(e);
 }
 
-//void RazorAppSwitcher::AppSwitcher::keyReleaseEvent(QKeyEvent * e)
-//{
-//    qDebug() << "AppSwitcher::keyReleaseEvent" << e << e->key() << e->modifiers();;
-//    QWidget::keyReleaseEvent(e);
-//}
+void RazorAppSwitcher::AppSwitcher::keyReleaseEvent(QKeyEvent * e)
+{
+    qDebug() << "AppSwitcher::keyReleaseEvent" << e << e->modifiers();
+    // close window if there is no modifier pressed.
+    // Here I assume that the key shortcis is always with ctrl or alt
+    if (e->modifiers() == 0)
+    {
+        activateXWindow();
+        close();
+    }
+    QWidget::keyReleaseEvent(e);
+}
 
 bool RazorAppSwitcher::AppSwitcher::eventFilter(QObject * o, QEvent * e)
 {
