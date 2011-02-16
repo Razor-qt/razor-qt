@@ -63,7 +63,7 @@ set ( razorqt_MOCS
 	razorqt/xdgmenu.h
 	razorqt/readsettings.h
 	razorqt/xdgdesktopfile.h
-	razorqt/domhelper.h
+	#razorqt/domhelper.h
 	razorqt/xdgmenuapplinkprocessor.h
 	razorqt/xdgmenureader.h
 	razorqt/xdgmenurules.h
@@ -107,8 +107,8 @@ ENDIF (NOT LIB_SUFFIX)
 
 add_library ( razorqt SHARED ${razorqt_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB})
-set_target_properties(razorqt PROPERTIES 
-  VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION} 
+set_target_properties(razorqt PROPERTIES
+  VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
   SOVERSION ${MAJOR_VERSION}
 )
 

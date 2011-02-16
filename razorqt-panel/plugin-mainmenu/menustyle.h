@@ -23,6 +23,7 @@
 
 class MenuStyle : public QProxyStyle
 {
+    Q_OBJECT
 public:
     explicit MenuStyle();
     int pixelMetric(PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 ) const;

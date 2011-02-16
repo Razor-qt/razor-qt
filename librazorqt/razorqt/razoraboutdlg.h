@@ -17,6 +17,7 @@ class RazorAboutDLGPrivate;
 
 class RazorAboutDLG: public QDialog
 {
+    Q_OBJECT
 public:
     RazorAboutDLG();
 private:

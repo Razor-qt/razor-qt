@@ -20,9 +20,9 @@ include_directories (
 set ( razor-appswitcher_HDRS
 	src/appswitcher.h
 	src/application.h
-    src/qxt/qxtglobal.h
+    #src/qxt/qxtglobal.h
     src/qxt/qxtglobalshortcut.h
-    src/qxt/qxtglobalshortcut_p.h
+    #src/qxt/qxtglobalshortcut_p.h
 	)
 
 set ( razor-appswitcher_SRCS
