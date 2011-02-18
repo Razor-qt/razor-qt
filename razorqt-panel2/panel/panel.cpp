@@ -30,7 +30,8 @@
 #include <QMenu>
 #include <QContextMenuEvent>
 
-#include <QAction>
+#include <QtGui/QAction>
+#include <QtGui/QActionGroup>
 
 
 #define CFG_FILE            "panel"
@@ -38,6 +39,42 @@
 #define CFG_KEY_DESKTOPNUM "desktop"
 #define CFG_KEY_POSITION   "position"
 #define CFG_KEY_PLUGINS    "plugins"
+#define CFG_KEY_STATE      "state"
+
+/************************************************
+
+ ************************************************/
+PositionAction::PositionAction(int displayNum, Panel::Position position, QActionGroup *parent):
+    QAction(parent)
+{
+    if (QApplication::desktop()->screenCount() == 1)
+    {
+        switch (position)
+        {
+            case Panel::PositionTop:    setText(tr("Top of desktop"));      break;
+            case Panel::PositionBottom: setText(tr("Bottom of desktop"));   break;
+            case Panel::PositionLeft:   setText(tr("Left of desktop"));     break;
+            case Panel::PositionRight:  setText(tr("Right of desktop"));    break;
+        }
+    }
+    else
+    {
+        switch (position)
+        {
+        case Panel::PositionTop:    setText(tr("Top of desktop %1").arg(displayNum +1));    break;
+        case Panel::PositionBottom: setText(tr("Bottom of desktop %1").arg(displayNum +1)); break;
+        case Panel::PositionLeft:   setText(tr("Left of desktop %1").arg(displayNum +1));   break;
+        case Panel::PositionRight:  setText(tr("Right of desktop %1").arg(displayNum +1));  break;
+        }
+    }
+
+
+    mPosition = position;
+    mDisplayNum = displayNum;
+    setCheckable(true);
+    parent->addAction(this);
+}
+
 
 
 /************************************************
@@ -52,13 +89,12 @@ Panel::Panel(QWidget *parent) :
     mXfitMan = new XfitMan();
 
     // Read command line arguments .....................
-    mConfigId = "main";
+    mConfigId = "default";
     if (qApp->arguments().count() > 1)
     {
         // First argument is config file section name.
         mConfigId = qApp->arguments().at(1);
     }
-
 
 
     ReadSettings* razorRS = new ReadSettings("razor");
@@ -91,6 +127,7 @@ Panel::Panel(QWidget *parent) :
         }
     }
 
+    restoreState(settings->value(CFG_KEY_STATE).toByteArray());
 
     delete panelRS;
 
@@ -120,12 +157,12 @@ Panel::~Panel()
     settings->beginGroup(mConfigId);
     settings->setValue(CFG_KEY_DESKTOPNUM, mDesktopNum);
     settings->setValue(CFG_KEY_POSITION, positionToStr(mPosition));
+    settings->setValue(CFG_KEY_STATE, saveState());
+
     delete panelRS;
 
     delete mPluginManager;
     delete mXfitMan;
-
-//    settings.setValue("windowState", saveState());
 }
 
 
@@ -134,12 +171,12 @@ Panel::~Panel()
  ************************************************/
 void Panel::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu* menu = new QMenu(tr("Panel"));
+    QMenu menu(tr("Panel"));
 
     QMenu* m;
     QAction* a;
 
-    m = menu->addMenu(tr("Plugins"));
+    m = menu.addMenu(tr("Plugins"));
 
     for (int i=0; i<mPluginManager->count(); ++i)
     {
@@ -160,53 +197,55 @@ void Panel::contextMenuEvent(QContextMenuEvent* event)
         connect(a, SIGNAL(triggered(bool)), plugin, SLOT(setVisible(bool)));
     }
 
-    QMenu* panelMenu = menu->addMenu(tr("Panel"));
 
-    m = panelMenu->addMenu(tr("Position"));
+    // Create Panel menu ********************************************
+    m = menu.addMenu(tr("Show this panel at"));
+    QActionGroup posGroup(&menu);
 
-    a = m->addAction(tr("Top"));
-    a->setCheckable(true);
-    a->setData(PositionTop);
-    a->setChecked(mPosition == PositionTop);
-    connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-
-    a = m->addAction(tr("Bottom"));
-    a->setCheckable(true);
-    a->setData(PositionBottom);
-    a->setChecked(mPosition == PositionBottom);
-    connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-
-/*
-    // Left & right alignment have work bagly, disabled it till.
-
-    a = m->addAction(tr("Left"));
-    a->setCheckable(true);
-    a->setData(PositionLeft);
-    a->setChecked(mPosition == PositionLeft);
-    connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-
-    a = m->addAction(tr("Right"));
-    a->setCheckable(true);
-    a->setData(PositionRight);
-    a->setChecked(mPosition == PositionRight);
-    connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-*/
-
-    m = panelMenu->addMenu(tr("Show on desktop"));
-    for (int i=0; i< QApplication::desktop()->screenCount(); ++i)
+    QDesktopWidget* dw = QApplication::desktop();
+    for (int i=0; i<dw->screenCount(); ++i)
     {
-        a = m->addAction(tr("Show on desctop %1").arg(i));
-        a->setCheckable(true);
-        a->setChecked(i == mDesktopNum);
-        a->setData(i);
-        connect(a, SIGNAL(triggered()), this, SLOT(switchDesktop()));
+        if (canPlacedOn(i, PositionTop))
+        {
+            a = new PositionAction(i,  PositionTop, &posGroup);
+            a->setChecked(mPosition == PositionTop && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            m->addAction(a);
+        }
+
+        if (canPlacedOn(i, PositionBottom))
+        {
+            a = new PositionAction(i, PositionBottom, &posGroup);
+            a->setChecked(mPosition == PositionBottom && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            m->addAction(a);
+        }
+
+        if (canPlacedOn(i, PositionLeft))
+        {
+            a = new PositionAction(i, PositionLeft, &posGroup);
+            a->setChecked(mPosition == PositionLeft && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            m->addAction(a);
+        }
+
+
+        if (canPlacedOn(i, PositionRight))
+        {
+            a = new PositionAction(i, PositionRight, &posGroup);
+            a->setChecked(mPosition == PositionRight && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            m->addAction(a);
+        }
+
+        m->addSeparator();
     }
+    // End of create Panel menu *************************************
 
-
-    a = menu->addAction("Exit");
+    a = menu.addAction("Exit");
     connect(a, SIGNAL(triggered()), this, SLOT(close()));
 
-    menu->exec(mapToGlobal(event->pos()));
+    menu.exec(mapToGlobal(event->pos()));
 
 }
 
@@ -235,25 +274,12 @@ void Panel::lockPlugin(bool value)
  ************************************************/
 void Panel::switchPosition()
 {
-    QAction* a = qobject_cast<QAction*>(sender());
+    PositionAction* a = qobject_cast<PositionAction*>(sender());
     if (!a)
         return;
 
-    mPosition = (Position)a->data().toInt();
-    realign();
-}
-
-
-/************************************************
-
- ************************************************/
-void Panel::switchDesktop()
-{
-    QAction* a = qobject_cast<QAction*>(sender());
-    if (!a)
-        return;
-
-    mDesktopNum = a->data().toInt();
+    mPosition = a->position();
+    mDesktopNum = a->displayNum();
     realign();
 }
 
@@ -330,9 +356,8 @@ void Panel::realign()
     qDebug() << "Realign: DesktopNum" << mDesktopNum;
     qDebug() << "Realign: Position  " << positionToStr(mPosition);
     qDebug() << "Realign: Theme     " << mTheme;
-    qDebug() << "Realign: Height    " << height();
-    qDebug() << "Realign: HeightHint" << sizeHint();
-
+    qDebug() << "Realign: SizeHint  " << sizeHint();
+    qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
 
     QRect screen = QApplication::desktop()->screenGeometry(mDesktopNum);
     QRect rect = screen;
@@ -344,7 +369,7 @@ void Panel::realign()
 
         case PositionBottom:
             rect.setHeight(0);
-            rect.setTop(screen.height() - sizeHint().height());
+            rect.moveTop(screen.bottom() - sizeHint().height());
             break;
 
         case PositionLeft:
@@ -353,11 +378,38 @@ void Panel::realign()
 
         case PositionRight:
             rect.setWidth(0);
-            rect.setRight(screen.width() - sizeHint().width());
+            rect.moveLeft(screen.right() - sizeHint().width());
             break;
     }
 
+    qDebug() << "Realign: New Pos   " << rect;
     setGeometry(rect);
+    qDebug() << "Realign: Size      " << size();
+
+/*
+    switch (mPosition)
+    {
+        case PositionTop:
+            rect.setHeight(0);
+            break;
+
+        case PositionBottom:
+            rect.setHeight(0);
+            rect.moveTop(screen.bottom() - sizeHint().height());
+            break;
+
+        case PositionLeft:
+            rect.setWidth(0);
+            break;
+
+        case PositionRight:
+            rect.setWidth(0);
+            rect.moveLeft(screen.right() - size().width());
+            break;
+    }
+    setGeometry(rect);
+*/
+
 
     //reserve our space on the screen
     Window wid = this->effectiveWinId();
@@ -404,3 +456,41 @@ void Panel::realign()
 
 }
 
+
+/************************************************
+
+ ************************************************/
+bool Panel::canPlacedOn(int displayNum, Panel::Position position) const
+{
+    QDesktopWidget* dw = QApplication::desktop();
+
+    switch (position)
+    {
+        case Panel::PositionTop:
+            for (int i=0; i < dw->screenCount(); ++i)
+                if (dw->screenGeometry(i).bottom() < dw->screenGeometry(displayNum).top())
+                    return false;
+                return true;
+
+        case Panel::PositionBottom:
+            for (int i=0; i < dw->screenCount(); ++i)
+                if (dw->screenGeometry(i).top() > dw->screenGeometry(displayNum).bottom())
+                    return false;
+                return true;
+
+        case Panel::PositionLeft:
+//            for (int i=0; i < dw->screenCount(); ++i)
+//                if (dw->screenGeometry(i).right() < dw->screenGeometry(displayNum).left())
+//                    return false;
+//            return true;
+            return false;
+
+        case Panel::PositionRight:
+//            for (int i=0; i < dw->screenCount(); ++i)
+//                if (dw->screenGeometry(i).left() > dw->screenGeometry(displayNum).right())
+//                    return false;
+//            return true;
+            return false;
+    }
+
+}

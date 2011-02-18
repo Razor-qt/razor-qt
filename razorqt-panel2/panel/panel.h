@@ -21,16 +21,20 @@
 
 #include <QMainWindow>
 #include <QString>
+#include <QtGui/QAction>
 
 
 class RazorPluginManager;
 class XfitMan;
+class QActionGroup;
 
 /*! \brief The Panel class provides a main window of the razor-panel.
  */
 class Panel : public QMainWindow
 {
     Q_OBJECT
+
+public:
     enum Position{
         PositionBottom,
         PositionTop,
@@ -38,7 +42,6 @@ class Panel : public QMainWindow
         PositionRight
     };
 
-public:
     Panel(QWidget *parent = 0);
     virtual ~Panel();
 
@@ -50,8 +53,6 @@ public slots:
 protected slots:
     void realign();
     void switchPosition();
-    void switchDesktop();
-
     void lockPlugin(bool value);
 
 
@@ -79,6 +80,27 @@ private:
     void setDesktopNum(int desktopNum);
     void setPosition(Position position);
 
+    /*! \brief The panel can't be placed on boundary of two displays.
+      This function checks, is the panel can be placed on the display @displayNum
+      on @position.
+     */
+    bool canPlacedOn(int displayNum, Position position) const;
+};
+
+
+
+class PositionAction: public QAction
+{
+  Q_OBJECT
+public:
+    PositionAction(int displayNum, Panel::Position position, QActionGroup* parent = 0);
+
+    Panel::Position position() const { return mPosition; }
+    int displayNum() const { return mDisplayNum; }
+
+private:
+    Panel::Position mPosition;
+    int mDisplayNum;
 };
 
 #endif // PANEL_H

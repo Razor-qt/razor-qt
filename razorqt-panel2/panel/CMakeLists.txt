@@ -18,6 +18,13 @@ set(SOURCES
     razorpluginmanager.cpp
 )
 
+set(MOCS
+    panel.h
+    razorpanelplugin.h
+    razorpluginmanager.h
+    #panel.cpp
+)
+
 set(LIBRARIES
     razorqt
    # razorqtxdg
@@ -75,7 +82,8 @@ find_package(Qt4 REQUIRED)
 #find_package ( X11 REQUIRED )
 
 include(${QT_USE_FILE})
-qt4_wrap_cpp(MOC_SOURCES ${HEADERS})
+#qt4_wrap_cpp(MOC_SOURCES ${HEADERS})
+qt4_wrap_cpp(MOC_SOURCES ${MOCS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
 
 set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
