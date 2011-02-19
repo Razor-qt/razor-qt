@@ -33,6 +33,8 @@
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
 
+#include <razorqt/xdgicon.h>
+
 
 #define CFG_FILE            "panel"
 
@@ -40,6 +42,7 @@
 #define CFG_KEY_POSITION   "position"
 #define CFG_KEY_PLUGINS    "plugins"
 #define CFG_KEY_STATE      "state"
+
 
 /************************************************
 
@@ -127,22 +130,14 @@ Panel::Panel(QWidget *parent) :
         }
     }
 
-    restoreState(settings->value(CFG_KEY_STATE).toByteArray());
+    if (settings->contains(CFG_KEY_STATE))
+        restoreState(settings->value(CFG_KEY_STATE).toByteArray());
+    else
+        restoreState(defaultState());
 
     delete panelRS;
 
     setTheme(mTheme);
-}
-
-
-/************************************************
-
- ************************************************/
-void Panel::show()
-{
-    QMainWindow::show();
-    realign();
-    mXfitMan->moveWindowtoDesktop(this->effectiveWinId(), -1);
 }
 
 
@@ -166,17 +161,78 @@ Panel::~Panel()
 }
 
 
+
+/************************************************
+
+ ************************************************/
+void Panel::show()
+{
+    QMainWindow::show();
+    realign();
+    mXfitMan->moveWindowtoDesktop(this->effectiveWinId(), -1);
+}
+
+
+/************************************************
+
+ ************************************************/
+QByteArray Panel::defaultState()
+{
+    QByteArray result = saveState();
+
+    RazorPanelPlugin* plugin = 0;
+    RazorPanelPluginIterator i(*mPluginManager);
+    i.toBack();
+
+
+    // Skip all right-aligned panels.
+    while (i.hasPrevious())
+    {
+        plugin = i.previous();
+        if (plugin->preferredAlignment() != RazorPanelPlugin::AlignRight)
+            break;
+    }
+
+
+    // If exists left-aligned panel, we increase its width.
+    if (plugin)
+    {
+        // Construct UTF-16BE string
+        QByteArray baName;
+        QDataStream ds(&baName, QIODevice::ReadWrite);
+        ds << QString(plugin->objectName());
+
+        int n = result.lastIndexOf(baName);
+        if (n > -1)
+        {
+
+            n += baName.length(); // UTF-16BE:  Name
+            n +=1;                // uchar:     1st bit: 1 if shown
+                                  //            2nd bit: 1 if orientation is vert.
+            n +=4;                // int:       Item.pos
+            result[n]   = 0x00;   // int:       Item.Size
+            result[n+1] = 0xFF;
+            result[n+2] = 0xFF;
+            result[n+3] = 0xFF;
+        }
+
+    }
+
+
+    return result;
+}
+
+
 /************************************************
 
  ************************************************/
 void Panel::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu(tr("Panel"));
-
     QMenu* m;
     QAction* a;
 
-    m = menu.addMenu(tr("Plugins"));
+    m = menu.addMenu(XdgIcon::fromTheme("preferences-plugin", 32), tr("Plugins"));
 
     for (int i=0; i<mPluginManager->count(); ++i)
     {
@@ -184,22 +240,31 @@ void Panel::contextMenuEvent(QContextMenuEvent* event)
         QMenu* plugMenu = m->addMenu(plugin->windowTitle());
         m->setIcon(plugin->windowIcon());
 
-        a = plugMenu->addAction(tr("Locked"));
-        a->setData(i);
-        a->setCheckable(true);
-        a->setChecked(!plugin->isMovable());
-        connect(a, SIGNAL(toggled(bool)), this, SLOT(lockPlugin(bool)));
+        if (plugin->isMovable())
+            a = plugMenu->addAction(XdgIcon::fromTheme("document-encrypt", 32), tr("Lock"));
+        else
+            a = plugMenu->addAction(XdgIcon::fromTheme("document-decrypt", 32), tr("Unlock"));
 
-        a = plugMenu->addAction(tr("Visible"));
         a->setData(i);
-        a->setCheckable(true);
-        a->setChecked(plugin->isVisible());
-        connect(a, SIGNAL(triggered(bool)), plugin, SLOT(setVisible(bool)));
+        connect(a, SIGNAL(triggered()), this, SLOT(lockPlugin()));
+
+        if (plugin->isVisible())
+        {
+            a = plugMenu->addAction(XdgIcon::fromTheme("layer-visible-off", 32), tr("Hide"));
+            connect(a, SIGNAL(triggered()), plugin, SLOT(hide()));
+            a->setData(i);
+        }
+        else
+        {
+            a = plugMenu->addAction(XdgIcon::fromTheme("layer-visible-on", 32), tr("Show"));
+            connect(a, SIGNAL(triggered()), plugin, SLOT(show()));
+            a->setData(i);
+        }
     }
 
 
     // Create Panel menu ********************************************
-    m = menu.addMenu(tr("Show this panel at"));
+    m = menu.addMenu(XdgIcon::fromTheme("configure-toolbars", 32), tr("Show this panel at"));
     QActionGroup posGroup(&menu);
 
     QDesktopWidget* dw = QApplication::desktop();
@@ -253,7 +318,7 @@ void Panel::contextMenuEvent(QContextMenuEvent* event)
 /************************************************
 
  ************************************************/
-void Panel::lockPlugin(bool value)
+void Panel::lockPlugin()
 {
     QAction* a = qobject_cast<QAction*>(sender());
     if (!a)
@@ -264,7 +329,7 @@ void Panel::lockPlugin(bool value)
     if (ok && n>-1 && n<mPluginManager->count())
     {
         RazorPanelPlugin* plugin = mPluginManager->value(n);
-        plugin->setMovable(!value);
+        plugin->setMovable(!plugin->isMovable());
     }
 }
 
@@ -359,6 +424,7 @@ void Panel::realign()
     qDebug() << "Realign: SizeHint  " << sizeHint();
     qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
 
+
     QRect screen = QApplication::desktop()->screenGeometry(mDesktopNum);
     QRect rect = screen;
     switch (mPosition)
@@ -382,9 +448,7 @@ void Panel::realign()
             break;
     }
 
-    qDebug() << "Realign: New Pos   " << rect;
     setGeometry(rect);
-    qDebug() << "Realign: Size      " << size();
 
 /*
     switch (mPosition)

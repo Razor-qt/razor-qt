@@ -48,4 +48,6 @@ public:
 
 };
 
+typedef QListIterator<RazorPanelPlugin*> RazorPanelPluginIterator;
+typedef QMutableListIterator<RazorPanelPlugin*> RazorPanelPluginMutableIterator;
 #endif // RAZORPLUGINMANAGER_H

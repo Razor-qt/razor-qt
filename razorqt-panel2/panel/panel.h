@@ -53,7 +53,7 @@ public slots:
 protected slots:
     void realign();
     void switchPosition();
-    void lockPlugin(bool value);
+    void lockPlugin();
 
 
 private:
@@ -85,6 +85,7 @@ private:
       on @position.
      */
     bool canPlacedOn(int displayNum, Position position) const;
+    QByteArray defaultState();
 };
 
 

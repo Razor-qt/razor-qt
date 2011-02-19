@@ -24,6 +24,28 @@
 #include <QAction>
 #include <QPushButton>
 
+class ClockPlugin: public RazorPanelPlugin
+{
+public:
+    ClockPlugin()
+    {
+        setObjectName("Clock");
+        setWindowTitle("Clock");
+
+        QLabel* clock = new QLabel();
+        clock->setAlignment(Qt::AlignCenter);
+        clock->setText("19:41<br><small>Thu,3 of Feb</small>");
+        addWidget(clock);
+    }
+
+    Alignment preferredAlignment() const
+    {
+        return RazorPanelPlugin::AlignRight;
+    }
+
+};
+
+
 /************************************************
 
  ************************************************/
@@ -106,14 +128,7 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName)
 
     if (libraryFileName.endsWith("librazorpanel_clock.so"))
     {
-        plugin = new RazorPanelPlugin();
-        plugin->setObjectName("Clock");
-        plugin->setWindowTitle("Clock");
-
-        QLabel* clock = new QLabel();
-        clock->setAlignment(Qt::AlignCenter);
-        clock->setText("19:41<br><small>Thu,3 of Feb</small>");
-        plugin->addWidget(clock);
+        plugin = new ClockPlugin();
     }
 
 
