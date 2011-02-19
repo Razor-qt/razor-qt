@@ -238,7 +238,7 @@ void Panel::contextMenuEvent(QContextMenuEvent* event)
     {
         const RazorPanelPlugin* plugin = mPluginManager->at(i);
         QMenu* plugMenu = m->addMenu(plugin->windowTitle());
-        m->setIcon(plugin->windowIcon());
+        plugMenu->setIcon(plugin->windowIcon());
 
         if (plugin->isMovable())
             a = plugMenu->addAction(XdgIcon::fromTheme("document-encrypt", 32), tr("Lock"));
@@ -307,7 +307,8 @@ void Panel::contextMenuEvent(QContextMenuEvent* event)
     }
     // End of create Panel menu *************************************
 
-    a = menu.addAction("Exit");
+    menu.addSeparator();
+    a = menu.addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
     connect(a, SIGNAL(triggered()), this, SLOT(close()));
 
     menu.exec(mapToGlobal(event->pos()));
