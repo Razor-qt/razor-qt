@@ -6,20 +6,20 @@ set(QT_USE_QTXML 1)
 set(QT_USE_QTDBUS 1)
 
 set(HEADERS
-    panel.h
+    razorpanel.h
     razorpanelplugin.h
     razorpluginmanager.h
 )
 
 set(SOURCES
     main.cpp
-    panel.cpp
+    razorpanel.cpp
     razorpanelplugin.cpp
     razorpluginmanager.cpp
 )
 
 set(MOCS
-    panel.h
+    razorpanel.h
     razorpanelplugin.h
     razorpluginmanager.h
     #panel.cpp
@@ -35,6 +35,16 @@ set(RESOURCES
 
 )
 
+# Translations .............. 
+set(TRANSLATIONS_DIR 
+    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}
+)
+
+add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
+
+file (GLOB TS_FILES 
+    translations/*.ts
+)
 
 ############################################
 
@@ -85,57 +95,14 @@ include(${QT_USE_FILE})
 #qt4_wrap_cpp(MOC_SOURCES ${HEADERS})
 qt4_wrap_cpp(MOC_SOURCES ${MOCS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
+qt4_add_translation(QM_FILES ${TS_FILES})
 
 set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
 add_definitions(-DPLUGIN_DIR=\"${PLUGIN_DIR}\")
 message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 
-add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QRC_SOURCES})
+add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# add_definitions ( -Wall )
-# find_package ( Qt4 REQUIRED )
-# find_package ( X11 REQUIRED )
-# include ( ${QT_USE_FILE} )
-# include_directories (
-# 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-# 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
-#        ${X11_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/librazorqt/
-# 	.
-# 	panel)
-
-# set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
-# add_definitions(-DPLUGIN_DIR=\"${PLUGIN_DIR}\")
-# message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
-
-# set ( razor-panel_HDRS
-#         panel.h
-#     )
-
-# set ( razor-panel_SRCS
-#         panel.cpp
-#     )
-
-
-# set ( razor-panel_MOCS
-#     )
-
-# QT4_WRAP_CPP(MOCS ${razor-panel_MOCS})
-
-# add_executable ( razor-panel ${razor-panel_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
-# target_link_libraries ( razor-panel  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so )
-#INSTALL(TARGETS razor-panel RUNTIME DESTINATION bin)
-
+install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+install(FILES   ${QM_FILES}        DESTINATION ${TRANSLATIONS_DIR})

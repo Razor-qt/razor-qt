@@ -18,29 +18,23 @@
 
 #include "razorpluginmanager.h"
 #include "razorpanelplugin.h"
+#include "razorpanel.h"
 #include <QDebug>
 #include <QIcon>
 #include <QLabel>
 #include <QAction>
 #include <QPushButton>
+#include <QtCore/QFileInfo>
+#include <QtCore/QLibrary>
 
-class ClockPlugin: public RazorPanelPlugin
+class FakePlugin: public RazorPanelPlugin
 {
 public:
-    ClockPlugin()
+    FakePlugin(RazorPanel* panel, const QString& configId, QWidget *parent, const QString& objName, const QString& title)
+        : RazorPanelPlugin(panel, configId, parent)
     {
-        setObjectName("Clock");
-        setWindowTitle("Clock");
-
-        QLabel* clock = new QLabel();
-        clock->setAlignment(Qt::AlignCenter);
-        clock->setText("19:41<br><small>Thu,3 of Feb</small>");
-        addWidget(clock);
-    }
-
-    Alignment preferredAlignment() const
-    {
-        return RazorPanelPlugin::AlignRight;
+        setWindowTitle(title);
+        setObjectName(objName);
     }
 
 };
@@ -67,16 +61,15 @@ RazorPluginManager::~RazorPluginManager()
 /************************************************
 
  ************************************************/
-RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName)
+RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName, const QString& configId, RazorPanel* panel)
 {
     RazorPanelPlugin* plugin = 0;
+    qDebug() << "RazorPluginManager: try to load " << libraryFileName;
 
-    if (libraryFileName.endsWith("librazorpanel_mainmenu.so"))
+
+    if (libraryFileName.endsWith("librazorpanel_mainmenu2.so"))
     {
-        plugin = new RazorPanelPlugin();
-        plugin->setWindowTitle("Main Menu");
-        plugin->setObjectName("MainMenu");
-
+        plugin = new FakePlugin(panel, configId, panel, "MainMenu", "Main Menu");
 
         QPushButton* mb = new QPushButton("Menu", plugin);
 
@@ -89,11 +82,9 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName)
     }
 
 
-    if (libraryFileName.endsWith("librazorpanel_quicklaunch.so"))
+    if (libraryFileName.endsWith("librazorpanel_quicklaunch2.so"))
     {
-        plugin = new RazorPanelPlugin();
-        plugin->setObjectName("QuickLaunch");
-        plugin->setWindowTitle("Quick Launch");
+        plugin = new FakePlugin(panel, configId, panel, "QuickLaunch", "Quick Launch");
 
         plugin->addAction(QIcon::fromTheme("kate"), "Kate");
         plugin->addAction(QIcon::fromTheme("utilities-terminal"), "Konsole");
@@ -101,11 +92,9 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName)
     }
 
 
-    if (libraryFileName.endsWith("librazorpanel_taskmanager.so"))
+    if (libraryFileName.endsWith("librazorpanel_taskmanager2.so"))
     {
-        plugin = new RazorPanelPlugin();
-        plugin->setObjectName("TaskBar");
-        plugin->setWindowTitle("TaskBar");
+        plugin = new FakePlugin(panel, configId, panel, "TaskBar", "TaskBar");
 
         plugin->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
@@ -126,20 +115,46 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName)
     }
 
 
-    if (libraryFileName.endsWith("librazorpanel_clock.so"))
-    {
-        plugin = new ClockPlugin();
-    }
-
-
     if (libraryFileName.endsWith("librazorpanel_logoutmenu.so"))
     {
 
     }
+    if (plugin)
+    {
+        append(plugin);
+        return plugin;
+    }
 
+    // FAKE <<--------------------
+
+
+
+    // check if the file exists. Probably debug only.
+    QFileInfo fi(libraryFileName);
+    if (!fi.exists())
+    {
+        qDebug() << "PLUGIN: MISSING FILE";
+        return 0;
+    }
+
+    QLibrary * lib = new QLibrary(libraryFileName, panel);
+    PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
+    if (!initFunc)
+    {
+        qDebug() << "PLUGIN: plugin: MISSING init()";
+        delete lib;
+        return 0;
+    }
+
+    plugin = initFunc(panel, panel, configId);
+    Q_ASSERT(plugin);
+    // now add the plug into the panel's layout.
+    // it's easier to do it here instead to handle it in plugin itself
 
     if (plugin)
+    {
         append(plugin);
-
+        qDebug() << "RazorPluginManager: plugin sacceffuly loaded";
+    }
     return plugin;
 }

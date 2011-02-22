@@ -16,8 +16,8 @@
 
 *********************************************************************/
 
-#ifndef PANEL_H
-#define PANEL_H
+#ifndef RAZORPANEL_H
+#define RAZORPANEL_H
 
 #include <QMainWindow>
 #include <QString>
@@ -28,9 +28,9 @@ class RazorPluginManager;
 class XfitMan;
 class QActionGroup;
 
-/*! \brief The Panel class provides a main window of the razor-panel.
+/*! \brief The RazorPanel class provides a single razor-panel.
  */
-class Panel : public QMainWindow
+class RazorPanel : public QMainWindow
 {
     Q_OBJECT
 
@@ -42,8 +42,8 @@ public:
         PositionRight
     };
 
-    Panel(QWidget *parent = 0);
-    virtual ~Panel();
+    RazorPanel(QWidget *parent = 0);
+    virtual ~RazorPanel();
 
 
 public slots:
@@ -94,14 +94,14 @@ class PositionAction: public QAction
 {
   Q_OBJECT
 public:
-    PositionAction(int displayNum, Panel::Position position, QActionGroup* parent = 0);
+    PositionAction(int displayNum, RazorPanel::Position position, QActionGroup* parent = 0);
 
-    Panel::Position position() const { return mPosition; }
+    RazorPanel::Position position() const { return mPosition; }
     int displayNum() const { return mDisplayNum; }
 
 private:
-    Panel::Position mPosition;
+    RazorPanel::Position mPosition;
     int mDisplayNum;
 };
 
-#endif // PANEL_H
+#endif // RAZORPANEL_H

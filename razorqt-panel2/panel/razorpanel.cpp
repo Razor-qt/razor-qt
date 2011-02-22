@@ -16,7 +16,7 @@
 
 *********************************************************************/
 
-#include "panel.h"
+#include "razorpanel.h"
 #include "razorpanelplugin.h"
 #include "razorpluginmanager.h"
 
@@ -47,27 +47,27 @@
 /************************************************
 
  ************************************************/
-PositionAction::PositionAction(int displayNum, Panel::Position position, QActionGroup *parent):
+PositionAction::PositionAction(int displayNum, RazorPanel::Position position, QActionGroup *parent):
     QAction(parent)
 {
     if (QApplication::desktop()->screenCount() == 1)
     {
         switch (position)
         {
-            case Panel::PositionTop:    setText(tr("Top of desktop"));      break;
-            case Panel::PositionBottom: setText(tr("Bottom of desktop"));   break;
-            case Panel::PositionLeft:   setText(tr("Left of desktop"));     break;
-            case Panel::PositionRight:  setText(tr("Right of desktop"));    break;
+            case RazorPanel::PositionTop:    setText(tr("Top of desktop"));      break;
+            case RazorPanel::PositionBottom: setText(tr("Bottom of desktop"));   break;
+            case RazorPanel::PositionLeft:   setText(tr("Left of desktop"));     break;
+            case RazorPanel::PositionRight:  setText(tr("Right of desktop"));    break;
         }
     }
     else
     {
         switch (position)
         {
-        case Panel::PositionTop:    setText(tr("Top of desktop %1").arg(displayNum +1));    break;
-        case Panel::PositionBottom: setText(tr("Bottom of desktop %1").arg(displayNum +1)); break;
-        case Panel::PositionLeft:   setText(tr("Left of desktop %1").arg(displayNum +1));   break;
-        case Panel::PositionRight:  setText(tr("Right of desktop %1").arg(displayNum +1));  break;
+        case RazorPanel::PositionTop:    setText(tr("Top of desktop %1").arg(displayNum +1));    break;
+        case RazorPanel::PositionBottom: setText(tr("Bottom of desktop %1").arg(displayNum +1)); break;
+        case RazorPanel::PositionLeft:   setText(tr("Left of desktop %1").arg(displayNum +1));   break;
+        case RazorPanel::PositionRight:  setText(tr("Right of desktop %1").arg(displayNum +1));  break;
         }
     }
 
@@ -83,7 +83,7 @@ PositionAction::PositionAction(int displayNum, Panel::Position position, QAction
 /************************************************
 
  ************************************************/
-Panel::Panel(QWidget *parent) :
+RazorPanel::RazorPanel(QWidget *parent) :
   QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
@@ -114,20 +114,20 @@ Panel::Panel(QWidget *parent) :
     mDesktopNum = settings->value(CFG_KEY_DESKTOPNUM, QApplication::desktop()->primaryScreen()).toInt();
 
     // Read panels & load plugins
-    QStringList keys = settings->allKeys();
-    foreach (QString key, keys)
+    int cnt = settings->allKeys().count();
+    for (int i=1; i<cnt; ++i)
     {
-        if (key.startsWith(QString("%1/").arg(CFG_KEY_PLUGINS)) && key.endsWith("/name"))
-        {
-            QString name = settings->value(key, "").toString();
-            if (name.isEmpty())
-                continue;
+        QString pluginName = settings->value(QString("plugins/%1/name").arg(i)).toString() + "2";
+        QString configId = settings->value(QString("plugins/%1/config").arg(i)).toString();
 
-            QString soPath = QString("%1/librazorpanel_%2.so").arg(PLUGIN_DIR, name);
-            RazorPanelPlugin* plugin = mPluginManager->loadPlugin(soPath);
-            if (plugin)
-                addToolBar(plugin);
-        }
+        if (pluginName.isEmpty() || configId.isEmpty())
+            continue;
+
+        QString soPath = QString("%1/librazorpanel_%2.so").arg(PLUGIN_DIR, pluginName);
+        RazorPanelPlugin* plugin = mPluginManager->loadPlugin(soPath, configId, this);
+
+        if (plugin)
+            addToolBar(plugin);
     }
 
     if (settings->contains(CFG_KEY_STATE))
@@ -144,7 +144,7 @@ Panel::Panel(QWidget *parent) :
 /************************************************
 
  ************************************************/
-Panel::~Panel()
+RazorPanel::~RazorPanel()
 {
     ReadSettings* panelRS = new ReadSettings("panel");
     QSettings* settings = panelRS->settings();
@@ -165,7 +165,7 @@ Panel::~Panel()
 /************************************************
 
  ************************************************/
-void Panel::show()
+void RazorPanel::show()
 {
     QMainWindow::show();
     realign();
@@ -176,7 +176,7 @@ void Panel::show()
 /************************************************
 
  ************************************************/
-QByteArray Panel::defaultState()
+QByteArray RazorPanel::defaultState()
 {
     QByteArray result = saveState();
 
@@ -210,10 +210,10 @@ QByteArray Panel::defaultState()
             n +=1;                // uchar:     1st bit: 1 if shown
                                   //            2nd bit: 1 if orientation is vert.
             n +=4;                // int:       Item.pos
-            result[n]   = 0x00;   // int:       Item.Size
-            result[n+1] = 0xFF;
-            result[n+2] = 0xFF;
-            result[n+3] = 0xFF;
+            result[n]   = '\x00'; // int:       Item.Size
+            result[n+1] = '\xFF';
+            result[n+2] = '\xFF';
+            result[n+3] = '\xFF';
         }
 
     }
@@ -226,7 +226,7 @@ QByteArray Panel::defaultState()
 /************************************************
 
  ************************************************/
-void Panel::contextMenuEvent(QContextMenuEvent* event)
+void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu(tr("Panel"));
     QMenu* m;
@@ -319,7 +319,7 @@ void Panel::contextMenuEvent(QContextMenuEvent* event)
 /************************************************
 
  ************************************************/
-void Panel::lockPlugin()
+void RazorPanel::lockPlugin()
 {
     QAction* a = qobject_cast<QAction*>(sender());
     if (!a)
@@ -338,7 +338,7 @@ void Panel::lockPlugin()
 /************************************************
 
  ************************************************/
-void Panel::switchPosition()
+void RazorPanel::switchPosition()
 {
     PositionAction* a = qobject_cast<PositionAction*>(sender());
     if (!a)
@@ -353,7 +353,7 @@ void Panel::switchPosition()
 /************************************************
 
  ************************************************/
-Panel::Position Panel::strToPosition(const QString& str, Position defaultValue) const
+RazorPanel::Position RazorPanel::strToPosition(const QString& str, Position defaultValue) const
 {
     if (str.toUpper() == "TOP")    return PositionTop;
     if (str.toUpper() == "LEFT")   return PositionLeft;
@@ -366,7 +366,7 @@ Panel::Position Panel::strToPosition(const QString& str, Position defaultValue) 
 /************************************************
 
  ************************************************/
-QString Panel::positionToStr(Position position) const
+QString RazorPanel::positionToStr(Position position) const
 {
     switch (position)
     {
@@ -381,7 +381,7 @@ QString Panel::positionToStr(Position position) const
 /************************************************
 
  ************************************************/
-void Panel::setTheme(const QString& themeName)
+void RazorPanel::setTheme(const QString& themeName)
 {
     mTheme = themeName;
     ReadTheme* readTheme = new ReadTheme(themeName);
@@ -397,7 +397,7 @@ void Panel::setTheme(const QString& themeName)
 /************************************************
 
  ************************************************/
-void Panel::setDesktopNum(int desktopNum)
+void RazorPanel::setDesktopNum(int desktopNum)
 {
     mDesktopNum = desktopNum;
     realign();
@@ -407,7 +407,7 @@ void Panel::setDesktopNum(int desktopNum)
 /************************************************
 
  ************************************************/
-void Panel::setPosition(Position position)
+void RazorPanel::setPosition(Position position)
 {
     mPosition = position;
     realign();
@@ -417,7 +417,7 @@ void Panel::setPosition(Position position)
 /************************************************
 
  ************************************************/
-void Panel::realign()
+void RazorPanel::realign()
 {
     qDebug() << "Realign: DesktopNum" << mDesktopNum;
     qDebug() << "Realign: Position  " << positionToStr(mPosition);
@@ -525,32 +525,32 @@ void Panel::realign()
 /************************************************
 
  ************************************************/
-bool Panel::canPlacedOn(int displayNum, Panel::Position position) const
+bool RazorPanel::canPlacedOn(int displayNum, RazorPanel::Position position) const
 {
     QDesktopWidget* dw = QApplication::desktop();
 
     switch (position)
     {
-        case Panel::PositionTop:
+        case RazorPanel::PositionTop:
             for (int i=0; i < dw->screenCount(); ++i)
                 if (dw->screenGeometry(i).bottom() < dw->screenGeometry(displayNum).top())
                     return false;
                 return true;
 
-        case Panel::PositionBottom:
+        case RazorPanel::PositionBottom:
             for (int i=0; i < dw->screenCount(); ++i)
                 if (dw->screenGeometry(i).top() > dw->screenGeometry(displayNum).bottom())
                     return false;
                 return true;
 
-        case Panel::PositionLeft:
+        case RazorPanel::PositionLeft:
 //            for (int i=0; i < dw->screenCount(); ++i)
 //                if (dw->screenGeometry(i).right() < dw->screenGeometry(displayNum).left())
 //                    return false;
 //            return true;
             return false;
 
-        case Panel::PositionRight:
+        case RazorPanel::PositionRight:
 //            for (int i=0; i < dw->screenCount(); ++i)
 //                if (dw->screenGeometry(i).left() > dw->screenGeometry(displayNum).right())
 //                    return false;

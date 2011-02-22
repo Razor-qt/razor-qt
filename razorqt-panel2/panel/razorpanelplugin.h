@@ -43,7 +43,7 @@ as in the "name" constructor's argument.
 #define RAZORPANELPLUGIN_H
 
 #include <QToolBar>
-
+#include "razorpanel.h"
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -51,19 +51,17 @@ All plugins *must* be inherited from this one.
 This class provides some basic API and inherited/implemented
 plugins GUIs will be responsible on the functionality itself.
 
-//Plugins will construct its content on this widget (painter
-//or subwidgets in layout, doesn't matter).
+Buttons are added by adding actions, using addAction() or insertAction().
+Groups of buttons can be separated using addSeparator() or insertSeparator().
+If a toolbar button is not appropriate, a widget can be inserted instead
+using addWidget() or insertWidget()
 
-//The panel will register plugins' sizeChanged() signal
-//with one global-size-recomputing slot to update required changes.
+For better behavior handling there are arguments to provide
+an access to Razor environment - see panel, parent.
 
-//For better behavior handling there are arguments to provide
-//an access to Razor environment - see panel, parent.
-
-//For example, to correctly show the main menu, I need to know the
-//position of the panel (top, bottom, left, right) and panel size (height,
-//width). Parent not necessarily will be panel, say for quicklaunch
-//buttons parent may be some subpanel etc.
+For example, to correctly show the main menu, I need to know the
+position of the panel (top, bottom, left, right) and panel size (height,
+width).
 */
 
 class RazorPanelPlugin : public QToolBar
@@ -76,14 +74,13 @@ public:
     };
 
     /*! Standard plugin constructor.
-    \param panel a reference to the RazorBar, panel.
-    \param parent a reference to the QWidget parent. It might be a RazorBar, but
+    \param panel a reference to the RazorPanel, panel.
+    \param configId defines section in a configuration file. Different instances of teh plugin
+           will keep the options in different sections of the config file.
+    \param parent a reference to the QWidget parent. It might be a RazorPanel, but
                     it can be any QWidget.
-    \param name a plugin name as it's provided from config file. Including
-                optional string suffixes ("quicklaunch0" for quicklaunch plug etc.)
-    \param f unused for now.
     */
-    explicit RazorPanelPlugin(QWidget *parent = 0);
+    explicit RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
     virtual ~RazorPanelPlugin();
 
     /*! Preferred alignment of the plug-in, at the left (for example the main menu
@@ -94,10 +91,42 @@ public:
      */
     virtual Alignment preferredAlignment() const { return AlignLeft; }
 
+    RazorPanel* panel() const { return mPanel; }
+    QString configId() const { return mConfigId; }
 signals:
 
 public slots:
 
+private:
+    RazorPanel* mPanel;
+    QString mConfigId;
+
 };
+
+
+
+/*! Prototype for plugin's init() function
+ */
+typedef RazorPanelPlugin* (*PluginInitFunction)(const RazorPanel* panel,
+                                           QWidget* parent,
+                                           const QString & configId);
+
+
+/*! Helper macro for define RazorPanelPlugin.
+    Place this macro in your plugin header file.
+ */
+#define EXPORT_RAZOR_PANEL_PLUGIN_H \
+    extern "C" RazorPanelPlugin* init(RazorPanel* panel, QWidget* parent, const QString & configId);
+
+
+/*! Helper macro for define RazorPanelPlugin.
+    Place this macro in your plugin source file.
+ */
+#define EXPORT_RAZOR_PANEL_PLUGIN_CPP(PLUGINCLASS)                                          \
+    RazorPanelPlugin* init(RazorPanel* panel, QWidget* parent, const QString & configId)    \
+    {                                                                                       \
+        return new PLUGINCLASS(panel, configId, parent);                                    \
+    }
+
 
 #endif // RAZORPANELPLUGIN_H

@@ -23,9 +23,12 @@
 /************************************************
 
  ************************************************/
-RazorPanelPlugin::RazorPanelPlugin(QWidget *parent) :
+RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent) :
     QToolBar(parent)
 {
+    mPanel = panel;
+    mConfigId = configId;
+
     setFloatable(false);
 }
 

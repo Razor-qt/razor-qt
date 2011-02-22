@@ -81,7 +81,7 @@ message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 add_subdirectory(panel)
 
 
-# set(ENABLED_PLUGINS)
+set(ENABLED_PLUGINS)
 #dev plugin
 # if (DEV_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Dev")
@@ -90,17 +90,14 @@ add_subdirectory(panel)
 #   target_link_libraries(razorpanel_devplugin ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_devplugin DESTINATION ${PLUGIN_DIR})
 # endif (DEV_PLUGIN)
-# 
-# 
-# if (CLOCK_PLUGIN)
-#   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Clock")
-#   QT4_WRAP_CPP(clock_moc plugin-clock/razorclock.h)
-#   add_library(razorpanel_clock SHARED ${clock_moc} plugin-clock/razorclock.cpp)
-#   target_link_libraries(razorpanel_clock ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-#   install(TARGETS razorpanel_clock DESTINATION ${PLUGIN_DIR})
-# endif (CLOCK_PLUGIN)
-# 
-# 
+ 
+ 
+if (CLOCK_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Clock")
+  add_subdirectory( plugin-clock )
+endif (CLOCK_PLUGIN)
+ 
+ 
 # if (DESKSWITCH_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Desktop switch")
 #   QT4_WRAP_CPP(deskswitch_moc plugin-deskswitch/razordeskswitch.h)
@@ -108,8 +105,8 @@ add_subdirectory(panel)
 #   target_link_libraries(razorpanel_desktopswitcher ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_desktopswitcher DESTINATION ${PLUGIN_DIR})
 # endif (DESKSWITCH_PLUGIN)
-# 
-# 
+ 
+ 
 # if (LOGOUTMENU_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Logout menu")
 #   QT4_WRAP_CPP(logoutmenu_moc plugin-logoutmenu/razorlogoutmenu.h)
@@ -117,8 +114,8 @@ add_subdirectory(panel)
 #   target_link_libraries(razorpanel_logoutmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_logoutmenu DESTINATION ${PLUGIN_DIR})
 # endif (LOGOUTMENU_PLUGIN)
-# 
-# 
+ 
+ 
 # if (QUICKLAUNCH_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Quick launch")
 #   QT4_WRAP_CPP(quicklaunch_moc plugin-quicklaunch/razorquicklaunch.h)
@@ -126,8 +123,8 @@ add_subdirectory(panel)
 #   target_link_libraries(razorpanel_quicklaunch ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_quicklaunch DESTINATION ${PLUGIN_DIR})
 # endif (QUICKLAUNCH_PLUGIN)
-# 
-# 
+ 
+ 
 # if (SPINBUTTON_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Spin button")
 #   QT4_WRAP_CPP(spinbutton_moc plugin-spinbutton/razorspinbutton.h)
@@ -184,9 +181,10 @@ add_subdirectory(panel)
 #   add_subdirectory( plugin-battery )
 # endif (BATTERY_PLUGIN)
 # 
-# message(STATUS  "**************** The following plugins will be built ****************")
-# foreach (PLUGIN_STR ${ENABLED_PLUGINS})
-#   message(STATUS   "  ${PLUGIN_STR}")
-# endforeach()
-# message(STATUS  "*********************************************************************")
-# 
+
+message(STATUS  "**************** The following plugins will be built ****************")
+foreach (PLUGIN_STR ${ENABLED_PLUGINS})
+  message(STATUS   "  ${PLUGIN_STR}")
+endforeach()
+message(STATUS  "*********************************************************************")
+ 

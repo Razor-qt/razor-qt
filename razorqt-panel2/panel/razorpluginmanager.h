@@ -22,7 +22,7 @@
 #include <QList>
 
 class RazorPanelPlugin;
-
+class RazorPanel;
 
 /*! \brief The RazorPluginManager class provides a list of RazorPanelPlugins.
  */
@@ -42,7 +42,7 @@ public:
     /*! \brief Constructs RazorPanelPlugin object from the library with the given libraryFileName and adds it in to plugins list.
         Returns the created plugin object if loading was success; otherwise retunrn NULL.
      */
-    RazorPanelPlugin* loadPlugin(const QString& libraryFileName);
+    RazorPanelPlugin* loadPlugin(const QString& libraryFileName, const QString& configId, RazorPanel* panel);
 
 
 
