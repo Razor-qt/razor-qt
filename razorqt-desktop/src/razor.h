@@ -1,8 +1,9 @@
 #ifndef RAZOR_H
 #define RAZOR_H
 #include <razorqt/readsettings.h>
-#include <razorqt/xfitman.h>
 #include <razorqt/xdgiconthememanager.h>
+
+class XfitMan;
 
 class Razor
 {

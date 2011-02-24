@@ -1,11 +1,11 @@
 #ifndef XFITMAN_H
 #define XFITMAN_H
-#include "defs.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <X11/Xutil.h>
+
+#include <QtCore/QList>
+#include <QtGui/QPixmap>
+#include <QtCore/QString>
+#include <QtCore/QMap>
 #include <X11/Xlib.h>
-#include <assert.h>
 
 //some net_wm state-operations we need here
 #define _NET_WM_STATE_TOGGLE 2
@@ -54,10 +54,7 @@ public:
     void resizeWindow(Window _wid, int _height, int _width);
 
     void setActiveDesktop(int _desktop);
-    void mapRaised(Window _wid)
-    {
-        XMapRaised(QX11Info::display(), _wid);
-    };
+    void mapRaised(Window _wid);
     bool isHidden(Window _wid);
     bool requiresAttention(Window _wid);
     int getActiveDesktop();
@@ -73,7 +70,7 @@ public:
 
 private:
     int clientMessage(Window _wid, Atom _msg, long unsigned int data0, long unsigned int data1, long unsigned int data2, long unsigned int data3, long unsigned int data4);
-    QString displayName;
+    //QString displayName;
     Window  root; //the actual root window on the used screen
     int screen; //the actual used screen
     int screencount;
@@ -82,5 +79,5 @@ private:
     QMap<QString,Atom> atomMap;
 };
 
-
+XfitMan* xfitMan();
 #endif

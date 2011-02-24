@@ -3,9 +3,20 @@
 
 #define dbg
 
+#include <QX11Info>
+#include <QtCore/QList>
+#include <QtGui/QApplication>
+#include <QtCore/QDebug>
+#include <QtGui/QDesktopWidget>
+
 #include <stdint.h>
 #include "xfitman.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <X11/Xutil.h>
+#include <assert.h>
+#include <X11/Xatom.h>
 
 /**
  * @file xfitman.cpp
@@ -13,6 +24,12 @@
  * @author Christopher "VdoP" Regali
  */
 
+
+XfitMan* xfitMan()
+{
+    static XfitMan instance;
+    return &instance;
+}
 
 /**
  * @brief constructor: gets Display vars and registers us
@@ -250,6 +267,13 @@ int XfitMan::clientMessage(Window _wid, Atom _msg, unsigned long data0, unsigned
     else
         return EXIT_FAILURE;
 }
+
+void XfitMan::mapRaised(Window _wid)
+{
+    XMapRaised(QX11Info::display(), _wid);
+};
+
+
 /**
  * @brief returns true if a window has its hidden_flag set
  */

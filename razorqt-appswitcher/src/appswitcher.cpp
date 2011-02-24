@@ -1,9 +1,15 @@
+#include <QDebug>
 #include "appswitcher.h"
 #include "qxtglobalshortcut.h"
 
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QKeyEvent>
 #include <QMessageBox>
 #include <QEvent>
 
+#include <razorqt/xfitman.h>
+#include <QtGui/QShortcut>
+#include <QtGui/QHBoxLayout>
 
 
 RazorAppSwitcher::AppSwitcher::AppSwitcher()

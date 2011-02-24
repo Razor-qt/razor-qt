@@ -1,12 +1,18 @@
 #ifndef APPSWITCHER_H
 #define APPSWITCHER_H
 
-
-#include <QWidget>
 #include "ui_appswitcher.h"
-#include "razorqt/xfitman.h"
+#include <QWidget>
+#include <QtGui/QToolButton>
+#include <QtCore/QString>
+#include <QtGui/QPixmap>
+#include <QtCore/QList>
+#include <X11/X.h>
 
 class QxtGlobalShortcut;
+class XfitMan;
+class QShortcut;
+class QHBoxLayout;
 
 namespace RazorAppSwitcher {
 

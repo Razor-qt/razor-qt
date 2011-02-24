@@ -1,5 +1,7 @@
 #include "razordeskicon.h"
 #include "razor.h"
+#include <razorqt/xfitman.h>
+
 /**
  * @file razordeskicon.cpp
  * @author Christopher "VdoP" Regali

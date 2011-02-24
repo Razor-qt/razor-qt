@@ -2,6 +2,7 @@
 #define RAZOR_CPP
 #include "razor.h"
 #include <razorqt/xdgenv.h>
+#include <razorqt/xfitman.h>
 
 Razor &Razor::getInstance()
 {
