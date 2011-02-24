@@ -17,6 +17,8 @@ public:
     RazorClock(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
     ~RazorClock();
 
+    virtual Alignment preferredAlignment() const { return AlignRight; }
+
 public slots:
     void updateTime();
 
