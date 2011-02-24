@@ -156,17 +156,14 @@ endif (CLOCK_PLUGIN)
 #   target_link_libraries(razorpanel_cmd ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_cmd DESTINATION ${PLUGIN_DIR})
 # endif (COMMAND_PLUGIN)
-# 
-# 
-# if (TASKBAR_PLUGIN)
-#   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Taskbar")
-#   QT4_WRAP_CPP(taskmanager_moc plugin-taskbar/razortask.h plugin-taskbar/razorbartask.h)
-#   add_library(razorpanel_taskmanager SHARED ${taskmanager_moc} plugin-taskbar/razortask.cpp plugin-taskbar/razorbartask.cpp)
-#   target_link_libraries(razorpanel_taskmanager ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-#   install(TARGETS razorpanel_taskmanager DESTINATION ${PLUGIN_DIR})
-# endif (TASKBAR_PLUGIN)
-# 
-# 
+
+
+if (TASKBAR_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Taskbar")
+  add_subdirectory( plugin-taskbar )
+endif (TASKBAR_PLUGIN)
+
+
 # if (SPACER_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Spacer")
 #   QT4_WRAP_CPP(spacer_moc plugin-spacer/spacer.h)

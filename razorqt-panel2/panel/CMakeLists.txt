@@ -9,6 +9,7 @@ set(HEADERS
     razorpanel.h
     razorpanelplugin.h
     razorpluginmanager.h
+    razorpanelapplication.h
 )
 
 set(SOURCES
@@ -16,18 +17,17 @@ set(SOURCES
     razorpanel.cpp
     razorpanelplugin.cpp
     razorpluginmanager.cpp
+    razorpanelapplication.cpp
 )
 
 set(MOCS
     razorpanel.h
     razorpanelplugin.h
-    razorpluginmanager.h
-    #panel.cpp
+    razorpanelapplication.h
 )
 
 set(LIBRARIES
     razorqt
-   # razorqtxdg
 )
 
 # QRC files .................

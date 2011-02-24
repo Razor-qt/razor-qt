@@ -1,5 +1,5 @@
 /********************************************************************
-  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+  Copyright: 2011 Alexander Sokoloff <sokoloff.a@gmail.ru>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License.
@@ -15,32 +15,32 @@
   Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 *********************************************************************/
-#include <QtCore/QLocale>
-#include <QtCore/QTranslator>
-#include <QtGui/QApplication>
-#include <QDebug>
 
 #include "razorpanelapplication.h"
-#include "razorpanel.h"
+#include <QtCore/QDebug>
+#include "razorpluginmanager.h"
+#include <X11/Xlib.h>
 
-/*! The razor-panel is the panel of Razor-qt.
-  Usage: razor-panel [CONFIG_ID]
-    CONFIG_ID      Section name in config file ~/.razor/panel.conf
-                   (default main)
- */
+/************************************************
 
-int main(int argc, char *argv[])
+ ************************************************/
+RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
+    : QApplication(argc, argv)
 {
-    RazorPanelApplication a(argc, argv);
-
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString("%1/razor-panel_%3.qm").arg(TRANSLATIONS_DIR, locale));
-    a.installTranslator(&translator);
-
-    RazorPanel window;
-    window.show();
-
-    return a.exec();
-
 }
+
+
+/************************************************
+
+ ************************************************/
+bool RazorPanelApplication::x11EventFilter(XEvent * event)
+{
+    if(event->type != PropertyNotify)
+        return false;
+
+    emit x11PropertyNotify(event);
+
+    return false;
+}
+
+

@@ -1,5 +1,5 @@
 /********************************************************************
-  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+  Copyright: 2011 Alexander Sokoloff <sokoloff.a@gmail.ru>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License.
@@ -15,32 +15,23 @@
   Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 *********************************************************************/
-#include <QtCore/QLocale>
-#include <QtCore/QTranslator>
-#include <QtGui/QApplication>
-#include <QDebug>
 
-#include "razorpanelapplication.h"
-#include "razorpanel.h"
+#ifndef RAZORPANELAPPLICATION_H
+#define RAZORPANELAPPLICATION_H
 
-/*! The razor-panel is the panel of Razor-qt.
-  Usage: razor-panel [CONFIG_ID]
-    CONFIG_ID      Section name in config file ~/.razor/panel.conf
-                   (default main)
- */
+#include <QApplication>
 
-int main(int argc, char *argv[])
+class RazorPanelApplication : public QApplication
 {
-    RazorPanelApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit RazorPanelApplication(int& argc, char** argv);
+    virtual bool x11EventFilter(XEvent* event);
 
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString("%1/razor-panel_%3.qm").arg(TRANSLATIONS_DIR, locale));
-    a.installTranslator(&translator);
+signals:
+    void x11PropertyNotify(XEvent* event);
 
-    RazorPanel window;
-    window.show();
+};
 
-    return a.exec();
 
-}
+#endif // RAZORPANELAPPLICATION_H

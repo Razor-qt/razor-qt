@@ -19,9 +19,10 @@
 #include "razorpanel.h"
 #include "razorpanelplugin.h"
 #include "razorpluginmanager.h"
+#include "razorpanelapplication.h"
 
 #include <razorqt/readsettings.h>
-#include <razorqt/xfitman.h>
+
 
 #include <QDebug>
 #include <QApplication>
@@ -29,11 +30,12 @@
 #include <QRect>
 #include <QMenu>
 #include <QContextMenuEvent>
-
+#include <QtCore/QFile>
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
 
 #include <razorqt/xdgicon.h>
+#include <razorqt/xfitman.h>
 
 
 #define CFG_FILE            "panel"
@@ -91,6 +93,8 @@ RazorPanel::RazorPanel(QWidget *parent) :
     mPluginManager = new RazorPluginManager();
     mXfitMan = new XfitMan();
 
+    connect(qApp, SIGNAL(x11PropertyNotify(XEvent*)), this, SIGNAL(x11PropertyNotify(XEvent*)));
+
     // Read command line arguments .....................
     mConfigId = "default";
     if (qApp->arguments().count() > 1)
@@ -123,7 +127,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
         if (pluginName.isEmpty() || configId.isEmpty())
             continue;
 
-        QString soPath = QString("%1/librazorpanel_%2.so").arg(PLUGIN_DIR, pluginName);
+        QString soPath = QString("%1/librazorpanel_%2").arg(PLUGIN_DIR, pluginName);
         RazorPanelPlugin* plugin = mPluginManager->loadPlugin(soPath, configId, this);
 
         if (plugin)
@@ -176,14 +180,30 @@ void RazorPanel::show()
 /************************************************
 
  ************************************************/
+void debugState(const QByteArray& state, const QString logFile, bool append=true)
+{
+    QFile f(logFile);
+    if (append)
+        f.open(QFile::Append);
+    else
+        f.open(QFile::WriteOnly);
+
+    f.write(state);
+    f.close();
+}
+
+
+/************************************************
+
+ ************************************************/
 QByteArray RazorPanel::defaultState()
 {
     QByteArray result = saveState();
+    //debugState(result, "./state.dat", false);
 
     RazorPanelPlugin* plugin = 0;
     RazorPanelPluginIterator i(*mPluginManager);
     i.toBack();
-
 
     // Skip all right-aligned panels.
     while (i.hasPrevious())
@@ -193,10 +213,10 @@ QByteArray RazorPanel::defaultState()
             break;
     }
 
-
     // If exists left-aligned panel, we increase its width.
     if (plugin)
     {
+        //qDebug() << "DefaultState: plugin found" << plugin->objectName();
         // Construct UTF-16BE string
         QByteArray baName;
         QDataStream ds(&baName, QIODevice::ReadWrite);
@@ -205,7 +225,7 @@ QByteArray RazorPanel::defaultState()
         int n = result.lastIndexOf(baName);
         if (n > -1)
         {
-
+            //qDebug() << "DefaultState: plugin data found" << n;
             n += baName.length(); // UTF-16BE:  Name
             n +=1;                // uchar:     1st bit: 1 if shown
                                   //            2nd bit: 1 if orientation is vert.
@@ -218,7 +238,7 @@ QByteArray RazorPanel::defaultState()
 
     }
 
-
+    //debugState(result, "./state.dat");
     return result;
 }
 

@@ -64,25 +64,20 @@ RazorPluginManager::~RazorPluginManager()
 RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName, const QString& configId, RazorPanel* panel)
 {
     RazorPanelPlugin* plugin = 0;
-    qDebug() << "RazorPluginManager: try to load " << libraryFileName;
 
-
-    if (libraryFileName.endsWith("librazorpanel_mainmenu2.so"))
+    // FAKE ------------------------>>>
+    if (libraryFileName.endsWith("librazorpanel_mainmenu2"))
     {
         plugin = new FakePlugin(panel, configId, panel, "MainMenu", "Main Menu");
 
         QPushButton* mb = new QPushButton("Menu", plugin);
 
-        //         mb->setMenu(mMenu);
         mb->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
         plugin->addWidget(mb);
-        //         addPlugin(plugin);
-
-
     }
 
 
-    if (libraryFileName.endsWith("librazorpanel_quicklaunch2.so"))
+    if (libraryFileName.endsWith("librazorpanel_quicklaunch2"))
     {
         plugin = new FakePlugin(panel, configId, panel, "QuickLaunch", "Quick Launch");
 
@@ -92,69 +87,35 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName,
     }
 
 
-    if (libraryFileName.endsWith("librazorpanel_taskmanager2.so"))
-    {
-        plugin = new FakePlugin(panel, configId, panel, "TaskBar", "TaskBar");
-
-        plugin->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-        QAction* a;
-        plugin->addAction(QIcon::fromTheme("kate"), "Application");
-
-        a = plugin->addAction(QIcon::fromTheme("utilities-terminal"), "Active App");
-        a->setCheckable(true);
-        a->setChecked(true);
-
-        plugin->addAction(QIcon::fromTheme("kmail"), "kmail");
-    }
-
-
-    if (libraryFileName.endsWith("librazorpanel_traybar.so"))
-    {
-
-    }
-
-
-    if (libraryFileName.endsWith("librazorpanel_logoutmenu.so"))
-    {
-
-    }
     if (plugin)
     {
         append(plugin);
         return plugin;
     }
 
-    // FAKE <<--------------------
+    // FAKE <<-------------------------
 
 
+    qDebug() << "RazorPanel: try to load " << libraryFileName;
 
-    // check if the file exists. Probably debug only.
-    QFileInfo fi(libraryFileName);
-    if (!fi.exists())
-    {
-        qDebug() << "PLUGIN: MISSING FILE";
-        return 0;
-    }
-
-    QLibrary * lib = new QLibrary(libraryFileName, panel);
+    QLibrary * lib = new QLibrary(libraryFileName);
     PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
     if (!initFunc)
     {
-        qDebug() << "PLUGIN: plugin: MISSING init()";
+        qDebug() << lib->errorString();
         delete lib;
         return 0;
     }
 
     plugin = initFunc(panel, panel, configId);
     Q_ASSERT(plugin);
-    // now add the plug into the panel's layout.
-    // it's easier to do it here instead to handle it in plugin itself
 
     if (plugin)
     {
+        lib->setParent(plugin);
         append(plugin);
-        qDebug() << "RazorPluginManager: plugin sacceffuly loaded";
+        qDebug() << "    * Plugin loaded.";
     }
     return plugin;
 }
+

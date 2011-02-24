@@ -23,7 +23,6 @@
 #include <QString>
 #include <QtGui/QAction>
 
-
 class RazorPluginManager;
 class XfitMan;
 class QActionGroup;
@@ -45,10 +44,14 @@ public:
     RazorPanel(QWidget *parent = 0);
     virtual ~RazorPanel();
 
+    Position position() const { return mPosition; }
+    bool isHorizontal() const { return mPosition == PositionBottom || mPosition == PositionTop; }
 
 public slots:
     void show();
 
+signals:
+     void x11PropertyNotify(XEvent* event);
 
 protected slots:
     void realign();

@@ -20,9 +20,11 @@
 #define RAZORPLUGINMANAGER_H
 
 #include <QList>
+#include <qwindowdefs.h>
 
 class RazorPanelPlugin;
 class RazorPanel;
+
 
 /*! \brief The RazorPluginManager class provides a list of RazorPanelPlugins.
  */
@@ -43,9 +45,6 @@ public:
         Returns the created plugin object if loading was success; otherwise retunrn NULL.
      */
     RazorPanelPlugin* loadPlugin(const QString& libraryFileName, const QString& configId, RazorPanel* panel);
-
-
-
 };
 
 typedef QListIterator<RazorPanelPlugin*> RazorPanelPluginIterator;
