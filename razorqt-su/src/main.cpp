@@ -51,7 +51,10 @@ int main(int argc, char **argv )
         }
     }
     QApplication app(argc, argv);
-    qDebug() << app.arguments();
+    
+    // expect "root" if there is no user given. I'm not sure if it's right but for now it works...
+    if (user.isNull())
+            user = "root";
 
     // Get target uid
     QString auth_user = user;
