@@ -30,6 +30,7 @@ add_subdirectory( razorqt-panel )
 add_subdirectory( razorqt-desktop )
 add_subdirectory( razorqt-appswitcher )
 add_subdirectory( razorqt-resources )
+add_subdirectory( razorqt-su )
 
 
 
