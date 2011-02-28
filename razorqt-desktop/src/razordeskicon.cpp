@@ -16,8 +16,12 @@ RazorDeskIcon::RazorDeskIcon(const QString & exec,
                              const QPoint & position,
                              QWidget * parent)
     : QAbstractButton(parent),
-      m_exec(exec)
+      m_exec(exec),
+      m_display(0)
 {
+    if (!parent)
+        setParent(QApplication::desktop());
+
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
     qDebug() << "Razordeskicon: initialising..." << parent;
@@ -46,6 +50,8 @@ RazorDeskIcon::RazorDeskIcon(const QString & exec,
 
 RazorDeskIcon::~RazorDeskIcon()
 {
+    if (m_display)
+        delete m_display;
     qDebug() << text() << " beeing shredded";
 }
 
@@ -114,28 +120,52 @@ void RazorDeskIcon::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
+    if (! m_display)
+        initialPainting();
+    painter.drawPixmap(0, 0, *m_display);
+}
 
+void RazorDeskIcon::initialPainting()
+{
+    qDebug() << "initialPainting";
+    Q_ASSERT(!m_display);
+    
+    m_display = new QPixmap(70, 70);
+    m_display->fill(QColor(0,0,0,0));
 
-    QStyleOption opt;
-    opt.init(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
-
+    QPainter painter(m_display);
+    painter.setRenderHint(QPainter::Antialiasing);
+    
     // now the icon
     QPixmap pm = icon().pixmap(iconSize(), isDown() ? QIcon::Selected : QIcon::Selected);
     QRect source(0, 0, 32, 32);
-    int w = width() / 2;
-    int h = height() / 2;
+    int w = m_display->width() / 2;
+    int h = m_display->height() / 2;
     int iw = iconSize().width() / 2;
     int ih = iconSize().height() / 2;
     QRect target(w - iw, h - ih - 10,
                  iconSize().width(), iconSize().height());
     //qDebug() << target << w << h << iw << ih;
     painter.drawPixmap(target, pm, source);
+
     // text now - it has to follow potential QSS
-    painter.setPen(opt.palette.color(QPalette::Normal, QPalette::Text));
-    painter.drawText(QRectF(2, h+ih-10, width()-4, height()-h-ih+10),
+    QColor txt = palette().color(QPalette::WindowText);
+    painter.setPen(txt);
+    painter.drawText(QRectF(2, h+ih-10, m_display->width()-4, m_display->height()-h-ih+10),
                      Qt::AlignCenter | Qt::TextWordWrap | Qt::TextIncludeTrailingSpaces,
                      text());
+    
+    //txt.setAlpha(150);
+    //painter.drawRoundedRect(m_display->rect(), 6, 6);
+    painter.end();
+                    
+    QBitmap mask = m_display->createHeuristicMask();
+    //QBitmap mask(*m_display);
+    
+    m_display->setMask(mask);
+    setMask(mask);
+//    m_display->save("bar.png");
+//    mask.save("foo.png");
 }
 
 void RazorDeskIcon::launchApp()

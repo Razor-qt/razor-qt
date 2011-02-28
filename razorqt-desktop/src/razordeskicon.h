@@ -64,6 +64,9 @@ private:
     bool firstGrab;
     QPoint firstPos;
 
+    QPixmap * m_display;
+    void initialPainting();
+
 private slots:
     /**
     @brief Launch assigned m_exec binary/path.
