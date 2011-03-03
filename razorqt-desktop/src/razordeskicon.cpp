@@ -46,6 +46,7 @@ RazorDeskIcon::RazorDeskIcon(const QString & exec,
     connect(this, SIGNAL(clicked(bool)), this, SLOT(launchApp()));
 
     show();
+    setPos(position);
 }
 
 RazorDeskIcon::~RazorDeskIcon()

@@ -1,18 +1,23 @@
 #ifndef RAZORDESKMAN_CPP
 #define RAZORDESKMAN_CPP
+#include <QDesktopServices>
 #include "razordeskman.h"
 
 
 void RazorDeskManager::saveIconState()
 {
-    qDebug() << "saveIconState" << privIconList;
+    qDebug() << "saveIconState" << m_iconList;
     QSettings * s = deskicons->settings();
     s->beginWriteArray("icons");
-    for (int i = 0; i < privIconList.count(); i++)
+    IconMapIterator i(m_iconList);
+    int ix = 0;
+    while (i.hasNext())
     {
-        s->setArrayIndex(i);
-        s->setValue("name", privIconList.at(i)->text());
-        s->setValue("point", privIconList.at(i)->pos());
+        i.next();
+        s->setArrayIndex(ix);
+        s->setValue("name", i.key());
+        s->setValue("point", i.value()->pos());
+        ++ix;
     }
     s->endArray();
 }
@@ -20,39 +25,37 @@ void RazorDeskManager::saveIconState()
 
 RazorDeskManager::~RazorDeskManager()
 {
-    for (int i = 0; i < privIconList.count(); i ++)
+    IconMapIterator i(m_iconList);
+    while (i.hasNext())
     {
-        delete privIconList.at(i);
-        privIconList.removeAt(i);
+        i.next();
+        delete i.value();
     }
+    m_iconList.clear();
 }
 
 
 void RazorDeskManager::restoreIconState()
 {
     qDebug() << "restoring icon state!";
-    // map icon name to its position. It's used to restore position
-    // later with privIconList merge
-    QMap<QString,QPoint> positions;
 
     QSettings * s = deskicons->settings();
     int count = s->beginReadArray("icons");
 
+    QString name;
     for (int i = 0; i < count; ++i)
     {
         s->setArrayIndex(i);
-        positions[s->value("name", "").toString()] = s->value("point").value<QPoint>();
+        name = s->value("name", "").toString();
+        if (! m_iconList.contains(name))
+        {
+            qDebug() << "Icon" << name << "is not found. It's strange but not critical";
+            continue;
+        }
+        m_iconList[name]->setPos(s->value("point").value<QPoint>());
     }
     s->endArray();
 
-    for (int i = 0; i < privIconList.count(); i ++)
-    {
-        if (! positions.contains(privIconList.at(i)->text()) )
-            continue;
-
-        qDebug() << "found saved position for: " << privIconList.at(i);
-        privIconList.at(i)->setPos(positions[privIconList.at(i)->text()]);
-    }
     qDebug() << "restoring done";
 }
 
@@ -60,9 +63,12 @@ void RazorDeskManager::restoreIconState()
 
 RazorDeskManager::RazorDeskManager(RazorWorkSpace* _workspace)
 {
-    qDebug() << "Initializing!!";
+    qDebug() << "Initializing!!" << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     workspace = _workspace;
     deskicons = new ReadSettings("deskicons", this);
+    
+    m_fsw = new QFileSystemWatcher(QStringList() << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation), this);
+    connect(m_fsw, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateIconList()));
 }
 
 

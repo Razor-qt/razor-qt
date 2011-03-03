@@ -5,11 +5,17 @@
  * @file razordeskman.h
  * @author Christopher "VdoP" Regali
  * @brief declares Razordeskman
- */
+*/
+
+#include <QFileSystemWatcher>
 
 #include "razordeskicon.h"
 #include "razorworkspace.h"
 #include <razorqt/readsettings.h>
+
+typedef QMap<QString,RazorDeskIcon*> IconMap;
+typedef QMapIterator<QString,RazorDeskIcon*> IconMapIterator;
+
 /**
  * @brief all the iconManagers are derived from this!
  */
@@ -22,21 +28,22 @@ public:
 
 public slots:
     void saveIconState();
+    virtual void updateIconList() = 0;
 
 protected:
-    virtual void updateIconList() = 0;
-    virtual QList<RazorDeskIcon*> iconList() = 0;
     void restoreIconState();
     RazorWorkSpace* workSpace()
     {
         return workspace;
     }
 
-    QList<RazorDeskIcon*> privIconList;
+    IconMap m_iconList;
 
 private:
     ReadSettings *deskicons;
     RazorWorkSpace * workspace;
+
+    QFileSystemWatcher * m_fsw;
 };
 
 

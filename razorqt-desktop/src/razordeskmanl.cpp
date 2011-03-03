@@ -1,6 +1,8 @@
 #ifndef RAZORDESKMANL_CPP
 #define RAZORDESKMANL_CPP
 
+#include <QDesktopServices>
+
 #include "razordeskmanl.h"
 #include "razor.h"
 #include <razorqt/xfitman.h>
@@ -15,13 +17,15 @@
 void RazorDeskManagerLegacy::updateIconList()
 {
     int maxHeight = QApplication::desktop()->screenGeometry().height();
-    privIconList.clear();
-    QDirIterator dirIter(QDir::homePath()+"/Desktop/",
+
+    QDirIterator dirIter(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation),
                          //QDir::NoDotAndDotDot,
                          QDirIterator::Subdirectories);
 
     int x = 0;
     int y = 30;
+    QStringList tmpList;
+
     while (dirIter.hasNext())
     {
         dirIter.next();
@@ -29,7 +33,16 @@ void RazorDeskManagerLegacy::updateIconList()
 
         if (dirIter.filePath().endsWith(".desktop")) //only use .desktop files!
         {
-            XdgDesktopFile* tmp = new XdgDesktopFile(dirIter.filePath());
+            QString df(dirIter.filePath());
+            tmpList.append(df);
+            // only non existing icons are created
+            if (m_iconList.contains(df))
+            {
+                qDebug() << "updateIconList REREAD. Skip:" << df;
+                continue;
+            }
+            
+            XdgDesktopFile* tmp = new XdgDesktopFile(df);
 
             if (tmp->isShow())
             {
@@ -44,11 +57,12 @@ void RazorDeskManagerLegacy::updateIconList()
                             workSpace()
                         );
                 connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
-                privIconList.append(idata);
+
+                m_iconList[df] = idata;
 
                 // HACK: there should be better algorithm for this.
                 // and it does not count with panels...
-                y += 100;
+                y += 70;
                 if (y > maxHeight-60)
                 {
                     y = 30;
@@ -60,13 +74,17 @@ void RazorDeskManagerLegacy::updateIconList()
         }
     }
 
-    qDebug() << "Razordeskmanl: found " << privIconList.count() << " usable desktop-entries";
-}
+    // now remove potentialy deleted icons
+    IconMapIterator iter(m_iconList);
+    while (iter.hasNext())
+    {
+        iter.next();
+        if (tmpList.contains(iter.key()))
+            continue;
+        delete m_iconList.take(iter.key());
+    }
 
-
-QList< RazorDeskIcon* > RazorDeskManagerLegacy::iconList()
-{
-    return privIconList;
+    qDebug() << "Razordeskmanl: found " << m_iconList.count() << " usable desktop-entries";
 }
 
 RazorDeskManagerLegacy::~RazorDeskManagerLegacy()
