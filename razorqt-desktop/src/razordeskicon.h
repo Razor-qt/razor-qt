@@ -53,6 +53,9 @@ protected:
      */
     void paintEvent(QPaintEvent * event);
 
+    void enterEvent(QEvent * event);
+    void leaveEvent(QEvent * event);
+
 signals:
     void moved(QPoint);
 
@@ -62,9 +65,12 @@ private:
     bool moveMe;
     bool movedMe;
     bool firstGrab;
+    bool m_mouseOver;
     QPoint firstPos;
 
     QPixmap * m_display;
+    QPixmap * m_displayHighlight;
+
     void initialPainting();
 
 private slots:

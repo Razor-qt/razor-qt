@@ -17,6 +17,7 @@ RazorDeskIcon::RazorDeskIcon(const QString & exec,
                              QWidget * parent)
     : QAbstractButton(parent),
       m_exec(exec),
+      m_mouseOver(false),
       m_display(0)
 {
     if (!parent)
@@ -53,6 +54,8 @@ RazorDeskIcon::~RazorDeskIcon()
 {
     if (m_display)
         delete m_display;
+    if (m_displayHighlight)
+        delete m_displayHighlight;
     qDebug() << text() << " beeing shredded";
 }
 
@@ -101,14 +104,14 @@ void RazorDeskIcon::mousePressEvent(QMouseEvent* _event)
 
 void RazorDeskIcon::mouseReleaseEvent(QMouseEvent* _event)
 {
-    Q_UNUSED(_event);
     qDebug() << "Razordeskicon: mouserelease, checking for move!";
     moveMe = false;
     if (!movedMe)
     {
         qDebug() << "Razordeskicon: not moved, so clicked!";
         setDown(false);
-        emit clicked();
+        if (_event->button() == Qt::LeftButton)
+            emit clicked();
     }
     else
     {
@@ -117,13 +120,37 @@ void RazorDeskIcon::mouseReleaseEvent(QMouseEvent* _event)
     }
 }
 
+void RazorDeskIcon::enterEvent(QEvent * event)
+{
+    m_mouseOver = true;
+    update();
+}
+
+void RazorDeskIcon::leaveEvent(QEvent * event)
+{
+    m_mouseOver = false;
+    update();
+}
+
 void RazorDeskIcon::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     if (! m_display)
         initialPainting();
-    painter.drawPixmap(0, 0, *m_display);
+    
+    if (m_mouseOver)
+    {
+        clearMask();
+        setMask(m_displayHighlight->mask());
+        painter.drawPixmap(0, 0, *m_displayHighlight);
+    }
+    else
+    {
+        clearMask();
+        setMask(m_display->mask());
+        painter.drawPixmap(0, 0, *m_display);
+    }
 }
 
 void RazorDeskIcon::initialPainting()
@@ -164,9 +191,22 @@ void RazorDeskIcon::initialPainting()
     //QBitmap mask(*m_display);
     
     m_display->setMask(mask);
-    setMask(mask);
 //    m_display->save("bar.png");
 //    mask.save("foo.png");
+
+    m_displayHighlight = new QPixmap(70, 70);
+    m_displayHighlight->fill(QColor(0,0,0,100));
+    QPainter hpainter(m_displayHighlight);
+    QColor bgcolor = palette().color(QPalette::Window);
+    QColor hicolor = palette().color(QPalette::WindowText);
+    hpainter.setPen(QPen(hicolor, 1));
+    hpainter.setBrush(bgcolor);
+    hpainter.drawRoundedRect(1, 1, 67, 67, 9, 9);
+    hpainter.drawPixmap(m_displayHighlight->rect(), m_display->copy(), m_display->rect());
+    hpainter.end();
+    //m_displayHighlight->setMask(m_displayHighlight->createHeuristicMask());
+    
+    m_displayHighlight->save("foo.png");
 }
 
 void RazorDeskIcon::launchApp()
