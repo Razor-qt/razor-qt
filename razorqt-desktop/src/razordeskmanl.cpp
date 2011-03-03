@@ -16,6 +16,7 @@
 
 void RazorDeskManagerLegacy::updateIconList()
 {
+    qDebug() << "updateIconList";
     int maxHeight = QApplication::desktop()->screenGeometry().height();
 
     QDirIterator dirIter(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation),
@@ -29,48 +30,51 @@ void RazorDeskManagerLegacy::updateIconList()
     while (dirIter.hasNext())
     {
         dirIter.next();
-        qDebug() << dirIter.filePath();
+        QString df(dirIter.filePath());
+        
+        // HACK: QDir::NoDotAndDotDot does not work so this fixes it...
+        if (df.endsWith("/..") || df.endsWith("/."))
+            continue;
+        
+        qDebug() << df;
+        tmpList.append(df);
+        
+        // only non existing icons are created
+        if (m_iconList.contains(df))
+        {
+            qDebug() << "updateIconList REREAD. Skip:" << df;
+            continue;
+        }
+        
+        QPoint pos(x, y);
+        RazorDeskIconBase * idata;
 
         if (dirIter.filePath().endsWith(".desktop")) //only use .desktop files!
         {
-            QString df(dirIter.filePath());
-            tmpList.append(df);
-            // only non existing icons are created
-            if (m_iconList.contains(df))
-            {
-                qDebug() << "updateIconList REREAD. Skip:" << df;
-                continue;
-            }
-            
             XdgDesktopFile* tmp = new XdgDesktopFile(df);
 
             if (tmp->isShow())
             {
-                qDebug() << "ISSHOW";
-                QPoint pos(x, y);
-                RazorDeskIcon* idata = new RazorDeskIcon(
-                            tmp->value("Exec").toString(),
-                            Razor::getInstance().geticontheme()->getIconNG(tmp->value("Icon").toString()),
-                            tmp->value("Name").toString(),
-                            tmp->value("Comment").toString(),
-                            pos,
-                            workSpace()
-                        );
-                connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
-
-                m_iconList[df] = idata;
-
-                // HACK: there should be better algorithm for this.
-                // and it does not count with panels...
-                y += 70;
-                if (y > maxHeight-60)
-                {
-                    y = 30;
-                    x += 90;
-                }
-
+                idata = new RazorDeskIconDesktop(tmp, pos, workSpace());
             }
-            delete tmp;
+            else
+                delete tmp;
+        }
+        else
+        {
+            idata = new RazorDeskIconFile(df, pos, workSpace());
+        }
+
+        connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
+        m_iconList[df] = idata;
+        
+        // HACK: there should be better algorithm for this.
+        // and it does not count with panels...
+        y += 70;
+        if (y > maxHeight-60)
+        {
+            y = 30;
+            x += 90;
         }
     }
 

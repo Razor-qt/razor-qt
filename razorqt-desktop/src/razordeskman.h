@@ -13,8 +13,8 @@
 #include "razorworkspace.h"
 #include <razorqt/readsettings.h>
 
-typedef QMap<QString,RazorDeskIcon*> IconMap;
-typedef QMapIterator<QString,RazorDeskIcon*> IconMapIterator;
+typedef QMap<QString,RazorDeskIconBase*> IconMap;
+typedef QMapIterator<QString,RazorDeskIconBase*> IconMapIterator;
 
 /**
  * @brief all the iconManagers are derived from this!

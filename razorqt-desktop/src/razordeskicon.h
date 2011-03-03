@@ -3,32 +3,26 @@
 
 #include <QAbstractButton>
 
+#include <razorqt/xdgdesktopfile.h>
 
-/**
- @brief this class represents a single desktop-icon - GUI
- "Icon" is QAbstractButton based now to simplufy QSS styling
- and implementation of well-behaved minimal widgets too.
- */
-class RazorDeskIcon : public QAbstractButton
+
+/*! \brief Abstract base for all desktop icons.
+It does all shared tasks like painting, moving, mouse action catching...
+"Icon" is QAbstractButton based now to simplufy QSS styling
+and implementation of well-behaved minimal widgets too.
+*/
+class RazorDeskIconBase : public QAbstractButton
 {
     Q_OBJECT
 
 public:
     /*! Construct an icons.
-    \param exec QString path with application executable
-    \param icon QIcon to be painted
-    \param text QString Text to be displayed under the icon
-    \param comment QString Text to be displayed in the tooltip
     \param position QPoint where to show the icon widget
     \param parent QWidget optional parent
     */
-    RazorDeskIcon(const QString & exec,
-                  const QIcon & icon,
-                  const QString & text,
-                  const QString & comment,
-                  const QPoint & position,
-                  QWidget * parent = 0);
-    ~RazorDeskIcon();
+    RazorDeskIconBase(const QPoint & position,
+                      QWidget * parent = 0);
+    ~RazorDeskIconBase();
 
     QSize sizeHint() const;
 
@@ -36,6 +30,7 @@ public:
     void setPos(const QPoint & npos);
 
 protected:
+
     /**
      * @brief this is used to drag-move the button and emit a new-pos event
      */
@@ -60,8 +55,6 @@ signals:
     void moved(QPoint);
 
 private:
-    //! App to launch (path)
-    QString m_exec;
     bool moveMe;
     bool movedMe;
     bool firstGrab;
@@ -72,6 +65,58 @@ private:
     QPixmap * m_displayHighlight;
 
     void initialPainting();
+
+private slots:
+    /**
+    @brief Launch assigned m_exec binary/path.
+    Called when is the button clicked.
+     */
+    virtual void launchApp() = 0;
+
+};
+
+
+/** \brief Icon for the XDG desktop file. It uses XdgDesktopFile handler
+from librazorqt.
+ */
+class RazorDeskIconDesktop : public RazorDeskIconBase
+{
+    Q_OBJECT
+    
+public:
+    RazorDeskIconDesktop(XdgDesktopFile * xdg,
+                         const QPoint & position,
+                         QWidget * parent = 0
+                        );
+    ~RazorDeskIconDesktop();
+
+private:
+    XdgDesktopFile * m_xdg;
+
+private slots:
+    /**
+    @brief Launch assigned m_exec binary/path.
+    Called when is the button clicked.
+     */
+    void launchApp();
+
+};
+
+/** \brief Icon for standard file. It uses QDesktopServices to launch the
+"open with" application by file mime type.
+ */
+class RazorDeskIconFile : public RazorDeskIconBase
+{
+    Q_OBJECT
+    
+public:
+    RazorDeskIconFile(const QString & file,
+                      const QPoint & position,
+                      QWidget * parent = 0
+                     );
+
+private:
+    QString m_file;
 
 private slots:
     /**
