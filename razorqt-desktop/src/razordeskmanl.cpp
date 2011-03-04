@@ -19,9 +19,7 @@ void RazorDeskManagerLegacy::updateIconList()
     qDebug() << "updateIconList";
     int maxHeight = QApplication::desktop()->screenGeometry().height();
 
-    QDirIterator dirIter(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation),
-                         //QDir::NoDotAndDotDot,
-                         QDirIterator::Subdirectories);
+    QDirIterator dirIter(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
     int x = 0;
     int y = 30;

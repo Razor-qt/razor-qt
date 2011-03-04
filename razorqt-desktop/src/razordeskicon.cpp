@@ -6,23 +6,15 @@
 #include "razor.h"
 #include <razorqt/xfitman.h>
 
-/**
- * @file RazorDeskIconBase.cpp
- * @author Christopher "VdoP" Regali
- * @brief implements the class RazorDeskIconBase
- */
-
 
 RazorDeskIconBase::RazorDeskIconBase(
                              const QPoint & position,
                              QWidget * parent)
     : QAbstractButton(parent),
       m_mouseOver(false),
-      m_display(0)
+      m_display(0),
+      m_displayHighlight(0)
 {
-    if (!parent)
-        setParent(QApplication::desktop());
-
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
     qDebug() << "RazorDeskIconBase: initialising..." << parent;
@@ -31,7 +23,7 @@ RazorDeskIconBase::RazorDeskIconBase(
     movedMe = false;
     //QString name = QApplication::fontMetrics().elidedText(data->text(), Qt::ElideRight, 65);
 
-    //TODO make this portable, red from config or anything else!
+    //TODO make this portable, read from config or anything else!
     QSize iconsize(32,32);
     setFixedSize(70,70);
 
@@ -39,6 +31,7 @@ RazorDeskIconBase::RazorDeskIconBase(
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
     setAttribute(Qt::WA_TranslucentBackground);
+    setCursor(Qt::PointingHandCursor);
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(launchApp()));
 
@@ -62,6 +55,7 @@ QSize RazorDeskIconBase::sizeHint() const
 
 void RazorDeskIconBase::setPos(const QPoint & npos)
 {
+    qDebug() << "RazorDeskIconBase::setPos";
     // if we are in workspace-mode we can move the buttons using Qts move routine
     if (parent() != NULL)
         move(npos);
@@ -118,88 +112,88 @@ void RazorDeskIconBase::mouseReleaseEvent(QMouseEvent* _event)
 
 void RazorDeskIconBase::enterEvent(QEvent * event)
 {
-    //qDebug() << "enterEvent";
     m_mouseOver = true;
-    clearMask();
-    setMask(m_displayHighlight->mask());
-    update();
 }
 
 void RazorDeskIconBase::leaveEvent(QEvent * event)
 {
-    //qDebug() << "leaveEvent";
     m_mouseOver = false;
-    clearMask();
-    setMask(m_display->mask());
-    update();
 }
 
 void RazorDeskIconBase::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    if (! m_display)
-        initialPainting();
 
     if (m_mouseOver)
     {
-        painter.drawPixmap(0, 0, *m_displayHighlight);
+        if (m_displayHighlight)
+            painter.drawPixmap(0, 0, *m_displayHighlight);
     }
     else
     {
-        painter.drawPixmap(0, 0, *m_display);
+        if (m_display)
+            painter.drawPixmap(0, 0, *m_display);
     }
 }
 
-void RazorDeskIconBase::initialPainting()
+void RazorDeskIconBase::setIcon(const QIcon & icon)
 {
-    Q_ASSERT(!m_display);
-    
-    m_display = new QPixmap(70, 70);
-    m_display->fill(QColor(0,0,0,0));
+    qDebug() << "RazorDeskIconBase::setIcon";
+    QAbstractButton::setIcon(icon);
 
-    QPainter painter(m_display);
+    m_display = initialPainting(QIcon::Normal);
+    Q_ASSERT(m_display);
+    m_displayHighlight = initialPainting(QIcon::Selected);
+    Q_ASSERT(m_displayHighlight);
+}
+
+QPixmap * RazorDeskIconBase::initialPainting(QIcon::Mode mode)
+{
+    qDebug() << "RazorDeskIconBase::initialPainting";
+    
+    if (icon().isNull())
+    {
+        qDebug() << "RazorDeskIconBase::setPos - icon() is null. Skipping for now.";
+        return 0;
+    }
+    
+    QPixmap * pm = new QPixmap(70, 70);
+    pm->fill(QColor(0,0,0,0));
+
+    QPainter painter(pm);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::HighQualityAntialiasing);
     painter.setRenderHint(QPainter::NonCosmeticDefaultPen);
     
     // now the icon
-    QPixmap pm = icon().pixmap(iconSize(), isDown() ? QIcon::Selected : QIcon::Selected);
+    QPixmap appIcon = icon().pixmap(iconSize(), mode);
+    // HACK: in some cases we can get larger icon than expected so rescale
+    //       it with brute force if it's required...
+    if (appIcon.size().width() > iconSize().width())
+        appIcon = appIcon.scaled(iconSize(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
     QRect source(0, 0, 32, 32);
-    int w = m_display->width() / 2;
-    int h = m_display->height() / 2;
+    int w = pm->width() / 2;
+    int h = pm->height() / 2;
     int iw = iconSize().width() / 2;
     int ih = iconSize().height() / 2;
     QRect target(w - iw, h - ih - 10,
                  iconSize().width(), iconSize().height());
-    //qDebug() << target << w << h << iw << ih;
-    painter.drawPixmap(target, pm, source);
+    painter.drawPixmap(target, appIcon, source);
 
     // text now - it has to follow potential QSS
     QColor txt = palette().color(QPalette::WindowText);
     painter.setPen(txt);
     painter.setBrush(palette().color(QPalette::Window));
-//    painter.drawRoundedRect(QRectF(2, h+ih-10, m_display->width()-4, m_display->height()-h-ih+10),
-//                            6, 6);
-    painter.drawText(QRectF(2, h+ih-10, m_display->width()-4, m_display->height()-h-ih+10),
-                     Qt::AlignCenter | Qt::TextWordWrap | Qt::TextIncludeTrailingSpaces,
+    painter.drawText(QRectF(2, h+ih-10, pm->width()-4, pm->height()-h-ih+10),
+                     Qt::AlignCenter | Qt::TextWordWrap | Qt::TextIncludeTrailingSpaces | Qt::TextDontClip,
                      text());
     painter.end();
-                    
-    QBitmap mask = m_display->createHeuristicMask();
-    m_display->setMask(mask);
 
-    m_displayHighlight = new QPixmap(70, 70);
-    m_displayHighlight->fill(QColor(0,0,0,100));
-    QPainter hpainter(m_displayHighlight);
-    QColor bgcolor = palette().color(QPalette::Window);
-    QColor hicolor = palette().color(QPalette::WindowText);
-    hpainter.setPen(QPen(hicolor, 1));
-    hpainter.setBrush(bgcolor);
-    hpainter.drawRoundedRect(1, 1, 67, 67, 9, 9);
-    hpainter.drawPixmap(m_displayHighlight->rect(), m_display->copy(), m_display->rect());
-    hpainter.end();
-    //m_displayHighlight->setMask(m_displayHighlight->createHeuristicMask());
+    pm->setMask(pm->createHeuristicMask());
+    setMask(pm->mask());
+    
+    return pm;
 }
 
 RazorDeskIconDesktop::RazorDeskIconDesktop(XdgDesktopFile * xdg,

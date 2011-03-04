@@ -26,6 +26,12 @@ public:
 
     QSize sizeHint() const;
 
+    /*! \brief Overridden QAbstractButton::setIcon() to ensure that all
+        required icons m_display and m_displayHighlight are pre-painted
+        for fast and optimized paintEvent()
+    */
+    void setIcon(const QIcon & icon);
+
     //! \brief Set new icon position in the window
     void setPos(const QPoint & npos);
 
@@ -48,7 +54,9 @@ protected:
      */
     void paintEvent(QPaintEvent * event);
 
+    //! Set the displayed icon to its QIcon::Selected mode
     void enterEvent(QEvent * event);
+    //! Set the displayed icon to its QIcon::Normal mode
     void leaveEvent(QEvent * event);
 
 signals:
@@ -61,10 +69,16 @@ private:
     bool m_mouseOver;
     QPoint firstPos;
 
+    //! Icon for normal display (including text)
     QPixmap * m_display;
+    //! Icon for mouse over
     QPixmap * m_displayHighlight;
 
-    void initialPainting();
+    /*! \brief Paint QPixmap for given mode.
+        \param mode Normal or "highlighed" mode of QIcon
+        \retval a reference to QPixmap. Used for m_display and m_displayHighlight
+    */
+    QPixmap * initialPainting(QIcon::Mode mode);
 
 private slots:
     /**
