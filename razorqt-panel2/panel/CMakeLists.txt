@@ -10,6 +10,7 @@ set(HEADERS
     razorpanelplugin.h
     razorpluginmanager.h
     razorpanelapplication.h
+  ../xfitman2.h
 )
 
 set(SOURCES
@@ -18,6 +19,7 @@ set(SOURCES
     razorpanelplugin.cpp
     razorpluginmanager.cpp
     razorpanelapplication.cpp
+  ../xfitman2.cpp
 )
 
 set(MOCS

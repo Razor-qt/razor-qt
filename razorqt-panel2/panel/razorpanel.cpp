@@ -24,19 +24,21 @@
 #include <razorqt/readsettings.h>
 
 
-#include <QDebug>
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QRect>
-#include <QMenu>
-#include <QContextMenuEvent>
+#include <QtCore/QDebug>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#include <QtCore/QRect>
+#include <QtGui/QMenu>
+#include <QtGui/QContextMenuEvent>
 #include <QtCore/QFile>
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
 
 #include <razorqt/xdgicon.h>
-#include <razorqt/xfitman.h>
+#include "../xfitman2.h"
 
+//%%%%%%%%%%%5
+#include <QX11Info>
 
 #define CFG_FILE            "panel"
 
@@ -91,7 +93,6 @@ RazorPanel::RazorPanel(QWidget *parent) :
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setObjectName("RazorBar");
     mPluginManager = new RazorPluginManager();
-    mXfitMan = new XfitMan();
 
     connect(qApp, SIGNAL(x11PropertyNotify(XEvent*)), this, SIGNAL(x11PropertyNotify(XEvent*)));
 
@@ -161,7 +162,6 @@ RazorPanel::~RazorPanel()
     delete panelRS;
 
     delete mPluginManager;
-    delete mXfitMan;
 }
 
 
@@ -173,7 +173,11 @@ void RazorPanel::show()
 {
     QMainWindow::show();
     realign();
-    mXfitMan->moveWindowtoDesktop(this->effectiveWinId(), -1);
+    xfitMan2()->moveWindowtoDesktop(this->effectiveWinId(), -1);
+//    XSelectInput(QX11Info::display(),
+//                             QApplication::desktop()->winId(),
+//                             StructureNotifyMask |
+//                             SubstructureNotifyMask | PropertyChangeMask);
 }
 
 
@@ -495,47 +499,47 @@ void RazorPanel::realign()
     setGeometry(rect);
 */
 
-
+    XfitMan2* xf = xfitMan2();
     //reserve our space on the screen
     Window wid = this->effectiveWinId();
 
     switch (mPosition)
     {
         case PositionTop:
-            mXfitMan->setStrut(wid, 0, 0, height(), 0,
-                     /* Left   */   0, 0,
-                     /* Right  */   0, 0,
-                     /* Top    */   rect.left(), rect.right(),
-                     /* Bottom */   0, 0
-                               );
+            xf->setStrut(wid, 0, 0, height(), 0,
+               /* Left   */   0, 0,
+               /* Right  */   0, 0,
+               /* Top    */   rect.left(), rect.right(),
+               /* Bottom */   0, 0
+                         );
         break;
 
         case PositionBottom:
-            mXfitMan->setStrut(wid, 0, 0, 0, height(),
-                     /* Left   */   0, 0,
-                     /* Right  */   0, 0,
-                     /* Top    */   0, 0,
-                     /* Bottom */   rect.left(), rect.right()
-                               );
+            xf->setStrut(wid, 0, 0, 0, height(),
+               /* Left   */   0, 0,
+               /* Right  */   0, 0,
+               /* Top    */   0, 0,
+               /* Bottom */   rect.left(), rect.right()
+                         );
             break;
 
         case PositionLeft:
-            mXfitMan->setStrut(wid, width(), 0, 0, 0,
-                     /* Left   */   rect.top(), rect.bottom(),
-                     /* Right  */   0, 0,
-                     /* Top    */   0, 0,
-                     /* Bottom */   0, 0
-                               );
+            xf->setStrut(wid, width(), 0, 0, 0,
+               /* Left   */   rect.top(), rect.bottom(),
+               /* Right  */   0, 0,
+               /* Top    */   0, 0,
+               /* Bottom */   0, 0
+                         );
 
             break;
 
         case PositionRight:
-            mXfitMan->setStrut(wid, 0, width(), 0, 0,
-                     /* Left   */   0, 0,
-                     /* Right  */   rect.top(), rect.bottom(),
-                     /* Top    */   0, 0,
-                     /* Bottom */   0, 0
-                               );
+            xf->setStrut(wid, 0, width(), 0, 0,
+               /* Left   */   0, 0,
+               /* Right  */   rect.top(), rect.bottom(),
+               /* Top    */   0, 0,
+               /* Bottom */   0, 0
+                         );
             break;
     }
 

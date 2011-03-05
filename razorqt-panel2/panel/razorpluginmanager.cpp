@@ -93,7 +93,7 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName,
         return plugin;
     }
 
-    // FAKE <<-------------------------
+    // FAKE <<<------------------------
 
 
     qDebug() << "RazorPanel: try to load " << libraryFileName;

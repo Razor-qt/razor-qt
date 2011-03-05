@@ -4,18 +4,20 @@ set(PROJECT "taskbar2")
 
 
 set(HEADERS
-  razortask.h
-  razorbartask.h
+  ../xfitman2.h
+  razortaskbar.h
+  razortaskbutton.h
 )
 
 set(SOURCES
-  razortask.cpp
-  razorbartask.cpp
+  ../xfitman2.cpp
+  razortaskbar.cpp
+  razortaskbutton.cpp
 )
 
 set(MOCS
-  razorbartask.h
-  razortask.h
+  razortaskbar.h
+  razortaskbutton.h
 )
 
 set(LIBRARIES

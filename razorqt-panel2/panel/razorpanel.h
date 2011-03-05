@@ -24,7 +24,6 @@
 #include <QtGui/QAction>
 
 class RazorPluginManager;
-class XfitMan;
 class QActionGroup;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
@@ -53,6 +52,9 @@ public slots:
 signals:
      void x11PropertyNotify(XEvent* event);
 
+protected:
+    void contextMenuEvent( QContextMenuEvent* event);
+
 protected slots:
     void realign();
     void switchPosition();
@@ -66,7 +68,6 @@ private:
     QString mTheme;
     Position mPosition;
     int mDesktopNum;
-    XfitMan* mXfitMan;
 
     /*! \brief Returns the Position by the string.
       String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
@@ -78,7 +79,7 @@ private:
      */
     QString positionToStr(Position position) const;
 
-    void contextMenuEvent( QContextMenuEvent* event);
+
     void setTheme(const QString& themeName);
     void setDesktopNum(int desktopNum);
     void setPosition(Position position);
@@ -88,6 +89,7 @@ private:
       on @position.
      */
     bool canPlacedOn(int displayNum, Position position) const;
+
     QByteArray defaultState();
 };
 

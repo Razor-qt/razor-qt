@@ -16,27 +16,38 @@
 
 *********************************************************************/
 
-#include "razorpanelapplication.h"
-//#include <QtCore/QDebug>
-//#include "razorpluginmanager.h"
+#ifndef RAZORTASKBAR_H
+#define RAZORTASKBAR_H
+
+#include "../panel/razorpanelplugin.h"
+#include <QtCore/QObject>
+#include <QtCore/QHash>
 #include <X11/Xlib.h>
-//#include <QX11Info>
+
+class RazorTaskButton;
 
 
-/************************************************
-
- ************************************************/
-RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
-    : QApplication(argc, argv)
+class RazorTaskBar : public RazorPanelPlugin
 {
-}
+    Q_OBJECT
+public:
+    explicit RazorTaskBar(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
+    virtual ~RazorTaskBar();
 
+public slots:
+    void activeWindowChanged();
 
-/************************************************
+private slots:
+    void handleXEvent(XEvent* );
 
- ************************************************/
-bool RazorPanelApplication::x11EventFilter(XEvent * event)
-{
-    emit x11PropertyNotify(event);
-    return false;
-}
+private:
+    void refreshTaskList();
+    QHash<Window, RazorTaskButton*> mButtonsHash;
+    RazorTaskButton* buttonByWindow(Window window) const;
+    Window mRootWindow;
+
+    void handlePropertyNotify(XPropertyEvent* event);
+};
+
+EXPORT_RAZOR_PANEL_PLUGIN_H
+#endif // RAZORTASKBAR_H

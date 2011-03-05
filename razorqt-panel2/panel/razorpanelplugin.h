@@ -94,9 +94,6 @@ public:
     RazorPanel* panel() const { return mPanel; }
     QString configId() const { return mConfigId; }
 
-signals:
-
-public slots:
 
 private:
     RazorPanel* mPanel;

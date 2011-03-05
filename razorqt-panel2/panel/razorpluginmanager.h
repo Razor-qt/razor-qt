@@ -20,7 +20,7 @@
 #define RAZORPLUGINMANAGER_H
 
 #include <QList>
-#include <qwindowdefs.h>
+//#include <qwindowdefs.h>
 
 class RazorPanelPlugin;
 class RazorPanel;
