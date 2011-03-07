@@ -17,12 +17,8 @@
 void RazorDeskManagerLegacy::updateIconList()
 {
     qDebug() << "updateIconList";
-    int maxHeight = QApplication::desktop()->screenGeometry().height();
-
     QDirIterator dirIter(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
-    int x = 0;
-    int y = 30;
     QStringList tmpList;
 
     while (dirIter.hasNext())
@@ -44,7 +40,7 @@ void RazorDeskManagerLegacy::updateIconList()
             continue;
         }
         
-        QPoint pos(x, y);
+        QPoint pos(0, 0);
         RazorDeskIconBase * idata;
 
         if (dirIter.filePath().endsWith(".desktop")) //only use .desktop files!
@@ -65,15 +61,6 @@ void RazorDeskManagerLegacy::updateIconList()
 
         connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
         m_iconList[df] = idata;
-        
-        // HACK: there should be better algorithm for this.
-        // and it does not count with panels...
-        y += 70;
-        if (y > maxHeight-60)
-        {
-            y = 30;
-            x += 90;
-        }
     }
 
     // now remove potentialy deleted icons
