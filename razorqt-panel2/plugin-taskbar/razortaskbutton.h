@@ -44,6 +44,8 @@ public:
     bool isApplicationActive() const;
     Window windowId() const { return mWindow; }
 
+    QSize   sizeHint() const;
+
 public slots:
     void raiseApplication();
     void minimizeApplication();
@@ -53,6 +55,9 @@ public slots:
 protected:
     void nextCheckState();
     void contextMenuEvent( QContextMenuEvent* event);
+
+    void updateText();
+    void updateIcon();
 
 private:
     Window mWindow;

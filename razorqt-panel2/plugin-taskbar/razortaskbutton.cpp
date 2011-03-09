@@ -33,6 +33,8 @@
 
 
 #define DEFAULT_APP_ICON "xorg"
+#define MAX_BTN_WIDTH  400
+
 /************************************************
 
 ************************************************/
@@ -43,17 +45,14 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     mButtonsGroup.addButton(this);
     mButtonsGroup.setExclusive(false);
     setCheckable(true);
+    //setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    setMaximumWidth(200);
+    setMaximumWidth(MAX_BTN_WIDTH);
 
-    setText(xfitMan2()->getName(mWindow));
-
-    QPixmap pix;
-    if (xfitMan2()->getClientIcon(window, pix))
-        setIcon(QIcon(pix));
-    else
-        setIcon(XdgIcon::fromTheme(DEFAULT_APP_ICON, 32));
+    updateText();
+    updateIcon();
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(btnClicked(bool)));
 
@@ -77,6 +76,29 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
 ************************************************/
 RazorTaskButton::~RazorTaskButton()
 {
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorTaskButton::updateText()
+{
+    setText(xfitMan2()->getName(mWindow));
+    setToolTip(text());
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorTaskButton::updateIcon()
+{
+    QPixmap pix;
+    if (xfitMan2()->getClientIcon(mWindow, pix))
+        setIcon(QIcon(pix));
+    else
+        setIcon(XdgIcon::fromTheme(DEFAULT_APP_ICON, 32));
 }
 
 
@@ -184,6 +206,17 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
     a = menu.addAction(XdgIcon::fromTheme("process-stop", 22), tr("&Close"));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(closeApplication()));
     menu.exec(mapToGlobal(event->pos()));
+}
+
+
+/************************************************
+
+************************************************/
+QSize RazorTaskButton::sizeHint() const
+{
+    QSize r = QToolButton::sizeHint();
+    r.setWidth(40);
+    return r;
 }
 
 QButtonGroup RazorTaskButton::mButtonsGroup;

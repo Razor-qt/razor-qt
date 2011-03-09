@@ -91,6 +91,8 @@ RazorPanel::RazorPanel(QWidget *parent) :
   QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
 {
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
+    setAttribute(Qt::WA_AlwaysShowToolTips);
+
     setObjectName("RazorBar");
     mPluginManager = new RazorPluginManager();
 
@@ -475,29 +477,6 @@ void RazorPanel::realign()
 
     setGeometry(rect);
 
-/*
-    switch (mPosition)
-    {
-        case PositionTop:
-            rect.setHeight(0);
-            break;
-
-        case PositionBottom:
-            rect.setHeight(0);
-            rect.moveTop(screen.bottom() - sizeHint().height());
-            break;
-
-        case PositionLeft:
-            rect.setWidth(0);
-            break;
-
-        case PositionRight:
-            rect.setWidth(0);
-            rect.moveLeft(screen.right() - size().width());
-            break;
-    }
-    setGeometry(rect);
-*/
 
     XfitMan2* xf = xfitMan2();
     //reserve our space on the screen

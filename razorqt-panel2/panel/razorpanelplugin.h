@@ -45,6 +45,9 @@ as in the "name" constructor's argument.
 #include <QToolBar>
 #include "razorpanel.h"
 
+class QToolButton;
+
+
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
 
@@ -94,6 +97,11 @@ public:
     RazorPanel* panel() const { return mPanel; }
     QString configId() const { return mConfigId; }
 
+    virtual void showExtensionMenu(QMouseEvent* event);
+
+protected:
+    QToolButton* mExtensionButton;
+    bool eventFilter(QObject* watched, QEvent* event);
 
 private:
     RazorPanel* mPanel;
