@@ -79,8 +79,8 @@ RazorTaskButton* RazorTaskBar::buttonByWindow(Window window) const
  ************************************************/
 void RazorTaskBar::refreshTaskList()
 {
-    XfitMan2* xf = xfitMan2();
-    QList<Window> tmp = xf->getClientList();
+    XfitMan2 xf = xfitMan2();
+    QList<Window> tmp = xf.getClientList();
 
     //qDebug() << "** Fill ********************************";
     //foreach (Window wnd, tmp)
@@ -103,7 +103,7 @@ void RazorTaskBar::refreshTaskList()
 
     foreach (Window wnd, tmp)
     {
-        if (xf->acceptWindow(wnd))
+        if (xf.acceptWindow(wnd))
         {
             RazorTaskButton* btn = new RazorTaskButton(wnd, this);
             mButtonsHash.insert(wnd, btn);
@@ -112,6 +112,7 @@ void RazorTaskBar::refreshTaskList()
     }
 
     activeWindowChanged();
+
 }
 
 
@@ -120,16 +121,14 @@ void RazorTaskBar::refreshTaskList()
  ************************************************/
 void RazorTaskBar::activeWindowChanged()
 {
-    static RazorTaskButton* checkedBtn = 0;
+    Window window = xfitMan2().getActiveAppWindow();
 
-    if (checkedBtn)
-        checkedBtn->setChecked(false);
+    RazorTaskButton* btn = buttonByWindow(window);
 
-    Window window = xfitMan2()->getActiveAppWindow();
-    checkedBtn = buttonByWindow(window);
-
-    if (checkedBtn)
-        checkedBtn->setChecked(true);
+    if (btn)
+        btn->setChecked(true);
+    else
+        RazorTaskButton::unCheckAll();
 }
 
 
@@ -181,8 +180,8 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
     else
     {
         RazorTaskButton* btn = buttonByWindow(event->window);
-        //if (btn)
-        //    btn->
+        if (btn)
+            btn->handlePropertyNotify(event);
     }
 //    char* aname = XGetAtomName(QX11Info::display(), event->atom);
 //    qDebug() << "** XPropertyEvent ********************";
@@ -194,7 +193,8 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
 //    qDebug() << "  serial:    " << event->serial;
 //    qDebug() << "  state:     " << event->state;
 //    qDebug() << "  time:      " << event->time;
-
 //    qDebug();
 
 }
+
+

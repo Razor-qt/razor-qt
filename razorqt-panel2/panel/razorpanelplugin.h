@@ -32,12 +32,6 @@ the library name. The config-number is provided to the plugin
 as in the "name" constructor's argument.
 */
 
-/*! Prototype for plugin's init() function
- */
-//typedef RazorPlugin* (*PluginInitFunction)(const RazorBar* panel,
-//                                           QWidget* parent,
-//                                           const QString & name);
-
 
 #ifndef RAZORPANELPLUGIN_H
 #define RAZORPANELPLUGIN_H
@@ -78,8 +72,8 @@ public:
 
     /*! Standard plugin constructor.
     \param panel a reference to the RazorPanel, panel.
-    \param configId defines section in a configuration file. Different instances of teh plugin
-           will keep the options in different sections of the config file.
+    \param configId defines section in a configuration file. Different instances of
+           the plugin will keep the options in different sections of the config file.
     \param parent a reference to the QWidget parent. It might be a RazorPanel, but
                     it can be any QWidget.
     */

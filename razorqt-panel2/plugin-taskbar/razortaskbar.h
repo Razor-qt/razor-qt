@@ -46,6 +46,7 @@ private:
     RazorTaskButton* buttonByWindow(Window window) const;
     Window mRootWindow;
 
+
     void handlePropertyNotify(XPropertyEvent* event);
 };
 

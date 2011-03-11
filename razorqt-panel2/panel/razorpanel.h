@@ -81,8 +81,6 @@ private:
 
 
     void setTheme(const QString& themeName);
-    void setDesktopNum(int desktopNum);
-    void setPosition(Position position);
 
     /*! \brief The panel can't be placed on boundary of two displays.
       This function checks, is the panel can be placed on the display @displayNum

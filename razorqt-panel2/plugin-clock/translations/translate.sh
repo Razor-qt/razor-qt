@@ -2,6 +2,8 @@
 
 PROJECT=plugin-clock
 
+#OPTS="-noobsolete" 
+
 if [ "$1" = "" ]; then
     TS_FILE=${PROJECT}_`echo $LANG | awk -F"." '{print($1)}'`.ts
 else
@@ -10,6 +12,6 @@ fi
 
 
 
-lupdate ../*.h ../*.cpp -ts $TS_FILE  && \
-linguist $TS_FILE
+lupdate ${OPTS} ../*.h ../*.cpp -ts ${TS_FILE}  && \
+linguist ${TS_FILE}
 

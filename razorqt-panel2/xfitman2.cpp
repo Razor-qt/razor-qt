@@ -25,11 +25,26 @@
  * @author Christopher "VdoP" Regali
  */
 
+/*
+ Some requests from Clients include type of the Client, for example the _NET_ACTIVE_WINDOW
+ message. Currently the types can be 1 for normal applications, and 2 for pagers.
+ See http://standards.freedesktop.org/wm-spec/latest/ar01s09.html#sourceindication
+ */
+#define SOURCE_NORMAL   1
+#define SOURCE_PAGER    2
 
-XfitMan2* const xfitMan2()
+/*
+  _NET_WM_STATE actions
+ */
+#define _NET_WM_STATE_REMOVE    0    // remove/unset property
+#define _NET_WM_STATE_ADD       1    // add/set property
+#define _NET_WM_STATE_TOGGLE    2    // toggle property
+
+
+const XfitMan2&  xfitMan2()
 {
     static XfitMan2 instance;
-    return &instance;
+    return instance;
 }
 
 /**
@@ -38,8 +53,7 @@ XfitMan2* const xfitMan2()
 XfitMan2::XfitMan2()
 {
     getAtoms();
-    screen = DefaultScreen(QX11Info::display());
-    root = RootWindow(QX11Info::display(),screen);
+    root = QX11Info::appRootWindow();
     screencount = ScreenCount(QX11Info::display());
 }
 
@@ -47,7 +61,7 @@ XfitMan2::XfitMan2()
  * @brief moves a window to a new position
  */
 
-void XfitMan2::moveWindow(Window _win, int _x, int _y)
+void XfitMan2::moveWindow(Window _win, int _x, int _y) const
 {
     XMoveWindow(QX11Info::display(), _win, _x, _y);
 }
@@ -56,7 +70,7 @@ void XfitMan2::moveWindow(Window _win, int _x, int _y)
 /**
  * @brief this sets our background to the pixmap map
  */
-void XfitMan2::setRootBackground(QPixmap _map)
+void XfitMan2::setRootBackground(QPixmap _map) const
 {
     Pixmap p = _map.handle();
     XGrabServer(QX11Info::display());
@@ -68,7 +82,6 @@ void XfitMan2::setRootBackground(QPixmap _map)
     XUngrabServer(QX11Info::display());
     XFlush(QX11Info::display());
 }
-
 
 
 /************************************************
@@ -89,7 +102,6 @@ bool XfitMan2::getWindowProperty(Window window,
 }
 
 
-
 /************************************************
 
  ************************************************/
@@ -106,9 +118,11 @@ bool XfitMan2::getRootWindowProperty(Atom atom,    // property
 /**
  * @brief this one gets the active application window.
  */
-Window XfitMan2::getActiveAppWindow()
+Window XfitMan2::getActiveAppWindow() const
 {
     Window window = getActiveWindow();
+    if (window == 0)
+        return 0;
 
     if (acceptWindow(window))
         return window;
@@ -125,7 +139,7 @@ Window XfitMan2::getActiveAppWindow()
  * @brief this makes the wm send Windowevents to us which normally do not belong to zs
  */
 
-void XfitMan2::setEventRoute()
+void XfitMan2::setEventRoute() const
 {
     XSelectInput(QX11Info::display(), root, StructureNotifyMask | SubstructureNotifyMask);
 }
@@ -133,7 +147,7 @@ void XfitMan2::setEventRoute()
 /**
  * @brief returns the window that currently has inputfocus
  */
-Window XfitMan2::getActiveWindow()
+Window XfitMan2::getActiveWindow() const
 {
     unsigned long len;
     unsigned long *data;
@@ -155,19 +169,19 @@ Window XfitMan2::getActiveWindow()
  * @brief Get the number of desktops
  */
 
-int XfitMan2::getNumDesktop()
+int XfitMan2::getNumDesktop() const
 {
-    int  format;
-    unsigned long type, length, rest, *data;
-    XGetWindowProperty(QX11Info::display(),root,atomMap["net_number_of_desktops"],0, 4096, FALSE, XA_CARDINAL,
-                       &type, &format, &length, &rest,(unsigned char**) &data);
-    return data[0];
+    unsigned long length, *data;
+    getRootWindowProperty(atom("_NET_NUMBER_OF_DESKTOPS"), XA_CARDINAL, &length, (unsigned char**) &data);
+    int res = data[0];
+    XFree(data);
+    return res;
 }
 
 /**
  * @brief resizes a window to the given dimensions
  */
-void XfitMan2::resizeWindow(Window _wid, int _width, int _height)
+void XfitMan2::resizeWindow(Window _wid, int _width, int _height) const
 {
     XResizeWindow(QX11Info::display(), _wid, _width, _height);
 }
@@ -178,7 +192,7 @@ void XfitMan2::resizeWindow(Window _wid, int _width, int _height)
  * @brief gets a windowpixmap from a window
  */
 
-bool XfitMan2::getClientIcon(Window _wid, QPixmap& _pixreturn)
+bool XfitMan2::getClientIcon(Window _wid, QPixmap& _pixreturn) const
 {
     int format;
     ulong type, nitems, extra;
@@ -217,56 +231,45 @@ XfitMan2::~XfitMan2()
  */
 
 //i got the idea for this from taskbar-plugin of LXPanel - so credits fly out :)
-QString XfitMan2::getName(Window _wid)
+QString XfitMan2::getName(Window _wid) const
 {
     QString name = "";
     //first try the modern net-wm ones
-    int format;
-    unsigned long type, length, rest;
+    unsigned long length;
     unsigned char *data = NULL;
-    if (XGetWindowProperty(QX11Info::display(),_wid, atomMap["net_wm_visible_name"], 0,
-                           4096, FALSE, atomMap["utf8"], &type, &format, &length,
-                           &rest, &data) == Success)
-    {
+    Atom utf8Atom = atom("UTF8_STRING");
 
+    if (getWindowProperty(_wid, atom("_NET_WM_VISIBLE_NAME"), utf8Atom, &length, &data))
+    {
         name = QString::fromUtf8((char*) data);
         XFree(data);
 
     }
-    if (name.isEmpty())
-        if (XGetWindowProperty(QX11Info::display(),_wid, atomMap["net_wm_name"], 0,
-                               4096, FALSE, atomMap["utf8"], &type, &format, &length,
-                               &rest, &data) == Success)
-        {
 
+    if (name.isEmpty())
+        if (getWindowProperty(_wid, atom("_NET_WM_NAME"), utf8Atom, &length, &data))
+        {
             name = QString::fromUtf8((char*) data);
             XFree(data);
         }
 
     if (name.isEmpty())
-        if (XGetWindowProperty(QX11Info::display(),_wid, atomMap["xa_wm_name"], 0,
-                               4096, FALSE, XA_STRING, &type, &format, &length,
-                               &rest, &data) == Success)
+        if (getWindowProperty(_wid, atom("XA_WM_NAME"), XA_STRING, &length, &data))
         {
-
             name = (char*) data;
             XFree(data);
         }
 
     if (name.isEmpty())
     {
-        char *cName;
-        Status ok = XFetchName(QX11Info::display(), _wid, &cName);
-        name = QString(cName);
-        if (0 != ok) XFree(cName);
+        Status ok = XFetchName(QX11Info::display(), _wid, (char**) &data);
+        name = QString((char*) data);
+        if (0 != ok) XFree(data);
     }
 
-    if (name != "")
-        return name;
-    else
-        return "BLAH!"; //should not happen - or is used to by getActiveAppWindow then
-
+    return name;
 }
+
 
 /**
  * @brief this add(1) / removes (0) / toggles (2) the _NET_WM_STATE_XXXX flag for a
@@ -275,10 +278,11 @@ QString XfitMan2::getName(Window _wid)
  * @param[in] _atomcode the QString-code for atomMap - state
  * @param[in] _action the action to do (add 1, remove 0, toggle 2)
  */
-void XfitMan2::setClientStateFlag(Window _wid, QString _atomcode, int _action)
+void XfitMan2::setClientStateFlag(Window _wid, QString _atomcode, int _action) const
 {
     clientMessage(_wid, atomMap["net_wm_state"],_action,atomMap[_atomcode],0,0,0);
 }
+
 
 /**
  * @brief sends a clientmessage to a window
@@ -308,62 +312,111 @@ int XfitMan2::clientMessage(Window _wid, Atom _msg,
         return EXIT_FAILURE;
 }
 
-void XfitMan2::mapRaised(Window _wid)
+
+void XfitMan2::mapRaised(Window _wid) const
 {
     XMapRaised(QX11Info::display(), _wid);
 }
+
+
+/***********************************************
+
+ ***********************************************/
+WindowAllowedActions XfitMan2::getAllowedActions(Window window) const
+{
+    WindowAllowedActions actions = { };
+
+    unsigned long len;
+    unsigned long *data;
+    if (getWindowProperty(window, atom("_NET_WM_ALLOWED_ACTIONS"), XA_ATOM, &len, (unsigned char**) &data))
+    {
+        for (unsigned long i=0; i<len; ++i)
+        {
+            if (data[i] == atom("_NET_WM_ACTION_MOVE"))             actions.Move = true;            else
+            if (data[i] == atom("_NET_WM_ACTION_RESIZE"))           actions.Resize = true;          else
+            if (data[i] == atom("_NET_WM_ACTION_MINIMIZE"))         actions.Minimize = true;        else
+            if (data[i] == atom("_NET_WM_ACTION_SHADE"))            actions.Shade = true;           else
+            if (data[i] == atom("_NET_WM_ACTION_STICK"))            actions.Stick = true;           else
+            if (data[i] == atom("_NET_WM_ACTION_MAXIMIZE_HORZ"))    actions.MaximizeHoriz = true;   else
+            if (data[i] == atom("_NET_WM_ACTION_MAXIMIZE_VERT"))    actions.MaximizeVert = true;    else
+            if (data[i] == atom("_NET_WM_ACTION_FULLSCREEN"))       actions.FullScreen = true;      else
+            if (data[i] == atom("_NET_WM_ACTION_CHANGE_DESKTOP"))   actions.ChangeDesktop = true;   else
+            if (data[i] == atom("_NET_WM_ACTION_CLOSE"))            actions.Close = true;           else
+            if (data[i] == atom("_NET_WM_ACTION_ABOVE"))            actions.AboveLayer = true;      else
+            if (data[i] == atom("_NET_WM_ACTION_BELOW"))            actions.BelowLayer = true;
+        }
+        XFree(data);
+    }
+
+    return actions;
+}
+
+
+WindowState XfitMan2::getWindowState(Window window) const
+{
+    WindowState state = { };
+
+    unsigned long len;
+    unsigned long *data;
+    if (getWindowProperty(window, atom("_NET_WM_STATE"), XA_ATOM, &len, (unsigned char**) &data))
+    {
+        for (unsigned long i=0; i<len; ++i)
+        {
+            if (data[i] == atom("_NET_WM_STATE_MODAL"))             state.Modal = true;             else
+            if (data[i] == atom("_NET_WM_STATE_STICKY"))            state.Sticky = true;            else
+            if (data[i] == atom("_NET_WM_STATE_MAXIMIZED_VERT"))    state.MaximizedVert = true;     else
+            if (data[i] == atom("_NET_WM_STATE_MAXIMIZED_HORZ"))    state.MaximizedHoriz = true;    else
+            if (data[i] == atom("_NET_WM_STATE_SHADED"))            state.Shaded = true;            else
+            if (data[i] == atom("_NET_WM_STATE_SKIP_TASKBAR"))      state.SkipTaskBar = true;       else
+            if (data[i] == atom("_NET_WM_STATE_SKIP_PAGER"))        state.SkipPager = true;         else
+            if (data[i] == atom("_NET_WM_STATE_HIDDEN"))            state.Hidden = true;            else
+            if (data[i] == atom("_NET_WM_STATE_FULLSCREEN"))        state.FullScreen = true;        else
+            if (data[i] == atom("_NET_WM_STATE_ABOVE"))             state.AboveLayer = true;        else
+            if (data[i] == atom("_NET_WM_STATE_BELOW"))             state.BelowLayer = true;        else
+            if (data[i] == atom("_NET_WM_STATE_DEMANDS_ATTENTION")) state.Attention = true;
+        }
+        XFree(data);
+    }
+
+    return state;
+
+}
+
 
 
 /**
  * @brief returns true if a window has its hidden_flag set
  */
 
-bool XfitMan2::isHidden(Window _wid)
+bool XfitMan2::isHidden(Window _wid) const
 {
-    int  format;
-    unsigned long type, length, rest, *data;
-    if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["net_wm_state"],0, 4096, FALSE, AnyPropertyType,
-                           &type, &format, &length, &rest,(unsigned char**) &data) != Success)
-        return false;
-
-    for (unsigned int i = 0; i < length; i++)
-    {
-        // qDebug() << data[i] << " | " << atomMap["net_wm_state_hidden"];
-        if (data[i] == atomMap["net_wm_state_hidden"])
-            return true;
-    }
-    return false;
-
+    return getWindowState(_wid).Hidden;
 }
 
-bool XfitMan2::requiresAttention(Window _wid)
-{
-    int  format;
-    unsigned long type, length, rest, *data;
-    if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["net_wm_state"],0, 4096, FALSE, AnyPropertyType,
-                           &type, &format, &length, &rest,(unsigned char**) &data) != Success)
-        return false;
 
-    for (unsigned int i = 0; i < length; i++)
-    {
-        // qDebug() << data[i] << " | " << atomMap["net_wm_state_hidden"];
-        if (data[i] == atomMap["net_wm_window_demands_attention"])
-            return true;
-    }
-    return false;
+bool XfitMan2::requiresAttention(Window _wid) const
+{
+    return getWindowState(_wid).Attention;
 }
 
 
 Atom XfitMan2::atom(const char* atomName)
 {
-    return XInternAtom(QX11Info::display(), atomName, false);
+    static QHash<QString, Atom> hash;
+
+    if (hash.contains(atomName))
+        return hash.value(atomName);
+
+    Atom atom = XInternAtom(QX11Info::display(), atomName, false);
+    hash[atomName] = atom;
+    return atom;
 }
 
 
 /**
  * @brief gets the used atoms into a QMap for further usage
  */
-void XfitMan2::getAtoms()
+void XfitMan2::getAtoms() const
 {
     atomMap["net_wm_strut"] = XInternAtom(QX11Info::display(), "_NET_WM_STRUT", False);
     atomMap["net_wm_strut_partial"] = XInternAtom(QX11Info::display(), "_NET_WM_STRUT_PARTIAL", False);
@@ -405,13 +458,10 @@ AtomList XfitMan2::getWindowType(Window window) const
 {
     AtomList result;
 
-    int  format;
-    unsigned long type, length, rest, *data;
+    unsigned long length, *data;
     length=0;
-    if (XGetWindowProperty(QX11Info::display(), window, atomMap["net_wm_window_type"],
-                           0, 4096, false, AnyPropertyType, &type, &format, &length,
-                           &rest, (unsigned char**) &data) != Success)
-    return result;
+    if (!getWindowProperty(window, atom("_NET_WM_WINDOW_TYPE"), (Atom)AnyPropertyType, &length, (unsigned char**) &data))
+        return result;
 
     for (unsigned int i = 0; i < length; i++)
         result.append(data[i]);
@@ -424,7 +474,7 @@ AtomList XfitMan2::getWindowType(Window window) const
 /**
  * @brief rejects a window from beeing listed
  */
-bool XfitMan2::acceptWindow(Window window)
+bool XfitMan2::acceptWindow(Window window) const
 {
     {
         AtomList types = getWindowType(window);
@@ -453,79 +503,69 @@ bool XfitMan2::acceptWindow(Window window)
 /**
  * @brief gets a client list
  */
-QList<Window> XfitMan2::getClientList()
+QList<Window> XfitMan2::getClientList() const
 {
     //initialize the parameters for the XGetWindowProperty call
-    int  format;
-    unsigned long type, length, rest, *data;
+    unsigned long length, *data;
     length=0;
 
     /**
      * @todo maybe support multiple desktops here!
      */
-
-
     QList<Window> output;
 
-    XGetWindowProperty(QX11Info::display(),root,atomMap["net_client_list"],0, 4096, FALSE, AnyPropertyType,
-                       &type, &format, &length, &rest,(unsigned char**) &data);
+    if (getRootWindowProperty(atom("_NET_CLIENT_LIST"), (Atom)AnyPropertyType, &length,  (unsigned char**) &data))
+    {
+        for (unsigned int i = 0; i < length; i ++)
+            output.append(data[i]);
+        XFree(data);
+    }
 
-
-    for (unsigned int i = 0; i < length; i ++)
-        output.append(data[i]);
-
-
-    XFree(data);
     return output;
 }
+
 
 /**
  * @brief returns the current desktop
  */
-int XfitMan2::getActiveDesktop()
+int XfitMan2::getActiveDesktop() const
 {
-    int  format;
-    unsigned long type, length, rest, *data;
-    XGetWindowProperty(QX11Info::display(),root,atomMap["net_current_desktop"],0, 4096, FALSE, XA_CARDINAL,
-                       &type, &format, &length, &rest,(unsigned char**) &data);
-    return data[0];
+    int res = -2;
+    unsigned long length, *data;
+    if (getRootWindowProperty(atom("_NET_CURRENT_DESKTOP"), XA_CARDINAL, &length, (unsigned char**) &data))
+    {
+        res = data[0];
+        XFree(data);
+    }
+
+    return res;
 }
 
 
 /**
  * @brief gets the desktop of the windows _wid
  */
-int XfitMan2::getWindowDesktop(Window _wid)
+int XfitMan2::getWindowDesktop(Window _wid) const
 {
-    int  format;
-    unsigned long type, length, rest, *data;
-    //so we try to use net_wm_desktop first, but if the
+    int  res = -1;
+    unsigned long length, *data;
+    // so we try to use net_wm_desktop first, but if the
     // system does not use net_wm standard we use win_workspace!
-    if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["net_wm_desktop"],0,
-                           4096, FALSE, XA_CARDINAL, &type, &format, &length,
-                           &rest,(unsigned char**) &data) != Success)
+    if (getWindowProperty(_wid, atom("_NET_WM_DESKTOP"), XA_CARDINAL, &length, (unsigned char**) &data))
     {
-        qDebug() << "XfitMan2::getWindowDesktop() NET_WM_DESKTOP is not set ("<<atomMap["net_wm_desktop"]<<")";
-        if (XGetWindowProperty(QX11Info::display(),_wid,atomMap["_win_workspace"],0,
-                               4096, FALSE, XA_CARDINAL, &type, &format, &length,
-                               &rest,(unsigned char**) &data) != Success)
+        res = data[0];
+        XFree(data);
+    }
+    else
+    {
+        if (getWindowProperty(_wid, atom("_WIN_WORKSPACE"), XA_CARDINAL, &length, (unsigned char**) &data))
         {
-            qDebug() << "XfitMan2::getWindowDesktop() FAILBACK: Window"
-                     << _wid << "does not have set NET_WM_DESKTOP ("
-                     << atomMap["net_wm_desktop"]<<") or _WIN_WORKSPACE ("
-                     << atomMap["_win_workspace"]<<")";
-            return -1;
+            res = data[0];
+            XFree(data);
         }
     }
-    qDebug() << "XfitMan2::getWindowDesktop() desktop should be known";
-    if (!data)
-    {
-        qDebug() << "XfitMan2::getWindowDesktop() WARNING *data is empty (uninitialized). And it's wrong!";
-        return -1;
-    }
-    int desktop = data[0];
-    XFree(data);
-    return desktop;
+
+    return res;
 }
 
 
@@ -533,25 +573,19 @@ int XfitMan2::getWindowDesktop(Window _wid)
  * @brief moves a window to a specified desktop
  */
 
-void XfitMan2::moveWindowtoDesktop(Window _wid, int _display)
+void XfitMan2::moveWindowToDesktop(Window _wid, int _display) const
 {
     clientMessage(_wid,atomMap["net_wm_desktop"],(unsigned long) _display,0,0,0,0);
 }
 
+
 /**
  * @brief raises windows _wid
  */
-void XfitMan2::raiseWindow(Window _wid)
+void XfitMan2::raiseWindow(Window _wid) const
 {
-    clientMessage(_wid,
-                  atomMap["net_active_window"],
-                  2, // source indication
-                  0,
-                  0,
-                  0,
-                  0);
-    // Source indication should be 1 when the request comes from an
-    // application, and 2 when it comes from a pager
+    clientMessage(_wid, atom("_NET_ACTIVE_WINDOW"),
+                  SOURCE_PAGER);
 }
 
 
@@ -568,27 +602,54 @@ void XfitMan2::minimizeWindow(Window _wid) const
 /************************************************
 
  ************************************************/
+void XfitMan2::maximizeWindow(Window _wid) const
+{
+    clientMessage(_wid, atom("_NET_WM_STATE"),
+                  _NET_WM_STATE_ADD,
+                  atom("_NET_WM_STATE_MAXIMIZED_VERT"),
+                  atom("_NET_WM_STATE_MAXIMIZED_HORZ"),
+                  SOURCE_PAGER);
+    raiseWindow(_wid);
+}
+
+
+/************************************************
+
+ ************************************************/
+void XfitMan2::shadeWindow(Window _wid, bool shade) const
+{
+    clientMessage(_wid, atom("_NET_WM_STATE"),
+                  shade ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE,
+                  atom("_NET_WM_STATE_SHADED"),
+                  0,
+                  SOURCE_PAGER);
+}
+
+
+/************************************************
+
+ ************************************************/
 void XfitMan2::closeWindow(Window _wid) const
 {
     clientMessage(_wid, atom("_NET_CLOSE_WINDOW"),
                   0, // Timestamp
-                  2);  // Source indication should be  when it comes from a pager.
+                  SOURCE_PAGER);
 }
 
 
 /**
  * @brief changes active desktop to _desktop
  */
-void XfitMan2::setActiveDesktop(int _desktop)
+void XfitMan2::setActiveDesktop(int _desktop) const
 {
-    screen = _desktop;
     clientMessage(root,atomMap["net_current_desktop"],(unsigned long) _desktop,0,0,0,0);
 }
+
 
 /**
  * @brief this sets a window as selection owner for a specified atom - checks for success then sends the clientmessage
  */
-void XfitMan2::setSelectionOwner(Window _wid, QString _selection,QString _manager)
+void XfitMan2::setSelectionOwner(Window _wid, QString _selection,QString _manager) const
 {
     XSetSelectionOwner(QX11Info::display(), atomMap.value(_selection), _wid, CurrentTime);
     if (getSelectionOwner(_selection)== _wid)
@@ -598,7 +659,7 @@ void XfitMan2::setSelectionOwner(Window _wid, QString _selection,QString _manage
 /**
  * @brief returns the owning window of selection _selection
  */
-Window XfitMan2::getSelectionOwner(QString _selection)
+Window XfitMan2::getSelectionOwner(QString _selection) const
 {
     return XGetSelectionOwner(QX11Info::display(), atomMap.value(_selection));
 }
@@ -615,9 +676,9 @@ void XfitMan2::setStrut(Window _wid,
                        int rightStartY,  int rightEndY,
                        int topStartX,    int topEndX,
                        int bottomStartX, int bottomEndX
-                       )
+                       ) const
 {
-    qDebug() << "XfitMan2: Trying to set STRUT_PARTIAL for panel!";
+    //qDebug() << "XfitMan2: Trying to set STRUT_PARTIAL for panel!";
     //prepare strutsize
     memset(desstrut,0,sizeof(desstrut));
     //prepare the array
@@ -628,45 +689,36 @@ void XfitMan2::setStrut(Window _wid,
      * bottom_end_x
      *
      */
-    //so we use bottom (index 3) bottom_start_x (index 10) and bottom_start_y (index 11)
 
     //so we take our panelsize from the bottom up
-    desstrut[0] = left;
-    desstrut[1] = right;
-    desstrut[2] = top;
-    desstrut[3] = bottom;
+    desstrut[0] = left; desstrut[1] = right;
+    desstrut[2] = top;  desstrut[3] = bottom;
 
-    desstrut[4] = leftStartY;
-    desstrut[5] = leftEndY;
-
-    desstrut[6] = rightStartY;
-    desstrut[7] = rightEndY;
-
-    desstrut[8] = topStartX;
-    desstrut[9] = topEndX;
-
-    desstrut[10] = bottomStartX;
-    desstrut[11] = bottomEndX;
+    desstrut[4] = leftStartY;    desstrut[5] = leftEndY;
+    desstrut[6] = rightStartY;   desstrut[7] = rightEndY;
+    desstrut[8] = topStartX;     desstrut[9] = topEndX;
+    desstrut[10] = bottomStartX; desstrut[11] = bottomEndX;
 
     //now we can change that property right
-    XChangeProperty(QX11Info::display(), _wid , atomMap["net_wm_strut_partial"],
+    XChangeProperty(QX11Info::display(), _wid , atom("_NET_WM_STRUT_PARTIAL"),
                     XA_CARDINAL, 32, PropModeReplace,  (unsigned char *) desstrut, 12  );
 
-    //now some wm do not support net_wm_strut_partial but only net_wm_strut, so we also send that one too
-    //xdg-std says: if you get a strut_partial ignore all following struts! so if this msg is recognized its ok
-    //if not, we dont care either
+    //now some wm do not support net_wm_strut_partial but only net_wm_strut, so we also
+    // send that one too xdg-std says: if you get a strut_partial ignore all following
+    // struts! so if this msg is recognized its ok if not, we dont care either
 
-    XChangeProperty(QX11Info::display(), _wid, atomMap["net_wm_strut"],
+    XChangeProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT"),
                     XA_CARDINAL, 32, PropModeReplace, (unsigned char*) desstrut, 4);
 }
+
 
 /**
  * @brief this unsets the strut set for panel
  */
-void XfitMan2::unsetStrut(Window _wid)
+void XfitMan2::unsetStrut(Window _wid) const
 {
-    XDeleteProperty(QX11Info::display(), _wid, atomMap["net_wm_strut"]);
-    XDeleteProperty(QX11Info::display(), _wid, atomMap["net_wm_strut_partial"]);
+    XDeleteProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT"));
+    XDeleteProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT_PARTIAL"));
 }
 
 
@@ -696,7 +748,7 @@ QString XfitMan2::debugWindow(Window wnd)
     else
         typeStr ="ERROR";
 
-    return QString("[%1] %2 %3").arg(wnd,8, 16).arg(xfitMan2()->getName(wnd)).arg(typeStr);
+    return QString("[%1] %2 %3").arg(wnd,8, 16).arg(xfitMan2().getName(wnd)).arg(typeStr);
 }
 
 #endif

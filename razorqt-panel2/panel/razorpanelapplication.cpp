@@ -17,10 +17,7 @@
 *********************************************************************/
 
 #include "razorpanelapplication.h"
-//#include <QtCore/QDebug>
-//#include "razorpluginmanager.h"
 #include <X11/Xlib.h>
-//#include <QX11Info>
 
 
 /************************************************

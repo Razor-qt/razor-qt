@@ -28,17 +28,15 @@
 
  ************************************************/
 RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent) :
-    QToolBar(parent)
+    QToolBar(parent),
+    mPanel(panel),
+    mConfigId(configId)
 {
-    mPanel = panel;
-    mConfigId = configId;
     setFloatable(false);
-
 
     mExtensionButton = findChild<QToolButton*>(QLatin1String("qt_toolbar_ext_button"));
     if (mExtensionButton)
         mExtensionButton->installEventFilter(this);
-
 }
 
 

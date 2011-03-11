@@ -19,18 +19,12 @@
 #ifndef RAZORTASKBUTTON_H
 #define RAZORTASKBUTTON_H
 
-#include <QtGui/QButtonGroup>
 #include <QtGui/QToolButton>
 #include <QtCore/QHash>
 
-//namespace X11
-//{
-//    extern "C"
-//    {
-        #include <X11/X.h>
-//        #include <X11/Xlib.h>
-//    }
-//};
+
+#include <X11/X.h>
+#include <X11/Xlib.h>
 
 
 class RazorTaskButton : public QToolButton
@@ -45,12 +39,18 @@ public:
     Window windowId() const { return mWindow; }
 
     QSize   sizeHint() const;
+    static void unCheckAll();
 
 public slots:
     void raiseApplication();
     void minimizeApplication();
+    void maximizeApplication();
+    void shadeApplication();
+    void unShadeApplication();
     void closeApplication();
-    //void moveApplicationToDesktop();
+    void moveApplicationToDesktop();
+
+    void handlePropertyNotify(XPropertyEvent* event);
 
 protected:
     void nextCheckState();
@@ -61,11 +61,11 @@ protected:
 
 private:
     Window mWindow;
-    static QButtonGroup mButtonsGroup;
+    static RazorTaskButton* mCheckedBtn;
 
 private slots:
     void btnClicked(bool checked);
-  //  void handlePropertyNotify(XPropertyEvent* event);
+    void checkedChanged(bool checked);
 };
 
 typedef QHash<Window,RazorTaskButton*> RazorTaskButtonHash;

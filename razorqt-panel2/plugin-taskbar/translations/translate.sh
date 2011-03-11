@@ -1,6 +1,8 @@
 #!/bin/bash
 
-PROJECT=plugin-clock
+PROJECT=plugin-taskbar2
+
+#OPTS="-noobsolete" 
 
 if [ "$1" = "" ]; then
     TS_FILE=${PROJECT}_`echo $LANG | awk -F"." '{print($1)}'`.ts
@@ -10,6 +12,6 @@ fi
 
 
 
-lupdate ../*.h ../*.cpp -ts $TS_FILE  && \
-linguist $TS_FILE
+lupdate ${OPTS} ../*.h ../*.cpp -ts ${TS_FILE}  && \
+linguist ${TS_FILE}
 

@@ -25,6 +25,8 @@
 
 
 #include <QtCore/QDebug>
+#include <QtCore/QLocale>
+#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
 #include <QtCore/QRect>
@@ -37,8 +39,6 @@
 #include <razorqt/xdgicon.h>
 #include "../xfitman2.h"
 
-//%%%%%%%%%%%5
-#include <QX11Info>
 
 #define CFG_FILE            "panel"
 
@@ -89,6 +89,7 @@ PositionAction::PositionAction(int displayNum, RazorPanel::Position position, QA
  ************************************************/
 RazorPanel::RazorPanel(QWidget *parent) :
   QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+
 {
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
@@ -120,6 +121,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
     mPosition = strToPosition(settings->value(CFG_KEY_POSITION).toString(), PositionBottom);
     mDesktopNum = settings->value(CFG_KEY_DESKTOPNUM, QApplication::desktop()->primaryScreen()).toInt();
 
+    QString locale = QLocale::system().name();
     // Read panels & load plugins
     int cnt = settings->allKeys().count();
     for (int i=1; i<cnt; ++i)
@@ -134,7 +136,12 @@ RazorPanel::RazorPanel(QWidget *parent) :
         RazorPanelPlugin* plugin = mPluginManager->loadPlugin(soPath, configId, this);
 
         if (plugin)
+        {
+            QTranslator* translator = new QTranslator(plugin);
+            translator->load(QString("%1/plugin-%2_%3.qm").arg(TRANSLATIONS_DIR, pluginName, locale));
+            qApp->installTranslator(translator);
             addToolBar(plugin);
+        }
     }
 
     if (settings->contains(CFG_KEY_STATE))
@@ -175,11 +182,7 @@ void RazorPanel::show()
 {
     QMainWindow::show();
     realign();
-    xfitMan2()->moveWindowtoDesktop(this->effectiveWinId(), -1);
-//    XSelectInput(QX11Info::display(),
-//                             QApplication::desktop()->winId(),
-//                             StructureNotifyMask |
-//                             SubstructureNotifyMask | PropertyChangeMask);
+    xfitMan2().moveWindowToDesktop(this->effectiveWinId(), -1);
 }
 
 
@@ -205,7 +208,6 @@ void debugState(const QByteArray& state, const QString logFile, bool append=true
 QByteArray RazorPanel::defaultState()
 {
     QByteArray result = saveState();
-    //debugState(result, "./state.dat", false);
 
     RazorPanelPlugin* plugin = 0;
     RazorPanelPluginIterator i(*mPluginManager);
@@ -222,7 +224,6 @@ QByteArray RazorPanel::defaultState()
     // If exists left-aligned panel, we increase its width.
     if (plugin)
     {
-        //qDebug() << "DefaultState: plugin found" << plugin->objectName();
         // Construct UTF-16BE string
         QByteArray baName;
         QDataStream ds(&baName, QIODevice::ReadWrite);
@@ -231,7 +232,6 @@ QByteArray RazorPanel::defaultState()
         int n = result.lastIndexOf(baName);
         if (n > -1)
         {
-            //qDebug() << "DefaultState: plugin data found" << n;
             n += baName.length(); // UTF-16BE:  Name
             n +=1;                // uchar:     1st bit: 1 if shown
                                   //            2nd bit: 1 if orientation is vert.
@@ -244,7 +244,6 @@ QByteArray RazorPanel::defaultState()
 
     }
 
-    //debugState(result, "./state.dat");
     return result;
 }
 
@@ -337,7 +336,7 @@ void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
     a = menu.addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
     connect(a, SIGNAL(triggered()), this, SLOT(close()));
 
-    menu.exec(mapToGlobal(event->pos()));
+    menu.exec(event->globalPos());
 
 }
 
@@ -423,34 +422,15 @@ void RazorPanel::setTheme(const QString& themeName)
 /************************************************
 
  ************************************************/
-void RazorPanel::setDesktopNum(int desktopNum)
-{
-    mDesktopNum = desktopNum;
-    realign();
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanel::setPosition(Position position)
-{
-    mPosition = position;
-    realign();
-}
-
-
-/************************************************
-
- ************************************************/
 void RazorPanel::realign()
 {
+    /*
     qDebug() << "Realign: DesktopNum" << mDesktopNum;
     qDebug() << "Realign: Position  " << positionToStr(mPosition);
     qDebug() << "Realign: Theme     " << mTheme;
     qDebug() << "Realign: SizeHint  " << sizeHint();
     qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
-
+    */
 
     QRect screen = QApplication::desktop()->screenGeometry(mDesktopNum);
     QRect rect = screen;
@@ -478,14 +458,14 @@ void RazorPanel::realign()
     setGeometry(rect);
 
 
-    XfitMan2* xf = xfitMan2();
+    XfitMan2 xf = xfitMan2();
     //reserve our space on the screen
     Window wid = this->effectiveWinId();
 
     switch (mPosition)
     {
         case PositionTop:
-            xf->setStrut(wid, 0, 0, height(), 0,
+            xf.setStrut(wid, 0, 0, height(), 0,
                /* Left   */   0, 0,
                /* Right  */   0, 0,
                /* Top    */   rect.left(), rect.right(),
@@ -494,7 +474,7 @@ void RazorPanel::realign()
         break;
 
         case PositionBottom:
-            xf->setStrut(wid, 0, 0, 0, height(),
+            xf.setStrut(wid, 0, 0, 0, height(),
                /* Left   */   0, 0,
                /* Right  */   0, 0,
                /* Top    */   0, 0,
@@ -503,7 +483,7 @@ void RazorPanel::realign()
             break;
 
         case PositionLeft:
-            xf->setStrut(wid, width(), 0, 0, 0,
+            xf.setStrut(wid, width(), 0, 0, 0,
                /* Left   */   rect.top(), rect.bottom(),
                /* Right  */   0, 0,
                /* Top    */   0, 0,
@@ -513,7 +493,7 @@ void RazorPanel::realign()
             break;
 
         case PositionRight:
-            xf->setStrut(wid, 0, width(), 0, 0,
+            xf.setStrut(wid, 0, width(), 0, 0,
                /* Left   */   0, 0,
                /* Right  */   rect.top(), rect.bottom(),
                /* Top    */   0, 0,

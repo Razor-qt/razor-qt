@@ -21,6 +21,44 @@
 typedef QList<Atom> AtomList;
 typedef QList<Window> WindowList;
 
+// A list of atoms indicating user operations that the Window Manager supports
+// for this window.
+// See http://standards.freedesktop.org/wm-spec/latest/ar01s05.html#id2569373
+struct WindowAllowedActions
+{
+    bool Move;          // indicates that the window may be moved around the screen.
+    bool Resize;        // indicates that the window may be resized.
+    bool Minimize;      // indicates that the window may be iconified.
+    bool Shade;         // indicates that the window may be shaded.
+    bool Stick;         // indicates that the window may have its sticky state toggled.
+    bool MaximizeHoriz; // indicates that the window may be maximized horizontally.
+    bool MaximizeVert;  // indicates that the window may be maximized vertically.
+    bool FullScreen;    // indicates that the window may be brought to fullscreen state.
+    bool ChangeDesktop; // indicates that the window may be moved between desktops.
+    bool Close;         // indicates that the window may be closed.
+    bool AboveLayer;    // indicates that the window may placed in the "above" layer of windows
+    bool BelowLayer;    // indicates that the window may placed in the "below" layer of windows
+};
+
+// A list of hints describing the window state.
+// http://standards.freedesktop.org/wm-spec/latest/ar01s05.html#id2569140
+struct WindowState
+{
+    bool Modal;         //  indicates that this is a modal dialog box.
+    bool Sticky;        //indicates that the Window Manager SHOULD keep the window's position
+                        // fixed on the screen, even when the virtual desktop scrolls.
+    bool MaximizedVert; // indicates that the window is vertically maximized.
+    bool MaximizedHoriz;// indicates that the window is horizontally maximized.
+    bool Shaded;        // indicates that the window is shaded.
+    bool SkipTaskBar;   // indicates that the window should not be included on a taskbar.
+    bool SkipPager;     // indicates that the window should not be included on a Pager.
+    bool Hidden;        // indicates that a window would not be visible on the screen
+    bool FullScreen;    // indicates that the window should fill the entire screen.
+    bool AboveLayer;    // indicates that the window should be on top of most windows.
+    bool BelowLayer;    // indicates that the window should be below most windows.
+    bool Attention;     // indicates that some action in or with the window happened.
+};
+
 /**
  * @brief manages the Xlib apicalls
  */
@@ -29,8 +67,8 @@ class XfitMan2
 public:
     ~XfitMan2();
     XfitMan2();
-    void moveWindow(Window _win, int _x, int _y);
-    void setRootBackground(QPixmap _map);
+    void moveWindow(Window _win, int _x, int _y) const;
+    void setRootBackground(QPixmap _map) const;
 
     // See
     void setStrut(Window _wid,
@@ -41,37 +79,43 @@ public:
                   int rightStartY,  int rightEndY,
                   int topStartX,    int topEndX,
                   int bottomStartX, int bottomEndX
-                  );
+                  ) const;
 
-    void unsetStrut(Window _wid);
-    void getAtoms();
-    QList<Window> getClientList();
-    bool getClientIcon(Window _wid, QPixmap& _pixreturn);
-    void setEventRoute();
-    void setClientStateFlag(Window _wid, QString _atomcode, int _action);
-    void setSelectionOwner(Window _wid, QString _selection, QString _manager);
-    Window getSelectionOwner(QString _selection);
-    int getWindowDesktop(Window _wid);
-    void moveWindowtoDesktop(Window _wid, int _display);
-    void raiseWindow(Window _wid);
+    void unsetStrut(Window _wid) const;
+    void getAtoms() const;
+    QList<Window> getClientList() const;
+    bool getClientIcon(Window _wid, QPixmap& _pixreturn) const;
+    void setEventRoute() const;
+    void setClientStateFlag(Window _wid, QString _atomcode, int _action) const;
+    void setSelectionOwner(Window _wid, QString _selection, QString _manager) const;
+    Window getSelectionOwner(QString _selection) const;
+    int getWindowDesktop(Window _wid) const;
+    void moveWindowToDesktop(Window _wid, int _display) const;
+
+    void raiseWindow(Window _wid) const;
     void minimizeWindow(Window _wid) const;
-    void resizeWindow(Window _wid, int _height, int _width);
+    void maximizeWindow(Window _wid) const;
+    void shadeWindow(Window _wid, bool shade) const;
+    void resizeWindow(Window _wid, int _height, int _width) const;
     void closeWindow(Window _wid) const;
 
-    void setActiveDesktop(int _desktop);
-    void mapRaised(Window _wid);
-    bool isHidden(Window _wid);
-    bool requiresAttention(Window _wid);
-    int getActiveDesktop();
-    Window getActiveAppWindow();
-    Window getActiveWindow();
-    int getNumDesktop();
-    QString getName(Window _wid);
-    Atom getAtom(QString _key)
+    void setActiveDesktop(int _desktop) const;
+    void mapRaised(Window _wid) const;
+    bool isHidden(Window _wid) const;
+    WindowAllowedActions getAllowedActions(Window window) const;
+    WindowState getWindowState(Window window) const;
+    bool requiresAttention(Window _wid) const;
+    int getActiveDesktop() const;
+    Window getActiveAppWindow() const;
+    Window getActiveWindow() const;
+    int getNumDesktop() const;
+    QString getName(Window _wid) const;
+    Atom getAtom(QString _key) const
     {
         return atomMap.value(_key);
     }
-    bool acceptWindow(Window _wid);
+
+    bool acceptWindow(Window _wid) const;
 
     AtomList getWindowType(Window window) const;
     static QString debugWindow(Window wnd);
@@ -99,17 +143,15 @@ private:
                               ) const;
 
 
-    //QString displayName;
     Window  root; //the actual root window on the used screen
-    int screen; //the actual used screen
     int screencount;
     unsigned long strutsize;
-    unsigned long desstrut[12];
-    QMap<QString,Atom> atomMap;
+    mutable unsigned long desstrut[12];
+    mutable QMap<QString,Atom> atomMap;
 };
 
 
-XfitMan2* const xfitMan2();
+const XfitMan2& xfitMan2();
 
 inline QString xEventTypeToStr(XEvent* event)
 {
@@ -152,20 +194,6 @@ inline QString xEventTypeToStr(XEvent* event)
     }
     return "Unknown";
 }
-
-//#define NET_CLIENT_LIST "NET_CLIENT_LIST"
-//   static const Atom NET_CLIENT_LIST_STACKING;
-//    static const Atom NET_ACTIVE_WINDOW;
-
-//    static const Atom NET_WM_WINDOW_TYPE;
-//    static const Atom NET_WM_WINDOW_TYPE_NORMAL;
-//    static const Atom NET_WM_WINDOW_TYPE_DOCK;
-//    static const Atom NET_WM_WINDOW_TYPE_SPLASH;
-//    static const Atom NET_WM_WINDOW_TYPE_DESKTOP;
-//    static const Atom KDE_NET_WM_WINDOW_TYPE_OVERRIDE;
-
-
-//};
 
 
 

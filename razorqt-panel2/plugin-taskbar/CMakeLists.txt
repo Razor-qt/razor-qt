@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(PROJECT "taskbar2")
+set(PLUGIN "taskbar2")
 
 
 set(HEADERS
@@ -28,20 +28,22 @@ set(LIBRARIES
 set(RESOURCES
 )
 
+
 file (GLOB CONFIG_FILES
   resources/*.conf
 )
 
-#set (CONFIG_FILES
-#  resources/${PROJECT}.conf
-#)
-
 #set(QT_USE_QTXML 1)
 #set(QT_USE_QTDBUS 1)
 
+#*******************************************
+set(PROJECT "razorpanel_${PLUGIN}")
+
+project(${PROJECT})
+
 # Translations .............. 
 set(TRANSLATIONS_DIR 
-    ${CMAKE_INSTALL_PREFIX}/share/razor/razor-panel/${PROJECT}
+    ${CMAKE_INSTALL_PREFIX}/share/razor/razor-panel
 )
 
 add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
@@ -49,11 +51,6 @@ add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
 file (GLOB TS_FILES 
     translations/*.ts
 )
-
-#*******************************************
-set(PROJECT "razorpanel_${PROJECT}")
-
-project(${PROJECT})
 
 include_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}/../../librazorqt
@@ -73,6 +70,7 @@ qt4_add_translation(QM_FILES ${TS_FILES})
 add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
 target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 
-install(TARGETS ${PROJECT}    DESTINATION ${PLUGIN_DIR})
+install(TARGETS ${PROJECT} DESTINATION ${PLUGIN_DIR})
 install(FILES ${CONFIG_FILES} DESTINATION share/razor)
-install(FILES ${QM_FILES}     DESTINATION ${TRANSLATIONS_DIR})
+install(FILES ${QM_FILES} DESTINATION ${TRANSLATIONS_DIR}2)
+
