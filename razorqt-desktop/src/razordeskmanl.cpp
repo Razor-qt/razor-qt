@@ -16,6 +16,8 @@
 
 void RazorDeskManagerLegacy::updateIconList()
 {
+    m_fsw->blockSignals(true);
+
     qDebug() << "updateIconList";
     QDirIterator dirIter(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
 
@@ -25,21 +27,21 @@ void RazorDeskManagerLegacy::updateIconList()
     {
         dirIter.next();
         QString df(dirIter.filePath());
-        
+
         // HACK: QDir::NoDotAndDotDot does not work so this fixes it...
         if (df.endsWith("/..") || df.endsWith("/."))
             continue;
-        
+
         qDebug() << df;
         tmpList.append(df);
-        
+
         // only non existing icons are created
         if (m_iconList.contains(df))
         {
             qDebug() << "updateIconList REREAD. Skip:" << df;
             continue;
         }
-        
+
         QPoint pos(0, 0);
         RazorDeskIconBase * idata;
 
@@ -52,7 +54,11 @@ void RazorDeskManagerLegacy::updateIconList()
                 idata = new RazorDeskIconDesktop(tmp, pos, workSpace());
             }
             else
+            {
                 delete tmp;
+                qDebug() << "Desktop file" << df << "isShow==false";
+                continue;
+            }
         }
         else
         {
@@ -74,6 +80,9 @@ void RazorDeskManagerLegacy::updateIconList()
     }
 
     qDebug() << "Razordeskmanl: found " << m_iconList.count() << " usable desktop-entries";
+
+    restoreIconState();
+    m_fsw->blockSignals(false);
 }
 
 RazorDeskManagerLegacy::~RazorDeskManagerLegacy()
@@ -83,7 +92,6 @@ RazorDeskManagerLegacy::~RazorDeskManagerLegacy()
 RazorDeskManagerLegacy::RazorDeskManagerLegacy(RazorWorkSpace* _workspace) : RazorDeskManager(_workspace)
 {
     updateIconList();
-    restoreIconState();
     qDebug() << "initialisation done";
 }
 

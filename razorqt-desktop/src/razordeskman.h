@@ -38,12 +38,11 @@ protected:
     }
 
     IconMap m_iconList;
+    QFileSystemWatcher * m_fsw;
 
 private:
     ReadSettings *deskicons;
     RazorWorkSpace * workspace;
-
-    QFileSystemWatcher * m_fsw;
 };
 
 
