@@ -65,26 +65,6 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName,
 {
     RazorPanelPlugin* plugin = 0;
 
-    // FAKE ------------------------>>>
-    if (libraryFileName.endsWith("librazorpanel_quicklaunch2"))
-    {
-        plugin = new FakePlugin(panel, configId, panel, "QuickLaunch", "Quick Launch");
-
-        plugin->addAction(QIcon::fromTheme("kate"), "Kate");
-        plugin->addAction(QIcon::fromTheme("utilities-terminal"), "Konsole");
-        plugin->addAction(QIcon::fromTheme("kmail"), "kmail");
-    }
-
-
-    if (plugin)
-    {
-        append(plugin);
-        return plugin;
-    }
-
-    // FAKE <<<------------------------
-
-
     qDebug() << "RazorPanel: try to load " << libraryFileName;
 
     QLibrary * lib = new QLibrary(libraryFileName);
