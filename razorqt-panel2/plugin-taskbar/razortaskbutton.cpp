@@ -24,7 +24,7 @@
 #include <QtGui/QContextMenuEvent>
 
 #include "razortaskbutton.h"
-#include "../xfitman2.h"
+#include <razorqt/xfitman.h>
 #include <QX11Info>
 
 
@@ -76,7 +76,7 @@ RazorTaskButton::~RazorTaskButton()
  ************************************************/
 void RazorTaskButton::updateText()
 {
-    setText(xfitMan2().getName(mWindow));
+    setText(xfitMan().getName(mWindow));
     setToolTip(text());
 }
 
@@ -87,7 +87,7 @@ void RazorTaskButton::updateText()
 void RazorTaskButton::updateIcon()
 {
     QPixmap pix;
-    if (xfitMan2().getClientIcon(mWindow, pix))
+    if (xfitMan().getClientIcon(mWindow, pix))
         setIcon(QIcon(pix));
     else
         setIcon(XdgIcon::fromTheme(DEFAULT_APP_ICON, 32));
@@ -99,7 +99,7 @@ void RazorTaskButton::updateIcon()
  ************************************************/
 void RazorTaskButton::nextCheckState()
 {
-    setChecked(xfitMan2().getActiveAppWindow() == mWindow);
+    setChecked(xfitMan().getActiveAppWindow() == mWindow);
 }
 
 
@@ -134,7 +134,7 @@ void RazorTaskButton::unCheckAll()
  ************************************************/
 bool RazorTaskButton::isAppHidden() const
 {
-    return xfitMan2().isHidden(mWindow);
+    return xfitMan().isHidden(mWindow);
 }
 
 
@@ -143,7 +143,7 @@ bool RazorTaskButton::isAppHidden() const
  ************************************************/
 bool RazorTaskButton::isApplicationActive() const
 {
-    return xfitMan2().getActiveAppWindow() == mWindow;
+    return xfitMan().getActiveAppWindow() == mWindow;
 }
 
 
@@ -164,7 +164,7 @@ void RazorTaskButton::btnClicked(bool checked)
  ************************************************/
 void RazorTaskButton::raiseApplication()
 {
-    xfitMan2().raiseWindow(mWindow);
+    xfitMan().raiseWindow(mWindow);
 }
 
 
@@ -173,7 +173,7 @@ void RazorTaskButton::raiseApplication()
  ************************************************/
 void RazorTaskButton::minimizeApplication()
 {
-    xfitMan2().minimizeWindow(mWindow);
+    xfitMan().minimizeWindow(mWindow);
 }
 
 
@@ -182,7 +182,7 @@ void RazorTaskButton::minimizeApplication()
  ************************************************/
 void RazorTaskButton::maximizeApplication()
 {
-    xfitMan2().maximizeWindow(mWindow);
+    xfitMan().maximizeWindow(mWindow);
 }
 
 
@@ -191,7 +191,7 @@ void RazorTaskButton::maximizeApplication()
  ************************************************/
 void RazorTaskButton::shadeApplication()
 {
-    xfitMan2().shadeWindow(mWindow, true);
+    xfitMan().shadeWindow(mWindow, true);
 }
 
 
@@ -200,7 +200,7 @@ void RazorTaskButton::shadeApplication()
  ************************************************/
 void RazorTaskButton::unShadeApplication()
 {
-    xfitMan2().shadeWindow(mWindow, false);
+    xfitMan().shadeWindow(mWindow, false);
 }
 
 
@@ -209,7 +209,7 @@ void RazorTaskButton::unShadeApplication()
  ************************************************/
 void RazorTaskButton::closeApplication()
 {
-    xfitMan2().closeWindow(mWindow);
+    xfitMan().closeWindow(mWindow);
 }
 
 
@@ -228,7 +228,7 @@ void RazorTaskButton::moveApplicationToDesktop()
     if (!ok)
         return;
 
-    xfitMan2().moveWindowToDesktop(mWindow, desk);
+    xfitMan().moveWindowToDesktop(mWindow, desk);
 }
 
 
@@ -237,7 +237,7 @@ void RazorTaskButton::moveApplicationToDesktop()
  ************************************************/
 void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
 {
-    XfitMan2 xf = xfitMan2();
+    XfitMan xf = xfitMan();
 
     WindowAllowedActions allow = xf.getAllowedActions(mWindow);
     WindowState state = xf.getWindowState(mWindow);
@@ -342,14 +342,14 @@ QSize RazorTaskButton::sizeHint() const
 ************************************************/
 void  RazorTaskButton::handlePropertyNotify(XPropertyEvent* event)
 {
-    if (event->atom == XfitMan2::atom("WM_NAME") ||
-        event->atom == XfitMan2::atom("_NET_WM_VISIBLE_NAME"))
+    if (event->atom == XfitMan::atom("WM_NAME") ||
+        event->atom == XfitMan::atom("_NET_WM_VISIBLE_NAME"))
     {
         updateText();
         return;
     }
 
-    if (event->atom == XfitMan2::atom("_NET_WM_ICON"))
+    if (event->atom == XfitMan::atom("_NET_WM_ICON"))
     {
         updateIcon();
         return;

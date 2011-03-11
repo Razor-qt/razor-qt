@@ -144,10 +144,10 @@ endif (CLOCK_PLUGIN)
 # endif (TRAY_PLUGIN)
 # 
 # 
-# if (MAINMENU_PLUGIN)
-#   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Main menu")
-#   add_subdirectory( plugin-mainmenu )
-# endif (MAINMENU_PLUGIN)
+if (MAINMENU_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Main menu")
+  add_subdirectory( plugin-mainmenu )
+endif (MAINMENU_PLUGIN)
 # 
 # 
 # if (COMMAND_PLUGIN)

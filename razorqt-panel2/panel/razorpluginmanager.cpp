@@ -66,17 +66,6 @@ RazorPanelPlugin* RazorPluginManager::loadPlugin(const QString& libraryFileName,
     RazorPanelPlugin* plugin = 0;
 
     // FAKE ------------------------>>>
-    if (libraryFileName.endsWith("librazorpanel_mainmenu2"))
-    {
-        plugin = new FakePlugin(panel, configId, panel, "MainMenu", "Main Menu");
-
-        QPushButton* mb = new QPushButton("Menu", plugin);
-
-        mb->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-        plugin->addWidget(mb);
-    }
-
-
     if (libraryFileName.endsWith("librazorpanel_quicklaunch2"))
     {
         plugin = new FakePlugin(panel, configId, panel, "QuickLaunch", "Quick Launch");

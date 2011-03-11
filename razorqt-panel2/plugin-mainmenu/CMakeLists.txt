@@ -1,21 +1,21 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(PLUGIN "taskbar2")
+set(PLUGIN "mainmenu2")
 
 
 set(HEADERS
-  razortaskbar.h
-  razortaskbutton.h
+  razormainmenu.h
+  menustyle.h
 )
 
 set(SOURCES
-  razortaskbar.cpp
-  razortaskbutton.cpp
+  razormainmenu.cpp
+  menustyle.cpp
 )
 
 set(MOCS
-  razortaskbar.h
-  razortaskbutton.h
+  razormainmenu.h
+  menustyle.h
 )
 
 set(LIBRARIES
@@ -26,15 +26,15 @@ set(LIBRARIES
 set(RESOURCES
 )
 
-
 file (GLOB CONFIG_FILES
   resources/*.conf
 )
 
-#set(QT_USE_QTXML 1)
-#set(QT_USE_QTDBUS 1)
+set(QT_USE_QTXML 1)
+set(QT_USE_QTDBUS 1)
 
 #*******************************************
+
 set(PROJECT "razorpanel_${PLUGIN}")
 
 project(${PROJECT})
@@ -58,6 +58,7 @@ include_directories (
 if (NOT DEFINED PLUGIN_DIR)
   set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
 endif (NOT DEFINED PLUGIN_DIR)
+
 
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})

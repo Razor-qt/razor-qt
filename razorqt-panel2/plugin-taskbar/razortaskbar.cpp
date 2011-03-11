@@ -17,14 +17,12 @@
 *********************************************************************/
 #include <QApplication>
 
-//#include "razortaskbar.h"
-
 #include <QtCore/QDebug>
 #include <QToolButton>
 
 #include "razortaskbar.h"
 #include <razorqt/xdgicon.h>
-#include "../xfitman2.h"
+#include <razorqt/xfitman.h>
 #include <QtCore/QList>
 
 
@@ -79,12 +77,12 @@ RazorTaskButton* RazorTaskBar::buttonByWindow(Window window) const
  ************************************************/
 void RazorTaskBar::refreshTaskList()
 {
-    XfitMan2 xf = xfitMan2();
+    XfitMan xf = xfitMan();
     QList<Window> tmp = xf.getClientList();
 
     //qDebug() << "** Fill ********************************";
     //foreach (Window wnd, tmp)
-    //    if (xf->acceptWindow(wnd)) qDebug() << XfitMan2::debugWindow(wnd);
+    //    if (xf->acceptWindow(wnd)) qDebug() << XfitMan::debugWindow(wnd);
     //qDebug() << "****************************************";
 
 
@@ -121,7 +119,7 @@ void RazorTaskBar::refreshTaskList()
  ************************************************/
 void RazorTaskBar::activeWindowChanged()
 {
-    Window window = xfitMan2().getActiveAppWindow();
+    Window window = xfitMan().getActiveAppWindow();
 
     RazorTaskButton* btn = buttonByWindow(window);
 
@@ -164,14 +162,14 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
     if (event->window == mRootWindow)
     {
         // Windows list changed ...............................
-        if (event->atom == XfitMan2::atom("_NET_CLIENT_LIST"))
+        if (event->atom == XfitMan::atom("_NET_CLIENT_LIST"))
         {
             refreshTaskList();
             return;
         }
 
         // Activate window ....................................
-        if (event->atom == XfitMan2::atom("_NET_ACTIVE_WINDOW"))
+        if (event->atom == XfitMan::atom("_NET_ACTIVE_WINDOW"))
         {
             activeWindowChanged();
             return;
@@ -187,7 +185,7 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
 //    qDebug() << "** XPropertyEvent ********************";
 //    qDebug() << "  atom:       0x" << hex << event->atom
 //            << " (" << (aname ? aname : "Unknown") << ')';
-//    qDebug() << "  window:    " << XfitMan2::debugWindow(event->window);
+//    qDebug() << "  window:    " << XfitMan::debugWindow(event->window);
 //    qDebug() << "  display:   " << event->display;
 //    qDebug() << "  send_event:" << event->send_event;
 //    qDebug() << "  serial:    " << event->serial;

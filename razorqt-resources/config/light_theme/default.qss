@@ -63,16 +63,23 @@ QToolButton:hover{
    
 }
 
+
+/* Main menu ********************************* */
+#MainMenu {
+    border: 0; 
+}
+
 #MainMenu QPushButton {
     height: 32px;
-/*    width: 32px;*/
-    border: none;
-/*    background-image: url(applications-system.png); */
+    width: 32px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+    background-image: url(kde.png); 
     background-position:  left;
     background-repeat: no-repeat;
-/*    color: transparent;*/
-    
 }
+
 
 #MainMenu QPushButton::menu-indicator {
     image: none;

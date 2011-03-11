@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=plugin-taskbar
+PROJECT=plugin-mainmenu
 
 #OPTS="-noobsolete" 
 

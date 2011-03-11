@@ -37,7 +37,7 @@
 #include <QtGui/QActionGroup>
 
 #include <razorqt/xdgicon.h>
-#include "../xfitman2.h"
+#include <razorqt/xfitman.h>
 
 
 #define CFG_FILE            "panel"
@@ -126,24 +126,26 @@ RazorPanel::RazorPanel(QWidget *parent) :
     int cnt = settings->allKeys().count();
     for (int i=1; i<cnt; ++i)
     {
-        QString pluginName = settings->value(QString("plugins/%1/name").arg(i)).toString() + "2";
+        QString pluginName = settings->value(QString("plugins/%1/name").arg(i)).toString();
         QString configId = settings->value(QString("plugins/%1/config").arg(i)).toString();
 
         if (pluginName.isEmpty() || configId.isEmpty())
             continue;
 
-        QString soPath = QString("%1/librazorpanel_%2").arg(PLUGIN_DIR, pluginName);
+        QTranslator* translator = new QTranslator(this);
+        translator->load(QString("%1/plugin-%2_%3.qm").arg(TRANSLATIONS_DIR, pluginName, locale));
+        qApp->installTranslator(translator);
+        
+        
+        QString soPath = QString("%1/librazorpanel_%2").arg(PLUGIN_DIR, pluginName + '2');
         RazorPanelPlugin* plugin = mPluginManager->loadPlugin(soPath, configId, this);
 
         if (plugin)
         {
-            QTranslator* translator = new QTranslator(plugin);
-            translator->load(QString("%1/plugin-%2_%3.qm").arg(TRANSLATIONS_DIR, pluginName, locale));
-            qApp->installTranslator(translator);
             addToolBar(plugin);
         }
     }
-
+            
     if (settings->contains(CFG_KEY_STATE))
         restoreState(settings->value(CFG_KEY_STATE).toByteArray());
     else
@@ -182,7 +184,7 @@ void RazorPanel::show()
 {
     QMainWindow::show();
     realign();
-    xfitMan2().moveWindowToDesktop(this->effectiveWinId(), -1);
+    xfitMan().moveWindowToDesktop(this->effectiveWinId(), -1);
 }
 
 
@@ -458,7 +460,7 @@ void RazorPanel::realign()
     setGeometry(rect);
 
 
-    XfitMan2 xf = xfitMan2();
+    XfitMan xf = xfitMan();
     //reserve our space on the screen
     Window wid = this->effectiveWinId();
 

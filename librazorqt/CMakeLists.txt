@@ -34,6 +34,7 @@ set ( razorqt_HDRS
 	razorqt/xdgdesktopfile.h
 	razorqt/xdgmenu.h
 	razorqt/xdgicon.h
+        razorqt/xdgdeskaction.h
 	)
 
 set ( razorqt_SRCS
@@ -53,6 +54,7 @@ set ( razorqt_SRCS
 	razorqt/xdgmenureader.cpp
 	razorqt/xdgmenurules.cpp
 	razorqt/xdgicon.cpp
+        razorqt/xdgdeskaction.cpp
 	)
 
 set ( razorqt_MOCS
@@ -67,6 +69,7 @@ set ( razorqt_MOCS
 	razorqt/xdgmenuapplinkprocessor.h
 	razorqt/xdgmenureader.h
 	razorqt/xdgmenurules.h
+        razorqt/xdgdeskaction.cpp
 	)
 
 QT4_WRAP_CPP(MOCS ${razorqt_MOCS})

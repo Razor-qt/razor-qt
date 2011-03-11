@@ -33,7 +33,7 @@ int RazorGUI::addPanel(const QString & configId)
     windowList.append(wid);
     //reserve our space on the screen
     Razor::getInstance().get_Xfitman()->setStrut(wid, 0, 0, 0, newpanel->height(), 0, 0, 0, 0, 0, 0, 0, QApplication::desktop()->width());
-    Razor::getInstance().get_Xfitman()->moveWindowtoDesktop(wid,-1);
+    Razor::getInstance().get_Xfitman()->moveWindowToDesktop(wid,-1);
     panelList.append(newpanel);
     return panelList.count();
 }

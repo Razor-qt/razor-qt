@@ -1,5 +1,5 @@
 /********************************************************************
-  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+  Copyright: 2010-2011 Alexander Sokoloff <sokoloff.a@gmail.ru>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License.
