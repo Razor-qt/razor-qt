@@ -69,7 +69,7 @@ include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
-        ${X11_INCLUDE_DIR} 
+        ${X11_INCLUDE_DIR}
         #${CMAKE_SOURCE_DIR}/librazorqt/
 	.
 	src)
@@ -91,14 +91,14 @@ set(ENABLED_PLUGINS)
 #   target_link_libraries(razorpanel_devplugin ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_devplugin DESTINATION ${PLUGIN_DIR})
 # endif (DEV_PLUGIN)
- 
- 
+
+
 if (CLOCK_PLUGIN)
   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Clock")
   add_subdirectory( plugin-clock )
 endif (CLOCK_PLUGIN)
- 
- 
+
+
 # if (DESKSWITCH_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Desktop switch")
 #   QT4_WRAP_CPP(deskswitch_moc plugin-deskswitch/razordeskswitch.h)
@@ -106,8 +106,8 @@ endif (CLOCK_PLUGIN)
 #   target_link_libraries(razorpanel_desktopswitcher ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_desktopswitcher DESTINATION ${PLUGIN_DIR})
 # endif (DESKSWITCH_PLUGIN)
- 
- 
+
+
 # if (LOGOUTMENU_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Logout menu")
 #   QT4_WRAP_CPP(logoutmenu_moc plugin-logoutmenu/razorlogoutmenu.h)
@@ -115,17 +115,14 @@ endif (CLOCK_PLUGIN)
 #   target_link_libraries(razorpanel_logoutmenu ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_logoutmenu DESTINATION ${PLUGIN_DIR})
 # endif (LOGOUTMENU_PLUGIN)
- 
- 
-# if (QUICKLAUNCH_PLUGIN)
-#   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Quick launch")
-#   QT4_WRAP_CPP(quicklaunch_moc plugin-quicklaunch/razorquicklaunch.h)
-#   add_library(razorpanel_quicklaunch SHARED ${quicklaunch_moc} plugin-quicklaunch/razorquicklaunch.cpp)
-#   target_link_libraries(razorpanel_quicklaunch ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-#   install(TARGETS razorpanel_quicklaunch DESTINATION ${PLUGIN_DIR})
-# endif (QUICKLAUNCH_PLUGIN)
- 
- 
+
+
+if (QUICKLAUNCH_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Quicklaunch")
+  add_subdirectory( plugin-quicklaunch )
+endif (QUICKLAUNCH_PLUGIN)
+
+
 # if (SPINBUTTON_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Spin button")
 #   QT4_WRAP_CPP(spinbutton_moc plugin-spinbutton/razorspinbutton.h)
@@ -133,8 +130,8 @@ endif (CLOCK_PLUGIN)
 #   target_link_libraries(razorpanel_razorspinbutton ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_razorspinbutton DESTINATION ${PLUGIN_DIR})
 # endif (SPINBUTTON_PLUGIN)
-# 
-# 
+#
+#
 # if (TRAY_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Tray")
 #   QT4_WRAP_CPP(tray_moc plugin-tray/razortray.h)
@@ -142,14 +139,14 @@ endif (CLOCK_PLUGIN)
 #   target_link_libraries(razorpanel_traybar ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_traybar DESTINATION ${PLUGIN_DIR})
 # endif (TRAY_PLUGIN)
-# 
-# 
+#
+#
 if (MAINMENU_PLUGIN)
   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Main menu")
   add_subdirectory( plugin-mainmenu )
 endif (MAINMENU_PLUGIN)
-# 
-# 
+#
+#
 # if (COMMAND_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Command")
 #   QT4_WRAP_CPP(cmd_moc plugin-command/razorcmd.h)
@@ -172,17 +169,17 @@ endif (TASKBAR_PLUGIN)
 #   target_link_libraries(razorpanel_spacer ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_spacer DESTINATION ${PLUGIN_DIR})
 # endif (SPACER_PLUGIN)
-# 
-# 
+#
+#
 # if (BATTERY_PLUGIN)
 #   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Battery")
 #   add_subdirectory( plugin-battery )
 # endif (BATTERY_PLUGIN)
-# 
+#
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
   message(STATUS   "  ${PLUGIN_STR}")
 endforeach()
 message(STATUS  "*********************************************************************")
- 
+
