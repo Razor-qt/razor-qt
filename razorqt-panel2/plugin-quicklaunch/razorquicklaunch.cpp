@@ -13,6 +13,9 @@ RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, Q
     : RazorPanelPlugin(panel, configId, parent),
       m_configId(configId)
 {
+    setObjectName("QuickLaunch");
+    setWindowTitle(tr("Quick Launcher"));
+
     cfg = new ReadSettings("quicklaunch", this);
     QSettings *s = cfg->settings();
 
