@@ -130,17 +130,14 @@ endif (QUICKLAUNCH_PLUGIN)
 #   target_link_libraries(razorpanel_razorspinbutton ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #   install(TARGETS razorpanel_razorspinbutton DESTINATION ${PLUGIN_DIR})
 # endif (SPINBUTTON_PLUGIN)
-#
-#
-# if (TRAY_PLUGIN)
-#   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Tray")
-#   QT4_WRAP_CPP(tray_moc plugin-tray/razortray.h)
-#   add_library(razorpanel_traybar SHARED ${tray_moc} plugin-tray/razortray.cpp)
-#   target_link_libraries(razorpanel_traybar ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-#   install(TARGETS razorpanel_traybar DESTINATION ${PLUGIN_DIR})
-# endif (TRAY_PLUGIN)
-#
-#
+
+
+if (TRAY_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "System Tray")
+  add_subdirectory( plugin-tray )
+endif (TRAY_PLUGIN)
+
+
 if (MAINMENU_PLUGIN)
   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Main menu")
   add_subdirectory( plugin-mainmenu )
