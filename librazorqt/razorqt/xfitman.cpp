@@ -278,7 +278,7 @@ QString XfitMan::getName(Window _wid) const
  * @param[in] _atomcode the QString-code for atomMap - state
  * @param[in] _action the action to do (add 1, remove 0, toggle 2)
  */
-void XfitMan::setClientStateFlag(Window _wid, QString _atomcode, int _action) const
+void XfitMan::setClientStateFlag(Window _wid, const QString & _atomcode, int _action) const
 {
     clientMessage(_wid, atomMap["net_wm_state"],_action,atomMap[_atomcode],0,0,0);
 }
@@ -649,7 +649,7 @@ void XfitMan::setActiveDesktop(int _desktop) const
 /**
  * @brief this sets a window as selection owner for a specified atom - checks for success then sends the clientmessage
  */
-void XfitMan::setSelectionOwner(Window _wid, QString _selection,QString _manager) const
+void XfitMan::setSelectionOwner(Window _wid, const QString & _selection, const QString & _manager) const
 {
     XSetSelectionOwner(QX11Info::display(), atomMap.value(_selection), _wid, CurrentTime);
     if (getSelectionOwner(_selection)== _wid)
@@ -659,7 +659,7 @@ void XfitMan::setSelectionOwner(Window _wid, QString _selection,QString _manager
 /**
  * @brief returns the owning window of selection _selection
  */
-Window XfitMan::getSelectionOwner(QString _selection) const
+Window XfitMan::getSelectionOwner(const QString & _selection) const
 {
     return XGetSelectionOwner(QX11Info::display(), atomMap.value(_selection));
 }

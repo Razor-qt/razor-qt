@@ -86,9 +86,9 @@ public:
     QList<Window> getClientList() const;
     bool getClientIcon(Window _wid, QPixmap& _pixreturn) const;
     void setEventRoute() const;
-    void setClientStateFlag(Window _wid, QString _atomcode, int _action) const;
-    void setSelectionOwner(Window _wid, QString _selection, QString _manager) const;
-    Window getSelectionOwner(QString _selection) const;
+    void setClientStateFlag(Window _wid, const QString & _atomcode, int _action) const;
+    void setSelectionOwner(Window _wid, const QString & _selection, const QString & _manager) const;
+    Window getSelectionOwner(const QString & _selection) const;
     int getWindowDesktop(Window _wid) const;
     void moveWindowToDesktop(Window _wid, int _display) const;
 
@@ -110,7 +110,7 @@ public:
     Window getActiveWindow() const;
     int getNumDesktop() const;
     QString getName(Window _wid) const;
-    Atom getAtom(QString _key) const
+    Atom getAtom(const QString & _key) const
     {
         return atomMap.value(_key);
     }
