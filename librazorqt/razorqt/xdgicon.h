@@ -33,6 +33,7 @@ public:
     static QString themeName();
     static void setThemeName(const QString& themeName);
 
+    static QIcon const defaultApplicationIcon();
 
 protected:
     explicit XdgIcon();

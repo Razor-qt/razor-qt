@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <QFileInfo>
 
+#define DEFAULT_APP_ICON "application-x-executable"
+
 /************************************************
 
  ************************************************/
@@ -211,6 +213,15 @@ QIcon* const XdgIconCache::fromTheme(const QString& iconName, int size)
 
     //qDebug() << "XdgIcon: not found" << iconName;
     return 0;
+}
+
+
+/************************************************
+
+ ************************************************/
+QIcon const XdgIcon::defaultApplicationIcon()
+{
+    return fromTheme(DEFAULT_APP_ICON, 32);
 }
 
 
