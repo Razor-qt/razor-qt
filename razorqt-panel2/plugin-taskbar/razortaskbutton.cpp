@@ -27,8 +27,6 @@
 #include <razorqt/xfitman.h>
 #include <QX11Info>
 
-
-#define DEFAULT_APP_ICON "xorg"
 #define MAX_BTN_WIDTH  400
 
 /************************************************
@@ -90,7 +88,7 @@ void RazorTaskButton::updateIcon()
     if (xfitMan().getClientIcon(mWindow, pix))
         setIcon(QIcon(pix));
     else
-        setIcon(XdgIcon::fromTheme(DEFAULT_APP_ICON, 32));
+        setIcon(XdgIcon::defaultApplicationIcon());
 }
 
 
