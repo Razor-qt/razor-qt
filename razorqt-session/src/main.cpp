@@ -15,7 +15,7 @@ session-openbox.conf
 session-eggwm.conf
 */
 
-#if DEBUG
+#ifdef DEBUG
 #include <cstdio>
 #include <cstdlib>
 #include <QDateTime>
@@ -51,7 +51,7 @@ void dbgMessageOutput(QtMsgType type, const char *msg)
 */
 int main(int argc, char **argv)
 {
-#if DEBUG
+#ifdef DEBUG
     qInstallMsgHandler(dbgMessageOutput);
 #endif
     QApplication app(argc, argv);
