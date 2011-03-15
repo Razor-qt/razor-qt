@@ -1,6 +1,7 @@
 #include "razorquicklaunch.h"
 #include <razorqt/xdgdesktopfile.h>
 #include "razorqt/readsettings.h"
+#include "razorqt/xdgicon.h"
 
 #include <QtDebug>
 #include <QProcess>
@@ -67,6 +68,9 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & name,
 {
     m_type = ActionLegacy;
 
+    if (icon.isNull())
+        setIcon(XdgIcon::defaultApplicationIcon());
+
     setData(exec);
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
 }
@@ -92,7 +96,7 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & desktop,
         title += " (" + gn + ")";
     setText(title);
 
-    setIcon(xdg->icon(128, QIcon()));
+    setIcon(xdg->icon(128, XdgIcon::defaultApplicationIcon()));
 
     setData(desktop);
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
