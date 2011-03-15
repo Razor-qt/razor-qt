@@ -1,8 +1,14 @@
-
+// Warning: order of those include is important.
+#include <QApplication>
+#include <QDesktopWidget>
 #include "razortray.h"
 #include <QtDebug>
 #include <QX11EmbedContainer>
+#include <QMessageBox>
+
+#include <QX11Info>
 #include <X11/Xlib.h>
+
 #include "razorqt/xfitman.h"
 
 
@@ -18,21 +24,11 @@ RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent
     qDebug() << "Razortray: initializing";
     setObjectName("Tray");
     setWindowTitle(tr("System Tray"));
-    //get our traycode-atom
-    m_xfitman = new XfitMan();
-    m_traycode = m_xfitman->getAtom("net_system_tray_opcode");
 
-    //first we try to set "us" (meaning the razorbar we are in!) as selection owner
-    //for tray stuff, forcing the events to the bar-window
-    //these will be sent to all plugins via the razorevent-subsystem
-    Window barWinId = panel->effectiveWinId();
-    QString systrayselcode = "net_system_tray";
-    QString managerselcode = "net_manager";
-    qDebug() << "getSel" << m_xfitman->getSelectionOwner(systrayselcode) << barWinId;
-    m_xfitman->setSelectionOwner(barWinId, systrayselcode, managerselcode);
-
-    //now register us for the incoming events! (make razorevent delivarrrr)
-    //Razor::getInstance().get_events()->registerCallback(this);
+    m_traycode = xfitMan().getAtom("net_system_tray_opcode");
+    // Inform X that this is the tray
+    xfitMan().setSelectionOwner(winId(), "net_system_tray", "net_manager");
+    
     connect(panel, SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
 }
 
@@ -42,7 +38,6 @@ RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent
  */
 RazorTray::~RazorTray()
 {
-//    delete gui;
 }
 
 /**
@@ -50,7 +45,7 @@ RazorTray::~RazorTray()
  */
 void RazorTray::handleEvent(XEvent* event)
 {
-    qDebug() << "RazorTray::handleEvent" << event->type << ClientMessage;
+    //qDebug() << "RazorTray::handleEvent" << event->type << ClientMessage;
     //we are waiting for a clientmessage
     if (event->type == ClientMessage)
     {
@@ -61,8 +56,16 @@ void RazorTray::handleEvent(XEvent* event)
             {
                 qDebug() << "Razortray: they wanna dock!" << event->xclient.data.l[2];
                 swallowXEmbed(event->xclient.data.l[2]);
+                return;
             }
-            //return true;
+            else if (event->xclient.data.l[1] == SYSTEM_TRAY_BEGIN_MESSAGE)
+            {
+                qDebug() << "SYSTEM_TRAY_BEGIN_MESSAGE";
+            }
+            else if (event->xclient.data.l[1] == SYSTEM_TRAY_CANCEL_MESSAGE)
+            {
+                qDebug() << "SYSTEM_TRAY_CANCEL_MESSAGE";
+            }
             return;
         }
     }
@@ -74,19 +77,37 @@ void RazorTray::handleEvent(XEvent* event)
  */
 void RazorTray::swallowXEmbed(Window _wid)
 {
-    qDebug() << "Razortraygui: swallowing client: " << _wid;
-    QX11EmbedContainer* embed = new QX11EmbedContainer(this);
+    qDebug() << "RazorTray::swallowXEmbed" << _wid;
+
+    QX11EmbedContainer* embed = new QX11EmbedContainer();
+    connect(embed, SIGNAL(error(QX11EmbedContainer::Error)),
+            this, SLOT(embedError(QX11EmbedContainer::Error)));
+//    connect(embed, SIGNAL(clientIsEmbedded()), this, SLOT(repaint()));
+
+    embed->setObjectName("TrayObject");
     embed->embedClient(_wid);
-    addWidget(embed);
-    //embed->setContentsMargins(0, 0, 0, 0);
-    //embed->setFixedSize( height()-5,  height()-5);
-    //m_xfitman->resizeWindow(_wid,embed->height(), embed->width());
-    m_xfitman->mapRaised(_wid);
+    embed->setContentsMargins(0, 0, 0, 0);
+    embed->setFixedSize( 32, 32);
+    
+    qDebug() << embed->error();
+
+    xfitMan().resizeWindow(_wid, embed->height(), embed->width());
+    xfitMan().mapRaised(_wid);
+    
+    //qDebug() << addWidget(embed) << embed->size();
+    
     connect(embed, SIGNAL(clientClosed()), this, SLOT(closeEmbed()));
+}
+
+void RazorTray::embedError(QX11EmbedContainer::Error e)
+{
+    QMessageBox::warning(this, tr("Tray Error"),
+                        tr("QX11EmbedContainer caused tray error: %1").arg(e));
 }
 
 void RazorTray::closeEmbed()
 {
+    qDebug() << "RazorTray::closeEmbed" << sender();
     // it *must* be called by signal
     Q_ASSERT(sender());
     QX11EmbedContainer* embed = qobject_cast<QX11EmbedContainer*>(sender());
