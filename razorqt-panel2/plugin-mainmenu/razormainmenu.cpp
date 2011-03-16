@@ -147,7 +147,7 @@ void RazorMainMenu::buildMenu()
     xdgMenu.setLogDir(mLogDir);
 
     mMenu = new QMenu(this);
-
+    mMenu->setObjectName("TopLevelMainMenu");
     bool res = xdgMenu.read();
     if (!res)
     {

@@ -1,10 +1,8 @@
 #RazorBar {
       background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #EFEFEF, stop:0.25 #e9e9e9, stop: 0.5 #dfdfdf, stop: 0.75 #d7d7d7, stop:1 #c0c0c0);     
 /*     background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #EFEFEF, stop:0.25 #e7e7e7, stop: 0.5 #e1e1e1, stop: 0.75 #d9d9d9, stop:1 #cecece);     */
-    border-top: 1px solid #EEEEEE;
+    border-top: 1px solid gray; 
     border-bottom: 1px solid gray;
-    
-/*    spacing: 0;*/
 }
 
 #RazorBar * {
@@ -47,16 +45,18 @@ QToolButton:hover{
 }
 
 #TaskBar QToolButton{
-    border: 2px groove silver;
-    border-radius: 6px;
-    width: 200px;
+     border: 2px groove silver; 
+     border-radius: 6px; 
+/*    width: 200px;*/
 }
 
 #TaskBar QToolButton:on{
     background: #FFFFFF;
 }
 
-
+#TaskBar QToolButton:hover{
+        border: -1;
+}
 
 /* Clock ************************************* */
 #Clock *{
@@ -86,5 +86,12 @@ QToolButton:hover{
 }
 
 
+#TopLevelMainMenu {
+    padding: 8px;
+}
 
-    
+#TopLevelMainMenu::item{
+     margin-left: 20px; 
+     padding: 5px 30px 5px 20px;  
+}
+
