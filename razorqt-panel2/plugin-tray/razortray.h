@@ -11,8 +11,10 @@
 #define SYSTEM_TRAY_BEGIN_MESSAGE 1
 #define SYSTEM_TRAY_CANCEL_MESSAGE 2
 
+#define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
+#define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
+
 #include <QX11EmbedContainer>
-#include <QFrame>
 
 
 /**
@@ -28,8 +30,10 @@ public:
 
 private:
     Atom m_traycode;
+    int m_count;
 
     void swallowXEmbed(Window _wid);
+    void updateSize();
 
 private slots:
     void closeEmbed();

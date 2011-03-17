@@ -8,6 +8,9 @@
 
 #include <QX11Info>
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
+#include <X11/extensions/Xrender.h>
 
 #include "razorqt/xfitman.h"
 
@@ -19,16 +22,79 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTray)
  * @brief constructor
  */
 RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent)
-    : RazorPanelPlugin(panel, configId, parent)
+    : RazorPanelPlugin(panel, configId, parent),
+    m_count(0)
 {
     qDebug() << "Razortray: initializing";
     setObjectName("Tray");
     setWindowTitle(tr("System Tray"));
 
     m_traycode = xfitMan().getAtom("net_system_tray_opcode");
+
+    // DEBUG: do we have composite?
+    qDebug() << "Composite:" << XGetSelectionOwner(QX11Info::display(), XInternAtom (QX11Info::display(), "_NET_WM_CM_S0", False));
+
     // Inform X that this is the tray
-    xfitMan().setSelectionOwner(winId(), "net_system_tray", "net_manager");
-    
+    Window winId = panel->winId();
+
+    // Tray orientation
+    int orientation = _NET_SYSTEM_TRAY_ORIENTATION_HORZ;
+    XChangeProperty(QX11Info::display(),
+                    winId,
+                    XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_ORIENTATION", False),
+                    XA_CARDINAL,
+                    32,
+                    PropModeReplace,
+                    (unsigned char *) &orientation, // TODO/FIXME: vertical panels
+                    1);
+#if 0
+    // This part of code is taken from tint2. But it looks like it's useles for now
+    // as Qt4 does all for us. See Qt4 source - qwidget_x11.cpp and qx11embedcontainer_x11.cpp
+    // So it seems to me that QToolBar is broken. See note in RazorTray::swallowXEmbed
+
+    // X alpha background handling
+    XVisualInfo templ;
+    templ.screen = 0;
+    templ.depth = 32;
+    templ.c_class = TrueColor; // workaround for C++ - seet X11/Xutil.h
+
+    int nvi;
+    XVisualInfo *xvi = XGetVisualInfo(QX11Info::display(), VisualScreenMask|VisualDepthMask|VisualClassMask, &templ, &nvi);
+
+    Visual *visual = 0;
+    if (xvi) {
+        qDebug() << "Found XVI" << xvi->screen << xvi->depth << xvi->c_class;
+        int i;
+        XRenderPictFormat *format;
+        for (i = 0; i < nvi; i++) {
+            format = XRenderFindVisualFormat(QX11Info::display(), xvi[i].visual);
+            if (format->type == PictTypeDirect && format->direct.alphaMask) {
+                visual = xvi[i].visual;
+                qDebug() << "Found visual" << visual;
+                break;
+            }
+        }
+    }
+    XFree (xvi);
+
+    VisualID vid = XVisualIDFromVisual(visual);
+
+    //VisualID vid =  XVisualIDFromVisual(DefaultVisual(QX11Info::display(), DefaultScreen(QX11Info::display())));
+    XChangeProperty(QX11Info::display(),
+                    winId,
+                    XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_VISUAL", False),
+                    XA_VISUALID,
+                    32,
+                    PropModeReplace,
+                    (unsigned char*)&vid,
+                    1);
+#endif
+
+    xfitMan().setSelectionOwner(winId, "net_system_tray", "net_manager");
+
+    setIconSize(QSize(32,32));
+    updateSize();
+
     connect(panel, SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
 }
 
@@ -85,17 +151,29 @@ void RazorTray::swallowXEmbed(Window _wid)
 //    connect(embed, SIGNAL(clientIsEmbedded()), this, SLOT(repaint()));
 
     embed->setObjectName("TrayObject");
-    embed->embedClient(_wid);
     embed->setContentsMargins(0, 0, 0, 0);
     embed->setFixedSize( 32, 32);
-    
+
     qDebug() << embed->error();
 
+
+    // WTF?!
+    // If I try to call addWidget(embed) I get bunch of X errors:
+    //    http://paste.opensuse.org/52197150
+    // but if I call it as a normal widget (show()) it works.
+    // It's the same as in old razor-panel - it was qwidget based...
+
+    qDebug() << addWidget(embed) << embed->size();
+    //embed->show();
+
+    embed->embedClient(_wid);
     xfitMan().resizeWindow(_wid, embed->height(), embed->width());
     xfitMan().mapRaised(_wid);
-    
-    //qDebug() << addWidget(embed) << embed->size();
-    
+
+    m_count++;
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    updateSize();
+
     connect(embed, SIGNAL(clientClosed()), this, SLOT(closeEmbed()));
 }
 
@@ -114,4 +192,15 @@ void RazorTray::closeEmbed()
     Q_ASSERT(embed); // just to be sure
     embed->close();
     embed->deleteLater();
+    m_count--;
+    updateSize();
+}
+
+void RazorTray::updateSize()
+{
+    // TODO/FIXME: this does not work
+    int s = (m_count ? m_count : 1) * iconSize().width();
+    qDebug() << "RazorTray::updateSize" << m_count << s;
+    QWidget::resize(s, height());
+    //QWidget::setMinimumWidth(s);
 }
