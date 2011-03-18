@@ -92,8 +92,8 @@ RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent
 
     xfitMan().setSelectionOwner(winId, "net_system_tray", "net_manager");
 
-    setIconSize(QSize(32,32));
-    updateSize();
+    //setIconSize(QSize(32,32));
+    //updateSize();
 
     connect(panel, SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
 }
@@ -163,7 +163,7 @@ void RazorTray::swallowXEmbed(Window _wid)
     // but if I call it as a normal widget (show()) it works.
     // It's the same as in old razor-panel - it was qwidget based...
 
-    qDebug() << addWidget(embed) << embed->size();
+    addWidget(embed);
     //embed->show();
 
     embed->embedClient(_wid);
@@ -171,8 +171,8 @@ void RazorTray::swallowXEmbed(Window _wid)
     xfitMan().mapRaised(_wid);
 
     m_count++;
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    updateSize();
+    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //updateSize();
 
     connect(embed, SIGNAL(clientClosed()), this, SLOT(closeEmbed()));
 }
@@ -199,8 +199,8 @@ void RazorTray::closeEmbed()
 void RazorTray::updateSize()
 {
     // TODO/FIXME: this does not work
-    int s = (m_count ? m_count : 1) * iconSize().width();
-    qDebug() << "RazorTray::updateSize" << m_count << s;
-    QWidget::resize(s, height());
+    //int s = (m_count ? m_count : 1) * iconSize().width();
+    //qDebug() << "RazorTray::updateSize" << m_count << s;
+    //QWidget::resize(s, height());
     //QWidget::setMinimumWidth(s);
 }

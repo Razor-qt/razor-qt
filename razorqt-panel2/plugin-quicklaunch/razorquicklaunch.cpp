@@ -5,6 +5,7 @@
 
 #include <QtDebug>
 #include <QProcess>
+#include <QToolButton>
 
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
@@ -34,7 +35,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, Q
         desktop = s->value("desktop", "").toString();
         if (! desktop.isEmpty())
         {
-            addAction(new RazorQuickLaunchAction(desktop, this));
+            addButton(new RazorQuickLaunchAction(desktop, this));
         }
         else
         {
@@ -46,7 +47,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, Q
                 qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
                 continue;
             }
-            addAction(new RazorQuickLaunchAction(execname, exec, icon, this));
+            addButton(new RazorQuickLaunchAction(execname, exec, icon, this));
         }
 
     }
@@ -57,6 +58,15 @@ RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, Q
 
 RazorQuickLaunch::~RazorQuickLaunch()
 {
+}
+
+void RazorQuickLaunch::addButton(QAction* action)
+{
+    QToolButton* btn = new QToolButton(this);
+    btn->setDefaultAction(action);
+    btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    btn->setIconSize(QSize(22, 22));
+    addWidget(btn);
 }
 
 RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & name,

@@ -19,16 +19,18 @@
 #ifndef RAZORPANEL_H
 #define RAZORPANEL_H
 
-#include <QMainWindow>
-#include <QString>
+#include <QtGui/QFrame>
+#include <QtCore/QString>
 #include <QtGui/QAction>
+#include <QtGui/QBoxLayout>
 
 class RazorPluginManager;
 class QActionGroup;
+class RazorPanelLayout;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */
-class RazorPanel : public QMainWindow
+class RazorPanel : public QFrame
 {
     Q_OBJECT
 
@@ -89,6 +91,7 @@ private:
     bool canPlacedOn(int displayNum, Position position) const;
 
     QByteArray defaultState();
+    RazorPanelLayout* mLayout;
 };
 
 

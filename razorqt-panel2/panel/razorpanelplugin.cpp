@@ -20,6 +20,7 @@
 #include "razorpanelplugin.h"
 #include <QToolButton>
 #include <QDebug>
+#include <QtGui/QBoxLayout>
 #include <QtCore/QEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMenu>
@@ -28,15 +29,20 @@
 
  ************************************************/
 RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent) :
-    QToolBar(parent),
+    QFrame(parent),
     mPanel(panel),
     mConfigId(configId)
 {
-    setFloatable(false);
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-    mExtensionButton = findChild<QToolButton*>(QLatin1String("qt_toolbar_ext_button"));
-    if (mExtensionButton)
-        mExtensionButton->installEventFilter(this);
+    mLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+    mLayout->setSpacing(0);
+    mLayout->setMargin(0);
+    mLayout->setContentsMargins(0, 0, 0, 0);
+
+//    mExtensionButton = findChild<QToolButton*>(QLatin1String("qt_toolbar_ext_button"));
+//    if (mExtensionButton)
+//        mExtensionButton->installEventFilter(this);
 }
 
 
@@ -50,30 +56,11 @@ RazorPanelPlugin::~RazorPanelPlugin()
 
 
 /************************************************
-  Workaround about QTBUG-597
-  http://bugreports.qt.nokia.com/browse/QTBUG-597
+
  ************************************************/
-bool RazorPanelPlugin::eventFilter(QObject* watched, QEvent* event)
+void RazorPanelPlugin::addWidget(QWidget* widget)
 {
-
-    if (watched == mExtensionButton)
-    {
-        switch (event->type())
-        {
-            case QEvent::MouseButtonPress:
-            case QEvent::MouseButtonDblClick:
-                return true;
-
-            case QEvent::MouseButtonRelease:
-                showExtensionMenu((QMouseEvent*) event);
-                return true;
-
-            default:
-                break;
-
-        }
-    }
-    return QToolBar::eventFilter(watched, event);
+    mLayout->addWidget(widget);
 }
 
 
@@ -81,31 +68,59 @@ bool RazorPanelPlugin::eventFilter(QObject* watched, QEvent* event)
   Workaround about QTBUG-597
   http://bugreports.qt.nokia.com/browse/QTBUG-597
  ************************************************/
-void RazorPanelPlugin::showExtensionMenu(QMouseEvent* event)
-{
-    QMenu menu;
-    QPoint extBtnPos = this->mExtensionButton->pos();
+//bool RazorPanelPlugin::eventFilter(QObject* watched, QEvent* event)
+//{
 
-    QList<QAction*> acts = actions();
+//    if (watched == mExtensionButton)
+//    {
+//        switch (event->type())
+//        {
+//            case QEvent::MouseButtonPress:
+//            case QEvent::MouseButtonDblClick:
+//                return true;
 
-    switch (this->orientation())
-    {
-        case Qt::Horizontal:
-            foreach(QAction* act, acts)
-            {
-                if (actionGeometry(act).right() > extBtnPos.x())
-                    menu.addAction(act);
-            }
-            break;
+//            case QEvent::MouseButtonRelease:
+//                showExtensionMenu((QMouseEvent*) event);
+//                return true;
 
-        case Qt::Vertical:
-            foreach(QAction* act, acts)
-            {
-                if (actionGeometry(act).bottom() > extBtnPos.y())
-                    menu.addAction(act);
-            }
-            break;
-    }
+//            default:
+//                break;
 
-    menu.exec(event->globalPos());
-}
+//        }
+//    }
+//    return QToolBar::eventFilter(watched, event);
+//}
+
+
+/************************************************
+  Workaround about QTBUG-597
+  http://bugreports.qt.nokia.com/browse/QTBUG-597
+ ************************************************/
+//void RazorPanelPlugin::showExtensionMenu(QMouseEvent* event)
+//{
+//    QMenu menu;
+//    QPoint extBtnPos = this->mExtensionButton->pos();
+
+//    QList<QAction*> acts = actions();
+
+//    switch (this->orientation())
+//    {
+//        case Qt::Horizontal:
+//            foreach(QAction* act, acts)
+//            {
+//                if (actionGeometry(act).right() > extBtnPos.x())
+//                    menu.addAction(act);
+//            }
+//            break;
+
+//        case Qt::Vertical:
+//            foreach(QAction* act, acts)
+//            {
+//                if (actionGeometry(act).bottom() > extBtnPos.y())
+//                    menu.addAction(act);
+//            }
+//            break;
+//    }
+
+//    menu.exec(event->globalPos());
+//}

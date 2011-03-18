@@ -6,6 +6,7 @@
 
 class XdgDesktopFile;
 class ReadSettings;
+class QAction;
 
 /*! \brief Loader for "quick launcher" icons in the panel.
 \author Petr Vanek <petr@scribus.info>
@@ -27,6 +28,7 @@ private:
 private slots:
     //! run command in the action
     void execAction(QAction*);
+    void addButton(QAction* action);
 };
 
 /*! \brief Special action representation for RazorQuickLaunch plugin.

@@ -10,6 +10,7 @@ set(HEADERS
     razorpanelplugin.h
     razorpluginmanager.h
     razorpanelapplication.h
+    razorpanellayout.h
 )
 
 set(SOURCES
@@ -18,6 +19,7 @@ set(SOURCES
     razorpanelplugin.cpp
     razorpluginmanager.cpp
     razorpanelapplication.cpp
+    razorpanellayout.cpp
 )
 
 set(MOCS

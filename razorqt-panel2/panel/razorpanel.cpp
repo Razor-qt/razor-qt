@@ -20,6 +20,7 @@
 #include "razorpanelplugin.h"
 #include "razorpluginmanager.h"
 #include "razorpanelapplication.h"
+#include "razorpanellayout.h"
 
 #include <razorqt/readsettings.h>
 
@@ -46,7 +47,6 @@
 #define CFG_KEY_POSITION   "position"
 #define CFG_KEY_PLUGINS    "plugins"
 #define CFG_KEY_STATE      "state"
-
 
 /************************************************
 
@@ -88,12 +88,14 @@ PositionAction::PositionAction(int displayNum, RazorPanel::Position position, QA
 
  ************************************************/
 RazorPanel::RazorPanel(QWidget *parent) :
-  QMainWindow(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
-
+  QFrame(parent),
+  mLayout(new RazorPanelLayout(QBoxLayout::LeftToRight, this))
 {
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
+    setLayout(mLayout);
     setObjectName("RazorBar");
     mPluginManager = new RazorPluginManager();
 
@@ -123,6 +125,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
 
     QString locale = QLocale::system().name();
     // Read panels & load plugins
+bool left= true;
     int cnt = settings->allKeys().count();
     for (int i=1; i<cnt; ++i)
     {
@@ -142,14 +145,25 @@ RazorPanel::RazorPanel(QWidget *parent) :
 
         if (plugin)
         {
-            addToolBar(plugin);
+            if (left && (plugin)->preferredAlignment() == RazorPanelPlugin::AlignRight)
+            {
+                qDebug() << "*************" << plugin->windowTitle();
+                mLayout->addStretch(0);
+                left = false;
+            }
+
+            qDebug() << "***** " << plugin->objectName()
+                     << plugin->sizePolicy().horizontalPolicy()
+                     << plugin->sizePolicy().horizontalStretch();
+            mLayout->addWidget(plugin);
+
         }
     }
             
-    if (settings->contains(CFG_KEY_STATE))
-        restoreState(settings->value(CFG_KEY_STATE).toByteArray());
-    else
-        restoreState(defaultState());
+    //if (settings->contains(CFG_KEY_STATE))
+    //    restoreState(settings->value(CFG_KEY_STATE).toByteArray());
+    //else
+    //    restoreState(defaultState());
 
     delete panelRS;
 
@@ -168,7 +182,7 @@ RazorPanel::~RazorPanel()
     settings->beginGroup(mConfigId);
     settings->setValue(CFG_KEY_DESKTOPNUM, mDesktopNum);
     settings->setValue(CFG_KEY_POSITION, positionToStr(mPosition));
-    settings->setValue(CFG_KEY_STATE, saveState());
+    //settings->setValue(CFG_KEY_STATE, saveState());
 
     delete panelRS;
 
@@ -182,8 +196,9 @@ RazorPanel::~RazorPanel()
  ************************************************/
 void RazorPanel::show()
 {
-    QMainWindow::show();
+    QWidget::show();
     realign();
+    mLayout->invalidate();
     xfitMan().moveWindowToDesktop(this->effectiveWinId(), -1);
 }
 
@@ -208,7 +223,7 @@ void debugState(const QByteArray& state, const QString logFile, bool append=true
 
  ************************************************/
 QByteArray RazorPanel::defaultState()
-{
+{/*
     QByteArray result = saveState();
 
     RazorPanelPlugin* plugin = 0;
@@ -247,6 +262,7 @@ QByteArray RazorPanel::defaultState()
     }
 
     return result;
+    */
 }
 
 
@@ -267,13 +283,13 @@ void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
         QMenu* plugMenu = m->addMenu(plugin->windowTitle());
         plugMenu->setIcon(plugin->windowIcon());
 
-        if (plugin->isMovable())
-            a = plugMenu->addAction(XdgIcon::fromTheme("document-encrypt", 32), tr("Lock"));
-        else
-            a = plugMenu->addAction(XdgIcon::fromTheme("document-decrypt", 32), tr("Unlock"));
+//        if (plugin->isMovable())
+//            a = plugMenu->addAction(XdgIcon::fromTheme("document-encrypt", 32), tr("Lock"));
+//        else
+//            a = plugMenu->addAction(XdgIcon::fromTheme("document-decrypt", 32), tr("Unlock"));
 
-        a->setData(i);
-        connect(a, SIGNAL(triggered()), this, SLOT(lockPlugin()));
+//        a->setData(i);
+//        connect(a, SIGNAL(triggered()), this, SLOT(lockPlugin()));
 
         if (plugin->isVisible())
         {
@@ -348,17 +364,17 @@ void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
  ************************************************/
 void RazorPanel::lockPlugin()
 {
-    QAction* a = qobject_cast<QAction*>(sender());
-    if (!a)
-        return;
+//    QAction* a = qobject_cast<QAction*>(sender());
+//    if (!a)
+//        return;
 
-    bool ok;
-    int n = a->data().toInt(&ok);
-    if (ok && n>-1 && n<mPluginManager->count())
-    {
-        RazorPanelPlugin* plugin = mPluginManager->value(n);
-        plugin->setMovable(!plugin->isMovable());
-    }
+//    bool ok;
+//    int n = a->data().toInt(&ok);
+//    if (ok && n>-1 && n<mPluginManager->count())
+//    {
+//        RazorPanelPlugin* plugin = mPluginManager->value(n);
+//        plugin->setMovable(!plugin->isMovable());
+//    }
 }
 
 

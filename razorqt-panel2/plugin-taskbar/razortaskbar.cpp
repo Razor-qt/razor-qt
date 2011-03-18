@@ -47,6 +47,10 @@ RazorTaskBar::RazorTaskBar(RazorPanel* panel, const QString& configId, QWidget *
     setWindowTitle(tr("Task Bar"));
 
     connect(panel, SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleXEvent(XEvent*)));
+    QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    sp.setHorizontalStretch(1);
+    sp.setVerticalStretch(1);
+    setSizePolicy(sp);
 
     mRootWindow = QX11Info::appRootWindow();
     refreshTaskList();

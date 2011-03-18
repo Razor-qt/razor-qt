@@ -36,11 +36,12 @@ as in the "name" constructor's argument.
 #ifndef RAZORPANELPLUGIN_H
 #define RAZORPANELPLUGIN_H
 
-#include <QToolBar>
+#include <QFrame>
 #include "razorpanel.h"
 
-class QToolButton;
 
+class QToolButton;
+class QBoxLayout;
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -61,7 +62,7 @@ position of the panel (top, bottom, left, right) and panel size (height,
 width).
 */
 
-class RazorPanelPlugin : public QToolBar
+class RazorPanelPlugin : public QFrame
 {
     Q_OBJECT
 public:
@@ -91,11 +92,14 @@ public:
     RazorPanel* panel() const { return mPanel; }
     QString configId() const { return mConfigId; }
 
-    virtual void showExtensionMenu(QMouseEvent* event);
+    //virtual void showExtensionMenu(QMouseEvent* event);
+    void addWidget(QWidget* widget);
+
 
 protected:
-    QToolButton* mExtensionButton;
-    bool eventFilter(QObject* watched, QEvent* event);
+    //QToolButton* mExtensionButton;
+    //bool eventFilter(QObject* watched, QEvent* event);
+    QBoxLayout* mLayout;
 
 private:
     RazorPanel* mPanel;
