@@ -53,7 +53,7 @@ int main (int argc, char* argv[])
     {
         qDebug() << "Using root-window as wallpaper-canvas";
         legacyWallPaper();
-        RazorDeskManagerLegacy* deskman=new RazorDeskManagerLegacy(NULL);
+        RazorDeskManagerLegacy* deskman=new RazorDeskManagerLegacy();
         Q_UNUSED(deskman);
     }
     else

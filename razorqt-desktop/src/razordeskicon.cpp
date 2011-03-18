@@ -28,8 +28,19 @@ RazorDeskIconBase::RazorDeskIconBase(
     setFixedSize(70,70);
 
     setIconSize(iconsize);
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
-    setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+    
+    if (! parent)
+    {
+        qDebug() << "SETTINGS AS A BG";
+        setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
+    }
+    else
+    {
+        qDebug() << "   AS A CHILD";
+        setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog );
+    }
+
     setAttribute(Qt::WA_TranslucentBackground);
     setCursor(Qt::PointingHandCursor);
 

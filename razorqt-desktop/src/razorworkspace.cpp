@@ -59,6 +59,7 @@ void RazorWorkSpace::wheelEvent(QWheelEvent* _ev)
 
 RazorWorkSpace::RazorWorkSpace(QWidget* _parent, Qt::WindowFlags _f): QLabel(_parent, _f)
 {
+    qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
     setScaledContents(true);
@@ -80,7 +81,7 @@ void RazorWorkSpaceManager::mouseClicked(QMouseEvent* _event)
 RazorWorkSpaceManager::RazorWorkSpaceManager(QObject* parent)
     : QObject(parent)
 {
-
+    qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager";
     //this may actually make the icon work on multihead
     QWidget* screen = QApplication::desktop()->screen(QApplication::desktop()->primaryScreen());
     workSpace = new RazorWorkSpace(screen);

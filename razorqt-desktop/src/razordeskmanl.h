@@ -27,7 +27,7 @@ class RazorDeskManagerLegacy:public RazorDeskManager
 {
     Q_OBJECT
 public:
-    RazorDeskManagerLegacy(RazorWorkSpace* _workspace);
+    RazorDeskManagerLegacy(RazorWorkSpace* _workspace = 0);
     ~RazorDeskManagerLegacy();
     void updateIconList();
 };
