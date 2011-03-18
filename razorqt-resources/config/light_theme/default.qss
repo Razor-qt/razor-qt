@@ -1,27 +1,32 @@
 #RazorBar {
-      background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #EFEFEF, stop:0.25 #e9e9e9, stop: 0.5 #dfdfdf, stop: 0.75 #d7d7d7, stop:1 #c0c0c0);     
-/*     background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #EFEFEF, stop:0.25 #e7e7e7, stop: 0.5 #e1e1e1, stop: 0.75 #d9d9d9, stop:1 #cecece);     */
+    background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #EFEFEF, stop:0.25 #e9e9e9, stop: 0.5 #dfdfdf, stop: 0.75 #d7d7d7, stop:1 #c0c0c0);      
     border-top: 1px solid gray; 
     border-bottom: 1px solid gray;
 }
+
 
 #RazorBar * {
   color: #333333;
 }
 
-QToolBar {
-    spacing: 2px;
-    border: 3px solid transparent;
+RazorPanelPlugin {
+    margin: 3px 0 3px 0;
+    padding: 0 2px 0 2px;    
+/*     border: 1px dotted red;  */
+    spacing: 20px;
 }
 
-QToolBar::handle {
-    background: none; 
-    border-left: 2px groove silver; 
-    width: 4px;
+
+QToolButton {
+    margin: 0;
+    border: 2px solid transparent;
+    border-radius: 3px;
 }
+
 
 QToolButton:hover{
-    background: #FFFFFF;
+    margin: 1px;
+    border: 1px solid #80a8d3;
 }
 
 
@@ -32,35 +37,38 @@ QToolButton:hover{
 }
 
 
-
+/* TaskBar *********************************** */
 
 #TaskBar {
-    
 /*     border: 1px dotted red; */
     
-}
-
-#TaskBar {
-
 }
 
 #TaskBar QToolButton{
      border: 2px groove silver; 
      border-radius: 6px; 
 /*    width: 200px;*/
+    padding-right: 4px;
+    margin-right: 3px;
 }
 
 #TaskBar QToolButton:on{
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 80%);
+    border: 1px solid #80a8d3;
+    margin: 1px;
+/*    border: 1px solid #80a8d3;*/
 }
 
 #TaskBar QToolButton:hover{
-        border: -1;
+   margin: 1px;
+   border: 1px solid #80a8d3;
 }
 
+
 /* Clock ************************************* */
-#Clock *{
-   
+#Clock QLabel{
+    font-size: 8pt;
+    color: #606060;    
 }
 
 
@@ -70,13 +78,14 @@ QToolButton:hover{
 }
 
 #MainMenu QPushButton {
+    margin: -3px 0 -3px 0;    
     height: 32px;
     width: 32px;
     border-width: 2px;
     border-style: solid;
     border-color: transparent;
     background-image: url(kde.png); 
-    background-position:  left;
+    background-position:  center;
     background-repeat: no-repeat;
 }
 
@@ -95,3 +104,5 @@ QToolButton:hover{
      padding: 5px 30px 5px 20px;  
 }
 
+
+    
