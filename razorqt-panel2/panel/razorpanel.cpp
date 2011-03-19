@@ -222,8 +222,8 @@ void debugState(const QByteArray& state, const QString logFile, bool append=true
 /************************************************
 
  ************************************************/
-QByteArray RazorPanel::defaultState()
-{/*
+/*QByteArray RazorPanel::defaultState()
+{
     QByteArray result = saveState();
 
     RazorPanelPlugin* plugin = 0;
@@ -262,14 +262,70 @@ QByteArray RazorPanel::defaultState()
     }
 
     return result;
-    */
+
+}
+*/
+
+
+/************************************************
+
+ ************************************************/
+QMenu* RazorPanel::popupMenu(QWidget *parent)
+{
+    QMenu* menu = new QMenu(tr("Show this panel at"), parent);
+    menu->setIcon(XdgIcon::fromTheme("configure-toolbars", 32));
+    QAction* a;
+
+    // Create Panel menu ********************************************
+ //   m = menu->addMenu(XdgIcon::fromTheme("", 32), );
+    QActionGroup* posGroup = new QActionGroup(menu);
+
+    QDesktopWidget* dw = QApplication::desktop();
+    for (int i=0; i<dw->screenCount(); ++i)
+    {
+        if (canPlacedOn(i, PositionTop))
+        {
+            a = new PositionAction(i,  PositionTop, posGroup);
+            a->setChecked(mPosition == PositionTop && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            menu->addAction(a);
+        }
+
+        if (canPlacedOn(i, PositionBottom))
+        {
+            a = new PositionAction(i, PositionBottom, posGroup);
+            a->setChecked(mPosition == PositionBottom && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            menu->addAction(a);
+        }
+
+        if (canPlacedOn(i, PositionLeft))
+        {
+            a = new PositionAction(i, PositionLeft, posGroup);
+            a->setChecked(mPosition == PositionLeft && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            menu->addAction(a);
+        }
+
+
+        if (canPlacedOn(i, PositionRight))
+        {
+            a = new PositionAction(i, PositionRight, posGroup);
+            a->setChecked(mPosition == PositionRight && mDesktopNum == i);
+            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
+            menu->addAction(a);
+        }
+
+    }
+
+    return menu;
 }
 
 
 /************************************************
 
  ************************************************/
-void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
+/*void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu(tr("Panel"));
     QMenu* m;
@@ -357,7 +413,7 @@ void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
     menu.exec(event->globalPos());
 
 }
-
+*/
 
 /************************************************
 

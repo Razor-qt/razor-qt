@@ -51,6 +51,7 @@ RazorTaskBar::RazorTaskBar(RazorPanel* panel, const QString& configId, QWidget *
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);
     setSizePolicy(sp);
+    layout()->addStretch();
 
     mRootWindow = QX11Info::appRootWindow();
     refreshTaskList();
@@ -109,7 +110,7 @@ void RazorTaskBar::refreshTaskList()
         {
             RazorTaskButton* btn = new RazorTaskButton(wnd, this);
             mButtonsHash.insert(wnd, btn);
-            addWidget(btn);
+            layout()->insertWidget(layout()->count()-1, btn);
         }
     }
 

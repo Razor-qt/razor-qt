@@ -24,6 +24,7 @@
 
 class RazorPanelLayout : public QBoxLayout
 {
+    Q_OBJECT
 public:
     RazorPanelLayout(Direction dir, QWidget* parent=0);
     virtual ~RazorPanelLayout();

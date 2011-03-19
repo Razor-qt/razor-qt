@@ -26,6 +26,7 @@ set(MOCS
     razorpanel.h
     razorpanelplugin.h
     razorpanelapplication.h
+    razorpanellayout.h
 )
 
 set(LIBRARIES

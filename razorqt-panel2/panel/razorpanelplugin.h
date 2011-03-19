@@ -36,12 +36,13 @@ as in the "name" constructor's argument.
 #ifndef RAZORPANELPLUGIN_H
 #define RAZORPANELPLUGIN_H
 
-#include <QFrame>
+#include <QtGui/QFrame>
+#include <QtGui/QBoxLayout>
 #include "razorpanel.h"
 
 
 class QToolButton;
-class QBoxLayout;
+class QMenu;
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -90,21 +91,32 @@ public:
     virtual Alignment preferredAlignment() const { return AlignLeft; }
 
     RazorPanel* panel() const { return mPanel; }
+
     QString configId() const { return mConfigId; }
 
     //virtual void showExtensionMenu(QMouseEvent* event);
-    void addWidget(QWidget* widget);
+    /*! Adds the given widget to the end of the plugin box.
+        The plugin does not takes ownership of widget.
+     */
+    virtual void addWidget(QWidget* widget);
 
+    /*! Returns the layout manager that is installed on this plugin.
+     */
+    QBoxLayout* layout() const { return mLayout; }
 
 protected:
     //QToolButton* mExtensionButton;
     //bool eventFilter(QObject* watched, QEvent* event);
     QBoxLayout* mLayout;
+    virtual QMenu* popupMenu(QWidget *parent);
+    virtual void contextMenuEvent( QContextMenuEvent* event);
 
 private:
     RazorPanel* mPanel;
     QString mConfigId;
 
+private slots:
+    void startMove();
 };
 
 

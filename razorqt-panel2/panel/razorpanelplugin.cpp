@@ -15,15 +15,18 @@
   Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 *********************************************************************/
-#include <QStyleOptionToolBar>
+//#include <QStyleOptionToolBar>
 
 #include "razorpanelplugin.h"
-#include <QToolButton>
+#include "razorpanellayout.h"
+
+//#include <QToolButton>
+#include <QApplication>
 #include <QDebug>
-#include <QtGui/QBoxLayout>
 #include <QtCore/QEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMenu>
+#include <razorqt/xdgicon.h>
 
 /************************************************
 
@@ -39,10 +42,6 @@ RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, Q
     mLayout->setSpacing(0);
     mLayout->setMargin(0);
     mLayout->setContentsMargins(0, 0, 0, 0);
-
-//    mExtensionButton = findChild<QToolButton*>(QLatin1String("qt_toolbar_ext_button"));
-//    if (mExtensionButton)
-//        mExtensionButton->installEventFilter(this);
 }
 
 
@@ -62,6 +61,57 @@ void RazorPanelPlugin::addWidget(QWidget* widget)
 {
     mLayout->addWidget(widget);
 }
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::contextMenuEvent(QContextMenuEvent* event)
+{
+    QMenu* menu = popupMenu(0);
+    menu->exec(event->globalPos());
+    delete menu;
+}
+
+
+/************************************************
+
+ ************************************************/
+QMenu* RazorPanelPlugin::popupMenu(QWidget *parent)
+{
+    QMenu* menu = new QMenu(parent);
+    QAction* a;
+
+    a = menu->addAction(XdgIcon::fromTheme("transform-move", 32), tr("Move plugin"));
+    connect(a, SIGNAL(triggered()), this, SLOT(startMove()));
+
+    menu->addSeparator();
+    menu->addMenu(panel()->popupMenu(menu));
+
+    menu->addSeparator();
+    a = menu->addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
+    connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    return menu;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::startMove()
+{
+    RazorPanelLayout* layout = qobject_cast<RazorPanelLayout*>(panel()->layout());
+    if (!layout)
+        return;
+
+    qDebug() << "START";
+}
+
+
+/************************************************
+
+ ************************************************/
 
 
 /************************************************

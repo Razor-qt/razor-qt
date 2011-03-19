@@ -33,6 +33,7 @@ class RazorPanelLayout;
 class RazorPanel : public QFrame
 {
     Q_OBJECT
+    friend class RazorPanelPlugin;
 
 public:
     enum Position{
@@ -55,7 +56,8 @@ signals:
      void x11PropertyNotify(XEvent* event);
 
 protected:
-    void contextMenuEvent( QContextMenuEvent* event);
+    //void contextMenuEvent( QContextMenuEvent* event);
+    virtual QMenu* popupMenu(QWidget *parent);
 
 protected slots:
     void realign();
@@ -90,7 +92,7 @@ private:
      */
     bool canPlacedOn(int displayNum, Position position) const;
 
-    QByteArray defaultState();
+    //QByteArray defaultState();
     RazorPanelLayout* mLayout;
 };
 
