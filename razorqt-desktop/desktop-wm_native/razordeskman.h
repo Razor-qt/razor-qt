@@ -10,39 +10,37 @@
 #include <QFileSystemWatcher>
 
 #include "razordeskicon.h"
-#include "razorworkspace.h"
 #include <razorqt/readsettings.h>
+#include <desktopplugin.h>
 
 typedef QMap<QString,RazorDeskIconBase*> IconMap;
 typedef QMapIterator<QString,RazorDeskIconBase*> IconMapIterator;
 
+EXPORT_RAZOR_DESKTOP_PLUGIN_H
+
 /**
  * @brief all the iconManagers are derived from this!
  */
-class RazorDeskManager : public QObject
+class RazorDeskManager : public QObject, public DesktopPlugin
 {
     Q_OBJECT
 public:
+    RazorDeskManager(const QString & configId, ReadSettings * config);
     ~RazorDeskManager();
-    RazorDeskManager(RazorWorkSpace* _workspace);
+
+    QString info();
 
 public slots:
     void saveIconState();
-    virtual void updateIconList() = 0;
+    void updateIconList();
 
-protected:
+private:
     void restoreIconState();
-    RazorWorkSpace* workSpace()
-    {
-        return workspace;
-    }
 
     IconMap m_iconList;
     QFileSystemWatcher * m_fsw;
 
-private:
     ReadSettings *deskicons;
-    RazorWorkSpace * workspace;
 };
 
 

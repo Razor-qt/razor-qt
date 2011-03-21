@@ -1,10 +1,14 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QFileIconProvider>
+#include <QtDebug>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QBitmap>
 
 #include "razordeskicon.h"
-#include "razor.h"
 #include <razorqt/xfitman.h>
+#include <razorqt/xdgicon.h>
 
 
 RazorDeskIconBase::RazorDeskIconBase(
@@ -31,13 +35,11 @@ RazorDeskIconBase::RazorDeskIconBase(
     
     if (! parent)
     {
-        qDebug() << "SETTINGS AS A BG";
         setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Dialog );
     }
     else
     {
-        qDebug() << "   AS A CHILD";
         setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog );
     }
 
@@ -71,7 +73,7 @@ void RazorDeskIconBase::setPos(const QPoint & npos)
     if (parent() != NULL)
         move(npos);
     else //else we need Xlib for moving, xlib is encapsulated by xfitman from librazorqt.
-        Razor::getInstance().getxfitman()->moveWindow(effectiveWinId(), npos.x(), npos.y());
+        xfitMan().moveWindow(effectiveWinId(), npos.x(), npos.y());
 }
 
 void RazorDeskIconBase::mouseMoveEvent(QMouseEvent* _event)
@@ -207,6 +209,7 @@ QPixmap * RazorDeskIconBase::initialPainting(QIcon::Mode mode)
     return pm;
 }
 
+
 RazorDeskIconDesktop::RazorDeskIconDesktop(XdgDesktopFile * xdg,
                                            const QPoint & position,
                                            QWidget * parent
@@ -217,7 +220,8 @@ RazorDeskIconDesktop::RazorDeskIconDesktop(XdgDesktopFile * xdg,
 
     setText(xdg->value("Name").toString());
     setToolTip(xdg->value("Comment").toString());
-    setIcon(Razor::getInstance().geticontheme()->getIconNG(xdg->value("Icon").toString()));
+
+    setIcon(xdg->icon(32, XdgIcon::defaultApplicationIcon()));
 }
 
 RazorDeskIconDesktop::~RazorDeskIconDesktop()
