@@ -14,8 +14,15 @@ HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSet
     
     setOpenExternalLinks(true);
     QString text(s->value("text", "Lorem Ipsum").toString());
-    qDebug() << "HelloWorld" << text;
     setHtml(text);
+    
+    QString color(s->value("color", "").toString());
+    if (! color.isEmpty())
+        setDefaultTextColor(QColor(color));
+
+    QFont f = font();
+    f.setPixelSize(48);
+    setFont(f);
     
     setFlag(QGraphicsItem::ItemIsMovable);
     
