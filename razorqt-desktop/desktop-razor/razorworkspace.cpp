@@ -18,6 +18,10 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+    
+    // this is mandatory for virtualized (virtualbox) installations. Dunno why.
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     connect(QApplication::desktop(), SIGNAL(workAreaResized(int)),
             this, SLOT(workspaceResized(int)));

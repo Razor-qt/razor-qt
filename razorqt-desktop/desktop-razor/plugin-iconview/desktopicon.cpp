@@ -62,6 +62,7 @@ void IconBase::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
     painter->setPen(QPen(txt, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::BevelJoin));
 
     QColor bgText = qApp->palette().color(QPalette::Window);
+
     bgText.setAlpha(m_highlight ? 80 : 40);
 
     painter->setBrush(QBrush(bgText, Qt::SolidPattern));
