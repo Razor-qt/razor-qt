@@ -12,20 +12,19 @@
 
 RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
     : QGraphicsView(parent),
-      m_config(config)
+      m_config(config),
+      m_screen(screen)
 {
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
 
-    QRect geometry(QApplication::desktop()->availableGeometry(screen));
+    connect(QApplication::desktop(), SIGNAL(workAreaResized(int)),
+            this, SLOT(workspaceResized(int)));
     
-    move(geometry.x(), geometry.y());
-    resize(geometry.width(), geometry.height());
-    //setMaximumSize(geometry.width(), geometry.height());
-    
-    m_scene = new QGraphicsScene(geometry.x(), geometry.y(), geometry.width(), geometry.height(), this);
+    m_scene = new QGraphicsScene(this);
     setScene(m_scene);
+    workspaceResized(screen);
     
     setRenderHint(QPainter::Antialiasing);
     setRenderHint(QPainter::TextAntialiasing);
@@ -96,7 +95,7 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
         }
         else
         {
-            DesktopWidgetPlugin * plugin = initFunc(configId, m_config);
+            DesktopWidgetPlugin * plugin = initFunc(m_scene, configId, m_config);
             Q_ASSERT(plugin);
 
             if (plugin)
@@ -106,14 +105,34 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
                 qDebug() << plugin->info();
 
                 QGraphicsItem * item = dynamic_cast<QGraphicsItem*>(plugin);
-                Q_ASSERT(item);
-                m_scene->addItem(item);
+                QWidget * w = dynamic_cast<QWidget*>(plugin);
+                if (w)
+                {
+                    qDebug() << "adding widget";
+                    m_scene->addWidget(w);
+                }
+                else if (item)
+                {
+                    qDebug() << "adding item";
+                    m_scene->addItem(item);
+                }
+
                 plugin->setSizeAndPosition(position, size);
             }
         }
     }
 }
 
+void RazorWorkSpace::workspaceResized(int screen)
+{
+    if (screen != m_screen)
+        return;
+
+    QRect geometry(QApplication::desktop()->availableGeometry(screen));    
+    move(geometry.x(), geometry.y());
+    resize(geometry.width(), geometry.height());
+    m_scene->setSceneRect(geometry.x(), geometry.y(), geometry.width(), geometry.height());
+}
 
 void RazorWorkSpace::mouseMoveEvent(QMouseEvent* _ev)
 {

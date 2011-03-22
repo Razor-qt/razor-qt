@@ -1,7 +1,7 @@
 #ifndef ICONVIEW_H
 #define ICONVIEW_H
 
-#include <QGraphicsWidget>
+#include <QGraphicsView>
 
 #include <razorqt/readsettings.h>
 #include <desktopwidgetplugin.h>
@@ -9,10 +9,10 @@
 class IconScene;
 
 
-class IconView : public DesktopWidgetPlugin, public QGraphicsWidget
+class IconView : public DesktopWidgetPlugin, public QGraphicsView
 {
 public:
-    IconView(const QString & configId, ReadSettings * config);
+    IconView(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
     ~IconView();
 
     QString info();

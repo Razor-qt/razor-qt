@@ -1,12 +1,13 @@
 #include "helloworld.h"
 #include <QtDebug>
+#include <QGraphicsScene>
 
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(HelloWorld)
 
 
-HelloWorld::HelloWorld(const QString & configId, ReadSettings * config)
-    : DesktopWidgetPlugin(configId, config)
+HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSettings * config)
+    : DesktopWidgetPlugin(scene, configId, config)
 {
     QSettings * s = config->settings();
     s->beginGroup(configId);
@@ -15,6 +16,8 @@ HelloWorld::HelloWorld(const QString & configId, ReadSettings * config)
     QString text(s->value("text", "Lorem Ipsum").toString());
     qDebug() << "HelloWorld" << text;
     setHtml(text);
+    
+    setFlag(QGraphicsItem::ItemIsMovable);
     
     s->endGroup();
 }

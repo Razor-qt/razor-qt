@@ -9,47 +9,40 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(IconView)
 
 
-IconView::IconView(const QString & configId, ReadSettings * config)
-    : DesktopWidgetPlugin(configId, config)
+IconView::IconView(QGraphicsScene * scene, const QString & configId, ReadSettings * config)
+    : DesktopWidgetPlugin(scene, configId, config)
 {
+    setObjectName("IconView");
+
     QSettings * s = config->settings();
     s->beginGroup(configId);
 
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     dir = s->value("directory", dir).toString();
     s->endGroup();
-
-#if 0      
-    QGraphicsGridLayout * layout = new QGraphicsGridLayout();
-    layout->addItem(new QGraphicsTextItem(dir), 0, 0);
-
-  
-    // TODO/FIXME: delete!
+    
+    setAttribute(Qt::WA_TranslucentBackground);
+    
     m_scene = new IconScene(dir);
    
-    // TODO/FIXME: delete!
-    QGraphicsView * view = new QGraphicsView(m_scene);
+    setScene(m_scene);
     
-    view->setRenderHint(QPainter::Antialiasing);
-    view->setRenderHint(QPainter::TextAntialiasing);
-    view->setRenderHint(QPainter::SmoothPixmapTransform);
-    view->setRenderHint(QPainter::HighQualityAntialiasing);
+    setRenderHint(QPainter::Antialiasing);
+    setRenderHint(QPainter::TextAntialiasing);
+    setRenderHint(QPainter::SmoothPixmapTransform);
+    setRenderHint(QPainter::HighQualityAntialiasing);
     
-    view->setDragMode(QGraphicsView::RubberBandDrag);
+    setDragMode(QGraphicsView::RubberBandDrag);
     
-    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     
-    view->setCacheMode(QGraphicsView::CacheBackground);
-    view->setBackgroundBrush(Qt::NoBrush);
-
-    layout->addWidget(view);
-
-    setLayout(layout);    
-#endif
+    setCacheMode(QGraphicsView::CacheBackground);
+    setBackgroundBrush(Qt::NoBrush);
 }
 
 IconView::~IconView()
 {
+    delete m_scene;
 }
 
     
@@ -61,7 +54,7 @@ QString IconView::info()
 void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
     qDebug() << "Moving to" << position << "resizing" << size;
-    setPos(position);
-    resize(size);
+    move(position.x(), position.y());
+    resize(size.width(), size.height());
     //m_scene->setSceneRect(QRectF(position, size));
 }

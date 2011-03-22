@@ -10,6 +10,7 @@ set(IV_HEADERS
 set(IV_SOURCES
   iconview.cpp
   iconscene.cpp
+  desktopicon.cpp
 )
 
 set(IV_MOCS

@@ -39,6 +39,10 @@ protected:
 private:
     QGraphicsScene * m_scene;
     ReadSettings * m_config;
+    int m_screen;
+
+private slots:
+    void workspaceResized(int screen);
 };
 
 

@@ -10,7 +10,7 @@
 class HelloWorld : public DesktopWidgetPlugin, public QGraphicsTextItem
 {
 public:
-    HelloWorld(const QString & configId, ReadSettings * config);
+    HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
     ~HelloWorld();
 
     QString info();
