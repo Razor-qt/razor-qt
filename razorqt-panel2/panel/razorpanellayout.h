@@ -21,30 +21,52 @@
 
 #include <QtGui/QBoxLayout>
 #include <QtCore/QList>
+#include <QtGui/QWidget>
+
+class MoveInfo;
+class QMouseEvent;
+class QEvent;
 
 class RazorPanelLayout : public QBoxLayout
 {
     Q_OBJECT
+    friend class MoveProcessor;
+
 public:
     RazorPanelLayout(Direction dir, QWidget* parent=0);
     virtual ~RazorPanelLayout();
 
-/*    void addItem(QLayoutItem * item);
-    QSize sizeHint() const;
+    void startMoveWidget(QWidget* widget);
 
-    QLayoutItem* itemAt(int index) const;
-    QLayoutItem* takeAt(int index);
-    int count() const;
+};
 
-    Qt::Orientations expandingDirections() const;
-    QSize minimumSize() const;
-    void setGeometry(const QRect& rect);
+class MoveProcItem;
+class MoveProcessor: public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget);
+    ~MoveProcessor();
+
+protected:
+    bool event(QEvent* event );
+    void apply();
 
 private:
-    enum SizeType { MinimumSize, SizeHint };
-    QSize calculateSize(SizeType sizeType) const;
-    QList<QLayoutItem*> mItems;
-*/
+    void mouseMoveHoriz();
+    void mouseMoveVert();
+
+    QWidget* mWidget;
+    QList<MoveProcItem*> mItems;
+    RazorPanelLayout* mLayout;
+    bool mHoriz;
+    int mIndex;
+    QPoint mOffset;
+    QRect mWidgetPlace;
+
+private slots:
+    void finished();
 };
 
 #endif // RAZORPANELLAYOUT_H

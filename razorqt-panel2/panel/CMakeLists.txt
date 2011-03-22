@@ -45,6 +45,7 @@ set(TRANSLATIONS_DIR
 
 add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
 
+
 file (GLOB TS_FILES 
     translations/*.ts
 )

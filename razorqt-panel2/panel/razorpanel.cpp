@@ -316,6 +316,7 @@ QMenu* RazorPanel::popupMenu(QWidget *parent)
             menu->addAction(a);
         }
 
+        menu->addSeparator();
     }
 
     return menu;
@@ -505,6 +506,8 @@ void RazorPanel::realign()
     qDebug() << "Realign: SizeHint  " << sizeHint();
     qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
     */
+    if (isHorizontal()) mLayout->setDirection(QBoxLayout::LeftToRight);
+    else  mLayout->setDirection(QBoxLayout::TopToBottom);
 
     QRect screen = QApplication::desktop()->screenGeometry(mDesktopNum);
     QRect rect = screen;

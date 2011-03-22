@@ -43,6 +43,7 @@ as in the "name" constructor's argument.
 
 class QToolButton;
 class QMenu;
+class QStyleOptionToolBar;
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -66,6 +67,11 @@ width).
 class RazorPanelPlugin : public QFrame
 {
     Q_OBJECT
+    /*! This property holds whether the user can move the pluginr within the panel area.
+        By default, this property is false.   */
+    Q_PROPERTY(bool movable READ isMovable WRITE setMovable
+                   NOTIFY movableChanged)
+
 public:
     enum Alignment {
         AlignLeft,
@@ -104,18 +110,35 @@ public:
      */
     QBoxLayout* layout() const { return mLayout; }
 
+    bool isMovable() const;
+    void setMovable(bool movable);
+
+signals:
+    void movableChanged(bool movable);
+
 protected:
+    void paintEvent(QPaintEvent* event);
     //QToolButton* mExtensionButton;
     //bool eventFilter(QObject* watched, QEvent* event);
     QBoxLayout* mLayout;
     virtual QMenu* popupMenu(QWidget *parent);
     virtual void contextMenuEvent( QContextMenuEvent* event);
 
+
+    //void mousePressEvent(QMouseEvent* event);
+    //void mouseMoveEvent(QMouseEvent* event);
+    //void mouseReleaseEvent(QMouseEvent* event);
+
+
 private:
     RazorPanel* mPanel;
     QString mConfigId;
+    bool mMovable;
+    void initStyleOption(QStyleOptionToolBar *option) const;
+    QRect handleRect();
 
 private slots:
+    void toggleMovable();
     void startMove();
 };
 

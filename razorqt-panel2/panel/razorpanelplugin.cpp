@@ -20,7 +20,9 @@
 #include "razorpanelplugin.h"
 #include "razorpanellayout.h"
 
-//#include <QToolButton>
+#include <QStyleOptionToolBar>
+#include <QPainter>
+#include <QToolTip>
 #include <QApplication>
 #include <QDebug>
 #include <QtCore/QEvent>
@@ -28,13 +30,15 @@
 #include <QtGui/QMenu>
 #include <razorqt/xdgicon.h>
 
+
 /************************************************
 
  ************************************************/
 RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent) :
     QFrame(parent),
     mPanel(panel),
-    mConfigId(configId)
+    mConfigId(configId),
+    mMovable(false)
 {
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
@@ -82,6 +86,7 @@ QMenu* RazorPanelPlugin::popupMenu(QWidget *parent)
     QMenu* menu = new QMenu(parent);
     QAction* a;
 
+
     a = menu->addAction(XdgIcon::fromTheme("transform-move", 32), tr("Move plugin"));
     connect(a, SIGNAL(triggered()), this, SLOT(startMove()));
 
@@ -99,20 +104,183 @@ QMenu* RazorPanelPlugin::popupMenu(QWidget *parent)
 /************************************************
 
  ************************************************/
-void RazorPanelPlugin::startMove()
+void RazorPanelPlugin::initStyleOption(QStyleOptionToolBar *option) const
 {
-    RazorPanelLayout* layout = qobject_cast<RazorPanelLayout*>(panel()->layout());
-    if (!layout)
-        return;
-
-    qDebug() << "START";
+    option->initFrom(this);
+    option->state |= QStyle::State_Horizontal;
+    if (mMovable)
+        option->features = QStyleOptionToolBar::Movable;
 }
 
 
 /************************************************
 
  ************************************************/
+QRect RazorPanelPlugin::handleRect()
+{
+    QStyleOptionToolBar opt;
+    initStyleOption(&opt);
 
+    return style()->subElementRect(QStyle::SE_ToolBarHandle, &opt, this);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::setMovable(bool movable)
+{
+    if (mMovable == movable)
+        return;
+
+    mMovable = movable;
+
+    QMargins m = contentsMargins();
+
+    if (movable)
+        m.setLeft(m.left() + handleRect().width());
+    else
+        m.setLeft(m.left() - handleRect().width());
+
+    setContentsMargins(m);
+
+
+    // Update stylesheet ............
+    style()->unpolish(this);
+    style()->polish(this);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool RazorPanelPlugin::isMovable() const
+{
+    return mMovable;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::toggleMovable()
+{
+    setMovable(!isMovable());
+}
+
+///************************************************
+
+// ************************************************/
+//void RazorPanelPlugin::mousePressEvent(QMouseEvent* event)
+//{
+//     static_cast<RazorPanelLayout*>(panel()->layout())->startMoveWidget(this);
+//}
+
+////    if (handleRect().contains(event->pos()))
+////    {
+////        panel()->layout()->startMoveWidget(this);
+////        event->accept();
+////    }
+////}
+
+
+/************************************************
+
+ ************************************************/
+//void RazorPanelPlugin::mouseReleaseEvent(QMouseEvent* event)
+//{
+//        RazorPanelLayout* l = qobject_cast<RazorPanelLayout*>(panel()->layout());
+//        if (!l)
+//            return;
+//        qDebug() << "STOP";
+//        event->accept(); // do not propagate
+////        mOffset = QPoint();
+////        int myN = l->indexOf(this);
+////        l->moveItem(myN, 2);
+//        panel()->layout()->setEnabled(true);
+//        panel()->layout()->invalidate();
+
+
+//   static_cast<RazorPanelLayout*>(panel()->layout())->stopMoveWidget();
+//}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::startMove()
+{
+    static_cast<RazorPanelLayout*>(panel()->layout())->startMoveWidget(this);
+}
+
+//    return;
+//    RazorPanelLayout* layout = qobject_cast<RazorPanelLayout*>(panel()->layout());
+//    if (!layout)
+//        return;
+////this->setToolTip("Move me");
+////this->toolTip()
+//    QMargins m = contentsMargins();
+//    m.setLeft(m.left() + 10);
+//    setContentsMargins(m);
+
+//    QToolTip::showText(mapToGlobal(QPoint(this->pos())), "Move me");
+//    layout->startMoveWidget(this);
+//panel()->layout()->setEnabled(false);
+//move(0, 10);
+//setParent(0);
+//show();
+//}
+
+
+
+
+//void RazorPanelPlugin::initStyleOption(QStyleOptionToolBar *option) const
+//{
+//    //Q_D(const QToolBar);
+
+//    if (!option)
+//        return;
+
+//    option->initFrom(this);
+//    //if (orientation() == Qt::Horizontal)
+//    //    option->state |= QStyle::State_Horizontal;
+//    option->lineWidth = style()->pixelMetric(QStyle::PM_ToolBarFrameWidth, 0, this);
+//    option->features = d->layout->movable()
+//                        ? QStyleOptionToolBar::Movable
+//                        : QStyleOptionToolBar::None;
+//    // if the tool bar is not in a QMainWindow, this will make the painting right
+//    option->toolBarArea = Qt::NoToolBarArea;
+
+//    // Add more styleoptions if the toolbar has been added to a mainwindow.
+//    QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget());
+
+//    if (!mainWindow)
+//        return;
+
+//    QMainWindowLayout *layout = qobject_cast<QMainWindowLayout *>(mainWindow->layout());
+//    Q_ASSERT_X(layout != 0, "QToolBar::initStyleOption()",
+//               "QMainWindow->layout() != QMainWindowLayout");
+
+//    layout->getStyleOptionInfo(option, const_cast<QToolBar *>(this));
+//}
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::paintEvent(QPaintEvent* event)
+{
+    if (mMovable)
+    {
+        QPainter p(this);
+        QStyle *style = this->style();
+        QStyleOptionToolBar opt;
+        initStyleOption(&opt);
+
+        opt.rect = style->subElementRect(QStyle::SE_ToolBarHandle, &opt, this);
+        if (opt.rect.isValid())
+            style->drawPrimitive(QStyle::PE_IndicatorToolBarHandle, &opt, &p, this);
+    }
+}
 
 /************************************************
   Workaround about QTBUG-597

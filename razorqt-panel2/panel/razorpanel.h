@@ -49,6 +49,8 @@ public:
     Position position() const { return mPosition; }
     bool isHorizontal() const { return mPosition == PositionBottom || mPosition == PositionTop; }
 
+    //RazorPanelLayout* layout() const { return mLayout; }
+
 public slots:
     void show();
 

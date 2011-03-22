@@ -18,7 +18,337 @@
 
 #include "razorpanellayout.h"
 #include <QtCore/QSize>
+#include <QtGui/QWidget>
+#include <QtCore/QEvent>
+#include <QtGui/QCursor>
+#include <QtGui/QApplication>
 #include <QDebug>
+#include <QtCore/QPoint>
+#include <QtGui/QMouseEvent>
+#include <QtAlgorithms>
+#include <QPoint>
+#include <QMouseEvent>
+#include <QPropertyAnimation>
+
+// QVariantAnimation class was introduced in Qt 4.6.
+#if QT_VERSION >= 0x040600
+#define ANIMATION_ENABLE
+#endif
+
+
+#ifdef ANIMATION_ENABLE
+
+#define ANIMATION_DURATION 250
+
+class ItemMoveAnimation : public QVariantAnimation
+{
+public:
+    ItemMoveAnimation(QLayoutItem *item) :
+            mItem(item)
+    {
+        //setEasingCurve(QEasingCurve::InOutQuad); // <-- Classic animation style
+        setEasingCurve(QEasingCurve::OutBack);   // <-- Modern animation style
+        setDuration(ANIMATION_DURATION);
+    }
+
+    void updateCurrentValue(const QVariant &current)
+    {
+        mItem->setGeometry(current.toRect());
+    }
+
+private:
+    QLayoutItem* mItem;
+};
+#endif
+
+
+class MoveProcItem
+{
+public:
+    MoveProcItem(QLayoutItem* item);
+    ~MoveProcItem();
+
+    QRect geometry() const { return mGeometry; }
+    void move(QPoint topLeft);
+
+private:
+    QLayoutItem* mItem;
+    QRect mGeometry;
+#ifdef ANIMATION_ENABLE
+    ItemMoveAnimation* mAnimation;
+#endif
+};
+
+
+/************************************************
+
+ ************************************************/
+MoveProcessor::MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget):
+    QWidget(movedWidget),
+    mWidget(movedWidget),
+    mLayout(layout)
+{
+    mWidgetPlace = mWidget->geometry();
+    mOffset = QCursor::pos() - mWidget->pos();
+    mIndex = layout->indexOf(movedWidget);
+    mWidget->raise();
+
+    for (int i=0; i<layout->count(); ++i)
+    {
+        if (i != mIndex)
+            mItems.append(new MoveProcItem(layout->itemAt(i)));
+    }
+
+    QBoxLayout::Direction dir = layout->direction();
+    mHoriz = (dir == QBoxLayout::LeftToRight || dir == QBoxLayout::RightToLeft);
+
+    setMouseTracking(true);
+    show(); //  Only visible widgets can grab mouse input.
+
+    if (mHoriz) this->grabMouse(Qt::SizeHorCursor);
+    else        this->grabMouse(Qt::SizeVerCursor);
+
+    layout->setEnabled(false);
+}
+
+
+/************************************************
+
+ ************************************************/
+MoveProcessor::~MoveProcessor()
+{
+    qDeleteAll(mItems);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool MoveProcessor::event(QEvent* event)
+{
+    switch (event->type())
+    {
+        case QEvent::MouseMove:
+            if (mHoriz) mouseMoveHoriz();
+            else        mouseMoveVert();
+
+            event->accept();
+            return true;
+
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonDblClick:
+            event->accept();
+            return true;
+
+        case QEvent::MouseButtonRelease:
+            event->accept();
+            apply();
+            return true;
+
+
+        case QEvent::ContextMenu:
+            event->accept();
+            return true;
+
+        default:
+            break;
+    }
+
+    return QWidget::event(event);
+}
+
+
+/************************************************
+
+ ************************************************/
+inline void MoveProcessor::mouseMoveHoriz()
+{
+    mWidget->move((QCursor::pos() - mOffset).x(), mWidget->pos().y());
+
+    // ::::::::::::::::::::::
+    QRect widgetGeometry = mWidget->geometry();
+
+    // Check to left ..................
+    for (int i = mIndex-1; i>-1; --i)
+    {
+        MoveProcItem* item = mItems[i];
+        if (widgetGeometry.left() < item->geometry().center().x())
+        {
+            mIndex--;
+            QPoint p = item->geometry().topLeft();
+            p.rx() += widgetGeometry.width();
+            item->move(p);
+            mWidgetPlace.translate(- item->geometry().width(), 0);
+        }
+        else
+            break;
+    }
+
+
+    // Check to right ..................
+    for (int i = mIndex; i<mItems.size(); ++i)
+    {
+        MoveProcItem* item = mItems[i];
+        if (widgetGeometry.right() > item->geometry().center().x())
+        {
+            mIndex++;
+            QPoint p = item->geometry().topLeft();
+            p.rx() -= widgetGeometry.width();
+            item->move(p);
+            mWidgetPlace.translate(item->geometry().width(), 0);
+        }
+        else
+            break;
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+inline void MoveProcessor::mouseMoveVert()
+{
+    mWidget->move(mWidget->pos().x(), (QCursor::pos() - mOffset).y());
+
+    // ::::::::::::::::::::::
+    QRect widgetGeometry = mWidget->geometry();
+
+    // Check to top ..................
+    for (int i = mIndex-1; i>-1; --i)
+    {
+        MoveProcItem* item = mItems[i];
+        if (widgetGeometry.top() < item->geometry().center().y())
+        {
+            mIndex--;
+            QPoint p = item->geometry().topLeft();
+            p.ry() += widgetGeometry.height();
+            item->move(p);
+            mWidgetPlace.translate(0, -item->geometry().height());
+        }
+        else
+            break;
+    }
+
+
+    // Check to bottom ................
+    for (int i = mIndex; i<mItems.size(); ++i)
+    {
+        MoveProcItem* item = mItems[i];
+        if ( widgetGeometry.bottom() > item->geometry().center().y())
+        {
+            mIndex++;
+            QPoint p = item->geometry().topLeft();
+            p.ry() -= widgetGeometry.height();
+            item->move(p);
+            mWidgetPlace.translate(0, item->geometry().height());
+        }
+        else
+            break;
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+
+void MoveProcessor::apply()
+{
+    int n = mLayout->indexOf(mWidget);
+
+    QLayoutItem* item = mLayout->takeAt(n);
+    mLayout->insertItem(mIndex, item);
+
+#ifdef ANIMATION_ENABLE
+    ItemMoveAnimation* animation = new ItemMoveAnimation(item);
+    connect(animation, SIGNAL(finished()), this, SLOT(finished()));
+    animation->setStartValue(item->geometry());
+    animation->setEndValue(mWidgetPlace);
+    animation->start(animation->DeleteWhenStopped);
+#else
+    finished();
+#endif
+}
+
+
+/************************************************
+
+ ************************************************/
+void MoveProcessor::finished()
+{
+    releaseMouse();
+    mLayout->setEnabled(true);
+    // activate not work on Qt 4.7, but update not work on 4.6.
+    mLayout->activate();
+    mLayout->update();
+    delete this;
+}
+
+
+#ifdef ANIMATION_ENABLE
+/************************************************
+
+ ************************************************/
+MoveProcItem::MoveProcItem(QLayoutItem* item):
+    mAnimation(0)
+{
+    mItem = item;
+    mGeometry = item->geometry();
+}
+
+
+/************************************************
+
+ ************************************************/
+MoveProcItem::~MoveProcItem()
+{
+    delete mAnimation;
+}
+
+
+/************************************************
+
+ ************************************************/
+void MoveProcItem::move(QPoint topLeft)
+{
+    mGeometry.moveTopLeft(topLeft);
+    if (!mAnimation)
+        mAnimation = new ItemMoveAnimation(mItem);
+
+    mAnimation->stop();
+    mAnimation->setStartValue(mItem->geometry());
+    mAnimation->setEndValue(mGeometry);
+    mAnimation->start();
+}
+
+
+#else
+/************************************************
+
+ ************************************************/
+MoveProcItem::MoveProcItem(QLayoutItem* item)
+{
+    mItem = item;
+    mGeometry = item->geometry();
+}
+
+
+/************************************************
+
+ ************************************************/
+MoveProcItem::~MoveProcItem()
+{
+}
+
+/************************************************
+
+ ************************************************/
+void MoveProcItem::move(QPoint topLeft)
+{
+    mGeometry.moveTopLeft(topLeft);
+    mItem->setGeometry(mGeometry);
+}
+#endif
 
 
 /************************************************
@@ -44,109 +374,8 @@ RazorPanelLayout::~RazorPanelLayout()
 /************************************************
 
  ************************************************/
-//void RazorPanelLayout::addItem(QLayoutItem * item)
-//{
-//    qDebug() << "AddItem";
-//    mItems.append(item);
-//}
+void RazorPanelLayout::startMoveWidget(QWidget* widget)
+{
+    new MoveProcessor(this, widget);
+}
 
-
-/************************************************
-
- ************************************************/
-//QSize RazorPanelLayout::sizeHint() const
-//{
-//    return calculateSize(SizeHint);
-//}
-
-
-/************************************************
-
- ************************************************/
-//QLayoutItem* RazorPanelLayout::itemAt(int index) const
-//{
-//    if (index<mItems.count())
-//        return mItems.at(index);
-//    else
-//        return 0;
-//}
-
-
-/************************************************
-
- ************************************************/
-//QLayoutItem* RazorPanelLayout::takeAt(int index)
-//{
-//    if (index<mItems.count())
-//        return mItems.takeAt(index);
-//    else
-//        return 0;
-//}
-
-
-/************************************************
-
- ************************************************/
-//int RazorPanelLayout::count() const
-//{
-//    return mItems.size();
-//}
-
-
-/************************************************
-
- ************************************************/
-//Qt::Orientations RazorPanelLayout::expandingDirections() const
-//{
-//    return Qt::Horizontal | Qt::Vertical;
-//}
-
-
-/************************************************
-
- ************************************************/
-//QSize RazorPanelLayout::minimumSize() const
-//{
-//    return calculateSize(MinimumSize);
-//}
-
-
-/************************************************
-
- ************************************************/
-//void RazorPanelLayout::setGeometry(const QRect& rect)
-//{
-//    int leftPos = 0;
-
-//    //foreach
-
-//}
-
-
-/************************************************
-
- ************************************************/
-//QSize RazorPanelLayout::calculateSize(SizeType sizeType) const
-//{
-//    QSize totalSize;
-
-//    foreach (QLayoutItem* item, mItems)
-//    {
-//        QSize itemSize;
-//        switch (sizeType)
-//        {
-//            case MinimumSize:
-//                itemSize = item->minimumSize();
-//                break;
-
-//            case SizeHint:
-//                itemSize = item->sizeHint();
-//                break;
-//        }
-
-//        totalSize.rwidth() += itemSize.width();
-//        totalSize.rheight() = 32;//qMin(totalSize.height(), itemSize.height());
-//    }
-
-//    return totalSize;
-//}
