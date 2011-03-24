@@ -33,6 +33,8 @@ class RazorPanelLayout;
 class RazorPanel : public QFrame
 {
     Q_OBJECT
+    Q_PROPERTY(Position position READ position NOTIFY positionChanged)
+    Q_ENUMS(Position)
     friend class RazorPanelPlugin;
 
 public:
@@ -56,6 +58,7 @@ public slots:
 
 signals:
      void x11PropertyNotify(XEvent* event);
+     void positionChanged();
 
 protected:
     //void contextMenuEvent( QContextMenuEvent* event);

@@ -36,6 +36,7 @@
 #include <QtCore/QFile>
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
+#include <QtGui/QStyle>
 
 #include <razorqt/xdgicon.h>
 #include <razorqt/xfitman.h>
@@ -96,7 +97,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
     setLayout(mLayout);
-    setObjectName("RazorBar");
+    setObjectName("RazorPenel");
     mPluginManager = new RazorPluginManager();
 
     connect(qApp, SIGNAL(x11PropertyNotify(XEvent*)), this, SIGNAL(x11PropertyNotify(XEvent*)));
@@ -447,6 +448,7 @@ void RazorPanel::switchPosition()
     mPosition = a->position();
     mDesktopNum = a->displayNum();
     realign();
+    emit positionChanged();
 }
 
 
@@ -506,6 +508,12 @@ void RazorPanel::realign()
     qDebug() << "Realign: SizeHint  " << sizeHint();
     qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
     */
+
+    // Update stylesheet ............
+    style()->unpolish(this);
+    style()->polish(this);
+    // ..............................
+
     if (isHorizontal()) mLayout->setDirection(QBoxLayout::LeftToRight);
     else  mLayout->setDirection(QBoxLayout::TopToBottom);
 
