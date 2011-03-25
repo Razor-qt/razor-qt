@@ -14,8 +14,10 @@ public:
     ~HelloWorld();
 
     QString info();
+    QString instanceInfo();
 
     void setSizeAndPosition(const QPointF & position, const QSizeF & size);
+    void save();
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H

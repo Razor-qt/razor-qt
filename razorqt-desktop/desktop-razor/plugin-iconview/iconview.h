@@ -16,8 +16,10 @@ public:
     ~IconView();
 
     QString info();
+    QString instanceInfo();
 
     void setSizeAndPosition(const QPointF & position, const QSizeF & size);
+    void save();
 
 private:
     IconScene * m_scene;

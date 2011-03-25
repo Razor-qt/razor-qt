@@ -3,7 +3,6 @@
 #include <QtDebug>
 #include <QDesktopServices>
 #include <QGraphicsView>
-#include <QGraphicsGridLayout>
 #include <QPropertyAnimation>
 
 
@@ -64,6 +63,11 @@ QString IconView::info()
     return QObject::tr("Display content of the given directory/folder");
 }
 
+QString IconView::instanceInfo()
+{
+    return QObject::tr("Icon View:") + " " + m_configId;
+}
+
 void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
     qDebug() << "Moving to" << position << "resizing" << size;
@@ -77,4 +81,15 @@ void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
     animation->start();
+}
+
+void IconView::save()
+{
+    QSettings *s = m_config->settings();
+    s->beginGroup(m_configId);
+    s->setValue("x", pos().x());
+    s->setValue("y", pos().y());
+    s->setValue("w", size().width());
+    s->setValue("h", size().height());
+    s->endGroup();
 }

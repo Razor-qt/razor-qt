@@ -15,8 +15,10 @@ public:
     };
 
     virtual QString info() { return QObject::tr("No info available"); };
+    virtual QString instanceInfo() = 0;
     
     virtual void setSizeAndPosition(const QPointF & position, const QSizeF & size) = 0;
+    virtual void save() = 0;
 
 protected:
     ReadSettings * m_config;

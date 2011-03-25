@@ -24,18 +24,13 @@ HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSet
     f.setPixelSize(48);
     setFont(f);
     
-    setFlag(QGraphicsItem::ItemIsMovable);
+    //setFlag(QGraphicsItem::ItemIsMovable);
     
     s->endGroup();
 }
 
 HelloWorld::~HelloWorld()
 {
-    QSettings * s = m_config->settings();
-    s->beginGroup(m_configId);
-    s->setValue("position", pos());
-    s->setValue("size", boundingRect().size());
-    s->endGroup();
 }
 
     
@@ -44,8 +39,25 @@ QString HelloWorld::info()
     return QObject::tr("Display simple text. A debugging/sample widget.");
 }
 
+QString HelloWorld::instanceInfo()
+{
+    return tr("Hello World:") + " " + m_configId;
+}
+
 void HelloWorld::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
     qDebug() << "Moving to" << position;
     setPos(position);
+}
+
+void HelloWorld::save()
+{
+    QSettings *s = m_config->settings();
+    s->beginGroup(m_configId);
+    qDebug() << "SAVING              " << m_configId << pos() << boundingRect();
+    s->setValue("x", pos().x());
+    s->setValue("y", pos().y());
+    s->setValue("w", boundingRect().width());
+    s->setValue("h", boundingRect().height());
+    s->endGroup();
 }

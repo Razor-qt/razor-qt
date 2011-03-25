@@ -6,16 +6,19 @@ set(PLUGIN "razor")
 set(HEADERS
   razorworkspace.h
   workspacemanager.h
+  arrangeitem.h
 )
 
 set(SOURCES
   razorworkspace.cpp
   workspacemanager.cpp
+  arrangeitem.cpp
 )
 
 set(MOCS
   razorworkspace.h
   workspacemanager.h
+  arrangeitem.h
 )
 
 # QRC files

@@ -3,7 +3,11 @@
 
 #include <QGraphicsView>
 #include <QMouseEvent>
+#include <QAction>
+
 #include <razorqt/xfitman.h>
+#include "arrangeitem.h"
+
 
 /**
  * @file razorworkspace.h
@@ -27,7 +31,6 @@ public:
 
     void setConfig(const WorkspaceConfig & bg);
 signals:
-    void mouseReleased(QMouseEvent*);
     void mouseWheeled(int);
 
 protected:
@@ -37,12 +40,25 @@ protected:
     void wheelEvent(QWheelEvent* _ev);
 
 private:
+    
+    enum Mode {
+        ModeNormal,
+        ModeArrange
+    };
+
     QGraphicsScene * m_scene;
     ReadSettings * m_config;
     int m_screen;
+    Mode m_mode;
+
+    QAction * m_actArrangeWidgets;
+    
+    ArrangeItem * m_arrangeRoot;
+    QList<ArrangeItem*> m_arrangeList;
 
 private slots:
     void workspaceResized(int screen);
+    void arrangeWidgets(bool start);
 };
 
 

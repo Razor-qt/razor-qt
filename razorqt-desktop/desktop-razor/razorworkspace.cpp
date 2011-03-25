@@ -1,10 +1,13 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QLibrary>
+#include <QMenu>
+#include <QGraphicsProxyWidget>
 
 #include "razorworkspace.h"
 #include "workspacemanager.h"
 #include "desktopwidgetplugin.h"
+#include "arrangeitem.h"
 #include <razorqt/readsettings.h>
 
 #include <QtDebug>
@@ -13,7 +16,8 @@
 RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
     : QGraphicsView(parent),
       m_config(config),
-      m_screen(screen)
+      m_screen(screen),
+      m_mode(ModeNormal)
 {
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
@@ -40,6 +44,11 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     
     setCacheMode(QGraphicsView::CacheBackground);
+    
+    m_actArrangeWidgets = new QAction(tr("Arrange Desktop Widgets..."), this);
+    m_actArrangeWidgets->setCheckable(true);
+    connect(m_actArrangeWidgets, SIGNAL(toggled(bool)),
+            this, SLOT(arrangeWidgets(bool)));
 }
 
 void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
@@ -150,8 +159,16 @@ void RazorWorkSpace::mousePressEvent(QMouseEvent* _ev)
 
 void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 {
-    emit mouseReleased(_ev);
-    QGraphicsView::mouseReleaseEvent(_ev);
+    // "context" menu
+    if (_ev->button() == Qt::RightButton)
+    {
+        QMenu context(tr("Context Actions"));
+        context.addAction(context.title());
+        context.addAction(m_actArrangeWidgets);
+        context.exec(_ev->pos());
+    }
+    else
+        QGraphicsView::mouseReleaseEvent(_ev);
 }
 
 void RazorWorkSpace::wheelEvent(QWheelEvent* _ev)
@@ -161,7 +178,51 @@ void RazorWorkSpace::wheelEvent(QWheelEvent* _ev)
     emit mouseWheeled(-numSteps);
 }
 
+void RazorWorkSpace::arrangeWidgets(bool start)
+{
+    if (start)
+    {
+        // enter the "edit" mode
+        m_mode = ModeArrange;
+        QList<QGraphicsItem*> items = m_scene->items();
+        m_arrangeRoot = new ArrangeItem(0, tr("Razor Desktop Edit Mode"),
+                                        m_scene->sceneRect(),
+                                        false);
+        m_scene->addItem(m_arrangeRoot);
+        
+        foreach (QGraphicsItem * item, items)
+        {
+            //qDebug() << "EDIT" << item;
+            DesktopWidgetPlugin * plug = dynamic_cast<DesktopWidgetPlugin*>(item);
+            if (!plug)
+            {
+                QGraphicsProxyWidget * w = dynamic_cast<QGraphicsProxyWidget*>(item);
+                Q_ASSERT(w); // here *must* be widget or there is something wrong. Badly wrong.
+                plug = dynamic_cast<DesktopWidgetPlugin*>(w->widget());
+                Q_ASSERT(plug);
+            }
+
+            ArrangeItem * i = new ArrangeItem(plug, plug->instanceInfo(), item->sceneBoundingRect(), true, m_arrangeRoot);
+            m_arrangeList.append(i);
+        }
+    }
+    else
+    {
+        // save new positions
+        foreach (ArrangeItem * i, m_arrangeList)
+        {
+            i->plugin()->setSizeAndPosition(i->pos(), i->boundingRect().size());
+            i->plugin()->save();
+        }
+        // back to normal
+        m_mode = ModeNormal;
+        m_scene->removeItem(m_arrangeRoot);
+        delete m_arrangeRoot;
+        m_arrangeRoot = 0;
+        m_arrangeList.clear();
+    }
+}
+
 RazorWorkSpace::~RazorWorkSpace()
 {
-
 }
