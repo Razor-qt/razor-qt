@@ -13,6 +13,7 @@
 #include <QtDebug>
 #include <QGraphicsTextItem>
 
+
 RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
     : QGraphicsView(parent),
       m_config(config),
@@ -113,7 +114,6 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
 
             if (plugin)
             {
-                //lib->setParent(plugin);
                 qDebug() << "    * Plugin loaded.";
                 qDebug() << plugin->info();
 
@@ -141,10 +141,12 @@ void RazorWorkSpace::workspaceResized(int screen)
     if (screen != m_screen)
         return;
 
-    QRect geometry(QApplication::desktop()->availableGeometry(screen));    
+    QRect geometry(QApplication::desktop()->availableGeometry(screen)); 
     move(geometry.x(), geometry.y());
     resize(geometry.width(), geometry.height());
-    m_scene->setSceneRect(geometry.x(), geometry.y(), geometry.width(), geometry.height());
+    // do not use geometry.x(), geometry.y() - scene starts always from 0,0
+    // the view is moved to geometry x, y instead
+    m_scene->setSceneRect(0, 0, geometry.width(), geometry.height());
 }
 
 void RazorWorkSpace::mouseMoveEvent(QMouseEvent* _ev)
@@ -165,7 +167,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         QMenu context(tr("Context Actions"));
         context.addAction(context.title());
         context.addAction(m_actArrangeWidgets);
-        context.exec(_ev->pos());
+        context.exec(mapToGlobal(_ev->pos()));
     }
     else
         QGraphicsView::mouseReleaseEvent(_ev);
@@ -202,7 +204,8 @@ void RazorWorkSpace::arrangeWidgets(bool start)
                 Q_ASSERT(plug);
             }
 
-            ArrangeItem * i = new ArrangeItem(plug, plug->instanceInfo(), item->sceneBoundingRect(), true, m_arrangeRoot);
+            QRectF br = item->sceneBoundingRect();
+            ArrangeItem * i = new ArrangeItem(plug, plug->instanceInfo(), br, true, m_arrangeRoot);
             m_arrangeList.append(i);
         }
     }

@@ -2,6 +2,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QCursor>
 #include <QTimer>
+#include <QGraphicsScene>
 #include <QtDebug>
 
 #include "arrangeitem.h"
@@ -19,9 +20,7 @@ ArrangeItem::ArrangeItem(DesktopWidgetPlugin * plugin, const QString & text, con
 
     m_timer = new QTimer(this);
 
-    if (! m_editable)
-        setOpacity(0.5);
-    else
+    if (m_editable)
     {
         m_timer->setInterval(500);
         connect(m_timer, SIGNAL(timeout()), this, SLOT(setCursorByTimer()));
@@ -43,8 +42,12 @@ void ArrangeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * opt
     f.setPointSize(m_editable ? f.pointSize()*2 : f.pointSize()*6);
     painter->setFont(f);
 
-    painter->setPen(QPen(Qt::red, 1));
-    painter->setBrush(QColor(0, 0, 0, m_highlight ? 200 : 50));
+    painter->setPen(QPen(Qt::white, 1));
+    if (m_editable)
+        painter->setBrush(QColor(0, 0, 0, m_highlight ? 200 : 50));
+    else
+        painter->setBrush(QColor(0, 0, 0, 50));
+
     painter->drawRect(1, 1, boundingRect().width()-1, boundingRect().height()-1);
     
     if (!m_editable)
@@ -95,7 +98,6 @@ void ArrangeItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {    
-    //qDebug() << "scene" <<event->scenePos() << pos() << boundingRect();
     qreal x = event->scenePos().x();
     qreal y = event->scenePos().y();
     QPointF position = pos();
@@ -103,7 +105,6 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     qreal diffy = (y - position.y()) / 2.0;
     qreal diffxw = (x - (position.x() + m_rect.width()));
     qreal diffyw = (y - (position.y() + m_rect.height()));
-    //qDebug() << "diffs" << diffx << diffy << diffxw << diffyw;
     
     prepareGeometryChange();
 
@@ -219,8 +220,6 @@ QCursor ArrangeItem::getCursorByPos(const QPointF & position)
 
 void ArrangeItem::setCursorByTimer()
 {
-    //qDebug() << "MAP" << QCursor::pos() << mapFromScene(QCursor::pos());
-    // HACK TODO/FIXME: this is probably evil for multihead/xinerama... have to test it
     setCursor(getCursorByPos(mapFromScene(QCursor::pos())));
     m_timer->start();
 }
