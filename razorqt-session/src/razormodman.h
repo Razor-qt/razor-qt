@@ -47,6 +47,14 @@ public:
     RazorModuleManager(const QString & config, QObject * parent = 0);
     virtual ~RazorModuleManager();
 
+public slots:
+    /*! \brief Exit Razor session.
+    It tries to terminate processes from procMap and autostartList
+    gracefully (to kill it if it is not possible). Then the session
+    exits - it returns to the kdm/gdm in most cases.
+    */
+    void logout();
+
 private:
     /*! \brief Flag if the crashed process should be restarted.
     Doespower has to be set */
@@ -74,13 +82,6 @@ private:
 
     //! \brief Reboot entire system with power d-bus interface.
     void reboot();
-
-    /*! \brief Exit Razor session.
-    It tries to terminate processes from procMap and autostartList
-    gracefully (to kill it if it is not possible). Then the session
-    exits - it returns to the kdm/gdm in most cases.
-    */
-    void logout();
 
 private slots:
 

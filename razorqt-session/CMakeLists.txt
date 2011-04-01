@@ -15,7 +15,6 @@ include_directories (
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${X11_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/librazorqt/ . src)
 
 set ( razor-session_HDRS
-	src/defs.h
 	)
 
 set ( razor-session_SRCS
@@ -25,6 +24,7 @@ set ( razor-session_SRCS
 
 set ( razor-session_MOCS
 	src/razormodman.h
+    src/sessiondbusadaptor.h
 	)
 QT4_WRAP_CPP(MOCS ${razor-session_MOCS})
 

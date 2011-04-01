@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include "razormodman.h"
+#include "sessiondbusadaptor.h"
 
 /**
 * @file main.cpp
@@ -68,5 +69,8 @@ int main(int argc, char **argv)
     }
 
     RazorModuleManager modman(session);
+    new SessionDBusAdaptor(&modman);
+    // connect to D-Bus and register as an object:
+    QDBusConnection::sessionBus().registerObject("/RazorSession", &modman);
     return app.exec();
 }
