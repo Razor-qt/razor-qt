@@ -203,6 +203,8 @@ XdgDesktopFile& XdgDesktopFile::operator=(const XdgDesktopFile& other)
  ************************************************/
 XdgDesktopFile::~XdgDesktopFile()
 {
+    Q_D(XdgDesktopFile);
+    delete d;
 }
 
 
