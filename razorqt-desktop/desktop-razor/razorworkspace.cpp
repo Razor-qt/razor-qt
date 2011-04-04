@@ -141,7 +141,7 @@ void RazorWorkSpace::workspaceResized(int screen)
     if (screen != m_screen)
         return;
 
-    QRect geometry(QApplication::desktop()->availableGeometry(screen)); 
+    QRect geometry(QApplication::desktop()->screenGeometry(screen)); 
     move(geometry.x(), geometry.y());
     resize(geometry.width(), geometry.height());
     // do not use geometry.x(), geometry.y() - scene starts always from 0,0
