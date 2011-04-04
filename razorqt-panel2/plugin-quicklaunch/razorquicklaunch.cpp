@@ -1,29 +1,21 @@
 #include "razorquicklaunch.h"
 #include <razorqt/xdgdesktopfile.h>
-#include "razorqt/readsettings.h"
 #include "razorqt/xdgicon.h"
 
 #include <QtDebug>
 #include <QProcess>
 #include <QToolButton>
-
+#include <QtCore/QSettings>
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
 
 
-RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, QWidget *parent)
-    : RazorPanelPlugin(panel, configId, parent),
-      m_configId(configId)
+RazorQuickLaunch::RazorQuickLaunch(const RazorPalelPluginStartInfo* startInfo, QWidget* parent)
+    : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("QuickLaunch");
-    setWindowTitle(tr("Quick Launcher"));
 
-    cfg = new ReadSettings("quicklaunch", this);
-    QSettings *s = cfg->settings();
-
-    s->beginGroup(configId);
-
-    int count = s->beginReadArray("apps");
+    int count = settings().beginReadArray("apps");
 
     QString desktop;
     QString execname;
@@ -31,17 +23,17 @@ RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, Q
     QIcon icon;
     for (int i = 0; i < count; ++i)
     {
-        s->setArrayIndex(i);
-        desktop = s->value("desktop", "").toString();
+        settings().setArrayIndex(i);
+        desktop = settings().value("desktop", "").toString();
         if (! desktop.isEmpty())
         {
             addButton(new RazorQuickLaunchAction(desktop, this));
         }
         else
         {
-            execname = s->value("name", "").toString();
-            exec = s->value("exec", "").toString();
-            icon = QIcon(s->value("icon", "").toString());
+            execname = settings().value("name", "").toString();
+            exec = settings().value("exec", "").toString();
+            icon = QIcon(settings().value("icon", "").toString());
             if (icon.isNull())
             {
                 qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
@@ -52,8 +44,7 @@ RazorQuickLaunch::RazorQuickLaunch(RazorPanel* panel, const QString& configId, Q
 
     }
 
-    s->endArray();
-    s->endGroup();
+    settings().endArray();
 }
 
 RazorQuickLaunch::~RazorQuickLaunch()

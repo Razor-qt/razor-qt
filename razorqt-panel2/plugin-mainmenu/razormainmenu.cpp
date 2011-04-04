@@ -28,7 +28,6 @@
 #include <QAction>
 #include <QtGui/QMessageBox>
 
-#include <razorqt/readsettings.h>
 #include <razorqt/xdgenv.h>
 //#include <razorbar.h>
 #include <razorqt/xdgicon.h>
@@ -43,13 +42,10 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMainMenu)
 /************************************************
 
  ************************************************/
-RazorMainMenu::RazorMainMenu(RazorPanel* panel, const QString& configId, QWidget *parent):
-    RazorPanelPlugin(panel, configId, parent)
+RazorMainMenu::RazorMainMenu(const RazorPalelPluginStartInfo* startInfo, QWidget* parent):
+    RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("MainMenu");
-    setWindowTitle(tr("Aplication menu"));
-
-    //qDebug() << "MainMenu: create";
     mMenu = 0;
 
     addWidget(&mButton);
@@ -69,6 +65,9 @@ RazorMainMenu::RazorMainMenu(RazorPanel* panel, const QString& configId, QWidget
  ************************************************/
 RazorMainMenu::~RazorMainMenu()
 {
+    settings().setValue("text", mButton.text());
+    settings().setValue("icon_size", mMenuStyle.iconSize());
+    settings().setValue("top_icon_size", mTopMenuStyle.iconSize());
 }
 
 
@@ -107,7 +106,6 @@ void RazorMainMenu::showMenu()
     }
 
     QPoint pos(x, y);
-    //mMenu->popup(pos);
     mMenu->exec(pos);
 }
 
@@ -117,24 +115,20 @@ void RazorMainMenu::showMenu()
  ************************************************/
 void RazorMainMenu::settingsChanged()
 {
-    ReadSettings readSettings("mainmenu");
-    QSettings *settings = readSettings.settings();
+    mButton.setText(settings().value("text", "").toString());
+    mLogDir = settings().value("log_dir", "").toString();
 
-    mButton.setText(settings->value("text", "").toString());
-    mLogDir = settings->value("log_dir", "").toString();
-
-    mMenuStyle.setIconSize(settings->value("icon_size", 16).toInt());
-    mTopMenuStyle.setIconSize(settings->value("top_icon_size", 16).toInt());
+    mMenuStyle.setIconSize(settings().value("icon_size", 16).toInt());
+    mTopMenuStyle.setIconSize(settings().value("top_icon_size", 16).toInt());
 
 
-    mMenuFile = settings->value("menu_file", "").toString();
+    mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
 
-    QIcon icon =  XdgIcon::fromTheme(settings->value("button_icon").toString(), 48);
+    QIcon icon =  XdgIcon::fromTheme(settings().value("button_icon").toString(), 48);
     if (!icon.isNull())
         mButton.setIcon(icon);
-
 }
 
 

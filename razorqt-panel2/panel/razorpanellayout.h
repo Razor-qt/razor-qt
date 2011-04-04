@@ -38,6 +38,11 @@ public:
 
     void startMoveWidget(QWidget* widget);
 
+    QSize minimumSize() const;
+
+signals:
+    void widgetMoved(QWidget* movedWidget);
+
 };
 
 class MoveProcItem;
@@ -48,6 +53,9 @@ class MoveProcessor: public QWidget
 public:
     explicit MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget);
     ~MoveProcessor();
+
+signals:
+    void widgetMoved(QWidget* movedWidget);
 
 protected:
     bool event(QEvent* event );

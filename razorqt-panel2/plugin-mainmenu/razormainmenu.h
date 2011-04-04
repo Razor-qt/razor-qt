@@ -34,7 +34,7 @@ class RazorMainMenu : public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorMainMenu(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
+    RazorMainMenu(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorMainMenu();
 
 //    int widthForHeight(int h) { return mButton.sizeHint().width(); }

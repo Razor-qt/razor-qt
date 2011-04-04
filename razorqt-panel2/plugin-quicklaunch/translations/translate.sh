@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=taskbar2
+PROJECT=quicklaunch2
 
 #OPTS="-noobsolete" 
 

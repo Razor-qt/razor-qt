@@ -3,9 +3,9 @@
 
 #include "../panel/razorpanelplugin.h"
 
-
-class ReadSettings;
 class QLabel;
+class QTimer;
+class QString;
 
 /**
  * @brief the clock-plugin for razorbar
@@ -14,10 +14,12 @@ class RazorClock : public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorClock(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
+    RazorClock(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorClock();
 
     virtual Alignment preferredAlignment() const { return AlignRight; }
+
+    void saveSettings();
 
 public slots:
     void updateTime();
@@ -25,8 +27,6 @@ public slots:
 private:
     QTimer* clocktimer;
     QLabel * gui;
-    ReadSettings * cfg;
-    QString m_configId;
     QString clockFormat;
 
 };

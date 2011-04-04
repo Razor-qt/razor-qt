@@ -1,5 +1,5 @@
 /********************************************************************
-  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+  Copyright: 2010-2011 Alexander Sokoloff <sokoloff.a@gmail.ru>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License.
@@ -15,10 +15,14 @@
   Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 *********************************************************************/
+
+
 //#include <QStyleOptionToolBar>
 
 #include "razorpanelplugin.h"
+#include "razorpanelplugin_p.h"
 #include "razorpanellayout.h"
+#include <razorqt/razorplugininfo.h>
 
 #include <QStyleOptionToolBar>
 #include <QPainter>
@@ -29,23 +33,44 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMenu>
 #include <razorqt/xdgicon.h>
+#include <QMetaEnum>
+
 
 
 /************************************************
 
  ************************************************/
-RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent) :
+RazorPanelPlugin::RazorPanelPlugin(const RazorPalelPluginStartInfo* startInfo, QWidget* parent):
     QFrame(parent),
-    mPanel(panel),
-    mConfigId(configId),
-    mMovable(false)
+    d_ptr(new RazorPanelPluginPrivate(startInfo, this))
 {
-    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-    mLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPalelPluginStartInfo* startInfo, RazorPanelPlugin* parent):
+    QObject(parent),
+    q_ptr(parent),
+    mSettings(new QSettings(startInfo->configFile, QSettings::NativeFormat, this)),
+    mConfigId(startInfo->configSection),
+    mAlignmentCached(false),
+    mMovable(false),
+    mPanel(startInfo->panel)
+{
+    mSettings->beginGroup(startInfo->configSection);
+
+    Q_Q(RazorPanelPlugin);
+    q->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+    q->setWindowTitle(startInfo->pluginInfo->name());
+    mLayout = new QBoxLayout(QBoxLayout::LeftToRight, q);
     mLayout->setSpacing(0);
     mLayout->setMargin(0);
     mLayout->setContentsMargins(0, 0, 0, 0);
+
 }
 
 
@@ -54,7 +79,56 @@ RazorPanelPlugin::RazorPanelPlugin(RazorPanel* panel, const QString& configId, Q
  ************************************************/
 RazorPanelPlugin::~RazorPanelPlugin()
 {
+}
 
+
+/************************************************
+
+ ************************************************/
+RazorPanelPluginPrivate::~RazorPanelPluginPrivate()
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+QSettings& RazorPanelPlugin::settings() const
+{
+    Q_D(const RazorPanelPlugin);
+    return d->settings();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::saveSettings()
+{
+    Q_D(RazorPanelPlugin);
+    d->saveSettings();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::saveSettings()
+{
+    if (alignment() == RazorPanelPlugin::AlignLeft)
+        mSettings->setValue("alignment", "Left");
+    else
+        mSettings->setValue("alignment", "Right");
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPanel* RazorPanelPlugin::panel() const
+{
+    Q_D(const RazorPanelPlugin);
+    return d->panel();
 }
 
 
@@ -63,6 +137,16 @@ RazorPanelPlugin::~RazorPanelPlugin()
  ************************************************/
 void RazorPanelPlugin::addWidget(QWidget* widget)
 {
+    Q_D(RazorPanelPlugin);
+    d->addWidget(widget);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::addWidget(QWidget* widget)
+{
     mLayout->addWidget(widget);
 }
 
@@ -70,7 +154,27 @@ void RazorPanelPlugin::addWidget(QWidget* widget)
 /************************************************
 
  ************************************************/
+QBoxLayout* RazorPanelPlugin::layout() const
+{
+    Q_D(const RazorPanelPlugin);
+    return d->layout();
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPlugin::contextMenuEvent(QContextMenuEvent* event)
+{
+    Q_D(RazorPanelPlugin);
+    d->contextMenuEvent(event);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu* menu = popupMenu(0);
     menu->exec(event->globalPos());
@@ -83,9 +187,18 @@ void RazorPanelPlugin::contextMenuEvent(QContextMenuEvent* event)
  ************************************************/
 QMenu* RazorPanelPlugin::popupMenu(QWidget *parent)
 {
+    Q_D(RazorPanelPlugin);
+    return d->popupMenu(parent);
+}
+
+
+/************************************************
+
+ ************************************************/
+QMenu* RazorPanelPluginPrivate::popupMenu(QWidget *parent)
+{
     QMenu* menu = new QMenu(parent);
     QAction* a;
-
 
     a = menu->addAction(XdgIcon::fromTheme("transform-move", 32), tr("Move plugin"));
     connect(a, SIGNAL(triggered()), this, SLOT(startMove()));
@@ -104,9 +217,31 @@ QMenu* RazorPanelPlugin::popupMenu(QWidget *parent)
 /************************************************
 
  ************************************************/
-void RazorPanelPlugin::initStyleOption(QStyleOptionToolBar *option) const
+void RazorPanelPluginPrivate::startMove()
 {
-    option->initFrom(this);
+    Q_Q(RazorPanelPlugin);
+    static_cast<RazorPanelLayout*>(panel()->layout())->startMoveWidget(q);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::updateStyleSheet()
+{
+    Q_Q(RazorPanelPlugin);
+    q->style()->unpolish(q);
+    q->style()->polish(q);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::initStyleOption(QStyleOptionToolBar *option) const
+{
+    Q_Q(const RazorPanelPlugin);
+    option->initFrom(q);
     option->state |= QStyle::State_Horizontal;
     if (mMovable)
         option->features = QStyleOptionToolBar::Movable;
@@ -116,38 +251,13 @@ void RazorPanelPlugin::initStyleOption(QStyleOptionToolBar *option) const
 /************************************************
 
  ************************************************/
-QRect RazorPanelPlugin::handleRect()
+QRect RazorPanelPluginPrivate::handleRect()
 {
+    Q_Q(RazorPanelPlugin);
     QStyleOptionToolBar opt;
     initStyleOption(&opt);
 
-    return style()->subElementRect(QStyle::SE_ToolBarHandle, &opt, this);
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPlugin::setMovable(bool movable)
-{
-    if (mMovable == movable)
-        return;
-
-    mMovable = movable;
-
-    QMargins m = contentsMargins();
-
-    if (movable)
-        m.setLeft(m.left() + handleRect().width());
-    else
-        m.setLeft(m.left() - handleRect().width());
-
-    setContentsMargins(m);
-
-
-    // Update stylesheet ............
-    style()->unpolish(this);
-    style()->polish(this);
+    return q->style()->subElementRect(QStyle::SE_ToolBarHandle, &opt, q);
 }
 
 
@@ -156,189 +266,141 @@ void RazorPanelPlugin::setMovable(bool movable)
  ************************************************/
 bool RazorPanelPlugin::isMovable() const
 {
-    return mMovable;
+    Q_D(const RazorPanelPlugin);
+    return d->isMovable();
 }
 
 
 /************************************************
 
  ************************************************/
-void RazorPanelPlugin::toggleMovable()
+void RazorPanelPlugin::setMovable(bool movable)
 {
-    setMovable(!isMovable());
+    Q_D(RazorPanelPlugin);
+    d->setMovable(movable);
+    emit movableChanged(d->isMovable());
 }
 
-///************************************************
-
-// ************************************************/
-//void RazorPanelPlugin::mousePressEvent(QMouseEvent* event)
-//{
-//     static_cast<RazorPanelLayout*>(panel()->layout())->startMoveWidget(this);
-//}
-
-////    if (handleRect().contains(event->pos()))
-////    {
-////        panel()->layout()->startMoveWidget(this);
-////        event->accept();
-////    }
-////}
-
 
 /************************************************
 
  ************************************************/
-//void RazorPanelPlugin::mouseReleaseEvent(QMouseEvent* event)
-//{
-//        RazorPanelLayout* l = qobject_cast<RazorPanelLayout*>(panel()->layout());
-//        if (!l)
-//            return;
-//        qDebug() << "STOP";
-//        event->accept(); // do not propagate
-////        mOffset = QPoint();
-////        int myN = l->indexOf(this);
-////        l->moveItem(myN, 2);
-//        panel()->layout()->setEnabled(true);
-//        panel()->layout()->invalidate();
-
-
-//   static_cast<RazorPanelLayout*>(panel()->layout())->stopMoveWidget();
-//}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPlugin::startMove()
+void RazorPanelPluginPrivate::setMovable(bool movable)
 {
-    static_cast<RazorPanelLayout*>(panel()->layout())->startMoveWidget(this);
+    if (mMovable == movable)
+        return;
+
+    Q_Q(RazorPanelPlugin);
+    mMovable = movable;
+
+    QMargins m = q->contentsMargins();
+
+    if (movable)
+        m.setLeft(m.left() + handleRect().width());
+    else
+        m.setLeft(m.left() - handleRect().width());
+
+    q->setContentsMargins(m);
+
+    updateStyleSheet();
 }
 
-//    return;
-//    RazorPanelLayout* layout = qobject_cast<RazorPanelLayout*>(panel()->layout());
-//    if (!layout)
-//        return;
-////this->setToolTip("Move me");
-////this->toolTip()
-//    QMargins m = contentsMargins();
-//    m.setLeft(m.left() + 10);
-//    setContentsMargins(m);
-
-//    QToolTip::showText(mapToGlobal(QPoint(this->pos())), "Move me");
-//    layout->startMoveWidget(this);
-//panel()->layout()->setEnabled(false);
-//move(0, 10);
-//setParent(0);
-//show();
-//}
-
-
-
-
-//void RazorPanelPlugin::initStyleOption(QStyleOptionToolBar *option) const
-//{
-//    //Q_D(const QToolBar);
-
-//    if (!option)
-//        return;
-
-//    option->initFrom(this);
-//    //if (orientation() == Qt::Horizontal)
-//    //    option->state |= QStyle::State_Horizontal;
-//    option->lineWidth = style()->pixelMetric(QStyle::PM_ToolBarFrameWidth, 0, this);
-//    option->features = d->layout->movable()
-//                        ? QStyleOptionToolBar::Movable
-//                        : QStyleOptionToolBar::None;
-//    // if the tool bar is not in a QMainWindow, this will make the painting right
-//    option->toolBarArea = Qt::NoToolBarArea;
-
-//    // Add more styleoptions if the toolbar has been added to a mainwindow.
-//    QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parentWidget());
-
-//    if (!mainWindow)
-//        return;
-
-//    QMainWindowLayout *layout = qobject_cast<QMainWindowLayout *>(mainWindow->layout());
-//    Q_ASSERT_X(layout != 0, "QToolBar::initStyleOption()",
-//               "QMainWindow->layout() != QMainWindowLayout");
-
-//    layout->getStyleOptionInfo(option, const_cast<QToolBar *>(this));
-//}
 
 /************************************************
 
  ************************************************/
 void RazorPanelPlugin::paintEvent(QPaintEvent* event)
 {
+    Q_D(RazorPanelPlugin);
+    d->paintEvent(event);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::paintEvent(QPaintEvent* event)
+{
+    Q_Q(RazorPanelPlugin);
+
     if (mMovable)
     {
-        QPainter p(this);
-        QStyle *style = this->style();
+        QPainter p(q);
+        QStyle *style = q->style();
         QStyleOptionToolBar opt;
         initStyleOption(&opt);
 
-        opt.rect = style->subElementRect(QStyle::SE_ToolBarHandle, &opt, this);
+        opt.rect = style->subElementRect(QStyle::SE_ToolBarHandle, &opt, q);
         if (opt.rect.isValid())
-            style->drawPrimitive(QStyle::PE_IndicatorToolBarHandle, &opt, &p, this);
+            style->drawPrimitive(QStyle::PE_IndicatorToolBarHandle, &opt, &p, q);
     }
 }
 
+
 /************************************************
-  Workaround about QTBUG-597
-  http://bugreports.qt.nokia.com/browse/QTBUG-597
+
  ************************************************/
-//bool RazorPanelPlugin::eventFilter(QObject* watched, QEvent* event)
-//{
-
-//    if (watched == mExtensionButton)
-//    {
-//        switch (event->type())
-//        {
-//            case QEvent::MouseButtonPress:
-//            case QEvent::MouseButtonDblClick:
-//                return true;
-
-//            case QEvent::MouseButtonRelease:
-//                showExtensionMenu((QMouseEvent*) event);
-//                return true;
-
-//            default:
-//                break;
-
-//        }
-//    }
-//    return QToolBar::eventFilter(watched, event);
-//}
+RazorPanelPlugin::Alignment RazorPanelPlugin::alignment() const
+{
+    Q_D(const RazorPanelPlugin);
+    return d->alignment();
+}
 
 
 /************************************************
-  Workaround about QTBUG-597
-  http://bugreports.qt.nokia.com/browse/QTBUG-597
+
  ************************************************/
-//void RazorPanelPlugin::showExtensionMenu(QMouseEvent* event)
-//{
-//    QMenu menu;
-//    QPoint extBtnPos = this->mExtensionButton->pos();
+RazorPanelPlugin::Alignment RazorPanelPluginPrivate::alignment() const
+{
+    if (!mAlignmentCached)
+    {
+        Q_Q(const RazorPanelPlugin);
+        QString s = settings().value("alignment").toString();
 
-//    QList<QAction*> acts = actions();
+        // Retrun default value
+        if (s.isEmpty())
+            mAlignment =  q->preferredAlignment();
+        else
+            mAlignment = (s.toUpper() == "RIGHT") ?
+                         RazorPanelPlugin::AlignRight :
+                         RazorPanelPlugin::AlignLeft;
 
-//    switch (this->orientation())
-//    {
-//        case Qt::Horizontal:
-//            foreach(QAction* act, acts)
-//            {
-//                if (actionGeometry(act).right() > extBtnPos.x())
-//                    menu.addAction(act);
-//            }
-//            break;
+        mAlignmentCached = true;
+    }
 
-//        case Qt::Vertical:
-//            foreach(QAction* act, acts)
-//            {
-//                if (actionGeometry(act).bottom() > extBtnPos.y())
-//                    menu.addAction(act);
-//            }
-//            break;
-//    }
+    return mAlignment;
+}
 
-//    menu.exec(event->globalPos());
-//}
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::setAlignment(Alignment alignment)
+{
+    Q_D(RazorPanelPlugin);
+    d->setAlignment(alignment);
+    emit alignmentChanged();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPluginPrivate::setAlignment(RazorPanelPlugin::Alignment alignment)
+{
+    mAlignment = alignment;
+    updateStyleSheet();
+}
+
+
+/************************************************
+
+ ************************************************/
+QString RazorPanelPlugin::configId() const
+{
+    Q_D(const RazorPanelPlugin);
+    return d->configId();
+}
+
+
+

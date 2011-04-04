@@ -36,8 +36,6 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     QToolButton(parent),
     mWindow(window)
 {
-    //mButtonsGroup.addButton(this);
-    //mButtonsGroup.setExclusive(false);
     setCheckable(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Quicklaunch
+Name[ru]=Панель запуска
+Comment=Launch your favorite Applications
+Comment[ru]=Панель с избранными программами

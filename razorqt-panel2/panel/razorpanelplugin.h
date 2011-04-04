@@ -1,5 +1,5 @@
 /********************************************************************
-  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+  Copyright: 2010-2011 Alexander Sokoloff <sokoloff.a@gmail.ru>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License.
@@ -40,7 +40,7 @@ as in the "name" constructor's argument.
 #include <QtGui/QBoxLayout>
 #include "razorpanel.h"
 
-
+class QSettings;
 class QToolButton;
 class QMenu;
 class QStyleOptionToolBar;
@@ -64,13 +64,26 @@ position of the panel (top, bottom, left, right) and panel size (height,
 width).
 */
 
+class RazorPanelPluginPrivate;
+class RazorPluginInfo;
+
+class RazorPalelPluginStartInfo
+{
+public:
+    QString configFile;
+    QString configSection;
+    RazorPanel* panel;
+    RazorPluginInfo* pluginInfo;
+};
+
 class RazorPanelPlugin : public QFrame
 {
     Q_OBJECT
     /*! This property holds whether the user can move the pluginr within the panel area.
         By default, this property is false.   */
-    Q_PROPERTY(bool movable READ isMovable WRITE setMovable
-                   NOTIFY movableChanged)
+    Q_PROPERTY(bool movable READ isMovable WRITE setMovable NOTIFY movableChanged)
+    Q_PROPERTY(Alignment alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
+    Q_ENUMS(Alignment)
 
 public:
     enum Alignment {
@@ -85,7 +98,8 @@ public:
     \param parent a reference to the QWidget parent. It might be a RazorPanel, but
                     it can be any QWidget.
     */
-    explicit RazorPanelPlugin(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
+    //explicit RazorPanelPlugin(const QString& configFile, const QString& configSection, RazorPanel* panel);
+    explicit RazorPanelPlugin(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
     virtual ~RazorPanelPlugin();
 
     /*! Preferred alignment of the plug-in, at the left (for example the main menu
@@ -96,76 +110,62 @@ public:
      */
     virtual Alignment preferredAlignment() const { return AlignLeft; }
 
-    RazorPanel* panel() const { return mPanel; }
+    RazorPanel* panel() const;
+    QSettings& settings() const;
 
-    QString configId() const { return mConfigId; }
 
-    //virtual void showExtensionMenu(QMouseEvent* event);
     /*! Adds the given widget to the end of the plugin box.
-        The plugin does not takes ownership of widget.
-     */
+        The plugin does not takes ownership of widget. */
     virtual void addWidget(QWidget* widget);
 
-    /*! Returns the layout manager that is installed on this plugin.
-     */
-    QBoxLayout* layout() const { return mLayout; }
+    //! Returns the layout manager that is installed on this plugin.
+    QBoxLayout* layout() const;
 
     bool isMovable() const;
     void setMovable(bool movable);
 
+    Alignment alignment() const;
+    void setAlignment(Alignment alignment);
+
+    QString configId() const;
+
+    void saveSettings();
+
 signals:
     void movableChanged(bool movable);
+    void alignmentChanged();
 
 protected:
     void paintEvent(QPaintEvent* event);
-    //QToolButton* mExtensionButton;
-    //bool eventFilter(QObject* watched, QEvent* event);
-    QBoxLayout* mLayout;
     virtual QMenu* popupMenu(QWidget *parent);
-    virtual void contextMenuEvent( QContextMenuEvent* event);
-
-
-    //void mousePressEvent(QMouseEvent* event);
-    //void mouseMoveEvent(QMouseEvent* event);
-    //void mouseReleaseEvent(QMouseEvent* event);
+    virtual void contextMenuEvent(QContextMenuEvent* event);
 
 
 private:
-    RazorPanel* mPanel;
-    QString mConfigId;
-    bool mMovable;
-    void initStyleOption(QStyleOptionToolBar *option) const;
-    QRect handleRect();
+    RazorPanelPluginPrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(RazorPanelPlugin)
 
-private slots:
-    void toggleMovable();
-    void startMove();
+    RazorPanelPlugin(const RazorPanelPlugin&);
+    RazorPanelPlugin &operator=(const RazorPanelPlugin&);
 };
 
 
 
-/*! Prototype for plugin's init() function
- */
-typedef RazorPanelPlugin* (*PluginInitFunction)(const RazorPanel* panel,
-                                           QWidget* parent,
-                                           const QString & configId);
-
+//! Prototype for plugin's init() function
+typedef RazorPanelPlugin* (*PluginInitFunction)(const RazorPalelPluginStartInfo* startInfo, QWidget* parent);
 
 /*! Helper macro for define RazorPanelPlugin.
-    Place this macro in your plugin header file.
- */
+    Place this macro in your plugin header file. */
 #define EXPORT_RAZOR_PANEL_PLUGIN_H \
-    extern "C" RazorPanelPlugin* init(RazorPanel* panel, QWidget* parent, const QString & configId);
-
+    extern "C" RazorPanelPlugin* init(const RazorPalelPluginStartInfo* startInfo, QWidget* parent);
 
 /*! Helper macro for define RazorPanelPlugin.
-    Place this macro in your plugin source file.
- */
-#define EXPORT_RAZOR_PANEL_PLUGIN_CPP(PLUGINCLASS)                                          \
-    RazorPanelPlugin* init(RazorPanel* panel, QWidget* parent, const QString & configId)    \
-    {                                                                                       \
-        return new PLUGINCLASS(panel, configId, parent);                                    \
+    Place this macro in your plugin source file.  */
+#define EXPORT_RAZOR_PANEL_PLUGIN_CPP(PLUGINCLASS)                      \
+    RazorPanelPlugin* init(const RazorPalelPluginStartInfo* startInfo,  \
+                           QWidget* parent)                             \
+    {                                                                   \
+        return new PLUGINCLASS(startInfo, parent);                      \
     }
-
 
 #endif // RAZORPANELPLUGIN_H

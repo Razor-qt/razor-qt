@@ -30,6 +30,8 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 
+#define MINIMIM_SIZE 8
+
 // QVariantAnimation class was introduced in Qt 4.6.
 #if QT_VERSION >= 0x040600
 #define ANIMATION_ENABLE
@@ -251,7 +253,6 @@ inline void MoveProcessor::mouseMoveVert()
 /************************************************
 
  ************************************************/
-
 void MoveProcessor::apply()
 {
     int n = mLayout->indexOf(mWidget);
@@ -281,6 +282,7 @@ void MoveProcessor::finished()
     // activate not work on Qt 4.7, but update not work on 4.6.
     mLayout->activate();
     mLayout->update();
+    emit widgetMoved(mWidget);
     delete this;
 }
 
@@ -376,6 +378,22 @@ RazorPanelLayout::~RazorPanelLayout()
  ************************************************/
 void RazorPanelLayout::startMoveWidget(QWidget* widget)
 {
-    new MoveProcessor(this, widget);
+    MoveProcessor* mp = new MoveProcessor(this, widget);
+    connect(mp, SIGNAL(widgetMoved(QWidget*)), this, SIGNAL(widgetMoved(QWidget*)));
 }
 
+
+/************************************************
+
+ ************************************************/
+QSize RazorPanelLayout::minimumSize() const
+{
+    QSize size = QBoxLayout::minimumSize();
+    if (size.rheight() < MINIMIM_SIZE)
+        size.rheight() = MINIMIM_SIZE;
+
+    if (size.rwidth() < MINIMIM_SIZE)
+        size.rwidth() = MINIMIM_SIZE;
+
+    return size;
+}

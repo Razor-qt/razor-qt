@@ -21,13 +21,12 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTray)
 /**
  * @brief constructor
  */
-RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent)
-    : RazorPanelPlugin(panel, configId, parent),
+RazorTray::RazorTray(const RazorPalelPluginStartInfo* startInfo, QWidget* parent)
+    : RazorPanelPlugin(startInfo, parent),
     m_count(0)
 {
     qDebug() << "Razortray: initializing";
     setObjectName("Tray");
-    setWindowTitle(tr("System Tray"));
 
     m_traycode = xfitMan().getAtom("net_system_tray_opcode");
 
@@ -35,7 +34,7 @@ RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent
     qDebug() << "Composite:" << XGetSelectionOwner(QX11Info::display(), XInternAtom (QX11Info::display(), "_NET_WM_CM_S0", False));
 
     // Inform X that this is the tray
-    Window winId = panel->winId();
+    Window winId = this->winId();
 
     // Tray orientation
     int orientation = _NET_SYSTEM_TRAY_ORIENTATION_HORZ;
@@ -95,7 +94,7 @@ RazorTray::RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent
     //setIconSize(QSize(32,32));
     //updateSize();
 
-    connect(panel, SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
+    connect(panel(), SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
 }
 
 

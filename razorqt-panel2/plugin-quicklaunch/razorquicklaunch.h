@@ -1,8 +1,12 @@
 #ifndef RAZORQUICKLAUNCH_H
 #define RAZORQUICKLAUNCH_H
 
-#include "razorpanelplugin.h"
-#include "razorpanel.h"
+#include "../panel/razorpanelplugin.h"
+#include "../panel/razorpanel.h"
+#include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtGui/QAction>
+
 
 class XdgDesktopFile;
 class ReadSettings;
@@ -16,13 +20,10 @@ class RazorQuickLaunch : public RazorPanelPlugin
     Q_OBJECT
 
 public:
-    RazorQuickLaunch(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
+    RazorQuickLaunch(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorQuickLaunch();
 
 private:
-    ReadSettings * cfg;
-    QString m_configId;
-
     QMap<QString,XdgDesktopFile*> m_xdgFiles;
 
 private slots:

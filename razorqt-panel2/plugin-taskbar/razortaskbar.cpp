@@ -40,13 +40,12 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTaskBar)
 /************************************************
 
 ************************************************/
-RazorTaskBar::RazorTaskBar(RazorPanel* panel, const QString& configId, QWidget *parent) :
-    RazorPanelPlugin(panel, configId, parent)
+RazorTaskBar::RazorTaskBar(const RazorPalelPluginStartInfo* startInfo, QWidget* parent) :
+    RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("TaskBar");
-    setWindowTitle(tr("Task Bar"));
 
-    connect(panel, SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleXEvent(XEvent*)));
+    connect(panel(), SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleXEvent(XEvent*)));
     QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);

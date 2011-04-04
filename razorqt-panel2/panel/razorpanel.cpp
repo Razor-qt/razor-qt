@@ -17,13 +17,14 @@
 *********************************************************************/
 
 #include "razorpanel.h"
+#include "razorpanel_p.h"
 #include "razorpanelplugin.h"
 #include "razorpluginmanager.h"
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
 
 #include <razorqt/readsettings.h>
-
+#include <razorqt/razorplugininfo.h>
 
 #include <QtCore/QDebug>
 #include <QtCore/QLocale>
@@ -37,17 +38,405 @@
 #include <QtGui/QAction>
 #include <QtGui/QActionGroup>
 #include <QtGui/QStyle>
+#include <QtCore/QFileInfo>
+#include <QtCore/QLibrary>
+#include <QtGui/QSpacerItem>
 
 #include <razorqt/xdgicon.h>
 #include <razorqt/xfitman.h>
 
 
-#define CFG_FILE            "panel"
+#define CFG_PANEL_GROUP    "panel"
 
 #define CFG_KEY_DESKTOPNUM "desktop"
 #define CFG_KEY_POSITION   "position"
 #define CFG_KEY_PLUGINS    "plugins"
-#define CFG_KEY_STATE      "state"
+
+#define CFG_FULLKEY_PLUGINS "panel/plugins"
+
+
+/************************************************
+ Returns the Position by the string.
+ String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
+ If the string is not correct, returns defaultValue.
+ ************************************************/
+RazorPanel::Position strToPosition(const QString& str, RazorPanel::Position defaultValue)
+{
+    if (str.toUpper() == "TOP")    return RazorPanel::PositionTop;
+    if (str.toUpper() == "LEFT")   return RazorPanel::PositionLeft;
+    if (str.toUpper() == "RIGHT")  return RazorPanel::PositionRight;
+    if (str.toUpper() == "BOTTOM") return RazorPanel::PositionBottom;
+    return defaultValue;
+}
+
+
+/************************************************
+ Return  string representation of the position
+ ************************************************/
+QString positionToStr(RazorPanel::Position position)
+{
+    switch (position)
+    {
+        case RazorPanel::PositionTop:    return QString("Top");
+        case RazorPanel::PositionLeft:   return QString("Left");
+        case RazorPanel::PositionRight:  return QString("Right");
+        case RazorPanel::PositionBottom: return QString("Bottom");
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPanelPlugin* RazorPanelPluginInfo::instance(const QString& configFile, const QString& configSection, QObject* parent)
+{
+    RazorPanel* panel = qobject_cast<RazorPanel*>(parent);
+
+    if (!panel)
+        return 0;
+
+    QLibrary* lib = loadLibrary();
+    if (!lib)
+    {
+        delete lib;
+        return 0;
+    }
+
+    PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
+
+    if (!initFunc)
+        return 0;
+
+    RazorPalelPluginStartInfo startInfo;
+    startInfo.configFile = configFile;
+    startInfo.configSection = configSection;
+    startInfo.panel = panel;
+    startInfo.pluginInfo = this;
+    return initFunc(&startInfo, panel);
+}
+
+
+
+/************************************************
+
+ ************************************************/
+RazorPanel::RazorPanel(QWidget *parent) :
+  QFrame(parent),
+  d_ptr(new RazorPanelPrivate(this))
+{
+    Q_D(RazorPanel);
+    d->init();
+
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setAttribute(Qt::WA_X11NetWmWindowTypeDock);
+    setAttribute(Qt::WA_AlwaysShowToolTips);
+
+    setObjectName("RazorPenel");
+
+    connect(qApp, SIGNAL(x11PropertyNotify(XEvent*)), this, SIGNAL(x11PropertyNotify(XEvent*)));
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
+    QObject(parent),
+    q_ptr(parent),
+    mDesktopNum(0)
+{
+    // Read command line arguments ..............
+    // The first argument is config file name.
+    mConfigFile = "panel2";
+    if (qApp->arguments().count() > 1)
+        mConfigFile = qApp->arguments().at(1);
+
+    mSettingsReader = new ReadSettings(mConfigFile);
+    mSettings = mSettingsReader->settings();
+
+    mLayout = new RazorPanelLayout(QBoxLayout::LeftToRight, parent);
+    connect(mLayout, SIGNAL(widgetMoved(QWidget*)), this, SLOT(pluginMoved(QWidget*)));
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::init()
+{
+    Q_Q(RazorPanel);
+    // Read theme from razor.conf ...............
+    ReadSettings* razorRS = new ReadSettings("razor");
+    QSettings* razorSettings = razorRS->settings();
+    mTheme = razorSettings->value("theme").toString();
+    delete razorRS;
+
+    // Read settings ............................
+    mSettings->beginGroup(CFG_PANEL_GROUP);
+    mPosition = strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), RazorPanel::PositionBottom);
+    mDesktopNum = mSettings->value(CFG_KEY_DESKTOPNUM, QApplication::desktop()->primaryScreen()).toInt();
+    mSettings->endGroup();
+
+    q->setLayout(mLayout);
+
+    loadPlugins();
+    setTheme(mTheme);
+}
+
+
+
+/************************************************
+
+ ************************************************/
+RazorPanel::~RazorPanel()
+{
+    Q_D(RazorPanel);
+    d->saveSettings();
+    delete d;
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPanelPrivate::~RazorPanelPrivate()
+{
+    qDeleteAll(mPlugins);
+    delete mSettingsReader;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::saveSettings()
+{
+    foreach (RazorPanelPlugin* plugin, mPlugins)
+        plugin->saveSettings();
+
+    mSettings->beginGroup(CFG_PANEL_GROUP);
+    mSettings->setValue(CFG_KEY_DESKTOPNUM, mDesktopNum);
+    mSettings->setValue(CFG_KEY_POSITION, positionToStr(mPosition));
+
+    QStringList pluginsStr;
+    for (int i=0; i<mLayout->count(); ++i)
+    {
+        RazorPanelPlugin* plugin = qobject_cast<RazorPanelPlugin*>(mLayout->itemAt(i)->widget());
+        if (plugin)
+            pluginsStr << plugin->configId();
+    }
+
+    mSettings->setValue(CFG_KEY_PLUGINS, pluginsStr);
+    mSettings->endGroup();
+    mSettings->sync();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::loadPlugins()
+{
+    Q_Q(RazorPanel);
+
+    mAvailablePlugins.load(PLUGIN_DESKTOPS_DIR, "RazorPanel/Plugin");
+
+    QStringList sections = mSettings->value(CFG_FULLKEY_PLUGINS).toStringList();
+
+    foreach (QString sect, sections)
+    {
+        qDebug() << "** Load plugin" << sect << "*************";
+        QString type = mSettings->value(sect+"/type").toString();
+        if (type.isEmpty())
+        {
+            qWarning() << QString("Section \"%1\" not found in %2.").arg(sect, mSettings->fileName());
+            continue;
+        }
+
+        RazorPanelPluginInfo* pi = mAvailablePlugins.find(type);
+        if (!pi)
+        {
+            qWarning() << QString("Plugin \"%1\" not found.").arg(type);
+            continue;
+        }
+
+        RazorPanelPlugin* plugin = pi->instance(mSettings->fileName(), sect, q);
+        if (!plugin)
+            continue;
+
+        mPlugins.append(plugin);
+    }
+
+
+    QList<RazorPanelPlugin*>::iterator i;
+    // Add left plugins .........................
+    for (i=mPlugins.begin(); i != mPlugins.end(); ++i)
+    {
+        if ((*i)->alignment() != RazorPanelPlugin::AlignLeft)
+            break;
+        mLayout->addWidget((*i));
+    }
+
+    mLayout->addStretch();
+    mSpacer = mLayout->itemAt(mLayout->count() -1);
+
+    // Add right plugins ........................
+    for (; i != mPlugins.end(); ++i)
+    {
+        mLayout->addWidget((*i));
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::setTheme(const QString& themeName)
+{
+    mTheme = themeName;
+    ReadTheme* readTheme = new ReadTheme(themeName);
+    qApp->setStyleSheet(readTheme->qss());
+
+    delete readTheme;
+    realign();
+}
+
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::realign()
+{
+    Q_Q(RazorPanel);
+    /*
+    qDebug() << "Realign: DesktopNum" << mDesktopNum;
+    qDebug() << "Realign: Position  " << positionToStr(mPosition);
+    qDebug() << "Realign: Theme     " << mTheme;
+    qDebug() << "Realign: SizeHint  " << q->sizeHint();
+    qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
+    */
+
+    // Update stylesheet ............
+    q->style()->unpolish(q);
+    q->style()->polish(q);
+    // ..............................
+
+    if (q->isHorizontal()) mLayout->setDirection(QBoxLayout::LeftToRight);
+    else  mLayout->setDirection(QBoxLayout::TopToBottom);
+
+    QRect screen = QApplication::desktop()->screenGeometry(mDesktopNum);
+    QRect rect = screen;
+    switch (mPosition)
+    {
+        case RazorPanel::PositionTop:
+            rect.setHeight(0);
+            break;
+
+        case RazorPanel::PositionBottom:
+            rect.setHeight(0);
+            rect.moveTop(screen.bottom() - q->sizeHint().height());
+            break;
+
+        case RazorPanel::PositionLeft:
+            rect.setWidth(0);
+            break;
+
+        case RazorPanel::PositionRight:
+            rect.setWidth(0);
+            rect.moveLeft(screen.right() - q->sizeHint().width());
+            break;
+    }
+
+    q->setGeometry(rect);
+
+    // Reserve our space on the screen ..........
+    XfitMan xf = xfitMan();
+    Window wid = q->effectiveWinId();
+
+    switch (mPosition)
+    {
+        case RazorPanel::PositionTop:
+            xf.setStrut(wid, 0, 0, q->height(), 0,
+               /* Left   */   0, 0,
+               /* Right  */   0, 0,
+               /* Top    */   rect.left(), rect.right(),
+               /* Bottom */   0, 0
+                         );
+        break;
+
+        case RazorPanel::PositionBottom:
+            xf.setStrut(wid, 0, 0, 0, q->height(),
+               /* Left   */   0, 0,
+               /* Right  */   0, 0,
+               /* Top    */   0, 0,
+               /* Bottom */   rect.left(), rect.right()
+                         );
+            break;
+
+        case RazorPanel::PositionLeft:
+            xf.setStrut(wid, q->width(), 0, 0, 0,
+               /* Left   */   rect.top(), rect.bottom(),
+               /* Right  */   0, 0,
+               /* Top    */   0, 0,
+               /* Bottom */   0, 0
+                         );
+
+            break;
+
+        case RazorPanel::PositionRight:
+            xf.setStrut(wid, 0, q->width(), 0, 0,
+               /* Left   */   0, 0,
+               /* Right  */   rect.top(), rect.bottom(),
+               /* Top    */   0, 0,
+               /* Bottom */   0, 0
+                         );
+            break;
+    }
+
+}
+
+
+/************************************************
+  The panel can't be placed on boundary of two displays.
+  This function checks, is the panel can be placed on the display
+  @displayNum on @position.
+ ************************************************/
+bool RazorPanelPrivate::canPlacedOn(int displayNum, RazorPanel::Position position) const
+{
+    QDesktopWidget* dw = QApplication::desktop();
+
+    switch (position)
+    {
+        case RazorPanel::PositionTop:
+            for (int i=0; i < dw->screenCount(); ++i)
+                if (dw->screenGeometry(i).bottom() < dw->screenGeometry(displayNum).top())
+                    return false;
+                return true;
+
+        case RazorPanel::PositionBottom:
+            for (int i=0; i < dw->screenCount(); ++i)
+                if (dw->screenGeometry(i).top() > dw->screenGeometry(displayNum).bottom())
+                    return false;
+                return true;
+
+        case RazorPanel::PositionLeft:
+//            for (int i=0; i < dw->screenCount(); ++i)
+//                if (dw->screenGeometry(i).right() < dw->screenGeometry(displayNum).left())
+//                    return false;
+//            return true;
+            return false;
+
+        case RazorPanel::PositionRight:
+//            for (int i=0; i < dw->screenCount(); ++i)
+//                if (dw->screenGeometry(i).left() > dw->screenGeometry(displayNum).right())
+//                    return false;
+//            return true;
+            return false;
+    }
+}
+
+
 
 /************************************************
 
@@ -84,112 +473,30 @@ PositionAction::PositionAction(int displayNum, RazorPanel::Position position, QA
 }
 
 
-
 /************************************************
 
  ************************************************/
-RazorPanel::RazorPanel(QWidget *parent) :
-  QFrame(parent),
-  mLayout(new RazorPanelLayout(QBoxLayout::LeftToRight, this))
+void RazorPanelPrivate::pluginMoved(QWidget* pluginWidget)
 {
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    setAttribute(Qt::WA_X11NetWmWindowTypeDock);
-    setAttribute(Qt::WA_AlwaysShowToolTips);
+    RazorPanelPlugin* plugin = qobject_cast<RazorPanelPlugin*>(pluginWidget);
+    if (!plugin)
+        return;
 
-    setLayout(mLayout);
-    setObjectName("RazorPenel");
-    mPluginManager = new RazorPluginManager();
-
-    connect(qApp, SIGNAL(x11PropertyNotify(XEvent*)), this, SIGNAL(x11PropertyNotify(XEvent*)));
-
-    // Read command line arguments .....................
-    mConfigId = "default";
-    if (qApp->arguments().count() > 1)
+    for (int i=0; i<mLayout->count(); ++i)
     {
-        // First argument is config file section name.
-        mConfigId = qApp->arguments().at(1);
-    }
-
-
-    ReadSettings* razorRS = new ReadSettings("razor");
-    QSettings* razorSettings = razorRS->settings();
-    mTheme = razorSettings->value("theme").toString();
-    delete razorRS;
-
-    ReadSettings* panelRS = new ReadSettings(CFG_FILE);
-    QSettings* settings = panelRS->settings();
-
-
-    settings->beginGroup(mConfigId);
-    mPosition = strToPosition(settings->value(CFG_KEY_POSITION).toString(), PositionBottom);
-    mDesktopNum = settings->value(CFG_KEY_DESKTOPNUM, QApplication::desktop()->primaryScreen()).toInt();
-
-    QString locale = QLocale::system().name();
-    // Read panels & load plugins
-bool left= true;
-    int cnt = settings->allKeys().count();
-    for (int i=1; i<cnt; ++i)
-    {
-        QString pluginName = settings->value(QString("plugins/%1/name").arg(i)).toString();
-        QString configId = settings->value(QString("plugins/%1/config").arg(i)).toString();
-
-        if (pluginName.isEmpty() || configId.isEmpty())
-            continue;
-
-        QTranslator* translator = new QTranslator(this);
-        translator->load(QString("%1/plugin-%2_%3.qm").arg(TRANSLATIONS_DIR, pluginName, locale));
-        qApp->installTranslator(translator);
-        
-        
-        QString soPath = QString("%1/librazorpanel_%2").arg(PLUGIN_DIR, pluginName + '2');
-        RazorPanelPlugin* plugin = mPluginManager->loadPlugin(soPath, configId, this);
-
-        if (plugin)
+        if (mLayout->itemAt(i) == mSpacer)
         {
-            if (left && (plugin)->preferredAlignment() == RazorPanelPlugin::AlignRight)
-            {
-                qDebug() << "*************" << plugin->windowTitle();
-                mLayout->addStretch(0);
-                left = false;
-            }
+            plugin->setAlignment(RazorPanelPlugin::AlignRight);
+            return;
+        }
 
-            qDebug() << "***** " << plugin->objectName()
-                     << plugin->sizePolicy().horizontalPolicy()
-                     << plugin->sizePolicy().horizontalStretch();
-            mLayout->addWidget(plugin);
-
+        if (mLayout->itemAt(i)->widget() == plugin)
+        {
+            plugin->setAlignment(RazorPanelPlugin::AlignLeft);
+            return;
         }
     }
-            
-    //if (settings->contains(CFG_KEY_STATE))
-    //    restoreState(settings->value(CFG_KEY_STATE).toByteArray());
-    //else
-    //    restoreState(defaultState());
-
-    delete panelRS;
-
-    setTheme(mTheme);
 }
-
-
-/************************************************
-
- ************************************************/
-RazorPanel::~RazorPanel()
-{
-    ReadSettings* panelRS = new ReadSettings("panel");
-    QSettings* settings = panelRS->settings();
-
-    settings->beginGroup(mConfigId);
-    settings->setValue(CFG_KEY_DESKTOPNUM, mDesktopNum);
-    settings->setValue(CFG_KEY_POSITION, positionToStr(mPosition));
-    //settings->setValue(CFG_KEY_STATE, saveState());
-
-    delete panelRS;
-
-    delete mPluginManager;
-}
-
 
 
 /************************************************
@@ -197,122 +504,103 @@ RazorPanel::~RazorPanel()
  ************************************************/
 void RazorPanel::show()
 {
+    Q_D(RazorPanel);
     QWidget::show();
-    realign();
-    mLayout->invalidate();
-    xfitMan().moveWindowToDesktop(this->effectiveWinId(), -1);
+    d->realign();
 }
 
 
 /************************************************
 
  ************************************************/
-void debugState(const QByteArray& state, const QString logFile, bool append=true)
+RazorPanel::Position RazorPanel::position() const
 {
-    QFile f(logFile);
-    if (append)
-        f.open(QFile::Append);
-    else
-        f.open(QFile::WriteOnly);
-
-    f.write(state);
-    f.close();
+    Q_D(const RazorPanel);
+    return d->position();
 }
 
 
 /************************************************
 
  ************************************************/
-/*QByteArray RazorPanel::defaultState()
+void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
 {
-    QByteArray result = saveState();
-
-    RazorPanelPlugin* plugin = 0;
-    RazorPanelPluginIterator i(*mPluginManager);
-    i.toBack();
-
-    // Skip all right-aligned panels.
-    while (i.hasPrevious())
-    {
-        plugin = i.previous();
-        if (plugin->preferredAlignment() != RazorPanelPlugin::AlignRight)
-            break;
-    }
-
-    // If exists left-aligned panel, we increase its width.
-    if (plugin)
-    {
-        // Construct UTF-16BE string
-        QByteArray baName;
-        QDataStream ds(&baName, QIODevice::ReadWrite);
-        ds << QString(plugin->objectName());
-
-        int n = result.lastIndexOf(baName);
-        if (n > -1)
-        {
-            n += baName.length(); // UTF-16BE:  Name
-            n +=1;                // uchar:     1st bit: 1 if shown
-                                  //            2nd bit: 1 if orientation is vert.
-            n +=4;                // int:       Item.pos
-            result[n]   = '\x00'; // int:       Item.Size
-            result[n+1] = '\xFF';
-            result[n+2] = '\xFF';
-            result[n+3] = '\xFF';
-        }
-
-    }
-
-    return result;
-
+    Q_D(RazorPanel);
+    d->contextMenuEvent(event);
 }
-*/
 
 
 /************************************************
 
  ************************************************/
-QMenu* RazorPanel::popupMenu(QWidget *parent)
+void RazorPanelPrivate::contextMenuEvent(QContextMenuEvent* event)
+{
+    QMenu* menu = new QMenu();
+    menu->addMenu(popupMenu(menu));
+
+    menu->addSeparator();
+    QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
+    connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    menu->exec(event->globalPos());
+    delete menu;
+}
+
+
+/************************************************
+
+ ************************************************/
+QMenu* RazorPanel::popupMenu(QWidget *parent) const
+{
+    Q_D(const RazorPanel);
+    return d->popupMenu(parent);
+}
+
+
+/************************************************
+
+ ************************************************/
+QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
 {
     QMenu* menu = new QMenu(tr("Show this panel at"), parent);
     menu->setIcon(XdgIcon::fromTheme("configure-toolbars", 32));
     QAction* a;
 
     // Create Panel menu ********************************************
- //   m = menu->addMenu(XdgIcon::fromTheme("", 32), );
-    QActionGroup* posGroup = new QActionGroup(menu);
+     QActionGroup* posGroup = new QActionGroup(menu);
 
     QDesktopWidget* dw = QApplication::desktop();
     for (int i=0; i<dw->screenCount(); ++i)
     {
-        if (canPlacedOn(i, PositionTop))
+        if (canPlacedOn(i, RazorPanel::PositionTop))
         {
-            a = new PositionAction(i,  PositionTop, posGroup);
-            a->setChecked(mPosition == PositionTop && mDesktopNum == i);
+            a = new PositionAction(i,  RazorPanel::PositionTop, posGroup);
+            a->setChecked(mPosition == RazorPanel::PositionTop && mDesktopNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
             menu->addAction(a);
         }
 
-        if (canPlacedOn(i, PositionBottom))
+        if (canPlacedOn(i, RazorPanel::PositionBottom))
         {
-            a = new PositionAction(i, PositionBottom, posGroup);
-            a->setChecked(mPosition == PositionBottom && mDesktopNum == i);
+            a = new PositionAction(i, RazorPanel::PositionBottom, posGroup);
+            a->setChecked(mPosition == RazorPanel::PositionBottom && mDesktopNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
             menu->addAction(a);
         }
 
-        if (canPlacedOn(i, PositionLeft))
+        if (canPlacedOn(i, RazorPanel::PositionLeft))
         {
-            a = new PositionAction(i, PositionLeft, posGroup);
-            a->setChecked(mPosition == PositionLeft && mDesktopNum == i);
+            a = new PositionAction(i, RazorPanel::PositionLeft, posGroup);
+            a->setChecked(mPosition == RazorPanel::PositionLeft && mDesktopNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
             menu->addAction(a);
         }
 
 
-        if (canPlacedOn(i, PositionRight))
+        if (canPlacedOn(i, RazorPanel::PositionRight))
         {
-            a = new PositionAction(i, PositionRight, posGroup);
-            a->setChecked(mPosition == PositionRight && mDesktopNum == i);
+            a = new PositionAction(i, RazorPanel::PositionRight, posGroup);
+            a->setChecked(mPosition == RazorPanel::PositionRight && mDesktopNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
             menu->addAction(a);
         }
@@ -327,303 +615,16 @@ QMenu* RazorPanel::popupMenu(QWidget *parent)
 /************************************************
 
  ************************************************/
-/*void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
-{
-    QMenu menu(tr("Panel"));
-    QMenu* m;
-    QAction* a;
-
-    m = menu.addMenu(XdgIcon::fromTheme("preferences-plugin", 32), tr("Plugins"));
-
-    for (int i=0; i<mPluginManager->count(); ++i)
-    {
-        const RazorPanelPlugin* plugin = mPluginManager->at(i);
-        QMenu* plugMenu = m->addMenu(plugin->windowTitle());
-        plugMenu->setIcon(plugin->windowIcon());
-
-//        if (plugin->isMovable())
-//            a = plugMenu->addAction(XdgIcon::fromTheme("document-encrypt", 32), tr("Lock"));
-//        else
-//            a = plugMenu->addAction(XdgIcon::fromTheme("document-decrypt", 32), tr("Unlock"));
-
-//        a->setData(i);
-//        connect(a, SIGNAL(triggered()), this, SLOT(lockPlugin()));
-
-        if (plugin->isVisible())
-        {
-            a = plugMenu->addAction(XdgIcon::fromTheme("layer-visible-off", 32), tr("Hide"));
-            connect(a, SIGNAL(triggered()), plugin, SLOT(hide()));
-            a->setData(i);
-        }
-        else
-        {
-            a = plugMenu->addAction(XdgIcon::fromTheme("layer-visible-on", 32), tr("Show"));
-            connect(a, SIGNAL(triggered()), plugin, SLOT(show()));
-            a->setData(i);
-        }
-    }
-
-
-    // Create Panel menu ********************************************
-    m = menu.addMenu(XdgIcon::fromTheme("configure-toolbars", 32), tr("Show this panel at"));
-    QActionGroup posGroup(&menu);
-
-    QDesktopWidget* dw = QApplication::desktop();
-    for (int i=0; i<dw->screenCount(); ++i)
-    {
-        if (canPlacedOn(i, PositionTop))
-        {
-            a = new PositionAction(i,  PositionTop, &posGroup);
-            a->setChecked(mPosition == PositionTop && mDesktopNum == i);
-            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            m->addAction(a);
-        }
-
-        if (canPlacedOn(i, PositionBottom))
-        {
-            a = new PositionAction(i, PositionBottom, &posGroup);
-            a->setChecked(mPosition == PositionBottom && mDesktopNum == i);
-            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            m->addAction(a);
-        }
-
-        if (canPlacedOn(i, PositionLeft))
-        {
-            a = new PositionAction(i, PositionLeft, &posGroup);
-            a->setChecked(mPosition == PositionLeft && mDesktopNum == i);
-            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            m->addAction(a);
-        }
-
-
-        if (canPlacedOn(i, PositionRight))
-        {
-            a = new PositionAction(i, PositionRight, &posGroup);
-            a->setChecked(mPosition == PositionRight && mDesktopNum == i);
-            connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            m->addAction(a);
-        }
-
-        m->addSeparator();
-    }
-    // End of create Panel menu *************************************
-
-    menu.addSeparator();
-    a = menu.addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
-    connect(a, SIGNAL(triggered()), this, SLOT(close()));
-
-    menu.exec(event->globalPos());
-
-}
-*/
-
-/************************************************
-
- ************************************************/
-void RazorPanel::lockPlugin()
-{
-//    QAction* a = qobject_cast<QAction*>(sender());
-//    if (!a)
-//        return;
-
-//    bool ok;
-//    int n = a->data().toInt(&ok);
-//    if (ok && n>-1 && n<mPluginManager->count())
-//    {
-//        RazorPanelPlugin* plugin = mPluginManager->value(n);
-//        plugin->setMovable(!plugin->isMovable());
-//    }
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanel::switchPosition()
+void RazorPanelPrivate::switchPosition()
 {
     PositionAction* a = qobject_cast<PositionAction*>(sender());
     if (!a)
         return;
 
+    Q_Q(RazorPanel);
     mPosition = a->position();
     mDesktopNum = a->displayNum();
     realign();
-    emit positionChanged();
+    emit q->positionChanged();
 }
 
-
-/************************************************
-
- ************************************************/
-RazorPanel::Position RazorPanel::strToPosition(const QString& str, Position defaultValue) const
-{
-    if (str.toUpper() == "TOP")    return PositionTop;
-    if (str.toUpper() == "LEFT")   return PositionLeft;
-    if (str.toUpper() == "RIGHT")  return PositionRight;
-    if (str.toUpper() == "BOTTOM") return PositionBottom;
-    return defaultValue;
-}
-
-
-/************************************************
-
- ************************************************/
-QString RazorPanel::positionToStr(Position position) const
-{
-    switch (position)
-    {
-        case PositionTop:    return QString("Top");
-        case PositionLeft:   return QString("Left");
-        case PositionRight:  return QString("Right");
-        case PositionBottom: return QString("Bottom");
-    }
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanel::setTheme(const QString& themeName)
-{
-    mTheme = themeName;
-    ReadTheme* readTheme = new ReadTheme(themeName);
-
-    qApp->setStyleSheet(readTheme->qss());
-
-    delete readTheme;
-
-    realign();
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanel::realign()
-{
-    /*
-    qDebug() << "Realign: DesktopNum" << mDesktopNum;
-    qDebug() << "Realign: Position  " << positionToStr(mPosition);
-    qDebug() << "Realign: Theme     " << mTheme;
-    qDebug() << "Realign: SizeHint  " << sizeHint();
-    qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mDesktopNum);
-    */
-
-    // Update stylesheet ............
-    style()->unpolish(this);
-    style()->polish(this);
-    // ..............................
-
-    if (isHorizontal()) mLayout->setDirection(QBoxLayout::LeftToRight);
-    else  mLayout->setDirection(QBoxLayout::TopToBottom);
-
-    QRect screen = QApplication::desktop()->screenGeometry(mDesktopNum);
-    QRect rect = screen;
-    switch (mPosition)
-    {
-        case PositionTop:
-            rect.setHeight(0);
-            break;
-
-        case PositionBottom:
-            rect.setHeight(0);
-            rect.moveTop(screen.bottom() - sizeHint().height());
-            break;
-
-        case PositionLeft:
-            rect.setWidth(0);
-            break;
-
-        case PositionRight:
-            rect.setWidth(0);
-            rect.moveLeft(screen.right() - sizeHint().width());
-            break;
-    }
-
-    setGeometry(rect);
-
-
-    XfitMan xf = xfitMan();
-    //reserve our space on the screen
-    Window wid = this->effectiveWinId();
-
-    switch (mPosition)
-    {
-        case PositionTop:
-            xf.setStrut(wid, 0, 0, height(), 0,
-               /* Left   */   0, 0,
-               /* Right  */   0, 0,
-               /* Top    */   rect.left(), rect.right(),
-               /* Bottom */   0, 0
-                         );
-        break;
-
-        case PositionBottom:
-            xf.setStrut(wid, 0, 0, 0, height(),
-               /* Left   */   0, 0,
-               /* Right  */   0, 0,
-               /* Top    */   0, 0,
-               /* Bottom */   rect.left(), rect.right()
-                         );
-            break;
-
-        case PositionLeft:
-            xf.setStrut(wid, width(), 0, 0, 0,
-               /* Left   */   rect.top(), rect.bottom(),
-               /* Right  */   0, 0,
-               /* Top    */   0, 0,
-               /* Bottom */   0, 0
-                         );
-
-            break;
-
-        case PositionRight:
-            xf.setStrut(wid, 0, width(), 0, 0,
-               /* Left   */   0, 0,
-               /* Right  */   rect.top(), rect.bottom(),
-               /* Top    */   0, 0,
-               /* Bottom */   0, 0
-                         );
-            break;
-    }
-
-}
-
-
-/************************************************
-
- ************************************************/
-bool RazorPanel::canPlacedOn(int displayNum, RazorPanel::Position position) const
-{
-    QDesktopWidget* dw = QApplication::desktop();
-
-    switch (position)
-    {
-        case RazorPanel::PositionTop:
-            for (int i=0; i < dw->screenCount(); ++i)
-                if (dw->screenGeometry(i).bottom() < dw->screenGeometry(displayNum).top())
-                    return false;
-                return true;
-
-        case RazorPanel::PositionBottom:
-            for (int i=0; i < dw->screenCount(); ++i)
-                if (dw->screenGeometry(i).top() > dw->screenGeometry(displayNum).bottom())
-                    return false;
-                return true;
-
-        case RazorPanel::PositionLeft:
-//            for (int i=0; i < dw->screenCount(); ++i)
-//                if (dw->screenGeometry(i).right() < dw->screenGeometry(displayNum).left())
-//                    return false;
-//            return true;
-            return false;
-
-        case RazorPanel::PositionRight:
-//            for (int i=0; i < dw->screenCount(); ++i)
-//                if (dw->screenGeometry(i).left() > dw->screenGeometry(displayNum).right())
-//                    return false;
-//            return true;
-            return false;
-    }
-
-}

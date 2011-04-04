@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Task Manager
+Name[ru]=Панель задач
+Comment=Switch between running applications
+Comment[ru]=Переключение между запущенными программами

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=taskbar2
+PROJECT=tray2
 
 #OPTS="-noobsolete" 
 

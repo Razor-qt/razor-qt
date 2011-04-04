@@ -1,5 +1,5 @@
 /********************************************************************
-  Copyright: 2010 Alexander Sokoloff <sokoloff.a@gmail.ru>
+  Copyright: 2010-2011 Alexander Sokoloff <sokoloff.a@gmail.ru>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License.
@@ -16,17 +16,17 @@
 
 *********************************************************************/
 
+
 #ifndef RAZORPANEL_H
 #define RAZORPANEL_H
 
 #include <QtGui/QFrame>
 #include <QtCore/QString>
-#include <QtGui/QAction>
-#include <QtGui/QBoxLayout>
+//#include <QtGui/QBoxLayout>
 
-class RazorPluginManager;
-class QActionGroup;
-class RazorPanelLayout;
+class QMenu;
+//class RazorPanelLayout;
+class RazorPanelPrivate;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */
@@ -48,10 +48,10 @@ public:
     RazorPanel(QWidget *parent = 0);
     virtual ~RazorPanel();
 
-    Position position() const { return mPosition; }
-    bool isHorizontal() const { return mPosition == PositionBottom || mPosition == PositionTop; }
+    Position position() const ;
+    bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
 
-    //RazorPanelLayout* layout() const { return mLayout; }
+    virtual QMenu* popupMenu(QWidget *parent) const;
 
 public slots:
     void show();
@@ -61,60 +61,12 @@ signals:
      void positionChanged();
 
 protected:
-    //void contextMenuEvent( QContextMenuEvent* event);
-    virtual QMenu* popupMenu(QWidget *parent);
-
-protected slots:
-    void realign();
-    void switchPosition();
-    void lockPlugin();
-
+    virtual void contextMenuEvent( QContextMenuEvent* event);
 
 private:
-    RazorPluginManager* mPluginManager;
-    QString mConfigId;
-
-    QString mTheme;
-    Position mPosition;
-    int mDesktopNum;
-
-    /*! \brief Returns the Position by the string.
-      String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
-      If the string is not correct, returns defaultValue.
-    */
-    Position strToPosition(const QString& str, Position defaultValue) const;
-
-    /*! Return  string representation of the position
-     */
-    QString positionToStr(Position position) const;
-
-
-    void setTheme(const QString& themeName);
-
-    /*! \brief The panel can't be placed on boundary of two displays.
-      This function checks, is the panel can be placed on the display @displayNum
-      on @position.
-     */
-    bool canPlacedOn(int displayNum, Position position) const;
-
-    //QByteArray defaultState();
-    RazorPanelLayout* mLayout;
+    RazorPanelPrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(RazorPanel)
 };
 
-
-
-class PositionAction: public QAction
-{
-  Q_OBJECT
-public:
-    PositionAction(int displayNum, RazorPanel::Position position, QActionGroup* parent = 0);
-
-    RazorPanel::Position position() const { return mPosition; }
-    int displayNum() const { return mDisplayNum; }
-
-private:
-    RazorPanel::Position mPosition;
-    int mDisplayNum;
-};
 
 #endif // RAZORPANEL_H

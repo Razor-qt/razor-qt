@@ -1,8 +1,8 @@
 #ifndef RAZORTRAY_H
 #define RAZORTRAY_H
 
-#include "razorpanelplugin.h"
-#include "razorpanel.h"
+#include "../panel/razorpanelplugin.h"
+#include "../panel/razorpanel.h"
 
 #include <X11/X.h>
 
@@ -25,8 +25,10 @@ class RazorTray: public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorTray(RazorPanel* panel, const QString& configId, QWidget *parent = 0);
+    RazorTray(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorTray();
+
+    virtual Alignment preferredAlignment() const { return AlignRight; }
 
 private:
     Atom m_traycode;

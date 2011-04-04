@@ -7,8 +7,9 @@ set(QT_USE_QTDBUS 1)
 
 set(HEADERS
     razorpanel.h
+    razorpanel_p.h
     razorpanelplugin.h
-    razorpluginmanager.h
+    razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
 )
@@ -17,14 +18,15 @@ set(SOURCES
     main.cpp
     razorpanel.cpp
     razorpanelplugin.cpp
-    razorpluginmanager.cpp
     razorpanelapplication.cpp
     razorpanellayout.cpp
 )
 
 set(MOCS
     razorpanel.h
+    razorpanel_p.h
     razorpanelplugin.h
+    razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
 )
@@ -38,6 +40,8 @@ set(RESOURCES
 
 )
 
+add_definitions(-DDEFULT_PANEL_PLUGINS=\"MainMenu,Quicklaunch,TaskBar,Tray,Clock\")
+
 # Translations .............. 
 set(TRANSLATIONS_DIR 
     ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}
@@ -45,6 +49,7 @@ set(TRANSLATIONS_DIR
 
 add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
 
+file (GLOB CONFIG_FILES     resources/*.conf)
 
 file (GLOB TS_FILES 
     translations/*.ts
@@ -57,7 +62,8 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-        add_definitions (-Wall -pedantic)
+    add_definitions (-Wall)
+#    add_definitions (-Wall -pedantic)
 endif()
 
 
@@ -87,6 +93,11 @@ IF (NOT LIB_SUFFIX)
 ENDIF (NOT LIB_SUFFIX)
 
 
+set(PLUGIN_DESKTOPS_DIR
+    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}/plugins
+)
+
+add_definitions(-DPLUGIN_DESKTOPS_DIR=\"${PLUGIN_DESKTOPS_DIR}\")
 
 
 #*******************************************
@@ -110,3 +121,4 @@ target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES   ${QM_FILES}        DESTINATION ${TRANSLATIONS_DIR})
+install(FILES   ${CONFIG_FILES}    DESTINATION share/razor)
