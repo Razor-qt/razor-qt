@@ -651,6 +651,12 @@ void XfitMan::setActiveDesktop(int _desktop) const
  */
 void XfitMan::setSelectionOwner(Window _wid, const QString & _selection, const QString & _manager) const
 {
+    if (getSelectionOwner(_selection))
+    {
+        qWarning() << "Another tray started";
+        return;
+    }
+
     XSetSelectionOwner(QX11Info::display(), atomMap.value(_selection), _wid, CurrentTime);
     if (getSelectionOwner(_selection)== _wid)
         clientMessage(QApplication::desktop()->winId(),atomMap.value(_manager),CurrentTime,atomMap.value(_selection),_wid,0,0);
