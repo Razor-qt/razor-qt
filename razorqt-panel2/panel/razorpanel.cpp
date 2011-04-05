@@ -507,6 +507,7 @@ void RazorPanel::show()
     Q_D(RazorPanel);
     QWidget::show();
     d->realign();
+    xfitMan().moveWindowToDesktop(this->effectiveWinId(), -1);
 }
 
 
