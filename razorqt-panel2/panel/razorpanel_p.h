@@ -47,7 +47,7 @@ public:
 
     QList<RazorPanelPlugin*>& plugins() { return mPlugins; }
     RazorPluginInfoList<RazorPanelPluginInfo>& availablePlugins() { return mAvailablePlugins; }
-    bool canPlacedOn(int displayNum, RazorPanel::Position position) const;
+    bool canPlacedOn(int screenNum, RazorPanel::Position position) const;
 
     QMenu* popupMenu(QWidget *parent) const;
 
@@ -55,19 +55,22 @@ public:
 
     virtual void contextMenuEvent( QContextMenuEvent* event);
     void saveSettings();
+
 public slots:
     void switchPosition();
     void pluginMoved(QWidget* pluginWidget);
+    void screensChangeds();
 
 private:
     void loadPlugins();
     void setTheme(const QString& themeName);
+    int findAvailableScreen(RazorPanel::Position position);
 
     RazorPanel* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanel)
 
     RazorPanel::Position mPosition;
-    int mDesktopNum;
+    int mScreenNum;
     QString mConfigFile;
     QString mTheme;
     QSettings* mSettings;
