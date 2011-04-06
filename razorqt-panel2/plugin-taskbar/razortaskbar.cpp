@@ -109,7 +109,12 @@ void RazorTaskBar::refreshTaskList()
         {
             RazorTaskButton* btn = new RazorTaskButton(wnd, this);
             mButtonsHash.insert(wnd, btn);
+            // -1 is here due the last stretchable item
             layout()->insertWidget(layout()->count()-1, btn);
+            // now I want to set higher stretchable priority for buttons
+            // to suppress stretchItem (last item) defauklt value which
+            // will remove that anoying aggresive space at the end -- petr
+            layout()->setStretch(layout()->count()-2, 1);
         }
     }
 
