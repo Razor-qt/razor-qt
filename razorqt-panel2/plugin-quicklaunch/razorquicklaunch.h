@@ -53,9 +53,8 @@ public:
                            const QIcon & icon,
                            QWidget * parent);
     /*! Constructor for XDG desktop handlers.
-        \param desktop name of a XDG desktop file. With or without path.
      */
-    RazorQuickLaunchAction(const QString & desktop, QWidget * parent);
+    RazorQuickLaunchAction(const XdgDesktopFile * xdg, QWidget * parent);
 
     //! Returns true if the action is valid (contains all required properties).
     bool isValid() { return m_valid; }

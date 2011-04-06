@@ -27,7 +27,13 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPalelPluginStartInfo* startInfo, Q
         desktop = settings().value("desktop", "").toString();
         if (! desktop.isEmpty())
         {
-            addButton(new RazorQuickLaunchAction(desktop, this));
+            XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
+            if (!xdg->isValid())
+            {
+                qDebug() << "XdgDesktopFile" << desktop << "is not valid";
+                continue;
+            }
+            addButton(new RazorQuickLaunchAction(xdg, this));
         }
         else
         {
@@ -76,20 +82,12 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & name,
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
 }
 
-RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & desktop,
+RazorQuickLaunchAction::RazorQuickLaunchAction(const XdgDesktopFile * xdg,
                                                QWidget * parent)
     : QAction(parent),
       m_valid(true)
 {
     m_type = ActionXdg;
-
-    XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
-    if (!xdg->isValid())
-    {
-        qDebug() << "XdgDesktopFile" << desktop << "is not valid";
-        m_valid = false;
-        return;
-    }
 
     QString title(xdg->localizedValue("Name").toString());
     QString gn(xdg->localizedValue("GenericName").toString());
@@ -99,7 +97,7 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & desktop,
 
     setIcon(xdg->icon(128, XdgIcon::defaultApplicationIcon()));
 
-    setData(desktop);
+    setData(xdg->fileName());
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
 }
 
