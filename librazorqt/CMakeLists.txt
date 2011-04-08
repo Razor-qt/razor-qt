@@ -18,7 +18,10 @@ include_directories (
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
 	${X11_INCLUDE_DIR}
 	.
-	razorqt)
+	razorqt
+    librazor-upower
+    )
+
 set ( razorqt_HDRS
 	razorqt/defs.h
 	razorqt/razoraboutdlg.h
@@ -34,7 +37,12 @@ set ( razorqt_HDRS
 	razorqt/xdgdesktopfile.h
 	razorqt/xdgmenu.h
 	razorqt/xdgicon.h
-        razorqt/razorplugininfo.h
+    razorqt/razorplugininfo.h
+    razorqt/powermanager.h
+    # upower. Maybe standalone lib?
+    librazor-upower/battery.h
+    librazor-upower/ucpufreq.h
+    librazor-upower/upower.h
 	)
 
 set ( razorqt_SRCS
@@ -54,7 +62,13 @@ set ( razorqt_SRCS
 	razorqt/xdgmenureader.cpp
 	razorqt/xdgmenurules.cpp
 	razorqt/xdgicon.cpp
-        razorqt/razorplugininfo.cpp
+    razorqt/razorplugininfo.cpp
+    razorqt/powermanager.cpp
+    # upower. Maybe standalone lib?
+    librazor-upower/battery.cpp
+    librazor-upower/ucpufreq.cpp
+    librazor-upower/upower.cpp
+
 	)
 
 set ( razorqt_MOCS
@@ -68,7 +82,13 @@ set ( razorqt_MOCS
 	razorqt/xdgmenuapplinkprocessor.h
 	razorqt/xdgmenureader.h
 	razorqt/xdgmenurules.h
-        razorqt/razorplugininfo.h
+    razorqt/razorplugininfo.h
+    razorqt/powermanager.h
+    # upower. Maybe standalone lib?
+    librazor-upower/battery.h
+    librazor-upower/ucpufreq.h
+    librazor-upower/upower.h
+
 	)
 
 QT4_WRAP_CPP(MOCS ${razorqt_MOCS})

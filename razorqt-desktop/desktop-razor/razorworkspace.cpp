@@ -3,15 +3,15 @@
 #include <QLibrary>
 #include <QMenu>
 #include <QGraphicsProxyWidget>
+#include <QtDebug>
+#include <QGraphicsTextItem>
 
 #include "razorworkspace.h"
 #include "workspacemanager.h"
 #include "desktopwidgetplugin.h"
 #include "arrangeitem.h"
 #include <razorqt/readsettings.h>
-
-#include <QtDebug>
-#include <QGraphicsTextItem>
+#include <razorqt/powermanager.h>
 
 
 RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
@@ -23,6 +23,8 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+    
+    m_power = new PowerManager(this);
     
     // this is mandatory for virtualized (virtualbox) installations. Dunno why.
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -167,6 +169,13 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         QMenu context(tr("Context Actions"));
         context.addAction(context.title());
         context.addAction(m_actArrangeWidgets);
+        
+        if (m_mode == ModeNormal)
+        {
+            context.addSeparator();
+            context.addActions(m_power->availableActions());
+        }
+
         context.exec(mapToGlobal(_ev->pos()));
     }
     else

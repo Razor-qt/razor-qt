@@ -22,8 +22,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTray)
  * @brief constructor
  */
 RazorTray::RazorTray(const RazorPalelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent),
-    m_count(0)
+    : RazorPanelPlugin(startInfo, parent)
 {
     qDebug() << "Razortray: initializing";
     setObjectName("Tray");
@@ -46,53 +45,9 @@ RazorTray::RazorTray(const RazorPalelPluginStartInfo* startInfo, QWidget* parent
                     PropModeReplace,
                     (unsigned char *) &orientation, // TODO/FIXME: vertical panels
                     1);
-#if 0
-    // This part of code is taken from tint2. But it looks like it's useles for now
-    // as Qt4 does all for us. See Qt4 source - qwidget_x11.cpp and qx11embedcontainer_x11.cpp
-    // So it seems to me that QToolBar is broken. See note in RazorTray::swallowXEmbed
 
-    // X alpha background handling
-    XVisualInfo templ;
-    templ.screen = 0;
-    templ.depth = 32;
-    templ.c_class = TrueColor; // workaround for C++ - seet X11/Xutil.h
-
-    int nvi;
-    XVisualInfo *xvi = XGetVisualInfo(QX11Info::display(), VisualScreenMask|VisualDepthMask|VisualClassMask, &templ, &nvi);
-
-    Visual *visual = 0;
-    if (xvi) {
-        qDebug() << "Found XVI" << xvi->screen << xvi->depth << xvi->c_class;
-        int i;
-        XRenderPictFormat *format;
-        for (i = 0; i < nvi; i++) {
-            format = XRenderFindVisualFormat(QX11Info::display(), xvi[i].visual);
-            if (format->type == PictTypeDirect && format->direct.alphaMask) {
-                visual = xvi[i].visual;
-                qDebug() << "Found visual" << visual;
-                break;
-            }
-        }
-    }
-    XFree (xvi);
-
-    VisualID vid = XVisualIDFromVisual(visual);
-
-    //VisualID vid =  XVisualIDFromVisual(DefaultVisual(QX11Info::display(), DefaultScreen(QX11Info::display())));
-    XChangeProperty(QX11Info::display(),
-                    winId,
-                    XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_VISUAL", False),
-                    XA_VISUALID,
-                    32,
-                    PropModeReplace,
-                    (unsigned char*)&vid,
-                    1);
-#endif
-
+// TODO/FIXME: remove it from lib when we will obsolete the panel1
     xfitMan().setSelectionOwner(winId, "net_system_tray", "net_manager");
-
-    //setIconSize(QSize(32,32));
-    //updateSize();
 
     connect(panel(), SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
 }
@@ -144,34 +99,24 @@ void RazorTray::swallowXEmbed(Window _wid)
 {
     qDebug() << "RazorTray::swallowXEmbed" << _wid;
 
-    QX11EmbedContainer* embed = new QX11EmbedContainer();
+    QX11EmbedContainer* embed = new QX11EmbedContainer(this);
     connect(embed, SIGNAL(error(QX11EmbedContainer::Error)),
             this, SLOT(embedError(QX11EmbedContainer::Error)));
-//    connect(embed, SIGNAL(clientIsEmbedded()), this, SLOT(repaint()));
 
     embed->setObjectName("TrayObject");
     embed->setContentsMargins(0, 0, 0, 0);
     embed->setFixedSize( 32, 32);
-
-    qDebug() << embed->error();
-
-
-    // WTF?!
-    // If I try to call addWidget(embed) I get bunch of X errors:
-    //    http://paste.opensuse.org/52197150
-    // but if I call it as a normal widget (show()) it works.
-    // It's the same as in old razor-panel - it was qwidget based...
+    
+    QPalette palette;
+    palette.setBrush(QPalette::Base, Qt::NoBrush);
+    embed->setPalette(palette);
+    embed->setAttribute(Qt::WA_TranslucentBackground);
 
     addWidget(embed);
-    //embed->show();
 
     embed->embedClient(_wid);
     xfitMan().resizeWindow(_wid, embed->height(), embed->width());
     xfitMan().mapRaised(_wid);
-
-    m_count++;
-    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //updateSize();
 
     connect(embed, SIGNAL(clientClosed()), this, SLOT(closeEmbed()));
 }
@@ -191,15 +136,4 @@ void RazorTray::closeEmbed()
     Q_ASSERT(embed); // just to be sure
     embed->close();
     embed->deleteLater();
-    m_count--;
-    updateSize();
-}
-
-void RazorTray::updateSize()
-{
-    // TODO/FIXME: this does not work
-    //int s = (m_count ? m_count : 1) * iconSize().width();
-    //qDebug() << "RazorTray::updateSize" << m_count << s;
-    //QWidget::resize(s, height());
-    //QWidget::setMinimumWidth(s);
 }

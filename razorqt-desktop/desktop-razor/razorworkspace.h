@@ -17,6 +17,7 @@
 
 class WorkspaceConfig;
 class ReadSettings;
+class PowerManager;
 
 /**
  * @brief This one is the actual workspace
@@ -55,6 +56,8 @@ private:
     
     ArrangeItem * m_arrangeRoot;
     QList<ArrangeItem*> m_arrangeList;
+    
+    PowerManager * m_power;
 
 private slots:
     void workspaceResized(int screen);

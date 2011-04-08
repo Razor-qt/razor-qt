@@ -32,10 +32,8 @@ public:
 
 private:
     Atom m_traycode;
-    int m_count;
 
     void swallowXEmbed(Window _wid);
-    void updateSize();
 
 private slots:
     void closeEmbed();
