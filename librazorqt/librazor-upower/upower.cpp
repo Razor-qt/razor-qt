@@ -10,6 +10,8 @@ UPower::UPower() : m_interfaceProps(0), m_interface(0) {
     connect( m_watcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(serviceUnregistered(QString)));
     connect( m_watcher, SIGNAL(serviceRegistered(QString)), this, SLOT(connectInterfaces()));
     connect( m_watcher, SIGNAL(serviceRegistered(QString)), this, SLOT(probeDevices()));
+    
+    connectInterfaces();
 }
 
 UPower::~UPower() {
