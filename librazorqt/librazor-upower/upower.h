@@ -34,18 +34,15 @@ public Q_SLOTS:
     bool connectInterfaces();
 
 private Q_SLOTS:
-    void deviceAdded( QString path );
+    void deviceAdded(QString path );
     void changed();
-    void serviceUnregistered( QString service );
 
 Q_SIGNALS:
     void upowerAvailable();
     void upowerUnavailable();
 
-    void changed( Battery *bat );
-
-    void batteryDetected( Battery * );
-    void batteryDisconnected( QString );
+    void batteryDetected(Battery *);
+    void batteryDisconnected(QString);
     void onLowBattery();
     void onBattery();
     void onPowerSupply();
@@ -54,8 +51,6 @@ Q_SIGNALS:
     void hibernateFail();
     void suspendSucceed();
     void hibernateSucceed();
-
-    void monitoring( QString );
 };
 
 #endif // DBUS_H
