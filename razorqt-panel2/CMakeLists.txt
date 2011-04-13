@@ -21,7 +21,7 @@ endmacro()
 
 #setByDefault(DEV_PLUGIN         Yes )
 setByDefault(CLOCK_PLUGIN       Yes )
-#setByDefault(DESKSWITCH_PLUGIN  Yes )
+setByDefault(DESKTOPSWITCH_PLUGIN  Yes )
 #setByDefault(LOGOUTMENU_PLUGIN  Yes )
 setByDefault(QUICKLAUNCH_PLUGIN Yes )
 #setByDefault(SPINBUTTON_PLUGIN  Yes )
@@ -99,13 +99,10 @@ if (CLOCK_PLUGIN)
 endif (CLOCK_PLUGIN)
 
 
-# if (DESKSWITCH_PLUGIN)
-#   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Desktop switch")
-#   QT4_WRAP_CPP(deskswitch_moc plugin-deskswitch/razordeskswitch.h)
-#   add_library(razorpanel_desktopswitcher SHARED ${deskswitch_moc} plugin-deskswitch/razordeskswitch.cpp)
-#   target_link_libraries(razorpanel_desktopswitcher ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
-#   install(TARGETS razorpanel_desktopswitcher DESTINATION ${PLUGIN_DIR})
-# endif (DESKSWITCH_PLUGIN)
+if (DESKTOPSWITCH_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS} "DesktopSwitch")
+  add_subdirectory( plugin-desktopswitch )
+endif (DESKTOPSWITCH_PLUGIN)
 
 
 # if (LOGOUTMENU_PLUGIN)
