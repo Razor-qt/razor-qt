@@ -159,6 +159,9 @@ void RazorTaskButton::btnClicked(bool checked)
  ************************************************/
 void RazorTaskButton::raiseApplication()
 {
+    int winDesktop = xfitMan().getWindowDesktop(mWindow);
+    if (xfitMan().getActiveDesktop() != winDesktop)
+        xfitMan().setActiveDesktop(winDesktop);
     xfitMan().raiseWindow(mWindow);
 }
 
