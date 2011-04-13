@@ -37,6 +37,8 @@ set ( razorqt_HDRS
 	razorqt/xdgdesktopfile.h
 	razorqt/xdgmenu.h
 	razorqt/xdgicon.h
+	razorqt/xdgaction.h
+        razorqt/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     # upower. Maybe standalone lib?
@@ -62,6 +64,8 @@ set ( razorqt_SRCS
 	razorqt/xdgmenureader.cpp
 	razorqt/xdgmenurules.cpp
 	razorqt/xdgicon.cpp
+	razorqt/xdgaction.cpp
+        razorqt/xdgmenuwidget.cpp
     razorqt/razorplugininfo.cpp
     razorqt/powermanager.cpp
     # upower. Maybe standalone lib?
@@ -82,6 +86,8 @@ set ( razorqt_MOCS
 	razorqt/xdgmenuapplinkprocessor.h
 	razorqt/xdgmenureader.h
 	razorqt/xdgmenurules.h
+	razorqt/xdgaction.h
+        razorqt/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     # upower. Maybe standalone lib?
