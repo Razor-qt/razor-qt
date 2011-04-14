@@ -43,17 +43,14 @@ razorpanel_clock2.desktop file
   Comment=Clock and calendar
 
 RazorPluginInfo class gives the interface for reading the values from the plugin .desktop file.
-To make your own layout manager,
 This is a pure virtual class, you must implement libraryDir(), translationDir(), and instance() methods.
-
 */
 class RazorPluginInfo: public XdgDesktopFile
 {
     Q_OBJECT
 
 public:
-    /*! Constructs a RazorPluginInfo object for accessing the info stored in the .desktop file
-    called fileName. */
+    /// Constructs a RazorPluginInfo object for accessing the info stored in the .desktop file called fileName.
     explicit RazorPluginInfo(const QString& pluginDesktopFile, QObject *parent = 0);
 
     //! Reimplemented from XdgDesktopFile.
@@ -63,7 +60,7 @@ public:
     RazorPluginInfo& operator=(const RazorPluginInfo& other);
 
 
-    //! Returns identification string of this plugin. This Id used as a settigs section name.
+    //! Returns identification string of this plugin, identified plugin type. Now id is part of the filename.
     QString id() const { return mId; }
 
     //! This function is provided for convenience. It's equivalent to calling value("ServiceTypes").toString().
@@ -74,6 +71,7 @@ public:
 
     /*! This is a factory method, it must create an instance of the plug-in.
     Example:
+    @code
     RazorPanelPlugin* RazorPanelPluginInfo::instance(const QString& configFile, const QString& configSection, QObject* parent)
     {
         RazorPanel* panel = qobject_cast<RazorPanel*>(parent);
@@ -98,6 +96,7 @@ public:
         startInfo.pluginInfo = this;
         return initFunc(&startInfo, panel);
     }
+    @endcode
     */
     virtual QObject* instance(const QString& configFile, const QString& configSection, QObject* parent = 0) = 0;
 

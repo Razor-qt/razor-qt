@@ -97,10 +97,7 @@ RazorPanelPlugin* RazorPanelPluginInfo::instance(const QString& configFile, cons
 
     QLibrary* lib = loadLibrary();
     if (!lib)
-    {
-        delete lib;
         return 0;
-    }
 
     PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
 
@@ -149,7 +146,11 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     // The first argument is config file name.
     mConfigFile = "panel2";
     if (qApp->arguments().count() > 1)
+    {
         mConfigFile = qApp->arguments().at(1);
+        if (mConfigFile.endsWith(".conf"))
+            mConfigFile.chop(5);
+    }
 
     mSettingsReader = new ReadSettings(mConfigFile);
     mSettings = mSettingsReader->settings();

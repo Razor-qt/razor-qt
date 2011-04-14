@@ -22,10 +22,8 @@
 
 #include <QtGui/QFrame>
 #include <QtCore/QString>
-//#include <QtGui/QBoxLayout>
 
 class QMenu;
-//class RazorPanelLayout;
 class RazorPanelPrivate;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
