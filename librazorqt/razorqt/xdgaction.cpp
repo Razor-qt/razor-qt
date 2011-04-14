@@ -17,7 +17,7 @@
 *********************************************************************/
 
 #include "xdgaction.h"
-
+#include <razorqt/xdgicon.h>
 
 
 /************************************************
@@ -46,6 +46,17 @@ XdgAction::XdgAction(const XdgDesktopFile* desktopFile, QObject *parent):
     QAction(parent)
 {
     load(*desktopFile);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgAction::XdgAction(const QString& desktopFileName, QObject *parent):
+    QAction(parent)
+{
+    XdgDesktopFile df(desktopFileName);
+    load(df);
 }
 
 
@@ -96,7 +107,11 @@ void XdgAction::load(const XdgDesktopFile& desktopFile)
     {
         setText(mDesktopFile.name());
         setToolTip(mDesktopFile.comment());
+
         setIcon(desktopFile.icon(32));
+        if (icon().isNull())
+            setIcon(XdgIcon::fromTheme("application-x-executable", 32));
+
         connect(this, SIGNAL(triggered()), this, SLOT(runConmmand()));
     }
     else

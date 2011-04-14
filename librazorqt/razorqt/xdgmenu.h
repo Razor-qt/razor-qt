@@ -30,7 +30,26 @@
 
 class QDomDocument;
 class QDomElement;
+/*! @brief The XdgMenu class implements the "Desktop Menu Specification" from freedesktop.org.
 
+ Freedesktop menu is a user-visible hierarchy of applications, typically displayed as a menu.
+
+ Example usage:
+@code
+    QString menuFile = XdgMenu::getMenuFileName();
+    XdgMenu xdgMenu(menuFile);
+
+    bool res = xdgMenu.read();
+    if (!res)
+    {
+        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+    }
+
+    QDomElement rootElement = xdgMenu.xml().documentElement()
+ @endcode
+
+ @sa http://specifications.freedesktop.org/menu-spec/menu-spec-latest.html
+ */
 class XdgMenu : public QObject
 {
 Q_OBJECT

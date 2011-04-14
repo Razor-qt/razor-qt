@@ -17,15 +17,98 @@
 *********************************************************************/
 
 #include "xdgmenuwidget.h"
+#include <razorqt/xdgicon.h>
+#include <razorqt/domhelper.h>
+#include <razorqt/xdgaction.h>
+#include <razorqt/xdgmenu.h>
+#include <QtCore/QEvent>
+#include <QDebug>
+
+
+class XdgMenuWidgetPrivate
+{
+private:
+    XdgMenuWidget* const q_ptr;
+    Q_DECLARE_PUBLIC(XdgMenuWidget);
+
+public:
+    explicit XdgMenuWidgetPrivate(XdgMenuWidget* parent):
+        q_ptr(parent),
+        mNeedBuild(true)
+    {}
+
+    void init(const QDomElement& xml);
+    void buildMenu();
+
+
+    QDomElement mXml;
+    bool mNeedBuild;
+
+private:
+    XdgAction* createAction(const QDomElement& xml);
+};
+
 
 
 /************************************************
 
  ************************************************/
-XdgMenuWidget::XdgMenuWidget(const XdgMenu* xdgMenu, const QString& title, QWidget* parent):
-    QMenu(title, parent)
+XdgMenuWidget::XdgMenuWidget(const XdgMenu& xdgMenu, const QString& title, QWidget* parent):
+    QMenu(parent),
+    d_ptr(new XdgMenuWidgetPrivate(this))
 {
+    d_ptr->init(xdgMenu.xml().documentElement());
+    setTitle(title);
+}
 
+
+/************************************************
+
+ ************************************************/
+XdgMenuWidget::XdgMenuWidget(const QDomElement& menuElement, QWidget* parent):
+    QMenu(parent),
+    d_ptr(new XdgMenuWidgetPrivate(this))
+{
+    d_ptr->init(menuElement);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgMenuWidget::XdgMenuWidget(const XdgMenuWidget& other, QWidget* parent):
+    QMenu(parent),
+    d_ptr(new XdgMenuWidgetPrivate(this))
+{
+    d_ptr->init(other.d_ptr->mXml);
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuWidgetPrivate::init(const QDomElement& xml)
+{
+    Q_Q(XdgMenuWidget);
+    mXml = xml;
+
+    q->clear();
+    mNeedBuild = true;
+
+    if (! xml.attribute("title").isEmpty())
+        q->setTitle(xml.attribute("title"));
+    else
+        q->setTitle(xml.attribute("name"));
+
+    q->setToolTip(xml.attribute("comment"));
+
+
+    QIcon parentIcon;
+    QMenu* parentMenu = qobject_cast<QMenu*>(q->parent());
+    if (parentMenu)
+        parentIcon = parentMenu->icon();
+
+    q->setIcon(XdgIcon::fromTheme(mXml.attribute("icon"), 48, parentIcon));
 }
 
 
@@ -34,5 +117,101 @@ XdgMenuWidget::XdgMenuWidget(const XdgMenu* xdgMenu, const QString& title, QWidg
  ************************************************/
 XdgMenuWidget::~XdgMenuWidget()
 {
+    delete d_ptr;
+}
 
+
+/************************************************
+
+ ************************************************/
+XdgMenuWidget& XdgMenuWidget::operator=(const XdgMenuWidget& other)
+{
+    Q_D(XdgMenuWidget);
+    d->init(other.d_ptr->mXml);
+
+    return *this;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgMenuWidget::event(QEvent* event)
+{
+    if (event->type() == QEvent::Show)
+    {
+        Q_D(XdgMenuWidget);
+        if (d->mNeedBuild)
+            d->buildMenu();
+    }
+    return QMenu::event(event);
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuWidgetPrivate::buildMenu()
+{
+    Q_Q(XdgMenuWidget);
+
+    QAction* first = 0;
+    if (!q->actions().isEmpty())
+        first = q->actions().last();
+
+
+    DomElementIterator it(mXml, "");
+    while(it.hasNext())
+    {
+        QDomElement xml = it.next();
+
+        // Build submenu ........................
+        if (xml.tagName() == "Menu")
+            q->insertMenu(first, new XdgMenuWidget(xml, q));
+
+        //Build application link ................
+        else if (xml.tagName() == "AppLink")
+            q->insertAction(first, createAction(xml));
+    }
+
+    mNeedBuild = false;
+}
+
+
+
+/************************************************
+
+ ************************************************/
+XdgAction* XdgMenuWidgetPrivate::createAction(const QDomElement& xml)
+{
+    Q_Q(XdgMenuWidget);
+    XdgAction* action = new XdgAction(xml.attribute("desktopFile"), q);
+
+    QString title;
+    if (!xml.attribute("title").isEmpty())
+        title = xml.attribute("title");
+    else
+        title = xml.attribute("name");
+
+
+    if (!xml.attribute("genericName").isEmpty())
+        title += QString(" (%1)").arg(xml.attribute("genericName"));
+
+    action->setText(title);
+    return action;
+}
+
+
+/************************************************
+
+ ************************************************/
+QSize XdgMenuWidget::sizeHint() const
+{
+    Q_D(const XdgMenuWidget);
+    if (d->mNeedBuild)
+    {
+        XdgMenuWidgetPrivate* p = const_cast<XdgMenuWidgetPrivate*>(d);
+        p->buildMenu();
+    }
+    return QMenu::sizeHint();
 }

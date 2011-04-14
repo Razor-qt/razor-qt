@@ -20,20 +20,63 @@
 #define XDGMENUWIDGET_H
 
 #include <QMenu>
+#include <QtXml/QDomElement>
 
 class XdgMenu;
+class QEvent;
+class XdgMenuWidgetPrivate;
+
+
+/*!
+ @brief The XdgMenuWidget class provides an QMenu widget for application menu or its part.
+
+ Example usage:
+ @code
+    QString menuFile = XdgMenu::getMenuFileName();
+    XdgMenu xdgMenu(menuFile);
+
+    bool res = xdgMenu.read();
+    if (res)
+    {
+        XdgMenuWidget menu(xdgMenu, "", this);
+        menu.exec(QCursor::pos());
+    }
+    else
+    {
+        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+    }
+ @endcode
+ */
 
 class XdgMenuWidget : public QMenu
 {
     Q_OBJECT
 public:
-    explicit XdgMenuWidget(const XdgMenu* xdgMenu, const QString& title="", QWidget* parent=0);
+    /// Constructs a menu for root documentElement in xdgMenu with some text and parent.
+    XdgMenuWidget(const XdgMenu& xdgMenu, const QString& title="", QWidget* parent=0);
+
+    /// Constructs a menu for menuElement with parent.
+    explicit XdgMenuWidget(const QDomElement& menuElement, QWidget* parent=0);
+
+    /// Constructs a copy of other.
+    XdgMenuWidget(const XdgMenuWidget& other, QWidget* parent=0);
+
+    /// Assigns other to this menu.
+    XdgMenuWidget& operator=(const XdgMenuWidget& other);
+
+    /// Destroys the menu.
     virtual ~XdgMenuWidget();
 
+    /// @reimp
+    QSize sizeHint() const;
 signals:
 
-public slots:
+protected:
+    bool event(QEvent* event);
 
+private:
+    XdgMenuWidgetPrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(XdgMenuWidget)
 };
 
 #endif // XDGMENUWIDGET_H
