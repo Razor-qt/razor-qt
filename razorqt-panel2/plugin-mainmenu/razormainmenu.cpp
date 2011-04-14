@@ -32,10 +32,11 @@
 //#include <razorbar.h>
 #include <razorqt/xdgicon.h>
 #include <razorqt/xdgdesktopfile.h>
+#include <razorqt/xdgmenuwidget.h>
 
 #include <QStack>
 
-
+#include <QCursor>
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMainMenu)
 
 
@@ -43,10 +44,10 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMainMenu)
 
  ************************************************/
 RazorMainMenu::RazorMainMenu(const RazorPalelPluginStartInfo* startInfo, QWidget* parent):
-    RazorPanelPlugin(startInfo, parent)
+    RazorPanelPlugin(startInfo, parent),
+    mMenu(0)
 {
     setObjectName("MainMenu");
-    mMenu = 0;
 
     addWidget(&mButton);
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
@@ -140,19 +141,16 @@ void RazorMainMenu::buildMenu()
     XdgMenu xdgMenu(mMenuFile);
     xdgMenu.setLogDir(mLogDir);
 
-    mMenu = new QMenu(this);
-    mMenu->setObjectName("TopLevelMainMenu");
     bool res = xdgMenu.read();
-    if (!res)
+    if (res)
     {
-        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+        mMenu = new XdgMenuWidget(xdgMenu, "", this);
+        mMenu->setObjectName("TopLevelMainMenu");
+        mMenu->setStyle(&mTopMenuStyle);
     }
     else
     {
-        QDomElement rootElement = xdgMenu.xml().documentElement();
-        buildMenuLevel(mMenu, rootElement);
-        mMenu->setStyle(&mTopMenuStyle);
-        setMenuIcons(mMenu);
+        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
     }
 
     mMenu->addSeparator();
@@ -169,121 +167,5 @@ void RazorMainMenu::buildMenu()
 
 //    act = leaveMenu->addAction(XdgIcon::fromTheme("system-shutdown", 48), tr("Tur off computer"));
 //    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_shutdown()));
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::buildMenuLevel(QMenu* menu, const QDomElement& element)
-{
-    menu->setStyle(&mMenuStyle);
-
-    if (!element.attribute("title").isEmpty())
-        menu->setTitle(element.attribute("title"));
-    else
-        menu->setTitle(element.attribute("name"));
-
-    menu->setToolTip(element.attribute("comment"));
-    menu->setWindowIconText(element.attribute("icon"));
-    connect(menu, SIGNAL(aboutToShow()), this, SLOT(menuAboutToShow()));
-
-
-    DomElementIterator it(element, "");
-    while(it.hasNext())
-    {
-        QDomElement e = it.next();
-
-        // Build submenu ........................
-        if (e.tagName() == "Menu")
-        {
-            QMenu* subMenu = new QMenu(menu);
-            menu->addMenu(subMenu);
-            buildMenuLevel(subMenu, e);
-        }
-
-        //Build application link ................
-        else if (e.tagName() == "AppLink")
-        {
-            QAction* action = new QAction(menu);
-            QString title;
-            if (!e.attribute("title").isEmpty())
-                title = e.attribute("title");
-            else
-                title = e.attribute("name");
-
-
-            if (!e.attribute("genericName").isEmpty())
-                title += QString(" (%1)").arg(e.attribute("genericName"));
-
-            action->setText(title);
-
-            action->setToolTip(e.attribute("comment"));
-            action->setData(e.attribute("desktopFile"));
-            action->setIconText(e.attribute("icon"));
-
-            connect(action, SIGNAL(triggered()), this, SLOT(runConmmand()));
-
-            menu->addAction(action);
-
-        }
-    }
-
-}
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::runConmmand()
-{
-    QAction* action=qobject_cast<QAction*>(sender());
-    if (!action || !action->data().isValid())
-        return;
-
-    //qDebug() << "RazorMainMenu::runConmmand: desktopfile=" << action->data().toString();
-    XdgDesktopFile* desktopFile = XdgDesktopFileCache::getFile(action->data().toString());
-
-    if (desktopFile->isValid())
-        desktopFile->startDetached();
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::menuAboutToShow()
-{
-    QMenu* menu=qobject_cast<QMenu*>(sender());
-    if (menu)
-        setMenuIcons(menu);
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::setMenuIcons(QMenu* parent)
-{
-
-    QObjectList childs = parent->children();
-
-    QObjectList::iterator i;
-    for(i = childs.begin(); i != childs.end(); ++i)
-    {
-        QMenu* m=qobject_cast<QMenu*>(*i);
-        if (m && !m->windowIconText().isEmpty() && m->icon().isNull())
-            m->setIcon(XdgIcon::fromTheme(m->windowIconText(), 48, parent->icon())) ;
-
-        QAction* a=qobject_cast<QAction*>(*i);
-        if (a && !a->iconText().isEmpty() && a->icon().isNull())
-        {
-            a->setIcon(XdgIcon::fromTheme(QStringList()
-                                          << a->iconText()
-                                          << "application-x-executable",
-                                          48
-                                          )
-                       );
-        }
-     }
 }
 

@@ -54,15 +54,11 @@ private:
 
 
     void buildMenu();
-    void buildMenuLevel(QMenu* menu, const QDomElement& element);
-    void setMenuIcons(QMenu* parent);
 
 
 private slots:
     void showMenu();
     void settingsChanged();
-    void runConmmand();
-    void menuAboutToShow();
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
