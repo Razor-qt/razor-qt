@@ -227,6 +227,16 @@ void RazorPanelPluginPrivate::startMove()
 /************************************************
 
  ************************************************/
+void RazorPanelPlugin::updateStyleSheet()
+{
+    Q_D(RazorPanelPlugin);
+    d->updateStyleSheet();
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPluginPrivate::updateStyleSheet()
 {
     Q_Q(RazorPanelPlugin);

@@ -140,6 +140,10 @@ protected:
     virtual QMenu* popupMenu(QWidget *parent);
     virtual void contextMenuEvent(QContextMenuEvent* event);
 
+    /*!
+    If the value of the Qt property changes after the style sheet has been set, you will probably have to force a style sheet recomputation.
+    This can be done by calling this method. */
+    void updateStyleSheet();
 
 private:
     RazorPanelPluginPrivate* const d_ptr;
