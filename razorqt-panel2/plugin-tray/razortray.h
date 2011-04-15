@@ -25,7 +25,7 @@ class RazorTray: public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorTray(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorTray();
 
     virtual Alignment preferredAlignment() const { return AlignRight; }

@@ -104,7 +104,7 @@ RazorPanelPlugin* RazorPanelPluginInfo::instance(const QString& configFile, cons
     if (!initFunc)
         return 0;
 
-    RazorPalelPluginStartInfo startInfo;
+    RazorPanelPluginStartInfo startInfo;
     startInfo.configFile = configFile;
     startInfo.configSection = configSection;
     startInfo.panel = panel;

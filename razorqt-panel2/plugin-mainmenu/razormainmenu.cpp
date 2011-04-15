@@ -43,7 +43,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMainMenu)
 /************************************************
 
  ************************************************/
-RazorMainMenu::RazorMainMenu(const RazorPalelPluginStartInfo* startInfo, QWidget* parent):
+RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
     RazorPanelPlugin(startInfo, parent),
     mMenu(0)
 {

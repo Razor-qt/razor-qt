@@ -12,7 +12,7 @@ class DesktopSwitch : public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    DesktopSwitch(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
+    DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~DesktopSwitch();
 
     virtual Alignment preferredAlignment() const { return AlignRight; }

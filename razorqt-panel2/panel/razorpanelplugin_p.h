@@ -31,7 +31,7 @@ class RazorPanelPluginPrivate: public QObject
 {
     Q_OBJECT
 public:
-    RazorPanelPluginPrivate(const RazorPalelPluginStartInfo* startInfo, RazorPanelPlugin* parent);
+    RazorPanelPluginPrivate(const RazorPanelPluginStartInfo* startInfo, RazorPanelPlugin* parent);
     virtual ~RazorPanelPluginPrivate();
 
     QSettings& settings() const { return *mSettings; }

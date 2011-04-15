@@ -14,7 +14,7 @@ class RazorClock : public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorClock(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorClock();
 
     virtual Alignment preferredAlignment() const { return AlignRight; }

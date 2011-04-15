@@ -18,7 +18,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorClock)
 /**
  * @brief constructor
  */
-RazorClock::RazorClock(const RazorPalelPluginStartInfo* startInfo, QWidget* parent):
+RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
         RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("Clock");

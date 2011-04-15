@@ -21,7 +21,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTray)
 /**
  * @brief constructor
  */
-RazorTray::RazorTray(const RazorPalelPluginStartInfo* startInfo, QWidget* parent)
+RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
     : RazorPanelPlugin(startInfo, parent)
 {
     qDebug() << "Razortray: initializing";

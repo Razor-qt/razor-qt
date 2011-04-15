@@ -67,7 +67,7 @@ width).
 class RazorPanelPluginPrivate;
 class RazorPluginInfo;
 
-class RazorPalelPluginStartInfo
+class RazorPanelPluginStartInfo
 {
 public:
     QString configFile;
@@ -99,7 +99,7 @@ public:
                     it can be any QWidget.
     */
     //explicit RazorPanelPlugin(const QString& configFile, const QString& configSection, RazorPanel* panel);
-    explicit RazorPanelPlugin(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
+    explicit RazorPanelPlugin(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     virtual ~RazorPanelPlugin();
 
     /*! Preferred alignment of the plug-in, at the left (for example the main menu
@@ -152,17 +152,17 @@ private:
 
 
 //! Prototype for plugin's init() function
-typedef RazorPanelPlugin* (*PluginInitFunction)(const RazorPalelPluginStartInfo* startInfo, QWidget* parent);
+typedef RazorPanelPlugin* (*PluginInitFunction)(const RazorPanelPluginStartInfo* startInfo, QWidget* parent);
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin header file. */
 #define EXPORT_RAZOR_PANEL_PLUGIN_H \
-    extern "C" RazorPanelPlugin* init(const RazorPalelPluginStartInfo* startInfo, QWidget* parent);
+    extern "C" RazorPanelPlugin* init(const RazorPanelPluginStartInfo* startInfo, QWidget* parent);
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin source file.  */
 #define EXPORT_RAZOR_PANEL_PLUGIN_CPP(PLUGINCLASS)                      \
-    RazorPanelPlugin* init(const RazorPalelPluginStartInfo* startInfo,  \
+    RazorPanelPlugin* init(const RazorPanelPluginStartInfo* startInfo,  \
                            QWidget* parent)                             \
     {                                                                   \
         return new PLUGINCLASS(startInfo, parent);                      \

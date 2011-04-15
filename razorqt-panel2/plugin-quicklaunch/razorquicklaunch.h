@@ -20,7 +20,7 @@ class RazorQuickLaunch : public RazorPanelPlugin
     Q_OBJECT
 
 public:
-    RazorQuickLaunch(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorQuickLaunch();
 
 private:

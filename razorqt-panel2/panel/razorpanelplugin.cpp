@@ -40,7 +40,7 @@
 /************************************************
 
  ************************************************/
-RazorPanelPlugin::RazorPanelPlugin(const RazorPalelPluginStartInfo* startInfo, QWidget* parent):
+RazorPanelPlugin::RazorPanelPlugin(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
     QFrame(parent),
     d_ptr(new RazorPanelPluginPrivate(startInfo, this))
 {
@@ -51,7 +51,7 @@ RazorPanelPlugin::RazorPanelPlugin(const RazorPalelPluginStartInfo* startInfo, Q
 /************************************************
 
  ************************************************/
-RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPalelPluginStartInfo* startInfo, RazorPanelPlugin* parent):
+RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo* startInfo, RazorPanelPlugin* parent):
     QObject(parent),
     q_ptr(parent),
     mSettings(new QSettings(startInfo->configFile, QSettings::NativeFormat, this)),

@@ -10,7 +10,7 @@
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
 
 
-RazorQuickLaunch::RazorQuickLaunch(const RazorPalelPluginStartInfo* startInfo, QWidget* parent)
+RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
     : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("QuickLaunch");

@@ -8,7 +8,7 @@
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(DesktopSwitch)
 
-DesktopSwitch::DesktopSwitch(const RazorPalelPluginStartInfo* startInfo, QWidget* parent)
+DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
     : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("DesktopSwitch");

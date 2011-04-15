@@ -40,7 +40,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTaskBar)
 /************************************************
 
 ************************************************/
-RazorTaskBar::RazorTaskBar(const RazorPalelPluginStartInfo* startInfo, QWidget* parent) :
+RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* parent) :
     RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("TaskBar");

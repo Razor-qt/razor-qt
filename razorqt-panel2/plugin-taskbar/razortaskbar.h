@@ -31,7 +31,7 @@ class RazorTaskBar : public RazorPanelPlugin
 {
     Q_OBJECT
 public:
-    explicit RazorTaskBar(const RazorPalelPluginStartInfo* startInfo, QWidget* parent = 0);
+    explicit RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     virtual ~RazorTaskBar();
 
 public slots:
