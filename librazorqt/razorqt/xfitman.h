@@ -96,7 +96,7 @@ public:
     void minimizeWindow(Window _wid) const;
     void maximizeWindow(Window _wid) const;
     void shadeWindow(Window _wid, bool shade) const;
-    void resizeWindow(Window _wid, int _height, int _width) const;
+    void resizeWindow(Window _wid, int _width, int _height) const;
     void closeWindow(Window _wid) const;
 
     void setActiveDesktop(int _desktop) const;
