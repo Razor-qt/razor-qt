@@ -83,7 +83,20 @@ QToolButton:hover{
 
 
 /* Tray ************************************** */
-#Tray *{
+#Tray {
+/*    border-radius: 4px; 
+    border: 1px solid silver;
+*/    
+    min-width: 6px;
+    padding-left: 2px;    
+    padding-right: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+TrayIcon {
+/*    border: 1px dotted gray;*/
+    margin: 2px; 
 }
 
 /* Main menu ********************************* */
