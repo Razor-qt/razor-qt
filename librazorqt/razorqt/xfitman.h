@@ -44,8 +44,8 @@ struct WindowAllowedActions
 // http://standards.freedesktop.org/wm-spec/latest/ar01s05.html#id2569140
 struct WindowState
 {
-    bool Modal;         //  indicates that this is a modal dialog box.
-    bool Sticky;        //indicates that the Window Manager SHOULD keep the window's position
+    bool Modal;         // indicates that this is a modal dialog box.
+    bool Sticky;        // indicates that the Window Manager SHOULD keep the window's position
                         // fixed on the screen, even when the virtual desktop scrolls.
     bool MaximizedVert; // indicates that the window is vertically maximized.
     bool MaximizedHoriz;// indicates that the window is horizontally maximized.
@@ -59,12 +59,28 @@ struct WindowState
     bool Attention;     // indicates that some action in or with the window happened.
 };
 
+
 /**
  * @brief manages the Xlib apicalls
  */
 class XfitMan
 {
 public:
+
+    enum Layer
+    {
+        LayerAbove,
+        LayerNormal,
+        LayerBelow
+    };
+
+    enum MaximizeDirection
+    {
+        MaximizeHoriz,
+        MaximizeVert,
+        MaximizeBoth
+    };
+
     ~XfitMan();
     XfitMan();
     void moveWindow(Window _win, int _x, int _y) const;
@@ -94,10 +110,12 @@ public:
 
     void raiseWindow(Window _wid) const;
     void minimizeWindow(Window _wid) const;
-    void maximizeWindow(Window _wid) const;
+    void maximizeWindow(Window _wid, MaximizeDirection direction = MaximizeBoth) const;
+    void deMaximizeWindow(Window _wid) const;
     void shadeWindow(Window _wid, bool shade) const;
     void resizeWindow(Window _wid, int _width, int _height) const;
     void closeWindow(Window _wid) const;
+    void setWindowLayer(Window _wid, Layer layer) const;
 
     void setActiveDesktop(int _desktop) const;
     void mapRaised(Window _wid) const;

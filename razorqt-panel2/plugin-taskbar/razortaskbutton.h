@@ -45,10 +45,12 @@ public slots:
     void raiseApplication();
     void minimizeApplication();
     void maximizeApplication();
+    void deMaximizeApplication();
     void shadeApplication();
     void unShadeApplication();
     void closeApplication();
     void moveApplicationToDesktop();
+    void setApplicationLayer();
 
     void handlePropertyNotify(XPropertyEvent* event);
 

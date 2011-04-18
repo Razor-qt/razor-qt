@@ -602,16 +602,45 @@ void XfitMan::minimizeWindow(Window _wid) const
 /************************************************
 
  ************************************************/
-void XfitMan::maximizeWindow(Window _wid) const
+void XfitMan::maximizeWindow(Window _wid, MaximizeDirection direction) const
 {
+    Atom atom1 = 0, atom2= 0;
+    switch (direction)
+    {
+        case MaximizeHoriz:
+            atom1 = atom("_NET_WM_STATE_MAXIMIZED_HORZ");
+            break;
+
+        case MaximizeVert:
+            atom1 = atom("_NET_WM_STATE_MAXIMIZED_VERT");
+            break;
+
+        case MaximizeBoth:
+            atom1 = atom("_NET_WM_STATE_MAXIMIZED_VERT");
+            atom2 = atom("_NET_WM_STATE_MAXIMIZED_HORZ");
+            break;
+
+    }
+
     clientMessage(_wid, atom("_NET_WM_STATE"),
                   _NET_WM_STATE_ADD,
-                  atom("_NET_WM_STATE_MAXIMIZED_VERT"),
-                  atom("_NET_WM_STATE_MAXIMIZED_HORZ"),
+                  atom1, atom2,
                   SOURCE_PAGER);
     raiseWindow(_wid);
 }
 
+
+/************************************************
+
+ ************************************************/
+void XfitMan::deMaximizeWindow(Window _wid) const
+{
+    clientMessage(_wid, atom("_NET_WM_STATE"),
+                  _NET_WM_STATE_REMOVE,
+                  atom("_NET_WM_STATE_MAXIMIZED_VERT"),
+                  atom("_NET_WM_STATE_MAXIMIZED_HORZ"),
+                  SOURCE_PAGER);
+}
 
 /************************************************
 
@@ -636,6 +665,30 @@ void XfitMan::closeWindow(Window _wid) const
                   SOURCE_PAGER);
 }
 
+
+/************************************************
+
+ ************************************************/
+void XfitMan::setWindowLayer(Window _wid, XfitMan::Layer layer) const
+{
+    ulong aboveAction = (layer == LayerAbove) ?
+        _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+
+    ulong belowAction = (layer == LayerBelow) ?
+        _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+
+    clientMessage(_wid, atom("_NET_WM_STATE"),
+                  aboveAction,
+                  atom("_NET_WM_STATE_ABOVE"),
+                  0,
+                  SOURCE_PAGER);
+
+    clientMessage(_wid, atom("_NET_WM_STATE"),
+                  belowAction,
+                  atom("_NET_WM_STATE_BELOW"),
+                  0,
+                  SOURCE_PAGER);
+}
 
 /**
  * @brief changes active desktop to _desktop

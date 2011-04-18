@@ -29,6 +29,7 @@
 
 #define MAX_BTN_WIDTH  400
 
+
 /************************************************
 
 ************************************************/
@@ -180,7 +181,27 @@ void RazorTaskButton::minimizeApplication()
  ************************************************/
 void RazorTaskButton::maximizeApplication()
 {
-    xfitMan().maximizeWindow(mWindow);
+    QAction* act = qobject_cast<QAction*>(sender());
+    if (!act)
+        return;
+
+    if (act->data().toInt() == XfitMan::MaximizeHoriz)
+        xfitMan().maximizeWindow(mWindow, XfitMan::MaximizeHoriz);
+
+    else if (act->data().toInt() == XfitMan::MaximizeVert)
+        xfitMan().maximizeWindow(mWindow, XfitMan::MaximizeVert);
+
+    else
+        xfitMan().maximizeWindow(mWindow, XfitMan::MaximizeBoth);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorTaskButton::deMaximizeApplication()
+{
+    xfitMan().deMaximizeWindow(mWindow);
 }
 
 
@@ -214,6 +235,26 @@ void RazorTaskButton::closeApplication()
 /************************************************
 
  ************************************************/
+void RazorTaskButton::setApplicationLayer()
+{
+    QAction* act = qobject_cast<QAction*>(sender());
+    if (!act)
+        return;
+
+    if (act->data().toInt() == XfitMan::LayerAbove)
+        xfitMan().setWindowLayer(mWindow, XfitMan::LayerAbove);
+
+    else if (act->data().toInt() == XfitMan::LayerBelow)
+        xfitMan().setWindowLayer(mWindow, XfitMan::LayerBelow);
+
+    else
+        xfitMan().setWindowLayer(mWindow, XfitMan::LayerNormal);
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorTaskButton::moveApplicationToDesktop()
 {
     QAction* act = qobject_cast<QAction*>(sender());
@@ -240,6 +281,35 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
     WindowAllowedActions allow = xf.getAllowedActions(mWindow);
     WindowState state = xf.getWindowState(mWindow);
 
+//    qDebug() << "Context menu " << xfitMan().getName(mWindow);
+//    qDebug() << "  Allowed Actions:";
+//    qDebug() << "    * Move          " << allow.Move;
+//    qDebug() << "    * Resize        " << allow.Resize;
+//    qDebug() << "    * Minimize      " << allow.Minimize;
+//    qDebug() << "    * Shade         " << allow.Shade;
+//    qDebug() << "    * Stick         " << allow.Stick;
+//    qDebug() << "    * MaximizeHoriz " << allow.MaximizeHoriz;
+//    qDebug() << "    * MaximizeVert  " << allow.MaximizeVert;
+//    qDebug() << "    * FullScreen    " << allow.FullScreen;
+//    qDebug() << "    * ChangeDesktop " << allow.ChangeDesktop;
+//    qDebug() << "    * Close         " << allow.Close;
+//    qDebug() << "    * AboveLayer    " << allow.AboveLayer;
+//    qDebug() << "    * BelowLayer    " << allow.BelowLayer;
+//    qDebug();
+//    qDebug() << "  Window State:";
+//    qDebug() << "    * Modal         " << state.Modal;
+//    qDebug() << "    * Sticky        " << state.Sticky;
+//    qDebug() << "    * MaximizedVert " << state.MaximizedVert;
+//    qDebug() << "    * MaximizedHoriz" << state.MaximizedHoriz;
+//    qDebug() << "    * Shaded        " << state.Shaded;
+//    qDebug() << "    * SkipTaskBar   " << state.SkipTaskBar;
+//    qDebug() << "    * SkipPager     " << state.SkipPager;
+//    qDebug() << "    * Hidden        " << state.Hidden;
+//    qDebug() << "    * FullScreen    " << state.FullScreen;
+//    qDebug() << "    * AboveLayer    " << state.AboveLayer;
+//    qDebug() << "    * BelowLayer    " << state.BelowLayer;
+//    qDebug() << "    * Attention     " << state.Attention;
+
     QMenu menu(tr("Appliction"));
     QAction* a;
 
@@ -260,6 +330,10 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
             Keep &Above Others
             Keep &Below Others
             Fill screen
+        &Layer >
+            Always on &top
+            &Normal
+            Always on &bottom
       ---
       + &Close
     */
@@ -294,14 +368,33 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
     // ** State menu ****************************
     menu.addSeparator();
 
+    a = menu.addAction(tr("Ma&ximize"));
+    a->setEnabled((allow.MaximizeHoriz && allow.MaximizeVert) &&
+                  (!state.MaximizedHoriz || !state.MaximizedVert /*|| state.Hidden*/));
+    a->setData(XfitMan::MaximizeBoth);
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
+
+    if (event->modifiers() & Qt::ShiftModifier)
+    {
+
+        a = menu.addAction(tr("Ma&ximize vert"));
+        a->setEnabled((allow.MaximizeVert) && (!state.MaximizedVert || state.Hidden));
+        a->setData(XfitMan::MaximizeVert);
+        connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
+
+        a = menu.addAction(tr("Ma&ximize Horiz"));
+        a->setEnabled((allow.MaximizeHoriz) && (!state.MaximizedHoriz || state.Hidden));
+        a->setData(XfitMan::MaximizeHoriz);
+        connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
+    }
+
+    a = menu.addAction(tr("&Restore"));
+    a->setEnabled(state.Hidden || state.MaximizedHoriz || state.MaximizedVert);
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(deMaximizeApplication()));
+
     a = menu.addAction(tr("Mi&nimize"));
     a->setEnabled(allow.Minimize && !state.Hidden);
     connect(a, SIGNAL(triggered(bool)), this, SLOT(minimizeApplication()));
-
-    a = menu.addAction(tr("Ma&ximize"));
-    a->setEnabled((allow.MaximizeHoriz || allow.MaximizeVert) &&
-                  (!state.MaximizedHoriz || !state.MaximizedVert || state.Hidden));
-    connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
 
     if (state.Shaded)
     {
@@ -315,6 +408,28 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
         a->setEnabled(allow.Shade && !state.Hidden);
         connect(a, SIGNAL(triggered(bool)), this, SLOT(shadeApplication()));
     }
+
+
+    // ** Layer menu ****************************
+    menu.addSeparator();
+
+    QMenu* layerMenu = menu.addMenu(tr("&Layer"));
+
+    a = layerMenu->addAction(tr("Always on &top"));
+    a->setEnabled(allow.AboveLayer && !state.AboveLayer);
+    a->setData(XfitMan::LayerAbove);
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(setApplicationLayer()));
+
+    a = layerMenu->addAction(tr("&Normal"));
+    a->setEnabled(state.AboveLayer || state.BelowLayer);
+    a->setData( XfitMan::LayerNormal);
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(setApplicationLayer()));
+
+    a = layerMenu->addAction(tr("Always on &bottom"));
+    a->setEnabled(allow.BelowLayer && !state.BelowLayer);
+    a->setData(XfitMan::LayerBelow);
+    connect(a, SIGNAL(triggered(bool)), this, SLOT(setApplicationLayer()));
+
 
     // ** Kill menu *****************************
     menu.addSeparator();
