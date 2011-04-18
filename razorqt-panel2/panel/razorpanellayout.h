@@ -38,7 +38,7 @@ public:
 
     void startMoveWidget(QWidget* widget);
 
-    QSize minimumSize() const;
+    QSize sizeHint() const;
 
 signals:
     void widgetMoved(QWidget* movedWidget);

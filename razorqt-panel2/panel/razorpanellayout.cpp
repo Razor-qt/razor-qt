@@ -30,7 +30,7 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 
-#define MINIMIM_SIZE 8
+#define MINIMIM_SIZE 16
 
 // QVariantAnimation class was introduced in Qt 4.6.
 #if QT_VERSION >= 0x040600
@@ -386,14 +386,13 @@ void RazorPanelLayout::startMoveWidget(QWidget* widget)
 /************************************************
 
  ************************************************/
-QSize RazorPanelLayout::minimumSize() const
+QSize RazorPanelLayout::sizeHint() const
 {
-    QSize size = QBoxLayout::minimumSize();
-    if (size.rheight() < MINIMIM_SIZE)
-        size.rheight() = MINIMIM_SIZE;
-
-    if (size.rwidth() < MINIMIM_SIZE)
-        size.rwidth() = MINIMIM_SIZE;
-
+    QSize size = QBoxLayout::sizeHint();
+    if (isEmpty())
+    {
+        size.rheight() = qMax(size.rheight(), MINIMIM_SIZE);
+        size.rwidth() = qMax(size.rwidth(), MINIMIM_SIZE);
+    }
     return size;
 }

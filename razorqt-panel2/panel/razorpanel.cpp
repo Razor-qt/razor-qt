@@ -345,26 +345,28 @@ void RazorPanelPrivate::realign()
 
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     QRect rect = screen;
+    QSize sizeHint = q->sizeHint();
     switch (mPosition)
     {
         case RazorPanel::PositionTop:
-            rect.setHeight(0);
+            rect.setHeight(sizeHint.height());
             break;
 
         case RazorPanel::PositionBottom:
-            rect.setHeight(0);
-            rect.moveTop(screen.bottom() - q->sizeHint().height());
+            rect.setHeight(sizeHint.height());
+            rect.moveTop(screen.bottom() - sizeHint.height());
             break;
 
         case RazorPanel::PositionLeft:
-            rect.setWidth(0);
+            rect.setWidth(sizeHint.width());
             break;
 
         case RazorPanel::PositionRight:
-            rect.setWidth(0);
-            rect.moveLeft(screen.right() - q->sizeHint().width());
+            rect.setWidth(sizeHint.width());
+            rect.moveLeft(screen.right() - sizeHint.width());
             break;
     }
+
 
     q->setGeometry(rect);
 
