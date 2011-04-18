@@ -71,6 +71,7 @@ int main(int argc, char **argv)
     RazorModuleManager modman(session);
     new SessionDBusAdaptor(&modman);
     // connect to D-Bus and register as an object:
+    QDBusConnection::sessionBus().registerService("org.razor.session");
     QDBusConnection::sessionBus().registerObject("/RazorSession", &modman);
     return app.exec();
 }

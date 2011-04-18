@@ -50,26 +50,61 @@ QList<QAction*> PowerManager::availableActions()
     
 void PowerManager::suspend()
 {
+    if (QMessageBox::question(0, tr("Razor Session Hibernate"),
+                              tr("Do you want to really suspend your computer?<p>Suspends the computer into a low power state. System state is not preserved if the power is lost."),
+                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    {
+        return;
+    }
+
     m_upower->suspend();
 }
 
 void PowerManager::hibernate()
 {
+    if (QMessageBox::question(0, tr("Razor Session Hibernate"),
+                              tr("Do you want to really hibernate your computer?<p>Hibernates the computer into a low power state. System state is preserved if the power is lost."),
+                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    {
+        return;
+    }
+
     m_upower->hibernate();
 }
 
 void PowerManager::reboot()
 {
+    if (QMessageBox::question(0, tr("Razor Session Reboot"),
+                              tr("Do you want to really restart your computer? All unsaved work will be lost..."),
+                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    {
+        return;
+    }
+
     m_upower->reboot();
 }
 
 void PowerManager::halt()
 {
+    if (QMessageBox::question(0, tr("Razor Session Shutdown"),
+                              tr("Do you want to really switch off your computer? All unsaved work will be lost..."),
+                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    {
+        return;
+    }
+
     m_upower->halt();
 }
 
 void PowerManager::logout()
 {
+    if (QMessageBox::question(0, tr("Razor Session Logout"),
+                              tr("Do you want to really logout? All unsaved work will be lost..."),
+                              QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    {
+        return;
+    }
+
     QDBusInterface interface("org.razor.session", "/RazorSession", "org.razor.session");
     interface.call( "logout" );
 }
