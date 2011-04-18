@@ -5,6 +5,7 @@
 #include <QGraphicsProxyWidget>
 #include <QtDebug>
 #include <QGraphicsTextItem>
+#include <QMessageBox>
 
 #include "razorworkspace.h"
 #include "workspacemanager.h"
@@ -12,6 +13,8 @@
 #include "arrangeitem.h"
 #include <razorqt/readsettings.h>
 #include <razorqt/powermanager.h>
+#include <razorqt/xdgmenuwidget.h>
+#include <razorqt/xdgmenu.h>
 
 
 RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
@@ -164,22 +167,42 @@ void RazorWorkSpace::mousePressEvent(QMouseEvent* _ev)
 void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 {
     // "context" menu
-    if (_ev->button() == Qt::RightButton)
+    switch (_ev->button())
     {
-        QMenu context(tr("Context Actions"));
-        context.addAction(context.title());
-        context.addAction(m_actArrangeWidgets);
-        
-        if (m_mode == ModeNormal)
+        case Qt::RightButton:
         {
-            context.addSeparator();
-            context.addActions(m_power->availableActions());
-        }
+            QMenu context(tr("Context Actions"));
+            context.addAction(context.title());
+            context.addAction(m_actArrangeWidgets);
+            
+            if (m_mode == ModeNormal)
+            {
+                context.addSeparator();
+                context.addActions(m_power->availableActions());
+            }
 
-        context.exec(mapToGlobal(_ev->pos()));
+            context.exec(mapToGlobal(_ev->pos()));
+        }
+        case Qt::LeftButton:
+        {
+            // TODO/FIXME: cache it?
+            QString menuFile = XdgMenu::getMenuFileName();
+            XdgMenu xdgMenu(menuFile);
+
+            bool res = xdgMenu.read();
+            if (res)
+            {
+                XdgMenuWidget menu(xdgMenu, "", this);
+                menu.exec(QCursor::pos());
+            }
+            else
+            {
+                QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+            }
+        }
+        default:
+            QGraphicsView::mouseReleaseEvent(_ev);
     }
-    else
-        QGraphicsView::mouseReleaseEvent(_ev);
 }
 
 void RazorWorkSpace::wheelEvent(QWheelEvent* _ev)
