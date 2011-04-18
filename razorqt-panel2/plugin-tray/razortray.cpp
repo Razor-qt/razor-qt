@@ -155,8 +155,6 @@ TrayIcon* RazorTray::findIcon(Window id)
 {
     foreach(TrayIcon* icon, mIcons)
     {
-//        qDebug() << " ...." << XfitMan::debugWindow(icon->iconId());
-//        qDebug() << "     " << XfitMan::debugWindow(id);
         if (icon->iconId() == id || icon->windowId() == id)
             return icon;
     }

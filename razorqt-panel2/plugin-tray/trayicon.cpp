@@ -46,7 +46,10 @@ int windowErrorHandler(Display *d, XErrorEvent *e)
     d=d;e=e;
     xError = true;
     if (e->error_code != BadWindow) {
-        qWarning() << "Error handler" << e->error_code;
+        char str[1024];
+        XGetErrorText(d, e->error_code,  str, 1024);
+        qWarning() << "Error handler" << e->error_code
+                   << str;
     }
     return 0;
 }
@@ -176,10 +179,12 @@ TrayIcon::~TrayIcon()
         XDamageDestroy(dsp, mDamage);
 
     // reparent to root
-    xError = FALSE;
+    xError = false;
     XErrorHandler old = XSetErrorHandler(windowErrorHandler);
+
     XUnmapWindow(dsp, mIconId);
     XReparentWindow(dsp, mIconId, QX11Info::appRootWindow(), 0, 0);
+
     XDestroyWindow(dsp, mWindowId);
     XSync(dsp, False);
     XSetErrorHandler(old);
