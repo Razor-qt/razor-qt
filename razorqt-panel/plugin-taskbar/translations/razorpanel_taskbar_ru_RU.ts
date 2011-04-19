@@ -29,19 +29,9 @@
         <translation>Не &amp;текущий рабочий стол</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="380"/>
-        <source>Ma&amp;ximize vert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razortaskbutton.cpp" line="385"/>
-        <source>Ma&amp;ximize Horiz</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../razortaskbutton.cpp" line="391"/>
         <source>&amp;Restore</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Восстановить</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="395"/>
@@ -52,6 +42,16 @@
         <location filename="../razortaskbutton.cpp" line="371"/>
         <source>Ma&amp;ximize</source>
         <translation>Р&amp;аспахнуть</translation>
+    </message>
+    <message>
+        <location filename="../razortaskbutton.cpp" line="380"/>
+        <source>Maximize vertically</source>
+        <translation>Распахнуть по вертикали</translation>
+    </message>
+    <message>
+        <location filename="../razortaskbutton.cpp" line="385"/>
+        <source>Maximize horizontally</source>
+        <translation>Распахнуть по горизонтали</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="401"/>
@@ -66,22 +66,22 @@
     <message>
         <location filename="../razortaskbutton.cpp" line="416"/>
         <source>&amp;Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Положение</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="418"/>
         <source>Always on &amp;top</source>
-        <translation type="unfinished"></translation>
+        <translation>Всегда на &amp;верху</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="423"/>
         <source>&amp;Normal</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Обычное</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="428"/>
         <source>Always on &amp;bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Всегда в&amp;низу</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="436"/>

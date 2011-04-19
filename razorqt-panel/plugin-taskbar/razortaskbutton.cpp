@@ -377,12 +377,12 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
     if (event->modifiers() & Qt::ShiftModifier)
     {
 
-        a = menu.addAction(tr("Ma&ximize vert"));
+        a = menu.addAction(tr("Maximize vertically"));
         a->setEnabled((allow.MaximizeVert) && (!state.MaximizedVert || state.Hidden));
         a->setData(XfitMan::MaximizeVert);
         connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));
 
-        a = menu.addAction(tr("Ma&ximize Horiz"));
+        a = menu.addAction(tr("Maximize horizontally"));
         a->setEnabled((allow.MaximizeHoriz) && (!state.MaximizedHoriz || state.Hidden));
         a->setData(XfitMan::MaximizeHoriz);
         connect(a, SIGNAL(triggered(bool)), this, SLOT(maximizeApplication()));

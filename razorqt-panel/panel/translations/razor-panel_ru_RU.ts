@@ -4,42 +4,42 @@
 <context>
     <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="61"/>
+        <location filename="../razorpanel.cpp" line="499"/>
         <source>Top of desktop</source>
         <translation>Вверху</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="62"/>
+        <location filename="../razorpanel.cpp" line="500"/>
         <source>Bottom of desktop</source>
         <translation>Внизу</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="63"/>
+        <location filename="../razorpanel.cpp" line="501"/>
         <source>Left of desktop</source>
         <translation>Слева</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="64"/>
+        <location filename="../razorpanel.cpp" line="502"/>
         <source>Right of desktop</source>
         <translation>Справа</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="71"/>
+        <location filename="../razorpanel.cpp" line="509"/>
         <source>Top of desktop %1</source>
         <translation>Вверху на %1 экране</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="72"/>
+        <location filename="../razorpanel.cpp" line="510"/>
         <source>Bottom of desktop %1</source>
         <translation>Внизу на %1 экране</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="73"/>
+        <location filename="../razorpanel.cpp" line="511"/>
         <source>Left of desktop %1</source>
         <translation>Слева на %1 экране</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="74"/>
+        <location filename="../razorpanel.cpp" line="512"/>
         <source>Right of desktop %1</source>
         <translation>Справа на %1 экране</translation>
     </message>
@@ -71,17 +71,31 @@
         <translation type="obsolete">Показать</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="275"/>
         <source>Show this panel at</source>
-        <translation>Показывать эту панель на</translation>
+        <translation type="obsolete">Показывать эту панель на</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPlugin</name>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="90"/>
+        <source>Move plugin</source>
+        <translation type="obsolete">Переместить плагин</translation>
+    </message>
+</context>
+<context>
+    <name>RazorPanelPluginPrivate</name>
+    <message>
+        <location filename="../razorpanelplugin.cpp" line="203"/>
         <source>Move plugin</source>
         <translation>Переместить плагин</translation>
+    </message>
+</context>
+<context>
+    <name>RazorPanelPrivate</name>
+    <message>
+        <location filename="../razorpanel.cpp" line="627"/>
+        <source>Show this panel at</source>
+        <translation>Показывать эту панель на</translation>
     </message>
 </context>
 </TS>
