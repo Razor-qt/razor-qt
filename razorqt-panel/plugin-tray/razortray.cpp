@@ -19,7 +19,6 @@
 
 // Warning: order of those include is important.
 #include <QApplication>
-
 #include <QtDebug>
 #include "trayicon.h"
 #include <QX11Info>
@@ -52,7 +51,8 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTray)
 RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
     RazorPanelPlugin(startInfo, parent),
     mValid(false),
-    mTrayId(0)
+    mTrayId(0),
+    mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT)
 {
     setObjectName("Tray");
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
@@ -159,6 +159,17 @@ TrayIcon* RazorTray::findIcon(Window id)
             return icon;
     }
     return 0;
+}
+
+
+/************************************************
+
+************************************************/
+void RazorTray::setIconSize(QSize iconSize)
+{
+    mIconSize = iconSize;
+    foreach(TrayIcon* icon, mIcons)
+        icon->setIconSize(mIconSize);
 }
 
 
@@ -332,6 +343,7 @@ void RazorTray::addIcon(Window winId)
         return;
     }
 
+    icon->setIconSize(mIconSize);
     mIcons.append(icon);
     addWidget(icon);
 }

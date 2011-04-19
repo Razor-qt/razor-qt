@@ -34,7 +34,7 @@ class RazorPanel;
 class TrayIcon: public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(int iconSize READ iconSize WRITE setIconSize)
+    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 
 public:
     TrayIcon(Window iconId, QWidget* parent);
@@ -45,8 +45,8 @@ public:
 
     bool isValid() const { return mValid; }
 
-    int iconSize() const { return mIconSize; }
-    void setIconSize(int iconSize);
+    QSize iconSize() const { return mIconSize; }
+    void setIconSize(QSize iconSize);
 
     QSize sizeHint() const;
 
@@ -60,7 +60,7 @@ private:
     Window mIconId;
     Window mWindowId;
     bool mValid;
-    int mIconSize;
+    QSize mIconSize;
     Damage mDamage;
 };
 

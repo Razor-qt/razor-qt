@@ -59,7 +59,7 @@ signals:
      void positionChanged();
 
 protected:
-    virtual void contextMenuEvent( QContextMenuEvent* event);
+    virtual bool event(QEvent* e);
 
 private:
     RazorPanelPrivate* const d_ptr;

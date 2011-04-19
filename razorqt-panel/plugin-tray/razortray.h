@@ -21,12 +21,11 @@
 
 #include "../panel/razorpanelplugin.h"
 
-#include <QX11EmbedContainer>
-
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
 class TrayIcon;
+class QSize;
 
 /**
  * @brief This makes our trayplugin
@@ -35,11 +34,15 @@ class TrayIcon;
 class RazorTray: public RazorPanelPlugin
 {
     Q_OBJECT
+    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
     RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorTray();
 
     virtual Alignment preferredAlignment() const { return AlignRight; }
+
+    QSize iconSize() const { return mIconSize; }
+    void setIconSize(QSize iconSize);
 
 signals:
     void iconSizeChanged(int iconSize);
@@ -59,6 +62,7 @@ private:
     QList<TrayIcon*> mIcons;
     int mDamageEvent;
     int mDamageError;
+    QSize mIconSize;
 private slots:
     /// This handles the events we get from the Razorplugin subsystem
     void handleEvent(XEvent* event);

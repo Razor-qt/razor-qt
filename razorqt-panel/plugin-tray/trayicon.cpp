@@ -62,7 +62,7 @@ TrayIcon::TrayIcon(Window iconId, QWidget* parent):
     QFrame(parent),
     mIconId(iconId),
     mWindowId(0),
-    mIconSize(TRAY_ICON_SIZE_DEFAULT),
+    mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT),
     mDamage(0)
 {
     setObjectName("TrayIcon");
@@ -82,11 +82,11 @@ bool TrayIcon::init()
     XWindowAttributes attr;
     if (! XGetWindowAttributes(dsp, mIconId, &attr)) return false;
 
-    qDebug() << "New tray icon ***********************************";
-    qDebug() << "  * window id:  " << hex << mIconId;
-    qDebug() << "  * window name:" << xfitMan().getName(mIconId);
-    qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
-    qDebug() << "  * color depth:" << attr.depth;
+//    qDebug() << "New tray icon ***********************************";
+//    qDebug() << "  * window id:  " << hex << mIconId;
+//    qDebug() << "  * window name:" << xfitMan().getName(mIconId);
+//    qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
+//    qDebug() << "  * color depth:" << attr.depth;
 
     unsigned long mask = 0;
     XSetWindowAttributes set_attr;
@@ -97,7 +97,8 @@ bool TrayIcon::init()
     set_attr.border_pixel = 0;
     mask = CWColormap|CWBackPixel|CWBorderPixel;
 
-    mWindowId = XCreateWindow(dsp, this->winId(), 0, 0, mIconSize, mIconSize, 0, attr.depth, InputOutput, visual, mask, &set_attr);
+    mWindowId = XCreateWindow(dsp, this->winId(), 0, 0, mIconSize.width(), mIconSize.height(),
+                              0, attr.depth, InputOutput, visual, mask, &set_attr);
 
 
     xError = false;
@@ -160,8 +161,8 @@ bool TrayIcon::init()
     XMapWindow(dsp, mIconId);
     XMapRaised(dsp, mWindowId);
 
-    xfitMan().resizeWindow(mWindowId, mIconSize, mIconSize);
-    xfitMan().resizeWindow(mIconId,   mIconSize, mIconSize);
+    xfitMan().resizeWindow(mWindowId, mIconSize.width(), mIconSize.height());
+    xfitMan().resizeWindow(mIconId,   mIconSize.width(), mIconSize.height());
 
     return true;
 }
@@ -197,8 +198,8 @@ TrayIcon::~TrayIcon()
 QSize TrayIcon::sizeHint() const
 {
     QMargins margins = contentsMargins();
-    return QSize(margins.left() + mIconSize + margins.right(),
-                 margins.top() + mIconSize + margins.bottom()
+    return QSize(margins.left() + mIconSize.width() + margins.right(),
+                 margins.top() + mIconSize.height() + margins.bottom()
                 );
 }
 
@@ -206,17 +207,15 @@ QSize TrayIcon::sizeHint() const
 /************************************************
 
  ************************************************/
-void TrayIcon::setIconSize(int iconSize)
+void TrayIcon::setIconSize(QSize iconSize)
 {
     mIconSize = iconSize;
 
     if (mWindowId)
-        xfitMan().resizeWindow(mWindowId, mIconSize, mIconSize);
+        xfitMan().resizeWindow(mWindowId, mIconSize.width(), mIconSize.height());
 
     if (mIconId)
-        xfitMan().resizeWindow(mIconId,   mIconSize, mIconSize);
-
-    adjustSize();
+        xfitMan().resizeWindow(mIconId,   mIconSize.width(), mIconSize.height());
 }
 
 
@@ -254,7 +253,7 @@ bool TrayIcon::event(QEvent *event)
  ************************************************/
 QRect TrayIcon::iconGeometry()
 {
-    QRect res = QRect(0, 0, mIconSize, mIconSize);
+    QRect res = QRect(QPoint(0, 0), mIconSize);
 
     res.moveCenter(QRect(0, 0, width(), height()).center());
     return res;
@@ -271,7 +270,7 @@ void TrayIcon::draw(QPaintEvent* event)
     XWindowAttributes attr;
     if (!XGetWindowAttributes(dsp, mIconId, &attr))
     {
-        qDebug() << "Paint error";
+        qWarning() << "Paint error";
         return;
     }
 

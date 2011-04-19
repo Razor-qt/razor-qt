@@ -369,7 +369,14 @@ void RazorPanelPrivate::realign()
 
 
     q->setGeometry(rect);
+//}
 
+
+/************************************************
+
+ ************************************************/
+//void RazorPanelPrivate::setStrut()
+//{
     // Reserve our space on the screen ..........
     XfitMan xf = xfitMan();
     Window wid = q->effectiveWinId();
@@ -565,10 +572,23 @@ RazorPanel::Position RazorPanel::position() const
 /************************************************
 
  ************************************************/
-void RazorPanel::contextMenuEvent(QContextMenuEvent* event)
+bool RazorPanel::event(QEvent* e)
 {
     Q_D(RazorPanel);
-    d->contextMenuEvent(event);
+    switch (e->type())
+    {
+        case QEvent::ContextMenu:
+            d->contextMenuEvent(static_cast<QContextMenuEvent*>(e));
+            break;
+
+        case QEvent::Resize:
+            d->realign();
+            break;
+
+        default:
+            break;
+    }
+    return QFrame::event(e);
 }
 
 

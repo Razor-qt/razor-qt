@@ -114,6 +114,7 @@ QToolButton:hover{
     padding-right: 2px;
     margin-left: 4px;
     margin-right: 4px;
+    qproperty-iconSize: 24px;
 }
 
 TrayIcon {
