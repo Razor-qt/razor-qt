@@ -154,62 +154,58 @@ void RazorWorkSpace::workspaceResized(int screen)
     m_scene->setSceneRect(0, 0, geometry.width(), geometry.height());
 }
 
-void RazorWorkSpace::mouseMoveEvent(QMouseEvent* _ev)
-{
-    QGraphicsView::mouseMoveEvent(_ev);
-}
-
-void RazorWorkSpace::mousePressEvent(QMouseEvent* _ev)
-{
-    QGraphicsView::mousePressEvent(_ev);
-}
-
 void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 {
-    // "context" menu
-    switch (_ev->button())
+    DesktopWidgetPlugin * plug = getPluginFromItem(m_scene->itemAt(_ev->posF()));
+    if (plug && plug->blockGlobalMenu())
     {
-        case Qt::RightButton:
-        {
-            QMenu context(tr("Context Actions"));
-            context.addAction(context.title());
-            context.addAction(m_actArrangeWidgets);
-            
-            if (m_mode == ModeNormal)
-            {
-                context.addSeparator();
-                context.addActions(m_power->availableActions());
-            }
-
-            context.exec(mapToGlobal(_ev->pos()));
-        }
-        case Qt::LeftButton:
-        {
-            // TODO/FIXME: cache it?
-            QString menuFile = XdgMenu::getMenuFileName();
-            XdgMenu xdgMenu(menuFile);
-
-            bool res = xdgMenu.read();
-            if (res)
-            {
-                XdgMenuWidget menu(xdgMenu, "", this);
-                menu.exec(QCursor::pos());
-            }
-            else
-            {
-                QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
-            }
-        }
-        default:
-            QGraphicsView::mouseReleaseEvent(_ev);
+        //qDebug() << "RazorWorkSpace::mouseReleaseEvent" << "menu blocked by plugin";
+        QGraphicsView::mouseReleaseEvent(_ev);
+        return;
     }
+    
+    // "context" menu
+    if (_ev->button() == Qt::RightButton)
+    {
+        QMenu * context = 0;
+        // TODO/FIXME: cache it?
+        XdgMenu xdgMenu(XdgMenu::getMenuFileName());
+        if (xdgMenu.read())
+        {
+            context = new XdgMenuWidget(xdgMenu, "Context Menu", this);
+        }
+        else
+        {
+            QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+            context = new QMenu("Context Menu", this);
+        }
+        // TODO/FIXME: this starts the menu building. Then I can append rest of actions...
+        context->show();context->hide();
+
+        context->addSeparator();
+        context->addAction(m_actArrangeWidgets);
+        context->addSeparator();
+        context->addActions(m_power->availableActions());
+
+        context->exec(QCursor::pos());
+        delete context;
+    }
+
+    QGraphicsView::mouseReleaseEvent(_ev);
 }
 
-void RazorWorkSpace::wheelEvent(QWheelEvent* _ev)
+void RazorWorkSpace::wheelEvent(QWheelEvent * e)
 {
-    int numDegrees = _ev->delta() / 8;
-    int numSteps = numDegrees / 15;
-    emit mouseWheeled(-numSteps);
+    int max = xfitMan().getNumDesktop() - 1;
+    int delta = e->delta() > 0 ? 1 : -1;
+    int current = xfitMan().getActiveDesktop() + delta;
+    
+    if (current > max)
+        current = 0;
+    else if (current < 0)
+        current = max;
+
+    xfitMan().setActiveDesktop(current);
 }
 
 void RazorWorkSpace::arrangeWidgets(bool start)
@@ -226,16 +222,9 @@ void RazorWorkSpace::arrangeWidgets(bool start)
         
         foreach (QGraphicsItem * item, items)
         {
-            //qDebug() << "EDIT" << item;
-            DesktopWidgetPlugin * plug = dynamic_cast<DesktopWidgetPlugin*>(item);
-            if (!plug)
-            {
-                QGraphicsProxyWidget * w = dynamic_cast<QGraphicsProxyWidget*>(item);
-                Q_ASSERT(w); // here *must* be widget or there is something wrong. Badly wrong.
-                plug = dynamic_cast<DesktopWidgetPlugin*>(w->widget());
-                Q_ASSERT(plug);
-            }
-
+            DesktopWidgetPlugin * plug = getPluginFromItem(item);
+            // here it *must* be a plugin
+            Q_ASSERT(plug);
             QRectF br = item->sceneBoundingRect();
             ArrangeItem * i = new ArrangeItem(plug, plug->instanceInfo(), br, true, m_arrangeRoot);
             m_arrangeList.append(i);
@@ -256,6 +245,18 @@ void RazorWorkSpace::arrangeWidgets(bool start)
         m_arrangeRoot = 0;
         m_arrangeList.clear();
     }
+}
+
+DesktopWidgetPlugin * RazorWorkSpace::getPluginFromItem(QGraphicsItem * item)
+{
+    DesktopWidgetPlugin * plug = dynamic_cast<DesktopWidgetPlugin*>(item);
+    if (!plug)
+    {
+        QGraphicsProxyWidget * w = dynamic_cast<QGraphicsProxyWidget*>(item);
+        if (w)
+            plug = dynamic_cast<DesktopWidgetPlugin*>(w->widget());
+    }
+    return plug;
 }
 
 RazorWorkSpace::~RazorWorkSpace()

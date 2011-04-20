@@ -16,6 +16,8 @@ public:
 
     void setParentSize(const QSizeF & size);
 
+    bool blockGlobalMenu();
+
 private:
     QFileSystemWatcher * m_fsw;
     QSizeF m_parentSize;

@@ -21,6 +21,8 @@ public:
     void setSizeAndPosition(const QPointF & position, const QSizeF & size);
     void save();
 
+    bool blockGlobalMenu();
+
 private:
     IconScene * m_scene;
 };

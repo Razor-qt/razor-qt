@@ -45,7 +45,6 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSetti
         else
             ws->setConfig(defaults);
         
-        connect(ws, SIGNAL(mouseWheeled(int)), this, SLOT(switchDesktop(int)));
         ws->show();
         m_workspaces.append(ws);
     }
@@ -71,24 +70,4 @@ QString RazorWorkSpaceManager::info()
 {
     return tr("Fully featured desktop implementation with all Razor's "
               "bells and whistles");
-}
-
-void RazorWorkSpaceManager::switchDesktop(int _change)
-{
-    qDebug() << "RazorWorkSpaceManager::switchDesktop" << _change;
-    int num_desks = xfitMan().getNumDesktop();
-    if (_change > 0)
-    {
-        if (xfitMan().getActiveDesktop()+1 < num_desks)
-            xfitMan().setActiveDesktop(xfitMan().getActiveDesktop()+1);
-        else
-            xfitMan().setActiveDesktop(0);
-    }
-    if (_change < 0)
-    {
-        if (xfitMan().getActiveDesktop()-1 >= 0)
-            xfitMan().setActiveDesktop(xfitMan().getActiveDesktop()-1);
-        else
-            xfitMan().setActiveDesktop(num_desks-1);
-    }
 }

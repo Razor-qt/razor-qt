@@ -106,3 +106,11 @@ void IconScene::setParentSize(const QSizeF & size)
     m_parentSize = size;
     updateIconList();
 }
+
+bool IconScene::blockGlobalMenu()
+{
+    qDebug() << "bool IconScene::blockGlobalMenu()" << mouseGrabberItem();
+
+    IconBase * item = dynamic_cast<IconBase*>(mouseGrabberItem());
+    return item != 0;
+}

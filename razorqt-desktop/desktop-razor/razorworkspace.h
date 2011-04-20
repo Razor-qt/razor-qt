@@ -31,14 +31,10 @@ public:
     ~RazorWorkSpace();
 
     void setConfig(const WorkspaceConfig & bg);
-signals:
-    void mouseWheeled(int);
 
 protected:
-    void mouseMoveEvent(QMouseEvent* _ev);
-    void mousePressEvent(QMouseEvent* _ev);
     void mouseReleaseEvent(QMouseEvent* _ev);
-    void wheelEvent(QWheelEvent* _ev);
+    void wheelEvent(QWheelEvent* e);
 
 private:
     
@@ -58,6 +54,8 @@ private:
     QList<ArrangeItem*> m_arrangeList;
     
     PowerManager * m_power;
+    
+    DesktopWidgetPlugin * getPluginFromItem(QGraphicsItem * item);
 
 private slots:
     void workspaceResized(int screen);

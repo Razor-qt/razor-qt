@@ -18,6 +18,8 @@ public:
 
     void setSizeAndPosition(const QPointF & position, const QSizeF & size);
     void save();
+
+    bool blockGlobalMenu() { return false; }
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H

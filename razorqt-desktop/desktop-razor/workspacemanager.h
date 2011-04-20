@@ -27,9 +27,6 @@ public:
     
     QString info();
 
-public slots:
-    void switchDesktop(int);
-
 private:
     QList<RazorWorkSpace*> m_workspaces;
     QSettings * m_settings;

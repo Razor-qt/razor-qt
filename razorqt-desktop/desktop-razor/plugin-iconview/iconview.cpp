@@ -93,3 +93,8 @@ void IconView::save()
     s->setValue("h", size().height());
     s->endGroup();
 }
+
+bool IconView::blockGlobalMenu()
+{
+    return m_scene->blockGlobalMenu();
+}
