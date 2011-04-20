@@ -13,8 +13,7 @@
 
 
 RazorAppSwitcher::AppSwitcher::AppSwitcher()
-    : QWidget(0, Qt::FramelessWindowHint | Qt::Tool),
-      m_x(0)
+    : QWidget(0, Qt::FramelessWindowHint | Qt::Tool)
 {
     setupUi(this);
 
@@ -24,9 +23,6 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     QWidget * background = new QWidget(this);
     scrollArea->setWidget(background);
     background->setLayout(m_layout);
-
-    m_x = new XfitMan();
-    Q_ASSERT(m_x);
 
     m_key = new QxtGlobalShortcut(this);
 
@@ -58,7 +54,7 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
     }
     m_list.clear();
 
-    QList<Window> l = m_x->getClientList();
+    QList<Window> l = xfitMan().getClientList();
     QList<Window> merge;
     // setup already used windows
     foreach (Window w, m_orderedWindows)
@@ -77,15 +73,15 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
     // setup new windows
     foreach (Window w, merge)
     {
-        if (!m_x->acceptWindow(w))
+        if (!xfitMan().acceptWindow(w))
         {
             continue;
         }
         QPixmap pm;
-        if (! m_x->getClientIcon(w, pm))
-            qDebug() << "No icon for:" << w << m_x->getName(w);
+        if (! xfitMan().getClientIcon(w, pm))
+            qDebug() << "No icon for:" << w << xfitMan().getName(w);
 
-        SwitcherItem * item = new SwitcherItem(w, m_x->getName(w), pm, this);
+        SwitcherItem * item = new SwitcherItem(w, xfitMan().getName(w), pm, this);
         connect(item, SIGNAL(infoChanged(const QString&)),
                 infoLabel, SLOT(setText(const QString&)));
         connect(item, SIGNAL(activateXWindow()), this, SLOT(activateXWindow()));
@@ -99,7 +95,7 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
     // but it works now.
     if (!isVisible())
     {
-        QRect desktop = QApplication::desktop()->availableGeometry(m_x->getActiveDesktop());
+        QRect desktop = QApplication::desktop()->availableGeometry(xfitMan().getActiveDesktop());
         int x, y;
         x = desktop.width()/2 - width() / 2;
         y = desktop.height()/2 - height() / 2;
@@ -117,7 +113,11 @@ void RazorAppSwitcher::AppSwitcher::activateXWindow()
         qDebug() << "AppSwitcher::activateXWindow activation. Something is wrong - focus widget is not on SwitcherItem!";
         return;
     }
-    m_x->raiseWindow(item->window());
+    int winDesktop = xfitMan().getWindowDesktop(item->window());
+    if (xfitMan().getActiveDesktop() != winDesktop)
+        xfitMan().setActiveDesktop(winDesktop);
+
+    xfitMan().raiseWindow(item->window());
     close();
 }
 
@@ -180,10 +180,10 @@ bool RazorAppSwitcher::AppSwitcher::handleEvent(XEvent * e)
 {
     if (e->type == PropertyNotify)
     {
-        if (!this || !m_x)
+        if (!this)
             return false;
 
-        Window w = m_x->getActiveWindow();
+        Window w = xfitMan().getActiveWindow();
         if (m_orderedWindows.contains(w))
         {
             int ix = m_orderedWindows.indexOf(w);

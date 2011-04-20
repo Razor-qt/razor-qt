@@ -10,7 +10,6 @@
 #include <X11/X.h>
 
 class QxtGlobalShortcut;
-class XfitMan;
 class QShortcut;
 class QHBoxLayout;
 
@@ -64,7 +63,6 @@ public:
     bool handleEvent(XEvent * e);
 
 private:
-    XfitMan * m_x;
     //! 3rd party class to handle global keyboard shortcut
     QxtGlobalShortcut * m_key;
     /*! Ambiguous shortcut, similar to m_key to handle switches when is
