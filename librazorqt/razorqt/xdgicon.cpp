@@ -172,6 +172,9 @@ inline QIcon XdgIconCache::searchFile(const QString& fileName)
  ************************************************/
 QIcon* const XdgIconCache::fromTheme(const QString& iconName, int size)
 {
+    if (iconName.isEmpty())
+        return 0;
+
     QString key = QString("%1 %2 %3").arg(iconName).arg(size).arg(mThemeName);
     if (mCache.contains(key))
         return mCache.value(key);
