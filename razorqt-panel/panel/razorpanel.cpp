@@ -282,6 +282,9 @@ void RazorPanelPrivate::loadPlugins()
         if (!plugin)
             continue;
 
+        connect(q, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)),
+                plugin, SLOT(layoutDirectionChanged(QBoxLayout::Direction)));
+
         mPlugins.append(plugin);
     }
 
@@ -687,6 +690,7 @@ void RazorPanelPrivate::switchPosition()
     mPosition = a->position();
     mScreenNum = a->displayNum();
     realign();
+    emit q->layoutDirectionChanged(q->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom);
     emit q->positionChanged();
 }
 

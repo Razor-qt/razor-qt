@@ -42,6 +42,7 @@ public:
     QString configId() const { return mConfigId; }
 
     QBoxLayout* layout() const { return mLayout; }
+    void layoutDirectionChanged(QBoxLayout::Direction direction);
 
     void addWidget(QWidget* widget);
 

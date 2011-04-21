@@ -66,7 +66,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     q->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
     q->setWindowTitle(startInfo->pluginInfo->name());
-    mLayout = new QBoxLayout(QBoxLayout::LeftToRight, q);
+    mLayout = new QBoxLayout(mPanel->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, q);
     mLayout->setSpacing(0);
     mLayout->setMargin(0);
     mLayout->setContentsMargins(0, 0, 0, 0);
@@ -158,6 +158,17 @@ QBoxLayout* RazorPanelPlugin::layout() const
 {
     Q_D(const RazorPanelPlugin);
     return d->layout();
+}
+
+void RazorPanelPlugin::layoutDirectionChanged(QBoxLayout::Direction direction)
+{
+    Q_D(RazorPanelPlugin);
+    d->layoutDirectionChanged(direction);
+}
+
+void RazorPanelPluginPrivate::layoutDirectionChanged(QBoxLayout::Direction direction)
+{
+    mLayout->setDirection(direction);
 }
 
 

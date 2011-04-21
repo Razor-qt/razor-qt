@@ -135,6 +135,9 @@ signals:
     void movableChanged(bool movable);
     void alignmentChanged();
 
+public slots:
+    void layoutDirectionChanged(QBoxLayout::Direction direction);
+
 protected:
     void paintEvent(QPaintEvent* event);
     virtual QMenu* popupMenu(QWidget *parent);

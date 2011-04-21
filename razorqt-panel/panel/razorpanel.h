@@ -22,6 +22,7 @@
 
 #include <QtGui/QFrame>
 #include <QtCore/QString>
+#include <QtGui/QBoxLayout>
 
 class QMenu;
 class RazorPanelPrivate;
@@ -57,6 +58,7 @@ public slots:
 signals:
      void x11PropertyNotify(XEvent* event);
      void positionChanged();
+     void layoutDirectionChanged(QBoxLayout::Direction direction);
 
 protected:
     virtual bool event(QEvent* e);
