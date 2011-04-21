@@ -26,6 +26,7 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
+    setFrameShape(QFrame::NoFrame);
     
     m_power = new PowerManager(this);
     
@@ -179,8 +180,6 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
             QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
             context = new QMenu("Context Menu", this);
         }
-        // TODO/FIXME: this starts the menu building. Then I can append rest of actions...
-        context->show();context->hide();
 
         context->addSeparator();
         context->addAction(m_actArrangeWidgets);
