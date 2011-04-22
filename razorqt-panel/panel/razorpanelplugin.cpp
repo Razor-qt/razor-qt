@@ -160,78 +160,23 @@ QBoxLayout* RazorPanelPlugin::layout() const
     return d->layout();
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPlugin::layoutDirectionChanged(QBoxLayout::Direction direction)
 {
     Q_D(RazorPanelPlugin);
     d->layoutDirectionChanged(direction);
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPluginPrivate::layoutDirectionChanged(QBoxLayout::Direction direction)
 {
     mLayout->setDirection(direction);
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPlugin::contextMenuEvent(QContextMenuEvent* event)
-{
-    Q_D(RazorPanelPlugin);
-    d->contextMenuEvent(event);
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPluginPrivate::contextMenuEvent(QContextMenuEvent* event)
-{
-    QMenu* menu = popupMenu(0);
-    menu->exec(event->globalPos());
-    delete menu;
-}
-
-
-/************************************************
-
- ************************************************/
-QMenu* RazorPanelPlugin::popupMenu(QWidget *parent)
-{
-    Q_D(RazorPanelPlugin);
-    return d->popupMenu(parent);
-}
-
-
-/************************************************
-
- ************************************************/
-QMenu* RazorPanelPluginPrivate::popupMenu(QWidget *parent)
-{
-    QMenu* menu = new QMenu(parent);
-    QAction* a;
-
-    a = menu->addAction(XdgIcon::fromTheme("transform-move", 32), tr("Move plugin"));
-    connect(a, SIGNAL(triggered()), this, SLOT(startMove()));
-
-    menu->addSeparator();
-    menu->addMenu(panel()->popupMenu(menu));
-
-    menu->addSeparator();
-    a = menu->addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
-    connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
-
-    return menu;
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPluginPrivate::startMove()
-{
-    Q_Q(RazorPanelPlugin);
-    static_cast<RazorPanelLayout*>(panel()->layout())->startMoveWidget(q);
 }
 
 

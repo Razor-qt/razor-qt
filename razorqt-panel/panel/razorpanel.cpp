@@ -22,10 +22,11 @@
 #include "razorpluginmanager.h"
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
-
+#include "addplugindialog/addplugindialog.h"
 #include <razorqt/readsettings.h>
 #include <razorqt/razorplugininfo.h>
 
+#include <QtCore/QString>
 #include <QtCore/QDebug>
 #include <QtCore/QLocale>
 #include <QtCore/QTranslator>
@@ -53,6 +54,7 @@
 #define CFG_KEY_PLUGINS     "plugins"
 
 #define CFG_FULLKEY_PLUGINS "panel/plugins"
+
 
 
 /************************************************
@@ -553,6 +555,61 @@ void RazorPanelPrivate::pluginMoved(QWidget* pluginWidget)
 /************************************************
 
  ************************************************/
+void RazorPanelPrivate::showAddPluginDialog()
+{
+    Q_Q(RazorPanel);
+    AddPluginDialog* dlg = q->findChild<AddPluginDialog*>();
+
+    if (!dlg)
+    {
+        dlg = new AddPluginDialog(&mAvailablePlugins, q);
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
+        connect(dlg, SIGNAL(pluginSelected(RazorPanelPluginInfo*)), this, SLOT(addPlugin(RazorPanelPluginInfo*)));
+    }
+
+    dlg->show();
+
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::addPlugin(RazorPanelPluginInfo *pluginInfo)
+{
+    if (!pluginInfo)
+        return;
+
+    QString sectionName = pluginInfo->id();
+    QStringList groups = mSettings->childGroups();
+
+    if (groups.contains(sectionName))
+    {
+        for (int i=2; true; ++i)
+        {
+            sectionName = QString("%1%2").arg(pluginInfo->id()).arg(i);
+            qDebug() << "   -" << sectionName;
+            if (!groups.contains(sectionName))
+                break;
+        }
+    }
+
+    Q_Q(RazorPanel);
+    RazorPanelPlugin* plugin = pluginInfo->instance(mSettings->fileName(), sectionName, q);
+    mSettings->setValue(QString("%1/type").arg(sectionName), pluginInfo->id());
+    mPlugins.append(plugin);
+    if (plugin->preferredAlignment() == RazorPanelPlugin::AlignRight)
+        mLayout->addWidget(plugin);
+    else
+    {
+        mLayout->insertWidget(0, plugin);
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorPanel::show()
 {
     Q_D(RazorPanel);
@@ -600,8 +657,7 @@ bool RazorPanel::event(QEvent* e)
  ************************************************/
 void RazorPanelPrivate::contextMenuEvent(QContextMenuEvent* event)
 {
-    QMenu* menu = new QMenu();
-    menu->addMenu(popupMenu(menu));
+    QMenu* menu = popupMenu(0);
 
     menu->addSeparator();
     QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
@@ -627,12 +683,38 @@ QMenu* RazorPanel::popupMenu(QWidget *parent) const
  ************************************************/
 QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
 {
-    QMenu* menu = new QMenu(tr("Show this panel at"), parent);
+    QMenu* menu = new QMenu(tr("Panel"), parent);
     menu->setIcon(XdgIcon::fromTheme("configure-toolbars", 32));
     QAction* a;
 
+    // Plugins menu .............................
+    QIcon plugIco = XdgIcon::fromTheme("preferences-plugin", 32);
+    QMenu* pluginsMenu = menu->addMenu(plugIco, tr("Plugins"));
+
+    a = pluginsMenu->addAction(tr("Add plugins ..."));
+    connect(a, SIGNAL(triggered()), this, SLOT(showAddPluginDialog()));
+    pluginsMenu->addSeparator();
+
+
+    foreach (RazorPanelPlugin* plugin, mPlugins)
+    {
+        QMenu* m = pluginsMenu->addMenu(plugin->windowTitle());
+
+        a = new PluginAction(plugin, XdgIcon::fromTheme("transform-move", 32), tr("Move plugin"), m);
+        connect(a, SIGNAL(triggered()), this, SLOT(onMovePlugin()));
+        m->addAction(a);
+
+        m->addSeparator();
+
+        a = new PluginAction(plugin, tr("Delete plugin"), m);
+        connect(a, SIGNAL(triggered()), this, SLOT(onRemovePlugin()));
+        m->addAction(a);
+    }
+
+
     // Create Panel menu ********************************************
-     QActionGroup* posGroup = new QActionGroup(menu);
+    QMenu* positionMenu = menu->addMenu(tr("Show this panel at"));
+    QActionGroup* posGroup = new QActionGroup(menu);
 
     QDesktopWidget* dw = QApplication::desktop();
     for (int i=0; i<dw->screenCount(); ++i)
@@ -642,7 +724,7 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
             a = new PositionAction(i,  RazorPanel::PositionTop, posGroup);
             a->setChecked(mPosition == RazorPanel::PositionTop && mScreenNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            menu->addAction(a);
+            positionMenu->addAction(a);
         }
 
         if (canPlacedOn(i, RazorPanel::PositionBottom))
@@ -650,7 +732,7 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
             a = new PositionAction(i, RazorPanel::PositionBottom, posGroup);
             a->setChecked(mPosition == RazorPanel::PositionBottom && mScreenNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            menu->addAction(a);
+            positionMenu->addAction(a);
         }
 
         if (canPlacedOn(i, RazorPanel::PositionLeft))
@@ -658,7 +740,7 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
             a = new PositionAction(i, RazorPanel::PositionLeft, posGroup);
             a->setChecked(mPosition == RazorPanel::PositionLeft && mScreenNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            menu->addAction(a);
+            positionMenu->addAction(a);
         }
 
 
@@ -667,13 +749,41 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
             a = new PositionAction(i, RazorPanel::PositionRight, posGroup);
             a->setChecked(mPosition == RazorPanel::PositionRight && mScreenNum == i);
             connect(a, SIGNAL(triggered()), this, SLOT(switchPosition()));
-            menu->addAction(a);
+            positionMenu->addAction(a);
         }
 
-        menu->addSeparator();
+        positionMenu->addSeparator();
     }
 
     return menu;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::onMovePlugin()
+{
+    PluginAction* a = qobject_cast<PluginAction*>(sender());
+    if (!a)
+        return;
+
+    mLayout->startMoveWidget(a->plugin());
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::onRemovePlugin()
+{
+    PluginAction* a = qobject_cast<PluginAction*>(sender());
+    if (!a)
+        return;
+
+    mSettings->remove(a->plugin()->configId());
+    mPlugins.removeAll(a->plugin());
+    delete a->plugin();
 }
 
 

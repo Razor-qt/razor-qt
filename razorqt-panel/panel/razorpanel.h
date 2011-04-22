@@ -26,6 +26,7 @@
 
 class QMenu;
 class RazorPanelPrivate;
+//class RazorPanelPlugin;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */
@@ -56,10 +57,10 @@ public slots:
     void show();
 
 signals:
-     void x11PropertyNotify(XEvent* event);
-     void positionChanged();
-     void layoutDirectionChanged(QBoxLayout::Direction direction);
-
+    void x11PropertyNotify(XEvent* event);
+    void positionChanged();
+    void layoutDirectionChanged(QBoxLayout::Direction direction);
+    
 protected:
     virtual bool event(QEvent* e);
 

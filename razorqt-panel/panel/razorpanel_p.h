@@ -33,7 +33,7 @@ class QLayoutItem;
 class ReadSettings;
 class RazorPanelPluginInfo;
 class RazorPanelLayout;
-
+class AddPluginDialog;
 
 class RazorPanelPrivate: QObject {
     Q_OBJECT
@@ -60,6 +60,10 @@ public slots:
     void switchPosition();
     void pluginMoved(QWidget* pluginWidget);
     void screensChangeds();
+    void showAddPluginDialog();
+    void addPlugin(RazorPanelPluginInfo* pluginInfo);
+    void onRemovePlugin();
+    void onMovePlugin();
 
 private:
     void loadPlugins();
@@ -109,5 +113,20 @@ private:
     int mDisplayNum;
 };
 
+
+class PluginAction: public QAction
+{
+  Q_OBJECT
+public:
+    PluginAction(RazorPanelPlugin* plugin, const QString &text, QObject* parent):
+        QAction(text, parent), mPlugin(plugin) {}
+
+    PluginAction(RazorPanelPlugin* plugin, const QIcon &icon, const QString &text, QObject* parent):
+        QAction(icon, text, parent), mPlugin(plugin) {}
+
+    RazorPanelPlugin* plugin() const { return mPlugin; }
+private:
+    RazorPanelPlugin* mPlugin;
+};
 
 #endif // RAZORPANEL_P_H

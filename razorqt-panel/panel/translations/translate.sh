@@ -10,6 +10,6 @@ fi
 
 
 
-lupdate ../*.h ../*.cpp -ts $TS_FILE  && \
+lupdate ../*.h ../*.cpp ../*/*.ui -ts $TS_FILE  && \
 linguist $TS_FILE
 

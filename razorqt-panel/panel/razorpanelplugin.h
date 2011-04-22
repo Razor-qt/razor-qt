@@ -140,8 +140,6 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent* event);
-    virtual QMenu* popupMenu(QWidget *parent);
-    virtual void contextMenuEvent(QContextMenuEvent* event);
 
     /*!
     If the value of the Qt property changes after the style sheet has been set, you will probably have to force a style sheet recomputation.

@@ -12,6 +12,7 @@ set(HEADERS
     razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
+    addplugindialog/addplugindialog.h
 )
 
 set(SOURCES
@@ -20,6 +21,7 @@ set(SOURCES
     razorpanelplugin.cpp
     razorpanelapplication.cpp
     razorpanellayout.cpp
+    addplugindialog/addplugindialog.cpp
 )
 
 set(MOCS
@@ -29,6 +31,11 @@ set(MOCS
     razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
+    addplugindialog/addplugindialog.h
+)
+
+set(FORMS
+    addplugindialog/addplugindialog.ui
 )
 
 set(LIBRARIES
@@ -106,9 +113,13 @@ project(${PROJECT})
 find_package(Qt4 REQUIRED)
 #find_package ( X11 REQUIRED )
 
+include_directories(
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 include(${QT_USE_FILE})
-#qt4_wrap_cpp(MOC_SOURCES ${HEADERS})
 qt4_wrap_cpp(MOC_SOURCES ${MOCS})
+qt4_wrap_ui(UI_HEADERS ${FORMS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
 qt4_add_translation(QM_FILES ${TS_FILES})
 
@@ -116,7 +127,7 @@ set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
 add_definitions(-DPLUGIN_DIR=\"${PLUGIN_DIR}\")
 message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 
-add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
+add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UI_HEADERS})
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)

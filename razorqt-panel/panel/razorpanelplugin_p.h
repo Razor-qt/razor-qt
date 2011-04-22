@@ -77,9 +77,6 @@ private:
     QRect handleRect();
     void initStyleOption(QStyleOptionToolBar *option) const;
 
-private slots:
-    void startMove();
-
 };
 
 #endif // RAZORPANELPLUGIN_P_H
