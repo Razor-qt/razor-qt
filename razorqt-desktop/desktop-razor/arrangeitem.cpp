@@ -97,7 +97,10 @@ void ArrangeItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 }
 
 void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{    
+{
+    m_prevPos = pos();
+    m_prevRect = m_rect;
+
     qreal x = event->scenePos().x();
     qreal y = event->scenePos().y();
     QPointF position = pos();
@@ -146,10 +149,31 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
         case C_C:
         default:
             QGraphicsItem::mouseMoveEvent(event);
-            return;
+    }
+
+    // scene boundaries
+    QRectF sc(scene()->sceneRect());
+    QRectF it(sceneBoundingRect());
+    if (it.x() < sc.x() || it.y() < sc.y()
+        || it.width()+it.x() > sc.width() || it.height()+it.y() > sc.height())
+    {
+        setPos(m_prevPos);
+        m_rect = m_prevRect;
+        return;
     }
     
-
+    // colliding plugins/items
+    QList<QGraphicsItem*> colliding = collidingItems();
+    foreach (QGraphicsItem* i, colliding)
+    {
+        ArrangeItem * item = dynamic_cast<ArrangeItem*>(i);
+        if (item && item->editable())
+        {
+            setPos(m_prevPos);
+            m_rect = m_prevRect;
+            return;
+        }
+    }
 }
 
 QCursor ArrangeItem::getCursorByPos(const QPointF & position)

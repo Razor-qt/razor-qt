@@ -16,6 +16,7 @@ public:
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
     DesktopWidgetPlugin * plugin();
+    bool editable() { return m_editable; }
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
@@ -34,6 +35,8 @@ private:
     DesktopWidgetPlugin * m_plugin;
     ChangeMode m_mode;
     QRectF m_rect;
+    QRectF m_prevRect;
+    QPointF m_prevPos;
     QString m_text;
     bool m_editable;
     bool m_highlight;
