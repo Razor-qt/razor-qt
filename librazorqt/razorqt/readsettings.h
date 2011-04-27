@@ -33,6 +33,8 @@ public:
             the extension. For example: if you want to open settings for
             panel call it as ReadSettings("panel"). Then access its
             settings over settings() method.
+            The function will create all parent directories necessary to create
+            the file.
             \note Existence of the QSettings instance is handled in this class.
                   Do not delete it on your own.
     \param parent It's no need to delete this class manually if it's set.

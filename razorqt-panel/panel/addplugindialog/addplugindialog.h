@@ -24,7 +24,6 @@
 
 #define SEARCH_DELAY 125
 
-class RazorPanelPluginInfo;
 
 namespace Ui {
     class AddPluginDialog;
@@ -35,18 +34,18 @@ class AddPluginDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddPluginDialog(RazorPluginInfoList<RazorPanelPluginInfo>* plugins, QWidget *parent = 0);
+    explicit AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent = 0);
     ~AddPluginDialog();
 
 signals:
-    void pluginSelected(RazorPanelPluginInfo* plugin);
+    void pluginSelected(RazorPluginInfo* plugin);
 
 protected:
     void timerEvent(QTimerEvent* event);
 
 private:
     Ui::AddPluginDialog *ui;
-    RazorPluginInfoList<RazorPanelPluginInfo>* mPlugins;
+    RazorPluginInfoList* mPlugins;
     int mTimerId;
 
 private slots:

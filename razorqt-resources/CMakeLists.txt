@@ -14,4 +14,4 @@ install(FILES sys/razor.desktop sys/razor-eggwm.desktop sys/razor-openbox.deskto
 #	install (DIRECTORY res/linux/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
 #ENDIF()
 
-
+add_subdirectory( themes )

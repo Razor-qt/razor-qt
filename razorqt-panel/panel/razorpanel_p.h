@@ -31,7 +31,6 @@ class QSettings;
 class QActionGroup;
 class QLayoutItem;
 class ReadSettings;
-class RazorPanelPluginInfo;
 class RazorPanelLayout;
 class AddPluginDialog;
 
@@ -46,7 +45,7 @@ public:
     RazorPanel::Position position() const { return mPosition; }
 
     QList<RazorPanelPlugin*>& plugins() { return mPlugins; }
-    RazorPluginInfoList<RazorPanelPluginInfo>& availablePlugins() { return mAvailablePlugins; }
+    RazorPluginInfoList& availablePlugins() { return mAvailablePlugins; }
     bool canPlacedOn(int screenNum, RazorPanel::Position position) const;
 
     QMenu* popupMenu(QWidget *parent) const;
@@ -61,12 +60,13 @@ public slots:
     void pluginMoved(QWidget* pluginWidget);
     void screensChangeds();
     void showAddPluginDialog();
-    void addPlugin(RazorPanelPluginInfo* pluginInfo);
+    void addPlugin(RazorPluginInfo* pluginInfo);
     void onRemovePlugin();
     void onMovePlugin();
 
 private:
     void loadPlugins();
+    RazorPanelPlugin* loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection);
     void setTheme(const QString& themeName);
     int findAvailableScreen(RazorPanel::Position position);
 
@@ -79,23 +79,10 @@ private:
     QString mTheme;
     QSettings* mSettings;
     ReadSettings* mSettingsReader;
-    RazorPluginInfoList<RazorPanelPluginInfo> mAvailablePlugins;
+    RazorPluginInfoList mAvailablePlugins;
     QList<RazorPanelPlugin*> mPlugins;
     RazorPanelLayout* mLayout;
     QLayoutItem* mSpacer;
-};
-
-
-class RazorPanelPluginInfo: public RazorPluginInfo
-{
-public:
-    RazorPanelPluginInfo(const QString& pluginDesktopFile, QObject *parent = 0): RazorPluginInfo(pluginDesktopFile, parent) {}
-    RazorPanelPlugin* instance(const QString& configFile, const QString& configSection, QObject* parent = 0);
-
-protected:
-    QString translationDir() const { return TRANSLATIONS_DIR; }
-    QString libraryDir() const { return PLUGIN_DIR; }
-
 };
 
 

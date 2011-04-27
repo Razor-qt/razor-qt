@@ -101,7 +101,7 @@ ENDIF (NOT LIB_SUFFIX)
 
 
 set(PLUGIN_DESKTOPS_DIR
-    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}/plugins
+    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}
 )
 
 add_definitions(-DPLUGIN_DESKTOPS_DIR=\"${PLUGIN_DESKTOPS_DIR}\")
@@ -132,4 +132,4 @@ target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES   ${QM_FILES}        DESTINATION ${TRANSLATIONS_DIR})
-install(FILES   ${CONFIG_FILES}    DESTINATION share/razor)
+install(FILES   ${CONFIG_FILES}    DESTINATION share/razor/razor-panel/)

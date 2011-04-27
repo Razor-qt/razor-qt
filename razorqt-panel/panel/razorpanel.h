@@ -26,7 +26,7 @@
 
 class QMenu;
 class RazorPanelPrivate;
-//class RazorPanelPlugin;
+
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */

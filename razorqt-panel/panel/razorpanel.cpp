@@ -87,34 +87,6 @@ QString positionToStr(RazorPanel::Position position)
 }
 
 
-/************************************************
-
- ************************************************/
-RazorPanelPlugin* RazorPanelPluginInfo::instance(const QString& configFile, const QString& configSection, QObject* parent)
-{
-    RazorPanel* panel = qobject_cast<RazorPanel*>(parent);
-
-    if (!panel)
-        return 0;
-
-    QLibrary* lib = loadLibrary();
-    if (!lib)
-        return 0;
-
-    PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
-
-    if (!initFunc)
-        return 0;
-
-    RazorPanelPluginStartInfo startInfo;
-    startInfo.configFile = configFile;
-    startInfo.configSection = configSection;
-    startInfo.panel = panel;
-    startInfo.pluginInfo = this;
-    return initFunc(&startInfo, panel);
-}
-
-
 
 /************************************************
 
@@ -154,7 +126,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
             mConfigFile.chop(5);
     }
 
-    mSettingsReader = new ReadSettings(mConfigFile);
+    mSettingsReader = new ReadSettings("razor-panel/" + mConfigFile);
     mSettings = mSettingsReader->settings();
 
     mLayout = new RazorPanelLayout(QBoxLayout::LeftToRight, parent);
@@ -257,15 +229,15 @@ void RazorPanelPrivate::saveSettings()
  ************************************************/
 void RazorPanelPrivate::loadPlugins()
 {
-    Q_Q(RazorPanel);
-
+    //qDebug() << "Search available plugins in" << PLUGIN_DESKTOPS_DIR;
     mAvailablePlugins.load(PLUGIN_DESKTOPS_DIR, "RazorPanel/Plugin");
+    //qDebug() << " Found" << mAvailablePlugins;
 
     QStringList sections = mSettings->value(CFG_FULLKEY_PLUGINS).toStringList();
 
     foreach (QString sect, sections)
     {
-        qDebug() << "** Load plugin" << sect << "*************";
+        //qDebug() << "** Load plugin" << sect << "*************";
         QString type = mSettings->value(sect+"/type").toString();
         if (type.isEmpty())
         {
@@ -273,21 +245,14 @@ void RazorPanelPrivate::loadPlugins()
             continue;
         }
 
-        RazorPanelPluginInfo* pi = mAvailablePlugins.find(type);
+        RazorPluginInfo* pi = mAvailablePlugins.find(type);
         if (!pi)
         {
             qWarning() << QString("Plugin \"%1\" not found.").arg(type);
             continue;
         }
 
-        RazorPanelPlugin* plugin = pi->instance(mSettings->fileName(), sect, q);
-        if (!plugin)
-            continue;
-
-        connect(q, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)),
-                plugin, SLOT(layoutDirectionChanged(QBoxLayout::Direction)));
-
-        mPlugins.append(plugin);
+        loadPlugin(pi, sect);
     }
 
 
@@ -308,6 +273,43 @@ void RazorPanelPrivate::loadPlugins()
     {
         mLayout->addWidget((*i));
     }
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection)
+{
+    Q_Q(RazorPanel);
+    //RazorPanel* panel = qobject_cast<RazorPanel*>(parent);
+
+    //if (!panel)
+    //    return 0;
+
+    QLibrary* lib = pluginInfo->loadLibrary(PLUGIN_DIR);
+    if (!lib)
+        return 0;
+
+    PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
+
+    if (!initFunc)
+        return 0;
+
+    RazorPanelPluginStartInfo startInfo(mSettings->fileName(), configSection, q, pluginInfo);
+    //startInfo.configFile = mSettings->fileName();
+    //startInfo.configSection = configSection;
+    //startInfo.panel = q;
+    //startInfo.pluginInfo = pluginInfo;
+    RazorPanelPlugin* plugin = initFunc(&startInfo, q);
+    if (!plugin)
+        return 0;
+
+    connect(q, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)),
+            plugin, SLOT(layoutDirectionChanged(QBoxLayout::Direction)));
+
+    mPlugins.append(plugin);
+    return plugin;
 }
 
 
@@ -564,7 +566,7 @@ void RazorPanelPrivate::showAddPluginDialog()
     {
         dlg = new AddPluginDialog(&mAvailablePlugins, q);
         dlg->setAttribute(Qt::WA_DeleteOnClose);
-        connect(dlg, SIGNAL(pluginSelected(RazorPanelPluginInfo*)), this, SLOT(addPlugin(RazorPanelPluginInfo*)));
+        connect(dlg, SIGNAL(pluginSelected(RazorPluginInfo*)), this, SLOT(addPlugin(RazorPluginInfo*)));
     }
 
     dlg->show();
@@ -575,7 +577,7 @@ void RazorPanelPrivate::showAddPluginDialog()
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::addPlugin(RazorPanelPluginInfo *pluginInfo)
+void RazorPanelPrivate::addPlugin(RazorPluginInfo *pluginInfo)
 {
     if (!pluginInfo)
         return;
@@ -594,16 +596,16 @@ void RazorPanelPrivate::addPlugin(RazorPanelPluginInfo *pluginInfo)
         }
     }
 
-    Q_Q(RazorPanel);
-    RazorPanelPlugin* plugin = pluginInfo->instance(mSettings->fileName(), sectionName, q);
+    RazorPanelPlugin* plugin = loadPlugin(pluginInfo, sectionName);
+    if (!plugin)
+        return;
+
     mSettings->setValue(QString("%1/type").arg(sectionName), pluginInfo->id());
-    mPlugins.append(plugin);
+
     if (plugin->preferredAlignment() == RazorPanelPlugin::AlignRight)
         mLayout->addWidget(plugin);
     else
-    {
         mLayout->insertWidget(0, plugin);
-    }
 }
 
 

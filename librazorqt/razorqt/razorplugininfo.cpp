@@ -31,7 +31,7 @@
 RazorPluginInfo::RazorPluginInfo(const QString& pluginDesktopFile, QObject *parent):
     XdgDesktopFile(pluginDesktopFile, parent)
 {
-    mId = QFileInfo(fileName()).completeBaseName().remove(QRegExp("^.*_"));
+    mId = QFileInfo(fileName()).completeBaseName();//.remove(QRegExp("^.*_"));
 }
 
 
@@ -70,11 +70,16 @@ bool RazorPluginInfo::isValid() const
 /************************************************
 
  ************************************************/
-QLibrary* RazorPluginInfo::loadLibrary()
+QLibrary* RazorPluginInfo::loadLibrary(const QString& libDir) const
 {
-    QString baseName = QFileInfo(fileName()).completeBaseName();
+    QString baseName, path;
+    {
+        QFileInfo fi = QFileInfo(fileName());
+        baseName = fi.completeBaseName();
+        path = fi.canonicalPath();
+    }
 
-    QString soPath = QString("%1/lib%2.so").arg(libraryDir(), baseName);
+    QString soPath = QString("%1/lib%2.so").arg(libDir, baseName);
     QLibrary* library = new QLibrary(soPath);
 
     if (!library->load())
@@ -86,11 +91,68 @@ QLibrary* RazorPluginInfo::loadLibrary()
 
     QString locale = QLocale::system().name();
     QTranslator* translator = new QTranslator(library);
-    translator->load(QString("%1/%2_%3.qm").arg(translationDir(), baseName, locale));
+
+    translator->load(QString("%1/%2/%2_%3.qm").arg(path, baseName, locale));
     qApp->installTranslator(translator);
 
     return library;
 }
+
+
+/************************************************
+
+ ************************************************/
+RazorPluginInfoList::RazorPluginInfoList():
+    QList<RazorPluginInfo*>()
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPluginInfoList::~RazorPluginInfoList()
+{
+    qDeleteAll(*this);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPluginInfoList::load(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter)
+{
+    QDir dir(desktopFilesDir);
+    QFileInfoList files = dir.entryInfoList(QStringList(nameFilter), QDir::Files | QDir::Readable);
+    foreach (QFileInfo file, files)
+    {
+        RazorPluginInfo* item = new RazorPluginInfo(file.canonicalFilePath());
+
+        if (item->isValid() && item->serviceType() == serviceType)
+            append(item);
+        else
+            delete item;
+    }
+
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorPluginInfo* const RazorPluginInfoList::find(const QString& id) const
+{
+    QListIterator<RazorPluginInfo*> it(*this);
+    while (it.hasNext())
+    {
+        RazorPluginInfo* item = it.next();
+        if (item->id() == id )
+            return item;
+    }
+
+    return 0;
+}
+
 
 
 /************************************************
@@ -113,3 +175,26 @@ QDebug operator<<(QDebug dbg, const RazorPluginInfo * const pluginInfo)
 
 
 
+/************************************************
+
+ ************************************************/
+QDebug operator<<(QDebug dbg, const RazorPluginInfoList& list)
+{
+    dbg.nospace() << '(';
+    for (int i=0; i<list.size(); ++i)
+    {
+        if (i) dbg.nospace() << ", ";
+        dbg << list.at(i);
+    }
+    dbg << ')';
+    return dbg.space();
+}
+
+
+/************************************************
+
+ ************************************************/
+QDebug operator<<(QDebug dbg, const RazorPluginInfoList* const pluginInfoList)
+{
+    return operator<<(dbg, *pluginInfoList);
+}

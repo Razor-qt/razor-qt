@@ -31,13 +31,21 @@ ReadSettings::ReadSettings(const QString & module, QObject * parent)
         }
         else
         {
+            // Create parent directories
+            QDir homeFileDir(QFileInfo(homeFile).absoluteDir());
+
+            if (!homeFileDir.exists())
+                homeFileDir.mkpath(".");
+
+
             QFile f(path);
+
             if (! f.copy(homeFile))
             {
-                qDebug() << "Cannot copy file from:" << path << "to:" << RAZOR_HOME_CFG;
+                qDebug() << "Cannot copy file from:" << path << "to:" << homeFileDir.absolutePath();
                 Q_ASSERT(0);
             }
-            qDebug() << "Copied file:" << path << "into" << RAZOR_HOME_CFG;
+            qDebug() << "Copied file:" << path << "into" << homeFileDir.absolutePath();
         }
     }
     else
@@ -107,7 +115,7 @@ bool ReadSettings::checkConfigDir()
 ReadTheme::ReadTheme(const QString & name, QObject * parent)
     : QObject(parent)
 {
-    QString path(ReadSettings::getSysPath(name));
+    QString path(ReadSettings::getSysPath("themes/" + name));
     if (path.isEmpty())
     {
         qDebug() << "Theme" << name << "cannot be found in any location";

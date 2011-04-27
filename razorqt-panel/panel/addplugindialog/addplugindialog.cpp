@@ -19,7 +19,6 @@
 #include "addplugindialog.h"
 #include "ui_addplugindialog.h"
 #include <razorqt/xdgicon.h>
-#include "../razorpanel_p.h"
 #include <QtGui/QListWidgetItem>
 #include <QtGui/QItemDelegate>
 #include <QtGui/QTextDocument>
@@ -109,7 +108,7 @@ QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
 /************************************************
 
  ************************************************/
-AddPluginDialog::AddPluginDialog(RazorPluginInfoList<RazorPanelPluginInfo>* plugins, QWidget *parent):
+AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
     QDialog(parent),
     ui(new Ui::AddPluginDialog),
     mPlugins(plugins),
@@ -128,7 +127,7 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList<RazorPanelPluginInfo>* plug
 
     for (int i=0; i< mPlugins->length(); ++i)
     {
-        const RazorPanelPluginInfo* plugin = mPlugins->at(i);
+        const RazorPluginInfo* plugin = mPlugins->at(i);
         qDebug() << plugin->name();
         QListWidgetItem* item = new QListWidgetItem(ui->pluginList);
         item->setText(QString("<b>%1</b><br>\n%2\n").arg(plugin->name(), plugin->comment()));
@@ -200,7 +199,7 @@ void AddPluginDialog::emitPluginSelected()
     QListWidget* pluginList = ui->pluginList;
     if (pluginList->currentItem())
     {
-        RazorPanelPluginInfo* plugin = mPlugins->at(pluginList->currentItem()->data(INDEX_ROLE).toInt());
+        RazorPluginInfo* plugin = mPlugins->at(pluginList->currentItem()->data(INDEX_ROLE).toInt());
         emit pluginSelected(plugin);
     }
 }

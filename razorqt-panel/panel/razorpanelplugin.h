@@ -70,10 +70,20 @@ class RazorPluginInfo;
 class RazorPanelPluginStartInfo
 {
 public:
-    QString configFile;
-    QString configSection;
+    RazorPanelPluginStartInfo(const QString& _configFile,
+                              const QString& _configSection,
+                              RazorPanel* _panel,
+                              const RazorPluginInfo* _pluginInfo
+                              ):
+        configFile(_configFile),
+        configSection(_configSection),
+        panel(_panel),
+        pluginInfo(_pluginInfo){}
+
+    const QString configFile;
+    const QString configSection;
     RazorPanel* panel;
-    RazorPluginInfo* pluginInfo;
+    const RazorPluginInfo * pluginInfo;
 };
 
 class RazorPanelPlugin : public QFrame

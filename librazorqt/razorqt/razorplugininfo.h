@@ -27,7 +27,6 @@
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QDebug>
 
-class QDir;
 class QLibrary;
 
 /*!
@@ -69,123 +68,44 @@ public:
     //! Reimplemented from XdgDesktopFile.
     virtual bool isValid() const;
 
-    /*! This is a factory method, it must create an instance of the plug-in.
-    Example:
-    @code
-    RazorPanelPlugin* RazorPanelPluginInfo::instance(const QString& configFile, const QString& configSection, QObject* parent)
-    {
-        RazorPanel* panel = qobject_cast<RazorPanel*>(parent);
-
-        if (!panel) return 0;
-
-        QLibrary* lib = loadLibrary();
-        if (!lib)
-        {
-            delete lib;
-            return 0;
-        }
-
-        PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
-
-        if (!initFunc) return 0;
-
-        RazorPalelPluginStartInfo startInfo;
-        startInfo.configFile = configFile;
-        startInfo.configSection = configSection;
-        startInfo.panel = panel;
-        startInfo.pluginInfo = this;
-        return initFunc(&startInfo, panel);
-    }
-    @endcode
-    */
-    virtual QObject* instance(const QString& configFile, const QString& configSection, QObject* parent = 0) = 0;
-
-protected:
-    //! Returns the directory where placed the plugin library file.
-    virtual QString libraryDir() const = 0;
-
-    //! Returns the directory where placed the plugin translations file.
-    virtual QString translationDir() const = 0;
-
-    //! Loads the library and returns QLibrary object if the library was loaded successfully; otherwise returns 0.
-    QLibrary* loadLibrary();
+    /*! Loads the library and returns QLibrary object if the library was loaded successfully; otherwise returns 0.
+        @parm libDir directory where placed the plugin .so file.
+     */
+    QLibrary* loadLibrary(const QString& libDir) const;
 
 private:
     QString mId;
 };
 
+
 //! List of the RazorPluginInfo objects.
-template <typename TPluginInfo>
-class RazorPluginInfoList: public QList<TPluginInfo*>
+class RazorPluginInfoList: public QList<RazorPluginInfo*>
 {
 public:
     //! Constructs an empty list.
-    explicit RazorPluginInfoList(): QList<TPluginInfo*>() {}
+    RazorPluginInfoList();
 
     //! Destroys the list and its RazorPluginInfo entries.
-    virtual ~RazorPluginInfoList() { qDeleteAll(*this); }
+    virtual ~RazorPluginInfoList();
+
 
     /*! Append RazorPluginInfo objects for the matched files in the directory.
       The list takes ownership of created objects.
       @param desktopFilesDir - scanned directory name.
       @param serviceType - type of the plugin, for example "RazorPanel/Plugin".
       @param nameFilter  - wildcard filter that understands * and ? wildcards. */
-    void load(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter="*")
-    {
-        QDir dir(desktopFilesDir);
-        QFileInfoList files = dir.entryInfoList(QStringList(nameFilter), QDir::Files | QDir::Readable);
-        foreach (QFileInfo file, files)
-        {
-            TPluginInfo* item = new TPluginInfo(file.canonicalFilePath());
-
-            if (item->isValid() && item->serviceType() == serviceType)
-                append(item);
-            else
-                delete item;
-        }
-
-    }
+    void load(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter="*");
 
     //! Returns the first PluginInfo Id that matches the id parameter. Returns 0 if no item matched.
-    TPluginInfo* const find(const QString& id) const
-    {
-        QListIterator<TPluginInfo*> it(*this);
-        while (it.hasNext())
-        {
-            TPluginInfo* item = it.next();
-            if (item->id() == id )
-                return item;
-        }
+    RazorPluginInfo* const find(const QString& id) const;
 
-        return 0;
-    }
 };
-
 
 
 QDebug operator<<(QDebug dbg, const RazorPluginInfo& pi);
 QDebug operator<<(QDebug dbg, const RazorPluginInfo* const pi);
 
-
-template <typename TPluginInfo>
-QDebug operator<<(QDebug dbg, const RazorPluginInfoList<TPluginInfo>& list)
-{
-    dbg.nospace() << '(';
-    for (int i=0; i<list.size(); ++i)
-    {
-        if (i) dbg.nospace() << ", ";
-        dbg << list.at(i);
-    }
-    dbg << ')';
-    return dbg.space();
-}
-
-
-template <typename TPluginInfo>
-QDebug operator<<(QDebug dbg, const RazorPluginInfoList<TPluginInfo>* const pluginInfoList)
-{
-    return operator<<(dbg, *pluginInfoList);
-}
-
+QDebug operator<<(QDebug dbg, const RazorPluginInfoList& list);
+QDebug operator<<(QDebug dbg, const RazorPluginInfoList* const pluginInfoList);
 
 #endif // RAZORPLUGININFO_H
