@@ -35,7 +35,7 @@ public:
     QString themeName() const { return mThemeName; }
     void setThemeName(const QString& themeName);
 
-    QIcon* const fromTheme(const QString& iconName, int size);
+    QIcon* const fromTheme(const QString& iconName);
     static XdgIconCache* instance();
 
 protected:
@@ -88,9 +88,9 @@ void XdgIcon::setThemeName(const QString& themeName)
  Returns the QIcon corresponding to name in the current icon theme. If no such icon
  is found in the current theme fallback is return instead.
  ************************************************/
-QIcon const XdgIcon::fromTheme(const QString& iconName, int size, const QIcon& fallback)
+QIcon const XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
 {
-    QIcon* res = XdgIconCache::instance()->fromTheme(iconName, size);
+    QIcon* res = XdgIconCache::instance()->fromTheme(iconName);
     if (res)
         return *res;
 
@@ -102,11 +102,11 @@ QIcon const XdgIcon::fromTheme(const QString& iconName, int size, const QIcon& f
  Returns the QIcon corresponding to names in the current icon theme. If no such icon
  is found in the current theme fallback is return instead.
  ************************************************/
-QIcon const XdgIcon::fromTheme(const QStringList& iconNames, int size, const QIcon& fallback)
+QIcon const XdgIcon::fromTheme(const QStringList& iconNames, const QIcon& fallback)
 {
     foreach (QString iconName, iconNames)
     {
-        QIcon* res = XdgIconCache::instance()->fromTheme(iconName, size);
+        QIcon* res = XdgIconCache::instance()->fromTheme(iconName);
         if (res)
             return *res;
     }
@@ -170,12 +170,12 @@ inline QIcon XdgIconCache::searchFile(const QString& fileName)
 /************************************************
 
  ************************************************/
-QIcon* const XdgIconCache::fromTheme(const QString& iconName, int size)
+QIcon* const XdgIconCache::fromTheme(const QString& iconName)
 {
     if (iconName.isEmpty())
         return 0;
 
-    QString key = QString("%1 %2 %3").arg(iconName).arg(size).arg(mThemeName);
+    QString key = QString("%1 %3").arg(iconName).arg(mThemeName);
     if (mCache.contains(key))
         return mCache.value(key);
 
@@ -207,9 +207,14 @@ QIcon* const XdgIconCache::fromTheme(const QString& iconName, int size)
     }
 
 
+    // Some icons are drawn with the wrong size, this dirty hack fixes this.
+    // If you know a better solution tell me.  [ Alex Sokoloff <sokoloff.a@gmailo.com> ]
     if (!icon.isNull())
     {
-        QIcon* res = new QIcon(icon.pixmap(QSize(size, size)));
+        QIcon* res = new QIcon();
+        foreach (QSize s, icon.availableSizes())
+            res->addPixmap(icon.pixmap(s));
+
         mCache[key]= res;
         return res;
     }
@@ -224,7 +229,7 @@ QIcon* const XdgIconCache::fromTheme(const QString& iconName, int size)
  ************************************************/
 QIcon const XdgIcon::defaultApplicationIcon()
 {
-    return fromTheme(DEFAULT_APP_ICON, 32);
+    return fromTheme(DEFAULT_APP_ICON);
 }
 
 

@@ -108,7 +108,7 @@ void XdgMenuWidgetPrivate::init(const QDomElement& xml)
     if (parentMenu)
         parentIcon = parentMenu->icon();
 
-    q->setIcon(XdgIcon::fromTheme(mXml.attribute("icon"), 48, parentIcon));
+    q->setIcon(XdgIcon::fromTheme(mXml.attribute("icon"), parentIcon));
 
     if (!qobject_cast<XdgMenuWidget*>(q->parent()))
         buildMenu();

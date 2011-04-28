@@ -662,7 +662,7 @@ void RazorPanelPrivate::contextMenuEvent(QContextMenuEvent* event)
     QMenu* menu = popupMenu(0);
 
     menu->addSeparator();
-    QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit", 32), "Exit");
+    QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit"), "Exit");
     connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     menu->exec(event->globalPos());
@@ -686,11 +686,11 @@ QMenu* RazorPanel::popupMenu(QWidget *parent) const
 QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
 {
     QMenu* menu = new QMenu(tr("Panel"), parent);
-    menu->setIcon(XdgIcon::fromTheme("configure-toolbars", 32));
+    menu->setIcon(XdgIcon::fromTheme("configure-toolbars"));
     QAction* a;
 
     // Plugins menu .............................
-    QIcon plugIco = XdgIcon::fromTheme("preferences-plugin", 32);
+    QIcon plugIco = XdgIcon::fromTheme("preferences-plugin");
     QMenu* pluginsMenu = menu->addMenu(plugIco, tr("Plugins"));
 
     a = pluginsMenu->addAction(tr("Add plugins ..."));
@@ -702,7 +702,7 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
     {
         QMenu* m = pluginsMenu->addMenu(plugin->windowTitle());
 
-        a = new PluginAction(plugin, XdgIcon::fromTheme("transform-move", 32), tr("Move plugin"), m);
+        a = new PluginAction(plugin, XdgIcon::fromTheme("transform-move"), tr("Move plugin"), m);
         connect(a, SIGNAL(triggered()), this, SLOT(onMovePlugin()));
         m->addAction(a);
 

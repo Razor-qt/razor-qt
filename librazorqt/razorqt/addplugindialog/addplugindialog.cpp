@@ -37,9 +37,14 @@
 class HtmlDelegate : public QStyledItemDelegate
 {
 public:
-    HtmlDelegate(QObject *parent = 0): QStyledItemDelegate(parent) {}
+    HtmlDelegate(const QSize iconSize, QObject* parent = 0):
+        QStyledItemDelegate(parent),
+        mIconSize(iconSize)
+    {}
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
     virtual QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
+private:
+    QSize mIconSize;
 };
 
 
@@ -65,7 +70,7 @@ void HtmlDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
     options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
 
     // Draw icon ................................
-    QSize iconSize = icon.actualSize(options.rect.size());
+    QSize iconSize = icon.actualSize(mIconSize);
     painter->translate(options.rect.left(), options.rect.top());
     QRect iconRect = QRect(4, 4, iconSize.width(), iconSize.height());
 
@@ -118,12 +123,11 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
     ui->setupUi(this);
     QListWidget* pluginList = ui->pluginList;
 
-    pluginList->setItemDelegate(new HtmlDelegate(this));
-    pluginList->setIconSize(QSize(32, 32));
+    pluginList->setItemDelegate(new HtmlDelegate(QSize(32, 32), pluginList));
     //pluginList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     connect(pluginList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(emitPluginSelected()));
 
-    QIcon fallIco = XdgIcon::fromTheme("preferences-plugin", 32);
+    QIcon fallIco = XdgIcon::fromTheme("preferences-plugin");
 
     for (int i=0; i< mPlugins->length(); ++i)
     {
@@ -131,7 +135,7 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
         qDebug() << plugin->name();
         QListWidgetItem* item = new QListWidgetItem(ui->pluginList);
         item->setText(QString("<b>%1</b><br>\n%2\n").arg(plugin->name(), plugin->comment()));
-        item->setIcon(plugin->icon(32, fallIco));
+        item->setIcon(plugin->icon(fallIco));
         item->setData(INDEX_ROLE, i);
         item->setData(SEARCH_ROLE, QString("%1 %2 %3 %4").arg(
                         plugin->name(),

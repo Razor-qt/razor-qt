@@ -433,7 +433,7 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
 
     // ** Kill menu *****************************
     menu.addSeparator();
-    a = menu.addAction(XdgIcon::fromTheme("process-stop", 22), tr("&Close"));
+    a = menu.addAction(XdgIcon::fromTheme("process-stop"), tr("&Close"));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(closeApplication()));
     menu.exec(mapToGlobal(event->pos()));
 }

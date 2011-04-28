@@ -84,7 +84,7 @@ public:
     //! This function is provided for convenience. It's equivalent to calling startDetached(QStringList(url)).
     bool startDetached(const QString& url="") const;
 
-    QIcon const icon(int size, const QIcon& fallback = QIcon()) const;
+    QIcon const icon(const QIcon& fallback = QIcon()) const;
 
     //! This function is provided for convenience. It's equivalent to calling localizedValue("Name").toString().
     QString name() const { return localizedValue("Name").toString(); }

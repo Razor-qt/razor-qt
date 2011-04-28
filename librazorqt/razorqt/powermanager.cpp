@@ -26,23 +26,23 @@ QList<QAction*> PowerManager::availableActions()
     QAction * act;
 
     // TODO/FIXME: icons
-    act = new QAction(XdgIcon::fromTheme("system-suspend-hibernate", 32), tr("Hibernate"), this);
+    act = new QAction(XdgIcon::fromTheme("system-suspend-hibernate"), tr("Hibernate"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(hibernate()));
     ret.append(act);
     
-    act = new QAction(XdgIcon::fromTheme("system-suspend", 32), tr("Suspend"), this);
+    act = new QAction(XdgIcon::fromTheme("system-suspend"), tr("Suspend"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(suspend()));
     ret.append(act);
 
-    act = new QAction(XdgIcon::fromTheme("system-reboot", 32), tr("Reboot"), this);
+    act = new QAction(XdgIcon::fromTheme("system-reboot"), tr("Reboot"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(reboot()));
     ret.append(act);
 
-    act = new QAction(XdgIcon::fromTheme("system-shutdown", 32), tr("Shutdown"), this);
+    act = new QAction(XdgIcon::fromTheme("system-shutdown"), tr("Shutdown"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(halt()));
     ret.append(act);
 
-    act = new QAction(XdgIcon::fromTheme("system-log-out", 32), tr("Logout"), this);
+    act = new QAction(XdgIcon::fromTheme("system-log-out"), tr("Logout"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(logout()));
     ret.append(act);
     

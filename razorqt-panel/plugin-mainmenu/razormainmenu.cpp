@@ -127,7 +127,7 @@ void RazorMainMenu::settingsChanged()
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
 
-    QIcon icon =  XdgIcon::fromTheme(settings().value("button_icon").toString(), 48);
+    QIcon icon =  XdgIcon::fromTheme(settings().value("button_icon").toString());
     if (!icon.isNull())
         mButton.setIcon(icon);
 }

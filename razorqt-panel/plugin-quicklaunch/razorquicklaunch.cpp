@@ -95,7 +95,7 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const XdgDesktopFile * xdg,
         title += " (" + gn + ")";
     setText(title);
 
-    setIcon(xdg->icon(128, XdgIcon::defaultApplicationIcon()));
+    setIcon(xdg->icon(XdgIcon::defaultApplicationIcon()));
 
     setData(xdg->fileName());
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));

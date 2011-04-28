@@ -108,9 +108,9 @@ void XdgAction::load(const XdgDesktopFile& desktopFile)
         setText(mDesktopFile.name());
         setToolTip(mDesktopFile.comment());
 
-        setIcon(desktopFile.icon(32));
+        setIcon(desktopFile.icon());
         if (icon().isNull())
-            setIcon(XdgIcon::fromTheme("application-x-executable", 32));
+            setIcon(XdgIcon::fromTheme("application-x-executable"));
 
         connect(this, SIGNAL(triggered()), this, SLOT(runConmmand()));
     }
