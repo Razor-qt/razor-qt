@@ -23,7 +23,7 @@
 #include <QtCore/QList>
 
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
+//#include <QtCore/QDir>
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QDebug>
 

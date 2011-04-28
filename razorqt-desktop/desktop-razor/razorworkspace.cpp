@@ -15,6 +15,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/xdgmenuwidget.h>
 #include <razorqt/xdgmenu.h>
+#include <razorqt/addplugindialog/addplugindialog.h>
 
 
 RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
@@ -29,6 +30,7 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     setFrameShape(QFrame::NoFrame);
     
     m_power = new PowerManager(this);
+    mAvailablePlugins.load(PLUGIN_DESKTOP_FILES_DIR, "RazorDesktop/Plugin");
     
     // this is mandatory for virtualized (virtualbox) installations. Dunno why.
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -52,10 +54,14 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     
     setCacheMode(QGraphicsView::CacheBackground);
     
-    m_actArrangeWidgets = new QAction(tr("Arrange Desktop Widgets..."), this);
+    m_actArrangeWidgets = new QAction(tr("Edit Desktop Widgets..."), this);
     m_actArrangeWidgets->setCheckable(true);
     connect(m_actArrangeWidgets, SIGNAL(toggled(bool)),
             this, SLOT(arrangeWidgets(bool)));
+            
+    m_actAddNewPlugin = new QAction(tr("Add New Desktop Widget..."), this);
+    connect(m_actAddNewPlugin, SIGNAL(triggered()),
+            this, SLOT(showAddPluginDialog()));
 }
 
 void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
@@ -169,22 +175,31 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
     if (_ev->button() == Qt::RightButton)
     {
         QMenu * context = 0;
-        // TODO/FIXME: cache it?
-        XdgMenu xdgMenu(XdgMenu::getMenuFileName());
-        if (xdgMenu.read())
+        if (m_mode == ModeNormal)
         {
-            context = new XdgMenuWidget(xdgMenu, "Context Menu", this);
+            // TODO/FIXME: cache it?
+            XdgMenu xdgMenu(XdgMenu::getMenuFileName());
+            if (xdgMenu.read())
+            {
+                context = new XdgMenuWidget(xdgMenu, "Context Menu", this);
+            }
+            else
+            {
+                QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+                context = new QMenu("Context Menu", this);
+            }
+
+            context->addSeparator();
+            context->addAction(m_actArrangeWidgets);
+            context->addSeparator();
+            context->addActions(m_power->availableActions());
         }
         else
         {
-            QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
-            context = new QMenu("Context Menu", this);
+            context = new QMenu("Context Menu");
+            context->addAction(m_actArrangeWidgets);
+            context->addAction(m_actAddNewPlugin);
         }
-
-        context->addSeparator();
-        context->addAction(m_actArrangeWidgets);
-        context->addSeparator();
-        context->addActions(m_power->availableActions());
 
         context->exec(QCursor::pos());
         delete context;
@@ -244,6 +259,25 @@ void RazorWorkSpace::arrangeWidgets(bool start)
         m_arrangeRoot = 0;
         m_arrangeList.clear();
     }
+}
+
+void RazorWorkSpace::showAddPluginDialog()
+{
+    AddPluginDialog* dlg = findChild<AddPluginDialog*>();
+
+    if (!dlg)
+    {
+        dlg = new AddPluginDialog(&mAvailablePlugins, this);
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
+        connect(dlg, SIGNAL(pluginSelected(RazorPluginInfo*)), this, SLOT(addPlugin(RazorPluginInfo*)));
+    }
+
+    dlg->show();
+}
+
+void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
+{
+    qDebug() << "addPlugin" << pluginInfo;
 }
 
 DesktopWidgetPlugin * RazorWorkSpace::getPluginFromItem(QGraphicsItem * item)

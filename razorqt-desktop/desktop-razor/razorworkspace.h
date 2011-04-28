@@ -1,11 +1,13 @@
 #ifndef RAZORWORKSPACE_H
 #define RAZORWORKSPACE_H
 
+#include <QTextStream>
 #include <QGraphicsView>
 #include <QMouseEvent>
 #include <QAction>
 
 #include <razorqt/xfitman.h>
+#include <razorqt/razorplugininfo.h>
 #include "arrangeitem.h"
 
 
@@ -18,6 +20,7 @@
 class WorkspaceConfig;
 class ReadSettings;
 class PowerManager;
+
 
 /**
  * @brief This one is the actual workspace
@@ -47,8 +50,11 @@ private:
     ReadSettings * m_config;
     int m_screen;
     Mode m_mode;
+    
+    RazorPluginInfoList mAvailablePlugins;
 
     QAction * m_actArrangeWidgets;
+    QAction * m_actAddNewPlugin;
     
     ArrangeItem * m_arrangeRoot;
     QList<ArrangeItem*> m_arrangeList;
@@ -60,6 +66,8 @@ private:
 private slots:
     void workspaceResized(int screen);
     void arrangeWidgets(bool start);
+    void showAddPluginDialog();
+    void addPlugin(RazorPluginInfo* pluginInfo);
 };
 
 

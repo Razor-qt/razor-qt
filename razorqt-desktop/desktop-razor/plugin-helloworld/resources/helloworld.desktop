@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorDesktop/Plugin
-Name=HelloWorld
+Name=Hello World
 Comment=Display rich text on the screen

@@ -40,6 +40,8 @@ qt4_wrap_cpp(MOC_SOURCES ${MOCS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
 qt4_add_translation(QM_FILES ${TS_FILES})
 
+add_definitions(-DPLUGIN_DESKTOP_FILES_DIR=\"${CMAKE_INSTALL_PREFIX}/share/razor/razor-desktop\")
+
 add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
 target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so)
 
