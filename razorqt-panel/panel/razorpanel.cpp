@@ -22,7 +22,7 @@
 #include "razorpluginmanager.h"
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
-#include "addplugindialog/addplugindialog.h"
+#include <razorqt/addplugindialog/addplugindialog.h>
 #include <razorqt/readsettings.h>
 #include <razorqt/razorplugininfo.h>
 

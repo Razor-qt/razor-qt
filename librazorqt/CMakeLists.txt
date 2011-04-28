@@ -38,9 +38,10 @@ set ( razorqt_HDRS
 	razorqt/xdgmenu.h
 	razorqt/xdgicon.h
 	razorqt/xdgaction.h
-        razorqt/xdgmenuwidget.h
+    razorqt/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
+    razorqt/addplugindialog/addplugindialog.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
@@ -65,9 +66,10 @@ set ( razorqt_SRCS
 	razorqt/xdgmenurules.cpp
 	razorqt/xdgicon.cpp
 	razorqt/xdgaction.cpp
-        razorqt/xdgmenuwidget.cpp
+    razorqt/xdgmenuwidget.cpp
     razorqt/razorplugininfo.cpp
     razorqt/powermanager.cpp
+    razorqt/addplugindialog/addplugindialog.cpp
     # upower. Maybe standalone lib?
     librazor-upower/battery.cpp
     librazor-upower/ucpufreq.cpp
@@ -87,22 +89,23 @@ set ( razorqt_MOCS
 	razorqt/xdgmenureader.h
 	razorqt/xdgmenurules.h
 	razorqt/xdgaction.h
-        razorqt/xdgmenuwidget.h
+    razorqt/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
+    razorqt/addplugindialog/addplugindialog.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
     librazor-upower/upower.h
-
-	)
+)
 
 QT4_WRAP_CPP(MOCS ${razorqt_MOCS})
 
 
 set ( razorqt_UIS
-        razorqt/aboutdlg.ui
-        )
+    razorqt/aboutdlg.ui
+    razorqt/addplugindialog/addplugindialog.ui
+)
 
 QT4_WRAP_UI(UIS ${razorqt_UIS})
 

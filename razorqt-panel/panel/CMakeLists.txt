@@ -12,7 +12,6 @@ set(HEADERS
     razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
-    addplugindialog/addplugindialog.h
 )
 
 set(SOURCES
@@ -21,7 +20,6 @@ set(SOURCES
     razorpanelplugin.cpp
     razorpanelapplication.cpp
     razorpanellayout.cpp
-    addplugindialog/addplugindialog.cpp
 )
 
 set(MOCS
@@ -31,11 +29,6 @@ set(MOCS
     razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
-    addplugindialog/addplugindialog.h
-)
-
-set(FORMS
-    addplugindialog/addplugindialog.ui
 )
 
 set(LIBRARIES
