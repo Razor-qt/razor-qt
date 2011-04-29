@@ -128,15 +128,9 @@ TrayIcon {
 }
 
 #MainMenu QPushButton {
-    margin: -3px 0 -3px 0;    
-    height: 32px;
-    width: 32px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: transparent;
-    background-image: url(arrow_button.png); 
-    background-position:  center;
-    background-repeat: no-repeat;
+    border: none;
+    qproperty-iconSize: 30px;
+    qproperty-icon: url(arrow_button.png);
 }
 
 
