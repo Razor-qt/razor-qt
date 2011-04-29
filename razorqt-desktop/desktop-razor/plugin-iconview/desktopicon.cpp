@@ -62,6 +62,7 @@ void IconBase::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
     painter->setPen(QPen(txt, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::BevelJoin));
 
     QColor bgText = qApp->palette().color(QPalette::Window);
+    QColor txt2 = bgText;
 
     bgText.setAlpha(m_highlight ? 80 : 40);
 
@@ -69,9 +70,19 @@ void IconBase::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 
     painter->drawRoundedRect(textRect, 8, 8);
 
+
+    textRect.adjust(4, 4, -4, -4);
+    painter->drawText(textRect.translated(1, 1),
+                      Qt::AlignCenter | Qt::TextWordWrap | Qt::TextWrapAnywhere | Qt::TextDontClip,
+                      m_text);
+
+    txt2.setAlpha(175);
+
+    painter->setPen(QPen(txt2));
     painter->drawText(textRect,
                       Qt::AlignCenter | Qt::TextWordWrap | Qt::TextWrapAnywhere | Qt::TextDontClip,
                       m_text);
+
 }
 
 void IconBase::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
