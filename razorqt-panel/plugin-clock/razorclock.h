@@ -6,6 +6,7 @@
 class QLabel;
 class QTimer;
 class QString;
+class QDialog;
 
 /**
  * @brief the clock-plugin for razorbar
@@ -19,16 +20,18 @@ public:
 
     virtual Alignment preferredAlignment() const { return AlignRight; }
 
-    void saveSettings();
-
 public slots:
     void updateTime();
+
+protected:
+    void mouseReleaseEvent(QMouseEvent* event);
 
 private:
     QTimer* clocktimer;
     QLabel * gui;
     QString clockFormat;
-
+    QString toolTipFormat;
+    QDialog* calendarDialog;
 };
 
 
