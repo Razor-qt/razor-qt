@@ -59,8 +59,6 @@ public:
 
     QMenu* popupMenu(QWidget *parent);
 
-    void saveSettings();
-
 private:
     RazorPanelPlugin* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanelPlugin)

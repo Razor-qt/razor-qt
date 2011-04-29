@@ -103,28 +103,6 @@ QSettings& RazorPanelPlugin::settings() const
 /************************************************
 
  ************************************************/
-void RazorPanelPlugin::saveSettings()
-{
-    Q_D(RazorPanelPlugin);
-    d->saveSettings();
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPluginPrivate::saveSettings()
-{
-    if (alignment() == RazorPanelPlugin::AlignLeft)
-        mSettings->setValue("alignment", "Left");
-    else
-        mSettings->setValue("alignment", "Right");
-}
-
-
-/************************************************
-
- ************************************************/
 RazorPanel* RazorPanelPlugin::panel() const
 {
     Q_D(const RazorPanelPlugin);

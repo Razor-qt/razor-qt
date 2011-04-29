@@ -204,7 +204,12 @@ RazorPanelPrivate::~RazorPanelPrivate()
 void RazorPanelPrivate::saveSettings()
 {
     foreach (RazorPanelPlugin* plugin, mPlugins)
-        plugin->saveSettings();
+    {
+        if (plugin->alignment() == RazorPanelPlugin::AlignLeft)
+            plugin->settings().setValue("alignment", "Left");
+        else
+            plugin->settings().setValue("alignment", "Right");
+    }
 
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mSettings->setValue(CFG_KEY_SCREENNUM, mScreenNum);

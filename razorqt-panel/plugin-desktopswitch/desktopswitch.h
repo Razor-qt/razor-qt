@@ -17,7 +17,6 @@ public:
 
     virtual Alignment preferredAlignment() const { return AlignRight; }
 
-    void saveSettings();
 
 public slots:
     void handleEvent(XEvent* event);

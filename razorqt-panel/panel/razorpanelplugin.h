@@ -139,8 +139,6 @@ public:
 
     QString configId() const;
 
-    void saveSettings();
-
 signals:
     void movableChanged(bool movable);
     void alignmentChanged();
