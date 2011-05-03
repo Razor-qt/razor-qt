@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DesktopBackgroundDialog</class>
+ <widget class="QDialog" name="DesktopBackgroundDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>402</width>
+    <height>219</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Desktop Background Settings</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QPushButton" name="colorButton">
+     <property name="text">
+      <string>Background &amp;Color...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" rowspan="4">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="previewLabel">
+        <property name="minimumSize">
+         <size>
+          <width>160</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="wallpaperButton">
+     <property name="text">
+      <string>Get Wallpaper Image...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="systemButton">
+     <property name="text">
+      <string>Get System Wallpaper...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="keepAspectCheckBox">
+     <property name="text">
+      <string>Keep Image Aspect Ratio</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>186</width>
+       <height>13</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>DesktopBackgroundDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>DesktopBackgroundDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

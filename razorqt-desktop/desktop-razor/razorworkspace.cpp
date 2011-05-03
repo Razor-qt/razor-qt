@@ -1,3 +1,6 @@
+// WARNINGS: order of the includes is important here
+#include "desktopbackgrounddialog.h"
+
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QLibrary>
@@ -54,7 +57,7 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     
     setCacheMode(QGraphicsView::CacheBackground);
     
-    m_actArrangeWidgets = new QAction(tr("Edit Desktop Widgets..."), this);
+    m_actArrangeWidgets = new QAction(tr("Edit Desktop..."), this);
     m_actArrangeWidgets->setCheckable(true);
     connect(m_actArrangeWidgets, SIGNAL(toggled(bool)),
             this, SLOT(arrangeWidgets(bool)));
@@ -62,6 +65,10 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     m_actAddNewPlugin = new QAction(tr("Add New Desktop Widget..."), this);
     connect(m_actAddNewPlugin, SIGNAL(triggered()),
             this, SLOT(showAddPluginDialog()));
+            
+    m_actSetbackground = new QAction(tr("Set Desktop Background..."), this);
+    connect(m_actSetbackground, SIGNAL(triggered()),
+            this, SLOT(setDesktopBackground()));
 }
 
 void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
@@ -76,7 +83,7 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
                 // TODO/FIXME: defaults
                 qDebug() << "Pixmap is null" << bg.wallpaper;
 
-            pm = pm.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+            pm = pm.scaled(size(), bg.keepAspectRatio ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             background.setTexture(pm);
             //        finalPixmap = Razor::getInstance().themesettings()->desktopBackground();
             break;
@@ -198,6 +205,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         {
             context = new QMenu("Context Menu");
             context->addAction(m_actArrangeWidgets);
+            context->addAction(m_actSetbackground);
             context->addAction(m_actAddNewPlugin);
         }
 
@@ -278,6 +286,16 @@ void RazorWorkSpace::showAddPluginDialog()
 void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
 {
     qDebug() << "addPlugin" << pluginInfo;
+}
+
+void RazorWorkSpace::setDesktopBackground()
+{
+    DesktopBackgroundDialog dia(size());
+    if (dia.exec())
+    {
+        setBackgroundBrush(dia.background());
+        dia.save(m_screen, m_config);
+    }
 }
 
 DesktopWidgetPlugin * RazorWorkSpace::getPluginFromItem(QGraphicsItem * item)

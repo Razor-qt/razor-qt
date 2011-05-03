@@ -19,6 +19,7 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSetti
     QMap<int,WorkspaceConfig> desktops;
     WorkspaceConfig defaults(
                             strToBackgroundType(m_settings->value("wallpaper_type", "color").toString(), RazorWorkSpaceManager::BackgroundColor),
+                            false,
                             m_settings->value("wallpaper", "#006600").toString(),
                             m_settings->value("plugins", QStringList()).toStringList()
                         );
@@ -28,6 +29,7 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSetti
         // TODO/FIXME: theme
         desktops[i] = WorkspaceConfig (
                             strToBackgroundType(m_settings->value("wallpaper_type").toString(), defaults.wallpaperType),
+                            m_settings->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
                             m_settings->value("wallpaper", defaults.wallpaper).toString(),
                             m_settings->value("plugins", defaults.plugins).toStringList()
                         );

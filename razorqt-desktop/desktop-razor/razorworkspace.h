@@ -34,6 +34,7 @@ public:
     ~RazorWorkSpace();
 
     void setConfig(const WorkspaceConfig & bg);
+    WorkspaceConfig getConfig();
 
 protected:
     void mouseReleaseEvent(QMouseEvent* _ev);
@@ -55,6 +56,7 @@ private:
 
     QAction * m_actArrangeWidgets;
     QAction * m_actAddNewPlugin;
+    QAction * m_actSetbackground;
     
     ArrangeItem * m_arrangeRoot;
     QList<ArrangeItem*> m_arrangeList;
@@ -67,6 +69,7 @@ private slots:
     void workspaceResized(int screen);
     void arrangeWidgets(bool start);
     void showAddPluginDialog();
+    void setDesktopBackground();
     void addPlugin(RazorPluginInfo* pluginInfo);
 };
 

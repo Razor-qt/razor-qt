@@ -38,14 +38,17 @@ struct WorkspaceConfig
 {
     WorkspaceConfig() {};
     WorkspaceConfig(RazorWorkSpaceManager::BackgroundType _wallpaperType,
+                    bool _keepAspectRatio,
                     const QString & _wallpaper,
                     const QStringList & _plugins)
     {
         wallpaperType = _wallpaperType;
+        keepAspectRatio = _keepAspectRatio;
         wallpaper = _wallpaper;
         plugins = _plugins;
     }
     RazorWorkSpaceManager::BackgroundType wallpaperType;
+    bool keepAspectRatio;
     QString wallpaper;
     QStringList plugins;
 };
