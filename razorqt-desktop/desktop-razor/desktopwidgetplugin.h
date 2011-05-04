@@ -19,8 +19,18 @@ public:
     
     virtual void setSizeAndPosition(const QPointF & position, const QSizeF & size) = 0;
     virtual void save() = 0;
+    virtual void configure() = 0;
     
     virtual bool blockGlobalMenu() = 0;
+    
+    QString configId() { return m_configId; }
+
+    void removeConfig()
+    {
+        m_config->settings()->beginGroup(m_configId);
+        m_config->settings()->remove("");
+        m_config->settings()->endGroup();
+    }
 
 protected:
     ReadSettings * m_config;

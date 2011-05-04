@@ -20,6 +20,7 @@ public:
 
     void setSizeAndPosition(const QPointF & position, const QSizeF & size);
     void save();
+    void configure();
 
     bool blockGlobalMenu();
 

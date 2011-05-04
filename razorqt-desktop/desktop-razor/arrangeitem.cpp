@@ -8,8 +8,9 @@
 #include "arrangeitem.h"
 
 
-ArrangeItem::ArrangeItem(DesktopWidgetPlugin * plugin, const QString & text, const QRectF & rect, bool editable, QGraphicsItem * parent)
+ArrangeItem::ArrangeItem(QGraphicsItem * related, DesktopWidgetPlugin * plugin, const QString & text, const QRectF & rect, bool editable, QGraphicsItem * parent)
     : QGraphicsObject(parent),
+      m_related(related),
       m_plugin(plugin),
       m_mode(C_C),
       m_rect(rect),
@@ -28,7 +29,10 @@ ArrangeItem::ArrangeItem(DesktopWidgetPlugin * plugin, const QString & text, con
         setAcceptHoverEvents(true);
         setAcceptedMouseButtons(Qt::LeftButton);
         setFlag(QGraphicsItem::ItemIsMovable);
+        setZValue(2);
     }
+    else
+        setZValue(1);
 }
 
 QRectF ArrangeItem::boundingRect() const
@@ -174,6 +178,12 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             return;
         }
     }
+}
+
+void ArrangeItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (m_editable)
+        m_plugin->configure();
 }
 
 QCursor ArrangeItem::getCursorByPos(const QPointF & position)

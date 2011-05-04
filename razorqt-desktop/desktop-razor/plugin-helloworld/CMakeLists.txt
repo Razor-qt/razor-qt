@@ -16,7 +16,7 @@ set(HW_MOCS
 )
 
 #*******************************************
-set(PROJECT "desktop-razor-${PLUGIN}")
+set(PROJECT "${PLUGIN}")
 
 project(${PROJECT})
 

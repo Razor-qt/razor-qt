@@ -17,10 +17,15 @@ public:
     void setParentSize(const QSizeF & size);
 
     bool blockGlobalMenu();
+    QString dir() { return m_directory; }
+    void setDir(const QString & directory);
 
 private:
+    QString m_directory;
     QFileSystemWatcher * m_fsw;
     QSizeF m_parentSize;
+
+    void setDirImpl(const QString & directory, bool repaint=false);
 
 private slots:
     void updateIconList();

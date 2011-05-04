@@ -1,6 +1,7 @@
 #include "helloworld.h"
 #include <QtDebug>
 #include <QGraphicsScene>
+#include <QInputDialog>
 
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(HelloWorld)
@@ -50,14 +51,26 @@ void HelloWorld::setSizeAndPosition(const QPointF & position, const QSizeF & siz
     setPos(position);
 }
 
+void HelloWorld::configure()
+{
+    bool ok;
+    QString txt = QInputDialog::getText(0, tr("Display Text Configuretion"), tr("Edit HTML"), QLineEdit::Normal, toHtml(), &ok);
+    if (!ok)
+        return;
+    setHtml(txt);
+    save();
+}
+
 void HelloWorld::save()
 {
     QSettings *s = m_config->settings();
     s->beginGroup(m_configId);
-    qDebug() << "SAVING              " << m_configId << pos() << boundingRect();
+    s->setValue("plugin", "helloworld");
     s->setValue("x", pos().x());
     s->setValue("y", pos().y());
     s->setValue("w", boundingRect().width());
     s->setValue("h", boundingRect().height());
+    s->setValue("text", toHtml());
+    s->setValue("color", defaultTextColor().name());
     s->endGroup();
 }

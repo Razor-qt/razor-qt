@@ -4,6 +4,7 @@
 #include <QDesktopServices>
 #include <QGraphicsView>
 #include <QPropertyAnimation>
+#include <QFileDialog>
 
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(IconView)
@@ -19,7 +20,6 @@ IconView::IconView(QGraphicsScene * scene, const QString & configId, ReadSetting
 
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     dir = s->value("directory", dir).toString();
-    qDebug() << "CFG: " << dir;
     s->endGroup();
 
     // Hack to ensure the fully transparent QGraphicsView background
@@ -87,11 +87,24 @@ void IconView::save()
 {
     QSettings *s = m_config->settings();
     s->beginGroup(m_configId);
+    s->setValue("plugin", "iconview");
     s->setValue("x", pos().x());
     s->setValue("y", pos().y());
     s->setValue("w", size().width());
     s->setValue("h", size().height());
+    s->setValue("directory", m_scene->dir());
     s->endGroup();
+}
+
+void IconView::configure()
+{
+    QString txt = QFileDialog::getExistingDirectory(0, tr("Icon View Configuration"),
+                                                    m_scene->dir());
+    if (txt.isNull())
+        return;
+
+    m_scene->setDir(txt);
+    save();
 }
 
 bool IconView::blockGlobalMenu()

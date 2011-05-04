@@ -10,12 +10,13 @@ class ArrangeItem : public QGraphicsObject
     Q_OBJECT
 
 public:
-    ArrangeItem(DesktopWidgetPlugin * plugin, const QString & text, const QRectF & rect, bool editable = true, QGraphicsItem * parent = 0);
+    ArrangeItem(QGraphicsItem * related, DesktopWidgetPlugin * plugin, const QString & text, const QRectF & rect, bool editable = true, QGraphicsItem * parent = 0);
 
     QRectF boundingRect() const;
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0);
 
     DesktopWidgetPlugin * plugin();
+    QGraphicsItem * related() { return m_related; }
     bool editable() { return m_editable; }
 
 protected:
@@ -24,6 +25,7 @@ protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event);
 
 private:
     enum ChangeMode {
@@ -32,6 +34,7 @@ private:
         C_BL, C_B, C_BR
     };
 
+    QGraphicsItem * m_related;
     DesktopWidgetPlugin * m_plugin;
     ChangeMode m_mode;
     QRectF m_rect;

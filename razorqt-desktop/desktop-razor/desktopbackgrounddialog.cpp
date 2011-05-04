@@ -63,6 +63,7 @@ void DesktopBackgroundDialog::save(int screen, ReadSettings * cfg)
         s->setValue("keep_aspect_ratio", keepAspectCheckBox->isChecked());
     }
     s->endArray();
+    s->endGroup();
 }
 
 void DesktopBackgroundDialog::colorButton_clicked()

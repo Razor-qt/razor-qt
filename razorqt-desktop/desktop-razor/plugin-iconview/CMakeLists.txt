@@ -22,7 +22,7 @@ set(IV_MOCS
 )
 
 #*******************************************
-set(PROJECT "desktop-razor-${PLUGIN}")
+set(PROJECT "${PLUGIN}")
 
 project(${PROJECT})
 

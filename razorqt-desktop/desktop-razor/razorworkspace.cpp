@@ -9,6 +9,7 @@
 #include <QtDebug>
 #include <QGraphicsTextItem>
 #include <QMessageBox>
+#include <QDateTime>
 
 #include "razorworkspace.h"
 #include "workspacemanager.h"
@@ -65,6 +66,14 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     m_actAddNewPlugin = new QAction(tr("Add New Desktop Widget..."), this);
     connect(m_actAddNewPlugin, SIGNAL(triggered()),
             this, SLOT(showAddPluginDialog()));
+
+    m_actRemovePlugin = new QAction(tr("Remove Plugin..."), this);
+    connect(m_actRemovePlugin, SIGNAL(triggered()),
+            this, SLOT(removePlugin()));
+            
+    m_actConfigurePlugin = new QAction(tr("Configure Plugin..."), this);
+    connect(m_actConfigurePlugin, SIGNAL(triggered()),
+            this, SLOT(configurePlugin()));
             
     m_actSetbackground = new QAction(tr("Set Desktop Background..."), this);
     connect(m_actSetbackground, SIGNAL(triggered()),
@@ -115,44 +124,71 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
         s->endGroup();
         
         qDebug() << libName << position;
-        QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "libdesktop-razor-" + libName + ".so";
+        QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "lib" + libName + ".so";
 
         qDebug() << "RazorDesktop: try to load " << libraryFileName;
 
         QLibrary * lib = new QLibrary(libraryFileName);
-        DesktopWidgetInitFunction initFunc = (DesktopWidgetInitFunction) lib->resolve("init");
-        if (!initFunc)
+        QGraphicsItem * item = loadPlugin(lib, configId);
+        DesktopWidgetPlugin * plugin = getPluginFromItem(item);
+        if (plugin)
+            plugin->setSizeAndPosition(position, size);
+    }
+}
+
+void RazorWorkSpace::saveConfig()
+{
+    QStringList plugins;
+    QSettings * s = m_config->settings();
+    
+    QList<QGraphicsItem*> items = m_scene->items();
+    foreach (QGraphicsItem * item, items)
+    {
+        DesktopWidgetPlugin * plug = getPluginFromItem(item);
+        // here it *must* be a plugin
+        Q_ASSERT(plug);
+        plugins.append(plug->configId());
+    }
+    s->beginGroup("razor");
+    s->beginWriteArray("desktops");
+    s->setArrayIndex(m_screen);
+    s->setValue("plugins", plugins);
+    s->endArray();
+    s->endGroup();
+}
+
+QGraphicsItem * RazorWorkSpace::loadPlugin(QLibrary * lib, const QString & configId)
+{
+    Q_ASSERT(lib);
+    DesktopWidgetInitFunction initFunc = (DesktopWidgetInitFunction) lib->resolve("init");
+    if (!initFunc)
+    {
+        qDebug() << lib->errorString();
+        delete lib;
+    }
+    else
+    {
+        DesktopWidgetPlugin * plugin = initFunc(m_scene, configId, m_config);
+        Q_ASSERT(plugin);
+
+        qDebug() << "    * Plugin loaded.";
+        qDebug() << plugin->info();
+
+        QGraphicsItem * item = dynamic_cast<QGraphicsItem*>(plugin);
+        QWidget * w = dynamic_cast<QWidget*>(plugin);
+        if (w)
         {
-            qDebug() << lib->errorString();
-            delete lib;
+            qDebug() << "adding widget";
+            return m_scene->addWidget(w);
         }
-        else
+        else if (item)
         {
-            DesktopWidgetPlugin * plugin = initFunc(m_scene, configId, m_config);
-            Q_ASSERT(plugin);
-
-            if (plugin)
-            {
-                qDebug() << "    * Plugin loaded.";
-                qDebug() << plugin->info();
-
-                QGraphicsItem * item = dynamic_cast<QGraphicsItem*>(plugin);
-                QWidget * w = dynamic_cast<QWidget*>(plugin);
-                if (w)
-                {
-                    qDebug() << "adding widget";
-                    m_scene->addWidget(w);
-                }
-                else if (item)
-                {
-                    qDebug() << "adding item";
-                    m_scene->addItem(item);
-                }
-
-                plugin->setSizeAndPosition(position, size);
-            }
+            qDebug() << "adding item";
+            m_scene->addItem(item);
+            return item;
         }
     }
+    return 0;
 }
 
 void RazorWorkSpace::workspaceResized(int screen)
@@ -207,6 +243,14 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
             context->addAction(m_actArrangeWidgets);
             context->addAction(m_actSetbackground);
             context->addAction(m_actAddNewPlugin);
+            ArrangeItem * curr = dynamic_cast<ArrangeItem*>(m_scene->itemAt(_ev->posF()));
+            if (curr && curr->editable())
+            {
+                context->addAction(m_actRemovePlugin);
+                m_actRemovePlugin->setData(_ev->posF());
+                context->addAction(m_actConfigurePlugin);
+                m_actConfigurePlugin->setData(_ev->posF());
+            }
         }
 
         context->exec(QCursor::pos());
@@ -237,7 +281,7 @@ void RazorWorkSpace::arrangeWidgets(bool start)
         // enter the "edit" mode
         m_mode = ModeArrange;
         QList<QGraphicsItem*> items = m_scene->items();
-        m_arrangeRoot = new ArrangeItem(0, tr("Razor Desktop Edit Mode"),
+        m_arrangeRoot = new ArrangeItem(0, 0, tr("Razor Desktop Edit Mode"),
                                         m_scene->sceneRect(),
                                         false);
         m_scene->addItem(m_arrangeRoot);
@@ -248,7 +292,7 @@ void RazorWorkSpace::arrangeWidgets(bool start)
             // here it *must* be a plugin
             Q_ASSERT(plug);
             QRectF br = item->sceneBoundingRect();
-            ArrangeItem * i = new ArrangeItem(plug, plug->instanceInfo(), br, true, m_arrangeRoot);
+            ArrangeItem * i = new ArrangeItem(item, plug, plug->instanceInfo(), br, true, m_arrangeRoot);
             m_arrangeList.append(i);
         }
     }
@@ -266,6 +310,8 @@ void RazorWorkSpace::arrangeWidgets(bool start)
         delete m_arrangeRoot;
         m_arrangeRoot = 0;
         m_arrangeList.clear();
+        
+        saveConfig();
     }
 }
 
@@ -280,12 +326,103 @@ void RazorWorkSpace::showAddPluginDialog()
         connect(dlg, SIGNAL(pluginSelected(RazorPluginInfo*)), this, SLOT(addPlugin(RazorPluginInfo*)));
     }
 
-    dlg->show();
+    dlg->exec();
 }
 
 void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
 {
     qDebug() << "addPlugin" << pluginInfo;
+    QLibrary * lib = pluginInfo->loadLibrary(DESKTOP_PLUGIN_DIR);
+    QGraphicsItem * item = loadPlugin(lib, QString("%1_%2").arg(pluginInfo->id()).arg(QDateTime::currentMSecsSinceEpoch()));
+    DesktopWidgetPlugin * plugin = getPluginFromItem(item);
+
+    // "clever" positioning
+    QSizeF size(100, 100);
+    int x = 10, y = 10;
+    int xmax = m_arrangeRoot->boundingRect().width()-60;
+    int ymax = m_arrangeRoot->boundingRect().height()-60;
+    while (true)
+    {
+        bool placeIt;
+        plugin->setSizeAndPosition(QPointF(x, y), size);
+        foreach (ArrangeItem* i, m_arrangeList)
+        {
+            if (item->collidesWithItem(i))
+            {
+                placeIt = false;
+                break;
+            }
+            placeIt = true;
+        }
+        
+        if (placeIt)
+        {
+            QRectF br = item->sceneBoundingRect();
+            ArrangeItem * i = new ArrangeItem(item, plugin, plugin->instanceInfo(), br, true, m_arrangeRoot);
+            m_arrangeList.append(i);            
+            break;
+        }
+
+        x += 20;
+        if (x >= xmax)
+        {
+            x = 0;
+            y += 20;
+        }
+        if (y >= ymax)
+        {
+            QMessageBox::information(this, tr("New Desktop Widget"),
+                                        tr("There is no free space to add new desktop widget"));
+            if (item)
+            {
+                m_scene->removeItem(item);
+                //delete item;
+            }
+            // TODO/FIXME: heck for mem leaks one day...
+            //if (plugin) delete plugin;
+            //if (lib) delete lib;
+            break;
+        }
+    } // while
+}
+
+void RazorWorkSpace::removePlugin()
+{
+    ArrangeItem * item = dynamic_cast<ArrangeItem*>(m_scene->itemAt(m_actRemovePlugin->data().toPointF()));
+    if (!item)
+    {
+        qDebug() << "Mismatch in m_actRemovePlugin data(). Expected ArrangeItem got" << m_actRemovePlugin->data();
+        return;
+    }
+    if (QMessageBox::question(this,
+                              tr("Remove Desktop Widget?"),
+                              tr("Really remove this widget '%1'?").arg(item->plugin()->instanceInfo()),
+                            QMessageBox::Yes, QMessageBox::No)
+        == QMessageBox::No)
+    {
+        return;
+    }
+
+    QGraphicsItem * related = item->related();
+    m_scene->removeItem(related);
+    
+    item->plugin()->removeConfig();
+    m_scene->removeItem(item);
+    m_arrangeList.removeAll(item);
+    delete related;
+    delete item;
+}
+
+void RazorWorkSpace::configurePlugin()
+{
+    ArrangeItem * item = dynamic_cast<ArrangeItem*>(m_scene->itemAt(m_actRemovePlugin->data().toPointF()));
+    qDebug() << "RazorWorkSpace::configurePlugin" << item;
+    if (!item)
+    {
+        qDebug() << "Mismatch in m_actConfigurePlugin data(). Expected ArrangeItem got" << m_actRemovePlugin->data();
+        return;
+    }
+    item->plugin()->configure();
 }
 
 void RazorWorkSpace::setDesktopBackground()

@@ -8,10 +8,21 @@
 
 
 IconScene::IconScene(const QString & directory, QObject * parent)
-    : QGraphicsScene(parent)
+    : QGraphicsScene(parent),
+      m_directory(directory),
+      m_fsw(0)
 {
-    // TODO/FIXME: Transparent! Now it's debugging blue
-    //setBackgroundBrush(QColor("#050d4e"));
+    setDirImpl(directory);
+}
+
+void IconScene::setDir(const QString & directory)
+{
+    setDirImpl(directory, true);
+}
+
+void IconScene::setDirImpl(const QString & directory, bool repaint)
+{
+    m_directory = directory;
 
     QStringList dirs;
     if (QDir(directory).exists())
@@ -22,8 +33,16 @@ IconScene::IconScene(const QString & directory, QObject * parent)
         dirs << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
     }
 
+    if (m_fsw)
+    {
+        delete m_fsw;
+    }
+
     m_fsw = new QFileSystemWatcher(dirs, this);
     connect(m_fsw, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateIconList()));
+    
+    if (repaint)
+        updateIconList();
 }
 
 void IconScene::updateIconList()
