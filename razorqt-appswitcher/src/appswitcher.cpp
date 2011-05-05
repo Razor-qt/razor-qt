@@ -253,10 +253,19 @@ RazorAppSwitcher::SwitcherItem::SwitcherItem(Window window, const QString & text
     setMaximumSize(64, 64);
     setMinimumSize(64, 64);
     setToolButtonStyle(Qt::ToolButtonIconOnly);
-    setIconSize(QSize(60, 60));
+    QSize sz(60, 60);
+    setIconSize(sz);
     setToolTip(text);
 
-    setIcon(pixmap);
+    // enforce unified size of icons
+    if (pixmap.size().height() != sz.height() || pixmap.size().width() != sz.width())
+    {
+        QPixmap pm = pixmap.scaled(sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+        setIcon(pm);
+    }
+    else
+        setIcon(pixmap);
+
     setText(text);
 }
 
