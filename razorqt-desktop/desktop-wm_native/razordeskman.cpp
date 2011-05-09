@@ -133,8 +133,8 @@ void RazorDeskManager::restoreIconState()
 
 
 
-RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * config)
-    : DesktopPlugin(configId, config)
+RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * config, ReadTheme * theme)
+    : DesktopPlugin(configId, config, theme)
 {
     config->settings()->beginGroup(configId);
     bool makeIcons = config->settings()->value("icons", false).toBool();
@@ -144,10 +144,8 @@ RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * conf
 
     if (finalPixmap.isEmpty())
     {
-        ReadSettings s("razor");
-        ReadTheme theme(s.settings()->value("theme", "").toString());
         //now we want to use the system default - we still need to find that one out though
-        finalPixmap = theme.desktopBackground();
+        finalPixmap = theme->desktopBackground();
         qDebug() << "trying to get system-defaults" << finalPixmap;
     }
 

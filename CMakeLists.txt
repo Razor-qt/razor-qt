@@ -8,6 +8,9 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
 endif()
 
+set(RAZOR_VERSION 0.3.0svn)
+add_definitions(-DRAZOR_VERSION=\"${RAZOR_VERSION}\")
+
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

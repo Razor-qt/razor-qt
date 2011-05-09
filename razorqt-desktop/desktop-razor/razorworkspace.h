@@ -59,6 +59,7 @@ private:
     QAction * m_actRemovePlugin;
     QAction * m_actConfigurePlugin;
     QAction * m_actSetbackground;
+    QAction * m_actAbout;
     
     ArrangeItem * m_arrangeRoot;
     QList<ArrangeItem*> m_arrangeList;
@@ -70,6 +71,7 @@ private:
     void saveConfig();
 
 private slots:
+    void about();
     void workspaceResized(int screen);
     void arrangeWidgets(bool start);
     void showAddPluginDialog();

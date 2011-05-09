@@ -98,19 +98,16 @@ public:
     for keys available.
     \param name a key for theme icon.
     */
-    QString icon(const QString & name) { return m_icons[name]; }
+//    QString icon(const QString & name) { return m_icons[name]; }
     /*! \brief A full path to image used as a wallpaper
     */
-    QString desktopBackground() { return m_desktopBackground; }
-    /*! \brief A full path to image used as a splash screen
-    */
-    QString splashScreen() { return m_splashScreen; }
+    QString desktopBackground(int screen=-1);
+
 private:
     QString m_qss;
     QString m_qssPath;
-    QHash<QString,QString> m_icons;
-    QString m_desktopBackground;
-    QString m_splashScreen;
+//    QHash<QString,QString> m_icons;
+    QHash<int,QString> m_desktopBackgrounds;
 };
 
 

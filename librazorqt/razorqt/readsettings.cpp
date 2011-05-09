@@ -115,6 +115,7 @@ bool ReadSettings::checkConfigDir()
 ReadTheme::ReadTheme(const QString & name, QObject * parent)
     : QObject(parent)
 {
+    qDebug() << "Reading Theme ____________________________________________";
     QString path(ReadSettings::getSysPath("themes/" + name));
     if (path.isEmpty())
     {
@@ -123,17 +124,26 @@ ReadTheme::ReadTheme(const QString & name, QObject * parent)
     }
 
     QString indexName(path + "/index.theme");
+    qDebug() << "Theme:" << indexName;
     QSettings s(indexName, QSettings::IniFormat, this);
+    // There is something strange... If I remove this qDebug the wallpapers array is not found...
+    qDebug() << s.childKeys() << s.childGroups();
 
-    m_desktopBackground = s.value("desktop_background", "").toString();
-    if (!m_desktopBackground.isEmpty())
-        m_desktopBackground = path + "/" + m_desktopBackground;
-    qDebug() << "Theme: desktop_background = " << m_desktopBackground;
-
-    m_splashScreen = s.value("splashscreen", "").toString();
-    if (!m_splashScreen.isEmpty())
-        m_splashScreen = path + "/" + m_splashScreen;
-    qDebug() << "Theme: splashscreen = " << m_splashScreen;
+    int cnt = s.beginReadArray("wallpapers");
+    for (int i = 0; i < cnt; ++i)
+    {
+        qDebug() << "WALL";
+        s.setArrayIndex(i);
+        QString pth(s.value("file", "").toString());
+        if (pth.isEmpty())
+        {
+            qDebug() << "Theme: wallpaper SKIPPED" << i << m_desktopBackgrounds[i];
+            continue;
+        }
+        m_desktopBackgrounds[i] = path + "/" + pth;
+        qDebug() << "Theme: wallpaper" << i << m_desktopBackgrounds[i];
+    }
+    s.endArray();
 
     m_qssPath = s.value("stylesheet", "").toString();
     if ( !m_qssPath.isEmpty())
@@ -165,11 +175,23 @@ ReadTheme::ReadTheme(const QString & name, QObject * parent)
     else
         qDebug() << "Theme: QSS is not defined in the style";
 
-    s.beginGroup("icons");
-    foreach (QString key, s.childKeys())
-    {
-        m_icons[key] = path + "/" + s.value(key, "").toString();
-        qDebug() << "Theme: icon" << key << "=" << m_icons[key];
-    }
-    s.endGroup();
+//    s.beginGroup("icons");
+//    foreach (QString key, s.childKeys())
+//    {
+//        m_icons[key] = path + "/" + s.value(key, "").toString();
+//        qDebug() << "Theme: icon" << key << "=" << m_icons[key];
+//    }
+//    s.endGroup();
+    qDebug() << "Reading Theme End ________________________________________";
+}
+
+QString ReadTheme::desktopBackground(int screen)
+{
+    if (m_desktopBackgrounds.contains(screen))
+        return m_desktopBackgrounds[screen];
+    
+    if (m_desktopBackgrounds.count())
+        return m_desktopBackgrounds.values().at(0);
+    
+    return QString();
 }

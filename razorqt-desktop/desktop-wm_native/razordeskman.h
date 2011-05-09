@@ -25,7 +25,7 @@ class RazorDeskManager : public QObject, public DesktopPlugin
 {
     Q_OBJECT
 public:
-    RazorDeskManager(const QString & configId, ReadSettings * config);
+    RazorDeskManager(const QString & configId, ReadSettings * config, ReadTheme * theme);
     ~RazorDeskManager();
 
     QString info();

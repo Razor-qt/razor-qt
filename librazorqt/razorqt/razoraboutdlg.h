@@ -1,7 +1,7 @@
 #ifndef RAZORABOUTDLG_H
 #define RAZORABOUTDLG_H
-#include "defs.h"
 
+#include <QDialog>
 
 /**
  * @file razoraboutdlg.n

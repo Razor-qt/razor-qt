@@ -19,6 +19,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/xdgmenuwidget.h>
 #include <razorqt/xdgmenu.h>
+#include <razorqt/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
 
 
@@ -78,6 +79,9 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     m_actSetbackground = new QAction(tr("Set Desktop Background..."), this);
     connect(m_actSetbackground, SIGNAL(triggered()),
             this, SLOT(setDesktopBackground()));
+            
+    m_actAbout = new QAction(tr("About Razor..."), this);
+    connect(m_actAbout, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
@@ -234,6 +238,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 
             context->addSeparator();
             context->addAction(m_actArrangeWidgets);
+            context->addAction(m_actAbout);
             context->addSeparator();
             context->addActions(m_power->availableActions());
         }
@@ -433,6 +438,11 @@ void RazorWorkSpace::setDesktopBackground()
         setBackgroundBrush(dia.background());
         dia.save(m_screen, m_config);
     }
+}
+
+void RazorWorkSpace::about()
+{
+    RazorAboutDLG dia;
 }
 
 DesktopWidgetPlugin * RazorWorkSpace::getPluginFromItem(QGraphicsItem * item)

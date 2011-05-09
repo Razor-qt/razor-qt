@@ -7,13 +7,14 @@
 EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
 
 
-RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSettings * config)
-    : DesktopPlugin(configId, config)
+RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSettings * config, ReadTheme * theme)
+    : DesktopPlugin(configId, config, theme)
 {
-    qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager";
+    qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
     //this may actually make the icon work on multihead
     
     QSettings * m_settings = config->settings();
+
     m_settings->beginGroup(configId);
     
     QMap<int,WorkspaceConfig> desktops;
@@ -24,13 +25,14 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSetti
                             m_settings->value("plugins", QStringList()).toStringList()
                         );
     int size = m_settings->beginReadArray("desktops");
+    QString themeWallpaper;
     for (int i = 0; i < size; ++i) {
         m_settings->setArrayIndex(i);
-        // TODO/FIXME: theme
+        themeWallpaper = theme->desktopBackground(i+1);
         desktops[i] = WorkspaceConfig (
-                            strToBackgroundType(m_settings->value("wallpaper_type").toString(), defaults.wallpaperType),
+                            strToBackgroundType(m_settings->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
                             m_settings->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
-                            m_settings->value("wallpaper", defaults.wallpaper).toString(),
+                            m_settings->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString(),
                             m_settings->value("plugins", defaults.plugins).toStringList()
                         );
     }

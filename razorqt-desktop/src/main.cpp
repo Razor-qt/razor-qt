@@ -33,7 +33,7 @@ int main (int argc, char* argv[])
         return 0;
     }
 
-    DesktopPlugin * plugin = initFunc(configId, &config);
+    DesktopPlugin * plugin = initFunc(configId, &config, &theme);
     Q_ASSERT(plugin);
 
     if (plugin)

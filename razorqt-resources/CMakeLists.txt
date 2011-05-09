@@ -1,6 +1,8 @@
 cmake_minimum_required( VERSION 2.6 )
 
 install(DIRECTORY config/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
+install(DIRECTORY graphics DESTINATION share/razor/ PATTERN ".svn" EXCLUDE)
+
 # TODO/FIXME: install kdm/gdm files too
 # this file should be enough but it needs testing...
 install(FILES sys/razor.desktop sys/razor-eggwm.desktop sys/razor-openbox.desktop DESTINATION share/xsessions)

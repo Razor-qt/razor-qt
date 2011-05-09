@@ -22,7 +22,7 @@ public:
         BackgroundColor = 1
     };
     
-    RazorWorkSpaceManager(const QString & configId, ReadSettings * config);
+    RazorWorkSpaceManager(const QString & configId, ReadSettings * config, ReadTheme * theme);
     ~RazorWorkSpaceManager();
     
     QString info();
