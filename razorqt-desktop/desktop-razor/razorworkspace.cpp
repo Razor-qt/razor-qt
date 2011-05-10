@@ -327,6 +327,7 @@ void RazorWorkSpace::showAddPluginDialog()
     if (!dlg)
     {
         dlg = new AddPluginDialog(&mAvailablePlugins, this);
+        dlg->move(geometry().center() - dlg->geometry().center());
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         connect(dlg, SIGNAL(pluginSelected(RazorPluginInfo*)), this, SLOT(addPlugin(RazorPluginInfo*)));
     }
@@ -348,7 +349,7 @@ void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
     int ymax = m_arrangeRoot->boundingRect().height()-60;
     while (true)
     {
-        bool placeIt;
+        bool placeIt = true;
         plugin->setSizeAndPosition(QPointF(x, y), size);
         foreach (ArrangeItem* i, m_arrangeList)
         {
@@ -383,7 +384,7 @@ void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
                 m_scene->removeItem(item);
                 //delete item;
             }
-            // TODO/FIXME: heck for mem leaks one day...
+            // TODO/FIXME: check for mem leaks one day...
             //if (plugin) delete plugin;
             //if (lib) delete lib;
             break;
@@ -432,7 +433,7 @@ void RazorWorkSpace::configurePlugin()
 
 void RazorWorkSpace::setDesktopBackground()
 {
-    DesktopBackgroundDialog dia(size());
+    DesktopBackgroundDialog dia(size(), this);
     if (dia.exec())
     {
         setBackgroundBrush(dia.background());

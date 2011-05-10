@@ -12,7 +12,7 @@ class DesktopBackgroundDialog : public QDialog, public Ui::DesktopBackgroundDial
     Q_OBJECT
     
 public:
-    DesktopBackgroundDialog(QSize desktopSize, QWidget * parent=0);
+    DesktopBackgroundDialog(QSize desktopSize, QWidget * parent);
     ~DesktopBackgroundDialog();
     QBrush background();
     void save(int screen, ReadSettings * cfg);
@@ -22,6 +22,8 @@ private:
     RazorWorkSpaceManager::BackgroundType m_type;
     QColor m_color;
     QString m_wallpaper;
+
+    void preview();
 
 private slots:
     void colorButton_clicked();

@@ -1,6 +1,7 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QDirIterator>
+#include <QDesktopWidget>
 #include "desktopbackgrounddialog.h"
 #include <razorqt/readsettings.h>
 
@@ -11,6 +12,8 @@ DesktopBackgroundDialog::DesktopBackgroundDialog(QSize desktopSize, QWidget * pa
       m_type(RazorWorkSpaceManager::BackgroundColor)
 {
     setupUi(this);
+    // center it to current desktop
+    move(parent->geometry().center() - geometry().center());
     
     connect(colorButton, SIGNAL(clicked()),
             this, SLOT(colorButton_clicked()));
@@ -18,6 +21,8 @@ DesktopBackgroundDialog::DesktopBackgroundDialog(QSize desktopSize, QWidget * pa
             this, SLOT(wallpaperButton_clicked()));
     connect(systemButton, SIGNAL(clicked()),
             this, SLOT(systemButton_clicked()));
+    
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 DesktopBackgroundDialog::~DesktopBackgroundDialog()
@@ -49,7 +54,10 @@ void DesktopBackgroundDialog::save(int screen, ReadSettings * cfg)
 {
     QSettings * s = cfg->settings();
     s->beginGroup("razor");
-    s->beginWriteArray("desktops");
+    // It's strange. Event that I set array size to desktop count, there is always
+    // index used. A bug in Qt? But it does not matter. I use screenCount()
+    // in the array reading routine...
+    s->beginWriteArray("desktops", QApplication::desktop()->screenCount());
     s->setArrayIndex(screen);
     if (m_type == RazorWorkSpaceManager::BackgroundColor)
     {
@@ -74,9 +82,7 @@ void DesktopBackgroundDialog::colorButton_clicked()
     
     m_type = RazorWorkSpaceManager::BackgroundColor;
     m_color = c;
-    QPixmap p(1, 1);
-    p.fill(c);
-    previewLabel->setPixmap(p);
+    preview();
 }
 
 void DesktopBackgroundDialog::wallpaperButton_clicked()
@@ -90,8 +96,6 @@ void DesktopBackgroundDialog::wallpaperButton_clicked()
     
     m_type = RazorWorkSpaceManager::BackgroundPixmap;
     m_wallpaper = fname;
-    QPixmap p(fname);
-    previewLabel->setPixmap(p);
 }
 
 void DesktopBackgroundDialog::systemButton_clicked()
@@ -105,36 +109,27 @@ void DesktopBackgroundDialog::systemButton_clicked()
     
     m_type = RazorWorkSpaceManager::BackgroundPixmap;
     m_wallpaper = fname;
-    QPixmap p(fname);
-    previewLabel->setPixmap(p);
-
-#if 0
-    // this is probably too much complicated for such small feature... and mainly - it's deadly slow without any caching
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    // read system-wide wallpapers
-    
-    QListWidget systemListWidget;
-
-    QDirIterator it("/usr/share/wallpapers", QDir::Files|QDir::Readable|QDir::NoDotDot, QDirIterator::Subdirectories);
-    QFileInfo fi;
-    while (it.hasNext())
-    {
-        QString fname(it.next());
-        if (fname.endsWith(".png", Qt::CaseInsensitive)
-            || fname.endsWith(".jpg", Qt::CaseInsensitive)
-            || fname.endsWith(".jpeg", Qt::CaseInsensitive)
-           )
-        {
-            fi.setFile(fname);
-            QPixmap pm = QPixmap(fname).scaledToHeight(160);
-            QListWidgetItem * item = new QListWidgetItem(pm, fi.fileName(), &systemListWidget);
-            item->setData(Qt::UserRole, fname);
-            systemListWidget.addItem(item);
-        }
-    }
-    systemListWidget.show();
-
-    QApplication::restoreOverrideCursor();
-#endif
+    preview();
 }
 
+void DesktopBackgroundDialog::preview()
+{
+    switch (m_type)
+    {
+        case RazorWorkSpaceManager::BackgroundPixmap:
+        {
+            QPixmap p(m_wallpaper);
+            previewLabel->setPixmap(p);
+            break;
+        }
+        case RazorWorkSpaceManager::BackgroundColor:
+        {
+            QPixmap p(1, 1);
+            p.fill(m_color);
+            previewLabel->setPixmap(p);
+            break;
+        }
+    }
+
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+}

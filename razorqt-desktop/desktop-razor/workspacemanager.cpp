@@ -24,7 +24,10 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSetti
                             m_settings->value("wallpaper", "#006600").toString(),
                             m_settings->value("plugins", QStringList()).toStringList()
                         );
-    int size = m_settings->beginReadArray("desktops");
+    // important: here is used screenCount() instead of beginReadArray()
+    // QSettings can contain more/les/or none desktop defined.
+    m_settings->beginReadArray("desktops");
+    int size = QApplication::desktop()->screenCount();
     QString themeWallpaper;
     for (int i = 0; i < size; ++i) {
         m_settings->setArrayIndex(i);
