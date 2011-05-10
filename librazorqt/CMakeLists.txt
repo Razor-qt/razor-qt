@@ -25,8 +25,8 @@ include_directories (
 set ( razorqt_HDRS
 	razorqt/defs.h
 	razorqt/razoraboutdlg.h
-	razorqt/razordevman.h
-	razorqt/razorhal.h
+#	razorqt/razordevman.h
+#	razorqt/razorhal.h
 	razorqt/readsettings.h
 	razorqt/xdgautostart.h
 	razorqt/xdgenv.h
@@ -50,14 +50,14 @@ set ( razorqt_HDRS
 
 set ( razorqt_SRCS
 	razorqt/razoraboutdlg.cpp
-	razorqt/razordevman.cpp
-	razorqt/razorhal.cpp
+#	razorqt/razordevman.cpp
+#	razorqt/razorhal.cpp
 	razorqt/readsettings.cpp
 	razorqt/xdgautostart.cpp
 	razorqt/xdgdesktopfile.cpp
 	razorqt/xdgiconthemefile.cpp
 	razorqt/xdgiconthememanager.cpp
-	razorqt/xdgmanager.cpp
+#	razorqt/xdgmanager.cpp
 	razorqt/xdgmenu.cpp
 	razorqt/xfitman.cpp
 	razorqt/domhelper.cpp
@@ -79,9 +79,9 @@ set ( razorqt_SRCS
 
 set ( razorqt_MOCS
 	razorqt/razoraboutdlg.h
-	razorqt/razordevman.h
-	razorqt/razorhal.h
-	razorqt/xdgmanager.h
+#	razorqt/razordevman.h
+#	razorqt/razorhal.h
+#	razorqt/xdgmanager.h
 	razorqt/xdgmenu.h
 	razorqt/readsettings.h
 	razorqt/xdgdesktopfile.h
