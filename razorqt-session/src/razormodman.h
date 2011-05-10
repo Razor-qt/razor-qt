@@ -68,20 +68,7 @@ private:
 	QList<QProcess*> autostartList;
 
     //! \brief HAL (dbus) instance for shudown and reboot actions.
-    QDBusInterface* power;
-
-    /*! \brief Main session management command hanlder.
-    It calls one of shutdown(), reboot(), logout() methods
-    regarding strings RAZOR_DO_*. See method internals.
-    \todo Maybe there should be better handling of this...
-    */
-    void doOperation(const QString & _cmd);
-
-    //! \brief Shutdown entire system with power d-bus interface.
-    void shutdown();
-
-    //! \brief Reboot entire system with power d-bus interface.
-    void reboot();
+    QDBusInterface* m_power;
 
 private slots:
 
@@ -104,14 +91,6 @@ private slots:
     /*! \brief Delayed startup of autostart processes. \see autostartList
     */
 	void autoStartSingleShot();
-
-    /*! \brief Process stdout parsing.
-    \warning The slot *has* to be called as a slot only due sender() cast.
-
-    parseState() reads proces's stdout. Then it calls doOperation()
-    with the single line string.
-    */
-    void parseState();
 };
 
 

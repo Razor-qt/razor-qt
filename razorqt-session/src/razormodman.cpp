@@ -1,5 +1,6 @@
 #include "razormodman.h"
 #include <razorqt/readsettings.h>
+#include <razorqt/xdgautostart.h>
 
 #include <QtDebug>
 #include <QDBusInterface>
@@ -19,7 +20,7 @@
 RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
     : QObject(parent)
 {
-    power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
+    m_power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
                                "org.freedesktop.Hal.Device.SystemPowerManagement",
                                QDBusConnection::systemBus());
 
@@ -44,10 +45,6 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
 
         QProcess* tmp = new QProcess(this);
         tmp->start(cmd);
-        if (power)
-        {
-            connect(tmp, SIGNAL(readyRead()), this, SLOT(parseState()));
-        }
 
         connect(tmp, SIGNAL(finished(int, QProcess::ExitStatus)),
                 this,SLOT(restartModules(int, QProcess::ExitStatus)));
@@ -81,6 +78,13 @@ void RazorModuleManager::autoStartSingleShot()
         autostartList << tmp;
     }
     s->endArray();
+    
+    // XDG autostart
+    XdgAutoStart xdgautostart;
+    foreach (XdgDesktopFile* f, xdgautostart.list())
+    {
+        f->startDetached();
+    }
 }
 
 void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitStatus)
@@ -122,34 +126,10 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
 
 }
 
-/**
-* @brief parses the output of the Process for RAZOR_DO commands
-*/
-void RazorModuleManager::parseState()
-{
-    qDebug() << "parsestate!";
-    QProcess * p = qobject_cast<QProcess*>(sender());
-    Q_ASSERT(p);
-//    QMessageBox::information(0, "RazorModuleManager", "parseState");
-    doOperation(p->readLine());
-}
 
 RazorModuleManager::~RazorModuleManager()
 {
-    delete power;
-}
-
-void RazorModuleManager::doOperation(const QString  & _cmd)
-{
-    QString cmd(_cmd.trimmed());
-    qDebug() << "Razorstate: got output: " << cmd;
-//    QMessageBox::information(0, "RazorModuleManager", cmd);
-    if (cmd =="RAZOR_DO_LOGOUT")
-        logout();
-    else if (cmd == "RAZOR_DO_SHUTDOWN")
-        shutdown();
-    else if (cmd == "RAZOR_DO_REBOOT")
-        reboot();
+    delete m_power;
 }
 
 /**
@@ -180,24 +160,4 @@ void RazorModuleManager::logout()
             qDebug() << "Module" << p << "rejected to close correctly. Kill it down.";
     }
     QCoreApplication::exit(0);
-}
-
-/**
-* @brief reboot via Dbus
-**/
-
-void RazorModuleManager::reboot()
-{
-    power->call("Reboot");
-}
-
-/**
-* @brief shutdown via Dbus
-**/
-
-void RazorModuleManager::shutdown()
-{
-    //qDebug() << "Would have shut down now";
-    //debug!! no real shutdown while testing :)
-    power->call("Shutdown");
 }

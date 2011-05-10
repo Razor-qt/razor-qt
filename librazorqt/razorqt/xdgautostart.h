@@ -24,16 +24,16 @@ class XdgAutoStart
 public:
     XdgAutoStart();
     ~XdgAutoStart();
-    QVector<XdgDesktopFile>* get_List();
-    void updateList();
-    void addDirtoList(QString _dir);
-    void debugAutostart();
-    void cleanList();
+    QList<XdgDesktopFile*> list();
 
 private:
-    QVector<XdgDesktopFile> autoList;
+    QList<XdgDesktopFile*> m_list;
     QStringList badNames;
 
+    void updateList();
+    void addDirtoList(const QString & _dir);
+    void debugAutostart();
+    void cleanList();
 };
 
 
