@@ -171,6 +171,6 @@ FileIcon::FileIcon(const QString & file,
 void FileIcon::launchApp()
 {
     qDebug() << "FileIcon::launchApp()" << m_file;
-    QDesktopServices::openUrl(QUrl(m_file));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(m_file));
 }
 
