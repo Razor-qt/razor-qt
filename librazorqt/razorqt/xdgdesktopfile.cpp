@@ -689,7 +689,9 @@ QString XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
                 if (pos2 >= str.length())
                 {
                     pos = pos2;
-                    return false;
+#warning TODO/FIXME: look at this fix... one time...
+                    //return false;
+                    return QString();
                 }
                 cc = str.unicode()[pos2].unicode();
                 if (cc == '`')
