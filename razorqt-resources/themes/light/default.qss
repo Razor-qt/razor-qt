@@ -130,7 +130,7 @@ TrayIcon {
 #MainMenu QPushButton {
     border: none;
     qproperty-iconSize: 30px;
-    qproperty-icon: url(arrow_button.png);
+    qproperty-icon: url(mainmenu.png);
 }
 
 
