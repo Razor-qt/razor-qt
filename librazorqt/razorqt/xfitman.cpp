@@ -173,11 +173,14 @@ int XfitMan::getNumDesktop() const
 {
     unsigned long length, *data;
     getRootWindowProperty(atom("_NET_NUMBER_OF_DESKTOPS"), XA_CARDINAL, &length, (unsigned char**) &data);
-    int res = data[0];
-    XFree(data);
-    return res;
+    if (data)
+    {
+        int res = data[0];
+        XFree(data);
+        return res;
+    }
+    return 0;
 }
-
 /**
  * @brief resizes a window to the given dimensions
  */
@@ -534,8 +537,11 @@ int XfitMan::getActiveDesktop() const
     unsigned long length, *data;
     if (getRootWindowProperty(atom("_NET_CURRENT_DESKTOP"), XA_CARDINAL, &length, (unsigned char**) &data))
     {
-        res = data[0];
-        XFree(data);
+        if (data)
+        {
+            res = data[0];
+            XFree(data);
+        }
     }
 
     return res;

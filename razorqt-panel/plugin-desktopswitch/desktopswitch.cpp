@@ -15,7 +15,8 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
     m_buttons = new QButtonGroup(this);
 
     QString mask("%1");
-    for (int i = 0; i < xfitMan().getNumDesktop(); ++i)
+    int numDesk = qMax(xfitMan().getNumDesktop(), 1);
+    for (int i = 0; i < numDesk; ++i)
     {
         QToolButton * m = new QToolButton(this);
         m->setText(mask.arg(i+1));
@@ -23,9 +24,9 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
         addWidget(m);
         m_buttons->addButton(m, i);
     }
-    
-    m_buttons->button(xfitMan().getActiveDesktop())->setChecked(true);
 
+    int activeDesk = qMax(xfitMan().getActiveDesktop(), 0);
+    m_buttons->button(activeDesk)->setChecked(true);
 
     connect(m_buttons, SIGNAL(buttonClicked(int)),
             this, SLOT(setDesktop(int)));
@@ -41,7 +42,8 @@ void DesktopSwitch::handleEvent(XEvent* _event)
 {
     if (_event->type == PropertyNotify)
     {
-        m_buttons->button(xfitMan().getActiveDesktop())->setChecked(true);
+        int activeDesk = qMax(xfitMan().getActiveDesktop(), 0);
+        m_buttons->button(activeDesk)->setChecked(true);
     }
 }
 void DesktopSwitch::setDesktop(int desktop)
