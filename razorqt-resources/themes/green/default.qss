@@ -138,15 +138,3 @@ TrayIcon {
     image: none;
 }
 
-
-#TopLevelMainMenu {
-    padding: 8px;
-}
-
-#TopLevelMainMenu::item{
-     margin-left: 20px; 
-     padding: 5px 30px 5px 20px;  
-}
-
-
-    
