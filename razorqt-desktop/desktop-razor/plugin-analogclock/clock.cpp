@@ -23,6 +23,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+/*
+    This plugin uses images from the Qt clocks example.
+    http://doc.qt.nokia.com/latest/declarative-toys-clocks.html
+ */
 
 #include "clock.h"
 #include <QtDebug>
