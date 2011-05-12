@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file alias="center.png">imgs/center.png</file>
+        <file alias="clock-night.png">imgs/clock-night.png</file>
+        <file alias="clock.png">imgs/clock.png</file>
+        <file alias="hour.png">imgs/hour.png</file>
+        <file alias="minute.png">imgs/minute.png</file>
+        <file alias="seconds.png">imgs/second.png</file>
+    </qresource>
+</RCC>
