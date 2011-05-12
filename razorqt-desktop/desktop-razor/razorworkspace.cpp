@@ -238,6 +238,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 
             context->addSeparator();
             context->addAction(m_actArrangeWidgets);
+            context->addAction(m_actSetbackground);
             context->addAction(m_actAbout);
             context->addSeparator();
             context->addActions(m_power->availableActions());
@@ -246,7 +247,6 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         {
             context = new QMenu("Context Menu");
             context->addAction(m_actArrangeWidgets);
-            context->addAction(m_actSetbackground);
             context->addAction(m_actAddNewPlugin);
             ArrangeItem * curr = dynamic_cast<ArrangeItem*>(m_scene->itemAt(_ev->posF()));
             if (curr && curr->editable())
