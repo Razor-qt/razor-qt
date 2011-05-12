@@ -339,6 +339,9 @@ void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
 {
     qDebug() << "addPlugin" << pluginInfo;
     QLibrary * lib = pluginInfo->loadLibrary(DESKTOP_PLUGIN_DIR);
+    if (!lib)
+        return;
+
     QGraphicsItem * item = loadPlugin(lib, QString("%1_%2").arg(pluginInfo->id()).arg(QDateTime::currentMSecsSinceEpoch()));
     DesktopWidgetPlugin * plugin = getPluginFromItem(item);
 
