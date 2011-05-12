@@ -23,12 +23,11 @@ private:
     QColor m_color;
     QString m_wallpaper;
 
-    void preview();
-
 private slots:
     void colorButton_clicked();
     void wallpaperButton_clicked();
     void systemButton_clicked();
+    void preview();
 };
 
 #endif

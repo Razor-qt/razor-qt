@@ -15,13 +15,18 @@ DesktopBackgroundDialog::DesktopBackgroundDialog(QSize desktopSize, QWidget * pa
     // center it to current desktop
     move(parent->geometry().center() - geometry().center());
     
+    previewLabel->setScaledContents(false);
+    previewLabel->setAlignment(Qt::AlignCenter);
+
     connect(colorButton, SIGNAL(clicked()),
             this, SLOT(colorButton_clicked()));
     connect(wallpaperButton, SIGNAL(clicked()),
             this, SLOT(wallpaperButton_clicked()));
     connect(systemButton, SIGNAL(clicked()),
             this, SLOT(systemButton_clicked()));
-    
+    connect(keepAspectCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(preview()));
+
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
@@ -96,6 +101,7 @@ void DesktopBackgroundDialog::wallpaperButton_clicked()
     
     m_type = RazorWorkSpaceManager::BackgroundPixmap;
     m_wallpaper = fname;
+    preview();
 }
 
 void DesktopBackgroundDialog::systemButton_clicked()
@@ -118,7 +124,8 @@ void DesktopBackgroundDialog::preview()
     {
         case RazorWorkSpaceManager::BackgroundPixmap:
         {
-            QPixmap p(m_wallpaper);
+            Qt::AspectRatioMode mode = ( keepAspectCheckBox->isChecked())? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio;
+            QPixmap p = QPixmap(m_wallpaper).scaled(previewLabel->size(), mode, Qt::FastTransformation);
             previewLabel->setPixmap(p);
             break;
         }
