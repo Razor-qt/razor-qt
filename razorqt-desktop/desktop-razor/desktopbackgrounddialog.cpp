@@ -14,9 +14,6 @@ DesktopBackgroundDialog::DesktopBackgroundDialog(QSize desktopSize, QWidget * pa
     setupUi(this);
     // center it to current desktop
     move(parent->geometry().center() - geometry().center());
-    
-    previewLabel->setScaledContents(false);
-    previewLabel->setAlignment(Qt::AlignCenter);
 
     connect(colorButton, SIGNAL(clicked()),
             this, SLOT(colorButton_clicked()));
