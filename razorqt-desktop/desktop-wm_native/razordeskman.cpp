@@ -142,18 +142,16 @@ RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * conf
     QString finalPixmap = config->settings()->value("wallpaper", "").toString();
     config->settings()->endGroup();
 
-    if (finalPixmap.isEmpty())
+    if (finalPixmap.isEmpty() || !QFile::exists(finalPixmap))
     {
         //now we want to use the system default - we still need to find that one out though
         finalPixmap = theme->desktopBackground();
         qDebug() << "trying to get system-defaults" << finalPixmap;
     }
 
-    qDebug() << finalPixmap;
-    //now try to set it - if its not set we assume the theme stylesheet takes care of it some way (like a gradient or stuff)
     if (! finalPixmap.isEmpty())
     {
-        qDebug() << "Creating icons";
+        qDebug() << "Creating wallpaper";
         int width,height;
         QDesktopWidget * dw = QApplication::desktop();
         if (dw->screenCount() == 1)
@@ -166,17 +164,15 @@ RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * conf
             width=dw->screenGeometry(-1).width();
             height=dw->screenGeometry(-1).height();
         }
-        xfitMan().setRootBackground(((QPixmap) finalPixmap).scaled(width,height));
+        xfitMan().setRootBackground(QPixmap(finalPixmap).scaled(width,height));
     }
-
     
     if (makeIcons)
     {
-        deskicons = new ReadSettings("deskicons", this);
-        updateIconList();
-    
+        deskicons = new ReadSettings("deskicons", this);    
         m_fsw = new QFileSystemWatcher(QStringList() << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation), this);
         connect(m_fsw, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateIconList()));
+        updateIconList();
     }
 }
 
