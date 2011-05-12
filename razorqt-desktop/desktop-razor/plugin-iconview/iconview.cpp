@@ -77,7 +77,7 @@ void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
     
     // "cool" display FX - the main part
     QPropertyAnimation * animation = new QPropertyAnimation(this, "windowOpacity");
-    animation->setDuration(3000);
+    animation->setDuration(500);
     animation->setStartValue(0.0);
     animation->setEndValue(1.0);
     animation->start();
