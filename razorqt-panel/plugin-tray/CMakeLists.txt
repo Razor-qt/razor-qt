@@ -17,8 +17,12 @@ set(MOCS
 
 include( FindPkgConfig )
 include( CheckLibraryExists )
-#pkg_check_modules( X11 REQUIRED x11 xcomposite xdamage xinerama xrender xrandr>=1.3 )
-pkg_check_modules( X11 REQUIRED x11 xcomposite xdamage)
+
+pkg_check_modules( X11 REQUIRED x11 )
+pkg_check_modules( XCOMPOSITE REQUIRED x11 xcomposite xdamage )
+pkg_check_modules( XDAMAGE REQUIRED xdamage )
+pkg_check_modules( XRENDER REQUIRED xrender )
+
 set(LIBRARIES
     ${X11_LIBRARIES}
 )
