@@ -8,7 +8,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
 endif()
 
-set(RAZOR_VERSION 0.3.0svn)
+set(RAZOR_VERSION 0.3.0)
 add_definitions(-DRAZOR_VERSION=\"${RAZOR_VERSION}\")
 
 # additional cmake files
@@ -51,7 +51,7 @@ ADD_CUSTOM_TARGET(uninstall
 ########## Add make dist target ################
 SET(CPACK_PACKAGE_VERSION "${RAZOR_VERSION}")
 SET(CPACK_SOURCE_GENERATOR "TBZ2")
-SET(CPACK_SOURCE_PACKAGE_FILE_NAME "razor-${CPACK_PACKAGE_VERSION}")
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME "razorqt-${CPACK_PACKAGE_VERSION}")
 SET(CPACK_IGNORE_FILES "/CVS/;/\\\\.svn/;\\\\.swp$;\\\\.#;/#;\\\\.tar.gz$;/CMakeFiles/;CMakeCache.txt;refresh-copyright-and-license.pl")
 SET(CPACK_SOURCE_IGNORE_FILES ${CPACK_IGNORE_FILES})
 INCLUDE(CPack)
