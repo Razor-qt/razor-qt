@@ -52,8 +52,8 @@ Clock::Clock(QGraphicsScene * scene, const QString & configId, ReadSettings * co
     mCenterPix = new  QPixmap(":/imgs/center.png");
     mHourPix = new  QPixmap(":/imgs/hour.png");
     mMinutePix = new  QPixmap(":/imgs/minute.png");
-    mSecondsPix = new  QPixmap(":/imgs/seconds.png");
-    mTimerId = startTimer(250);
+    //mSecondsPix = new  QPixmap(":/imgs/seconds.png");
+    mTimerId = startTimer(10000);
 }
 
 Clock::~Clock()
@@ -120,10 +120,10 @@ void Clock::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     painter->drawPixmap(-mMinutePix->width()/2.0 , -mMinutePix->height()+3 , mMinutePix->width(), mMinutePix->height(), *mMinutePix);
     painter->restore();
 
-    painter->save();
-    painter->rotate(6.0 * (time.second() + time.msec() / 1000.0));
-    painter->drawPixmap(-mSecondsPix->width()/2.0 , -mSecondsPix->height()+3 , mSecondsPix->width(), mSecondsPix->height(), *mSecondsPix);
-    painter->restore();
+//    painter->save();
+//    painter->rotate(6.0 * (time.second() + time.msec() / 1000.0));
+//    painter->drawPixmap(-mSecondsPix->width()/2.0 , -mSecondsPix->height()+3 , mSecondsPix->width(), mSecondsPix->height(), *mSecondsPix);
+//    painter->restore();
 
     painter->drawPixmap(-mCenterPix->width()/2.0, -mCenterPix->height()/2.0, mCenterPix->width(), mCenterPix->height(), *mCenterPix);
     painter->restore();

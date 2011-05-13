@@ -57,7 +57,7 @@ private:
     QPixmap* mCenterPix;
     QPixmap* mHourPix;
     QPixmap* mMinutePix;
-    QPixmap* mSecondsPix;
+//    QPixmap* mSecondsPix;
     int mTimerId;
 };
 
