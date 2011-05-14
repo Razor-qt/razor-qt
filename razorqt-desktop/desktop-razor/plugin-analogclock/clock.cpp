@@ -33,7 +33,8 @@
 #include <QGraphicsScene>
 //#include <QInputDialog>
 #include <QPainter>
-//#include <QStyleOptionGraphicsItem>
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QTime>
 #include <QTimerEvent>
 #include "configuredialog.h"
@@ -91,7 +92,19 @@ QString Clock::instanceInfo()
 
 void Clock::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
-    setGeometry(position.x(), position.y(), mClockPix->width(), mClockPix->height());
+    int x = position.x();
+    int y=position.y();
+
+    if (x<0)
+    {
+        x = QApplication::desktop()->availableGeometry().width()- mClockPix->width() - (-position.x());
+    }
+
+    if (y<0)
+    {
+        y = QApplication::desktop()->availableGeometry().height() - mClockPix->height() - (-position.y());
+    }
+    setGeometry(x, y, mClockPix->width(), mClockPix->height());
 }
 
 
