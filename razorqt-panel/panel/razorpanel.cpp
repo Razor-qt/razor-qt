@@ -379,16 +379,9 @@ void RazorPanelPrivate::realign()
             break;
     }
 
-
     q->setGeometry(rect);
-//}
 
 
-/************************************************
-
- ************************************************/
-//void RazorPanelPrivate::setStrut()
-//{
     // Reserve our space on the screen ..........
     XfitMan xf = xfitMan();
     Window wid = q->effectiveWinId();
@@ -666,9 +659,9 @@ void RazorPanelPrivate::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu* menu = popupMenu(0);
 
-    menu->addSeparator();
-    QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit"), "Exit");
-    connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
+    //menu->addSeparator();
+    //QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit"), "Exit");
+    //connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     menu->exec(event->globalPos());
     delete menu;
