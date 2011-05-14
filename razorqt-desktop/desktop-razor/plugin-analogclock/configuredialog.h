@@ -24,47 +24,29 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef CLOCK_H
-#define CLOCK_H
 
-//#include <QGraphicsItem>
-#include <QGraphicsWidget>
-#include <razorqt/readsettings.h>
-#include <desktopwidgetplugin.h>
+#ifndef CONFIGUREDIALOG_H
+#define CONFIGUREDIALOG_H
 
-class QPixmap;
+#include <QDialog>
 
-class Clock : public DesktopWidgetPlugin, public QGraphicsWidget
+namespace Ui {
+    class ConfigureDialog;
+}
+
+class ConfigureDialog : public QDialog
 {
+    Q_OBJECT
+
 public:
-    Clock(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
-    ~Clock();
+    explicit ConfigureDialog(QWidget *parent = 0);
+    ~ConfigureDialog();
 
-    QString instanceInfo();
-
-    void setSizeAndPosition(const QPointF & position, const QSizeF & size);
-    void save();
-    void configure();
-
-    bool blockGlobalMenu() { return false; }
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget=0);
-
-protected:
-    virtual void timerEvent(QTimerEvent* event);
+    bool showSecondsHand() const;
+    void setShowSecondsHand(bool value);
 
 private:
-    void startClock();
-
-    QPixmap* mClockPix;
-    QPixmap* mCenterPix;
-    QPixmap* mHourPix;
-    QPixmap* mMinutePix;
-    QPixmap* mSecondsPix;
-    int mTimerId;
-    bool mShowSeconds;
+    Ui::ConfigureDialog *ui;
 };
 
-EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H
-
-
-#endif
+#endif // CONFIGUREDIALOG_H

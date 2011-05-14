@@ -24,47 +24,30 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef CLOCK_H
-#define CLOCK_H
+#include "configuredialog.h"
+#include "ui_configuredialog.h"
 
-//#include <QGraphicsItem>
-#include <QGraphicsWidget>
-#include <razorqt/readsettings.h>
-#include <desktopwidgetplugin.h>
-
-class QPixmap;
-
-class Clock : public DesktopWidgetPlugin, public QGraphicsWidget
+ConfigureDialog::ConfigureDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::ConfigureDialog)
 {
-public:
-    Clock(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
-    ~Clock();
+    ui->setupUi(this);
+}
 
-    QString instanceInfo();
-
-    void setSizeAndPosition(const QPointF & position, const QSizeF & size);
-    void save();
-    void configure();
-
-    bool blockGlobalMenu() { return false; }
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget=0);
-
-protected:
-    virtual void timerEvent(QTimerEvent* event);
-
-private:
-    void startClock();
-
-    QPixmap* mClockPix;
-    QPixmap* mCenterPix;
-    QPixmap* mHourPix;
-    QPixmap* mMinutePix;
-    QPixmap* mSecondsPix;
-    int mTimerId;
-    bool mShowSeconds;
-};
-
-EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H
+ConfigureDialog::~ConfigureDialog()
+{
+    delete ui;
+}
 
 
-#endif
+bool ConfigureDialog::showSecondsHand() const
+{
+    return ui->showSecondsCheckBox->isChecked();
+}
+
+
+void ConfigureDialog::setShowSecondsHand(bool value)
+{
+   ui->showSecondsCheckBox->setChecked(value);
+}
+
