@@ -57,8 +57,6 @@ RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
     setObjectName("Tray");
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
-    connect(panel(), SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleEvent(XEvent*)));
-
     mValid = startTray();
 }
 
@@ -75,7 +73,7 @@ RazorTray::~RazorTray()
 /************************************************
 
  ************************************************/
-void RazorTray::handleEvent(XEvent* event)
+void RazorTray::x11EventFilter(XEvent* event)
 {
     TrayIcon* icon;
 

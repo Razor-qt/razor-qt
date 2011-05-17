@@ -27,6 +27,7 @@
 #include <QFileInfo>
 #include <QAction>
 #include <QtGui/QMessageBox>
+#include <razorqt/powermanager.h>
 
 #include <razorqt/xdgenv.h>
 //#include <razorbar.h>
@@ -51,6 +52,8 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
 
     addWidget(&mButton);
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+    mPowerManager = new PowerManager(this);
+    mPowerManager->setParentWidget(panel());
 
     settingsChanged();
 
@@ -155,17 +158,7 @@ void RazorMainMenu::buildMenu()
 
     mMenu->addSeparator();
 
-//    QMenu* leaveMenu = mMenu->addMenu(XdgIcon::fromTheme("system-shutdown", 48), tr("Leave"));
-
-//    QAction* act;
-//    act = leaveMenu->addAction(XdgIcon::fromTheme("system-log-out", 48), tr("End session"));
-//    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_logout()));
-
-//    act = leaveMenu->addAction(XdgIcon::fromTheme("system-reboot", 48), tr("Restart computer"));
-//    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_reboot()));
-
-
-//    act = leaveMenu->addAction(XdgIcon::fromTheme("system-shutdown", 48), tr("Tur off computer"));
-//    connect(act, SIGNAL(triggered()), Razor::getInstance().get_handler(), SLOT(sys_shutdown()));
+    QMenu* leaveMenu = mMenu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
+    leaveMenu->addActions(mPowerManager->availableActions());
 }
 

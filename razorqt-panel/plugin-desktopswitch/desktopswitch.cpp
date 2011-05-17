@@ -30,15 +30,13 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
 
     connect(m_buttons, SIGNAL(buttonClicked(int)),
             this, SLOT(setDesktop(int)));
-    connect(panel(), SIGNAL(x11PropertyNotify(XEvent*)),
-            this, SLOT(handleEvent(XEvent*)));
 }
 
 DesktopSwitch::~DesktopSwitch()
 {
 }
 
-void DesktopSwitch::handleEvent(XEvent* _event)
+void DesktopSwitch::x11EventFilter(XEvent* _event)
 {
     if (_event->type == PropertyNotify)
     {

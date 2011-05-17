@@ -21,6 +21,8 @@
 
 #include <QApplication>
 
+class RazorPanel;
+
 class RazorPanelApplication : public QApplication
 {
     Q_OBJECT
@@ -28,9 +30,11 @@ public:
     explicit RazorPanelApplication(int& argc, char** argv);
     virtual bool x11EventFilter(XEvent* event);
 
-signals:
-    void x11PropertyNotify(XEvent* event);
+    RazorPanel* panel() const { return mPanel; }
+    void setPanel(RazorPanel* panel);
 
+private:
+    RazorPanel* mPanel;
 };
 
 

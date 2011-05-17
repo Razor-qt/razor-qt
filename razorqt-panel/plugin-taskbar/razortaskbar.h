@@ -34,11 +34,11 @@ public:
     explicit RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     virtual ~RazorTaskBar();
 
+    virtual void x11EventFilter(XEvent* event);
+
 public slots:
     void activeWindowChanged();
 
-private slots:
-    void handleXEvent(XEvent* );
 
 private:
     void refreshTaskList();

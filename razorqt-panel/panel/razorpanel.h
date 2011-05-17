@@ -52,12 +52,12 @@ public:
     bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
 
     virtual QMenu* popupMenu(QWidget *parent) const;
+    void x11EventFilter(XEvent* event);
 
 public slots:
     void show();
 
 signals:
-    void x11PropertyNotify(XEvent* event);
     void positionChanged();
     void layoutDirectionChanged(QBoxLayout::Direction direction);
     

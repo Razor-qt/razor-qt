@@ -29,6 +29,7 @@
 
 class QMenu;
 class RazorBar;
+class PowerManager;
 
 class RazorMainMenu : public RazorPanelPlugin
 {
@@ -51,7 +52,7 @@ private:
     QMenu* mMenu;
     MenuStyle mTopMenuStyle;
     MenuStyle mMenuStyle;
-
+    PowerManager* mPowerManager;
 
     void buildMenu();
 

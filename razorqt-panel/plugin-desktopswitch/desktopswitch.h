@@ -17,9 +17,7 @@ public:
 
     virtual Alignment preferredAlignment() const { return AlignRight; }
 
-
-public slots:
-    void handleEvent(XEvent* event);
+    virtual void x11EventFilter(XEvent* event);
     
 private:
     QButtonGroup * m_buttons;

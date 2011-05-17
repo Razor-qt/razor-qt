@@ -17,6 +17,7 @@
 *********************************************************************/
 
 #include "razorpanelapplication.h"
+#include "razorpanel.h"
 #include <X11/Xlib.h>
 
 
@@ -24,8 +25,18 @@
 
  ************************************************/
 RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
-    : QApplication(argc, argv)
+    : QApplication(argc, argv),
+    mPanel(0)
 {
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelApplication::setPanel(RazorPanel* panel)
+{
+    mPanel = panel;
 }
 
 
@@ -34,6 +45,7 @@ RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
  ************************************************/
 bool RazorPanelApplication::x11EventFilter(XEvent * event)
 {
-    emit x11PropertyNotify(event);
+    if (mPanel)
+        mPanel->x11EventFilter(event);
     return false;
 }

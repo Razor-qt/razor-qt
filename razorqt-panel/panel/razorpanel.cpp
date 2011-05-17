@@ -103,8 +103,6 @@ RazorPanel::RazorPanel(QWidget *parent) :
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
     setObjectName("RazorPenel");
-
-    connect(qApp, SIGNAL(x11PropertyNotify(XEvent*)), this, SIGNAL(x11PropertyNotify(XEvent*)));
 }
 
 
@@ -626,6 +624,19 @@ RazorPanel::Position RazorPanel::position() const
 {
     Q_D(const RazorPanel);
     return d->position();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanel::x11EventFilter(XEvent* event)
+{
+    Q_D(RazorPanel);
+    foreach (RazorPanelPlugin* plugin, d->mPlugins)
+    {
+        plugin->x11EventFilter(event);
+    }
 }
 
 

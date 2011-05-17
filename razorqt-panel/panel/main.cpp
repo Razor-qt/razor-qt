@@ -38,8 +38,9 @@ int main(int argc, char *argv[])
     translator.load(QString("%1/razor-panel_%3.qm").arg(TRANSLATIONS_DIR, locale));
     a.installTranslator(&translator);
 
-    RazorPanel window;
-    window.show();
+    RazorPanel panel;
+    a.setPanel(&panel);
+    panel.show();
 
     return a.exec();
 

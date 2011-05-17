@@ -45,7 +45,6 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 {
     setObjectName("TaskBar");
 
-    connect(panel(), SIGNAL(x11PropertyNotify(XEvent*)), this, SLOT(handleXEvent(XEvent*)));
     QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);
@@ -112,7 +111,7 @@ void RazorTaskBar::refreshTaskList()
             // -1 is here due the last stretchable item
             layout()->insertWidget(layout()->count()-1, btn);
             // now I want to set higher stretchable priority for buttons
-            // to suppress stretchItem (last item) defauklt value which
+            // to suppress stretchItem (last item) default value which
             // will remove that anoying aggresive space at the end -- petr
             layout()->setStretch(layout()->count()-2, 1);
         }
@@ -142,7 +141,7 @@ void RazorTaskBar::activeWindowChanged()
 /************************************************
 
  ************************************************/
-void RazorTaskBar::handleXEvent(XEvent* event)
+void RazorTaskBar::x11EventFilter(XEvent* event)
 {
 
     switch (event->type)

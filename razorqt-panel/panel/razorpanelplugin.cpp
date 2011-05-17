@@ -253,6 +253,15 @@ void RazorPanelPluginPrivate::setMovable(bool movable)
 /************************************************
 
  ************************************************/
+void RazorPanelPlugin::x11EventFilter(XEvent* event)
+{
+    Q_UNUSED(event)
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPlugin::paintEvent(QPaintEvent* event)
 {
     Q_D(RazorPanelPlugin);

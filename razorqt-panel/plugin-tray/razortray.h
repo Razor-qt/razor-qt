@@ -44,8 +44,13 @@ public:
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
 
+    /// This handles the events we get from the Razorplugin subsystem
+    virtual void x11EventFilter(XEvent* event);
+
+
 signals:
     void iconSizeChanged(int iconSize);
+
 
 private:
     Visual* getVisual();
@@ -63,9 +68,6 @@ private:
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
-private slots:
-    /// This handles the events we get from the Razorplugin subsystem
-    void handleEvent(XEvent* event);
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
