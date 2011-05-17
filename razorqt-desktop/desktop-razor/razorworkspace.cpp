@@ -292,6 +292,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 
 void RazorWorkSpace::wheelEvent(QWheelEvent * e)
 {
+    //! \todo TODO/FIXME: wheel event is disabled because openbox handles it on its owns. Check it for different WMs... maybe we should consume XLib event instead...s
 #if 0
     int max = xfitMan().getNumDesktop() - 1;
     int delta = e->delta() > 0 ? 1 : -1;
