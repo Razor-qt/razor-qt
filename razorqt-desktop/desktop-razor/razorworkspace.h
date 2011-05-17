@@ -106,7 +106,4 @@ private slots:
     void addPlugin(RazorPluginInfo* pluginInfo);
 };
 
-
-
-
 #endif

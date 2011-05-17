@@ -136,7 +136,7 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
     
     foreach (QString configId, bg.plugins)
     {
-        qDebug() << "Plugin conf id" << configId << m_config->settings();
+        qDebug() << "RazorWorkSpace::setConfig() Plugin conf id" << configId << m_config->settings();
         
         QSettings * s = m_config->settings();
         s->beginGroup(configId);
@@ -153,11 +153,20 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
         s->endGroup();
         
         qDebug() << libName << position;
-        QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "lib" + libName + ".so";
+        RazorPluginInfo * pluginInfo = mAvailablePlugins.find(libName);
+        if (! pluginInfo)
+        {
+            qDebug() << "RazorWorkSpace::setConfig() Plugin" << libName << "not found";
+            continue;
+        }
 
-        qDebug() << "RazorDesktop: try to load " << libraryFileName;
+        QLibrary * lib = pluginInfo->loadLibrary(DESKTOP_PLUGIN_DIR);
+        if (!lib)
+        {
+            qDebug() << "RazorWorkSpace::setConfig() Library" << libName << "is not loaded";
+            continue;
+        }
 
-        QLibrary * lib = new QLibrary(libraryFileName);
         QGraphicsItem * item = loadPlugin(lib, configId);
         DesktopWidgetPlugin * plugin = getPluginFromItem(item);
         if (plugin)
