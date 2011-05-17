@@ -292,6 +292,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 
 void RazorWorkSpace::wheelEvent(QWheelEvent * e)
 {
+#if 0
     int max = xfitMan().getNumDesktop() - 1;
     int delta = e->delta() > 0 ? 1 : -1;
     int current = xfitMan().getActiveDesktop() + delta;
@@ -302,6 +303,9 @@ void RazorWorkSpace::wheelEvent(QWheelEvent * e)
         current = max;
 
     xfitMan().setActiveDesktop(current);
+#else
+    QGraphicsView::wheelEvent(e);
+#endif
 }
 
 void RazorWorkSpace::arrangeWidgets(bool start)
