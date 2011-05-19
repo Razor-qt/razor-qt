@@ -4,7 +4,7 @@
 <context>
     <name>Clock</name>
     <message>
-        <location filename="../clock.cpp" line="87"/>
+        <location filename="../clock.cpp" line="89"/>
         <source>Clock</source>
         <translation>Часы</translation>
     </message>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
-        <translation></translation>
+        <translation>Показывать &amp;секундную стрелку</translation>
     </message>
 </context>
 </TS>
