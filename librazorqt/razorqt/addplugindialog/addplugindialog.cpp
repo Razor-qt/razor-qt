@@ -132,7 +132,6 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
     for (int i=0; i< mPlugins->length(); ++i)
     {
         const RazorPluginInfo* plugin = mPlugins->at(i);
-        qDebug() << plugin->name();
         QListWidgetItem* item = new QListWidgetItem(ui->pluginList);
         item->setText(QString("<b>%1</b><br>\n%2\n").arg(plugin->name(), plugin->comment()));
         item->setIcon(plugin->icon(fallIco));
