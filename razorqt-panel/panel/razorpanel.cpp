@@ -538,15 +538,16 @@ void RazorPanelPrivate::pluginMoved(QWidget* pluginWidget)
         if (mLayout->itemAt(i) == mSpacer)
         {
             plugin->setAlignment(RazorPanelPlugin::AlignRight);
-            return;
+            break;
         }
 
         if (mLayout->itemAt(i)->widget() == plugin)
         {
             plugin->setAlignment(RazorPanelPlugin::AlignLeft);
-            return;
+            break;
         }
     }
+    saveSettings();
 }
 
 
@@ -586,7 +587,6 @@ void RazorPanelPrivate::addPlugin(RazorPluginInfo *pluginInfo)
         for (int i=2; true; ++i)
         {
             sectionName = QString("%1%2").arg(pluginInfo->id()).arg(i);
-            qDebug() << "   -" << sectionName;
             if (!groups.contains(sectionName))
                 break;
         }
@@ -602,6 +602,8 @@ void RazorPanelPrivate::addPlugin(RazorPluginInfo *pluginInfo)
         mLayout->addWidget(plugin);
     else
         mLayout->insertWidget(0, plugin);
+
+    saveSettings();
 }
 
 
@@ -795,6 +797,7 @@ void RazorPanelPrivate::onRemovePlugin()
     mSettings->remove(a->plugin()->configId());
     mPlugins.removeAll(a->plugin());
     delete a->plugin();
+    saveSettings();
 }
 
 
@@ -813,5 +816,6 @@ void RazorPanelPrivate::switchPosition()
     realign();
     emit q->layoutDirectionChanged(q->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom);
     emit q->positionChanged();
+    saveSettings();
 }
 
