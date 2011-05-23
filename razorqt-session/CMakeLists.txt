@@ -31,3 +31,6 @@ QT4_WRAP_CPP(MOCS ${razor-session_MOCS})
 add_executable ( razor-session ${razor-session_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 target_link_libraries ( razor-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so )
 INSTALL(TARGETS razor-session RUNTIME DESTINATION bin)
+
+install(PROGRAMS resources/xdg-open resources/xdg-mime DESTINATION bin/razor)
+add_definitions ( -DPATH_PREPEND=\"${CMAKE_INSTALL_PREFIX}/bin/razor\" )

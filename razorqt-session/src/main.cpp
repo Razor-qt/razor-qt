@@ -82,6 +82,7 @@ int main(int argc, char **argv)
     qInstallMsgHandler(dbgMessageOutput);
 #endif
     QApplication app(argc, argv);
+    qDebug() << "Razor Session start";
 
     char* session = NULL;
     int c;
@@ -93,6 +94,12 @@ int main(int argc, char **argv)
             break;
         }
     }
+    
+    QByteArray path(qgetenv("PATH"));
+    path = path.prepend(":");
+    path = path.prepend(PATH_PREPEND);
+    qDebug() << "Setting special PATH variable:" << path;
+    qputenv("PATH", path);
 
     RazorModuleManager modman(session);
     new SessionDBusAdaptor(&modman);
