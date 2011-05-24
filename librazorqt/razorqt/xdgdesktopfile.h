@@ -73,9 +73,9 @@ public:
 
 
     /*! A Exec value consists of an executable program optionally followed by one or more arguments.
-        This function expands this arguments and returns command line string.
+        This function expands this arguments and returns command line string parts.
         @par urls - A list of files or URLS. Each file is passed as a separate argument to the result string program.*/
-    QString expandExecString(const QStringList& urls = QStringList()) const;
+    QStringList expandExecString(const QStringList& urls = QStringList()) const;
 
     /*! Starts the program with the optional urls in a new process, and detaches from it. Returns true on success; otherwise returns false.
       @par urls - A list of files or URLS. Each file is passed as a separate argument to the executable program. */
@@ -104,6 +104,7 @@ class XdgDesktopFileCache
 {
 public:
     static XdgDesktopFile* getFile(const QString& fileName);
+    static XdgDesktopFile* getDefaultApp(const QString& mimeType);
 };
 
 

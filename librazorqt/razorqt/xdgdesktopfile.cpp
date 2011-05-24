@@ -60,8 +60,8 @@ public:
 
 protected:
     bool checkTryExec(const QString& progName) const;
-    QString expandExecString(const QStringList& urls) const;
-    int expandMacro(const QString &str, int pos, const QStringList& urls, QStringList &ret) const;
+    QStringList expandExecString(const QStringList& urls) const;
+
 
 private:
     enum IsShow {
@@ -69,29 +69,6 @@ private:
         ShowEnabled,
         ShowDisabled
     };
-    enum Quoting
-    {
-        noquote,
-        singlequote,
-        doublequote,
-        dollarquote,
-        paren,
-        subst,
-        group,
-        math
-    };
-
-    typedef struct
-    {
-        Quoting current;
-        bool dquote;
-    } State;
-
-    typedef struct
-    {
-        QString str;
-        int pos;
-    } Save;
 
     XdgDesktopFile* const q_ptr;
     Q_DECLARE_PUBLIC(XdgDesktopFile);
@@ -102,52 +79,6 @@ private:
     mutable IsShow   mIsShow;
 
 };
-
-
-/************************************************
-
- ************************************************/
-inline static bool isSpecial( QChar cUnicode )
-{
-    static const uchar iqm[] = {
-        0xff, 0xff, 0xff, 0xff, 0xdf, 0x07, 0x00, 0xd8,
-        0x00, 0x00, 0x00, 0x38, 0x01, 0x00, 0x00, 0x78
-    }; // 0-32 \'"$`<>|;&(){}*?#!~[]
-
-    uint c = cUnicode.unicode ();
-    return (c < sizeof(iqm) * 8) && (iqm[c / 8] & (1 << (c & 7)));
-}
-
-
-/************************************************
-
- ************************************************/
-QString quoteArg( const QString &arg )
-{
-    if (!arg.length())
-        return QString::fromLatin1("''");
-    for (int i = 0; i < arg.length(); i++)
-        if (isSpecial( arg.unicode()[i] )) {
-            QChar q( QLatin1Char('\'') );
-            return QString( arg ).replace( q, QLatin1String("'\\''") ).prepend( q ).append( q );
-        }
-    return arg;
-}
-
-
-/************************************************
-
- ************************************************/
-QString joinArgs( const QStringList &args )
-{
-    QString ret;
-    for (QStringList::ConstIterator it = args.begin(); it != args.end(); ++it) {
-        if (!ret.isEmpty())
-            ret.append(QLatin1Char(' '));
-        ret.append(quoteArg(*it));
-    }
-    return ret;
-}
 
 
 /************************************************
@@ -270,7 +201,7 @@ bool XdgDesktopFile::isShow(const QString& environment) const
 /************************************************
 
  ************************************************/
-QString XdgDesktopFile::expandExecString(const QStringList& urls) const
+QStringList XdgDesktopFile::expandExecString(const QStringList& urls) const
 {
     Q_D(const XdgDesktopFile);
     return d->expandExecString(urls);
@@ -305,6 +236,7 @@ bool XdgDesktopFile::startDetached(const QString& url) const
     else
         return d->startDetached(QStringList(url));
 }
+
 
 /************************************************
   Returns an icon specified in this file.
@@ -559,359 +491,162 @@ bool XdgDesktopFilePrivate::checkTryExec(const QString& progName) const
     return false;
 }
 
+
 /************************************************
 
  ************************************************/
-QString XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
+static QStringList parseCombinedArgString(const QString &program)
 {
-    int len;
-    int pos2;
-    ushort ec = '%';
-    State state = { noquote, false };
-    QStack<State> sstack;
-    QStack<Save> ostack;
-    QStringList rst;
-    QString rsts;
+    QStringList args;
+    QString tmp;
+    int quoteCount = 0;
+    bool inQuote = false;
 
-    int pos = 0;
-    QString str = value("Exec").toString();
-
-    while (pos < str.length()) {
-        ushort cc = str.unicode()[pos].unicode();
-        if (cc != ec)
-            goto nohit;
-
-        if (!(len = expandMacro( str, pos, urls, rst )))
-            goto nohit;
-
-        if (len < 0)
-        {
-            pos -= len;
+    // handle quoting. tokens can be surrounded by double quotes
+    // "hello world". three consecutive double quotes represent
+    // the quote character itself.
+    for (int i = 0; i < program.size(); ++i) {
+        if (program.at(i) == QLatin1Char('"')) {
+            ++quoteCount;
+            if (quoteCount == 3) {
+                // third consecutive quote
+                quoteCount = 0;
+                tmp += program.at(i);
+            }
             continue;
         }
-
-        if (state.dquote)
-        {
-            rsts = rst.join( QLatin1String(" ") );
-            rsts.replace( QRegExp(QLatin1String("([$`\"\\\\])")), QLatin1String("\\\\1") );
+        if (quoteCount) {
+            if (quoteCount == 1)
+                inQuote = !inQuote;
+            quoteCount = 0;
         }
-        else if (state.current == dollarquote)
-        {
-            rsts = rst.join( QLatin1String(" ") );
-            rsts.replace( QRegExp(QLatin1String("(['\\\\])")), QLatin1String("\\\\1") );
-        }
-        else if (state.current == singlequote)
-        {
-            rsts = rst.join( QLatin1String(" ") );
-            rsts.replace( QLatin1Char('\''), QLatin1String("'\\''") );
-        }
-        else
-        {
-            if (rst.isEmpty())
-            {
-                str.remove( pos, len );
-                continue;
+        if (!inQuote && program.at(i).isSpace()) {
+            if (!tmp.isEmpty()) {
+                args += tmp;
+                tmp.clear();
             }
-            else
-            {
-                rsts = joinArgs( rst );
-            }
+        } else {
+            tmp += program.at(i);
         }
-        rst.clear();
-        str.replace( pos, len, rsts );
-        pos += rsts.length();
-        continue;
-
-    nohit:
-        if (state.current == singlequote)
-        {
-            if (cc == '\'')
-                state = sstack.pop();
-        }
-        else if (cc == '\\')
-        {
-            // always swallow the char -> prevent anomalies due to expansion
-            pos += 2;
-            continue;
-        }
-        else if (state.current == dollarquote)
-        {
-            if (cc == '\'')
-                state = sstack.pop();
-        }
-        else if (cc == '$')
-        {
-            cc = str.unicode()[++pos].unicode();
-            if (cc == '(')
-            {
-                sstack.push( state );
-                if (str.unicode()[pos + 1].unicode() == '(')
-                {
-                    Save sav = { str, pos + 2 };
-                    ostack.push( sav );
-                    state.current = math;
-                    pos += 2;
-                    continue;
-                }
-                else
-                {
-                    state.current = paren;
-                    state.dquote = false;
-                }
-            }
-            else if (cc == '{')
-            {
-                sstack.push( state );
-                state.current = subst;
-            }
-            else if (!state.dquote)
-            {
-                if (cc == '\'')
-                {
-                    sstack.push( state );
-                    state.current = dollarquote;
-                }
-                else if (cc == '"')
-                {
-                    sstack.push( state );
-                    state.current = doublequote;
-                    state.dquote = true;
-                }
-            }
-            // always swallow the char -> prevent anomalies due to expansion
-        }
-        else if (cc == '`')
-        {
-            str.replace( pos, 1, QLatin1String("$( " )); // add space -> avoid creating $((
-            pos2 = pos += 3;
-            for (;;)
-            {
-                if (pos2 >= str.length())
-                {
-                    pos = pos2;
-                    return QString();
-                }
-                cc = str.unicode()[pos2].unicode();
-                if (cc == '`')
-                    break;
-                if (cc == '\\')
-                {
-                    cc = str.unicode()[++pos2].unicode();
-                    if (cc == '$' || cc == '`' || cc == '\\' ||
-                        (cc == '"' && state.dquote))
-                    {
-                        str.remove( pos2 - 1, 1 );
-                        continue;
-                    }
-                }
-                pos2++;
-            }
-            str[pos2] = QLatin1Char(')');
-            sstack.push( state );
-            state.current = paren;
-            state.dquote = false;
-            continue;
-        }
-        else if (state.current == doublequote)
-        {
-            if (cc == '"')
-                state = sstack.pop();
-        }
-        else if (cc == '\'')
-        {
-            if (!state.dquote)
-            {
-                sstack.push( state );
-                state.current = singlequote;
-            }
-        }
-        else if (cc == '"')
-        {
-            if (!state.dquote)
-            {
-                sstack.push( state );
-                state.current = doublequote;
-                state.dquote = true;
-            }
-        }
-        else if (state.current == subst)
-        {
-            if (cc == '}')
-                state = sstack.pop();
-        }
-        else if (cc == ')')
-        {
-            if (state.current == math)
-            {
-                if (str.unicode()[pos + 1].unicode() == ')')
-                {
-                    state = sstack.pop();
-                    pos += 2;
-                }
-                else
-                {
-                    // false hit: the $(( was a $( ( in fact
-                    // ash does not care, but bash does
-                    pos = ostack.top().pos;
-                    str = ostack.top().str;
-                    ostack.pop();
-                    state.current = paren;
-                    state.dquote = false;
-                    sstack.push( state );
-                }
-                continue;
-            }
-            else if (state.current == paren)
-                state = sstack.pop();
-            else
-                break;
-        }
-        else if (cc == '}')
-        {
-            if (state.current == group)
-                state = sstack.pop();
-            else
-                break;
-        }
-        else if (cc == '(')
-        {
-            sstack.push( state );
-            state.current = paren;
-        }
-        else if (cc == '{')
-        {
-            sstack.push( state );
-            state.current = group;
-        }
-        pos++;
     }
+    if (!tmp.isEmpty())
+        args += tmp;
 
-    if (sstack.empty())
-        return str;
-    else
-        return QString();
+    return args;
 }
 
 
 /************************************************
 
  ************************************************/
-int XdgDesktopFilePrivate::expandMacro(const QString &str, int pos, const QStringList& urls, QStringList &ret) const
+QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
 {
-    uint option = str[pos + 1].unicode();
-    switch (option)
+    QStringList result;
+    QStringList tokens = parseCombinedArgString(value("Exec").toString());
+    foreach (QString token, tokens)
     {
         // ----------------------------------------------------------
         // A single file name, even if multiple files are selected.
-        case 'f':
+        if (token == "%f")
         {
             if (!urls.isEmpty())
-                ret << urls.at(0);
-            break;
+                result << urls.at(0);
+            continue;
         }
 
         // ----------------------------------------------------------
         // A list of files. Use for apps that can open several local files at once.
         // Each file is passed as a separate argument to the executable program.
-        case 'F':
+        if (token == "%F")
         {
-            ret << urls;
-            break;
+            result << urls;
+            continue;
         }
 
         // ----------------------------------------------------------
         // A single URL. Local files may either be passed as file: URLs or as file path.
-        case 'u':
+        if (token == "%u")
         {
-            if (urls.isEmpty())
-                break;
-
-            QUrl url;
-            url.setUrl(urls.at(0));
-            ret << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
-            break;
+            if (!urls.isEmpty())
+            {
+                QUrl url;
+                url.setUrl(urls.at(0));
+                result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
+            }
+            continue;
         }
 
         // ----------------------------------------------------------
         // A list of URLs. Each URL is passed as a separate argument to the executable
         // program. Local files may either be passed as file: URLs or as file path.
-        case 'U':
+        if (token == "%U")
         {
             foreach (QString s, urls)
             {
                 QUrl url(s);
-                ret << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
+                result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
             }
-            break;
+            continue;
         }
 
         // ----------------------------------------------------------
         // The Icon key of the desktop entry expanded as two arguments, first --icon
         // and then the value of the Icon key. Should not expand to any arguments if
         // the Icon key is empty or missing.
-        case 'i':
+        if (token == "%i")
         {
             QString icon = value("Icon").toString();
             if (!icon.isEmpty())
-                ret << "-icon" << icon.replace('%', "%%");
-
-            break;
+                result << "-icon" << icon.replace('%', "%%");
+            continue;
         }
 
 
         // ----------------------------------------------------------
         // The translated name of the application as listed in the appropriate Name key
         // in the desktop entry.
-        case 'c':
+        if (token == "%c")
         {
-            ret << localizedValue("Name").toString().replace('%', "%%");
-            break;
+            result << localizedValue("Name").toString().replace('%', "%%");
+            continue;
         }
 
         // ----------------------------------------------------------
         // The location of the desktop file as either a URI (if for example gotten from
         // the vfolder system) or a local filename or empty if no location is known.
-        case 'k':
+        if (token == "%k")
         {
-            ret << fileName().replace('%', "%%");
+            result << fileName().replace('%', "%%");
             break;
         }
 
         // ----------------------------------------------------------
         // Deprecated.
         // Deprecated field codes should be removed from the command line and ignored.
-        case 'd':
-        case 'D':
-        case 'n':
-        case 'N':
-        case 'v':
-        case 'm':
-            return -2;
+        if (token == "%d" || token == "%D" ||
+            token == "%n" || token == "%N" ||
+            token == "%v" || token == "%m"
+            )
+        {
+            continue;
+        }
 
         // ----------------------------------------------------------
-        case '%':
-            ret = QStringList(QLatin1String("%"));
-            break;
-
-        // ----------------------------------------------------------
-        default:
-            return -2; // subst with same and skip
+        result << token;
     }
 
-    return 2;
+    return result;
 }
-
 
 /************************************************
 
  ************************************************/
 bool XdgDesktopFilePrivate::startDetached(const QStringList& urls) const
 {
-    //qDebug() << "XdgDesktopFilePrivate::startDetached: fileName" << fileName();
-    qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
-    QString cmd = expandExecString(urls);
-    //qDebug() << "XdgDesktopFilePrivate.startDetached: cmd=" << cmd;
-    if (cmd.isEmpty())
+    //qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
+    QStringList args = expandExecString(urls);
+
+    if (args.isEmpty())
         return false;
 
     if (value("Terminal").toBool())
@@ -920,12 +655,13 @@ bool XdgDesktopFilePrivate::startDetached(const QStringList& urls) const
         if (term.isEmpty())
             term = "xterm";
 
-        cmd = QString("%1 -e %2").arg(term, cmd);
+        args.prepend("-e");
+        args.prepend(term);
     }
 
-    qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << cmd;
-
-    return QProcess::startDetached(cmd);
+    //qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << args;
+    QString cmd = args.takeFirst();
+    return QProcess::startDetached(cmd, args);
 }
 
 
@@ -993,7 +729,7 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
     {
         // Search desktop file ..................
         QString filePath = findDesktopFile(fileName);
-        qDebug() << "Sokoloff XdgDesktopFileCache::getFile found fileName" << fileName << filePath;
+        //qDebug() << "Sokoloff XdgDesktopFileCache::getFile found fileName" << fileName << filePath;
         XdgDesktopFile* desktopFile;
 
         if (!mDesktopFiles.contains(filePath))
@@ -1008,6 +744,67 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
         mDesktopFiles.insert(fileName, desktopFile);
         return desktopFile;
     }
+}
+
+
+
+/************************************************
+
+ ************************************************/
+void loadMimeCacheDir(const QString& dirName, QHash<QString, XdgDesktopFile*>* cache)
+{
+    QDir dir(dirName);
+
+    // Working recursively ............
+    QFileInfoList files = dir.entryInfoList(QStringList(), QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    foreach (QFileInfo f, files)
+    {
+        if (f.isDir())
+        {
+            loadMimeCacheDir(f.absoluteFilePath(), cache);
+            continue;
+        }
+
+
+        XdgDesktopFile* df = XdgDesktopFileCache::getFile(f.absoluteFilePath());
+        if (!df)
+            continue;
+
+        QStringList mimes = df->value("MimeType").toString().split(';', QString::SkipEmptyParts);
+        int newPref= df->value("InitialPreference", 0).toInt();
+
+        foreach (QString m, mimes)
+        {
+            // If the association doesn't exist or its priority is less.
+            if (!cache->contains(m) ||
+                cache->value(m)->value("InitialPreference", 0).toInt() < newPref)
+                cache->insert(m, df);
+        }
+    }
+
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
+{
+    static QHash<QString, XdgDesktopFile*> cache;
+    // Initialize the cache .....................
+    if (cache.isEmpty())
+    {
+        QStringList dataDirs = XdgEnv::dataDirs().split(":", QString::SkipEmptyParts);
+        foreach (QString dirName, dataDirs)
+            loadMimeCacheDir(dirName + "/applications", &cache);
+    }
+    // ..........................................
+
+
+    if (cache.contains(mimeType))
+        return cache.value(mimeType);
+    else
+        return 0;
 }
 
 
