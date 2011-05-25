@@ -36,7 +36,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QtDebug>
 #include <razorqt/xdgicon.h>
-
+#include <razorqt/razormime.h>
 
 IconViewLabel::IconViewLabel(const QString & text, QGraphicsItem * parent)
     : QGraphicsTextItem(text, parent)
@@ -130,7 +130,7 @@ void IconBase::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             break;
         default:
             // ignored
-            1;
+            break;
     }
 }
 
@@ -186,16 +186,26 @@ FileIcon::FileIcon(const QString & file,
       m_file(file)
 {
     QFileInfo fi(file);
-    QFileIconProvider ip;
 
+    m_mimeInfo = new RazorMimeInfo(fi);
     setText(fi.fileName());
     setToolTip(file);
-    setIcon(ip.icon(fi));
+    if (fi.isDir())
+    {
+        QFileIconProvider ip;
+        setIcon(ip.icon(fi));
+    }
+    else
+        setIcon(m_mimeInfo->icon());
 }
 
 void FileIcon::launchApp()
 {
-    qDebug() << "FileIcon::launchApp()" << m_file;
-    QDesktopServices::openUrl(QUrl::fromLocalFile(m_file));
+    qDebug() << "FileIcon::launchApp()" << m_file << m_mimeInfo->mimeType();
+
+    XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(m_mimeInfo->mimeType());
+    qDebug() << "FOUND:" << (desktopFile != 0);
+    if (desktopFile)
+        desktopFile->startDetached(m_file);
 }
 
