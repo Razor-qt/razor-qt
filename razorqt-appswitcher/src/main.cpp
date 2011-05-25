@@ -41,6 +41,7 @@ int main(int argc, char **argv)
 {
     RazorAppSwitcher::Application a(argc, argv);
     a.setQuitOnLastWindowClosed(false);
+    a.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
     return a.exec();
 }

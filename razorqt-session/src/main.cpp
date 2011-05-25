@@ -25,6 +25,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QApplication>
+#include <QIcon>
 
 #include "razormodman.h"
 #include "sessiondbusadaptor.h"
@@ -83,6 +84,7 @@ int main(int argc, char **argv)
 #endif
     QApplication app(argc, argv);
     qDebug() << "Razor Session start";
+    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
     char* session = NULL;
     int c;

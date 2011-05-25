@@ -26,6 +26,7 @@
 #include <QApplication>
 #include <QLibrary>
 #include <QtDebug>
+#include <QIcon>
 
 #include <razorqt/readsettings.h>
 #include "desktopplugin.h"
@@ -37,6 +38,7 @@ int main (int argc, char* argv[])
     //TODO make singleton QApplication that does all this shit, then make razorsettings and stylesettings available and fix all the other stuff with it
 
     QApplication app(argc,argv);
+    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
     ReadSettings s("razor");
     ReadTheme theme(s.settings()->value("theme", "").toString());
