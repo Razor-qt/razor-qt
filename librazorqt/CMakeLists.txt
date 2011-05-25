@@ -12,6 +12,13 @@ endif (NOT CMAKE_BUILD_TYPE)
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
 find_package ( X11 REQUIRED )
+
+find_file(MAGIC_H magic.h)
+if(NOT MAGIC_H)
+    message(SEND_ERROR "A required package 'libmagic' was not found")
+endif(NOT MAGIC_H)
+
+
 include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
@@ -42,6 +49,7 @@ set ( razorqt_HDRS
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     razorqt/addplugindialog/addplugindialog.h
+    razorqt/razormime.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
@@ -70,6 +78,7 @@ set ( razorqt_SRCS
     razorqt/razorplugininfo.cpp
     razorqt/powermanager.cpp
     razorqt/addplugindialog/addplugindialog.cpp
+    razorqt/razormime.cpp
     # upower. Maybe standalone lib?
     librazor-upower/battery.cpp
     librazor-upower/ucpufreq.cpp
@@ -114,7 +123,7 @@ include(RazorLibSuffix)
 
 
 add_library ( razorqt SHARED ${razorqt_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
-target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB})
+target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} magic)
 set_target_properties(razorqt PROPERTIES
   VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
   SOVERSION ${MAJOR_VERSION}

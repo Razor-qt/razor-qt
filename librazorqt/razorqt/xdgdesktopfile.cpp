@@ -754,6 +754,11 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 void loadMimeCacheDir(const QString& dirName, QHash<QString, XdgDesktopFile*>* cache)
 {
     QDir dir(dirName);
+    // Directories have the type "application/x-directory", but in the desktop file
+    // are shown as "inode/directory". To handle these cases, we use this hash.
+    QHash<QString, QString> specials;
+    specials.insert("inode/directory", "application/x-directory");
+
 
     // Working recursively ............
     QFileInfoList files = dir.entryInfoList(QStringList(), QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
@@ -778,7 +783,11 @@ void loadMimeCacheDir(const QString& dirName, QHash<QString, XdgDesktopFile*>* c
             // If the association doesn't exist or its priority is less.
             if (!cache->contains(m) ||
                 cache->value(m)->value("InitialPreference", 0).toInt() < newPref)
+            {
                 cache->insert(m, df);
+                if (specials.contains(m))
+                    cache->insert(specials.value(m), df);
+            }
         }
     }
 
