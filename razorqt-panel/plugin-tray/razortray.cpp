@@ -200,8 +200,8 @@ Visual* RazorTray::getVisual()
                 break;
             }
         }
+        XFree (xvi);
     }
-    XFree (xvi);
 
     return visual;
     // check composite manager
@@ -275,16 +275,19 @@ bool RazorTray::startTray()
                     1);
 
     // ** Visual ********************************
-    VisualID vid = XVisualIDFromVisual(getVisual());
-
-    XChangeProperty(QX11Info::display(),
-                    mTrayId,
-                    xfitMan().atom("_NET_SYSTEM_TRAY_VISUAL"),
-                    XA_VISUALID,
-                    32,
-                    PropModeReplace,
-                    (unsigned char*)&vid,
-                    1);
+    Visual* visual = getVisual();
+    if (visual)
+    {
+        VisualID vid = XVisualIDFromVisual(visual);
+        XChangeProperty(QX11Info::display(),
+                        mTrayId,
+                        xfitMan().atom("_NET_SYSTEM_TRAY_VISUAL"),
+                        XA_VISUALID,
+                        32,
+                        PropModeReplace,
+                        (unsigned char*)&vid,
+                        1);
+    }
     // ******************************************
 
 
