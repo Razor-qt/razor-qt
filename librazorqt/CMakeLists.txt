@@ -12,11 +12,7 @@ endif (NOT CMAKE_BUILD_TYPE)
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
 find_package ( X11 REQUIRED )
-
-find_file(MAGIC_H magic.h)
-if(NOT MAGIC_H)
-    message(SEND_ERROR "A required package 'libmagic' was not found")
-endif(NOT MAGIC_H)
+find_package ( LibMagic REQUIRED )
 
 
 include ( ${QT_USE_FILE} )
@@ -24,6 +20,7 @@ include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
 	${X11_INCLUDE_DIR}
+	${LIBMAGIC_INCLUDE_DIR}
 	.
 	razorqt
     librazor-upower
@@ -123,7 +120,11 @@ include(RazorLibSuffix)
 
 
 add_library ( razorqt SHARED ${razorqt_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
-target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} magic)
+
+target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+                                 ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
+                                 ${X11_X11_LIB} ${LIBMAGIC_LIBRARY} )
+
 set_target_properties(razorqt PROPERTIES
   VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
   SOVERSION ${MAJOR_VERSION}
@@ -155,3 +156,4 @@ message(STATUS ${CMAKE_INSTALL_PREFIX})
 
 install(TARGETS razorqt DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razorqt_HDRS} DESTINATION include/razorqt)
+
