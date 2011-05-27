@@ -1,0 +1,5 @@
+%NAME% (%VERSION%-1%DIST%) %DIST%; urgency=low
+
+  * Initial release
+
+ -- Sokoloff <sokoloff.a@gmail.com>  %DATE%
