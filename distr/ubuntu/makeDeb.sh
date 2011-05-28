@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-NAME='razor'
+NAME='razor-qt'
 KEY='29EE0D60'
 SVN='https://razor-qt.svn.sourceforge.net/svnroot/razor-qt/trunk'
 RELEASES="maverick natty"
