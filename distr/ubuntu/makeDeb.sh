@@ -47,7 +47,6 @@ fi
 
 if [ -z "$VER" ]; then
     VER=`LANG=C svn info ${SVN} | grep '^Revision:' | awk '{print $2}'`
-    VER=378
     NAME=$NAME-svn
 fi
 
