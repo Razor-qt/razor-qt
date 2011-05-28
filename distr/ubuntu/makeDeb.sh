@@ -69,7 +69,6 @@ for RELEASE in $RELEASES; do
     echo " Build $RELEASE"
     echo "*******************************"
 
-    cd $CUR_DIR
     SRC_DEB_DIR=${DIR}/distr/ubuntu/debian
     cp --force -R ${SRC_DEB_DIR} ${DIR}/ || exit 1
 
@@ -83,9 +82,12 @@ for RELEASE in $RELEASES; do
     done
 
     cd ${DIR} && debuild ${TYPE} -rfakeroot -sa -k${KEY}
+    cd $CUR_DIR
 done
 
-
+# Create send2launchpad.sh script 
+echo "dput ppa:razor-qt/ppa ${NAME}_${VER}*_source.changes" > send2launchpad.sh
+chmod u+x send2launchpad.sh
 
 
 
