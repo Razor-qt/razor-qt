@@ -152,7 +152,6 @@ SET(DOXYGEN_SOURCE_DIR
 #    )
 #endif(DOXYGEN_FOUND)
 
-message(STATUS ${CMAKE_INSTALL_PREFIX})
 
 install(TARGETS razorqt DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razorqt_HDRS} DESTINATION include/razorqt)
