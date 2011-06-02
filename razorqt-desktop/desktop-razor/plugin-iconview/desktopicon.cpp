@@ -162,8 +162,8 @@ DesktopIcon::DesktopIcon(XdgDesktopFile * xdg,
 {
     m_xdg = xdg;
 
-    setText(xdg->value("Name").toString());
-    setToolTip(xdg->value("Comment").toString());
+    setText(xdg->localizedValue("Name").toString());
+    setToolTip(xdg->localizedValue("Comment").toString());
 
     setIcon(xdg->icon(XdgIcon::defaultApplicationIcon()));
 }
