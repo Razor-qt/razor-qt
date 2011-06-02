@@ -34,7 +34,7 @@
 #include <QtDebug>
 #include <QGraphicsTextItem>
 #include <QMessageBox>
-#include <QDateTime>
+#include <QUuid>
 
 #include "razorworkspace.h"
 #include "workspacemanager.h"
@@ -381,7 +381,7 @@ void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
     if (!lib)
         return;
 
-    QGraphicsItem * item = loadPlugin(lib, QString("%1_%2").arg(pluginInfo->id()).arg(QDateTime::currentMSecsSinceEpoch()));
+    QGraphicsItem * item = loadPlugin(lib, QString("%1_%2").arg(pluginInfo->id()).arg(QUuid::createUuid().toString()));
     DesktopWidgetPlugin * plugin = getPluginFromItem(item);
 
     // "clever" positioning
