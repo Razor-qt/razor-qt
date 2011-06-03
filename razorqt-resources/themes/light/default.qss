@@ -127,14 +127,14 @@ TrayIcon {
     border: 0; 
 }
 
-#MainMenu QPushButton {
+#MainMenu > QPushButton {
     border: none;
     qproperty-iconSize: 30px;
     qproperty-icon: url(mainmenu.png);
 }
 
 
-#MainMenu QPushButton::menu-indicator {
+#MainMenu > QPushButton::menu-indicator {
     image: none;
 }
 
