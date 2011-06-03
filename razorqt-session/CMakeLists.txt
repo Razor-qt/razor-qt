@@ -9,6 +9,8 @@ add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
 find_package ( X11 REQUIRED )
 
+include(RazorLibSuffix)
+
 include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
