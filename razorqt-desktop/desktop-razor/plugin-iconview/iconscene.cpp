@@ -55,7 +55,11 @@ void IconScene::setDirImpl(const QString & directory, bool repaint)
     else
     {
         qDebug() << "ERROR config dir" << directory << "does not exist";
-        dirs << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
+        QString d(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+        if (!d.isEmpty() && QDir(d).exists())
+            dirs << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
+        else
+            dirs << QDir::homePath();
     }
 
     if (m_fsw)
