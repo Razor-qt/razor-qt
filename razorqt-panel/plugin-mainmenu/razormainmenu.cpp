@@ -91,6 +91,9 @@ void RazorMainMenu::showMenu()
     if (!mMenu)
         buildMenu();
 
+    if (!mMenu)
+        return;
+
     int x, y;
 
     switch (panel()->position())
@@ -162,6 +165,7 @@ void RazorMainMenu::buildMenu()
     else
     {
         QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+        return;
     }
 
     mMenu->addSeparator();

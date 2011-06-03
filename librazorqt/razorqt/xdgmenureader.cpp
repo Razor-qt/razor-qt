@@ -68,7 +68,7 @@ bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
 {
     if (fileName.isEmpty())
     {
-        mErrorStr = "Menu file not defined.";
+        mErrorStr = tr("Menu file not defined.");
         return false;
     }
 
