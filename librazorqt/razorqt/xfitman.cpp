@@ -513,6 +513,9 @@ bool XfitMan::acceptWindow(Window window) const
         if (types.contains(atom("_NET_WM_WINDOW_TYPE_DOCK")))         return false;
         if (types.contains(atom("_NET_WM_WINDOW_TYPE_SPLASH")))       return false;
         if (types.contains(atom("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE"))) return false;
+
+        WindowState state = getWindowState(window);
+        if (state.SkipTaskBar)  return false;
     }
 
     Window transFor = None;
