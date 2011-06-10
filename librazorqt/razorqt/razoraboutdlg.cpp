@@ -26,7 +26,7 @@ RazorAboutDLGPrivate::RazorAboutDLGPrivate()
     "<p>The razor-qt Crew consists of (in alphabetical order):</p>"
     "<ul>"
     "<li>Christopher 'VdoP' Regali</li>"
-    "<li>Alexander Sokoloff&lt;<a href='mailto:sokoloff.a@gmail.com'>sokoloff.a@gmail.com</a>&gt;</li>"
+    "<li>Alexander Sokolov &lt;<a href='mailto:sokoloff.a@gmail.com'>sokoloff.a@gmail.com</a>&gt;</li>"
     "<li>Petr Vanek &lt;<a href='mailto:petr@scribus.info'>petr@scribus.info</a>&gt;</li>"
     "</ul>"
     "<p>If you want to contribute, just visit <a href=\"http://razor-qt.sf.net\">razor-qt.sf.net</a>.</p>"
