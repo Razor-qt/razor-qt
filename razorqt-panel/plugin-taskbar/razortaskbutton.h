@@ -29,10 +29,23 @@
 
 #include <QtGui/QToolButton>
 #include <QtCore/QHash>
-
+#include <QtGui/QProxyStyle>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
+
+class QPainter;
+class QPalette;
+
+class ElidedButtonStyle: public QProxyStyle
+{
+public:
+    ElidedButtonStyle(QStyle* style=0): QProxyStyle(style) {}
+
+    void drawItemText(QPainter* painter, const QRect& rect, int flags,
+                      const QPalette & pal, bool enabled, const QString & text,
+                      QPalette::ColorRole textRole = QPalette::NoRole ) const;
+};
 
 
 class RazorTaskButton : public QToolButton
@@ -72,6 +85,7 @@ protected:
 private:
     Window mWindow;
     static RazorTaskButton* mCheckedBtn;
+    ElidedButtonStyle mStyle;
 
 private slots:
     void btnClicked(bool checked);

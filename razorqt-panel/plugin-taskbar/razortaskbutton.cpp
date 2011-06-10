@@ -29,12 +29,25 @@
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
 #include <QtGui/QContextMenuEvent>
+#include <QtGui/QPainter>
 
 #include "razortaskbutton.h"
 #include <razorqt/xfitman.h>
 #include <QX11Info>
 
 #define MAX_BTN_WIDTH  400
+
+
+/************************************************
+
+************************************************/
+void ElidedButtonStyle::drawItemText(QPainter* painter, const QRect& rect,
+                    int flags, const QPalette & pal, bool enabled,
+                  const QString & text, QPalette::ColorRole textRole) const
+{
+    QString s = painter->fontMetrics().elidedText(text, Qt::ElideRight, rect.width());
+    QProxyStyle::drawItemText(painter, rect, flags, pal, enabled, s, textRole);
+}
 
 
 /************************************************
@@ -61,6 +74,8 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     XSetWindowAttributes attr;
     attr.event_mask = PropertyChangeMask;
     XChangeWindowAttributes(QX11Info::display(), QX11Info::appRootWindow(), CWEventMask, &attr);
+
+    setStyle(&mStyle);
 }
 
 
