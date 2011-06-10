@@ -28,7 +28,7 @@
 #include <razorqt/xdgicon.h>
 #include <razorqt/domhelper.h>
 #include <razorqt/xdgaction.h>
-#include <razorqt/xdgmenu.h>
+#include "xdgmenu.h"
 #include <QtCore/QEvent>
 #include <QDebug>
 

@@ -38,6 +38,8 @@
 
 class QDomDocument;
 class QDomElement;
+class XdgMenuPrivate;
+
 /*! @brief The XdgMenu class implements the "Desktop Menu Specification" from freedesktop.org.
 
  Freedesktop menu is a user-visible hierarchy of applications, typically displayed as a menu.
@@ -58,11 +60,10 @@ class QDomElement;
 
  @sa http://specifications.freedesktop.org/menu-spec/menu-spec-latest.html
  */
+
 class XdgMenu : public QObject
 {
 Q_OBJECT
-friend class XdgMenuItem;
-
 public:
     explicit XdgMenu(const QString& menuFileName, QObject *parent = 0);
     virtual ~XdgMenu();
@@ -70,46 +71,24 @@ public:
     bool read();
     void save(const QString& fileName);
 
-    const QDomDocument xml() const { return mXml; }
-    QString menuFileName() const { return mMenuFileName; }
+    const QDomDocument xml() const;
+    QString menuFileName() const;
 
     QDomElement findMenu(QDomElement& baseElement, const QString& path, bool createNonExisting);
-    QStringList& environments() { return mEnvironments; }
 
-    const QString errorString() const { return mErrorString; }
-    const QString logDir() const { return mLogDir; }
+    /// A list of strings identifying the environments that should display a desktop entry.
+    QStringList& environments();
+
+    const QString errorString() const;
+
+    const QString logDir() const;
     void setLogDir(const QString& directory);
 
     static QString getMenuFileName(const QString& baseName = "applications.menu");
-    
-    
-signals:
-
-public slots:
-
-protected:
-    void simplify(QDomElement& element);
-    void mergeMenus(QDomElement& element);
-    void moveMenus(QDomElement& element);
-    void deleteDeletedMenus(QDomElement& element);
-
-    void processDirectoryEntries(QDomElement& element, const QStringList& parentDirs);
-    void processApps(QDomElement& element);
-    void deleteEmpty(QDomElement& element);
-
-    bool loadDirectoryFile(const QString& fileName, QDomElement& element);
-
 
 private:
-    QString mMenuFileName;
-    QDomDocument mXml;
-//    QHash<QString, XdgDesktopFile*> mDesktopFiles;
-
-    void prependChilds(QDomElement& srcElement, QDomElement& destElement);
-    void appendChilds(QDomElement& srcElement, QDomElement& destElement);
-    QStringList mEnvironments;
-    QString mErrorString;
-    QString mLogDir;
+    XdgMenuPrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(XdgMenu)
 };
 
 

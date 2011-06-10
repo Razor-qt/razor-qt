@@ -30,6 +30,7 @@
 #include "xdgmenurules.h"
 #include "xdgmenuapplinkprocessor.h"
 #include "xdgenv.h"
+#include "xdgmenulayoutprocessor.h"
 
 #include <QDebug>
 #include <QtXml/QDomElement>
@@ -41,15 +42,46 @@
 #include <QtCore/QHash>
 #include <QtCore/QLocale>
 
+class XdgMenuPrivate
+{
+public:
+    XdgMenuPrivate(XdgMenu* parent);
+
+    void simplify(QDomElement& element);
+    void mergeMenus(QDomElement& element);
+    void moveMenus(QDomElement& element);
+    void deleteDeletedMenus(QDomElement& element);
+    void processDirectoryEntries(QDomElement& element, const QStringList& parentDirs);
+    void processApps(QDomElement& element);
+    void deleteEmpty(QDomElement& element);
+    void processLayouts(QDomElement& element);
+
+    bool loadDirectoryFile(const QString& fileName, QDomElement& element);
+    void prependChilds(QDomElement& srcElement, QDomElement& destElement);
+    void appendChilds(QDomElement& srcElement, QDomElement& destElement);
+
+    void saveLog(const QString& logFileName);
+
+    QString mErrorString;
+    QStringList mEnvironments;
+    QString mMenuFileName;
+    QString mLogDir;
+    QDomDocument mXml;
+
+private:
+    XdgMenu* const q_ptr;
+    Q_DECLARE_PUBLIC(XdgMenu)
+};
+
 
 /************************************************
 
  ************************************************/
 XdgMenu::XdgMenu(const QString& menuFileName, QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    d_ptr(new XdgMenuPrivate(this))
 {
-    mMenuFileName = menuFileName;
-    mLogDir = "";
+    d_ptr->mMenuFileName = menuFileName;
 }
 
 
@@ -58,14 +90,77 @@ XdgMenu::XdgMenu(const QString& menuFileName, QObject *parent) :
  ************************************************/
 XdgMenu::~XdgMenu()
 {
+    Q_D(XdgMenu);
+    delete d;
 }
+
+
+/************************************************
+
+ ************************************************/
+XdgMenuPrivate::XdgMenuPrivate(XdgMenu *parent):
+    q_ptr(parent)
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+const QString XdgMenu::logDir() const
+{
+    Q_D(const XdgMenu);
+    return d->mLogDir;
+}
+
 
 /************************************************
 
  ************************************************/
 void XdgMenu::setLogDir(const QString& directory)
 {
-    mLogDir = directory;
+    Q_D(XdgMenu);
+    d->mLogDir = directory;
+}
+
+
+/************************************************
+
+ ************************************************/
+const QDomDocument XdgMenu::xml() const
+{
+    Q_D(const XdgMenu);
+    return d->mXml;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString XdgMenu::menuFileName() const
+{
+    Q_D(const XdgMenu);
+    return d->mMenuFileName;
+}
+
+
+/************************************************
+
+ ************************************************/
+QStringList& XdgMenu::environments()
+{
+    Q_D(XdgMenu);
+    return d->mEnvironments;
+}
+
+
+/************************************************
+
+ ************************************************/
+const QString XdgMenu::errorString() const
+{
+    Q_D(const XdgMenu);
+    return d->mErrorString;
 }
 
 
@@ -74,50 +169,46 @@ void XdgMenu::setLogDir(const QString& directory)
  ************************************************/
 bool XdgMenu::read()
 {
+    Q_D(XdgMenu);
+
     XdgMenuReader reader;
-    if (!reader.load(mMenuFileName))
+    if (!reader.load(d->mMenuFileName))
     {
         qWarning() << reader.errorString();
-        mErrorString = reader.errorString();
+        d->mErrorString = reader.errorString();
         return false;
     }
 
-    mXml = *(reader.xml());
-    QDomElement root = mXml.documentElement();
-    if (!mLogDir.isEmpty())
-      save(mLogDir + "/00-reader.xml");
+    d->mXml = reader.xml();
+    QDomElement root = d->mXml.documentElement();
+    d->saveLog("00-reader.xml");
 
-    simplify(root);
-    if (!mLogDir.isEmpty())
-      save(mLogDir + "/01-simplify.xml");
+    d->simplify(root);
+    d->saveLog("01-simplify.xml");
 
-    mergeMenus(root);
-    if (!mLogDir.isEmpty())
-      save(mLogDir + "/02-mergeMenus.xml");
+    d->mergeMenus(root);
+    d->saveLog("02-mergeMenus.xml");
 
-    moveMenus(root);
-    if (!mLogDir.isEmpty())
-          save(mLogDir + "/03-moveMenus.xml");
+    d->moveMenus(root);
+    d->saveLog("03-moveMenus.xml");
 
-    mergeMenus(root);
-    if (!mLogDir.isEmpty())
-          save(mLogDir + "/04-mergeMenus.xml");
+    d->mergeMenus(root);
+    d->saveLog("04-mergeMenus.xml");
 
-    deleteDeletedMenus(root);
-    if (!mLogDir.isEmpty())
-          save(mLogDir + "/05-deleteDeletedMenus.xml");
+    d->deleteDeletedMenus(root);
+    d->saveLog("05-deleteDeletedMenus.xml");
 
-    processDirectoryEntries(root, QStringList());
-    if (!mLogDir.isEmpty())
-          save(mLogDir + "/06-processDirectoryEntries.xml");
+    d->processDirectoryEntries(root, QStringList());
+    d->saveLog("06-processDirectoryEntries.xml");
 
-    processApps(root);
-    if (!mLogDir.isEmpty())
-          save(mLogDir + "/07-processApps.xml");
+    d->processApps(root);
+    d->saveLog("07-processApps.xml");
 
-    deleteEmpty(root);
-    if (!mLogDir.isEmpty())
-          save(mLogDir + "/08-deleteEmpty.xml");
+    d->deleteEmpty(root);
+    d->saveLog("08-deleteEmpty.xml");
+
+    d->processLayouts(root);
+    d->saveLog("09-processLayouts.xml");
 
     return true;
 }
@@ -128,6 +219,8 @@ bool XdgMenu::read()
  ************************************************/
 void XdgMenu::save(const QString& fileName)
 {
+    Q_D(const XdgMenu);
+
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
@@ -138,15 +231,27 @@ void XdgMenu::save(const QString& fileName)
     }
 
     QTextStream ts(&file);
-    mXml.save(ts, 2);
+    d->mXml.save(ts, 2);
 
     file.close();
 }
 
+
 /************************************************
 
  ************************************************/
-void XdgMenu::mergeMenus(QDomElement& element)
+void XdgMenuPrivate::saveLog(const QString& logFileName)
+{
+    Q_Q(XdgMenu);
+    if (!mLogDir.isEmpty())
+        q->save(mLogDir + "/" + logFileName);
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuPrivate::mergeMenus(QDomElement& element)
 {
     QHash<QString, QDomElement> menus;
 
@@ -189,7 +294,7 @@ void XdgMenu::mergeMenus(QDomElement& element)
 /************************************************
 
  ************************************************/
-void XdgMenu::simplify(QDomElement& element)
+void XdgMenuPrivate::simplify(QDomElement& element)
 {
     MutableDomElementIterator it(element);
     //it.toFront();
@@ -243,7 +348,7 @@ void XdgMenu::simplify(QDomElement& element)
 /************************************************
 
  ************************************************/
-void XdgMenu::prependChilds(QDomElement& srcElement, QDomElement& destElement)
+void XdgMenuPrivate::prependChilds(QDomElement& srcElement, QDomElement& destElement)
 {
     MutableDomElementIterator it(srcElement);
 
@@ -269,7 +374,7 @@ void XdgMenu::prependChilds(QDomElement& srcElement, QDomElement& destElement)
 /************************************************
 
  ************************************************/
-void XdgMenu::appendChilds(QDomElement& srcElement, QDomElement& destElement)
+void XdgMenuPrivate::appendChilds(QDomElement& srcElement, QDomElement& destElement)
 {
     MutableDomElementIterator it(srcElement);
 
@@ -291,10 +396,11 @@ void XdgMenu::appendChilds(QDomElement& srcElement, QDomElement& destElement)
  ************************************************/
 QDomElement XdgMenu::findMenu(QDomElement& baseElement, const QString& path, bool createNonExisting)
 {
+    Q_D(XdgMenu);
     // Absolute path ..................
     if (path.startsWith('/'))
     {
-        QDomElement root = mXml.documentElement();
+        QDomElement root = d->mXml.documentElement();
         return findMenu(root, path.section('/', 2), createNonExisting);
     }
 
@@ -324,7 +430,7 @@ QDomElement XdgMenu::findMenu(QDomElement& baseElement, const QString& path, boo
     foreach (QString name, names)
     {
         QDomElement p = el;
-        el = mXml.createElement("Menu");
+        el = d->mXml.createElement("Menu");
         p.appendChild(el);
         el.setAttribute("name", name);
     }
@@ -344,8 +450,10 @@ QDomElement XdgMenu::findMenu(QDomElement& baseElement, const QString& path, boo
  If both paths exist, take the origin <Menu> element, delete its <Name> element, and
  prepend its remaining child elements to the destination <Menu> element.
  ************************************************/
-void XdgMenu::moveMenus(QDomElement& element)
+void XdgMenuPrivate::moveMenus(QDomElement& element)
 {
+    Q_Q(XdgMenu);
+
     {
         MutableDomElementIterator i(element, "Menu");
         while(i.hasNext())
@@ -364,11 +472,11 @@ void XdgMenu::moveMenus(QDomElement& element)
         if (oldPath.isEmpty() || newPath.isEmpty())
             continue;
 
-        QDomElement oldMenu = findMenu(element, oldPath, false);
+        QDomElement oldMenu = q->findMenu(element, oldPath, false);
         if (oldMenu.isNull())
             continue;
 
-        QDomElement newMenu = findMenu(element, newPath, true);
+        QDomElement newMenu = q->findMenu(element, newPath, true);
         appendChilds(oldMenu, newMenu);
         oldMenu.parentNode().removeChild(oldMenu);
     }
@@ -380,7 +488,7 @@ void XdgMenu::moveMenus(QDomElement& element)
  For each <Menu> containing a <Deleted> element which is not followed by a
  <NotDeleted> element, remove that menu and all its child menus.
  ************************************************/
-void XdgMenu::deleteDeletedMenus(QDomElement& element)
+void XdgMenuPrivate::deleteDeletedMenus(QDomElement& element)
 {
     MutableDomElementIterator i(element, "Menu");
     while(i.hasNext())
@@ -398,7 +506,7 @@ void XdgMenu::deleteDeletedMenus(QDomElement& element)
 /************************************************
 
  ************************************************/
-void XdgMenu::processDirectoryEntries(QDomElement& element, const QStringList& parentDirs)
+void XdgMenuPrivate::processDirectoryEntries(QDomElement& element, const QStringList& parentDirs)
 {
     QStringList dirs;
     QStringList files;
@@ -453,7 +561,7 @@ void XdgMenu::processDirectoryEntries(QDomElement& element, const QStringList& p
 /************************************************
 
  ************************************************/
-bool XdgMenu::loadDirectoryFile(const QString& fileName, QDomElement& element)
+bool XdgMenuPrivate::loadDirectoryFile(const QString& fileName, QDomElement& element)
 {
     XdgDesktopFile file(fileName);
 
@@ -471,9 +579,10 @@ bool XdgMenu::loadDirectoryFile(const QString& fileName, QDomElement& element)
 /************************************************
 
  ************************************************/
-void XdgMenu::processApps(QDomElement& element)
+void XdgMenuPrivate::processApps(QDomElement& element)
 {
-    XdgMenuApplinkProcessor processor(element, this);
+    Q_Q(XdgMenu);
+    XdgMenuApplinkProcessor processor(element, q);
     processor.run();
 }
 
@@ -481,7 +590,7 @@ void XdgMenu::processApps(QDomElement& element)
 /************************************************
 
  ************************************************/
-void XdgMenu::deleteEmpty(QDomElement& element)
+void XdgMenuPrivate::deleteEmpty(QDomElement& element)
 {
     MutableDomElementIterator it(element, "Menu");
     while(it.hasNext())
@@ -494,6 +603,16 @@ void XdgMenu::deleteEmpty(QDomElement& element)
     {
         element.parentNode().removeChild(element);
     }
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuPrivate::processLayouts(QDomElement& element)
+{
+    XdgMenuLayoutProcessor proc;
+    proc.run(element);
 }
 
 

@@ -43,7 +43,7 @@ public:
     bool load(const QString& fileName, const QString& baseDir = "");
     QString fileName() const { return mFileName; }
     QString errorString() const { return mErrorStr; }
-    QDomDocument* xml() { return &mXml; }
+    QDomDocument& xml() { return mXml; }
 
 signals:
 

@@ -381,7 +381,7 @@ void XdgMenuReader::mergeFile(const QString& fileName, QDomElement& element, QSt
     if (reader.load(fileName, mDirName))
     {
         //qDebug() << "\tOK";
-        QDomElement n = reader.xml()->firstChildElement().firstChildElement();
+        QDomElement n = reader.xml().firstChildElement().firstChildElement();
         while (!n.isNull())
         {
             // As a special exception, remove the <Name> element from the root

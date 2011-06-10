@@ -27,22 +27,22 @@ include_directories (
     )
 
 set ( razorqt_HDRS
-	razorqt/defs.h
-	razorqt/razoraboutdlg.h
-#	razorqt/razordevman.h
-#	razorqt/razorhal.h
-	razorqt/readsettings.h
-	razorqt/xdgautostart.h
-	razorqt/xdgenv.h
-	razorqt/xdgiconthemefile.h
-	razorqt/xdgiconthememanager.h
-	razorqt/xfitman.h
-	razorqt/domhelper.h
-	razorqt/xdgdesktopfile.h
-	razorqt/xdgmenu.h
-	razorqt/xdgicon.h
-	razorqt/xdgaction.h
-    razorqt/xdgmenuwidget.h
+    razorqt/defs.h
+    razorqt/razoraboutdlg.h
+#   razorqt/razordevman.h
+#   razorqt/razorhal.h
+    razorqt/readsettings.h
+    razorqt/xdgautostart.h
+    razorqt/xdgenv.h
+    razorqt/xdgiconthemefile.h
+    razorqt/xdgiconthememanager.h
+    razorqt/xfitman.h
+    razorqt/domhelper.h
+    razorqt/xdgdesktopfile.h
+    razorqt/xdgmenu/xdgmenu.h
+    razorqt/xdgicon.h
+    razorqt/xdgaction.h
+    razorqt/xdgmenu/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     razorqt/addplugindialog/addplugindialog.h
@@ -54,24 +54,25 @@ set ( razorqt_HDRS
 	)
 
 set ( razorqt_SRCS
-	razorqt/razoraboutdlg.cpp
-#	razorqt/razordevman.cpp
-#	razorqt/razorhal.cpp
-	razorqt/readsettings.cpp
-	razorqt/xdgautostart.cpp
-	razorqt/xdgdesktopfile.cpp
-	razorqt/xdgiconthemefile.cpp
-	razorqt/xdgiconthememanager.cpp
-#	razorqt/xdgmanager.cpp
-	razorqt/xdgmenu.cpp
-	razorqt/xfitman.cpp
-	razorqt/domhelper.cpp
-	razorqt/xdgmenuapplinkprocessor.cpp
-	razorqt/xdgmenureader.cpp
-	razorqt/xdgmenurules.cpp
-	razorqt/xdgicon.cpp
-	razorqt/xdgaction.cpp
-    razorqt/xdgmenuwidget.cpp
+    razorqt/razoraboutdlg.cpp
+#   razorqt/razordevman.cpp
+#   razorqt/razorhal.cpp
+    razorqt/readsettings.cpp
+    razorqt/xdgautostart.cpp
+    razorqt/xdgdesktopfile.cpp
+    razorqt/xdgiconthemefile.cpp
+    razorqt/xdgiconthememanager.cpp
+#   razorqt/xdgmanager.cpp
+    razorqt/xdgmenu/xdgmenu.cpp
+    razorqt/xfitman.cpp
+    razorqt/domhelper.cpp
+    razorqt/xdgmenu/xdgmenuapplinkprocessor.cpp
+    razorqt/xdgmenu/xdgmenureader.cpp
+    razorqt/xdgmenu/xdgmenurules.cpp
+    razorqt/xdgmenu/xdgmenulayoutprocessor.cpp
+    razorqt/xdgicon.cpp
+    razorqt/xdgaction.cpp
+    razorqt/xdgmenu/xdgmenuwidget.cpp
     razorqt/razorplugininfo.cpp
     razorqt/powermanager.cpp
     razorqt/addplugindialog/addplugindialog.cpp
@@ -84,18 +85,18 @@ set ( razorqt_SRCS
 	)
 
 set ( razorqt_MOCS
-	razorqt/razoraboutdlg.h
-#	razorqt/razordevman.h
-#	razorqt/razorhal.h
-#	razorqt/xdgmanager.h
-	razorqt/xdgmenu.h
-	razorqt/readsettings.h
-	razorqt/xdgdesktopfile.h
-	razorqt/xdgmenuapplinkprocessor.h
-	razorqt/xdgmenureader.h
-	razorqt/xdgmenurules.h
-	razorqt/xdgaction.h
-    razorqt/xdgmenuwidget.h
+    razorqt/razoraboutdlg.h
+#   razorqt/razordevman.h
+#   razorqt/razorhal.h
+#   razorqt/xdgmanager.h
+    razorqt/xdgmenu/xdgmenu.h
+    razorqt/readsettings.h
+    razorqt/xdgdesktopfile.h
+    razorqt/xdgmenu/xdgmenuapplinkprocessor.h
+    razorqt/xdgmenu/xdgmenureader.h
+    razorqt/xdgmenu/xdgmenurules.h
+    razorqt/xdgaction.h
+    razorqt/xdgmenu/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     razorqt/addplugindialog/addplugindialog.h
