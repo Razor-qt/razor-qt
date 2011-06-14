@@ -371,7 +371,7 @@ void RazorPanelPrivate::realign()
 
         case RazorPanel::PositionBottom:
             rect.setHeight(sizeHint.height());
-            rect.moveTop(screen.bottom() - sizeHint.height());
+            rect.moveBottom(screen.bottom());
             break;
 
         case RazorPanel::PositionLeft:
@@ -380,7 +380,7 @@ void RazorPanelPrivate::realign()
 
         case RazorPanel::PositionRight:
             rect.setWidth(sizeHint.width());
-            rect.moveLeft(screen.right() - sizeHint.width());
+            rect.moveRight(screen.right());
             break;
     }
 
