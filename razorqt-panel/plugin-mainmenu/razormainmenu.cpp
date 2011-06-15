@@ -29,7 +29,7 @@
 #include <QDebug>
 #include <QtGui/QMenu>
 #include <razorqt/xdgdesktopfile.h>
-#include <razorqt/xdgmenu.h>
+#include <razorqt/xdgmenu/xdgmenu.h>
 #include <razorqt/domhelper.h>
 #include <QSettings>
 #include <QFileInfo>
@@ -41,7 +41,7 @@
 //#include <razorbar.h>
 #include <razorqt/xdgicon.h>
 #include <razorqt/xdgdesktopfile.h>
-#include <razorqt/xdgmenuwidget.h>
+#include <razorqt/xdgmenu/xdgmenuwidget.h>
 
 #include <QStack>
 

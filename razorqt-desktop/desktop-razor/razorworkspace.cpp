@@ -42,8 +42,8 @@
 #include "arrangeitem.h"
 #include <razorqt/readsettings.h>
 #include <razorqt/powermanager.h>
-#include <razorqt/xdgmenuwidget.h>
-#include <razorqt/xdgmenu.h>
+#include <razorqt/xdgmenu/xdgmenuwidget.h>
+#include <razorqt/xdgmenu/xdgmenu.h>
 #include <razorqt/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
 

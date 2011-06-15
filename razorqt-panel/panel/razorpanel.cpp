@@ -91,6 +91,8 @@ QString positionToStr(RazorPanel::Position position)
         case RazorPanel::PositionRight:  return QString("Right");
         case RazorPanel::PositionBottom: return QString("Bottom");
     }
+
+    return "";
 }
 
 
@@ -472,6 +474,7 @@ bool RazorPanelPrivate::canPlacedOn(int screenNum, RazorPanel::Position position
 //            return true;
             return false;
     }
+    return false;
 }
 
 
