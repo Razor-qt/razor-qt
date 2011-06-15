@@ -47,13 +47,18 @@ public:
 public slots:
     void activeWindowChanged();
 
+private slots:
+    void readSettings();
+    void writeSettings();
 
 private:
     void refreshTaskList();
     QHash<Window, RazorTaskButton*> mButtonsHash;
     RazorTaskButton* buttonByWindow(Window window) const;
     Window mRootWindow;
+    Qt::ToolButtonStyle mButtonStyle;
 
+    void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
 
     void handlePropertyNotify(XPropertyEvent* event);
 };

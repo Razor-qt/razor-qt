@@ -28,6 +28,7 @@
 
 #include <QtCore/QDebug>
 #include <QToolButton>
+#include <QSettings>
 
 #include "razortaskbar.h"
 #include <razorqt/xdgicon.h>
@@ -50,7 +51,8 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTaskBar)
 
 ************************************************/
 RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* parent) :
-    RazorPanelPlugin(startInfo, parent)
+    RazorPanelPlugin(startInfo, parent),
+    mButtonStyle(Qt::ToolButtonTextBesideIcon)
 {
     setObjectName("TaskBar");
 
@@ -61,6 +63,8 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
     layout()->addStretch();
 
     mRootWindow = QX11Info::appRootWindow();
+
+    readSettings();
     refreshTaskList();
 }
 
@@ -70,6 +74,7 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
  ************************************************/
 RazorTaskBar::~RazorTaskBar()
 {
+    writeSettings();
 }
 
 
@@ -116,6 +121,7 @@ void RazorTaskBar::refreshTaskList()
         if (xf.acceptWindow(wnd))
         {
             RazorTaskButton* btn = new RazorTaskButton(wnd, this);
+            btn->setToolButtonStyle(mButtonStyle);
             mButtonsHash.insert(wnd, btn);
             // -1 is here due the last stretchable item
             layout()->insertWidget(layout()->count()-1, btn);
@@ -213,3 +219,58 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
 }
 
 
+/************************************************
+
+ ************************************************/
+void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
+{
+    mButtonStyle = buttonStyle;
+
+    QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
+    while (i.hasNext())
+    {
+        i.next();
+        i.value()->setToolButtonStyle(mButtonStyle);
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorTaskBar::readSettings()
+{
+    QSettings& sets = this->settings();
+    QString s = sets.value("buttonStyle").toString().toUpper();
+
+    if (s == "ICON")    setButtonStyle(Qt::ToolButtonIconOnly); else
+    if (s == "TEXT")    setButtonStyle(Qt::ToolButtonTextOnly); else
+    setButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorTaskBar::writeSettings()
+{
+    QSettings& s = this->settings();
+
+    switch (mButtonStyle)
+    {
+        case Qt::ToolButtonIconOnly:
+            s.setValue("buttonStyle", "Icon");
+            break;
+
+        case Qt::ToolButtonTextOnly:
+            s.setValue("buttonStyle", "Text");
+            break;
+
+
+        default:
+            s.setValue("buttonStyle", "IconText");
+            break;
+    }
+
+}
