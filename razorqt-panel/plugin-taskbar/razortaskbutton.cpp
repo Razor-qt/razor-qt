@@ -463,7 +463,7 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
 
 /************************************************
 
-************************************************/
+ ************************************************/
 QSize RazorTaskButton::sizeHint() const
 {
     QSize r = QToolButton::sizeHint();
@@ -474,7 +474,7 @@ QSize RazorTaskButton::sizeHint() const
 
 /************************************************
 
-************************************************/
+ ************************************************/
 void  RazorTaskButton::handlePropertyNotify(XPropertyEvent* event)
 {
     if (event->atom == XfitMan::atom("WM_NAME") ||
@@ -497,6 +497,16 @@ void  RazorTaskButton::handlePropertyNotify(XPropertyEvent* event)
 //            << " (" << (aname ? aname : "Unknown") << ')';
 
 }
+
+
+/************************************************
+
+ ************************************************/
+int RazorTaskButton::desktopNum() const
+{
+    return xfitMan().getWindowDesktop(mWindow);
+}
+
 
 RazorTaskButton* RazorTaskButton::mCheckedBtn = 0;
 

@@ -61,6 +61,7 @@ public:
 
     QSize   sizeHint() const;
     static void unCheckAll();
+    int desktopNum() const;
 
 public slots:
     void raiseApplication();

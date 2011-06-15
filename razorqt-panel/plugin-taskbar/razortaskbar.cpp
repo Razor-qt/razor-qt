@@ -52,7 +52,8 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTaskBar)
 ************************************************/
 RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* parent) :
     RazorPanelPlugin(startInfo, parent),
-    mButtonStyle(Qt::ToolButtonTextBesideIcon)
+    mButtonStyle(Qt::ToolButtonTextBesideIcon),
+    mShowOnlyCurrentDesktopTasks(false)
 {
     setObjectName("TaskBar");
 
@@ -132,8 +133,26 @@ void RazorTaskBar::refreshTaskList()
         }
     }
 
+    refreshButtonVisibility();
+
     activeWindowChanged();
 
+}
+
+/************************************************
+
+ ************************************************/
+void RazorTaskBar::refreshButtonVisibility()
+{
+    int curretDesktop = xfitMan().getActiveDesktop();
+    QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
+    while (i.hasNext())
+    {
+        i.next();
+        i.value()->setHidden(mShowOnlyCurrentDesktopTasks &&
+                             i.value()->desktopNum() != curretDesktop
+                            );
+    }
 }
 
 
@@ -165,12 +184,16 @@ void RazorTaskBar::x11EventFilter(XEvent* event)
             handlePropertyNotify(&event->xproperty);
             break;
 
-//        default:
-//        {
-//            qDebug() << "** XEvent ************************";
-//            qDebug() << "Type:   " << xEventTypeToStr(event);
-//        }
+#if 0
+        case MotionNotify:
+            break;
 
+        default:
+        {
+            qDebug() << "** XEvent ************************";
+            qDebug() << "Type:   " << xEventTypeToStr(event);
+        }
+#endif
 
     }
 }
@@ -195,6 +218,14 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
         if (event->atom == XfitMan::atom("_NET_ACTIVE_WINDOW"))
         {
             activeWindowChanged();
+            return;
+        }
+
+        // Desktop switch .....................................
+        if (event->atom == XfitMan::atom("_NET_CURRENT_DESKTOP"))
+        {
+            if (mShowOnlyCurrentDesktopTasks)
+                refreshTaskList();
             return;
         }
     }
@@ -247,6 +278,8 @@ void RazorTaskBar::readSettings()
     if (s == "TEXT")    setButtonStyle(Qt::ToolButtonTextOnly); else
     setButtonStyle(Qt::ToolButtonTextBesideIcon);
 
+    mShowOnlyCurrentDesktopTasks = sets.value("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks).toBool();
+    writeSettings();
 }
 
 
@@ -273,4 +306,5 @@ void RazorTaskBar::writeSettings()
             break;
     }
 
+    s.setValue("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks);
 }

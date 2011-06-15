@@ -53,12 +53,13 @@ private slots:
 
 private:
     void refreshTaskList();
+    void refreshButtonVisibility();
     QHash<Window, RazorTaskButton*> mButtonsHash;
     RazorTaskButton* buttonByWindow(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;
-
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
+    bool mShowOnlyCurrentDesktopTasks;
 
     void handlePropertyNotify(XPropertyEvent* event);
 };
