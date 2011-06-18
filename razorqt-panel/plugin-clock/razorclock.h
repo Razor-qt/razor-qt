@@ -52,7 +52,10 @@ public slots:
     void updateTime();
 
 protected:
-    void mouseReleaseEvent(QMouseEvent* event);
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+
+protected slots:
+    virtual void settigsChanged();
 
 private:
     QTimer* clocktimer;

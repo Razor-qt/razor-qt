@@ -28,6 +28,7 @@
 #define RAZORPANELPLUGIN_P_H
 
 #include "razorpanelplugin.h"
+#include "razorqt/razorsettings.h"
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
 
@@ -70,7 +71,7 @@ private:
     RazorPanelPlugin* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanelPlugin)
 
-    QSettings* const mSettings;
+    RazorSettings* const mSettings;
     QString mConfigId;
     mutable RazorPanelPlugin::Alignment mAlignment;
     mutable bool mAlignmentCached;

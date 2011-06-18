@@ -29,7 +29,6 @@
 #define RAZORCLOCK_CPP
 
 #include "razorclock.h"
-#include "razorqt/readsettings.h"
 #include <QtGui/QLabel>
 #include <QtCore/QDebug>
 #include <QtCore/QDateTime>
@@ -38,6 +37,7 @@
 #include <QtGui/QDialog>
 #include <QtGui/QHBoxLayout>
 #include <QtCore/QPoint>
+#include <QtCore/QSettings>
 
 /**
  * @file razorclock.cpp
@@ -54,23 +54,17 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
         calendarDialog(0)
 {
     setObjectName("Clock");
-
-    clockFormat = settings().value("format", "hh:mm").toString();
-    toolTipFormat = settings().value("tooltipFormat", "medium").toString();
-    //qDebug() << "Razorclock loading";
-    //gui machen
     gui = new QLabel(this);
     gui->setAlignment(Qt::AlignCenter);
     addWidget(gui);
 
+    settigsChanged();
+
     // ensure wi will not have moving widgets in the panel waiting for timer shot
     updateTime();
 
-    //timer machen
     clocktimer = new QTimer(this);
-    //timer mit uhrupdate verbinden
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
-    //timer starten
     clocktimer->start(1000);
 }
 
@@ -108,6 +102,13 @@ RazorClock::~RazorClock()
 {
     settings().setValue("format", clockFormat);
     settings().setValue("tooltipFormat", toolTipFormat);
+}
+
+
+void RazorClock::settigsChanged()
+{
+    clockFormat = settings().value("format", "hh:mm").toString();
+    toolTipFormat = settings().value("tooltipFormat", "medium").toString();
 }
 
 

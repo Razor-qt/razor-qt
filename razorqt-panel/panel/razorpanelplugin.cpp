@@ -30,6 +30,7 @@
 #include "razorpanelplugin_p.h"
 #include "razorpanellayout.h"
 #include <razorqt/razorplugininfo.h>
+#include <razorqt/razorsettings.h>
 
 #include <QStyleOptionToolBar>
 #include <QPainter>
@@ -61,16 +62,16 @@ RazorPanelPlugin::RazorPanelPlugin(const RazorPanelPluginStartInfo* startInfo, Q
 RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo* startInfo, RazorPanelPlugin* parent):
     QObject(parent),
     q_ptr(parent),
-    mSettings(new QSettings(startInfo->configFile, QSettings::NativeFormat, this)),
+    mSettings(new RazorSettings(startInfo->settings, startInfo->configSection, this)),
     mConfigId(startInfo->configSection),
     mAlignmentCached(false),
     mMovable(false),
     mPanel(startInfo->panel)
 {
-    mSettings->beginGroup(startInfo->configSection);
-
     Q_Q(RazorPanelPlugin);
     q->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
+    connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
 
     q->setWindowTitle(startInfo->pluginInfo->name());
     mLayout = new QBoxLayout(mPanel->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, q);
@@ -78,6 +79,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     mLayout->setMargin(0);
     mLayout->setContentsMargins(0, 0, 0, 0);
 
+    q->settigsChanged();
 }
 
 

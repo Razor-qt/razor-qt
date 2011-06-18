@@ -8,6 +8,8 @@ ReadSettings::ReadSettings(const QString & module, QObject * parent)
     : QObject(parent),
       m_module(module)
 {
+#warning "ReadSettings is deprecated. Use RazorSettings instead."
+
     if (!checkConfigDir())
     {
         qDebug() << "Cannot create user config dir";

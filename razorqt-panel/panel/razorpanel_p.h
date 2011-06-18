@@ -35,9 +35,9 @@
 #include <QtCore/QList>
 #include <QtGui/QAction>
 
-class QSettings;
 class QActionGroup;
 class QLayoutItem;
+class RazorSettings;
 class ReadSettings;
 class RazorPanelLayout;
 class AddPluginDialog;
@@ -85,8 +85,7 @@ private:
     int mScreenNum;
     QString mConfigFile;
     QString mTheme;
-    QSettings* mSettings;
-    ReadSettings* mSettingsReader;
+    RazorSettings* mSettings;
     RazorPluginInfoList mAvailablePlugins;
     QList<RazorPanelPlugin*> mPlugins;
     RazorPanelLayout* mLayout;

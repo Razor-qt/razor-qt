@@ -77,6 +77,7 @@ set ( razorqt_SRCS
     razorqt/powermanager.cpp
     razorqt/addplugindialog/addplugindialog.cpp
     razorqt/razormime.cpp
+    razorqt/razorsettings.cpp
     # upower. Maybe standalone lib?
     librazor-upower/battery.cpp
     librazor-upower/ucpufreq.cpp
@@ -100,6 +101,7 @@ set ( razorqt_MOCS
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     razorqt/addplugindialog/addplugindialog.h
+    razorqt/razorsettings.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h

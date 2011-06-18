@@ -31,6 +31,7 @@
 #include "razorpanellayout.h"
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <razorqt/razorplugininfo.h>
 
 #include <QtCore/QString>
@@ -133,8 +134,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
             mConfigFile.chop(5);
     }
 
-    mSettingsReader = new ReadSettings("razor-panel/" + mConfigFile);
-    mSettings = mSettingsReader->settings();
+    mSettings = new RazorSettings("razor-panel/" + mConfigFile, this);
 
     mLayout = new RazorPanelLayout(QBoxLayout::LeftToRight, parent);
     connect(mLayout, SIGNAL(widgetMoved(QWidget*)), this, SLOT(pluginMoved(QWidget*)));
@@ -165,10 +165,8 @@ void RazorPanelPrivate::init()
 {
     Q_Q(RazorPanel);
     // Read theme from razor.conf ...............
-    ReadSettings* razorRS = new ReadSettings("razor");
-    QSettings* razorSettings = razorRS->settings();
-    mTheme = razorSettings->value("theme").toString();
-    delete razorRS;
+    RazorSettings razorSettings("razor");
+    mTheme = razorSettings.value("theme").toString();
 
     // Read settings ............................
     mSettings->beginGroup(CFG_PANEL_GROUP);
@@ -201,7 +199,7 @@ RazorPanel::~RazorPanel()
 RazorPanelPrivate::~RazorPanelPrivate()
 {
     qDeleteAll(mPlugins);
-    delete mSettingsReader;
+    mSettings->sync();
 }
 
 
@@ -308,7 +306,7 @@ RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo* pluginInf
     if (!initFunc)
         return 0;
 
-    RazorPanelPluginStartInfo startInfo(mSettings->fileName(), configSection, q, pluginInfo);
+    RazorPanelPluginStartInfo startInfo(mSettings, configSection, q, pluginInfo);
     //startInfo.configFile = mSettings->fileName();
     //startInfo.configSection = configSection;
     //startInfo.panel = q;

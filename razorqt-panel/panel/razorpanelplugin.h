@@ -49,6 +49,7 @@ as in the "name" constructor's argument.
 #include "razorpanel.h"
 
 class QSettings;
+class RazorSettings;
 class QToolButton;
 class QMenu;
 class QStyleOptionToolBar;
@@ -78,17 +79,17 @@ class RazorPluginInfo;
 class RazorPanelPluginStartInfo
 {
 public:
-    RazorPanelPluginStartInfo(const QString& _configFile,
+    RazorPanelPluginStartInfo(const QSettings* _settings,
                               const QString& _configSection,
                               RazorPanel* _panel,
                               const RazorPluginInfo* _pluginInfo
                               ):
-        configFile(_configFile),
+        settings(_settings),
         configSection(_configSection),
         panel(_panel),
         pluginInfo(_pluginInfo){}
 
-    const QString configFile;
+    const QSettings* settings;
     const QString configSection;
     RazorPanel* panel;
     const RazorPluginInfo * pluginInfo;
@@ -159,6 +160,13 @@ signals:
 
 public slots:
     void layoutDirectionChanged(QBoxLayout::Direction direction);
+
+protected slots:
+    /**
+      This slot is called when values are changed in the plugin settings.
+      Reimplement this function to your plugin corresponded the new settings.
+    **/
+    virtual void settigsChanged() {}
 
 protected:
     void paintEvent(QPaintEvent* event);
