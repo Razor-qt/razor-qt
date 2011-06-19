@@ -46,7 +46,7 @@ public:
     RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorClock();
 
-    virtual Alignment preferredAlignment() const { return AlignRight; }
+    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 
 public slots:
     void updateTime();
@@ -56,6 +56,7 @@ protected:
 
 protected slots:
     virtual void settigsChanged();
+    virtual void showConfigureDialog();
 
 private:
     QTimer* clocktimer;

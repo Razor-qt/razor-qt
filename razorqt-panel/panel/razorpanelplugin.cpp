@@ -321,7 +321,11 @@ RazorPanelPlugin::Alignment RazorPanelPluginPrivate::alignment() const
 
         // Retrun default value
         if (s.isEmpty())
-            mAlignment =  q->preferredAlignment();
+        {
+            mAlignment = (q->flags().testFlag(RazorPanelPlugin::PreferRightAlignment)) ?
+                        RazorPanelPlugin::AlignRight :
+                        RazorPanelPlugin::AlignLeft;
+        }
         else
             mAlignment = (s.toUpper() == "RIGHT") ?
                          RazorPanelPlugin::AlignRight :

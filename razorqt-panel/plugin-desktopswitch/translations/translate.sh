@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=razor-panel
+PROJECT="desktopswitch"
 NO_OBSOLETE="-noobsolete"
 
 if [ "$1" = "" ]; then
@@ -12,4 +12,3 @@ fi
 
 lupdate $NO_OBSOLETE -recursive ..  -ts $TS_FILE  && \ 
 linguist $TS_FILE
-

@@ -47,7 +47,7 @@ public:
     RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorTray();
 
-    virtual Alignment preferredAlignment() const { return AlignRight; }
+    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment; }
 
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);

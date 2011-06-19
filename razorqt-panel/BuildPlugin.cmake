@@ -16,6 +16,7 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     include_directories (
         ${CMAKE_CURRENT_SOURCE_DIR}/../../librazorqt
         ${CMAKE_CURRENT_SOURCE_DIR}/panel
+        ${CMAKE_CURRENT_BINARY_DIR}
     )
 
     if (NOT DEFINED PLUGIN_DIR)
@@ -27,8 +28,9 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     qt4_wrap_cpp(MOC_SOURCES ${MOCS})
     qt4_add_resources(QRC_SOURCES ${RESOURCES})
     qt4_add_translation(QM_FILES ${TS_FILES})
+    qt4_wrap_ui(UI_SOURCES ${UIS})
 
-    add_library(${Name} SHARED ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
+    add_library(${Name} SHARED ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UIS})
     target_link_libraries(${Name} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBRARIES})
 
     install(TARGETS ${Name} DESTINATION ${PLUGIN_DIR})

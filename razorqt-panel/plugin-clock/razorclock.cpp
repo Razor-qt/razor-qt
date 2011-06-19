@@ -149,4 +149,9 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 */
 }
 
+void RazorClock::showConfigureDialog()
+{
+    qDebug() << "Show Edit dialog ********************************";
+}
+
 #endif

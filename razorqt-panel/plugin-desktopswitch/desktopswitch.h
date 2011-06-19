@@ -41,8 +41,6 @@ public:
     DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~DesktopSwitch();
 
-    virtual Alignment preferredAlignment() const { return AlignRight; }
-
     virtual void x11EventFilter(XEvent* event);
     
 private:

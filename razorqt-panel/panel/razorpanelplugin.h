@@ -110,6 +110,20 @@ public:
         AlignRight
     };
 
+    /**
+      This enum describes the properties of an plugin.
+     **/
+    enum Flag {
+        NoFlags              = 0,   //! It does not have any properties set.
+        PreferRightAlignment = 1,   /*! The plugin is prefer right alignment (for example the clock plugin);
+                                        otherwise plugin prefer left (like main menu).
+                                        This flag is used only at the first start, later positions of all
+                                        plugins saved in a config, and this saved information is used. */
+        HaveConfigDialog     = 2    //! The plugin have a configuration dialog.
+    };
+
+    Q_DECLARE_FLAGS(Flags, Flag)
+
     /*! Standard plugin constructor.
     \param panel a reference to the RazorPanel, panel.
     \param configId defines section in a configuration file. Different instances of
@@ -117,17 +131,14 @@ public:
     \param parent a reference to the QWidget parent. It might be a RazorPanel, but
                     it can be any QWidget.
     */
-    //explicit RazorPanelPlugin(const QString& configFile, const QString& configSection, RazorPanel* panel);
     explicit RazorPanelPlugin(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     virtual ~RazorPanelPlugin();
 
-    /*! Preferred alignment of the plug-in, at the left (for example the main menu
-        plugin), or on the right (like clock). Default implementation return AlignLeft.
-
-        The result of this function is used only at the first start, later positions
-        of all plug-ins saved in a config file, and this saved information is used.
+    /*! Returns the plugin flags.
+        The base class implementation returns a NoFlags.
      */
-    virtual Alignment preferredAlignment() const { return AlignLeft; }
+    virtual Flags flags() const { return NoFlags; }
+
 
     RazorPanel* panel() const;
     QSettings& settings() const;
@@ -160,6 +171,12 @@ signals:
 
 public slots:
     void layoutDirectionChanged(QBoxLayout::Direction direction);
+    /**
+      Reimplement this function to show plugin settings dialog.
+      To save the settings you should use a ready-to-use RazorPanelPlugin::settings() object.
+     **/
+    virtual void showConfigureDialog() {}
+
 
 protected slots:
     /**
@@ -184,6 +201,7 @@ private:
     RazorPanelPlugin &operator=(const RazorPanelPlugin&);
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(RazorPanelPlugin::Flags)
 
 
 //! Prototype for plugin's init() function

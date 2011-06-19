@@ -606,7 +606,7 @@ void RazorPanelPrivate::addPlugin(RazorPluginInfo *pluginInfo)
 
     mSettings->setValue(QString("%1/type").arg(sectionName), pluginInfo->id());
 
-    if (plugin->preferredAlignment() == RazorPanelPlugin::AlignRight)
+    if (plugin->flags().testFlag(RazorPanelPlugin::PreferRightAlignment))
         mLayout->addWidget(plugin);
     else
         mLayout->insertWidget(0, plugin);
@@ -724,6 +724,13 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
         a = new PluginAction(plugin, XdgIcon::fromTheme("transform-move"), tr("Move plugin"), m);
         connect(a, SIGNAL(triggered()), this, SLOT(onMovePlugin()));
         m->addAction(a);
+
+        if (plugin->flags().testFlag(RazorPanelPlugin::HaveConfigDialog))
+        {
+            a = new PluginAction(plugin, tr("Configure plugin"), m);
+            connect(a, SIGNAL(triggered()), plugin, SLOT(showConfigureDialog()));
+            m->addAction(a);
+        }
 
         m->addSeparator();
 
