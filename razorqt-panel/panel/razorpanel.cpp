@@ -164,10 +164,6 @@ void RazorPanelPrivate::screensChangeds()
 void RazorPanelPrivate::init()
 {
     Q_Q(RazorPanel);
-    // Read theme from razor.conf ...............
-    RazorSettings razorSettings("razor");
-    mTheme = razorSettings.value("theme").toString();
-
     // Read settings ............................
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mPosition = strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), RazorPanel::PositionBottom);
@@ -177,7 +173,7 @@ void RazorPanelPrivate::init()
     q->setLayout(mLayout);
 
     loadPlugins();
-    setTheme(mTheme);
+    reTheme();
 }
 
 
@@ -326,13 +322,9 @@ RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo* pluginInf
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::setTheme(const QString& themeName)
+void RazorPanelPrivate::reTheme()
 {
-    mTheme = themeName;
-    ReadTheme* readTheme = new ReadTheme(themeName);
-    qApp->setStyleSheet(readTheme->qss());
-
-    delete readTheme;
+    qApp->setStyleSheet(razorTheme->qss("panel"));
     realign();
 }
 

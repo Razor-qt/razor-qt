@@ -26,6 +26,7 @@
 #ifndef RAZORSETTINGS_H
 #define RAZORSETTINGS_H
 
+#include <QtCore/QObject>
 #include <QtCore/QSettings>
 
 class QEvent;
@@ -57,13 +58,39 @@ protected:
     virtual bool event(QEvent *event);
 
 private:
-    //RazorSettings(const QString& organization, const QString& application=QString(), QObject* parent=0);
-    //RazorSettings(Scope scope, const QString& organization, const QString& application=QString(), QObject* parent=0);
-    //RazorSettings(Format format, Scope scope, const QString& organization, const QString& application=QString(), QObject* parent=0);
-    //RazorSettings(const QString& fileName, Format format, QObject* parent=0);
-
     RazorSettingsPrivate* const d_ptr;
     Q_DECLARE_PRIVATE(RazorSettings)
 };
+
+
+class RazorThemePrivate;
+class RazorTheme : public QObject
+{
+    Q_OBJECT
+public:
+    /// \brief Returns a pointer to the RazorTheme instance.
+    static RazorTheme* instance();
+
+    /*! \brief Return StyleSheet text (not file name, but real text) of the module called module.
+    Paths in url() C/QSS functions are parsed to be real values for the theme,
+    relative to full path */
+    QString qss(const QString& module);
+
+private:
+    RazorTheme();
+    RazorTheme(const RazorTheme &);
+    RazorTheme& operator=(const RazorTheme &);
+
+    static RazorTheme* mInstance;
+    RazorThemePrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(RazorTheme)
+};
+
+/*!
+A global pointer referring to the unique RazorTheme object.
+It is equivalent to the pointer returned by the RazorTheme::instance() function.
+Only one theme object can be created. !*/
+
+#define razorTheme RazorTheme::instance()
 
 #endif // RAZORSETTINGS_H

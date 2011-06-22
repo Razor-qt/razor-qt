@@ -28,6 +28,8 @@
 #include <QtCore/QEvent>
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
+#include <QtCore/QMutex>
+
 
 #define RAZOR_HOME_CFG QDir::homePath() + "/.razor/"
 
@@ -42,6 +44,22 @@ public:
 
 private:
     RazorSettings* mParent;
+};
+
+
+RazorTheme* RazorTheme::mInstance = 0;
+
+class RazorThemePrivate
+{
+public:
+    RazorThemePrivate(RazorTheme* parent):
+        mParent(parent)
+    {
+    }
+
+    QString loadQss(const QString& qssFile);
+
+    RazorTheme* mParent;
 };
 
 
@@ -60,11 +78,14 @@ void createDir(const QString& file)
 
 
 /************************************************
-  This looks in all the usual system paths for our file
+  This looks in all the usual paths for file
  ************************************************/
-QString getSysPath(const QString& module)
+QString findFile(const QString& fileName, bool onlyGlobal)
 {
     QStringList paths;
+
+    if (!onlyGlobal)
+        paths << RAZOR_HOME_CFG;
 
 #ifdef SHARE_DIR
     // test for non-standard install dirs - useful for development for example
@@ -82,7 +103,8 @@ QString getSysPath(const QString& module)
 
     foreach(QString path, paths)
     {
-        QString file = QString("%1/%2.conf").arg(path, module);
+        QString file = QString("%1/%2").arg(path, fileName);
+        //qDebug() << "   * test:" << file;
         if (QFile::exists(file))
             return file;
     }
@@ -100,7 +122,7 @@ void copySysConfig(const QString& module, const QString& homeFile)
     if (hf.exists())
         return;
 
-    QString sysFile(getSysPath(module));
+    QString sysFile(findFile(QString("%1.conf").arg(module), true));
     if (sysFile.isEmpty())
         return;
 
@@ -172,3 +194,84 @@ bool RazorSettings::event(QEvent *event)
 
     return QSettings::event(event);
 }
+
+
+/************************************************
+
+ ************************************************/
+RazorTheme::RazorTheme():
+    QObject(),
+    d_ptr(new RazorThemePrivate(this))
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorTheme* RazorTheme::instance()
+{
+    static QMutex mutex;
+
+    if (!mInstance)
+    {
+        mutex.lock();
+
+        if (!mInstance)
+            mInstance = new RazorTheme();
+
+        mutex.unlock();
+    }
+
+    return mInstance;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString RazorTheme::qss(const QString& module)
+{
+    Q_D(RazorTheme);
+
+    RazorSettings settings("razor");
+    QString themeName = settings.value("theme").toString();
+
+    QString path(findFile(QString("themes/%1/%2.qss").arg(themeName, module), false));
+    if (!path.isEmpty())
+        return d->loadQss(path);
+
+    qWarning() << "QSS file cannot be found in any location:" << QString("%1/%2.qss").arg(themeName, module);
+    return "";
+}
+
+
+/************************************************
+
+ ************************************************/
+QString RazorThemePrivate::loadQss(const QString& qssFile)
+{
+    //qDebug() << "Theme: Reading QSS from" << qssFile;
+
+    QFile f(qssFile);
+    if (! f.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qWarning() << "Theme: Canot open file for reading:" << qssFile;
+        return "";
+    }
+
+    QString qss = f.readAll();
+    f.close();
+
+    if (qss.isEmpty())
+        return "";
+
+    // handle relative paths
+    QString qssDir = QFileInfo(qssFile).canonicalPath();
+    //qDebug() << "Theme: replace relative path to " << qssDir;
+    qss.replace(QRegExp("url.[ \\t\\s]*", Qt::CaseInsensitive, QRegExp::RegExp2), "url(" + qssDir + "/");
+
+    return qss;
+}
+
+

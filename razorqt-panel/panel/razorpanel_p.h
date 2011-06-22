@@ -75,7 +75,7 @@ public slots:
 private:
     void loadPlugins();
     RazorPanelPlugin* loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection);
-    void setTheme(const QString& themeName);
+    void reTheme();
     int findAvailableScreen(RazorPanel::Position position);
 
     RazorPanel* const q_ptr;
@@ -84,7 +84,6 @@ private:
     RazorPanel::Position mPosition;
     int mScreenNum;
     QString mConfigFile;
-    QString mTheme;
     RazorSettings* mSettings;
     RazorPluginInfoList mAvailablePlugins;
     QList<RazorPanelPlugin*> mPlugins;

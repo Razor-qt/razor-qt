@@ -3,6 +3,8 @@
 
 #include <QSettings>
 
+#warning "ReadSettings is deprecated. Use RazorSettings instead."
+
 /*! \brief Shared configuration handling.
 
 Razor configuration is based on QSettings class.
