@@ -38,6 +38,7 @@ qt4_add_resources(QRC_SOURCES ${RESOURCES})
 qt4_add_translation(QM_FILES ${TS_FILES})
 
 add_library(${PROJECT} SHARED ${IV_HEADERS} ${IV_SOURCES} ${IV_MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
+add_dependencies(${PROJECT} razorqt)
 target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} )
 
 install(TARGETS ${PROJECT} DESTINATION ${DESKTOP_PLUGIN_DIR})

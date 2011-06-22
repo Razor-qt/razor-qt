@@ -40,5 +40,6 @@ QT4_WRAP_UI(UIS src/appswitcher.ui)
 SET (exec razor-appswitcher)
 
 add_executable ( ${exec} ${razor-appswitcher_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+add_dependencies( ${exec} razorqt )
 target_link_libraries ( ${exec}  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so)
 INSTALL(TARGETS ${exec} RUNTIME DESTINATION bin)

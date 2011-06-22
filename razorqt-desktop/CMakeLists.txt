@@ -29,6 +29,7 @@ set ( razor-desktop_SRCS
 	)
 
 add_executable ( razor-desktop ${razor-desktop_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+add_dependencies( razor-desktop razorqt)
 target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so)
 INSTALL(TARGETS razor-desktop RUNTIME DESTINATION bin)
 install(DIRECTORY resources/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
