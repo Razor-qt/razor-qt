@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Screensaver
+Comment=Activate a screensaver and/or lock the screen

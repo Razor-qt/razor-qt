@@ -31,6 +31,7 @@ setByDefault(MAINMENU_PLUGIN    Yes )
 setByDefault(TASKBAR_PLUGIN     Yes )
 #setByDefault(SPACER_PLUGIN      Yes )
 #setByDefault(BATTERY_PLUGIN     No  )
+setByDefault(SCREENSAVER_PLUGIN  Yes )
 
 # *******************************************************************
 
@@ -147,6 +148,11 @@ endif (TASKBAR_PLUGIN)
 #   add_subdirectory( plugin-battery )
 # endif (BATTERY_PLUGIN)
 #
+
+if (SCREENSAVER_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Screensaver")
+    add_subdirectory( plugin-screensaver )
+endif (SCREENSAVER_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})

@@ -5,7 +5,7 @@
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,55 +23,39 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#ifndef SCREENSAVER_H
+#define SCREENSAVER_H
 
-#ifndef RAZOR_MAINMENU_H
-#define RAZOR_MAINMENU_H
+#include <QtCore/QProcess>
+#include <QtCore/QObject>
+#include <QtGui/QAction>
 
-#include "../panel/razorpanelplugin.h"
 
-#include <QPushButton>
-#include <QDomElement>
-#include <QAction>
+class QProcess;
 
-#include "menustyle.h"
 
-class QMenu;
-class RazorBar;
-class PowerManager;
-class ScreenSaver;
-
-class RazorMainMenu : public RazorPanelPlugin
+class ScreenSaver : public QObject
 {
     Q_OBJECT
+
 public:
-    RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~RazorMainMenu();
+    ScreenSaver(QObject * parent=0);
 
-//    int widthForHeight(int h) { return mButton.sizeHint().width(); }
-//    int heightForWidth(int w) { return w; }
-  //  RazorPlugin::RazorPluginSizing sizePriority() { return RazorPlugin::Static; }
-
+    QList<QAction*> availableActions();
 
 signals:
+    void activated();
+
+public slots:
+    void lockScreen();
 
 private:
-    QPushButton mButton;
-    QString mLogDir;
-    QString mMenuFile;
-    QMenu* mMenu;
-    MenuStyle mTopMenuStyle;
-    MenuStyle mMenuStyle;
-    PowerManager* mPowerManager;
-    ScreenSaver* mScreenSaver;
-
-    void buildMenu();
-
+    QProcess * m_xdgProcess;
 
 private slots:
-    void showMenu();
-    void settingsChanged();
+    void xdgProcess_finished(int err, QProcess::ExitStatus status);
+
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
-
 #endif
+

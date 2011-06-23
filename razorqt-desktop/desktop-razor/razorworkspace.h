@@ -45,6 +45,7 @@
 class WorkspaceConfig;
 class ReadSettings;
 class PowerManager;
+class ScreenSaver;
 
 
 /**
@@ -90,6 +91,7 @@ private:
     QList<ArrangeItem*> m_arrangeList;
     
     PowerManager * m_power;
+    ScreenSaver * m_screenSaver;
     
     DesktopWidgetPlugin * getPluginFromItem(QGraphicsItem * item);
     QGraphicsItem * loadPlugin(QLibrary * lib, const QString & configId="default");

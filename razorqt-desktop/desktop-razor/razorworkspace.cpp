@@ -42,6 +42,7 @@
 #include "arrangeitem.h"
 #include <razorqt/readsettings.h>
 #include <razorqt/powermanager.h>
+#include <razorqt/screensaver.h>
 #include <razorqt/xdgmenu/xdgmenuwidget.h>
 #include <razorqt/xdgmenu/xdgmenu.h>
 #include <razorqt/razoraboutdlg.h>
@@ -60,6 +61,8 @@ RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* paren
     setFrameShape(QFrame::NoFrame);
     
     m_power = new PowerManager(this);
+    m_screenSaver = new ScreenSaver(this);
+
     mAvailablePlugins.load(PLUGIN_DESKTOP_FILES_DIR, "RazorDesktop/Plugin");
     
     // this is mandatory for virtualized (virtualbox) installations. Dunno why.
@@ -276,6 +279,8 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
             context->addAction(m_actAbout);
             context->addSeparator();
             context->addActions(m_power->availableActions());
+            context->addSeparator();
+            context->addActions(m_screenSaver->availableActions());
         }
         else
         {

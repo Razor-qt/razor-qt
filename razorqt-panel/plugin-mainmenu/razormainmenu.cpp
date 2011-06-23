@@ -36,6 +36,7 @@
 #include <QAction>
 #include <QtGui/QMessageBox>
 #include <razorqt/powermanager.h>
+#include <razorqt/screensaver.h>
 
 #include <razorqt/xdgenv.h>
 //#include <razorbar.h>
@@ -62,6 +63,8 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     mPowerManager = new PowerManager(this);
     mPowerManager->setParentWidget(panel());
+
+    mScreenSaver = new ScreenSaver(this);
 
     settingsChanged();
 
@@ -172,5 +175,7 @@ void RazorMainMenu::buildMenu()
 
     QMenu* leaveMenu = mMenu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
     leaveMenu->addActions(mPowerManager->availableActions());
+
+    mMenu->addActions(mScreenSaver->availableActions());
 }
 

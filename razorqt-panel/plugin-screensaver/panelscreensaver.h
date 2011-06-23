@@ -3,9 +3,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * https://sourceforge.net/projects/razor-qt/
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,54 +24,28 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZOR_MAINMENU_H
-#define RAZOR_MAINMENU_H
+#ifndef PANELSCREENSAVER_H
+#define PANELSCREENSAVER_H
 
 #include "../panel/razorpanelplugin.h"
+#include "../panel/razorpanel.h"
 
-#include <QPushButton>
-#include <QDomElement>
-#include <QAction>
-
-#include "menustyle.h"
-
-class QMenu;
-class RazorBar;
-class PowerManager;
 class ScreenSaver;
 
-class RazorMainMenu : public RazorPanelPlugin
+
+class PanelScreenSaver : public RazorPanelPlugin
 {
     Q_OBJECT
+
 public:
-    RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~RazorMainMenu();
-
-//    int widthForHeight(int h) { return mButton.sizeHint().width(); }
-//    int heightForWidth(int w) { return w; }
-  //  RazorPlugin::RazorPluginSizing sizePriority() { return RazorPlugin::Static; }
-
-
-signals:
+    PanelScreenSaver(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
 
 private:
-    QPushButton mButton;
-    QString mLogDir;
-    QString mMenuFile;
-    QMenu* mMenu;
-    MenuStyle mTopMenuStyle;
-    MenuStyle mMenuStyle;
-    PowerManager* mPowerManager;
-    ScreenSaver* mScreenSaver;
+    ScreenSaver * m_saver;
 
-    void buildMenu();
-
-
-private slots:
-    void showMenu();
-    void settingsChanged();
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif
+
