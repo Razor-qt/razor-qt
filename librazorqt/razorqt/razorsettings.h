@@ -74,7 +74,10 @@ public:
     /*! \brief Return StyleSheet text (not file name, but real text) of the module called module.
     Paths in url() C/QSS functions are parsed to be real values for the theme,
     relative to full path */
-    QString qss(const QString& module);
+    QString qss(const QString& module) const;
+
+    /*! \brief A full path to image used as a wallpaper */
+    QString desktopBackground(int screen=-1) const;
 
 private:
     RazorTheme();

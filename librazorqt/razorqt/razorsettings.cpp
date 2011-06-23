@@ -57,8 +57,8 @@ public:
     {
     }
 
-    QString loadQss(const QString& qssFile);
-
+    QString loadQss(const QString& qssFile) const;
+    QString mThemeName;
     RazorTheme* mParent;
 };
 
@@ -80,7 +80,7 @@ void createDir(const QString& file)
 /************************************************
   This looks in all the usual paths for file
  ************************************************/
-QString findFile(const QString& fileName, bool onlyGlobal)
+QString findFile(const QString& fileName, bool onlyGlobal = false)
 {
     QStringList paths;
 
@@ -104,7 +104,6 @@ QString findFile(const QString& fileName, bool onlyGlobal)
     foreach(QString path, paths)
     {
         QString file = QString("%1/%2").arg(path, fileName);
-        //qDebug() << "   * test:" << file;
         if (QFile::exists(file))
             return file;
     }
@@ -132,8 +131,6 @@ void copySysConfig(const QString& module, const QString& homeFile)
         qWarning() << "Cannot copy file from:" << sysFile << "to:" << homeFile;
         Q_ASSERT(0);
     }
-
-//    qDebug() << "Copied file:" << sysFile << "into" << homeFile;
 }
 
 
@@ -203,6 +200,8 @@ RazorTheme::RazorTheme():
     QObject(),
     d_ptr(new RazorThemePrivate(this))
 {
+    RazorSettings settings("razor");
+    d_ptr->mThemeName = settings.value("theme").toString();
 }
 
 
@@ -230,18 +229,16 @@ RazorTheme* RazorTheme::instance()
 /************************************************
 
  ************************************************/
-QString RazorTheme::qss(const QString& module)
+QString RazorTheme::qss(const QString& module) const
 {
-    Q_D(RazorTheme);
+    Q_D(const RazorTheme);
 
-    RazorSettings settings("razor");
-    QString themeName = settings.value("theme").toString();
 
-    QString path(findFile(QString("themes/%1/%2.qss").arg(themeName, module), false));
+    QString path(findFile(QString("themes/%1/%2.qss").arg(d->mThemeName, module)));
     if (!path.isEmpty())
         return d->loadQss(path);
 
-    qWarning() << "QSS file cannot be found in any location:" << QString("%1/%2.qss").arg(themeName, module);
+    qWarning() << "QSS file cannot be found in any location:" << QString("%1/%2.qss").arg(d->mThemeName, module);
     return "";
 }
 
@@ -249,10 +246,8 @@ QString RazorTheme::qss(const QString& module)
 /************************************************
 
  ************************************************/
-QString RazorThemePrivate::loadQss(const QString& qssFile)
+QString RazorThemePrivate::loadQss(const QString& qssFile) const
 {
-    //qDebug() << "Theme: Reading QSS from" << qssFile;
-
     QFile f(qssFile);
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -268,10 +263,32 @@ QString RazorThemePrivate::loadQss(const QString& qssFile)
 
     // handle relative paths
     QString qssDir = QFileInfo(qssFile).canonicalPath();
-    //qDebug() << "Theme: replace relative path to " << qssDir;
     qss.replace(QRegExp("url.[ \\t\\s]*", Qt::CaseInsensitive, QRegExp::RegExp2), "url(" + qssDir + "/");
 
     return qss;
 }
 
 
+QString RazorTheme::desktopBackground(int screen) const
+{
+    Q_D(const RazorTheme);
+    QString indexFileName = findFile(QString("themes/%1/index.theme").arg(d->mThemeName));
+
+    if (indexFileName.isEmpty())
+        return "";
+
+    QSettings s(indexFileName, QSettings::IniFormat);
+    // There is something strange... If I remove next line the wallpapers array is not found...
+    s.childKeys();
+    s.beginReadArray("wallpapers");
+
+    s.setArrayIndex(screen);
+    if (s.contains("file"))
+        return s.value("file").toString();
+
+    s.setArrayIndex(0);
+    if (s.contains("file"))
+        return s.value("file").toString();
+
+    return QString();
+}
