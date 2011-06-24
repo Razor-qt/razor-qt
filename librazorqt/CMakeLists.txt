@@ -27,7 +27,6 @@ include_directories (
     )
 
 set ( razorqt_HDRS
-    razorqt/defs.h
     razorqt/razoraboutdlg.h
 #   razorqt/razordevman.h
 #   razorqt/razorhal.h
