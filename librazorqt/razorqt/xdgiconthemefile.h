@@ -1,8 +1,9 @@
 #ifndef XDGICONTHEMEFILE_H
 #define XDGICONTHEMEFILE_H
 
-#include "defs.h"
-
+#include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 /**
  * @file xdgiconthemefile.h
  * @brief Declares the class Xdgiconthemefile
@@ -18,11 +19,11 @@
 class XdgIconThemeFile
 {
 public:
-    XdgIconThemeFile(QString _filename);
+    XdgIconThemeFile(const QString & _filename);
     ~XdgIconThemeFile();
     void parseFile();
     void searchDirs();
-    QString searchIcon(QString _name, QString _context);
+    QString searchIcon(const QString & _name, const QString & _context);
     QString getName();
 private:
     QString themeDir;

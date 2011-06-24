@@ -12,8 +12,6 @@
 // 2010 by Chris "VdoP" Regali
 
 
-#include "defs.h"
-
 #include "xdgautostart.h"
 #include "xdgiconthememanager.h"
 

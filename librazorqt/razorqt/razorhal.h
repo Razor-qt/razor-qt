@@ -1,6 +1,6 @@
 #ifndef RAZOR_HAL_H
 #define RAZOR_HAL_H
-#include "defs.h"
+
 #include "razordevman.h"
 
 /**

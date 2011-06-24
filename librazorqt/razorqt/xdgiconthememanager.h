@@ -9,9 +9,9 @@
  * @author Christopher "VdoP" Regali
   */
 
-#include "defs.h"
 #include "xdgiconthemefile.h"
 
+class QIcon;
 
 /**
  * @brief shall manage the icon-themes and select the active one

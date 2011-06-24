@@ -1,5 +1,12 @@
 #ifndef XDGICONTHEMEFILE_CPP
 #define XDGICONTHEMEFILE_CPP
+
+#include <QtCore/QSettings>
+#include <QtCore/QLocale>
+#include <QtCore/QDir>
+#include <QtCore/QtDebug>
+#include <QtGui/QIcon>
+
 /**
  * @file xdgiconthemefile.cpp
  * @brief Implements the class Xdgiconthemefile
@@ -60,7 +67,7 @@ void XdgIconThemeFile::parseFile()
  * @brief constructor with params
  * @param[in] _filename the .theme file you want to parse
  */
-XdgIconThemeFile::XdgIconThemeFile(QString _filename)
+XdgIconThemeFile::XdgIconThemeFile(const QString & _filename)
 {
     fileName=_filename;
     themeName="";
@@ -112,7 +119,7 @@ void XdgIconThemeFile::searchDirs()
  * @return an absolute filepath to the most fitting icon
  */
 
-QString XdgIconThemeFile::searchIcon(QString _name, QString _context)
+QString XdgIconThemeFile::searchIcon(const QString & _name, const QString & _context)
 {
     QString retval = "";
     for (int size = 128; size >= 16; size /= 2) // get the bigges and nicest icons we find

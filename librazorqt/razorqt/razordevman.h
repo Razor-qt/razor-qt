@@ -1,6 +1,6 @@
 #ifndef RAZORDEVMAN_H
 #define RAZORDEVMAN_H
-#include "defs.h"
+
 
 class RazorDev: public QObject
 {

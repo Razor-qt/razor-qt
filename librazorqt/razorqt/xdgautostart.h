@@ -12,7 +12,6 @@
  * @author Christopher "VdoP" Regali
   **/
 
-#include "defs.h"
 #include "xdgdesktopfile.h"
 
 /**

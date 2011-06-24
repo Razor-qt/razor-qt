@@ -1,6 +1,11 @@
 #ifndef XDGICONTHEMEMANAGER_CPP
 #define XDGICONTHEMEMANAGER_CPP
 
+#include <QtGui/QIcon>
+#include <QtCore/QtDebug>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDirIterator>
 
 /**
  * @file xdgiconthememanager.cpp

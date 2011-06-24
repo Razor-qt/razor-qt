@@ -1,5 +1,8 @@
 //2010 Chris "VdoP" Regali
 
+#include <QtCore/QtDebug>
+#include <QtCore/QDir>
+
 #include "xdgautostart.h"
 #include "xdgenv.h"
 
