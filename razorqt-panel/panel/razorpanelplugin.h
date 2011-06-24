@@ -60,11 +60,6 @@ All plugins *must* be inherited from this one.
 This class provides some basic API and inherited/implemented
 plugins GUIs will be responsible on the functionality itself.
 
-Buttons are added by adding actions, using addAction() or insertAction().
-Groups of buttons can be separated using addSeparator() or insertSeparator().
-If a toolbar button is not appropriate, a widget can be inserted instead
-using addWidget() or insertWidget()
-
 For better behavior handling there are arguments to provide
 an access to Razor environment - see panel, parent.
 
