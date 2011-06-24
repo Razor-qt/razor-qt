@@ -96,12 +96,11 @@ public:
     */
     QString qss() { return m_qss; }
 
-    /*! \brief Get icon path (not QIcon) by specified key. See theme docs
-    for keys available.
-    \param name a key for theme icon.
-    */
-//    QString icon(const QString & name) { return m_icons[name]; }
     /*! \brief A full path to image used as a wallpaper
+     \param screen is an ID of the screen like in Qt. -1 means default (any) screen.
+                   Any other value greater than -1 is the exact screen (in dualhead). 
+		   In themes the index starts from 1 (ix 1 means 1st screen).
+     \retval QString a file name (including path).
     */
     QString desktopBackground(int screen=-1);
 
