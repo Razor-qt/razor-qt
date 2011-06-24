@@ -29,6 +29,7 @@
 #include <QIcon>
 
 #include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include "desktopplugin.h"
 
 
@@ -40,11 +41,9 @@ int main (int argc, char* argv[])
     QApplication app(argc,argv);
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
-    ReadSettings s("razor");
-    ReadTheme theme(s.settings()->value("theme", "").toString());
     ReadSettings config("desktop");
 
-    app.setStyleSheet(theme.qss());
+    app.setStyleSheet(razorTheme->qss("desktop"));
     
     QString configId(config.settings()->value("desktop", "razor").toString());
     QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "libdesktop-" + configId + ".so";
@@ -60,7 +59,7 @@ int main (int argc, char* argv[])
         return 0;
     }
 
-    DesktopPlugin * plugin = initFunc(configId, &config, &theme);
+    DesktopPlugin * plugin = initFunc(configId, &config);
     Q_ASSERT(plugin);
 
     if (plugin)

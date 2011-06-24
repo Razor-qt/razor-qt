@@ -31,6 +31,7 @@
 #include <QVariant>
 #include <QtDebug>
 
+#include <razorqt/razorsettings.h>
 #include "razorqt/xfitman.h"
 
 #include "razordeskman.h"
@@ -158,8 +159,8 @@ void RazorDeskManager::restoreIconState()
 
 
 
-RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * config, ReadTheme * theme)
-    : DesktopPlugin(configId, config, theme)
+RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * config)
+    : DesktopPlugin(configId, config)
 {
     config->settings()->beginGroup(configId);
     bool makeIcons = config->settings()->value("icons", false).toBool();
@@ -170,7 +171,7 @@ RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * conf
     if (finalPixmap.isEmpty() || !QFile::exists(finalPixmap))
     {
         //now we want to use the system default - we still need to find that one out though
-        finalPixmap = theme->desktopBackground();
+        finalPixmap = razorTheme->desktopBackground();
         qDebug() << "trying to get system-defaults" << finalPixmap;
     }
 

@@ -38,7 +38,6 @@
 class QActionGroup;
 class QLayoutItem;
 class RazorSettings;
-class ReadSettings;
 class RazorPanelLayout;
 class AddPluginDialog;
 

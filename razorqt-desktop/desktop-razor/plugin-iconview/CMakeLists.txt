@@ -16,7 +16,6 @@ set(IV_SOURCES
 )
 
 set(IV_MOCS
-  iconview.h
   iconscene.h
   desktopicon.h
 )

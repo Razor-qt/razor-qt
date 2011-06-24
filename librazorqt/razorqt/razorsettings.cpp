@@ -278,17 +278,18 @@ QString RazorTheme::desktopBackground(int screen) const
         return "";
 
     QSettings s(indexFileName, QSettings::IniFormat);
+    QString themeDir = QFileInfo(indexFileName).absolutePath();
     // There is something strange... If I remove next line the wallpapers array is not found...
     s.childKeys();
     s.beginReadArray("wallpapers");
 
-    s.setArrayIndex(screen);
+    s.setArrayIndex(screen - 1);
     if (s.contains("file"))
-        return s.value("file").toString();
+        return QString("%1/%2").arg(themeDir, s.value("file").toString());
 
     s.setArrayIndex(0);
     if (s.contains("file"))
-        return s.value("file").toString();
+        return QString("%1/%2").arg(themeDir, s.value("file").toString());
 
     return QString();
 }

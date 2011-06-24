@@ -35,7 +35,6 @@
 
 
 class XdgDesktopFile;
-class ReadSettings;
 class QAction;
 
 /*! \brief Loader for "quick launcher" icons in the panel.

@@ -58,6 +58,8 @@ protected:
     virtual bool event(QEvent *event);
 
 private:
+    Q_DISABLE_COPY(RazorSettings)
+
     RazorSettingsPrivate* const d_ptr;
     Q_DECLARE_PRIVATE(RazorSettings)
 };
@@ -76,7 +78,12 @@ public:
     relative to full path */
     QString qss(const QString& module) const;
 
-    /*! \brief A full path to image used as a wallpaper */
+    /*! \brief A full path to image used as a wallpaper
+     \param screen is an ID of the screen like in Qt. -1 means default (any) screen.
+                   Any other value greater than -1 is the exact screen (in dualhead).
+                  In themes the index starts from 1 (ix 1 means 1st screen).
+     \retval QString a file name (including path).
+    */
     QString desktopBackground(int screen=-1) const;
 
 private:

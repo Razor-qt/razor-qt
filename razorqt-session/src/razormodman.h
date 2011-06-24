@@ -32,7 +32,6 @@
 
 class QDBusInterface;
 
-class ReadSettings;
 
 /**
  * @file razormodman.h
@@ -85,8 +84,9 @@ private:
     /*! \brief Flag if the crashed process should be restarted.
     Doespower has to be set */
     bool autorestart;
+
     //! \brief Session configuration.
-    ReadSettings* cfg;
+    QString mConfig;
 
     //! \brief map with Razor main modules. Window manager, and Razor components.
     ModulesMap procMap;

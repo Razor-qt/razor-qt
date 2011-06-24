@@ -26,14 +26,15 @@
 #include <QtDebug>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <razorqt/razorsettings.h>
 
 #include "workspacemanager.h"
 
 EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
 
 
-RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSettings * config, ReadTheme * theme)
-    : DesktopPlugin(configId, config, theme)
+RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSettings * config)
+    : DesktopPlugin(configId, config)
 {
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
     //this may actually make the icon work on multihead
@@ -56,7 +57,8 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSetti
     QString themeWallpaper;
     for (int i = 0; i < size; ++i) {
         m_settings->setArrayIndex(i);
-        themeWallpaper = theme->desktopBackground(i+1);
+        themeWallpaper = razorTheme->desktopBackground(i+1);
+
         desktops[i] = WorkspaceConfig (
                             strToBackgroundType(m_settings->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
                             m_settings->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),

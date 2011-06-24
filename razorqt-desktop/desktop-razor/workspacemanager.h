@@ -47,7 +47,7 @@ public:
         BackgroundColor = 1
     };
     
-    RazorWorkSpaceManager(const QString & configId, ReadSettings * config, ReadTheme * theme);
+    RazorWorkSpaceManager(const QString & configId, ReadSettings * config);
     ~RazorWorkSpaceManager();
     
     QString info();

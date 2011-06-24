@@ -23,7 +23,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razorqt/readsettings.h"
+#include "razorqt/razorsettings.h"
 #include "application.h"
 
 
@@ -31,9 +31,7 @@ RazorAppSwitcher::Application::Application(int & argc, char ** argv)
     : QApplication(argc, argv),
       m_as(0)
 {
-    ReadSettings cfg("razor");
-    ReadTheme theme(cfg.settings()->value("theme", "").toString());
-    setStyleSheet(theme.qss());
+    setStyleSheet(razorTheme->qss("appswitcher"));
 
     m_as = new RazorAppSwitcher::AppSwitcher();
 }

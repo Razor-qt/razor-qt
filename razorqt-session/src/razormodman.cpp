@@ -25,7 +25,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razormodman.h"
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <razorqt/xdgautostart.h>
 
 #include <QtDebug>
@@ -44,30 +44,33 @@
  * @brief the constructor, needs a valid modules.conf
  */
 RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
-    : QObject(parent)
+    : QObject(parent),
+    mConfig(config)
 {
     m_power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
                                "org.freedesktop.Hal.Device.SystemPowerManagement",
                                QDBusConnection::systemBus());
 
     qDebug() << __FILE__ << ":" << __LINE__ << "Session" << config << "about to launch (deafult 'session')";
-    cfg = new ReadSettings(config.isEmpty() ? "session" : config, this);
+    if (mConfig.isEmpty())
+        mConfig = "session";
 
-    QSettings * s = cfg->settings();
-    autorestart = s->value("autorestart", true).toBool();
 
-    int count = s->beginReadArray("modules");
+    RazorSettings s(mConfig);
+    autorestart = s.value("autorestart", true).toBool();
+
+    int count = s.beginReadArray("modules");
     QString cmd;
     for (int i = 0; i < count; ++i)
     {
-        s->setArrayIndex(i);
-        cmd = s->value("exec", "").toString();
+        s.setArrayIndex(i);
+        cmd = s.value("exec", "").toString();
         if (cmd.isEmpty())
         {
             qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
             continue;
         }
-        bool power = s->value("doespower", false).toBool();
+        bool power = s.value("doespower", false).toBool();
 
         QProcess* tmp = new QProcess(this);
         tmp->start(cmd);
@@ -79,21 +82,21 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
         m.process = tmp;
         procMap[cmd] = m;
     }
-    s->endArray();
+    s.endArray();
 
-    int delay = s->value("autostart_delay", 1).toInt();
+    int delay = s.value("autostart_delay", 1).toInt();
     QTimer::singleShot(delay * 1000, this, SLOT(autoStartSingleShot()));
 }
 
 void RazorModuleManager::autoStartSingleShot()
 {
-    QSettings * s = cfg->settings();
-    int count = s->beginReadArray("autostart");
+    RazorSettings s(mConfig);
+    int count = s.beginReadArray("autostart");
     QString cmd;
     for (int i = 0; i < count; ++i)
     {
-        s->setArrayIndex(i);
-        cmd = s->value("exec", "").toString();
+        s.setArrayIndex(i);
+        cmd = s.value("exec", "").toString();
         if (cmd.isEmpty())
         {
             qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
@@ -103,7 +106,7 @@ void RazorModuleManager::autoStartSingleShot()
         tmp->start(cmd);
         autostartList << tmp;
     }
-    s->endArray();
+    s.endArray();
     
     // XDG autostart
     XdgAutoStart xdgautostart;
