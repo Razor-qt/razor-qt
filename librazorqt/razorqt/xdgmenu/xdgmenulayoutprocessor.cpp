@@ -25,92 +25,44 @@
 
 
 #include "xdgmenulayoutprocessor.h"
-
+#include "../domhelper.h"
 #include <QDebug>
 
-/*class LayoutProps
-{
-public:
-    LayoutProps(const LayoutProps& other)
-    {
-        mShowEmpty = other.mShowEmpty;
-        mIsInline = other.mIsInline;
-        mInlineLimit = other.mInlineLimit;
-        mInlineHeader = other.mInlineHeader;
-        mInlineAlias = other.mInlineAlias;
-    }
-
-private:
-    bool mShowEmpty;
-    bool mIsInline;
-    bool mInlineLimit;
-    bool mInlineHeader;
-    bool mInlineAlias;
-};
-*/
-
-
-
-
-/************************************************
- If no default-layout has been specified then the layout as specified by
- the following elements should be assumed:
- <DefaultLayout
-     show_empty="false"
-     inline="false"
-     inline_limit="4"
-     inline_header="true"
-     inline_alias="false">
-     <Merge type="menus"/>
-     <Merge type="files"/>
- </DefaultLayout>
- ************************************************/
-XdgMenuLayoutProcessor::XdgMenuLayoutProcessor()
-{
-    /*
-    mDefaultLayout.setShowEmpty(false);
-    mDefaultLayout.setInline(false);
-    mDefaultLayout.setInlineLimit(4);
-    mDefaultLayout.setInlineHeader(true);
-    mDefaultLayout.setInlineAlias(false);
-*/
-/*
-    mDefaultLayout.mShowEmpty = false;
-    mDefaultLayout.mInline = false;
-    mDefaultLayout.mInlineLimit = 4;
-    mDefaultLayout.mInlineHeader = true;
-    mDefaultLayout.mInlineAlias = false;
-
-
-    LayoutItem item;
-    item.type = LayoutItem::MergeMenus;
-    mDefaultLayout << item;
-
-    item.type = LayoutItem::MergeFiles;
-    mDefaultLayout << item;
-*/
-}
-
-
-/************************************************
-
- ************************************************/
-/*XdgMenuLayoutProcessor::XdgMenuLayoutProcessor(const Layout& other)
-{
-    mDefaultLayout = other;
-}
-*/
 
 /************************************************
 
  ************************************************/
 QDomElement findLastElementByTag(const QDomElement element, const QString tagName)
 {
-//    QDomNodeList l = element.elementsByTagName(tagName);
-//    if (l.isEmpty())
-//        return QDomElement();
+    QDomNodeList l = element.elementsByTagName(tagName);
+    if (l.isEmpty())
+        return QDomElement();
 
-    //return l.at(l.length()-1);
+    return l.at(l.length()-1).toElement();
+}
+
+
+/************************************************
+
+ ************************************************/
+void setParams(QDomElement defaultLayout, LayoutParams defaultValues, LayoutParams* result)
+{
+    *result = defaultValues;
+
+    if (defaultLayout.hasAttribute("show_empty"))
+        result->mShowEmpty = defaultLayout.attribute("show_empty") == "true";
+
+    if (defaultLayout.hasAttribute("inline"))
+        result->mShowEmpty = defaultLayout.attribute("inline") == "true";
+
+    if (defaultLayout.hasAttribute("inline_limit"))
+        result->mShowEmpty = defaultLayout.attribute("inline_limit").toInt();
+
+    if (defaultLayout.hasAttribute("inline_header"))
+        result->mShowEmpty = defaultLayout.attribute("inline_header") == "true";
+
+    if (defaultLayout.hasAttribute("inline_alias"))
+        result->mShowEmpty = defaultLayout.attribute("inline_alias") == "true";
 }
 
 
@@ -127,62 +79,143 @@ QDomElement findLastElementByTag(const QDomElement element, const QString tagNam
      <Merge type="files"/>
  </DefaultLayout>
  ************************************************/
-void XdgMenuLayoutProcessor::run(QDomElement& element)
+XdgMenuLayoutProcessor::XdgMenuLayoutProcessor(QDomElement& element):
+    mElement(element)
 {
- /*   qDebug() << "RUN::::::::::::::::::::::::::::::";
+    mDefaultParams.mShowEmpty = false;
+    mDefaultParams.mInline = false;
+    mDefaultParams.mInlineLimit = 4;
+    mDefaultParams.mInlineHeader = true;
+    mDefaultParams.mInlineAlias = false;
+
     mDefaultLayout = findLastElementByTag(element, "DefaultLayout");
 
-    if (mDefaultLayout.isNull())
+    if (!mDefaultLayout.isNull())
     {
-        // Create node ..........................
-        QDomDocument doc = element.ownerDocument();
-        mDefaultLayout = doc.createElement("DefaultLayout");
-        QDomElement menus = doc.createElement("Merge");
-        menus.setAttribute("type", "menus");
-
-        QDomElement files = doc.createElement("Merge");
-        files.setAttribute("type", "files");
-
-        mDefaultLayout.appendChild(menus);
-        mDefaultLayout.appendChild(files);
-
-        element.appendChild(mDefaultLayout);
-
-        mDefaultParams.mShowEmpty = false;
-        mDefaultParams.mInline = false;
-        mDefaultParams.mInlineLimit = 4;
-        mDefaultParams.mInlineHeader = true;
-        mDefaultParams.mInlineAlias = false;
+        // DefaulLayout node found copy params from it
+        setParams(mDefaultLayout, mDefaultParams, &mDefaultParams);
     }
     else
     {
-        mDefaultParams.mShowEmpty = mDefaultLayout.attribute("show_empty", "false");
-        mDefaultParams.mInline = mDefaultLayout.attribute("inline", "false");
-        mDefaultParams.mInlineLimit = mDefaultLayout.attribute("inline_limit", "4");
-        mDefaultParams.mInlineHeader = mDefaultLayout.attribute("inline_header", "true");
-        mDefaultParams.mInlineAlias = mDefaultLayout.attribute("inline_alias", "false");
+        // Create DefaultLayout node
+        QDomDocument doc = element.ownerDocument();
+        mDefaultLayout = doc.createElement("DefaultLayout");
+
+        QDomElement menus = doc.createElement("Merge");
+        menus.setAttribute("type", "menus");
+        mDefaultLayout.appendChild(menus);
+
+        QDomElement files = doc.createElement("Merge");
+        files.setAttribute("type", "files");
+        mDefaultLayout.appendChild(files);
+
+        mElement.appendChild(mDefaultLayout);
     }
 
-    run(element, this);
-*/
+    // If a menu does not contain a <Layout> element or if it contains an empty <Layout> element
+    // then the default layout should be used.
+    mLayout = findLastElementByTag(element, "Layout");
+    if (mLayout.isNull() || !mLayout.hasChildNodes())
+        mLayout = mDefaultLayout;
 }
 
 
 /************************************************
 
  ************************************************/
-void XdgMenuLayoutProcessor::run(QDomElement &element, XdgMenuLayoutProcessor *parent)
+XdgMenuLayoutProcessor::XdgMenuLayoutProcessor(QDomElement &element, XdgMenuLayoutProcessor *parent):
+    mElement(element)
 {
-    //mDefaultLayout = findLastElementByTag(element, "DefaultLayout");
+    // DefaultLayout ............................
+    QDomElement defaultLayout = findLastElementByTag(element, "DefaultLayout");
 
-/*    // DefaultLayout ............................
+    if (!defaultLayout.isNull())
     {
-        QDomNodeList l = element.elementsByTagName("DefaultLayout");
-        if (!l.isEmpty())
-        {
-            QDomElement e = l.at(l.length()-1);
-            mDefaultLayout.mShowEmpty =  e.attribute("show_empty", mDefaultLayout.mShowEmpty);
-        }
+        // DefaulLayout node found copy params from it
+        mDefaultLayout = defaultLayout;
+        setParams(mDefaultLayout, mDefaultParams, &(parent->mDefaultParams));
     }
-*/
+    else
+    {
+        // Copy DefaulLayout from parent
+        mDefaultLayout = parent->mDefaultLayout;
+        mDefaultParams = parent->mDefaultParams;
+    }
+
+    // If a menu does not contain a <Layout> element or if it contains an empty <Layout> element
+    // then the default layout should be used.
+    mLayout = findLastElementByTag(element, "Layout");
+    if (mLayout.isNull() || !mLayout.hasChildNodes())
+        mLayout = mDefaultLayout;
+
 }
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuLayoutProcessor::run()
+{
+    return; // <-------------------------------------------------
+    QDomDocument doc = mLayout.ownerDocument();
+    mResult = doc.createElement("Result");
+    mElement.appendChild(mResult);
+
+    DomElementIterator it(mLayout);
+    it.toFront();
+    while (it.hasNext())
+    {
+        QDomElement e = it.next();
+
+        if (e.tagName() == "Filename")
+            processFilenameTag(e);
+
+        else if (e.tagName() == "Menuname")
+            processMenunameTag(e);
+
+        else if (e.tagName() == "Separator")
+            processSeparatorTag(e);
+
+        else if (e.tagName() == "Merge")
+            processMergeTag(e);
+
+    }
+
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuLayoutProcessor::processFilenameTag(const QDomElement &element)
+{
+
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuLayoutProcessor::processMenunameTag(const QDomElement &element)
+{
+
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuLayoutProcessor::processSeparatorTag(const QDomElement &element)
+{
+
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuLayoutProcessor::processMergeTag(const QDomElement &element)
+{
+
+}
+

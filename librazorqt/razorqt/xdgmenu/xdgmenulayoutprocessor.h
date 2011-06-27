@@ -89,19 +89,23 @@ struct LayoutParams
 class XdgMenuLayoutProcessor
 {
 public:
-    XdgMenuLayoutProcessor();
-//    XdgMenuLayoutProcessor(const Layout& other);
-
-    void run(QDomElement& element);
+    XdgMenuLayoutProcessor(QDomElement& element);
+    void run();
 
 protected:
-    void run(QDomElement& element, XdgMenuLayoutProcessor* parent);
+    XdgMenuLayoutProcessor(QDomElement &element, XdgMenuLayoutProcessor *parent);
+
+    void processFilenameTag(const QDomElement &element);
+    void processMenunameTag(const QDomElement &element);
+    void processSeparatorTag(const QDomElement &element);
+    void processMergeTag(const QDomElement &element);
 
 private:
     LayoutParams mDefaultParams;
-    QDomElement  mDefaultLayout;
-    //Layout mDefaultLayout;
-    //Layout mLayout;
+    QDomElement& mElement;
+    QDomElement mDefaultLayout;
+    QDomElement mLayout;
+    QDomElement mResult;
 };
 
 #endif // XDGMENULAYOUTPROCESSOR_H

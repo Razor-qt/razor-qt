@@ -592,8 +592,8 @@ void XdgMenuPrivate::deleteEmpty(QDomElement& element)
  ************************************************/
 void XdgMenuPrivate::processLayouts(QDomElement& element)
 {
-    XdgMenuLayoutProcessor proc;
-    proc.run(element);
+    XdgMenuLayoutProcessor proc(element);
+    proc.run();
 }
 
 
