@@ -92,6 +92,7 @@ set ( razorqt_MOCS
 #   razorqt/razorhal.h
 #   razorqt/xdgmanager.h
     razorqt/xdgmenu/xdgmenu.h
+    razorqt/xdgmenu/xdgmenu_p.h
     razorqt/readsettings.h
     razorqt/xdgdesktopfile.h
     razorqt/xdgmenu/xdgmenuapplinkprocessor.h

@@ -32,12 +32,12 @@
 #include <QtCore/QStringList>
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
-
+class XdgMenu;
 class XdgMenuReader : public QObject
 {
     Q_OBJECT
 public:
-    explicit XdgMenuReader(XdgMenuReader*  parentReader = 0, QObject *parent = 0);
+    explicit XdgMenuReader(XdgMenu* menu, XdgMenuReader*  parentReader = 0, QObject *parent = 0);
     virtual ~XdgMenuReader();
 
     bool load(const QString& fileName, const QString& baseDir = "");
@@ -72,6 +72,7 @@ private:
     QDomDocument mXml;
     XdgMenuReader*  mParentReader;
     QStringList mBranchFiles;
+    XdgMenu* mMenu;
 };
 
 #endif // XDGMENUREADER_H

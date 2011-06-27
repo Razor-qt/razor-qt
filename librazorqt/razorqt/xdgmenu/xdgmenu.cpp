@@ -25,6 +25,7 @@
 
 
 #include "xdgmenu.h"
+#include "xdgmenu_p.h"
 #include "xdgmenureader.h"
 #include "domhelper.h"
 #include "xdgmenurules.h"
@@ -41,47 +42,16 @@
 #include <QtCore/QDir>
 #include <QtCore/QHash>
 #include <QtCore/QLocale>
-
-class XdgMenuPrivate
-{
-public:
-    XdgMenuPrivate(XdgMenu* parent);
-
-    void simplify(QDomElement& element);
-    void mergeMenus(QDomElement& element);
-    void moveMenus(QDomElement& element);
-    void deleteDeletedMenus(QDomElement& element);
-    void processDirectoryEntries(QDomElement& element, const QStringList& parentDirs);
-    void processApps(QDomElement& element);
-    void deleteEmpty(QDomElement& element);
-    void processLayouts(QDomElement& element);
-
-    bool loadDirectoryFile(const QString& fileName, QDomElement& element);
-    void prependChilds(QDomElement& srcElement, QDomElement& destElement);
-    void appendChilds(QDomElement& srcElement, QDomElement& destElement);
-
-    void saveLog(const QString& logFileName);
-
-    QString mErrorString;
-    QStringList mEnvironments;
-    QString mMenuFileName;
-    QString mLogDir;
-    QDomDocument mXml;
-
-private:
-    XdgMenu* const q_ptr;
-    Q_DECLARE_PUBLIC(XdgMenu)
-};
+#include <QtCore/QFileSystemWatcher>
 
 
 /************************************************
 
  ************************************************/
-XdgMenu::XdgMenu(const QString& menuFileName, QObject *parent) :
+XdgMenu::XdgMenu(QObject *parent) :
     QObject(parent),
     d_ptr(new XdgMenuPrivate(this))
 {
-    d_ptr->mMenuFileName = menuFileName;
 }
 
 
@@ -99,8 +69,11 @@ XdgMenu::~XdgMenu()
 
  ************************************************/
 XdgMenuPrivate::XdgMenuPrivate(XdgMenu *parent):
+    mOutDated(true),
     q_ptr(parent)
 {
+    this->connect(&mWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
+    this->connect(&mWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(fileChanged(QString)));
 }
 
 
@@ -167,11 +140,15 @@ const QString XdgMenu::errorString() const
 /************************************************
 
  ************************************************/
-bool XdgMenu::read()
+bool XdgMenu::read(const QString& menuFileName)
 {
     Q_D(XdgMenu);
 
-    XdgMenuReader reader;
+    d->mMenuFileName = menuFileName;
+
+    d->clearWatcher();
+
+    XdgMenuReader reader(this);
     if (!reader.load(d->mMenuFileName))
     {
         qWarning() << reader.errorString();
@@ -209,6 +186,8 @@ bool XdgMenu::read()
 
     d->processLayouts(root);
     d->saveLog("09-processLayouts.xml");
+
+    d->mOutDated = false;
 
     return true;
 }
@@ -572,6 +551,8 @@ bool XdgMenuPrivate::loadDirectoryFile(const QString& fileName, QDomElement& ele
     element.setAttribute("comment", file.localizedValue("Comment").toString());
     element.setAttribute("icon", file.value("Icon").toString());
 
+    Q_Q(XdgMenu);
+    q->addWatchPath(QFileInfo(file.fileName()).absolutePath());
     return true;
 }
 
@@ -650,4 +631,54 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
 
 
     return "";
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenu::addWatchPath(const QString &path)
+{
+    Q_D(XdgMenu);
+
+    if (d->mWatcher.files().contains(path))
+        return;
+
+    if (d->mWatcher.directories().contains(path))
+        return;
+
+    d->mWatcher.addPath(path);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgMenu::isOutDated() const
+{
+    Q_D(const XdgMenu);
+    return d->mOutDated;
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuPrivate::fileChanged(const QString& path)
+{
+    Q_UNUSED(path)
+    mOutDated = true;
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuPrivate::clearWatcher()
+{
+    QStringList sl;
+    sl << mWatcher.files();
+    sl << mWatcher.directories();
+    if (sl.length())
+        mWatcher.removePaths(sl);
 }

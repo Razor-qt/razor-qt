@@ -243,6 +243,7 @@ void XdgMenuApplinkProcessor::fillAppFileInfoList()
 void XdgMenuApplinkProcessor::findDesktopFiles(const QString& dirName, const QString& prefix)
 {
     QDir dir(dirName);
+    mMenu->addWatchPath(dir.absolutePath());
     QFileInfoList files = dir.entryInfoList(QStringList("*.desktop"), QDir::Files);
 
     foreach (QFileInfo file, files)

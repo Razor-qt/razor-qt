@@ -25,6 +25,7 @@
 
 
 #include "xdgmenureader.h"
+#include "xdgmenu.h"
 #include "xdgenv.h"
 #include "domhelper.h"
 
@@ -39,12 +40,12 @@
 
 
 
-
 /************************************************
 
  ************************************************/
-XdgMenuReader::XdgMenuReader(XdgMenuReader*  parentReader, QObject *parent) :
-    QObject(parent)
+XdgMenuReader::XdgMenuReader(XdgMenu* menu, XdgMenuReader*  parentReader, QObject *parent) :
+    QObject(parent),
+    mMenu(menu)
 {
     mParentReader = parentReader;
     if (mParentReader)
@@ -83,12 +84,12 @@ bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
     mBranchFiles << mFileName;
 
     QFile file(mFileName);
-
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
         mErrorStr = tr("%1 not loading: %2").arg(fileName).arg(file.errorString());
         return false;
     }
+    mMenu->addWatchPath(fileName);
 
     QString errorStr;
     int errorLine;
@@ -363,7 +364,7 @@ void XdgMenuReader::addDirTag(QDomElement& previousElement, const QString& tagNa
  ************************************************/
 void XdgMenuReader::mergeFile(const QString& fileName, QDomElement& element, QStringList* mergedFiles)
 {
-    XdgMenuReader reader(this);
+    XdgMenuReader reader(mMenu, this);
     //qDebug() << "Merge file: " << fileName;
     QFileInfo fileInfo(QDir(mDirName), fileName);
 

@@ -40,6 +40,7 @@ class QDomDocument;
 class QDomElement;
 class XdgMenuPrivate;
 
+
 /*! @brief The XdgMenu class implements the "Desktop Menu Specification" from freedesktop.org.
 
  Freedesktop menu is a user-visible hierarchy of applications, typically displayed as a menu.
@@ -47,9 +48,9 @@ class XdgMenuPrivate;
  Example usage:
 @code
     QString menuFile = XdgMenu::getMenuFileName();
-    XdgMenu xdgMenu(menuFile);
+    XdgMenu xdgMenu();
 
-    bool res = xdgMenu.read();
+    bool res = xdgMenu.read(menuFile);
     if (!res)
     {
         QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
@@ -64,11 +65,14 @@ class XdgMenuPrivate;
 class XdgMenu : public QObject
 {
 Q_OBJECT
+    friend class XdgMenuReader;
+    friend class XdgMenuApplinkProcessor;
+
 public:
-    explicit XdgMenu(const QString& menuFileName, QObject *parent = 0);
+    explicit XdgMenu(QObject *parent = 0);
     virtual ~XdgMenu();
 
-    bool read();
+    bool read(const QString& menuFileName);
     void save(const QString& fileName);
 
     const QDomDocument xml() const;
@@ -85,6 +89,11 @@ public:
     void setLogDir(const QString& directory);
 
     static QString getMenuFileName(const QString& baseName = "applications.menu");
+
+    bool isOutDated() const;
+
+protected:
+    void addWatchPath(const QString& path);
 
 private:
     XdgMenuPrivate* const d_ptr;

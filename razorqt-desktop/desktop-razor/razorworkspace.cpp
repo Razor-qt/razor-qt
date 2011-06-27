@@ -262,8 +262,8 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         if (m_mode == ModeNormal)
         {
             // TODO/FIXME: cache it?
-            XdgMenu xdgMenu(XdgMenu::getMenuFileName());
-            if (xdgMenu.read())
+            XdgMenu xdgMenu;
+            if (xdgMenu.read(XdgMenu::getMenuFileName()))
             {
                 context = new XdgMenuWidget(xdgMenu, "Context Menu", this);
             }

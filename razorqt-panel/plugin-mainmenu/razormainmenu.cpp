@@ -25,11 +25,9 @@
 
 
 #include "razormainmenu.h"
-//#include "razor.h"
 #include <QDebug>
 #include <QtGui/QMenu>
 #include <razorqt/xdgdesktopfile.h>
-#include <razorqt/xdgmenu/xdgmenu.h>
 #include <razorqt/domhelper.h>
 #include <QSettings>
 #include <QFileInfo>
@@ -39,7 +37,6 @@
 #include <razorqt/screensaver.h>
 
 #include <razorqt/xdgenv.h>
-//#include <razorbar.h>
 #include <razorqt/xdgicon.h>
 #include <razorqt/xdgdesktopfile.h>
 #include <razorqt/xdgmenu/xdgmenuwidget.h>
@@ -91,7 +88,7 @@ RazorMainMenu::~RazorMainMenu()
  ************************************************/
 void RazorMainMenu::showMenu()
 {
-    if (!mMenu)
+    if (mXdgMenu.isOutDated())
         buildMenu();
 
     if (!mMenu)
@@ -155,19 +152,18 @@ void RazorMainMenu::settingsChanged()
  ************************************************/
 void RazorMainMenu::buildMenu()
 {
-    XdgMenu xdgMenu(mMenuFile);
-    xdgMenu.setLogDir(mLogDir);
+    mXdgMenu.setLogDir(mLogDir);
 
-    bool res = xdgMenu.read();
+    bool res = mXdgMenu.read(mMenuFile);
     if (res)
     {
-        mMenu = new XdgMenuWidget(xdgMenu, "", this);
+        mMenu = new XdgMenuWidget(mXdgMenu, "", this);
         mMenu->setObjectName("TopLevelMainMenu");
         mMenu->setStyle(&mTopMenuStyle);
     }
     else
     {
-        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+        QMessageBox::warning(this, "Parse error", mXdgMenu.errorString());
         return;
     }
 

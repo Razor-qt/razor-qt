@@ -28,6 +28,7 @@
 #define RAZOR_MAINMENU_H
 
 #include "../panel/razorpanelplugin.h"
+#include <razorqt/xdgmenu/xdgmenu.h>
 
 #include <QPushButton>
 #include <QDomElement>
@@ -47,11 +48,6 @@ public:
     RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorMainMenu();
 
-//    int widthForHeight(int h) { return mButton.sizeHint().width(); }
-//    int heightForWidth(int w) { return w; }
-  //  RazorPlugin::RazorPluginSizing sizePriority() { return RazorPlugin::Static; }
-
-
 signals:
 
 private:
@@ -63,7 +59,7 @@ private:
     MenuStyle mMenuStyle;
     PowerManager* mPowerManager;
     ScreenSaver* mScreenSaver;
-
+    XdgMenu mXdgMenu;
     void buildMenu();
 
 
