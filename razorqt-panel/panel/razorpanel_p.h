@@ -34,6 +34,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtGui/QAction>
+#include <QtCore/QVariantAnimation>
 
 class QActionGroup;
 class QLayoutItem;
@@ -70,6 +71,7 @@ public slots:
     void addPlugin(RazorPluginInfo* pluginInfo);
     void onRemovePlugin();
     void onMovePlugin();
+    void startMoveWidget();
 
 private:
     void loadPlugins();
@@ -119,6 +121,16 @@ public:
     RazorPanelPlugin* plugin() const { return mPlugin; }
 private:
     RazorPanelPlugin* mPlugin;
+};
+
+class CursorAnimation: public QVariantAnimation
+{
+    Q_OBJECT
+
+public:
+    CursorAnimation(QObject *parent);
+
+    void updateCurrentValue(const QVariant &value);
 };
 
 #endif // RAZORPANEL_P_H

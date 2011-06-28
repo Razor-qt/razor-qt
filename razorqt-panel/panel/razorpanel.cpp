@@ -777,7 +777,6 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
     return menu;
 }
 
-
 /************************************************
 
  ************************************************/
@@ -787,9 +786,22 @@ void RazorPanelPrivate::onMovePlugin()
     if (!a)
         return;
 
-    mLayout->startMoveWidget(a->plugin());
+    CursorAnimation *cursorAnimation = new CursorAnimation(a->plugin());
+    connect(cursorAnimation, SIGNAL(finished()), SLOT(startMoveWidget()));
+    cursorAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+    cursorAnimation->setDuration(150);
+    cursorAnimation->setStartValue(QCursor::pos());
+    cursorAnimation->setEndValue(a->plugin()->mapToGlobal(a->plugin()->rect().center()));
+    cursorAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
+void RazorPanelPrivate::startMoveWidget()
+{
+    CursorAnimation* a = qobject_cast<CursorAnimation*>(sender());
+    if (!a)
+        return;
+    mLayout->startMoveWidget(qobject_cast<QWidget *>(a->parent()));
+}
 
 /************************************************
 
@@ -825,3 +837,12 @@ void RazorPanelPrivate::switchPosition()
     saveSettings();
 }
 
+CursorAnimation::CursorAnimation(QObject *parent):
+    QVariantAnimation(parent)
+{
+}
+
+void CursorAnimation::updateCurrentValue(const QVariant &value)
+{
+    QCursor::setPos(value.toPoint());
+}
