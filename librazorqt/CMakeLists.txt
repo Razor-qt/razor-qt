@@ -30,7 +30,7 @@ set ( razorqt_HDRS
     razorqt/razoraboutdlg.h
 #   razorqt/razordevman.h
 #   razorqt/razorhal.h
-    razorqt/readsettings.h
+    razorqt/razorsettings.h
     razorqt/xdgautostart.h
     razorqt/xdgenv.h
     razorqt/xdgiconthemefile.h
@@ -57,7 +57,6 @@ set ( razorqt_SRCS
     razorqt/razoraboutdlg.cpp
 #   razorqt/razordevman.cpp
 #   razorqt/razorhal.cpp
-    razorqt/readsettings.cpp
     razorqt/xdgautostart.cpp
     razorqt/xdgdesktopfile.cpp
     razorqt/xdgiconthemefile.cpp
@@ -93,7 +92,6 @@ set ( razorqt_MOCS
 #   razorqt/xdgmanager.h
     razorqt/xdgmenu/xdgmenu.h
     razorqt/xdgmenu/xdgmenu_p.h
-    razorqt/readsettings.h
     razorqt/xdgdesktopfile.h
     razorqt/xdgmenu/xdgmenuapplinkprocessor.h
     razorqt/xdgmenu/xdgmenureader.h

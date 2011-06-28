@@ -35,7 +35,7 @@
 #include <QFileSystemWatcher>
 
 #include "razordeskicon.h"
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <desktopplugin.h>
 
 typedef QMap<QString,RazorDeskIconBase*> IconMap;
@@ -50,7 +50,7 @@ class RazorDeskManager : public QObject, public DesktopPlugin
 {
     Q_OBJECT
 public:
-    RazorDeskManager(const QString & configId, ReadSettings * config);
+    RazorDeskManager(const QString & configId, RazorSettings * config);
     ~RazorDeskManager();
 
     QString info();
@@ -65,7 +65,7 @@ private:
     IconMap m_iconList;
     QFileSystemWatcher * m_fsw;
 
-    ReadSettings *deskicons;
+    RazorSettings *deskicons;
 };
 
 

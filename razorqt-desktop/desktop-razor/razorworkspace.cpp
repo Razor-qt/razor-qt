@@ -40,7 +40,7 @@
 #include "workspacemanager.h"
 #include "desktopwidgetplugin.h"
 #include "arrangeitem.h"
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 #include <razorqt/xdgmenu/xdgmenuwidget.h>
@@ -49,7 +49,7 @@
 #include <razorqt/addplugindialog/addplugindialog.h>
 
 
-RazorWorkSpace::RazorWorkSpace(ReadSettings * config, int screen, QWidget* parent)
+RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* parent)
     : QGraphicsView(parent),
       m_config(config),
       m_screen(screen),
@@ -126,7 +126,6 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
 
             pm = pm.scaled(size(), bg.keepAspectRatio ? Qt::KeepAspectRatio : Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
             background.setTexture(pm);
-            //        finalPixmap = Razor::getInstance().themesettings()->desktopBackground();
             break;
         }
         default:
@@ -139,21 +138,20 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
     
     foreach (QString configId, bg.plugins)
     {
-        qDebug() << "RazorWorkSpace::setConfig() Plugin conf id" << configId << m_config->settings();
+        qDebug() << "RazorWorkSpace::setConfig() Plugin conf id" << configId << m_config;
         
-        QSettings * s = m_config->settings();
-        s->beginGroup(configId);
-        QString libName(s->value("plugin", "").toString());
+        m_config->beginGroup(configId);
+        QString libName(m_config->value("plugin", "").toString());
         // TODO/FIXME: now it's readable. Move it to QVariant in settings later with GUI
         //QPointF position(s->value("position", QPointF(10, 10)).toPointF());
         //QSizeF size(s->value("size", QSizeF(100, 100)).toSizeF());
-        qreal x = s->value("x", 10.0).toReal();
-        qreal y = s->value("y", 10.0).toReal();
-        qreal w = s->value("w", 10.0).toReal();
-        qreal h = s->value("h", 10.0).toReal();
+        qreal x = m_config->value("x", 10.0).toReal();
+        qreal y = m_config->value("y", 10.0).toReal();
+        qreal w = m_config->value("w", 10.0).toReal();
+        qreal h = m_config->value("h", 10.0).toReal();
         QPointF position(x, y);
         QSizeF size(w, h);
-        s->endGroup();
+        m_config->endGroup();
         
         qDebug() << libName << position;
         RazorPluginInfo * pluginInfo = mAvailablePlugins.find(libName);
@@ -180,7 +178,6 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
 void RazorWorkSpace::saveConfig()
 {
     QStringList plugins;
-    QSettings * s = m_config->settings();
     
     QList<QGraphicsItem*> items = m_scene->items();
     foreach (QGraphicsItem * item, items)
@@ -190,12 +187,12 @@ void RazorWorkSpace::saveConfig()
         Q_ASSERT(plug);
         plugins.append(plug->configId());
     }
-    s->beginGroup("razor");
-    s->beginWriteArray("desktops");
-    s->setArrayIndex(m_screen);
-    s->setValue("plugins", plugins);
-    s->endArray();
-    s->endGroup();
+    m_config->beginGroup("razor");
+    m_config->beginWriteArray("desktops");
+    m_config->setArrayIndex(m_screen);
+    m_config->setValue("plugins", plugins);
+    m_config->endArray();
+    m_config->endGroup();
 }
 
 QGraphicsItem * RazorWorkSpace::loadPlugin(QLibrary * lib, const QString & configId)
@@ -480,11 +477,10 @@ void RazorWorkSpace::configurePlugin()
 
 void RazorWorkSpace::setDesktopBackground()
 {
-    DesktopBackgroundDialog dia(size(), this);
+    DesktopBackgroundDialog dia(m_config, m_screen, size(), backgroundBrush(), this);
     if (dia.exec())
     {
         setBackgroundBrush(dia.background());
-        dia.save(m_screen, m_config);
     }
 }
 

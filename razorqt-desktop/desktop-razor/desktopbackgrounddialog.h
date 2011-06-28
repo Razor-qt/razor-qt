@@ -29,7 +29,7 @@
 #include "ui_desktopbackgrounddialog.h"
 #include "workspacemanager.h"
 
-class ReadSettings;
+class RazorSettings;
 
 
 class DesktopBackgroundDialog : public QDialog, public Ui::DesktopBackgroundDialog
@@ -37,16 +37,20 @@ class DesktopBackgroundDialog : public QDialog, public Ui::DesktopBackgroundDial
     Q_OBJECT
     
 public:
-    DesktopBackgroundDialog(QSize desktopSize, QWidget * parent);
+    DesktopBackgroundDialog(RazorSettings * cfg, int screen, QSize desktopSize, const QBrush & brush, QWidget * parent);
     ~DesktopBackgroundDialog();
     QBrush background();
-    void save(int screen, ReadSettings * cfg);
 
 private:
     QSize m_desktopSize;
     RazorWorkSpaceManager::BackgroundType m_type;
     QColor m_color;
     QString m_wallpaper;
+
+    RazorSettings * m_config;
+    int m_screen;
+
+    void save();
 
 private slots:
     void colorButton_clicked();

@@ -28,17 +28,31 @@
 #include <QDirIterator>
 #include <QDesktopWidget>
 #include "desktopbackgrounddialog.h"
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 
 
-DesktopBackgroundDialog::DesktopBackgroundDialog(QSize desktopSize, QWidget * parent)
+DesktopBackgroundDialog::DesktopBackgroundDialog(RazorSettings * cfg, int screen, QSize desktopSize, const QBrush & brush, QWidget * parent)
     : QDialog(parent),
       m_desktopSize(desktopSize),
-      m_type(RazorWorkSpaceManager::BackgroundColor)
+      m_type(RazorWorkSpaceManager::BackgroundColor),
+      m_config(cfg),
+      m_screen(screen)
 {
     setupUi(this);
     // center it to current desktop
     move(parent->geometry().center() - geometry().center());
+    
+    // read current wallpaper brush
+    if (brush.texture().isNull())
+    {
+        m_color = brush.color();
+        preview();
+    }
+    else
+    {
+        QPixmap p = brush.texture().scaled(previewLabel->size(), Qt::IgnoreAspectRatio, Qt::FastTransformation);
+        previewLabel->setPixmap(p);
+    }
 
     connect(colorButton, SIGNAL(clicked()),
             this, SLOT(colorButton_clicked()));
@@ -50,6 +64,7 @@ DesktopBackgroundDialog::DesktopBackgroundDialog(QSize desktopSize, QWidget * pa
             this, SLOT(preview()));
 
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    keepAspectCheckBox->setEnabled(false);
 }
 
 DesktopBackgroundDialog::~DesktopBackgroundDialog()
@@ -74,31 +89,31 @@ QBrush DesktopBackgroundDialog::background()
             background.setColor(m_color);
             background.setStyle(Qt::SolidPattern);
     }
+    save();
     return background;
 }
 
-void DesktopBackgroundDialog::save(int screen, ReadSettings * cfg)
+void DesktopBackgroundDialog::save()
 {
-    QSettings * s = cfg->settings();
-    s->beginGroup("razor");
+    m_config->beginGroup("razor");
     // It's strange. Event that I set array size to desktop count, there is always
     // index used. A bug in Qt? But it does not matter. I use screenCount()
     // in the array reading routine...
-    s->beginWriteArray("desktops", QApplication::desktop()->screenCount());
-    s->setArrayIndex(screen);
+    m_config->beginWriteArray("desktops", QApplication::desktop()->screenCount());
+    m_config->setArrayIndex(m_screen);
     if (m_type == RazorWorkSpaceManager::BackgroundColor)
     {
-        s->setValue("wallpaper_type", "color");
-        s->setValue("wallpaper", m_color.name());
+        m_config->setValue("wallpaper_type", "color");
+        m_config->setValue("wallpaper", m_color.name());
     }
     else
     {
-        s->setValue("wallpaper_type", "pixmap");
-        s->setValue("wallpaper", m_wallpaper);
-        s->setValue("keep_aspect_ratio", keepAspectCheckBox->isChecked());
+        m_config->setValue("wallpaper_type", "pixmap");
+        m_config->setValue("wallpaper", m_wallpaper);
+        m_config->setValue("keep_aspect_ratio", keepAspectCheckBox->isChecked());
     }
-    s->endArray();
-    s->endGroup();
+    m_config->endArray();
+    m_config->endGroup();
 }
 
 void DesktopBackgroundDialog::colorButton_clicked()
@@ -107,6 +122,8 @@ void DesktopBackgroundDialog::colorButton_clicked()
     if (!c.isValid())
         return;
     
+    keepAspectCheckBox->setEnabled(false);
+
     m_type = RazorWorkSpaceManager::BackgroundColor;
     m_color = c;
     preview();
@@ -121,6 +138,8 @@ void DesktopBackgroundDialog::wallpaperButton_clicked()
     if (fname.isNull())
         return;
     
+    keepAspectCheckBox->setEnabled(true);
+
     m_type = RazorWorkSpaceManager::BackgroundPixmap;
     m_wallpaper = fname;
     preview();
@@ -135,6 +154,8 @@ void DesktopBackgroundDialog::systemButton_clicked()
     if (fname.isNull())
         return;
     
+    keepAspectCheckBox->setEnabled(true);
+
     m_type = RazorWorkSpaceManager::BackgroundPixmap;
     m_wallpaper = fname;
     preview();

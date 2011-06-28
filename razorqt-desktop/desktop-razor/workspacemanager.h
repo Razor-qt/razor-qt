@@ -47,14 +47,13 @@ public:
         BackgroundColor = 1
     };
     
-    RazorWorkSpaceManager(const QString & configId, ReadSettings * config);
+    RazorWorkSpaceManager(const QString & configId, RazorSettings * config);
     ~RazorWorkSpaceManager();
     
     QString info();
 
 private:
     QList<RazorWorkSpace*> m_workspaces;
-    QSettings * m_settings;
 
     RazorWorkSpaceManager::BackgroundType strToBackgroundType(const QString& str, BackgroundType defaultValue) const;
 };

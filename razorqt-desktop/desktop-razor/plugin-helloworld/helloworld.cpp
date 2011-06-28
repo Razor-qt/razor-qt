@@ -32,17 +32,16 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(HelloWorld)
 
 
-HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSettings * config)
+HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)
 {
-    QSettings * s = config->settings();
-    s->beginGroup(configId);
+    m_config->beginGroup(configId);
     
     setOpenExternalLinks(true);
-    QString text(s->value("text", "Lorem Ipsum").toString());
+    QString text(m_config->value("text", "Lorem Ipsum").toString());
     setHtml(text);
     
-    QString color(s->value("color", "").toString());
+    QString color(m_config->value("color", "").toString());
     if (! color.isEmpty())
         setDefaultTextColor(QColor(color));
 
@@ -50,9 +49,7 @@ HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSet
     f.setPixelSize(48);
     setFont(f);
     
-    //setFlag(QGraphicsItem::ItemIsMovable);
-    
-    s->endGroup();
+    m_config->endGroup();
 }
 
 HelloWorld::~HelloWorld()
@@ -88,14 +85,13 @@ void HelloWorld::configure()
 
 void HelloWorld::save()
 {
-    QSettings *s = m_config->settings();
-    s->beginGroup(m_configId);
-    s->setValue("plugin", "helloworld");
-    s->setValue("x", pos().x());
-    s->setValue("y", pos().y());
-    s->setValue("w", boundingRect().width());
-    s->setValue("h", boundingRect().height());
-    s->setValue("text", toHtml());
-    s->setValue("color", defaultTextColor().name());
-    s->endGroup();
+    m_config->beginGroup(m_configId);
+    m_config->setValue("plugin", "helloworld");
+    m_config->setValue("x", pos().x());
+    m_config->setValue("y", pos().y());
+    m_config->setValue("w", boundingRect().width());
+    m_config->setValue("h", boundingRect().height());
+    m_config->setValue("text", toHtml());
+    m_config->setValue("color", defaultTextColor().name());
+    m_config->endGroup();
 }

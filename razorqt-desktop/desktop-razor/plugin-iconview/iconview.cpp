@@ -35,17 +35,16 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(IconView)
 
 
-IconView::IconView(QGraphicsScene * scene, const QString & configId, ReadSettings * config)
+IconView::IconView(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)
 {
     setObjectName("IconView");
 
-    QSettings * s = config->settings();
-    s->beginGroup(configId);
+    m_config->beginGroup(configId);
 
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-    dir = s->value("directory", dir).toString();
-    s->endGroup();
+    dir = m_config->value("directory", dir).toString();
+    m_config->endGroup();
 
     // Hack to ensure the fully transparent QGraphicsView background
     QPalette palette;
@@ -110,15 +109,14 @@ void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 
 void IconView::save()
 {
-    QSettings *s = m_config->settings();
-    s->beginGroup(m_configId);
-    s->setValue("plugin", "iconview");
-    s->setValue("x", pos().x());
-    s->setValue("y", pos().y());
-    s->setValue("w", size().width());
-    s->setValue("h", size().height());
-    s->setValue("directory", m_scene->dir());
-    s->endGroup();
+    m_config->beginGroup(m_configId);
+    m_config->setValue("plugin", "iconview");
+    m_config->setValue("x", pos().x());
+    m_config->setValue("y", pos().y());
+    m_config->setValue("w", size().width());
+    m_config->setValue("h", size().height());
+    m_config->setValue("directory", m_scene->dir());
+    m_config->endGroup();
 }
 
 void IconView::configure()

@@ -27,13 +27,13 @@
 #define DESKTOPWIDGETPLUGIN_H
 
 
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 
 
 class DesktopWidgetPlugin
 {
 public:
-    DesktopWidgetPlugin(QGraphicsScene * scene, const QString & configId, ReadSettings * config)
+    DesktopWidgetPlugin(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
         : m_config(config),
           m_configId(configId)
     {
@@ -50,35 +50,36 @@ public:
     
     QString configId() { return m_configId; }
 
+    //! \todo TODO/FIXME: maybe a candidate for RazorSettings...
     void removeConfig()
     {
-        m_config->settings()->beginGroup(m_configId);
-        m_config->settings()->remove("");
-        m_config->settings()->endGroup();
+        m_config->beginGroup(m_configId);
+        m_config->remove("");
+        m_config->endGroup();
     }
 
 protected:
-    ReadSettings * m_config;
+    RazorSettings * m_config;
     QString m_configId;
 };
 
 
 /*! Prototype for plugin's init() function
  */
-typedef DesktopWidgetPlugin* (*DesktopWidgetInitFunction)(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
+typedef DesktopWidgetPlugin* (*DesktopWidgetInitFunction)(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
 
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin header file.
  */
 #define EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H \
-    extern "C" DesktopWidgetPlugin* init(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
+    extern "C" DesktopWidgetPlugin* init(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin source file.
  */
 #define EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(PLUGINCLASS)        \
-    DesktopWidgetPlugin* init(QGraphicsScene * scene, const QString & configId, ReadSettings * config)              \
+    DesktopWidgetPlugin* init(QGraphicsScene * scene, const QString & configId, RazorSettings * config)              \
     {                                                       \
         return new PLUGINCLASS(scene, configId, config);      \
     }

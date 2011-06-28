@@ -29,7 +29,7 @@
 
 //#include <QGraphicsItem>
 #include <QGraphicsWidget>
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 
 class QPixmap;
@@ -37,7 +37,7 @@ class QPixmap;
 class Clock : public DesktopWidgetPlugin, public QGraphicsWidget
 {
 public:
-    Clock(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
+    Clock(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
     ~Clock();
 
     QString instanceInfo();

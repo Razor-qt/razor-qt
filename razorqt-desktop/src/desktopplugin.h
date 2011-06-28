@@ -26,13 +26,13 @@
 #ifndef DESKTOPPLUGIN_H
 #define DESKTOPPLUGIN_H
 
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 
 
 class DesktopPlugin
 {
 public:
-    DesktopPlugin(const QString & configId, ReadSettings * config)
+    DesktopPlugin(const QString & configId, RazorSettings * config)
         : m_config(config)
     {
     };
@@ -40,26 +40,26 @@ public:
     virtual QString info() { return QObject::tr("No info available"); };
 
 protected:
-    ReadSettings * m_config;
+    RazorSettings * m_config;
 };
 
 
 /*! Prototype for plugin's init() function
  */
-typedef DesktopPlugin* (*PluginInitFunction)(const QString & configId, ReadSettings * config);
+typedef DesktopPlugin* (*PluginInitFunction)(const QString & configId, RazorSettings * config);
 
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin header file.
  */
 #define EXPORT_RAZOR_DESKTOP_PLUGIN_H \
-    extern "C" DesktopPlugin* init(const QString & configId, ReadSettings * config);
+    extern "C" DesktopPlugin* init(const QString & configId, RazorSettings * config);
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin source file.
  */
 #define EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(PLUGINCLASS)        \
-    DesktopPlugin* init(const QString & configId, ReadSettings * config) \
+    DesktopPlugin* init(const QString & configId, RazorSettings * config) \
     {                                                       \
         return new PLUGINCLASS(configId, config);      \
     }

@@ -6,6 +6,7 @@
  * Copyright: 2010-2011 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,13 +43,12 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(Clock)
 
 
-Clock::Clock(QGraphicsScene * scene, const QString & configId, ReadSettings * config)
+Clock::Clock(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)
 {
-    QSettings * s = config->settings();
-    s->beginGroup(configId);
-    mShowSeconds = s->value("showseconds", false).toBool();
-    s->endGroup();
+    config->beginGroup(configId);
+    mShowSeconds = config->value("showseconds", false).toBool();
+    config->endGroup();
 
     mClockPix = new QPixmap(":/imgs/clock.png");
     mCenterPix = new  QPixmap(":/imgs/center.png");
@@ -124,13 +124,12 @@ void Clock::configure()
 
 void Clock::save()
 {
-    QSettings *s = m_config->settings();
-    s->beginGroup(m_configId);
-    s->setValue("plugin", "analogclock");
-    s->setValue("x", pos().x());
-    s->setValue("y", pos().y());
-    s->setValue("showseconds", mShowSeconds);
-    s->endGroup();
+    m_config->beginGroup(m_configId);
+    m_config->setValue("plugin", "analogclock");
+    m_config->setValue("x", pos().x());
+    m_config->setValue("y", pos().y());
+    m_config->setValue("showseconds", mShowSeconds);
+    m_config->endGroup();
 }
 
 

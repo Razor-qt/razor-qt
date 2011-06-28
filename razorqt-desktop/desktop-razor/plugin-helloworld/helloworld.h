@@ -28,14 +28,14 @@
 
 #include <QGraphicsItem>
 
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 
 
 class HelloWorld : public DesktopWidgetPlugin, public QGraphicsTextItem
 {
 public:
-    HelloWorld(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
+    HelloWorld(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
     ~HelloWorld();
 
     QString info();

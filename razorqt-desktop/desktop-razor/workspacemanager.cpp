@@ -33,42 +33,40 @@
 EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
 
 
-RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, ReadSettings * config)
+RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSettings * config)
     : DesktopPlugin(configId, config)
 {
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
     //this may actually make the icon work on multihead
     
-    QSettings * m_settings = config->settings();
-
-    m_settings->beginGroup(configId);
+    m_config->beginGroup(configId);
     
     QMap<int,WorkspaceConfig> desktops;
     WorkspaceConfig defaults(
-                            strToBackgroundType(m_settings->value("wallpaper_type", "color").toString(), RazorWorkSpaceManager::BackgroundColor),
+                            strToBackgroundType(m_config->value("wallpaper_type", "color").toString(), RazorWorkSpaceManager::BackgroundColor),
                             false,
-                            m_settings->value("wallpaper", "#006600").toString(),
-                            m_settings->value("plugins", QStringList()).toStringList()
+                            m_config->value("wallpaper", "#006600").toString(),
+                            m_config->value("plugins", QStringList()).toStringList()
                         );
     // important: here is used screenCount() instead of beginReadArray()
     // QSettings can contain more/les/or none desktop defined.
-    m_settings->beginReadArray("desktops");
+    m_config->beginReadArray("desktops");
     int size = QApplication::desktop()->screenCount();
     QString themeWallpaper;
     for (int i = 0; i < size; ++i) {
-        m_settings->setArrayIndex(i);
+        m_config->setArrayIndex(i);
         themeWallpaper = razorTheme->desktopBackground(i+1);
 
         desktops[i] = WorkspaceConfig (
-                            strToBackgroundType(m_settings->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
-                            m_settings->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
-                            m_settings->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString(),
-                            m_settings->value("plugins", defaults.plugins).toStringList()
+                            strToBackgroundType(m_config->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
+                            m_config->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
+                            m_config->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString(),
+                            m_config->value("plugins", defaults.plugins).toStringList()
                         );
     }
-    m_settings->endArray();
+    m_config->endArray();
     
-    m_settings->endGroup();
+    m_config->endGroup();
     
     for (int i = 0; i < QApplication::desktop()->screenCount(); ++i)
     {

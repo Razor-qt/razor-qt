@@ -43,7 +43,7 @@
  */
 
 class WorkspaceConfig;
-class ReadSettings;
+class RazorSettings;
 class PowerManager;
 class ScreenSaver;
 
@@ -56,7 +56,7 @@ class RazorWorkSpace : public QGraphicsView
 {
     Q_OBJECT
 public:
-    RazorWorkSpace(ReadSettings * config, int screen=-1, QWidget * parent=0);
+    RazorWorkSpace(RazorSettings * config, int screen=-1, QWidget * parent=0);
     ~RazorWorkSpace();
 
     void setConfig(const WorkspaceConfig & bg);
@@ -74,7 +74,7 @@ private:
     };
 
     QGraphicsScene * m_scene;
-    ReadSettings * m_config;
+    RazorSettings * m_config;
     int m_screen;
     Mode m_mode;
     

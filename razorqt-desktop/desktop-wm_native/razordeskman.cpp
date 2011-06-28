@@ -51,19 +51,18 @@ QString RazorDeskManager::info()
 void RazorDeskManager::saveIconState()
 {
     qDebug() << "saveIconState" << m_iconList;
-    QSettings * s = deskicons->settings();
-    s->beginWriteArray("icons");
+    deskicons->beginWriteArray("icons");
     IconMapIterator i(m_iconList);
     int ix = 0;
     while (i.hasNext())
     {
         i.next();
-        s->setArrayIndex(ix);
-        s->setValue("name", i.key());
-        s->setValue("point", i.value()->pos());
+        deskicons->setArrayIndex(ix);
+        deskicons->setValue("name", i.key());
+        deskicons->setValue("point", i.value()->pos());
         ++ix;
     }
-    s->endArray();
+    deskicons->endArray();
 }
 
 
@@ -83,8 +82,7 @@ void RazorDeskManager::restoreIconState()
 {
     qDebug() << "restoring icon state!";
 
-    QSettings * s = deskicons->settings();
-    int count = s->beginReadArray("icons");
+    int count = deskicons->beginReadArray("icons");
 
     // Store positions of already setPos-ed icons here temporarily - used in calculation below.
     QList<QRect> positionFrames;
@@ -93,19 +91,19 @@ void RazorDeskManager::restoreIconState()
     QString name;
     for (int i = 0; i < count; ++i)
     {
-        s->setArrayIndex(i);
-        name = s->value("name", "").toString();
+        deskicons->setArrayIndex(i);
+        name = deskicons->value("name", "").toString();
         if (! m_iconList.contains(name))
         {
             continue;
         }
 
         RazorDeskIconBase* icon = m_iconList[name];
-        QPoint p = s->value("point").value<QPoint>();
+        QPoint p = deskicons->value("point").value<QPoint>();
         icon->setPos(p);
         positionFrames.append(QRect(p.x(), p.y(), icon->width(), icon->height()));
     }
-    s->endArray();
+    deskicons->endArray();
     
     // Then take all remaining icons (QPoint(0.0)) and try to calculate
     // their position.
@@ -159,14 +157,14 @@ void RazorDeskManager::restoreIconState()
 
 
 
-RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * config)
+RazorDeskManager::RazorDeskManager(const QString & configId, RazorSettings * config)
     : DesktopPlugin(configId, config)
 {
-    config->settings()->beginGroup(configId);
-    bool makeIcons = config->settings()->value("icons", false).toBool();
+    config->beginGroup(configId);
+    bool makeIcons = config->value("icons", false).toBool();
     //now we got the desktop we need to determine if the user wants a defined picture there
-    QString finalPixmap = config->settings()->value("wallpaper", "").toString();
-    config->settings()->endGroup();
+    QString finalPixmap = config->value("wallpaper", "").toString();
+    config->endGroup();
 
     if (finalPixmap.isEmpty() || !QFile::exists(finalPixmap))
     {
@@ -195,7 +193,7 @@ RazorDeskManager::RazorDeskManager(const QString & configId, ReadSettings * conf
     
     if (makeIcons)
     {
-        deskicons = new ReadSettings("deskicons", this);    
+        deskicons = new RazorSettings("deskicons", this);    
         m_fsw = new QFileSystemWatcher(QStringList() << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation), this);
         connect(m_fsw, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateIconList()));
         updateIconList();

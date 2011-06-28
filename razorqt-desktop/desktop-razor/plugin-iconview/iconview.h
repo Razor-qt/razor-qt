@@ -28,7 +28,7 @@
 
 #include <QGraphicsView>
 
-#include <razorqt/readsettings.h>
+#include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 
 class IconScene;
@@ -37,7 +37,7 @@ class IconScene;
 class IconView : public DesktopWidgetPlugin, public QGraphicsView
 {
 public:
-    IconView(QGraphicsScene * scene, const QString & configId, ReadSettings * config);
+    IconView(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
     ~IconView();
 
     QString info();

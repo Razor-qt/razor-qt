@@ -28,7 +28,6 @@
 #include <QtDebug>
 #include <QIcon>
 
-#include <razorqt/readsettings.h>
 #include <razorqt/razorsettings.h>
 #include "desktopplugin.h"
 
@@ -41,11 +40,11 @@ int main (int argc, char* argv[])
     QApplication app(argc,argv);
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
-    ReadSettings config("desktop");
+    RazorSettings config("desktop");
 
     app.setStyleSheet(razorTheme->qss("desktop"));
     
-    QString configId(config.settings()->value("desktop", "razor").toString());
+    QString configId(config.value("desktop", "razor").toString());
     QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "libdesktop-" + configId + ".so";
 
     qDebug() << "RazorDesktop: try to load " << libraryFileName;

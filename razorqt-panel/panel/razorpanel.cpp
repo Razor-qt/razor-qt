@@ -30,7 +30,6 @@
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
 #include <razorqt/addplugindialog/addplugindialog.h>
-#include <razorqt/readsettings.h>
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorplugininfo.h>
 
