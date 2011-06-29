@@ -25,10 +25,6 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XFITMAN_CPP
-#define XFITMAN_CPP
-
-#define dbg
 
 #include <QtGui/QX11Info>
 #include <QtCore/QList>
@@ -79,9 +75,13 @@ const XfitMan&  xfitMan()
  */
 XfitMan::XfitMan()
 {
+#if 0
     getAtoms();
+#endif
     root = QX11Info::appRootWindow();
+#if 0
     screencount = ScreenCount(QX11Info::display());
+#endif
 }
 
 /**
@@ -92,24 +92,6 @@ void XfitMan::moveWindow(Window _win, int _x, int _y) const
 {
     XMoveWindow(QX11Info::display(), _win, _x, _y);
 }
-
-
-/**
- * @brief this sets our background to the pixmap map
- */
-void XfitMan::setRootBackground(QPixmap _map) const
-{
-    Pixmap p = _map.handle();
-    XGrabServer(QX11Info::display());
-    XChangeProperty(QX11Info::display(), root, atomMap["xrootpmap"], XA_PIXMAP, 32, PropModeReplace, (unsigned char *) &p, 1);
-    XChangeProperty(QX11Info::display(), root, atomMap["esetroot"], XA_PIXMAP, 32, PropModeReplace, (unsigned char *) &p, 1);
-    XSetCloseDownMode(QX11Info::display(), RetainPermanent);
-    XSetWindowBackgroundPixmap(QX11Info::display(), root, p);
-    XClearWindow(QX11Info::display(), root);
-    XUngrabServer(QX11Info::display());
-    XFlush(QX11Info::display());
-}
-
 
 /************************************************
 
@@ -161,15 +143,15 @@ Window XfitMan::getActiveAppWindow() const
     return 0;
 }
 
-
+#if 0
 /**
  * @brief this makes the wm send Windowevents to us which normally do not belong to zs
  */
-
 void XfitMan::setEventRoute() const
 {
     XSelectInput(QX11Info::display(), root, StructureNotifyMask | SubstructureNotifyMask);
 }
+#endif
 
 /**
  * @brief returns the window that currently has inputfocus
@@ -228,7 +210,7 @@ bool XfitMan::getClientIcon(Window _wid, QPixmap& _pixreturn) const
     ulong type, nitems, extra;
     ulong* data = 0;
 
-    XGetWindowProperty(QX11Info::display(), _wid, atomMap["net_wm_icon"],
+    XGetWindowProperty(QX11Info::display(), _wid, atom("_NET_WM_ICON"),
                        0, LONG_MAX, False, AnyPropertyType,
                        &type, &format, &nitems, &extra,
                        (uchar**)&data);
@@ -301,6 +283,7 @@ QString XfitMan::getName(Window _wid) const
 }
 
 
+#if 0
 /**
  * @brief this add(1) / removes (0) / toggles (2) the _NET_WM_STATE_XXXX flag for a
  *  specified window
@@ -312,7 +295,7 @@ void XfitMan::setClientStateFlag(Window _wid, const QString & _atomcode, int _ac
 {
     clientMessage(_wid, atomMap["net_wm_state"],_action,atomMap[_atomcode],0,0,0);
 }
-
+#endif
 
 /**
  * @brief sends a clientmessage to a window
@@ -342,11 +325,12 @@ int XfitMan::clientMessage(Window _wid, Atom _msg,
         return EXIT_FAILURE;
 }
 
-
+#if 0
 void XfitMan::mapRaised(Window _wid) const
 {
     XMapRaised(QX11Info::display(), _wid);
 }
+#endif
 
 
 /***********************************************
@@ -423,11 +407,12 @@ bool XfitMan::isHidden(Window _wid) const
     return getWindowState(_wid).Hidden;
 }
 
-
+#if 0
 bool XfitMan::requiresAttention(Window _wid) const
 {
     return getWindowState(_wid).Attention;
 }
+#endif
 
 
 Atom XfitMan::atom(const char* atomName)
@@ -442,7 +427,7 @@ Atom XfitMan::atom(const char* atomName)
     return atom;
 }
 
-
+#if 0
 /**
  * @brief gets the used atoms into a QMap for further usage
  */
@@ -481,8 +466,8 @@ void XfitMan::getAtoms() const
     atomMap["xrootpmap"] = XInternAtom(QX11Info::display(), "_XROOTPMAP_ID", False);
     atomMap["esetroot"] = XInternAtom(QX11Info::display(), "ESETROOT_PMAP_ID", False);
     atomMap["net_wm_window_demands_attention"] = XInternAtom(QX11Info::display(), "_NET_WM_STATE_DEMANDS_ATTENTION", False);
-
 }
+#endif
 
 AtomList XfitMan::getWindowType(Window window) const
 {
@@ -611,7 +596,7 @@ int XfitMan::getWindowDesktop(Window _wid) const
 
 void XfitMan::moveWindowToDesktop(Window _wid, int _display) const
 {
-    clientMessage(_wid,atomMap["net_wm_desktop"],(unsigned long) _display,0,0,0,0);
+    clientMessage(_wid, atom("_NET_WM_DESKTOP"), (unsigned long) _display,0,0,0,0);
 }
 
 
@@ -731,10 +716,10 @@ void XfitMan::setWindowLayer(Window _wid, XfitMan::Layer layer) const
  */
 void XfitMan::setActiveDesktop(int _desktop) const
 {
-    clientMessage(root,atomMap["net_current_desktop"],(unsigned long) _desktop,0,0,0,0);
+    clientMessage(root, atom("_NET_CURRENT_DESKTOP"), (unsigned long) _desktop,0,0,0,0);
 }
 
-
+#if 0
 /**
  * @brief this sets a window as selection owner for a specified atom - checks for success then sends the clientmessage
  */
@@ -750,7 +735,9 @@ void XfitMan::setSelectionOwner(Window _wid, const QString & _selection, const Q
     if (getSelectionOwner(_selection)== _wid)
         clientMessage(QApplication::desktop()->winId(),atomMap.value(_manager),CurrentTime,atomMap.value(_selection),_wid,0,0);
 }
+#endif
 
+#if 0
 /**
  * @brief returns the owning window of selection _selection
  */
@@ -758,7 +745,7 @@ Window XfitMan::getSelectionOwner(const QString & _selection) const
 {
     return XGetSelectionOwner(QX11Info::display(), atomMap.value(_selection));
 }
-
+#endif
 
 /**
  * @brief sets net_wm_strut_partial = our reserved panelspace for the mainbar!
@@ -806,7 +793,7 @@ void XfitMan::setStrut(Window _wid,
                     XA_CARDINAL, 32, PropModeReplace, (unsigned char*) desstrut, 4);
 }
 
-
+#if 0
 /**
  * @brief this unsets the strut set for panel
  */
@@ -815,8 +802,9 @@ void XfitMan::unsetStrut(Window _wid) const
     XDeleteProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT"));
     XDeleteProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT_PARTIAL"));
 }
+#endif
 
-
+#ifdef DEBUG
 /************************************************
 
  ************************************************/
@@ -845,5 +833,4 @@ QString XfitMan::debugWindow(Window wnd)
 
     return QString("[%1] %2 %3").arg(wnd,8, 16).arg(xfitMan().getName(wnd)).arg(typeStr);
 }
-
 #endif

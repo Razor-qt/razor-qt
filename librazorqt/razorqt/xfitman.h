@@ -110,7 +110,6 @@ public:
     ~XfitMan();
     XfitMan();
     void moveWindow(Window _win, int _x, int _y) const;
-    void setRootBackground(QPixmap _map) const;
 
     // See
     void setStrut(Window _wid,
@@ -122,15 +121,26 @@ public:
                   int topStartX,    int topEndX,
                   int bottomStartX, int bottomEndX
                   ) const;
-
+#if 0
     void unsetStrut(Window _wid) const;
+#endif
+#if 0
     void getAtoms() const;
+#endif
     QList<Window> getClientList() const;
     bool getClientIcon(Window _wid, QPixmap& _pixreturn) const;
+#if 0
     void setEventRoute() const;
+#endif
+#if 0
     void setClientStateFlag(Window _wid, const QString & _atomcode, int _action) const;
+#endif
+#if 0
     void setSelectionOwner(Window _wid, const QString & _selection, const QString & _manager) const;
+#endif
+#if 0
     Window getSelectionOwner(const QString & _selection) const;
+#endif
     int getWindowDesktop(Window _wid) const;
     void moveWindowToDesktop(Window _wid, int _display) const;
 
@@ -144,25 +154,27 @@ public:
     void setWindowLayer(Window _wid, Layer layer) const;
 
     void setActiveDesktop(int _desktop) const;
+#if 0
     void mapRaised(Window _wid) const;
+#endif
     bool isHidden(Window _wid) const;
     WindowAllowedActions getAllowedActions(Window window) const;
     WindowState getWindowState(Window window) const;
+#if 0
     bool requiresAttention(Window _wid) const;
+#endif
     int getActiveDesktop() const;
     Window getActiveAppWindow() const;
     Window getActiveWindow() const;
     int getNumDesktop() const;
     QString getName(Window _wid) const;
-    Atom getAtom(const QString & _key) const
-    {
-        return atomMap.value(_key);
-    }
 
     bool acceptWindow(Window _wid) const;
 
     AtomList getWindowType(Window window) const;
+#ifdef DEBUG
     static QString debugWindow(Window wnd);
+#endif
     static Atom atom(const char* atomName);
 private:
     int clientMessage(Window _wid, Atom _msg,
@@ -188,15 +200,20 @@ private:
 
 
     Window  root; //the actual root window on the used screen
+#if 0
     int screencount;
+#endif
     unsigned long strutsize;
     mutable unsigned long desstrut[12];
+#if 0
     mutable QMap<QString,Atom> atomMap;
+#endif
 };
 
 
 const XfitMan& xfitMan();
 
+#if 0
 inline QString xEventTypeToStr(XEvent* event)
 {
     switch (event->type)
@@ -238,7 +255,7 @@ inline QString xEventTypeToStr(XEvent* event)
     }
     return "Unknown";
 }
-
+#endif
 
 
 #endif

@@ -29,7 +29,10 @@
 #include <QDesktopWidget>
 #include <QDirIterator>
 #include <QVariant>
+#include <QX11Info>
 #include <QtDebug>
+
+#include <X11/Xatom.h>
 
 #include <razorqt/razorsettings.h>
 #include "razorqt/xfitman.h"
@@ -188,7 +191,18 @@ RazorDeskManager::RazorDeskManager(const QString & configId, RazorSettings * con
             width=dw->screenGeometry(-1).width();
             height=dw->screenGeometry(-1).height();
         }
-        xfitMan().setRootBackground(QPixmap(finalPixmap).scaled(width,height));
+
+        QPixmap pixmap(finalPixmap);
+        pixmap = pixmap.scaled(width,height);
+        Pixmap p = pixmap.handle();
+        XGrabServer(QX11Info::display());
+        XChangeProperty(QX11Info::display(), QX11Info::appRootWindow(), XfitMan::atom("_XROOTPMAP_ID"), XA_PIXMAP, 32, PropModeReplace, (unsigned char *) &p, 1);
+        XChangeProperty(QX11Info::display(), QX11Info::appRootWindow(), XfitMan::atom("ESETROOT_PMAP_ID"), XA_PIXMAP, 32, PropModeReplace, (unsigned char *) &p, 1);
+        XSetCloseDownMode(QX11Info::display(), RetainPermanent);
+        XSetWindowBackgroundPixmap(QX11Info::display(), QX11Info::appRootWindow(), p);
+        XClearWindow(QX11Info::display(), QX11Info::appRootWindow());
+        XUngrabServer(QX11Info::display());
+        XFlush(QX11Info::display());
     }
     
     if (makeIcons)
