@@ -36,6 +36,7 @@
 
 class QPainter;
 class QPalette;
+class QMimeData;
 
 class ElidedButtonStyle: public QProxyStyle
 {
@@ -77,6 +78,9 @@ public slots:
     void handlePropertyNotify(XPropertyEvent* event);
 
 protected:
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dragLeaveEvent(QDragLeaveEvent *event);
+
     void nextCheckState();
     void contextMenuEvent( QContextMenuEvent* event);
 
@@ -87,10 +91,12 @@ private:
     Window mWindow;
     static RazorTaskButton* mCheckedBtn;
     ElidedButtonStyle mStyle;
+    const QMimeData *mDraggableMimeData;
 
 private slots:
     void btnClicked(bool checked);
     void checkedChanged(bool checked);
+    void activateWithDraggable();
 };
 
 typedef QHash<Window,RazorTaskButton*> RazorTaskButtonHash;

@@ -26,6 +26,7 @@
 
 #include <QDebug>
 #include <razorqt/xdgicon.h>
+#include <QtCore/QTimer>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
 #include <QtGui/QContextMenuEvent>
@@ -62,6 +63,7 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
 
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     setMaximumWidth(MAX_BTN_WIDTH);
+    setAcceptDrops(true);
 
     updateText();
     updateIcon();
@@ -124,6 +126,26 @@ void RazorTaskButton::nextCheckState()
 /************************************************
 
  ************************************************/
+void RazorTaskButton::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->accept();
+    mDraggableMimeData = event->mimeData();
+    QTimer::singleShot(1000, this, SLOT(activateWithDraggable()));
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorTaskButton::dragLeaveEvent(QDragLeaveEvent *event)
+{
+    mDraggableMimeData = NULL;
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorTaskButton::checkedChanged(bool checked)
 {
 
@@ -176,6 +198,13 @@ void RazorTaskButton::btnClicked(bool checked)
         raiseApplication();
 }
 
+void RazorTaskButton::activateWithDraggable()
+{
+    if (!mDraggableMimeData || mDraggableMimeData->text().isEmpty())
+        return;
+
+    raiseApplication();
+}
 
 /************************************************
 
