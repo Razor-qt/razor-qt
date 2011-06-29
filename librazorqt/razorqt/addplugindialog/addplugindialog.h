@@ -51,6 +51,7 @@ private:
 private slots:
     void emitPluginSelected();
     void searchEditTexChanged(const QString& text);
+    void toggleAddButtonState();
 };
 
 #endif // ADDPLUGINDIALOG_H

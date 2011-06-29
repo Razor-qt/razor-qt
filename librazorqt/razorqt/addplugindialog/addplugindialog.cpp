@@ -126,6 +126,7 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
     pluginList->setItemDelegate(new HtmlDelegate(QSize(32, 32), pluginList));
     //pluginList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     connect(pluginList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(emitPluginSelected()));
+    connect(pluginList, SIGNAL(itemSelectionChanged()), this, SLOT(toggleAddButtonState()));
 
     QIcon fallIco = XdgIcon::fromTheme("preferences-plugin");
 
@@ -145,6 +146,7 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
                      );
     }
 
+    ui->addButton->setEnabled(false);
 
     connect(ui->searchEdit, SIGNAL(textEdited(QString)), this, SLOT(searchEditTexChanged(QString)));
     connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(emitPluginSelected()));
@@ -200,9 +202,17 @@ void AddPluginDialog::timerEvent(QTimerEvent* event)
 void AddPluginDialog::emitPluginSelected()
 {
     QListWidget* pluginList = ui->pluginList;
-    if (pluginList->currentItem())
+    if (pluginList->currentItem() && pluginList->currentItem()->isSelected())
     {
         RazorPluginInfo* plugin = mPlugins->at(pluginList->currentItem()->data(INDEX_ROLE).toInt());
         emit pluginSelected(plugin);
     }
+}
+
+/************************************************
+
+ ************************************************/
+void AddPluginDialog::toggleAddButtonState()
+{
+    ui->addButton->setEnabled(ui->pluginList->currentItem() && ui->pluginList->currentItem()->isSelected());
 }
