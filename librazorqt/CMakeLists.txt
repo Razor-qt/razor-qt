@@ -24,6 +24,7 @@ include_directories (
 	.
 	razorqt
     librazor-upower
+    qxt
     )
 
 set ( razorqt_HDRS
@@ -122,7 +123,6 @@ QT4_WRAP_UI(UIS ${razorqt_UIS})
 
 include(RazorLibSuffix)
 
-
 add_library ( razorqt SHARED ${razorqt_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 
 target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
@@ -134,11 +134,43 @@ set_target_properties(razorqt PROPERTIES
   SOVERSION ${MAJOR_VERSION}
 )
 
+install(TARGETS razorqt DESTINATION lib${LIB_SUFFIX})
+install(FILES ${razorqt_HDRS} DESTINATION include/razorqt)
 
-SET(DOXYGEN_SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/razorqt
+# our Qxt library
+set ( razorqxt_HDRS
+    razorqxt/qxtglobal.h
+    razorqxt/qxtglobalshortcut.h
+    )
+    
+set ( razorqxt_SRC
+    razorqxt/qxtglobal.cpp
+    razorqxt/qxtglobalshortcut.cpp
+    razorqxt/qxtglobalshortcut_x11.cpp
     )
 
+QT4_WRAP_CPP(qxt_MOCS ${razorqxt_HDRS})
+
+add_library ( razorqxt SHARED ${razorqxt_SRC} ${qxt_MOCS} )
+
+target_link_libraries ( razorqxt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+                                 ${X11_X11_LIB} )
+
+set_target_properties(razorqxt PROPERTIES
+  VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
+  SOVERSION ${MAJOR_VERSION}
+)
+
+install(TARGETS razorqxt DESTINATION lib${LIB_SUFFIX})
+install(FILES ${razorqxt_HDRS} DESTINATION include/razorqxt)
+
+
+add_dependencies( razorqt razorqxt )
+
+#SET(DOXYGEN_SOURCE_DIR
+#    ${CMAKE_CURRENT_SOURCE_DIR}/razorqt
+#    )
+#
 #find_package(Doxygen)
 #if(DOXYGEN_FOUND)
 #
@@ -155,8 +187,3 @@ SET(DOXYGEN_SOURCE_DIR
 #        COMMENT "Generating API documentation with Doxygen" VERBATIM
 #    )
 #endif(DOXYGEN_FOUND)
-
-
-install(TARGETS razorqt DESTINATION lib${LIB_SUFFIX})
-install(FILES ${razorqt_HDRS} DESTINATION include/razorqt)
-

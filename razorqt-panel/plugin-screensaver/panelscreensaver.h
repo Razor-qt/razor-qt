@@ -31,6 +31,7 @@
 #include "../panel/razorpanel.h"
 
 class ScreenSaver;
+class QxtGlobalShortcut;
 
 
 class PanelScreenSaver : public RazorPanelPlugin
@@ -42,7 +43,7 @@ public:
 
 private:
     ScreenSaver * m_saver;
-
+    QxtGlobalShortcut * m_key;
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

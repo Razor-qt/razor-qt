@@ -14,24 +14,19 @@ include_directories (
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
     ${X11_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/librazorqt/
+    ${CMAKE_SOURCE_DIR}/librazorqxt/
 	src
-    src/qxt)
+)
 
 set ( razor-appswitcher_HDRS
 	src/appswitcher.h
 	src/application.h
-    #src/qxt/qxtglobal.h
-    src/qxt/qxtglobalshortcut.h
-    #src/qxt/qxtglobalshortcut_p.h
 	)
 
 set ( razor-appswitcher_SRCS
 	src/main.cpp
 	src/appswitcher.cpp
 	src/application.cpp
-    src/qxt/qxtglobal.cpp
-    src/qxt/qxtglobalshortcut.cpp
-    src/qxt/qxtglobalshortcut_x11.cpp
 	)
 
 QT4_WRAP_CPP(MOCS ${razor-appswitcher_HDRS})
@@ -41,5 +36,10 @@ SET (exec razor-appswitcher)
 
 add_executable ( ${exec} ${razor-appswitcher_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 add_dependencies( ${exec} razorqt )
-target_link_libraries ( ${exec}  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY} ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so)
+target_link_libraries ( ${exec}  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+                                 ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
+                                 ${X11_X11_LIB}
+                                 ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so
+                                 ${CMAKE_BINARY_DIR}/librazorqt/librazorqxt.so
+                    )
 INSTALL(TARGETS ${exec} RUNTIME DESTINATION bin)

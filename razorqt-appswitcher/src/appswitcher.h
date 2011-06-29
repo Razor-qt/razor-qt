@@ -26,13 +26,12 @@
 #ifndef APPSWITCHER_H
 #define APPSWITCHER_H
 
-#include "ui_appswitcher.h"
-#include <QWidget>
 #include <QtGui/QToolButton>
-#include <QtCore/QString>
-#include <QtGui/QPixmap>
-#include <QtCore/QList>
+
+#include "ui_appswitcher.h"
+
 #include <X11/X.h>
+
 
 class QxtGlobalShortcut;
 class QShortcut;

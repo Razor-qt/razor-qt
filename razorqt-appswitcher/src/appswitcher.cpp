@@ -23,18 +23,19 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QDebug>
+// include order is important here...
 #include "appswitcher.h"
-#include "qxtglobalshortcut.h"
 
+#include <QtCore/QtDebug>
+#include <QtCore/QEvent>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QKeyEvent>
-#include <QMessageBox>
-#include <QEvent>
-
-#include <razorqt/xfitman.h>
+#include <QtGui/QMessageBox>
 #include <QtGui/QShortcut>
 #include <QtGui/QHBoxLayout>
+
+#include <razorqt/xfitman.h>
+#include <razorqxt/qxtglobalshortcut.h>
 
 
 RazorAppSwitcher::AppSwitcher::AppSwitcher()
