@@ -76,6 +76,8 @@ void HtmlDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
 
     icon.paint(painter, iconRect);
 
+    doc.setTextWidth(options.rect.width() - iconRect.right() - 10);
+
     // shift text right to make icon visible
     painter->translate(iconRect.right() + 8, 0);
     QRect clip(0, 0, options.rect.width()-iconRect.right()- 10, options.rect.height());
@@ -103,9 +105,12 @@ QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
     QStyleOptionViewItemV4 options = option;
     initStyleOption(&options, index);
 
+    QSize iconSize = QIcon().actualSize(mIconSize);
+    QRect iconRect = QRect(4, 4, iconSize.width(), iconSize.height());
+
     QTextDocument doc;
     doc.setHtml(options.text);
-    doc.setTextWidth(options.rect.width());
+    doc.setTextWidth(options.rect.width()-iconRect.right()- 10);
     return QSize(doc.idealWidth(), doc.size().height() + 8);
 }
 
