@@ -67,6 +67,7 @@ public:
     void processApps(QDomElement& element);
     void deleteEmpty(QDomElement& element);
     void processLayouts(QDomElement& element);
+    void fixSeparators(QDomElement& element);
 
     bool loadDirectoryFile(const QString& fileName, QDomElement& element);
     void prependChilds(QDomElement& srcElement, QDomElement& destElement);

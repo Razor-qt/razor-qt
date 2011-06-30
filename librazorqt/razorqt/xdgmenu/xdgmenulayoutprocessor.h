@@ -93,14 +93,16 @@ public:
     void run();
 
 protected:
-    XdgMenuLayoutProcessor(QDomElement &element, XdgMenuLayoutProcessor *parent);
+    XdgMenuLayoutProcessor(QDomElement& element, XdgMenuLayoutProcessor *parent);
 
+private:
+    void setParams(QDomElement defaultLayout, LayoutParams *result);
+    QDomElement searchElement(const QString &tagName, const QString &attributeName, const QString &attributeValue) const;
     void processFilenameTag(const QDomElement &element);
     void processMenunameTag(const QDomElement &element);
     void processSeparatorTag(const QDomElement &element);
     void processMergeTag(const QDomElement &element);
 
-private:
     LayoutParams mDefaultParams;
     QDomElement& mElement;
     QDomElement mDefaultLayout;

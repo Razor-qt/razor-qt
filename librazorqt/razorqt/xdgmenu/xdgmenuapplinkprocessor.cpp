@@ -179,6 +179,7 @@ void XdgMenuApplinkProcessor::step2()
 
         QDomElement appLink = doc.createElement("AppLink");
 
+        appLink.setAttribute("id", fileInfo->id());
         appLink.setAttribute("title", file->localizedValue("Name").toString());
         appLink.setAttribute("comment", file->localizedValue("Comment").toString());
         appLink.setAttribute("genericName", file->localizedValue("GenericName").toString());
@@ -250,7 +251,7 @@ void XdgMenuApplinkProcessor::findDesktopFiles(const QString& dirName, const QSt
     {
         XdgDesktopFile* f = XdgDesktopFileCache::getFile(file.canonicalFilePath());
         if (f)
-            mAppFileInfoHash.insert(prefix + file.fileName(), new XdgMenuAppFileInfo(f, this));
+            mAppFileInfoHash.insert(prefix + file.fileName(), new XdgMenuAppFileInfo(f, prefix + file.fileName(), this));
     }
 
 

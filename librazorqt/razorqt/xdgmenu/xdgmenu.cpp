@@ -181,11 +181,15 @@ bool XdgMenu::read(const QString& menuFileName)
     d->processApps(root);
     d->saveLog("07-processApps.xml");
 
-    d->deleteEmpty(root);
-    d->saveLog("08-deleteEmpty.xml");
-
     d->processLayouts(root);
-    d->saveLog("09-processLayouts.xml");
+    d->saveLog("08-processLayouts.xml");
+
+    d->deleteEmpty(root);
+    d->saveLog("09-deleteEmpty.xml");
+
+    d->fixSeparators(root);
+    d->saveLog("10-fixSeparators.xml");
+
 
     d->mOutDated = false;
 
@@ -490,6 +494,8 @@ void XdgMenuPrivate::processDirectoryEntries(QDomElement& element, const QString
     QStringList dirs;
     QStringList files;
 
+    element.setAttribute("title", element.attribute("name"));
+
     MutableDomElementIterator i(element, "");
     i.toBack();
     while(i.hasPrevious())
@@ -547,6 +553,7 @@ bool XdgMenuPrivate::loadDirectoryFile(const QString& fileName, QDomElement& ele
     if (!file.isValid())
         return false;
 
+
     element.setAttribute("title", file.localizedValue("Name").toString());
     element.setAttribute("comment", file.localizedValue("Comment").toString());
     element.setAttribute("icon", file.value("Icon").toString());
@@ -577,6 +584,9 @@ void XdgMenuPrivate::deleteEmpty(QDomElement& element)
     while(it.hasNext())
         deleteEmpty(it.next());
 
+    if (element.attribute("keep") == "true")
+        return;
+
     QDomElement childMenu = element.firstChildElement("Menu");
     QDomElement childApps = element.firstChildElement("AppLink");
 
@@ -594,6 +604,36 @@ void XdgMenuPrivate::processLayouts(QDomElement& element)
 {
     XdgMenuLayoutProcessor proc(element);
     proc.run();
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuPrivate::fixSeparators(QDomElement& element)
+{
+
+    MutableDomElementIterator it(element, "Separator");
+    while(it.hasNext())
+    {
+        QDomElement s = it.next();
+        if (s.previousSiblingElement().tagName() == "Separator")
+            element.removeChild(s);
+    }
+
+
+    QDomElement first = element.firstChild().toElement();
+    if (first.tagName() == "Separator")
+        element.removeChild(first);
+
+    QDomElement last = element.lastChild().toElement();
+    if (last.tagName() == "Separator")
+        element.removeChild(last);
+
+
+    MutableDomElementIterator mi(element, "Menu");
+    while(mi.hasNext())
+        fixSeparators(mi.next());
 }
 
 
