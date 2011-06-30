@@ -3,10 +3,8 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * https://sourceforge.net/projects/razor-qt/
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2011 Razor team
  * Authors:
- *   Christopher "VdoP" Regali
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
  *   Maciej Płaza <plaza.maciej@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -25,51 +23,50 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORCLOCK_H
-#define RAZORCLOCK_H
+#ifndef RAZORCLOCKCONFIGURATION_H
+#define RAZORCLOCKCONFIGURATION_H
 
-#include "../panel/razorpanelplugin.h"
-#include "razorclockconfiguration.h"
+#include <QtGui/QDialog>
+#include <QtGui/QAbstractButton>
+#include <QtGui/QButtonGroup>
+#include <QtCore/QSettings>
+#include <QtCore/QLocale>
+#include <QtCore/QDateTime>
 
-class QLabel;
-class QTimer;
-class QString;
-class QDialog;
+namespace Ui {
+    class RazorClockConfiguration;
+}
 
-/**
- * @brief the clock-plugin for razorbar
- */
-class RazorClock : public RazorPanelPlugin
+class RazorClockConfiguration : public QDialog
 {
     Q_OBJECT
+
 public:
-    RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~RazorClock();
-
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
-
-public slots:
-    void updateTime();
-
-protected:
-    virtual void mouseReleaseEvent(QMouseEvent* event);
-
-protected slots:
-    virtual void settigsChanged();
-    virtual void showConfigureDialog();
+    explicit RazorClockConfiguration(QSettings &settings, QWidget *parent = 0);
+    ~RazorClockConfiguration();
 
 private:
-    QTimer* clocktimer;
-    QLabel * gui;
-    QString clockFormat;
-    QString toolTipFormat;
-    QDialog* calendarDialog;
+    Ui::RazorClockConfiguration *ui;
+    QSettings &mSettings;
+    QHash<QString, QVariant> oldSettings;
+
+    /*
+      Read settings from conf file and put data into controls.
+    */
+    void loadSettings();
+
+    /*
+      Creates a date formats consistent with the region read from locale.
+    */
+    void createDateFormats();
 
 private slots:
-    void confWindowDestroyed();
+    /*
+      Saves settings in conf file.
+    */
+    void saveSettings();
+    void accepChanges();
+    void rejectChanges();
 };
 
-
-EXPORT_RAZOR_PANEL_PLUGIN_H
-
-#endif
+#endif // RAZORCLOCKCONFIGURATION_H

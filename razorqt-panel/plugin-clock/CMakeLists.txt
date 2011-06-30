@@ -4,15 +4,22 @@ set(PLUGIN "clock")
 
 
 set(HEADERS
-  razorclock.h
+    razorclock.h
+    razorclockconfiguration.h
 )
 
 set(SOURCES
-  razorclock.cpp
+    razorclock.cpp
+    razorclockconfiguration.cpp
 )
 
 set(MOCS
-  razorclock.h
+    razorclock.h
+    razorclockconfiguration.h
+)
+
+set(UIS
+    razorclockconfiguration.ui
 )
 
 

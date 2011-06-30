@@ -7,6 +7,7 @@
  * Authors:
  *   Christopher "VdoP" Regali
  *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Maciej Płaza <plaza.maciej@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -54,6 +55,7 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
         calendarDialog(0)
 {
     setObjectName("Clock");
+    clockFormat = "hh:mm";
     gui = new QLabel(this);
     gui->setAlignment(Qt::AlignCenter);
     addWidget(gui);
@@ -68,49 +70,44 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     clocktimer->start(1000);
 }
 
-
-QString getDate(QString format)
-{
-    if (format.compare("short", Qt::CaseInsensitive) == 0)
-        return QDateTime::currentDateTime().toString(Qt::DefaultLocaleShortDate);
-
-    if (format.compare("medium", Qt::CaseInsensitive) == 0)
-        return QDateTime::currentDateTime().toString(Qt::TextDate);
-
-    if (format.compare("long", Qt::CaseInsensitive) == 0)
-        return QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate);
-
-    return QDateTime::currentDateTime().toString(format);
-}
-
-
 /**
  * @brief updates the time
  * Color and font settings can be configured in Qt CSS
  */
 void RazorClock::updateTime()
 {
-    gui->setText(getDate(clockFormat));
-    gui->setToolTip(getDate(toolTipFormat));
+    gui->setText(QDateTime::currentDateTime().toString(clockFormat));
+    gui->setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
 }
-
 
 /**
  * @brief destructor
  */
 RazorClock::~RazorClock()
 {
-    settings().setValue("format", clockFormat);
-    settings().setValue("tooltipFormat", toolTipFormat);
 }
-
 
 void RazorClock::settigsChanged()
 {
-    clockFormat = settings().value("format", "hh:mm").toString();
-    toolTipFormat = settings().value("tooltipFormat", "medium").toString();
-}
+    QString date;
 
+    clockFormat = settings().value("timeFormat", QLocale::system().timeFormat(QLocale::ShortFormat)).toString();
+    date = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
+
+    if (settings().value("showDate", false).toBool())
+    {
+        if (settings().value("dateOnNewLine", true).toBool())
+        {
+            clockFormat.append("\n");
+        }
+        else
+        {
+            clockFormat.append(" ");
+        }
+
+        clockFormat += date;
+    }
+}
 
 void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -151,7 +148,16 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 
 void RazorClock::showConfigureDialog()
 {
-    qDebug() << "Show Edit dialog ********************************";
+    RazorClockConfiguration *confWindow = this->findChild<RazorClockConfiguration*>("ClockConfigurationWindow");
+
+    if (!confWindow)
+    {
+        confWindow = new RazorClockConfiguration(settings(), this);
+    }
+
+    confWindow->show();
+    confWindow->raise();
+    confWindow->activateWindow();
 }
 
 #endif
