@@ -65,7 +65,6 @@ private slots:
       Saves settings in conf file.
     */
     void saveSettings();
-    void accepChanges();
     void rejectChanges();
 };
 
