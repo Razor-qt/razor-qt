@@ -6,6 +6,7 @@
  * Copyright: 2011 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Maciej Płaza <plaza.maciej@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,6 +29,7 @@
 #define RAZORTASKBAR_H
 
 #include "../panel/razorpanelplugin.h"
+#include "razortaskbarconfiguration.h"
 #include <QtCore/QObject>
 #include <QtCore/QHash>
 #include <X11/Xlib.h>
@@ -43,6 +45,7 @@ public:
     virtual ~RazorTaskBar();
 
     virtual void x11EventFilter(XEvent* event);
+    virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
 
 public slots:
     void activeWindowChanged();
@@ -51,6 +54,10 @@ private slots:
     void readSettings();
     void writeSettings();
 
+protected slots:
+    virtual void settigsChanged();
+    virtual void showConfigureDialog();
+
 private:
     void refreshTaskList();
     void refreshButtonVisibility();
@@ -58,7 +65,9 @@ private:
     RazorTaskButton* buttonByWindow(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;
+    int buttonMaxWidth;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
+    void setButtonMaxWidth(int maxWidth);
     bool mShowOnlyCurrentDesktopTasks;
 
     void handlePropertyNotify(XPropertyEvent* event);

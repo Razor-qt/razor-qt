@@ -36,9 +36,6 @@
 #include <razorqt/xfitman.h>
 #include <QX11Info>
 
-#define MAX_BTN_WIDTH  400
-
-
 /************************************************
 
 ************************************************/
@@ -59,10 +56,9 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     mWindow(window)
 {
     setCheckable(true);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    setMaximumWidth(MAX_BTN_WIDTH);
     setAcceptDrops(true);
 
     updateText();

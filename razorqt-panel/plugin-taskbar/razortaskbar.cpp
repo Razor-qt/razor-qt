@@ -6,6 +6,7 @@
  * Copyright: 2011 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Maciej Płaza <plaza.maciej@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -65,8 +66,7 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 
     mRootWindow = QX11Info::appRootWindow();
 
-    readSettings();
-    refreshTaskList();
+    settigsChanged();
 }
 
 
@@ -75,7 +75,6 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
  ************************************************/
 RazorTaskBar::~RazorTaskBar()
 {
-    writeSettings();
 }
 
 
@@ -123,6 +122,14 @@ void RazorTaskBar::refreshTaskList()
         {
             RazorTaskButton* btn = new RazorTaskButton(wnd, this);
             btn->setToolButtonStyle(mButtonStyle);
+            if (buttonMaxWidth == -1)
+            {
+                btn->setMaximumWidth(btn->height());
+            }
+            else
+            {
+                btn->setMaximumWidth(buttonMaxWidth);
+            }
             mButtonsHash.insert(wnd, btn);
             // -1 is here due the last stretchable item
             layout()->insertWidget(layout()->count()-1, btn);
@@ -265,46 +272,62 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
     }
 }
 
-
-/************************************************
-
- ************************************************/
-void RazorTaskBar::readSettings()
+void RazorTaskBar::setButtonMaxWidth(int maxWidth)
 {
-    QSettings& sets = this->settings();
-    QString s = sets.value("buttonStyle").toString().toUpper();
-
-    if (s == "ICON")    setButtonStyle(Qt::ToolButtonIconOnly); else
-    if (s == "TEXT")    setButtonStyle(Qt::ToolButtonTextOnly); else
-    setButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-    mShowOnlyCurrentDesktopTasks = sets.value("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks).toBool();
-    writeSettings();
+   QHash<Window, RazorTaskButton*>::const_iterator i = mButtonsHash.constBegin();
+   while (i != mButtonsHash.constEnd())
+   {
+       if (maxWidth == -1)
+       {
+           i.value()->setMaximumWidth(i.value()->height());
+       }
+       else
+       {
+           i.value()->setMaximumWidth(maxWidth);
+       }
+       ++i;
+   }
 }
 
-
 /************************************************
 
  ************************************************/
-void RazorTaskBar::writeSettings()
+void RazorTaskBar::settigsChanged()
 {
-    QSettings& s = this->settings();
+    buttonMaxWidth = settings().value("maxWidth", 400).toInt();
+    QString s = settings().value("buttonStyle").toString().toUpper();
 
-    switch (mButtonStyle)
+    if (s == "ICON")
     {
-        case Qt::ToolButtonIconOnly:
-            s.setValue("buttonStyle", "Icon");
-            break;
-
-        case Qt::ToolButtonTextOnly:
-            s.setValue("buttonStyle", "Text");
-            break;
-
-
-        default:
-            s.setValue("buttonStyle", "IconText");
-            break;
+        setButtonStyle(Qt::ToolButtonIconOnly);
+        buttonMaxWidth = -1;
+        setButtonMaxWidth(buttonMaxWidth);
+    }
+    else if (s == "TEXT")
+    {
+        setButtonStyle(Qt::ToolButtonTextOnly);
+        setButtonMaxWidth(buttonMaxWidth);
+    }
+    else
+    {
+        setButtonStyle(Qt::ToolButtonTextBesideIcon);
+        setButtonMaxWidth(buttonMaxWidth);
     }
 
-    s.setValue("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks);
+    mShowOnlyCurrentDesktopTasks = settings().value("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks).toBool();
+    refreshTaskList();
+}
+
+void RazorTaskBar::showConfigureDialog()
+{
+    RazorTaskbarConfiguration *confWindow = this->findChild<RazorTaskbarConfiguration*>("TaskbarConfigurationWindow");
+
+    if (!confWindow)
+    {
+        confWindow = new RazorTaskbarConfiguration(settings(), this);
+    }
+
+    confWindow->show();
+    confWindow->raise();
+    confWindow->activateWindow();
 }

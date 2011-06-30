@@ -80,8 +80,8 @@ QToolButton:hover{
      border: 2px groove silver;
      border-radius: 6px;
 /*    width: 200px;*/
-    padding-right: 4px;
-    margin-right: 3px;
+   /* padding-right: 4px;
+    margin-right: 3px; */
 }
 
 #TaskBar QToolButton:on{
