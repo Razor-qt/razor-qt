@@ -183,6 +183,10 @@ void XdgMenuWidgetPrivate::buildMenu()
         //Build application link ................
         else if (xml.tagName() == "AppLink")
             q->insertAction(first, createAction(xml));
+
+        //Build separator .......................
+        else if (xml.tagName() == "Separator")
+            q->insertSeparator(first);
     }
 
     mNeedBuild = false;
