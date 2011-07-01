@@ -103,4 +103,19 @@ Only one theme object can be created. !*/
 
 #define razorTheme RazorTheme::instance()
 
+class RazorSettingsCache
+{
+public:
+    explicit RazorSettingsCache(QSettings &settings);
+    virtual ~RazorSettingsCache() {}
+
+    void loadFromSettings();
+    void loadToSettings();
+
+private:
+    QSettings &mSettings;
+    QHash<QString, QVariant> cache;
+};
+
+
 #endif // RAZORSETTINGS_H

@@ -294,3 +294,30 @@ QString RazorTheme::desktopBackground(int screen) const
 
     return QString();
 }
+
+RazorSettingsCache::RazorSettingsCache(QSettings &settings) :
+    mSettings(settings)
+{
+    loadFromSettings();
+}
+
+void RazorSettingsCache::loadFromSettings()
+{
+   foreach (QString key, mSettings.allKeys())
+   {
+       cache.insert(key, mSettings.value(key));
+   }
+}
+
+void RazorSettingsCache::loadToSettings()
+{
+    QHash<QString, QVariant>::const_iterator i = cache.constBegin();
+
+    while(i != cache.constEnd())
+    {
+        mSettings.setValue(i.key(), i.value());
+        ++i;
+    }
+
+    mSettings.sync();
+}
