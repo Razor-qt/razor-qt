@@ -33,6 +33,8 @@
 #include <QtCore/QLocale>
 #include <QtCore/QDateTime>
 
+#include "razorqt/razorsettings.h"
+
 namespace Ui {
     class RazorClockConfiguration;
 }
@@ -48,7 +50,7 @@ public:
 private:
     Ui::RazorClockConfiguration *ui;
     QSettings &mSettings;
-    QHash<QString, QVariant> oldSettings;
+    RazorSettingsCache oldSettings;
 
     /*
       Read settings from conf file and put data into controls.
@@ -65,7 +67,7 @@ private slots:
       Saves settings in conf file.
     */
     void saveSettings();
-    void rejectChanges();
+    void dialogButtonsAction(QAbstractButton *btn);
 };
 
 #endif // RAZORCLOCKCONFIGURATION_H

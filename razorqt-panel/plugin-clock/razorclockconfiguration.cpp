@@ -29,7 +29,8 @@
 RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorClockConfiguration),
-    mSettings(settings)
+    mSettings(settings),
+    oldSettings(settings)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("ClockConfigurationWindow");
@@ -37,18 +38,19 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
 
     createDateFormats();
 
-    connect(ui->buttons, SIGNAL(accepted()), this, SLOT(saveSettings()));
-    connect(ui->buttons, SIGNAL(rejected()), this, SLOT(rejectChanges()));
+    connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
     connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateOnNewLineCB, SLOT(setEnabled(bool)));
     connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateFormatCOB, SLOT(setEnabled(bool)));
     connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateFormatL, SLOT(setEnabled(bool)));
 
     loadSettings();
-    connect(ui->showSecondsCB, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->ampmClockCB, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->showDateCB, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->dateOnNewLineCB, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->dateFormatCOB, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSettings()));
+    /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly
+      chage of state */
+    connect(ui->showSecondsCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->ampmClockCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->showDateCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->dateOnNewLineCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->dateFormatCOB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -100,31 +102,41 @@ void RazorClockConfiguration::createDateFormats()
 void RazorClockConfiguration::loadSettings()
 {
     QString timeFormat;
-    QVariant buffer;
 
-    buffer = mSettings.value("showDate", false);
-    ui->showDateCB->setChecked(buffer.toBool());
-    oldSettings.insert("showDate", buffer);
+    ui->showDateCB->setChecked(mSettings.value("showDate", false).toBool());
+    ui->dateOnNewLineCB->setChecked(mSettings.value("dateOnNewLine", true).toBool());
 
-    buffer = mSettings.value("dateOnNewLine", true);
-    ui->dateOnNewLineCB->setChecked(buffer.toBool());
-    oldSettings.insert("dateOnNewLine", buffer);
+    ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->findData(mSettings.value("dateFormat", Qt::SystemLocaleShortDate)));
+    if (ui->dateFormatCOB->currentIndex() < 0)
+    {
+        ui->dateFormatCOB->setCurrentIndex(1);
+    }
 
-    buffer = mSettings.value("dateFormat", Qt::SystemLocaleShortDate);
-    ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->findData(buffer));
-    oldSettings.insert("dateFormat", buffer);
+    if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
+    {
+        timeFormat = mSettings.value("timeFormat", "h:mm AP").toString();
+    }
+    else
+    {
+        timeFormat = mSettings.value("timeFormat", "HH:mm").toString();
+    }
 
-    buffer = mSettings.value("timeFormat", QLocale::system().timeFormat(QLocale::ShortFormat));
-    oldSettings.insert("timeFormat", buffer);
-    timeFormat = buffer.toString();
     if (timeFormat.indexOf("ss") > -1)
     {
         ui->showSecondsCB->setChecked(true);
     }
+    else
+    {
+        ui->showSecondsCB->setChecked(false);
+    }
 
-    if (timeFormat.indexOf("AP") > -1)
+    if (timeFormat.toUpper().indexOf("AP") > -1)
     {
         ui->ampmClockCB->setChecked(true);
+    }
+    else
+    {
+        ui->ampmClockCB->setChecked(false);
     }
 }
 
@@ -136,54 +148,32 @@ void RazorClockConfiguration::saveSettings()
     mSettings.setValue("dateOnNewLine", ui->dateOnNewLineCB->isChecked());
     mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
 
-    timeFormat = QLocale::system().timeFormat(QLocale::ShortFormat);
-    if (timeFormat.indexOf("HH") > -1)
+    if (ui->ampmClockCB->isChecked() == true)
     {
-        if (ui->showSecondsCB->isChecked())
-        {
-            timeFormat.insert(timeFormat.indexOf("mm") + 2, ":ss");
-        }
-
-        if (ui->ampmClockCB->isChecked())
-        {
-            timeFormat.append(" AP");
-            /*
-              From Qt documentation:
-                HH -> the hour with a leading zero (00 to 23, even with AM/PM display)
-                h -> the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)
-            */
-            timeFormat.replace("HH", "h");
-        }
+        timeFormat = "h:mm AP";
     }
-    else if (timeFormat.indexOf("h:") > -1)
+    else
     {
-        if (ui->showSecondsCB->isChecked())
-        {
-            timeFormat.insert(timeFormat.indexOf("mm") + 2, ":ss");
-        }
+        timeFormat = "HH:mm";
+    }
 
-        if (!(ui->ampmClockCB->isChecked()))
-        {
-            timeFormat.remove(" AP");
-            /*
-              From Qt documentation:
-                h -> the hour without a leading zero (0 to 23 or 1 to 12 if AM/PM display)
-                hh -> the hour with a leading zero (00 to 23 or 01 to 12 if AM/PM display)
-            */
-            timeFormat.replace("h", "hh");
-        }
+    if (ui->showSecondsCB->isChecked() == true)
+    {
+        timeFormat.insert(timeFormat.indexOf("mm") + 2, ":ss");
     }
 
     mSettings.setValue("timeFormat", timeFormat);
 }
 
-void RazorClockConfiguration::rejectChanges()
+void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
 {
-    QHash<QString, QVariant>::const_iterator i = oldSettings.constBegin();
-
-    while(i != oldSettings.constEnd())
+    if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
     {
-        mSettings.setValue(i.key(), i.value());
-        ++i;
+        oldSettings.loadToSettings();
+        loadSettings();
+    }
+    else
+    {
+        close();
     }
 }

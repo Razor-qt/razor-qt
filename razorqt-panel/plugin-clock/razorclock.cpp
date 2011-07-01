@@ -91,7 +91,15 @@ void RazorClock::settigsChanged()
 {
     QString date;
 
-    clockFormat = settings().value("timeFormat", QLocale::system().timeFormat(QLocale::ShortFormat)).toString();
+    if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
+    {
+        clockFormat = settings().value("timeFormat", "h:mm AP").toString();
+    }
+    else
+    {
+        clockFormat = settings().value("timeFormat", "HH:mm").toString();
+    }
+
     date = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
     if (settings().value("showDate", false).toBool())
@@ -107,6 +115,8 @@ void RazorClock::settigsChanged()
 
         clockFormat += date;
     }
+
+    updateTime();
 }
 
 void RazorClock::mouseReleaseEvent(QMouseEvent* event)
