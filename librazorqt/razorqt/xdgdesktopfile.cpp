@@ -30,18 +30,19 @@
 *********************************************************************/
 
 #include "xdgdesktopfile.h"
-#include <stdlib.h>
-#include <QFile>
-#include <QDir>
-#include <QFileInfo>
-#include <QDebug>
-#include <QHash>
-#include <QProcess>
-// For XdgDesktopFilePrivate
-#include <QStack>
-#include <QUrl>
+#include "razormime.h"
 #include "xdgicon.h"
 #include "xdgenv.h"
+#include <stdlib.h>
+#include <QtCore/QFile>
+#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
+#include <QDebug>
+#include <QtCore/QHash>
+#include <QtCore/QProcess>
+#include <QUrl>
+#include <QDesktopServices>
+#include <unistd.h>
 
 class XdgDesktopFilePrivate {
 public:
@@ -64,10 +65,12 @@ public:
     bool contains(const QString& key) const;
     bool isShow(const QString& environment) const;
 
-    bool startDetached(const QStringList& urls) const;
+    bool startApplicationDetached(const QStringList& urls) const;
+    bool startLinkDetached() const;
 
     QIcon const icon(const QIcon& fallback = QIcon()) const;
 
+    XdgDesktopFile::Type mType;
 protected:
     bool checkTryExec(const QString& progName) const;
     QStringList expandExecString(const QStringList& urls) const;
@@ -80,6 +83,7 @@ private:
         ShowDisabled
     };
 
+    XdgDesktopFile::Type detectType();
     XdgDesktopFile* const q_ptr;
     Q_DECLARE_PUBLIC(XdgDesktopFile);
     QString mPrefix;
@@ -214,7 +218,80 @@ bool XdgDesktopFile::isShow(const QString& environment) const
 QStringList XdgDesktopFile::expandExecString(const QStringList& urls) const
 {
     Q_D(const XdgDesktopFile);
-    return d->expandExecString(urls);
+    if (d->mType == ApplicationType)
+        return d->expandExecString(urls);
+    else
+        return QStringList();
+}
+
+
+/************************************************
+
+ ************************************************/
+QString expandDynamicUrl(QString url)
+{
+    for (int i=0; environ[i]; i++)
+    {
+        QString line(environ[i]);
+        QString name = line.section("=", 0, 0);
+        QString val =  line.section("=", 1);
+        url.replace(QString("$%1").arg(name), val);
+        url.replace(QString("${%1}").arg(name), val);
+    }
+
+    return url;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString XdgDesktopFile::url() const
+{
+    if (type() != LinkType)
+        return "";
+
+   QString url;
+
+   url = value("URL").toString();
+   if (!url.isEmpty())
+   return url;
+
+    // WTF? What standard describes it?
+    url = expandDynamicUrl(value("URL[$e]").toString());
+    if (!url.isEmpty())
+        return url;
+
+    return "";
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::Type XdgDesktopFilePrivate::detectType()
+{
+    QString typeStr = value("Type").toString();
+    if (typeStr == "Application")
+        return XdgDesktopFile::ApplicationType;
+
+    if (typeStr == "Link")
+        return XdgDesktopFile::LinkType;
+
+    if (typeStr == "Directory")
+        return XdgDesktopFile::DirectoryType;
+
+    return XdgDesktopFile::UnknownType;
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::Type XdgDesktopFile::type() const
+{
+    Q_D(const XdgDesktopFile);
+    return d->mType;
 }
 
 
@@ -231,7 +308,17 @@ QStringList XdgDesktopFile::expandExecString(const QStringList& urls) const
 bool XdgDesktopFile::startDetached(const QStringList& urls) const
 {
     Q_D(const XdgDesktopFile);
-    return d->startDetached(urls);
+    switch(d->mType)
+    {
+    case ApplicationType:
+        return d->startApplicationDetached(urls);
+
+    case LinkType:
+        return d->startLinkDetached();
+
+    default:
+        return false;
+    }
 }
 
 
@@ -240,11 +327,10 @@ bool XdgDesktopFile::startDetached(const QStringList& urls) const
  ************************************************/
 bool XdgDesktopFile::startDetached(const QString& url) const
 {
-    Q_D(const XdgDesktopFile);
     if (url.isEmpty())
-        return d->startDetached(QStringList());
+        return startDetached(QStringList());
     else
-        return d->startDetached(QStringList(url));
+        return startDetached(QStringList(url));
 }
 
 
@@ -267,6 +353,7 @@ XdgDesktopFilePrivate::XdgDesktopFilePrivate(XdgDesktopFile* parent):
     mIsValid = false;
     mPrefix = "";
     mFileName = "";
+    mType = XdgDesktopFile::UnknownType;
     mIsShow = XdgDesktopFilePrivate::ShowUndefined;
 }
 
@@ -339,6 +426,7 @@ bool XdgDesktopFilePrivate::read()
         mItems[section + "/" + key] = QVariant(value);
     }
 
+    mType = detectType();
     mIsValid = valid;
     return valid;
 }
@@ -651,7 +739,7 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
 /************************************************
 
  ************************************************/
-bool XdgDesktopFilePrivate::startDetached(const QStringList& urls) const
+bool XdgDesktopFilePrivate::startApplicationDetached(const QStringList& urls) const
 {
     //qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
     QStringList args = expandExecString(urls);
@@ -672,6 +760,42 @@ bool XdgDesktopFilePrivate::startDetached(const QStringList& urls) const
     //qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << args;
     QString cmd = args.takeFirst();
     return QProcess::startDetached(cmd, args);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFilePrivate::startLinkDetached() const
+{
+    Q_Q(const XdgDesktopFile);
+    QString url = q->url();
+
+    if (url.isEmpty())
+    {
+        qWarning() << "XdgDesktopFilePrivate::startLinkDetached: url is empty.";
+        return false;
+    }
+
+    QString scheme = QUrl(url).scheme();
+
+    if (scheme.isEmpty() || scheme.toUpper() == "FILE")
+    {
+        // Local file
+        QFileInfo fi(url);
+        RazorMimeInfo mimeInfo(fi);
+
+        XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(mimeInfo.mimeType());
+        if (desktopFile)
+            return desktopFile->startDetached(url);
+    }
+    else
+    {
+        // Internet URL
+        return QDesktopServices::openUrl(QUrl::fromEncoded(url.toLocal8Bit()));
+    }
+
+    return false;
 }
 
 

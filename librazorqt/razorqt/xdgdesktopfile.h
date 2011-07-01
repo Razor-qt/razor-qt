@@ -38,16 +38,32 @@ class XdgDesktopFilePrivate;
 /**
  \brief Desktop files handling.
  XdgDesktopFile class gives the interface for reading the values from the XDG .desktop file.
- The format .desktop a file is described on http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
-
  The interface of this class is similar on QSettings.
- \author Petr Vanek <petr@scribus.info>
+
+ The Desktop Entry Specification defines 3 types of desktop entries: Application, Link and
+ Directory. The format of .desktop file is described on
+ http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html
+
+ Note that not all methods in this class make sense for all types of desktop files.
+ \author Alexander Sokoloff <sokoloff.a@gmail.ru>
  */
 
 class XdgDesktopFile : protected QObject
 {
     Q_OBJECT
 public:
+
+    /*! The Desktop Entry Specification defines 3 types of desktop entries: Application, Link and
+        Directory. File type is determined by the "Type" tag.
+     */
+    enum Type
+    {
+        UnknownType,     //! Unknown desktop file type. Maybe is invalid.
+        ApplicationType, //! The file describes application.
+        LinkType,        //! The file describes URL.
+        DirectoryType    //! The file describes directory settings.
+    };
+
     explicit XdgDesktopFile(QObject *parent = 0, const QString& prefix="Desktop Entry");
     explicit XdgDesktopFile(const QString& fileName, QObject *parent = 0, const QString& prefix="Desktop Entry");
     XdgDesktopFile(const XdgDesktopFile& other, QObject *parent = 0);
@@ -81,13 +97,28 @@ public:
     bool isShow(const QString& environment = "RAZOR") const;
 
 
+    /*! Returns the desktop file type.
+       @see XdgDesktopFile::Type
+     */
+    Type type() const;
+
     /*! A Exec value consists of an executable program optionally followed by one or more arguments.
         This function expands this arguments and returns command line string parts.
+        Note this method make sense only for Application type.
         @par urls - A list of files or URLS. Each file is passed as a separate argument to the result string program.*/
     QStringList expandExecString(const QStringList& urls = QStringList()) const;
 
-    /*! Starts the program with the optional urls in a new process, and detaches from it. Returns true on success; otherwise returns false.
-      @par urls - A list of files or URLS. Each file is passed as a separate argument to the executable program. */
+    /*! Returns the URL for the Link desktop file; otherwise an empty string is returned.
+     */
+    QString url() const;
+
+    /*! For file with Application type. Starts the program with the optional urls in a new process, and detaches from it.
+        Returns true on success; otherwise returns false.
+          @par urls - A list of files or URLS. Each file is passed as a separate argument to the executable program.
+
+        For file with Link type. Opens URL in the associated application. Parametr urls is not used.
+
+        For file with Directory type, do nothing.  */
     bool startDetached(const QStringList& urls) const;
 
     //! This function is provided for convenience. It's equivalent to calling startDetached(QStringList(url)).
