@@ -305,15 +305,15 @@ void RazorSettingsCache::loadFromSettings()
 {
    foreach (QString key, mSettings.allKeys())
    {
-       cache.insert(key, mSettings.value(key));
+       mCache.insert(key, mSettings.value(key));
    }
 }
 
 void RazorSettingsCache::loadToSettings()
 {
-    QHash<QString, QVariant>::const_iterator i = cache.constBegin();
+    QHash<QString, QVariant>::const_iterator i = mCache.constBegin();
 
-    while(i != cache.constEnd())
+    while(i != mCache.constEnd())
     {
         mSettings.setValue(i.key(), i.value());
         ++i;
