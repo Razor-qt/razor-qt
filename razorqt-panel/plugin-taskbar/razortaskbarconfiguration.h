@@ -27,7 +27,9 @@
 #define RAZORTASKBARCONFIGURATION_H
 
 #include <QtGui/QDialog>
-#include <QtCore/QSettings>
+#include <QtGui/QAbstractButton>
+
+#include <razorqt/razorsettings.h>
 
 namespace Ui {
     class RazorTaskbarConfiguration;
@@ -44,7 +46,7 @@ public:
 private:
     Ui::RazorTaskbarConfiguration *ui;
     QSettings &mSettings;
-    QHash<QString, QVariant> oldSettings;
+    RazorSettingsCache oldSettings;
 
     /*
       Read settings from conf file and put data into controls.
@@ -53,7 +55,7 @@ private:
 
 private slots:
     void saveSettings();
-    void rejectChanges();
+    void dialogButtonsAction(QAbstractButton *btn);
     void updateControls(int index);
 };
 

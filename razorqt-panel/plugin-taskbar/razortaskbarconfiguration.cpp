@@ -29,24 +29,26 @@
 RazorTaskbarConfiguration::RazorTaskbarConfiguration(QSettings &settings, QWidget *parent):
     QDialog(parent),
     ui(new Ui::RazorTaskbarConfiguration),
-    mSettings(settings)
+    mSettings(settings),
+    oldSettings(settings)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("TaskbarConfigurationWindow");
     ui->setupUi(this);
 
-    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(saveSettings()));
-    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(rejectChanges()));
+    connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
     ui->buttonStyleCB->addItem("Icon and text", "IconText");
     ui->buttonStyleCB->addItem("Only icon", "Icon");
     ui->buttonStyleCB->addItem("Only text", "Text");
 
     loadSettings();
-    connect(ui->fAllDesktopsCB, SIGNAL(toggled(bool)), this, SLOT(saveSettings()));
-    connect(ui->fCurrentDesktopRB, SIGNAL(toggled(bool)), this, SLOT(saveSettings()));
-    connect(ui->buttonStyleCB, SIGNAL(currentIndexChanged(int)), this, SLOT(updateControls(int)));
-    connect(ui->buttonStyleCB, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSettings()));
+    /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly
+        change of state */
+    connect(ui->fAllDesktopsCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->fCurrentDesktopRB, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(updateControls(int)));
+    connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
     connect(ui->maxWidthSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
 }
 
@@ -57,11 +59,7 @@ RazorTaskbarConfiguration::~RazorTaskbarConfiguration()
 
 void RazorTaskbarConfiguration::loadSettings()
 {
-    QVariant buffer;
-
-    buffer = mSettings.value("showOnlyCurrentDesktopTasks", false);
-    oldSettings.insert("showOnlyCurrentDesktopTasks", buffer);
-    if (buffer.toBool() == true)
+    if (mSettings.value("showOnlyCurrentDesktopTasks", false).toBool() == true)
     {
         ui->fCurrentDesktopRB->setChecked(true);
     }
@@ -70,14 +68,11 @@ void RazorTaskbarConfiguration::loadSettings()
         ui->fAllDesktopsCB->setChecked(true);
     }
 
-    buffer = mSettings.value("buttonStyle", "IconText");
-    ui->buttonStyleCB->setCurrentIndex(ui->buttonStyleCB->findData(buffer));
+    ui->buttonStyleCB->setCurrentIndex(ui->buttonStyleCB->findData(mSettings.value("buttonStyle", "IconText")));
     updateControls(ui->buttonStyleCB->currentIndex());
-    oldSettings.insert("buttonStyle", buffer);
 
-    buffer = mSettings.value("maxWidth", 400);
-    ui->maxWidthSB->setValue(buffer.toInt());
-    oldSettings.insert("maxWidth", buffer);
+    /* Keep maxWidth loading at the end of this method to prevent errors */
+    ui->maxWidthSB->setValue(mSettings.value("maxWidth", 400).toInt());
 }
 
 void RazorTaskbarConfiguration::saveSettings()
@@ -85,17 +80,6 @@ void RazorTaskbarConfiguration::saveSettings()
     mSettings.setValue("showOnlyCurrentDesktopTasks", ui->fCurrentDesktopRB->isChecked());
     mSettings.setValue("buttonStyle", ui->buttonStyleCB->itemData(ui->buttonStyleCB->currentIndex()));
     mSettings.setValue("maxWidth", ui->maxWidthSB->value());
-}
-
-void RazorTaskbarConfiguration::rejectChanges()
-{
-    QHash<QString, QVariant>::const_iterator i = oldSettings.constBegin();
-
-    while(i != oldSettings.constEnd())
-    {
-        mSettings.setValue(i.key(), i.value());
-        ++i;
-    }
 }
 
 void RazorTaskbarConfiguration::updateControls(int index)
@@ -109,5 +93,22 @@ void RazorTaskbarConfiguration::updateControls(int index)
     {
         ui->maxWidthSB->setEnabled(true);
         ui->maxWidthL->setEnabled(true);
+    }
+}
+
+void RazorTaskbarConfiguration::dialogButtonsAction(QAbstractButton *btn)
+{
+    if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
+    {
+        /* We have to disable signals for maxWidthSB to prevent errors. Otherwise not all data
+          could be restored */
+        ui->maxWidthSB->blockSignals(true);
+        oldSettings.loadToSettings();
+        loadSettings();
+        ui->maxWidthSB->blockSignals(false);
+    }
+    else
+    {
+        close();
     }
 }
