@@ -26,6 +26,7 @@
 
 #include "xdgaction.h"
 #include <razorqt/xdgicon.h>
+#include <QtCore/QDebug>
 
 
 /************************************************

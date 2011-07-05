@@ -30,8 +30,11 @@
 #include <razorqt/xdgaction.h>
 #include "xdgmenu.h"
 #include <QtCore/QEvent>
-#include <QDebug>
-
+#include <QtCore/QDebug>
+#include <QtCore/QUrl>
+#include <QtGui/QDrag>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QApplication>
 
 class XdgMenuWidgetPrivate
 {
@@ -48,9 +51,12 @@ public:
     void init(const QDomElement& xml);
     void buildMenu();
 
-
     QDomElement mXml;
     bool mNeedBuild;
+
+    void mouseMoveEvent(QMouseEvent *event);
+
+    QPoint mDragStartPosition;
 
 private:
     XdgAction* createAction(const QDomElement& xml);
@@ -149,13 +155,56 @@ XdgMenuWidget& XdgMenuWidget::operator=(const XdgMenuWidget& other)
  ************************************************/
 bool XdgMenuWidget::event(QEvent* event)
 {
+    Q_D(XdgMenuWidget);
+
     if (event->type() == QEvent::Show)
     {
-        Q_D(XdgMenuWidget);
         if (d->mNeedBuild)
             d->buildMenu();
     }
+
+    else if (event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent *e = static_cast<QMouseEvent*>(event);
+        if (e->button() == Qt::LeftButton)
+            d->mDragStartPosition = e->pos();
+    }
+
+    else if (event->type() == QEvent::MouseMove)
+    {
+        QMouseEvent *e = static_cast<QMouseEvent*>(event);
+        d->mouseMoveEvent(e);
+    }
+
     return QMenu::event(event);
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgMenuWidgetPrivate::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!(event->buttons() & Qt::LeftButton))
+        return;
+
+    if ((event->pos() - mDragStartPosition).manhattanLength() < QApplication::startDragDistance())
+        return;
+
+    Q_Q(XdgMenuWidget);
+    XdgAction *a = qobject_cast<XdgAction*>(q->actionAt(event->pos()));
+    if (!a)
+        return;
+
+    QList<QUrl> urls;
+    urls << QUrl(a->desktopFile().fileName());
+
+    QMimeData *mimeData = new QMimeData();
+    mimeData->setUrls(urls);
+
+    QDrag *drag = new QDrag(q);
+    drag->setMimeData(mimeData);
+    drag->exec(Qt::CopyAction | Qt::LinkAction);
 }
 
 
@@ -191,7 +240,6 @@ void XdgMenuWidgetPrivate::buildMenu()
 
     mNeedBuild = false;
 }
-
 
 
 /************************************************
