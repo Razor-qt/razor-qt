@@ -377,6 +377,7 @@ XdgDesktopFilePrivate& XdgDesktopFilePrivate::operator=(const XdgDesktopFilePriv
     mIsValid = other.mIsValid;
     mItems = other.mItems; // This copy map values
     mIsShow = other.mIsShow;
+    mType = other.mType;
     return *this;
 }
 
