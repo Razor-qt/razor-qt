@@ -99,12 +99,12 @@
     </spacer>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="buttons">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
      </property>
     </widget>
    </item>
@@ -113,7 +113,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>buttons</sender>
    <signal>accepted()</signal>
    <receiver>RazorTaskbarConfiguration</receiver>
    <slot>accept()</slot>
@@ -129,7 +129,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>buttons</sender>
    <signal>rejected()</signal>
    <receiver>RazorTaskbarConfiguration</receiver>
    <slot>reject()</slot>

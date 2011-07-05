@@ -114,7 +114,7 @@ public:
 
 private:
     QSettings &mSettings;
-    QHash<QString, QVariant> cache;
+    QHash<QString, QVariant> mCache;
 };
 
 

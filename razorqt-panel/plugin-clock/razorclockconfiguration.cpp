@@ -45,7 +45,7 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
 
     loadSettings();
     /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly
-      chage of state */
+      change of state */
     connect(ui->showSecondsCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->ampmClockCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->showDateCB, SIGNAL(clicked()), this, SLOT(saveSettings()));

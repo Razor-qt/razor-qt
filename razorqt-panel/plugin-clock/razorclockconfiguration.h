@@ -29,7 +29,6 @@
 #include <QtGui/QDialog>
 #include <QtGui/QAbstractButton>
 #include <QtGui/QButtonGroup>
-#include <QtCore/QSettings>
 #include <QtCore/QLocale>
 #include <QtCore/QDateTime>
 

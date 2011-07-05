@@ -124,7 +124,6 @@ void RazorTaskButton::nextCheckState()
  ************************************************/
 void RazorTaskButton::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->accept();
     mDraggableMimeData = event->mimeData();
     QTimer::singleShot(1000, this, SLOT(activateWithDraggable()));
 }
