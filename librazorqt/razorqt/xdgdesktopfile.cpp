@@ -439,7 +439,8 @@ bool XdgDesktopFilePrivate::read()
 QVariant XdgDesktopFilePrivate::value(const QString& key, const QVariant& defaultValue) const
 {
     //qDebug() << "XdgDesktopFilePrivate::value mPrefix + key" << mPrefix + key;
-    return mItems.value(mPrefix + key, defaultValue);
+    QVariant v = mItems.value(mPrefix + key, defaultValue);
+    return v.toString().replace("&", "&&");
 }
 
 
