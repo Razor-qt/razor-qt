@@ -58,7 +58,7 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 {
     setObjectName("TaskBar");
 
-    QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    QSizePolicy sp(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);
     setSizePolicy(sp);
