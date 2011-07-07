@@ -38,6 +38,7 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QFileIconProvider>
 
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
@@ -132,7 +133,7 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
             settings().setValue("desktop", fileName);
             settings().endArray();
         }
-        else if (fi.exists() && fi.isExecutable())
+        else if (fi.exists() && fi.isExecutable() && !fi.isDir())
         {
             addButton(new RazorQuickLaunchAction(fileName, fileName, XdgIcon::defaultApplicationIcon(), this));
             int count = settings().beginReadArray("apps");
@@ -208,8 +209,16 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & fileName, QWidget
     setData(fileName);
 
     QFileInfo fi(fileName);
-    RazorMimeInfo mi(fi);
-    setIcon(mi.icon());
+    if (fi.isDir())
+    {
+        QFileIconProvider ip;
+        setIcon(ip.icon(fi));
+    }
+    else
+    {
+        RazorMimeInfo mi(fi);
+        setIcon(mi.icon());
+    }
     
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
 }
