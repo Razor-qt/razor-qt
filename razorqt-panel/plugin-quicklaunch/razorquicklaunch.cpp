@@ -29,9 +29,12 @@
 #include "razorqt/xdgicon.h"
 
 #include <QtDebug>
-#include <QProcess>
-#include <QToolButton>
+#include <QtCore/QProcess>
 #include <QtCore/QSettings>
+#include <QtCore/QUrl>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QToolButton>
+
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
 
@@ -40,6 +43,7 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
     : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("QuickLaunch");
+    setAcceptDrops(true);
 
     int count = settings().beginReadArray("apps");
 
@@ -90,6 +94,38 @@ void RazorQuickLaunch::addButton(QAction* action)
     btn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     btn->setIconSize(QSize(22, 22));
     addWidget(btn);
+}
+
+void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
+{
+    // Getting URL from mainmenu...
+    if (e->mimeData()->hasUrls())
+        e->acceptProposedAction();
+}
+
+void RazorQuickLaunch::dropEvent(QDropEvent *e)
+{
+    const QMimeData *mime = e->mimeData();
+    // urls from mainmenu
+    foreach (QUrl url, mime->urls())
+    {
+        QString fileName(url.toString());
+        XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(fileName);
+        if (!xdg->isValid())
+        {
+            qDebug() << "XdgDesktopFile" << fileName << "is not valid";
+        }
+        else
+        {
+            addButton(new RazorQuickLaunchAction(xdg, this));
+            int count = settings().beginReadArray("apps");
+            settings().endArray();
+            settings().beginWriteArray("apps", count+1);
+            settings().setArrayIndex(count);
+            settings().setValue("desktop", fileName);
+            settings().endArray();
+        }
+    }
 }
 
 RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & name,

@@ -33,9 +33,10 @@
 #include <QtCore/QString>
 #include <QtGui/QAction>
 
-
 class XdgDesktopFile;
 class QAction;
+class QDragEnterEvent;
+
 
 /*! \brief Loader for "quick launcher" icons in the panel.
 \author Petr Vanek <petr@scribus.info>
@@ -50,6 +51,9 @@ public:
 
 private:
     QMap<QString,XdgDesktopFile*> m_xdgFiles;
+
+    void dragEnterEvent(QDragEnterEvent *e);
+    void dropEvent(QDropEvent *e);
 
 private slots:
     //! run command in the action
