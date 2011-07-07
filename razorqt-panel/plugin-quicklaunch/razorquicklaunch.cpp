@@ -26,14 +26,18 @@
 
 #include "razorquicklaunch.h"
 #include <razorqt/xdgdesktopfile.h>
-#include "razorqt/xdgicon.h"
+#include <razorqt/xdgicon.h>
+#include <razorqt/razormime.h>
 
 #include <QtDebug>
 #include <QtCore/QProcess>
 #include <QtCore/QSettings>
 #include <QtCore/QUrl>
+#include <QtCore/QFileInfo>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QToolButton>
+#include <QtGui/QMessageBox>
+#include <QtGui/QDesktopServices>
 
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
@@ -48,6 +52,7 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
     int count = settings().beginReadArray("apps");
 
     QString desktop;
+    QString file;
     QString execname;
     QString exec;
     QIcon icon;
@@ -55,6 +60,7 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
     {
         settings().setArrayIndex(i);
         desktop = settings().value("desktop", "").toString();
+        file = settings().value("file", "").toString();
         if (! desktop.isEmpty())
         {
             XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
@@ -64,6 +70,10 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
                 continue;
             }
             addButton(new RazorQuickLaunchAction(xdg, this));
+        }
+        else if (! file.isEmpty())
+        {
+            addButton(new RazorQuickLaunchAction(file, this));
         }
         else
         {
@@ -77,8 +87,7 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
             }
             addButton(new RazorQuickLaunchAction(execname, exec, icon, this));
         }
-
-    }
+    } // for
 
     settings().endArray();
 }
@@ -109,13 +118,11 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
     // urls from mainmenu
     foreach (QUrl url, mime->urls())
     {
-        QString fileName(url.toString());
+        QString fileName(url.toLocalFile());
         XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(fileName);
-        if (!xdg->isValid())
-        {
-            qDebug() << "XdgDesktopFile" << fileName << "is not valid";
-        }
-        else
+        QFileInfo fi(fileName);
+        qDebug() << fileName << fi.exists() << fi.isExecutable();
+        if (xdg->isValid())
         {
             addButton(new RazorQuickLaunchAction(xdg, this));
             int count = settings().beginReadArray("apps");
@@ -124,6 +131,35 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
             settings().setArrayIndex(count);
             settings().setValue("desktop", fileName);
             settings().endArray();
+        }
+        else if (fi.exists() && fi.isExecutable())
+        {
+            addButton(new RazorQuickLaunchAction(fileName, fileName, XdgIcon::defaultApplicationIcon(), this));
+            int count = settings().beginReadArray("apps");
+            settings().endArray();
+            settings().beginWriteArray("apps", count+1);
+            settings().setArrayIndex(count);
+            settings().setValue("name", fileName);
+            settings().setValue("exec", fileName);
+            settings().setValue("icon", XdgIcon::defaultApplicationIcon().name());
+            settings().endArray();
+        }
+        else if (fi.exists())
+        {
+            addButton(new RazorQuickLaunchAction(fileName, this));
+            int count = settings().beginReadArray("apps");
+            settings().endArray();
+            settings().beginWriteArray("apps", count+1);
+            settings().setArrayIndex(count);
+            settings().setValue("file", fileName);
+            settings().endArray();
+        }
+        else
+        {
+            qDebug() << "XdgDesktopFile" << fileName << "is not valid";
+            QMessageBox::information(this, tr("Drop Error"),
+                              tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
+                            );
         }
     }
 }
@@ -163,6 +199,21 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const XdgDesktopFile * xdg,
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
 }
 
+RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & fileName, QWidget * parent)
+    : QAction(parent),
+      m_valid(true)
+{
+    m_type = ActionFile;
+    setText(fileName);
+    setData(fileName);
+
+    QFileInfo fi(fileName);
+    RazorMimeInfo mi(fi);
+    setIcon(mi.icon());
+    
+    connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
+}
+
 void RazorQuickLaunchAction::execAction()
 {
     QString exec(data().toString());
@@ -178,5 +229,8 @@ void RazorQuickLaunchAction::execAction()
                 xdg->startDetached();
             break;
         }
+        case ActionFile:
+            QDesktopServices::openUrl(QUrl(exec));
+            break;
     }
 }

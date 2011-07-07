@@ -84,6 +84,9 @@ public:
     /*! Constructor for XDG desktop handlers.
      */
     RazorQuickLaunchAction(const XdgDesktopFile * xdg, QWidget * parent);
+    /*! Constructor for regular files 
+     */
+    RazorQuickLaunchAction(const QString & fileName, QWidget * parent);
 
     //! Returns true if the action is valid (contains all required properties).
     bool isValid() { return m_valid; }
@@ -92,7 +95,7 @@ public slots:
     void execAction();
 
 private:
-    enum ActionType { ActionLegacy, ActionXdg };
+    enum ActionType { ActionLegacy, ActionXdg, ActionFile };
     ActionType m_type;
     QString m_data;
     bool m_valid;
