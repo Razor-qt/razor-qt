@@ -24,5 +24,6 @@ set ( razor-appswitcher_SRCS
 add_executable ( razor-x11info ${razor-appswitcher_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 target_link_libraries ( razor-x11info ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${X11_X11_LIB}
                                       ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so )
+add_dependencies(razor-x11info razorqt)
 INSTALL(TARGETS razor-x11info RUNTIME DESTINATION bin)
 
