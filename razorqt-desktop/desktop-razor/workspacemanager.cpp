@@ -78,6 +78,14 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
             ws->setConfig(defaults);
         
         ws->show();
+        
+        // This X11 call seems mandatory for issue #3:
+        // "There is only one desktop when on plasma-desktop"
+        // for some WM it is not enough to use Qt::WA_X11NetWmWindowTypeDesktop
+        // Note: this has to be called after is ws shown to take an effect.
+        // EWMH specs: Cardinal to determine the desktop the window is in (or wants to be) starting with 0 for the first desktop. A Client MAY choose not to set this property, in which case the Window Manager SHOULD place it as it wishes. 0xFFFFFFFF indicates that the window SHOULD appear on all desktops.
+        xfitMan().moveWindowToDesktop(ws->winId(), 0xFFFFFFFF);
+        
         m_workspaces.append(ws);
     }
 }
