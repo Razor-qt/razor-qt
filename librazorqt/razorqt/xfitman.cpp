@@ -493,11 +493,19 @@ bool XfitMan::acceptWindow(Window window) const
 {
     {
         AtomList types = getWindowType(window);
-
-        if (types.contains(atom("_NET_WM_WINDOW_TYPE_DESKTOP")))      return false;
-        if (types.contains(atom("_NET_WM_WINDOW_TYPE_DOCK")))         return false;
-        if (types.contains(atom("_NET_WM_WINDOW_TYPE_SPLASH")))       return false;
-        if (types.contains(atom("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE"))) return false;
+        AtomList ignoreList;
+        ignoreList  << atom("_NET_WM_WINDOW_TYPE_DESKTOP")
+                    << atom("_NET_WM_WINDOW_TYPE_DOCK")
+                    << atom("_NET_WM_WINDOW_TYPE_SPLASH")
+                    << atom("_NET_WM_WINDOW_TYPE_TOOLBAR")
+                    << atom("_NET_WM_WINDOW_TYPE_MENU")
+                    << atom("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE");
+                    
+        foreach (Atom i, ignoreList)
+        {
+            if (types.contains(i))
+                return false;
+        }
 
         WindowState state = getWindowState(window);
         if (state.SkipTaskBar)  return false;
