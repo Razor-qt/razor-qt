@@ -28,6 +28,9 @@
 #include <QtGui/QDesktopWidget>
 #include <QtDebug>
 
+#include <razorqt/xfitman.h>
+#include <X11/Xlib.h>
+
 #ifndef RAZOR_VERSION
 #define RAZOR_VERSION "Version n/a. Probably built out of Razor-qt tree"
 #endif
@@ -53,6 +56,7 @@ int main(int argc, char **argv)
     qDebug() << "X11 colormap:\t\t" << x11.colormap();
     qDebug() << "X11 depth:\t\t" << x11.depth();
     qDebug() << "X11 composite:\t\t" << x11.isCompositingManagerRunning();
+    qDebug() << "X11 ScreenCount:\t" << ScreenCount(QX11Info::display());
     qDebug() << "";
 #endif
 
@@ -68,6 +72,10 @@ int main(int argc, char **argv)
         qDebug() << "\tScreen" << i << "screenGeometry:\t" << dw->screenGeometry(i);
         qDebug() << "";
     }
+    
+    qDebug() << "* XfitMan information";
+    qDebug() << "getActiveDesktop:\t" << xfitMan().getActiveDesktop();
+    qDebug() << "getNumDesktop:\t" << xfitMan().getNumDesktop();
 
     return 0;
 }
