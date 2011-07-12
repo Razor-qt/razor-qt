@@ -26,7 +26,8 @@
 #ifndef ICONSCENE_H
 #define ICONSCENE_H
 
-#include <QGraphicsScene>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsSceneDragDropEvent>
 
 class QFileSystemWatcher;
 class IconViewLabel;
@@ -51,6 +52,11 @@ private:
     QSizeF m_parentSize;
 
     void setDirImpl(const QString & directory, bool repaint=false);
+
+    void dragEnterEvent(QGraphicsSceneDragDropEvent *e);
+    //! It's required to have dragMoveEvent as QGraphicsScene needs it to handle drops.
+    void dragMoveEvent(QGraphicsSceneDragDropEvent *e);
+    void dropEvent(QGraphicsSceneDragDropEvent *e);
 
 private slots:
     void updateIconList();

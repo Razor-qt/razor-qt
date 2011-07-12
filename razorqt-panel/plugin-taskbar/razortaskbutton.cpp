@@ -502,6 +502,17 @@ QSize RazorTaskButton::sizeHint() const
  ************************************************/
 void  RazorTaskButton::handlePropertyNotify(XPropertyEvent* event)
 {
+    // I suppose here that only new/update values need to
+    // be promoted here. There is no need to update inof
+    // If it's deleted/about to delete. And mainly - it prevents
+    // "BadWindow (invalid Window parameter)" errors:
+    // Issue #4 BadWindow when a window is closed
+    if (event->state == PropertyDelete)
+    {
+//        qDebug() << "RazorTaskButton::handlePropertyNotify to delete";
+        return;
+    }
+
     if (event->atom == XfitMan::atom("WM_NAME") ||
         event->atom == XfitMan::atom("_NET_WM_VISIBLE_NAME"))
     {

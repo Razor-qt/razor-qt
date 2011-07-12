@@ -62,9 +62,6 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 
     settigsChanged();
 
-    // ensure wi will not have moving widgets in the panel waiting for timer shot
-    updateTime();
-
     clocktimer = new QTimer(this);
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
     clocktimer->start(1000);

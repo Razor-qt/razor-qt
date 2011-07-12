@@ -55,6 +55,8 @@ IconView::IconView(QGraphicsScene * scene, const QString & configId, RazorSettin
     // no border at all finally
     setFrameShape(QFrame::NoFrame);
     
+    setAcceptDrops(true);
+    
     m_scene = new IconScene(dir);
    
     setScene(m_scene);
