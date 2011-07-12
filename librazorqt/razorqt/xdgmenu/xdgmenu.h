@@ -27,8 +27,6 @@
 #ifndef XDGMENU_H
 #define XDGMENU_H
 
-#include "../xdgdesktopfile.h"
-
 #include <QObject>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
