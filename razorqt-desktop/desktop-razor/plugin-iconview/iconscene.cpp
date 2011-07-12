@@ -25,11 +25,15 @@
 
 #include "iconscene.h"
 #include "desktopicon.h"
-#include <QDesktopServices>
-#include <QDir>
-#include <QFileSystemWatcher>
-#include <QFileInfoList>
+
+#include <QtCore/QUrl>
+#include <QtCore/QDir>
+#include <QtCore/QFileSystemWatcher>
+#include <QtCore/QFileInfoList>
 #include <QtDebug>
+
+#include <QtGui/QDesktopServices>
+#include <QtGui/QMessageBox>
 
 
 IconScene::IconScene(const QString & directory, QObject * parent)
@@ -72,6 +76,36 @@ void IconScene::setDirImpl(const QString & directory, bool repaint)
     
     if (repaint)
         updateIconList();
+}
+
+void IconScene::dragEnterEvent(QGraphicsSceneDragDropEvent *e)
+{
+    qDebug() << "IconScene::dragEnterEvent" << e->mimeData()->hasUrls();
+    // Getting URL from mainmenu...
+    if (e->mimeData()->hasUrls())
+        e->acceptProposedAction();
+}
+
+void IconScene::dragMoveEvent(QGraphicsSceneDragDropEvent *e)
+{
+    dragEnterEvent(e);
+}
+
+void IconScene::dropEvent(QGraphicsSceneDragDropEvent *e)
+{
+    qDebug() << "IconScene::dropEvent" << e->mimeData()->urls();
+    const QMimeData *mime = e->mimeData();
+    // urls from mainmenu
+    foreach (QUrl url, mime->urls())
+    {
+        QFileInfo fi(url.toLocalFile());
+        QFile f(url.toLocalFile());
+        if (!f.copy(m_directory + "/" + fi.fileName()))
+        {
+            QMessageBox::information(0, tr("Copy File Error"),
+                                     tr("Cannot copy file %1 to %2").arg(url.toLocalFile()).arg(m_directory));
+        }
+    }
 }
 
 void IconScene::updateIconList()
