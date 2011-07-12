@@ -59,6 +59,11 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* pare
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
     setFrameShape(QFrame::NoFrame);
+    // This X11 call seems mandatory for issue #3:
+    // "There is only one desktop when on plasma-desktop"
+    // for some WM it is not enough to use Qt::WA_X11NetWmWindowTypeDesktop
+    // EWMH specs: Cardinal to determine the desktop the window is in (or wants to be) starting with 0 for the first desktop. A Client MAY choose not to set this property, in which case the Window Manager SHOULD place it as it wishes. 0xFFFFFFFF indicates that the window SHOULD appear on all desktops.
+    xfitMan().moveWindowToDesktop(winId(), 0xFFFFFFFF);
     
     m_power = new PowerManager(this);
     m_screenSaver = new ScreenSaver(this);
