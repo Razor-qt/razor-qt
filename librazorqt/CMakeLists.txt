@@ -34,8 +34,6 @@ set ( razorqt_HDRS
     razorqt/razorsettings.h
     razorqt/xdgautostart.h
     razorqt/xdgenv.h
-    razorqt/xdgiconthemefile.h
-    razorqt/xdgiconthememanager.h
     razorqt/xfitman.h
     razorqt/domhelper.h
     razorqt/xdgdesktopfile.h
@@ -60,9 +58,6 @@ set ( razorqt_SRCS
 #   razorqt/razorhal.cpp
     razorqt/xdgautostart.cpp
     razorqt/xdgdesktopfile.cpp
-    razorqt/xdgiconthemefile.cpp
-    razorqt/xdgiconthememanager.cpp
-#   razorqt/xdgmanager.cpp
     razorqt/xdgmenu/xdgmenu.cpp
     razorqt/xfitman.cpp
     razorqt/domhelper.cpp
