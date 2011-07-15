@@ -285,6 +285,8 @@ void XdgMenuReader::processDefaultMergeDirsTag(QDomElement& element, QStringList
 
     foreach (QString dir, dirs)
         mergeDir(QString("%1/menus/%2-merged").arg(dir).arg(menuBaseName), element, mergedFiles);
+
+    mergeDir(QString("%1/menus").arg(XdgEnv::configHome()), element, mergedFiles);
 }
 
 
@@ -406,7 +408,7 @@ void XdgMenuReader::mergeDir(const QString& dirName, QDomElement& element, QStri
 {
     //qDebug() << "Merge dir: " << dirName;
     QFileInfo dirInfo(mDirName, dirName);
-    //qDebug() << "\tcanonical path: " << dirInfo.canonicalFilePath();
+    //qDebug() << "   canonical path: " << dirInfo.canonicalFilePath();
 
     if (dirInfo.isDir())
     {
