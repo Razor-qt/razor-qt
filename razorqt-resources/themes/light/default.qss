@@ -138,6 +138,9 @@ TrayIcon {
     image: none;
 }
 
+#selectIconTB {
+    qproperty-icon: url(mainmenu.png);
+}
 
 /* AppSwitcher ******************************* */
 #AppSwitcher {
