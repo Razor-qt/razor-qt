@@ -368,5 +368,8 @@ QString RazorPanelPlugin::configId() const
     return d->configId();
 }
 
-
+void RazorPanelPlugin::reconfigure()
+{
+    settigsChanged();
+}
 

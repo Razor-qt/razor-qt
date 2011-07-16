@@ -160,6 +160,8 @@ public:
 
     QString configId() const;
 
+    void reconfigure();
+
 signals:
     void movableChanged(bool movable);
     void alignmentChanged();

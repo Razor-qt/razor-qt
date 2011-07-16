@@ -78,6 +78,7 @@ private:
     RazorPanelPlugin* loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection);
     void reTheme();
     int findAvailableScreen(RazorPanel::Position position);
+    void test();
 
     RazorPanel* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanel)

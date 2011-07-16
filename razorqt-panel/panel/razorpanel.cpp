@@ -175,8 +175,13 @@ void RazorPanelPrivate::init()
     reTheme();
 }
 
-
-
+void RazorPanelPrivate::test()
+{
+    foreach (RazorPanelPlugin *plug, mPlugins)
+    {
+        plug->reconfigure();
+    }
+}
 /************************************************
 
  ************************************************/
@@ -615,6 +620,7 @@ void RazorPanel::show()
     QWidget::show();
     d->realign();
     xfitMan().moveWindowToDesktop(this->effectiveWinId(), -1);
+    d->test();
 }
 
 
