@@ -64,7 +64,7 @@ void RazorMainMenuConfiguration::loadSettings()
     }
     else
     {
-        ui->selectIconTB->setStyleSheet("");
+        ui->selectIconTB->setStyleSheet("#selectIconTB {}");
     }
 
     ui->iconSizeSB->setValue(mSettings.value("icon_size", 30).toInt());

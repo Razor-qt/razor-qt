@@ -166,7 +166,7 @@ void RazorMainMenu::settigsChanged()
     }
     else
     {
-        mButton.setStyleSheet("");
+        mButton.setStyleSheet("#MenuButton {}");
     }
 
     mButton.setIconSize(QSize(mButtonIconSize, mButtonIconSize));
