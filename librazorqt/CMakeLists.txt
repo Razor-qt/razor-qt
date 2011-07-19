@@ -25,12 +25,10 @@ include_directories (
 	razorqt
     librazor-upower
     qxt
-    )
+)
 
-set ( razorqt_HDRS
+set(razorqt_HDRS
     razorqt/razoraboutdlg.h
-#   razorqt/razordevman.h
-#   razorqt/razorhal.h
     razorqt/razorsettings.h
     razorqt/xdgautostart.h
     razorqt/xdgenv.h
@@ -46,16 +44,16 @@ set ( razorqt_HDRS
     razorqt/addplugindialog/addplugindialog.h
     razorqt/razormime.h
     razorqt/screensaver.h
+    razorqt/razorshortcutbutton.h
+    razorqt/razorshortcutbutton_p.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
     librazor-upower/upower.h
-	)
+)
 
-set ( razorqt_SRCS
+set(razorqt_SRCS
     razorqt/razoraboutdlg.cpp
-#   razorqt/razordevman.cpp
-#   razorqt/razorhal.cpp
     razorqt/xdgautostart.cpp
     razorqt/xdgdesktopfile.cpp
     razorqt/xdgmenu/xdgmenu.cpp
@@ -74,18 +72,15 @@ set ( razorqt_SRCS
     razorqt/razormime.cpp
     razorqt/razorsettings.cpp
     razorqt/screensaver.cpp
+    razorqt/razorshortcutbutton.cpp
     # upower. Maybe standalone lib?
     librazor-upower/battery.cpp
     librazor-upower/ucpufreq.cpp
     librazor-upower/upower.cpp
+)
 
-	)
-
-set ( razorqt_MOCS
+set(razorqt_MOCS
     razorqt/razoraboutdlg.h
-#   razorqt/razordevman.h
-#   razorqt/razorhal.h
-#   razorqt/xdgmanager.h
     razorqt/xdgmenu/xdgmenu.h
     razorqt/xdgmenu/xdgmenu_p.h
     razorqt/xdgdesktopfile.h
@@ -99,6 +94,8 @@ set ( razorqt_MOCS
     razorqt/addplugindialog/addplugindialog.h
     razorqt/razorsettings.h
     razorqt/screensaver.h
+    razorqt/razorshortcutbutton.h
+    razorqt/razorshortcutbutton_p.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
