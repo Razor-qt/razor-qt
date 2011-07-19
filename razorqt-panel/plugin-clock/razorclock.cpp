@@ -113,6 +113,25 @@ void RazorClock::settigsChanged()
         clockFormat += date;
     }
 
+    // issue #18: Panel clock plugin changes your size
+    // Try to set fixed width for plugin to disallow "jumping"
+    // - find minimal width for "monospaced" font.
+    QFont f= font();
+    f.setStyleHint(QFont::TypeWriter);
+
+    QFontMetrics fm(f);
+    QStringList splitted = clockFormat.split('\n');
+    int suggestedWidth = 0;
+    foreach (QString s, splitted)
+    {
+         int tmpWidth = fm.boundingRect(s).width();
+         if (tmpWidth > suggestedWidth)
+             suggestedWidth = tmpWidth;
+    }
+    setMaximumWidth(suggestedWidth);
+    setMinimumWidth(suggestedWidth);
+    // end of issue #18
+    
     updateTime();
 }
 
