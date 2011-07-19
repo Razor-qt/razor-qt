@@ -270,6 +270,9 @@ QString RazorThemePrivate::loadQss(const QString& qssFile) const
 }
 
 
+/************************************************
+
+ ************************************************/
 QString RazorTheme::desktopBackground(int screen) const
 {
     Q_D(const RazorTheme);
@@ -295,12 +298,30 @@ QString RazorTheme::desktopBackground(int screen) const
     return QString();
 }
 
+
+/************************************************
+
+ ************************************************/
 RazorSettingsCache::RazorSettingsCache(QSettings &settings) :
     mSettings(settings)
 {
     loadFromSettings();
 }
 
+
+/************************************************
+
+ ************************************************/
+RazorSettingsCache::RazorSettingsCache(QSettings *settings) :
+    mSettings(*settings)
+{
+    loadFromSettings();
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorSettingsCache::loadFromSettings()
 {
    foreach (QString key, mSettings.allKeys())
@@ -309,6 +330,10 @@ void RazorSettingsCache::loadFromSettings()
    }
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorSettingsCache::loadToSettings()
 {
     QHash<QString, QVariant>::const_iterator i = mCache.constBegin();

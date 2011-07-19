@@ -107,6 +107,7 @@ class RazorSettingsCache
 {
 public:
     explicit RazorSettingsCache(QSettings &settings);
+    explicit RazorSettingsCache(QSettings *settings);
     virtual ~RazorSettingsCache() {}
 
     void loadFromSettings();
