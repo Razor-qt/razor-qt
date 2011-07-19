@@ -35,7 +35,7 @@ add_subdirectory( razorqt-appswitcher )
 add_subdirectory( razorqt-resources )
 #add_subdirectory( razorqt-su )
 add_subdirectory( razorqt-x11info )
-
+add_subdirectory( razorqt-runner )
 
 
 ########### Add uninstall target ###############

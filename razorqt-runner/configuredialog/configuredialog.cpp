@@ -1,0 +1,151 @@
+/* BEGIN_COMMON_COPYRIGHT_HEADER
+ *
+ * Razor - a lightweight, Qt based, desktop toolset
+ * https://sourceforge.net/projects/razor-qt/
+ *
+ * Copyright: 2010-2011 Razor team
+ * Authors:
+ *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation;  only version 2 of
+ * the License is valid for this program.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * END_COMMON_COPYRIGHT_HEADER */
+
+
+#include "configuredialog.h"
+#include "ui_configuredialog.h"
+
+#include <razorqt/razorsettings.h>
+
+#include <QtCore/QSettings>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QComboBox>
+#include <QtCore/QDebug>
+#include <QtGui/QKeySequence>
+#include <QtGui/QPushButton>
+#include <QtGui/QCloseEvent>
+
+
+
+
+/************************************************
+
+ ************************************************/
+ConfigureDialog *ConfigureDialog::createAndShow(QSettings *settings, QWidget *parent)
+{
+    ConfigureDialog *dlg = new ConfigureDialog(settings, parent);
+    dlg->exec();
+    return dlg;
+}
+
+
+/************************************************
+
+ ************************************************/
+ConfigureDialog::ConfigureDialog(QSettings *settings, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::ConfigureDialog),
+    mSettings(settings),
+    mOldSettings(new RazorSettingsCache(settings))
+{
+    ui->setupUi(this);
+
+    connect(ui->buttonBox->button(QDialogButtonBox::Reset), SIGNAL(clicked()), this, SLOT(resetSettings()));
+
+    // Position .................................
+    ui->positionCbx->addItem(tr("Top edge of screen"), QVariant(ConfigureDialog::PositionTop));
+    ui->positionCbx->addItem(tr("Center of screen"), QVariant(ConfigureDialog::PositionCenter));
+    connect(ui->positionCbx, SIGNAL(currentIndexChanged(int)), this, SLOT(positionCbxChanged(int)));
+
+    // Monitor ..................................
+    QDesktopWidget *desktop = qApp->desktop();
+
+    ui->monitorCbx->addItem(tr("Monitor where the mouse"), QVariant(0));
+
+    int monCnt = desktop->screenCount();
+    for (int i=0; i<monCnt; ++i)
+    {
+        ui->monitorCbx->addItem(tr("Always on %1 monitor").arg(i+1), QVariant(i+1));
+    }
+    ui->monitorCbx->setEnabled(monCnt > 1);
+    connect(ui->monitorCbx, SIGNAL(currentIndexChanged(int)), this, SLOT(monitorCbxChanged(int)));
+
+
+    // Shortcut .................................
+    connect(ui->shortcutEd, SIGNAL(keySequenceChanged(QString)), this, SLOT(shortcutChanged(QString)));
+    settingsChanged();
+}
+
+
+/************************************************
+
+ ************************************************/
+void ConfigureDialog::settingsChanged()
+{
+    if (mSettings->value("dialog/show_on_top", true).toBool())
+        ui->positionCbx->setCurrentIndex(0);
+    else
+        ui->positionCbx->setCurrentIndex(1);
+
+    ui->monitorCbx->setCurrentIndex(mSettings->value("dialog/monitor", 0).toInt());
+    ui->shortcutEd->setKeySequence(mSettings->value("dialog/shortcut", "Alt+F2").toString());
+}
+
+
+/************************************************
+
+ ************************************************/
+ConfigureDialog::~ConfigureDialog()
+{
+    delete ui;
+}
+
+
+/************************************************
+
+ ************************************************/
+void ConfigureDialog::shortcutChanged(const QString &text)
+{
+    mSettings->setValue("dialog/shortcut", text);
+}
+
+
+/************************************************
+
+ ************************************************/
+void ConfigureDialog::positionCbxChanged(int index)
+{
+    mSettings->setValue("dialog/show_on_top", index == 0);
+}
+
+
+/************************************************
+
+ ************************************************/
+void ConfigureDialog::monitorCbxChanged(int index)
+{
+    mSettings->setValue("dialog/monitor", index);
+}
+
+
+/************************************************
+
+ ************************************************/
+void ConfigureDialog::resetSettings()
+{
+    mOldSettings->loadToSettings();
+    ui->shortcutEd->setChecked(false);
+    settingsChanged();
+}
