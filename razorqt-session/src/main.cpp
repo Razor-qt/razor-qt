@@ -97,11 +97,7 @@ int main(int argc, char **argv)
         }
     }
     
-    QByteArray path(qgetenv("PATH"));
-    path = path.prepend(":");
-    path = path.prepend(PATH_PREPEND);
-    qDebug() << "Setting special PATH variable:" << path;
-    qputenv("PATH", path);
+    razor_setenv_prepend("PATH", PATH_PREPEND);
 
     RazorModuleManager modman(session);
     new SessionDBusAdaptor(&modman);
@@ -110,3 +106,4 @@ int main(int argc, char **argv)
     QDBusConnection::sessionBus().registerObject("/RazorSession", &modman);
     return app.exec();
 }
+

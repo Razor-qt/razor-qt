@@ -120,4 +120,21 @@ private slots:
 };
 
 
+/*! \brief platform independent way how to set up an environment variable.
+It sets env variable for all razor-session childs.
+\param env a raw string variable name (PATH, TERM, ...)
+\param value a QByteArray with the value. Variable will use this new value only
+             - no appending/prepending is performed.
+See razor_setenv_prepend.
+*/
+void razor_setenv(const char *env, const QByteArray &value);
+/*! \brief Set up a environment variable with original value with new value prepending.
+\param env a raw string with variable name
+\param value a QByteArray value to be pre-pend to original content of the variable
+\param separator an optional string with separator character. Eg. ":" for PATH.
+See razor_setenv.
+*/
+void razor_setenv_prepend(const char *env, const QByteArray &value, const QByteArray &separator=":");
+
+
 #endif

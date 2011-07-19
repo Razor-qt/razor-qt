@@ -57,8 +57,22 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
 
 
     RazorSettings s(mConfig);
+
+    // first - set some user defined environment variables (like TERM...)
+    s.beginGroup("environment");
+    QByteArray envVal;
+    foreach (QString i, s.childKeys())
+    {
+        envVal = s.value(i).toByteArray();
+        razor_setenv(i.toUtf8().constData(), envVal);
+    }
+    s.endGroup();
+
+    // then rest of the config:
+    // autorestart of directly-loaded modules (when is doespower on)
     autorestart = s.value("autorestart", true).toBool();
 
+    // razor-modules or 3rd party apps with doespower handling
     int count = s.beginReadArray("modules");
     QString cmd;
     for (int i = 0; i < count; ++i)
@@ -84,6 +98,7 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
     }
     s.endArray();
 
+    // start 3rd party apps without doespower/restart handling
     int delay = s.value("autostart_delay", 1).toInt();
     QTimer::singleShot(delay * 1000, this, SLOT(autoStartSingleShot()));
 }
@@ -190,3 +205,19 @@ void RazorModuleManager::logout()
     }
     QCoreApplication::exit(0);
 }
+
+void razor_setenv(const char *env, const QByteArray &value)
+{
+    qDebug() << "Environment variable" << env << "=" << value;
+    qputenv(env, value);
+}
+
+void razor_setenv_prepend(const char *env, const QByteArray &value, const QByteArray &separator)
+{
+    QByteArray orig(qgetenv("PATH"));
+    orig = orig.prepend(separator);
+    orig = orig.prepend(value);
+    qDebug() << "Setting special" << env << " variable:" << orig;
+    razor_setenv(env, orig);
+}
+
