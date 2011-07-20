@@ -40,7 +40,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
-
+#include <QtGui/QApplication>
 
 /************************************************
 
@@ -287,7 +287,7 @@ void Dialog::realign()
     QRect rect = this->geometry();
     rect.moveCenter(desktop.center());
     if (mShowOnTop)
-        rect.moveTop(0);
+        rect.moveTop(QApplication::desktop()->availableGeometry().top());
 
     setGeometry(rect);
 }
