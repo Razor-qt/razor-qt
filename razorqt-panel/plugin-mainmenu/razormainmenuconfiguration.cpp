@@ -59,7 +59,13 @@ void RazorMainMenuConfiguration::loadSettings()
 {
     ui->showTextCB->setChecked(mSettings.value("showText", false).toBool());
     ui->textLE->setText(mSettings.value("text", "").toString());
-    ui->menuFilePathLE->setText(mSettings.value("menu_file", XdgMenu::getMenuFileName()).toString());
+
+    QString menuFile = mSettings.value("menu_file", "").toString();
+    if (menuFile.isEmpty())
+    {
+        menuFile = XdgMenu::getMenuFileName();
+    }
+    ui->menuFilePathLE->setText(menuFile);
 }
 
 void RazorMainMenuConfiguration::textButtonChanged(QString value)

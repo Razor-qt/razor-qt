@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>270</width>
-    <height>235</height>
+    <width>362</width>
+    <height>184</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Razor Main Menu settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
