@@ -39,6 +39,7 @@
 #include <QtCore/QProcess>
 #include <QtGui/QLineEdit>
 #include <QtGui/QAction>
+#include <QtGui/QMessageBox>
 
 
 /************************************************
@@ -256,8 +257,14 @@ void Dialog::applySettings()
 
     if (mGlobalShortcut->shortcut() != shortcut)
     {
-        mGlobalShortcut->setShortcut(shortcut);
-        qDebug() << tr("Press \"%1\" to see dialog.").arg(shortcut.toString());
+        if (! mGlobalShortcut->setShortcut(shortcut))
+        {
+            QMessageBox::information(this, tr("Global keyboard shortcut"),
+                                     tr("Global shorcut: '%1' is already in use.\nSelect another one, please.").arg(shortcut.toString()));
+            showConfigDialog();
+        }
+        else
+            qDebug() << tr("Press \"%1\" to see dialog.").arg(shortcut.toString());
     }
 
     mShowOnTop = mSettings->value("dialog/show_on_top", true).toBool();
