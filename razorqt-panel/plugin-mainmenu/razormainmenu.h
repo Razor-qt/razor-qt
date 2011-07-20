@@ -48,6 +48,8 @@ public:
     RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorMainMenu();
 
+    virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
+
 signals:
 
 private:
@@ -62,10 +64,12 @@ private:
     XdgMenu mXdgMenu;
     void buildMenu();
 
+protected slots:
+    virtual void showConfigureDialog();
+    virtual void settigsChanged();
 
 private slots:
     void showMenu();
-    void settingsChanged();
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

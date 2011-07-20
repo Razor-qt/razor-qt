@@ -25,6 +25,7 @@
 
 
 #include "razormainmenu.h"
+#include "razormainmenuconfiguration.h"
 #include <QDebug>
 #include <QtGui/QMenu>
 #include <razorqt/xdgdesktopfile.h>
@@ -63,7 +64,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
 
     mScreenSaver = new ScreenSaver(this);
 
-    settingsChanged();
+    settigsChanged();
 
     QSizePolicy sp = mButton.sizePolicy();
     sp.setVerticalPolicy(QSizePolicy::Minimum);
@@ -77,9 +78,6 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
  ************************************************/
 RazorMainMenu::~RazorMainMenu()
 {
-    settings().setValue("text", mButton.text());
-    settings().setValue("icon_size", mMenuStyle.iconSize());
-    settings().setValue("top_icon_size", mTopMenuStyle.iconSize());
 }
 
 
@@ -128,22 +126,22 @@ void RazorMainMenu::showMenu()
 /************************************************
 
  ************************************************/
-void RazorMainMenu::settingsChanged()
+void RazorMainMenu::settigsChanged()
 {
-    mButton.setText(settings().value("text", "").toString());
+    if (settings().value("showText", false).toBool() == false)
+    {
+        mButton.setText(NULL);
+    }
+    else
+    {
+        mButton.setText(settings().value("text", "Start").toString());
+    }
     mLogDir = settings().value("log_dir", "").toString();
-
-    mMenuStyle.setIconSize(settings().value("icon_size", 16).toInt());
     mTopMenuStyle.setIconSize(settings().value("top_icon_size", 16).toInt());
-
 
     mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
-
-    QIcon icon =  XdgIcon::fromTheme(settings().value("button_icon").toString());
-    if (!icon.isNull())
-        mButton.setIcon(icon);
 }
 
 
@@ -175,3 +173,17 @@ void RazorMainMenu::buildMenu()
     mMenu->addActions(mScreenSaver->availableActions());
 }
 
+void RazorMainMenu::showConfigureDialog()
+{
+    RazorMainMenuConfiguration *confWindow =
+            this->findChild<RazorMainMenuConfiguration*>("MainMenuConfigurationWindow");
+
+    if (!confWindow)
+    {
+        confWindow = new RazorMainMenuConfiguration(settings(), this);
+    }
+
+    confWindow->show();
+    confWindow->raise();
+    confWindow->activateWindow();
+}
