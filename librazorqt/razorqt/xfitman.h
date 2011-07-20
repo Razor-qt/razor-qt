@@ -176,6 +176,25 @@ public:
     static QString debugWindow(Window wnd);
 #endif
     static Atom atom(const char* atomName);
+
+    /*!
+     *   QDesktopWidget have a bug http://bugreports.qt.nokia.com/browse/QTBUG-18380
+     *   This workaraund this problem.
+     */
+    const QRect availableGeometry(int screen = -1) const;
+
+    /*!
+     *   QDesktopWidget have a bug http://bugreports.qt.nokia.com/browse/QTBUG-18380
+     *   This workaraund this problem.
+     */
+    const QRect availableGeometry(const QWidget *widget) const;
+
+    /*!
+     *   QDesktopWidget have a bug http://bugreports.qt.nokia.com/browse/QTBUG-18380
+     *   This workaraund this problem.
+     */
+    const QRect availableGeometry(const QPoint &point) const;
+
 private:
     int clientMessage(Window _wid, Atom _msg,
                       long unsigned int data0,
@@ -256,6 +275,7 @@ inline QString xEventTypeToStr(XEvent* event)
     return "Unknown";
 }
 #endif
+
 
 
 #endif
