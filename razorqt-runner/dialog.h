@@ -63,6 +63,8 @@ private:
     int mMonitor;
 
     void realign();
+    //! \brief handle various additional behaviours (math only for now)
+    bool editEnterPressed();
 
 private slots:
     void applySettings();
