@@ -208,6 +208,10 @@ bool Dialog::listKeyPressEvent(QKeyEvent *event)
     return QDialog::eventFilter(ui->commandEd, event);
 }
 
+
+/************************************************
+
+ ************************************************/
 bool Dialog::editEnterPressed()
 {
     QString content(ui->commandEd->lineEdit()->text().trimmed());
@@ -301,14 +305,8 @@ void Dialog::applySettings()
 
     if (mGlobalShortcut->shortcut() != shortcut)
     {
-        if (! mGlobalShortcut->setShortcut(shortcut))
-        {
-            QMessageBox::information(this, tr("Global keyboard shortcut"),
-                                     tr("Global shorcut: '%1' is already in use.\nSelect another one, please.").arg(shortcut.toString()));
-            showConfigDialog();
-        }
-        else
-            qDebug() << tr("Press \"%1\" to see dialog.").arg(shortcut.toString());
+        mGlobalShortcut->setShortcut(shortcut);
+        qDebug() << tr("Press \"%1\" to see dialog.").arg(shortcut.toString());
     }
 
     mShowOnTop = mSettings->value("dialog/show_on_top", true).toBool();
