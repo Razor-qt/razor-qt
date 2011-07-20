@@ -27,7 +27,7 @@
 #include "razorshortcutbutton_p.h"
 
 #include <QtGui/QKeyEvent>
-//#include <QtCore/QDebug>
+#include <QtCore/QDebug>
 
 /************************************************
 
@@ -45,6 +45,7 @@ RazorShortcutButton::RazorShortcutButton(QWidget *parent) :
     connect(a, SIGNAL(triggered()), d, SLOT(clear()));
     setMenu(&d->mMenu);
 
+    connect(this, SIGNAL(toggled(bool)), d, SLOT(activate(bool)));
     setKeySequence("");
 }
 
@@ -61,8 +62,24 @@ RazorShortcutButtonPrivate::RazorShortcutButtonPrivate(RazorShortcutButton *pare
 /************************************************
 
  ************************************************/
+void RazorShortcutButtonPrivate::activate(bool active)
+{
+    Q_Q(RazorShortcutButton);
+
+    if (active)
+        q->grabKeyboard();
+    else
+        q->releaseKeyboard();
+
+}
+
+
+/************************************************
+
+ ************************************************/
 RazorShortcutButton::~RazorShortcutButton()
 {
+    releaseKeyboard();
     Q_D(RazorShortcutButton);
     delete d;
 }

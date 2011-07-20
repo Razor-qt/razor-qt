@@ -41,6 +41,7 @@ public:
 
 public slots:
     void clear();
+    void activate(bool active);
 
 private:
     RazorShortcutButton* const q_ptr;
