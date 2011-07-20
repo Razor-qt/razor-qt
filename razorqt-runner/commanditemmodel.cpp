@@ -25,7 +25,7 @@
 
 #include "commanditemmodel.h"
 
-#include <razorqt/xdgmenu.h>
+#include <razorqt/xdgmenu/xdgmenu.h>
 #include <razorqt/xdgdesktopfile.h>
 #include <razorqt/domhelper.h>
 #include <razorqt/xdgicon.h>

@@ -25,7 +25,7 @@
 
 #include "razormainmenuconfiguration.h"
 #include "ui_razormainmenuconfiguration.h"
-#include "razorqt/xdgmenu.h"
+#include "razorqt/xdgmenu/xdgmenu.h"
 
 #include <QtGui/QFileDialog>
 
