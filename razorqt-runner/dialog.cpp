@@ -33,6 +33,7 @@
 #include <razorqt/xdgicon.h>
 #include <razorqxt/qxtglobalshortcut.h>
 
+
 #include <QtCore/QDebug>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDesktopWidget>
@@ -41,6 +42,10 @@
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
 #include <QtGui/QApplication>
+
+// I hate a X11 heading files. As a result we have such nightmare.
+QEvent::Type QEventKeyPress=QEvent::KeyPress;
+#include <razorqt/xfitman.h>
 
 /************************************************
 
@@ -136,7 +141,7 @@ void Dialog::resizeEvent(QResizeEvent *event)
  ************************************************/
 bool Dialog::eventFilter(QObject *object, QEvent *event)
 {
-    if (event->type() == QEvent::KeyPress)
+    if (event->type() == QEventKeyPress) // QEvent::KeyPress
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
 
@@ -279,15 +284,18 @@ void Dialog::realign()
     QRect desktop;
 
     if (mMonitor) // Show on the specified monitor.
-        desktop = QApplication::desktop()->availableGeometry(mMonitor-1);
+        desktop = xfitMan().availableGeometry(mMonitor-1);
     else         // Follow the mouse.
-        desktop = QApplication::desktop()->availableGeometry(QCursor::pos());
+        desktop = xfitMan().availableGeometry(QCursor::pos());
 
 
     QRect rect = this->geometry();
     rect.moveCenter(desktop.center());
+
     if (mShowOnTop)
-        rect.moveTop(QApplication::desktop()->availableGeometry().top());
+        rect.moveTop(desktop.top());
+    else
+        rect.moveTop(desktop.center().y() - ui->panel->sizeHint().height());
 
     setGeometry(rect);
 }
