@@ -4,18 +4,25 @@ set(PLUGIN "mainmenu")
 
 
 set(HEADERS
-  razormainmenu.h
-  menustyle.h
+    razormainmenu.h
+    menustyle.h
+    razormainmenuconfiguration.h
 )
 
 set(SOURCES
-  razormainmenu.cpp
-  menustyle.cpp
+    razormainmenu.cpp
+    menustyle.cpp
+    razormainmenuconfiguration.cpp
 )
 
 set(MOCS
-  razormainmenu.h
-  menustyle.h
+    razormainmenu.h
+    menustyle.h
+    razormainmenuconfiguration.h
+)
+
+set(UIS
+    razormainmenuconfiguration.ui
 )
 
 set(LIBRARIES
