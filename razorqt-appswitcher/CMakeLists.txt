@@ -29,6 +29,7 @@ set ( razor-appswitcher_SRCS
 	src/application.cpp
 	)
 
+
 QT4_WRAP_CPP(MOCS ${razor-appswitcher_HDRS})
 QT4_WRAP_UI(UIS src/appswitcher.ui)
 

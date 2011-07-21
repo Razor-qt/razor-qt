@@ -34,8 +34,10 @@
 
 
 class QxtGlobalShortcut;
+class RazorSettings;
 class QShortcut;
 class QHBoxLayout;
+
 
 namespace RazorAppSwitcher {
 
@@ -102,6 +104,8 @@ private:
     //! QScrollarea QWidget's layout
     QHBoxLayout * m_layout;
 
+    RazorSettings *m_settings;
+
     //! Enable m_key, the global shortcut.
     void hideEvent(QHideEvent *e);
     //! Disable m_key, the global shortcut.
@@ -125,6 +129,8 @@ private slots:
     void selectNextItem();
     //! Activate X11 window and close appswitcher
     void activateXWindow();
+
+    void applySettings();
 };
 
 }; // namespace

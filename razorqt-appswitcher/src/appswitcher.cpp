@@ -35,13 +35,20 @@
 #include <QtGui/QHBoxLayout>
 
 #include <razorqt/xfitman.h>
+#include <razorqt/xdgicon.h>
+#include <razorqt/razorsettings.h>
 #include <razorqxt/qxtglobalshortcut.h>
+
+
+#define DEFAULT_SHORTCUT "Alt+Tab"
 
 
 RazorAppSwitcher::AppSwitcher::AppSwitcher()
     : QWidget(0, Qt::FramelessWindowHint | Qt::Tool)
 {
     setupUi(this);
+
+    m_settings = new RazorSettings("appswitcher", this);
 
     installEventFilter(this);
 
@@ -51,18 +58,32 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     background->setLayout(m_layout);
 
     m_key = new QxtGlobalShortcut(this);
+    m_localKey = new QShortcut(QKeySequence::fromString(DEFAULT_SHORTCUT), this, SLOT(selectNextItem()), SLOT(selectNextItem()));
 
-    QKeySequence ks(Qt::ALT + Qt::Key_Tab);
-    //QKeySequence ks(Qt::ALT + Qt::CTRL + Qt::Key_T);
-    if (! m_key->setShortcut(ks))
+    connect(m_settings, SIGNAL(settigsChanged()), this, SLOT(applySettings()));
+    connect(m_key, SIGNAL(activated()), this, SLOT(handleApps()));
+    
+    applySettings();
+}
+
+void RazorAppSwitcher::AppSwitcher::applySettings()
+{
+    QKeySequence shortcut = QKeySequence::fromString(m_settings->value("shortcut", DEFAULT_SHORTCUT).toString());
+    if (shortcut.isEmpty())
+        shortcut = QKeySequence::fromString(DEFAULT_SHORTCUT);
+    
+    if (m_key->shortcut() == shortcut)
+        return;
+
+    if (! m_key->setShortcut(shortcut))
     {
         QMessageBox::information(this, tr("Global keyboard shortcut"),
-                                 tr("Global shorcut: '%1' cannot be registered").arg(ks.toString()));
+                                 tr("Global shorcut: '%1' cannot be registered").arg(shortcut.toString()));
         exit(1);
     }
-    m_localKey = new QShortcut(ks, this, SLOT(selectNextItem()), SLOT(selectNextItem()));
-
-    connect(m_key, SIGNAL(activated()), this, SLOT(handleApps()));
+    m_localKey->setKey(shortcut);
+    
+    m_settings->sync();
 }
 
 void RazorAppSwitcher::AppSwitcher::handleApps()
@@ -182,7 +203,7 @@ void RazorAppSwitcher::AppSwitcher::keyReleaseEvent(QKeyEvent * e)
 {
     qDebug() << "AppSwitcher::keyReleaseEvent" << e << e->modifiers();
     // close window if there is no modifier pressed.
-    // Here I assume that the key shortcis is always with ctrl or alt
+    // Here I assume that the key shortcut is always with ctrl or alt
     if (e->modifiers() == 0)
     {
         activateXWindow();
