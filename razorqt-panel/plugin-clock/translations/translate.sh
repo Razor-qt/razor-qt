@@ -12,6 +12,6 @@ fi
 
 
 
-lupdate ${OPTS} ../*.h ../*.cpp -ts ${TS_FILE}  && \
+lupdate ${OPTS} ../*.h ../*.cpp ../*.ui -ts ${TS_FILE}  && \
 linguist ${TS_FILE}
 
