@@ -2,4 +2,6 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Desktopswitch
+Name[pl]=Pager
 Comment=Allow to switch virtual desktops
+Comment[pl]=Pozwala przełączać się pomiędzy writualnymi pulpitami

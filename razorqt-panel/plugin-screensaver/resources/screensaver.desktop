@@ -2,4 +2,6 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Screensaver
+Name[pl]=Wygaszacz ekranu
 Comment=Activate a screensaver and/or lock the screen
+Comment[pl]=Aktywuje wygaszacz ekranu oraz/albo blokuje ekran

@@ -3,5 +3,7 @@ Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Clock
 Name[ru]=Часы
+Name[pl]=Zegar
 Comment=Clock and calendar
 Comment[ru]=Часы и календарь
+Comment[pl]=Zegar oraz kalendarz

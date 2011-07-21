@@ -38,9 +38,9 @@ RazorTaskbarConfiguration::RazorTaskbarConfiguration(QSettings &settings, QWidge
 
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
-    ui->buttonStyleCB->addItem("Icon and text", "IconText");
-    ui->buttonStyleCB->addItem("Only icon", "Icon");
-    ui->buttonStyleCB->addItem("Only text", "Text");
+    ui->buttonStyleCB->addItem(tr("Icon and text"), "IconText");
+    ui->buttonStyleCB->addItem(tr("Only icon"), "Icon");
+    ui->buttonStyleCB->addItem(tr("Only text"), "Text");
 
     loadSettings();
     /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly

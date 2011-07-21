@@ -3,5 +3,7 @@ Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=System tray
 Name[ru]=Системный лоток
+Name[pl]=Tacka systemowa
 Comment=Access hidden applications minimized in the system tray
 Comment[ru]=Значки программ, свернутых в системный лоток
+Comment[pl]=Udostępnia ukryte aplikacje
