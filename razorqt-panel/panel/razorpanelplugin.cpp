@@ -42,6 +42,7 @@
 #include <QtGui/QMenu>
 #include <razorqt/xdgicon.h>
 #include <QMetaEnum>
+#include <QtCore/QTranslator>
 
 
 
@@ -69,6 +70,17 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     mPanel(startInfo->panel)
 {
     Q_Q(RazorPanelPlugin);
+
+    /* Load translation for plugin */
+    QString locale = QLocale::system().name();
+    QTranslator *translator = new QTranslator(this);
+    QString translationPath = QString("%1/%2/razorpanel_%2_%3.qm")
+            .arg(TRANSLATIONS_DIR, startInfo->pluginInfo->id(), locale);
+    if (translator->load(translationPath))
+    {
+        qApp->installTranslator(translator);
+    }
+
     q->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
     connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
