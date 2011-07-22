@@ -126,13 +126,13 @@ void HtmlDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
     painter->translate(mIconSize.width() + 8, 0);
     QRect clip(0, 0, options.rect.width()-mIconSize.width() - 10, options.rect.height());
 
-
     painter->setClipRect(clip);
+
     QAbstractTextDocumentLayout::PaintContext ctx;
-    // set text color to red for selected item
-    if ((option.state & QStyle::State_Selected) && (option.state & QStyle::State_Active))
+    if (option.state & QStyle::State_Selected)
     {
-        ctx.palette.setColor(QPalette::Text, option.palette.color(QPalette::HighlightedText));
+        QPalette::ColorGroup colorGroup =  (option.state & QStyle::State_Active) ? QPalette::Active : QPalette::Inactive;
+        ctx.palette.setColor(QPalette::Text, option.palette.color(colorGroup, QPalette::HighlightedText));
     }
 
     ctx.clip = clip;
