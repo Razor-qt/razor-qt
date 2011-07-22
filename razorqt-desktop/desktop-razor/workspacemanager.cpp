@@ -37,7 +37,6 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
     : DesktopPlugin(configId, config)
 {
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
-    //this may actually make the icon work on multihead
     
     m_config->beginGroup(configId);
     

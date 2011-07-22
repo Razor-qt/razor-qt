@@ -163,6 +163,8 @@ void RazorDeskManager::restoreIconState()
 RazorDeskManager::RazorDeskManager(const QString & configId, RazorSettings * config)
     : DesktopPlugin(configId, config)
 {
+    m_launchMode = DesktopPlugin::launchModeFromString(config->value("icon-launch-mode").toString());
+
     config->beginGroup(configId);
     bool makeIcons = config->value("icons", false).toBool();
     //now we got the desktop we need to determine if the user wants a defined picture there
@@ -264,6 +266,8 @@ void RazorDeskManager::updateIconList()
         {
             idata = new RazorDeskIconFile(df, pos);
         }
+        
+        idata->setLaunchMode(m_launchMode);
 
         connect(idata, SIGNAL(moved(QPoint)), this, SLOT(saveIconState()));
         m_iconList[df] = idata;

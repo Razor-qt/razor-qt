@@ -32,12 +32,32 @@
 class DesktopPlugin
 {
 public:
+    enum IconLaunchMode {
+        SingleClick,
+        DoubleClick
+    };
+
     DesktopPlugin(const QString & configId, RazorSettings * config)
         : m_config(config)
     {
     };
 
     virtual QString info() { return QObject::tr("No info available"); };
+    
+    static IconLaunchMode launchModeFromString(const QString & txt)
+    {
+        if (txt.toLower() == "doubleclick") return DoubleClick;
+        return SingleClick;
+    }
+    
+    static QString stringFromLaunchMode(IconLaunchMode mode)
+    {
+        switch (mode)
+        {
+            case (SingleClick) : return "singleclick";
+            case (DoubleClick) : return "doubleclick";
+        }
+    }
 
 protected:
     RazorSettings * m_config;

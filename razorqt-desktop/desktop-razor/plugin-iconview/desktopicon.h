@@ -29,6 +29,8 @@
 #include <QGraphicsLayoutItem>
 #include <QGraphicsTextItem>
 #include <razorqt/xdgdesktopfile.h>
+#include "desktopplugin.h"
+
 
 class RazorMimeInfo;
 
@@ -44,6 +46,7 @@ public:
 class IconBase : public QGraphicsItem
 {
 public:
+
     IconBase(QGraphicsItem * parent=0);
 
     QRectF boundingRect() const;
@@ -51,6 +54,7 @@ public:
 
     void setIcon(const QIcon & icon);
     void setText(const QString & text);
+    void setLaunchMode(DesktopPlugin::IconLaunchMode mode) { m_launchMode = mode; }
 
     static int iconWidth() { return 80; }
     static int iconHeight() { return 80; }
@@ -59,6 +63,7 @@ protected:
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event);
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
@@ -68,6 +73,7 @@ private:
     QPixmap m_pm_hi; // highlight
     bool m_highlight;
     QString m_text;
+    DesktopPlugin::IconLaunchMode m_launchMode;
 
     /**
     @brief Launch assigned m_exec binary/path.

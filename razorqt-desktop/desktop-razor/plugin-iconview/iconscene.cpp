@@ -42,6 +42,9 @@ IconScene::IconScene(const QString & directory, QObject * parent)
       m_fsw(0)
 {
     setDirImpl(directory);
+    
+    RazorSettings s("desktop");
+    m_launchMode = DesktopPlugin::launchModeFromString(s.value("icon-launch-mode").toString());
 }
 
 void IconScene::setDir(const QString & directory)
@@ -164,6 +167,7 @@ void IconScene::updateIconList()
             //qDebug() << "   POSITIONING" << x << y;
             addItem(idata);
             idata->setPos(x, y);
+            idata->setLaunchMode(m_launchMode);
             while (idata->collidingItems().count())
             {
                 idata->setPos(x, y*IconBase::iconHeight());

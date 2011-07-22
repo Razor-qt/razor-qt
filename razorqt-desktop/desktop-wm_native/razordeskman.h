@@ -66,6 +66,8 @@ private:
     QFileSystemWatcher * m_fsw;
 
     RazorSettings *deskicons;
+
+    DesktopPlugin::IconLaunchMode m_launchMode;
 };
 
 

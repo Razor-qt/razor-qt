@@ -28,6 +28,7 @@
 
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QGraphicsSceneDragDropEvent>
+#include "desktopplugin.h"
 
 class QFileSystemWatcher;
 class IconViewLabel;
@@ -50,6 +51,7 @@ private:
     QString m_directory;
     QFileSystemWatcher * m_fsw;
     QSizeF m_parentSize;
+    DesktopPlugin::IconLaunchMode m_launchMode;
 
     void setDirImpl(const QString & directory, bool repaint=false);
 

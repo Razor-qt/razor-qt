@@ -27,6 +27,7 @@
 #define RAZORDESKICON_H
 
 #include <QAbstractButton>
+#include "desktopplugin.h"
 
 #include <razorqt/xdgdesktopfile.h>
 
@@ -60,6 +61,8 @@ public:
     //! \brief Set new icon position in the window
     void setPos(const QPoint & npos);
 
+    void setLaunchMode(DesktopPlugin::IconLaunchMode mode) { m_launchMode = mode; }
+
 protected:
 
     /**
@@ -74,6 +77,7 @@ protected:
      * @brief triggered on release, if we did not get moved, it was a click and we behave accordingly
      */
     void mouseReleaseEvent(QMouseEvent* _event);
+    void mouseDoubleClickEvent(QMouseEvent* _event);
     /*! \brief Custom and minimal painting for desktop icon.
      * Fine tuning design will be performed in the qss stylesheed
      */
@@ -98,6 +102,8 @@ private:
     QPixmap * m_display;
     //! Icon for mouse over
     QPixmap * m_displayHighlight;
+
+    DesktopPlugin::IconLaunchMode m_launchMode;
 
     /*! \brief Paint QPixmap for given mode.
         \param mode Normal or "highlighed" mode of QIcon

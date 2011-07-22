@@ -138,8 +138,11 @@ void RazorDeskIconBase::mouseReleaseEvent(QMouseEvent* _event)
     {
         qDebug() << "RazorDeskIconBase: not moved, so clicked!";
         setDown(false);
-        if (_event->button() == Qt::LeftButton)
+        if (m_launchMode == DesktopPlugin::SingleClick
+            && _event->button() == Qt::LeftButton)
+        {
             emit clicked();
+        }
     }
     else
     {
@@ -147,6 +150,16 @@ void RazorDeskIconBase::mouseReleaseEvent(QMouseEvent* _event)
         QAbstractButton::setDown(false);
     }
 }
+
+void RazorDeskIconBase::mouseDoubleClickEvent(QMouseEvent* _event)
+{
+    if (m_launchMode == DesktopPlugin::DoubleClick
+        && _event->button() == Qt::LeftButton)
+    {
+        emit clicked();
+    }
+}
+
 
 void RazorDeskIconBase::enterEvent(QEvent * event)
 {

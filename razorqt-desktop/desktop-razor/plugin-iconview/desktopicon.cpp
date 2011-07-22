@@ -47,7 +47,8 @@ IconViewLabel::IconViewLabel(const QString & text, QGraphicsItem * parent)
 
 IconBase::IconBase(QGraphicsItem * parent)
     : QGraphicsItem(parent),
-      m_highlight(false)
+      m_highlight(false),
+      m_launchMode(DesktopPlugin::SingleClick)
 {
     // not yet setFlag(QGraphicsItem::ItemIsMovable);
     setAcceptHoverEvents(true);
@@ -122,6 +123,8 @@ void IconBase::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void IconBase::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
+    if (m_launchMode == DesktopPlugin::DoubleClick)
+        return;
 //    qDebug() << "IconBase::mouseReleaseEvent" << event;
     switch (event->button())
     {
@@ -131,6 +134,15 @@ void IconBase::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         default:
             // ignored
             break;
+    }
+}
+
+void IconBase::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (m_launchMode == DesktopPlugin::DoubleClick
+        && event->button() == Qt::LeftButton)
+    {
+        launchApp();
     }
 }
 
