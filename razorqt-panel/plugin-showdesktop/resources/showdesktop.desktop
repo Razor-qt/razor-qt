@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Show Desktop
+Comment=Minimize all windows and show the desktop

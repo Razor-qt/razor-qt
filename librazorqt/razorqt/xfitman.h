@@ -195,13 +195,14 @@ public:
      */
     const QRect availableGeometry(const QPoint &point) const;
 
-private:
     int clientMessage(Window _wid, Atom _msg,
                       long unsigned int data0,
                       long unsigned int data1 = 0,
                       long unsigned int data2 = 0,
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
+
+private:
 
 
     bool getWindowProperty(Window window,
