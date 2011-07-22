@@ -290,13 +290,16 @@ void HistoryProvider::AddCommand(const QString &command)
 
 
 #ifdef MATH_ENABLED
+#include <QtScript/QScriptEngine>
+#include <QtScript/QScriptValue>
+
 /************************************************
 
  ************************************************/
 MathItem::MathItem():
     CommandProviderItem()
 {
-    setComment(QObject::tr("Mathematics"));
+    setToolTip(QObject::tr("Mathematics"));
     setIcon(XdgIcon::fromTheme("accessories-calculator"));
 }
 
@@ -315,17 +318,22 @@ bool MathItem::run() const
  ************************************************/
 bool MathItem::compare(const QRegExp &regExp) const
 {
-    bool res = regExp.pattern().endsWith("=");
-    if (!res)
-        return false;
+    QString s = regExp.pattern().trimmed();
 
-    MathItem *self=const_cast<MathItem*>(this);
-    if (regExp.pattern() == "2+3=")
-        self->setTile("2+3=5");
-    if (regExp.pattern() == "2+4=")
-        self->setTile("2+4=6");
+    if (s.endsWith("="))
+    {
+        s.chop(1);
+        QScriptEngine myEngine;
+        QScriptValue res = myEngine.evaluate(s);
+        if (res.isNumber())
+        {
+            MathItem *self=const_cast<MathItem*>(this);
+            self->setTile(s + " = " + res.toString());
+            return true;
+        }
+    }
 
-    return true;
+    return false;
 }
 
 
@@ -336,7 +344,6 @@ bool MathItem::compare(const QRegExp &regExp) const
 MathProvider::MathProvider()
 {
     append(new MathItem());
-    qDebug() << "MATH ***************************";
 }
 
 #endif

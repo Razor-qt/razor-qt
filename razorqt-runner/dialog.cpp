@@ -167,9 +167,6 @@ bool Dialog::editKeyPressEvent(QKeyEvent *event)
     case Qt::Key_PageDown:
         qApp->sendEvent(ui->commandList, event);
         return true;
-    case Qt::Key_Return:
-    case Qt::Key_Enter:
-        return editEnterPressed();
     }
 
     return QDialog::eventFilter(ui->commandList, event);
@@ -209,51 +206,6 @@ bool Dialog::listKeyPressEvent(QKeyEvent *event)
     }
 
     return QDialog::eventFilter(ui->commandEd, event);
-}
-
-
-/************************************************
-
- ************************************************/
-bool Dialog::editEnterPressed()
-{
-    QString content(ui->commandEd->lineEdit()->text().trimmed());
-    // "math" mode
-    if (content.endsWith("="))
-    {
-        content.chop(1); // remove the last '='
-        // 'echo' the math expression
-        QProcess pEcho;
-        // 'bc' takes it from pipe
-        QProcess pBc;
-#ifdef DEBUG
-        qDebug() << "MATH INPUT:" << content;
-#endif
-        pEcho.setStandardOutputProcess(&pBc);
-        // limit floating point scale to 2
-        pEcho.start("echo \"scale=2; " + content +"\"");
-        pBc.start("bc -l"); // allow to use extended math lib - man bc
-        pEcho.waitForFinished();
-        if (pBc.waitForFinished())
-        {
-            if (pBc.exitCode() == 0)
-            {
-//                QString res(pBc.readAllStandardOutput()/*.trimmed()*/);
-                QString res(pBc.readAllStandardOutput().trimmed());
-#ifdef DEBUG
-                qDebug() << "MATH OK:"  << res;
-#endif
-                ui->commandEd->lineEdit()->setText(res);
-                ui->commandEd->lineEdit()->selectAll();
-            }
-#ifdef DEBUG
-            else
-                qDebug() << "MATH ERR:" << pBc.readAllStandardError();
-#endif
-        }
-        return true;
-    }
-    return false;
 }
 
 

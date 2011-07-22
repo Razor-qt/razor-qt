@@ -38,15 +38,27 @@ set(LIBRARIES
     razorqxt
 )
 
-set(QT_USE_QTXML 1)
+set(QT_USE_QTXML true)
+set(QT_USE_QTSCRIPT true)
 
 set(THEMES
     resources/themes
 )
 
-if (RUNNER_MATH)
-    add_definitions(-DMATH_ENABLED)
-endif (RUNNER_MATH)
+macro( setByDefault VAR_NAME VAR_VALUE )
+  if (NOT DEFINED ${VAR_NAME})
+    set (${VAR_NAME} ${VAR_VALUE})
+  endif (NOT DEFINED ${VAR_NAME})
+endmacro()
+
+
+# *******************************************************************
+# What plugins will be built, by default.
+# You can enable/disable building of the plugin using cmake options.
+#    cmake -DRUNNER_MATH=Yes .. # Enable math plugin
+#    cmake -DRUNNER_MATH=No ..  # Disable math plugin
+
+setByDefault(RUNNER_MATH Yes )
 
 
 # Translations **********************************
@@ -78,6 +90,10 @@ set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT})
 add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
 #************************************************
+
+if (RUNNER_MATH)
+    add_definitions(-DMATH_ENABLED)
+endif (RUNNER_MATH)
 
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
