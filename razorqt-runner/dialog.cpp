@@ -43,6 +43,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QApplication>
 
+#include <QScrollBar>
 // I hate a X11 heading files. As a result we have such nightmare.
 QEvent::Type QEventKeyPress=QEvent::KeyPress;
 #include <razorqt/xfitman.h>
@@ -338,11 +339,12 @@ void Dialog::setFilter(const QString &text)
 
     if (mCommandItemModel->rowCount())
     {
+        mCommandItemModel->sort(0);
         if (!ui->commandList->currentIndex().isValid())
             ui->commandList->setCurrentIndex(mCommandItemModel->index(0, 0));
+
         ui->commandList->scrollTo(ui->commandList->currentIndex());
         ui->commandList->show();
-        mCommandItemModel->sort(0);
     }
     else
     {

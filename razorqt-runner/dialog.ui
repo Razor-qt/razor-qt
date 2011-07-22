@@ -130,13 +130,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QTreeView" name="commandList">
-     <property name="rootIsDecorated">
-      <bool>false</bool>
+    <widget class="QListView" name="commandList">
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
     </widget>
    </item>
   </layout>
