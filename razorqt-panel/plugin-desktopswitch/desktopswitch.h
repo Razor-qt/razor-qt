@@ -30,6 +30,7 @@
 #include "../panel/razorpanelplugin.h"
 
 class QButtonGroup;
+class RazorGridLayout;
 
 /**
  * @brief Desktop switcher. A very simple one...
@@ -45,6 +46,7 @@ public:
     
 private:
     QButtonGroup * m_buttons;
+    RazorGridLayout *mLay;
 
     void wheelEvent(QWheelEvent* e);
 

@@ -29,6 +29,7 @@
 #include <QWheelEvent>
 #include <QtDebug>
 #include <razorqt/xfitman.h>
+#include "razorqt/razorgridlayout.h"
 
 #include "desktopswitch.h"
 
@@ -38,6 +39,10 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
     : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("DesktopSwitch");
+    delete layout();
+    mLay = new RazorGridLayout(this);
+    mLay->setRowsCount(2);
+
     m_buttons = new QButtonGroup(this);
 
     QString mask("%1");
@@ -47,7 +52,8 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
         QToolButton * m = new QToolButton(this);
         m->setText(mask.arg(i+1));
         m->setCheckable(true);
-        addWidget(m);
+        //addWidget(m);
+        mLay->addObject(m);
         m_buttons->addButton(m, i);
     }
 
