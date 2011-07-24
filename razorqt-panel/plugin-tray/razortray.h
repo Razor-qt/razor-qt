@@ -34,6 +34,7 @@
 
 class TrayIcon;
 class QSize;
+class RazorGridLayout;
 
 /**
  * @brief This makes our trayplugin
@@ -76,6 +77,7 @@ private:
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
+    RazorGridLayout *mLay;
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

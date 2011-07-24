@@ -41,7 +41,7 @@
 #include <X11/extensions/Xrender.h>
 #include <X11/extensions/Xdamage.h>
 #include "razorqt/xfitman.h"
-
+#include "razorqt/razorgridlayout.h"
 
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 #define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
@@ -70,6 +70,11 @@ RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
 
     mValid = startTray();
+    delete layout();
+
+    mLay = new RazorGridLayout(this);
+    mLay->setRowsCount(2);
+    setLayout(mLay);
 }
 
 
@@ -108,6 +113,7 @@ void RazorTray::x11EventFilter(XEvent* event)
                 mIcons.removeAll(icon);
                 delete icon;
             }
+            mLay->reDo();
             break;
 
         default:
@@ -358,5 +364,6 @@ void RazorTray::addIcon(Window winId)
 
     icon->setIconSize(mIconSize);
     mIcons.append(icon);
-    addWidget(icon);
+    //addWidget(icon);
+    mLay->addObject(icon);
 }
