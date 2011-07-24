@@ -46,6 +46,7 @@ set(razorqt_HDRS
     razorqt/screensaver.h
     razorqt/razorshortcutbutton.h
     razorqt/razorshortcutbutton_p.h
+    razorqt/razorgridlayout.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
@@ -73,6 +74,7 @@ set(razorqt_SRCS
     razorqt/razorsettings.cpp
     razorqt/screensaver.cpp
     razorqt/razorshortcutbutton.cpp
+    razorqt/razorgridlayout.cpp
     # upower. Maybe standalone lib?
     librazor-upower/battery.cpp
     librazor-upower/ucpufreq.cpp
@@ -96,6 +98,7 @@ set(razorqt_MOCS
     razorqt/screensaver.h
     razorqt/razorshortcutbutton.h
     razorqt/razorshortcutbutton_p.h
+    razorqt/razorgridlayout.h
     # upower. Maybe standalone lib?
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
