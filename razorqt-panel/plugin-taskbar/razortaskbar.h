@@ -35,7 +35,7 @@
 #include <X11/Xlib.h>
 
 class RazorTaskButton;
-
+class RazorGridLayout;
 
 class RazorTaskBar : public RazorPanelPlugin
 {
@@ -59,9 +59,10 @@ protected slots:
     virtual void showConfigureDialog();
 
 private:
+    RazorGridLayout *mLay;
     void refreshTaskList();
     void refreshButtonVisibility();
-    QHash<Window, RazorTaskButton*> mButtonsHash;
+    QMap<Window, RazorTaskButton*> mButtonsHash;
     RazorTaskButton* buttonByWindow(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;

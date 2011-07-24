@@ -46,6 +46,7 @@
 
 #include <QX11Info>
 
+#include "razorqt/razorgridlayout.h"
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTaskBar)
 
 /************************************************
@@ -57,12 +58,15 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
     mShowOnlyCurrentDesktopTasks(false)
 {
     setObjectName("TaskBar");
+    delete layout();
+    mLay = new RazorGridLayout(this);
+    mLay->setRowsCount(2);
 
     QSizePolicy sp(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);
     setSizePolicy(sp);
-    layout()->addStretch();
+    //layout()->addStretch();
 
     mRootWindow = QX11Info::appRootWindow();
 
@@ -103,7 +107,7 @@ void RazorTaskBar::refreshTaskList()
     //qDebug() << "****************************************";
 
 
-    QMutableHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
+    QMutableMapIterator<Window, RazorTaskButton*> i(mButtonsHash);
     while (i.hasNext())
     {
         i.next();
@@ -132,18 +136,17 @@ void RazorTaskBar::refreshTaskList()
             }
             mButtonsHash.insert(wnd, btn);
             // -1 is here due the last stretchable item
-            layout()->insertWidget(layout()->count()-1, btn);
+            //layout()->insertWidget(layout()->count()-1, btn);
+            //mLay->addObject(btn);
             // now I want to set higher stretchable priority for buttons
             // to suppress stretchItem (last item) default value which
             // will remove that anoying aggresive space at the end -- petr
-            layout()->setStretch(layout()->count()-2, 1);
+            //layout()->setStretch(layout()->count()-2, 1);
         }
     }
 
     refreshButtonVisibility();
-
     activeWindowChanged();
-
 }
 
 /************************************************
@@ -151,14 +154,19 @@ void RazorTaskBar::refreshTaskList()
  ************************************************/
 void RazorTaskBar::refreshButtonVisibility()
 {
+    mLay->clearLayout();
     int curretDesktop = xfitMan().getActiveDesktop();
-    QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
+    QMapIterator<Window, RazorTaskButton*> i(mButtonsHash);
     while (i.hasNext())
     {
         i.next();
         i.value()->setHidden(mShowOnlyCurrentDesktopTasks &&
                              i.value()->desktopNum() != curretDesktop
                             );
+        if (i.value()->isHidden() == false)
+        {
+            mLay->addObject(i.value());
+        }
     }
 }
 
@@ -264,7 +272,7 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
 {
     mButtonStyle = buttonStyle;
 
-    QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
+    QMapIterator<Window, RazorTaskButton*> i(mButtonsHash);
     while (i.hasNext())
     {
         i.next();
@@ -274,7 +282,7 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
 
 void RazorTaskBar::setButtonMaxWidth(int maxWidth)
 {
-   QHash<Window, RazorTaskButton*>::const_iterator i = mButtonsHash.constBegin();
+   QMap<Window, RazorTaskButton*>::const_iterator i = mButtonsHash.constBegin();
    while (i != mButtonsHash.constEnd())
    {
        if (maxWidth == -1)
