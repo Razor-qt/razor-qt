@@ -56,6 +56,7 @@ set(razorqt_SRCS
     razorqt/razoraboutdlg.cpp
     razorqt/xdgautostart.cpp
     razorqt/xdgdesktopfile.cpp
+    razorqt/xdgenv.cpp
     razorqt/xdgmenu/xdgmenu.cpp
     razorqt/xfitman.cpp
     razorqt/domhelper.cpp

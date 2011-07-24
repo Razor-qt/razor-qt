@@ -643,7 +643,7 @@ void XdgMenuPrivate::fixSeparators(QDomElement& element)
  ************************************************/
 QString XdgMenu::getMenuFileName(const QString& baseName)
 {
-    QStringList configDirs = XdgEnv::configDirs().split(":", QString::SkipEmptyParts);
+    QStringList configDirs = XdgEnv::configDirs();
     QString menuPrefix = getenv("XDG_MENU_PREFIX");
 
     foreach(QString configDir, configDirs)

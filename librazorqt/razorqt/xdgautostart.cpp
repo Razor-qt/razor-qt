@@ -23,7 +23,7 @@ void XdgAutoStart::updateList()
 {
     qDebug()<< "XdgAutoStart: getting configpaths";
     QStringList pathList;
-    QStringList config_dirs = XdgEnv::configDirs().split(":");
+    QStringList config_dirs = XdgEnv::configDirs();
     for (int i = 0; i < config_dirs.count(); i++)
         pathList.append(config_dirs.at(i)+"/autostart/");
     pathList.push_back(XdgEnv::configHome()+"/autostart/");

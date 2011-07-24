@@ -830,7 +830,7 @@ QString findDesktopFile(const QString& dirName, const QString& desktopName)
  ************************************************/
 QString findDesktopFile(const QString& desktopName)
 {
-    QStringList dataDirs = XdgEnv::dataDirs().split(":", QString::SkipEmptyParts);
+    QStringList dataDirs = XdgEnv::dataDirs();
 
     foreach (QString dirName, dataDirs)
     {
@@ -939,7 +939,7 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
     // Initialize the cache .....................
     if (cache.isEmpty())
     {
-        QStringList dataDirs = XdgEnv::dataDirs().split(":", QString::SkipEmptyParts);
+        QStringList dataDirs = XdgEnv::dataDirs();
         foreach (QString dirName, dataDirs)
             loadMimeCacheDir(dirName + "/applications", &cache);
     }

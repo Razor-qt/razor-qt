@@ -31,66 +31,63 @@
 #include <QtCore/QStringList>
 #include <stdlib.h>
 
+/*! @brief The XdgMenu class implements the "XDG Base Directory Specification" from freedesktop.org.
+ * This specification defines where these files should be looked for by defining one or more base
+ * directories relative to which files should be located.
+ *
+ * @sa http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+ */
 class XdgEnv
 {
 public:
-    /************************************************
-     *
-     ************************************************/
-    static
-    QString configDirs()
-    {
-        QStringList dirs = QString(getenv("XDG_CONFIG_DIRS")).split(':', QString::SkipEmptyParts);
-        if (!dirs.isEmpty())
-        {
-            for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
-            {
-                if ((*i).startsWith('~'))
-                    *i = QString(getenv("HOME")) + (*i).mid(1);
-            }
-
-            return dirs.join(":");
-        }
-
-        return "/etc/xdg";
-    }
+    /*! @brief Returns the path to the directory that corresponds to the $XDG_DATA_HOME.
+     * $XDG_DATA_HOME defines the base directory relative to which user specific data files
+     * should be stored. If $XDG_DATA_HOME is either not set or empty, a default equal to
+     * $HOME/.local/share should be used.
+     */
+    static QString dataHome();
 
 
-    /************************************************
-     *
-     ************************************************/
-    static
-    QString configHome()
-    {
-        QString result(getenv("XDG_CONFIG_HOME"));
-        if (!result.isEmpty())
-            return result;
-
-        return QString("%1/.config").arg(getenv("HOME"));
-    }
+    /*! @brief Returns the path to the directory that corresponds to the $XDG_CONFIG_HOME.
+     * $XDG_CONFIG_HOME defines the base directory relative to which user specific configuration
+     * files should be stored. If $XDG_CONFIG_HOME is either not set or empty, a default equal
+     * to $HOME/.config should be used.
+     */
+    static QString configHome();
 
 
-    /************************************************
-     *
-     ************************************************/
-    static
-    QString dataDirs()
-    {
-        QStringList dirs = QString(getenv("XDG_DATA_DIRS")).split(':', QString::SkipEmptyParts);
-        if (!dirs.isEmpty())
-        {
-            for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
-            {
-                if ((*i).startsWith('~'))
-                    *i = QString(getenv("HOME")) + (*i).mid(1);
-            }
+    /*! @brief Returns a list of all directories that corresponds to the $XDG_DATA_DIRS.
+     * $XDG_DATA_DIRS defines the preference-ordered set of base directories to search for data
+     * files in addition to the $XDG_DATA_HOME base directory. If $XDG_DATA_DIRS is either not set
+     * or empty, a value equal to /usr/local/share/:/usr/share/ should be used.
+     */
+    static QStringList dataDirs();
 
-            return dirs.join(":");
-        }
 
-        return "/usr/local/share/:/usr/share/";
-    }
 
+    /*! @brief Returns a list of all directories that corresponds to the $XDG_CONFIG_DIRS.
+     * $XDG_CONFIG_DIRS defines the preference-ordered set of base directories to search for
+     * configuration files in addition to the $XDG_CONFIG_HOME base directory. If $XDG_CONFIG_DIRS
+     * is either not set or empty, a value equal to /etc/xdg should be used.
+     */
+    static QStringList configDirs();
+
+
+    /*! @brief Returns the path to the directory that corresponds to the $XDG_CACHE_HOME.
+     * $XDG_CACHE_HOME defines the base directory relative to which user specific non-essential
+     * data files should be stored. If $XDG_CACHE_HOME is either not set or empty,
+     * a default equal to $HOME/.cache should be used.
+     */
+    static QString cacheHome();
+
+
+    /*! @brief Returns the path to the directory that corresponds to the $XDG_RUNTIME_DIR.
+     * $XDG_RUNTIME_DIR defines the base directory relative to which user-specific non-essential
+     * runtime files and other file objects (such as sockets, named pipes, ...) should be stored.
+     * The directory MUST be owned by the user, and he MUST be the only one having read and write
+     * access to it. Its Unix access mode MUST be 0700.
+     */
+     static QString runtimeDir();
 };
 
 #endif // XDGENV_H
