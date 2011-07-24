@@ -24,6 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "xdgenv.h"
+#include <QtCore/QDir>
+#include <QtCore/QDebug>
 
 
 /************************************************
@@ -39,16 +41,23 @@ void fixBashShortcuts(QString &s)
 /************************************************
  Helper func.
  ************************************************/
-QString xdgSingleDir(const QString &envVar, const QString &def)
+QString xdgSingleDir(const QString &envVar, const QString &def, bool createDir)
 {
-    QString result(getenv(envVar.toAscii()));
-    if (!result.isEmpty())
+    QString s(getenv(envVar.toAscii()));
+
+    if (!s.isEmpty())
+        fixBashShortcuts(s);
+    else
+        s = QString("%1/%2").arg(getenv("HOME"), def);
+
+    QDir d(s);
+    if (createDir && !d.exists())
     {
-        fixBashShortcuts(result);
-        return result;
+        if (!d.mkpath("."))
+            qWarning() << QString("Can't create %1 directory.").arg(d.absolutePath());
     }
 
-    return QString("%1/%2").arg(getenv("HOME"), def);
+    return d.absolutePath();
 }
 
 
@@ -69,18 +78,18 @@ QStringList xdgDirList(const QString &envVar)
 /************************************************
 
  ************************************************/
-QString XdgEnv::dataHome()
+QString XdgEnv::dataHome(bool createDir)
 {
-    return xdgSingleDir("XDG_DATA_HOME", ".local/share");
+    return xdgSingleDir("XDG_DATA_HOME", ".local/share", createDir);
 }
 
 
 /************************************************
 
  ************************************************/
-QString XdgEnv::configHome()
+QString XdgEnv::configHome(bool createDir)
 {
-    return xdgSingleDir("XDG_CONFIG_HOME", ".config");
+    return xdgSingleDir("XDG_CONFIG_HOME", ".config", createDir);
 }
 
 
@@ -118,9 +127,9 @@ QStringList XdgEnv::configDirs()
 /************************************************
 
  ************************************************/
-QString XdgEnv::cacheHome()
+QString XdgEnv::cacheHome(bool createDir)
 {
-    return xdgSingleDir("XDG_CACHE_HOME", ".cache");
+    return xdgSingleDir("XDG_CACHE_HOME", ".cache", createDir);
 }
 
 

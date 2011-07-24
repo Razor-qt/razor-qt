@@ -41,19 +41,23 @@ class XdgEnv
 {
 public:
     /*! @brief Returns the path to the directory that corresponds to the $XDG_DATA_HOME.
+     * If @i createDir is true, the function will create the directory.
+     *
      * $XDG_DATA_HOME defines the base directory relative to which user specific data files
      * should be stored. If $XDG_DATA_HOME is either not set or empty, a default equal to
      * $HOME/.local/share should be used.
      */
-    static QString dataHome();
+    static QString dataHome(bool createDir=true);
 
 
     /*! @brief Returns the path to the directory that corresponds to the $XDG_CONFIG_HOME.
+     * If @i createDir is true, the function will create the directory.
+     *
      * $XDG_CONFIG_HOME defines the base directory relative to which user specific configuration
      * files should be stored. If $XDG_CONFIG_HOME is either not set or empty, a default equal
      * to $HOME/.config should be used.
      */
-    static QString configHome();
+    static QString configHome(bool createDir=true);
 
 
     /*! @brief Returns a list of all directories that corresponds to the $XDG_DATA_DIRS.
@@ -74,11 +78,13 @@ public:
 
 
     /*! @brief Returns the path to the directory that corresponds to the $XDG_CACHE_HOME.
+     * If @i createDir is true, the function will create the directory.
+     *
      * $XDG_CACHE_HOME defines the base directory relative to which user specific non-essential
      * data files should be stored. If $XDG_CACHE_HOME is either not set or empty,
      * a default equal to $HOME/.cache should be used.
      */
-    static QString cacheHome();
+    static QString cacheHome(bool createDir=true);
 
 
     /*! @brief Returns the path to the directory that corresponds to the $XDG_RUNTIME_DIR.
