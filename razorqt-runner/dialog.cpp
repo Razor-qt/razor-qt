@@ -64,9 +64,6 @@ Dialog::Dialog(QWidget *parent) :
 
     connect(mSettings, SIGNAL(settigsChanged()), this, SLOT(applySettings()));
 
-    mCommandItemModel->loadHistory(mSettings);
-    mCommandItemModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-
 
     ui->commandEd->installEventFilter(this);
     ui->commandEd->setInsertPolicy(QComboBox::NoInsert);
@@ -361,7 +358,7 @@ void Dialog::setFilter(const QString &text)
 void Dialog::runCommand()
 {
     bool res =false;
-    const CommandItem *command = mCommandItemModel->command(ui->commandList->currentIndex());
+    const CommandProviderItem *command = mCommandItemModel->command(ui->commandList->currentIndex());
 
     if (command)
     {
@@ -374,7 +371,6 @@ void Dialog::runCommand()
         if (res)
         {
             mCommandItemModel->addHistoryCommand(command);
-            mCommandItemModel->saveHistory(mSettings);
         }
     }
 

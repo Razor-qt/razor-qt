@@ -4,6 +4,7 @@ set(H_FILES
     dialog.h
     commanditemmodel.h
     widgets.h
+    providers.h
     configuredialog/configuredialog.h
 )
 
@@ -19,6 +20,7 @@ set(CPP_FILES
     dialog.cpp
     commanditemmodel.cpp
     widgets.cpp
+    providers.cpp
     configuredialog/configuredialog.cpp
 )
 
@@ -41,6 +43,12 @@ set(QT_USE_QTXML 1)
 set(THEMES
     resources/themes
 )
+
+if (RUNNER_MATH)
+    add_definitions(-DMATH_ENABLED)
+endif (RUNNER_MATH)
+
+
 # Translations **********************************
 file(GLOB TS_FILES
     translations/*.ts

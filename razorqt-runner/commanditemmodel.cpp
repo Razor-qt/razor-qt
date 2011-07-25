@@ -25,116 +25,15 @@
 
 #include "commanditemmodel.h"
 
-#include <razorqt/xdgmenu/xdgmenu.h>
-#include <razorqt/xdgdesktopfile.h>
-#include <razorqt/domhelper.h>
+
+//#include <razorqt/xdgdesktopfile.h>
+//#include <razorqt/domhelper.h>
 #include <razorqt/xdgicon.h>
 
-#include <QtGui/QStandardItemModel>
+//#include <QtGui/QStandardItemModel>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
-#include <QtCore/QSettings>
-
-
-/************************************************
-
- ************************************************/
-CommandItem::CommandItem():
-    QStandardItem()
-{
-}
-
-
-/************************************************
-
- ************************************************/
-CommandItem::~CommandItem()
-{
-}
-
-
-/************************************************
-
- ************************************************/
-void CommandItem::setText(const QString &title, const QString &comment)
-{
-    QString s = QString("<b>%1</b><br>\n%2\n").arg(title, comment);
-    setData(s, Qt::DisplayRole);
-}
-
-
-/************************************************
-
- ************************************************/
-DesktopItem::DesktopItem(const QDomElement &element):
-    CommandItem()
-{
-    setData(XdgIcon::fromTheme(element.attribute("icon")), Qt::DecorationRole);
-    setText(element.attribute("title"), element.attribute("genericName"));
-    setData(QVariant(element.attribute("comment")), Qt::ToolTipRole);
-
-    QString command = QFileInfo(element.attribute("exec")).baseName().section(" ", 0, 0);
-    mSearchText = element.attribute("title") + " " + command;
-    mDesktopFile = element.attribute("desktopFile");
-
-}
-
-
-/************************************************
-
- ************************************************/
-bool DesktopItem::run() const
-{
-
-    XdgDesktopFile *desktop = XdgDesktopFileCache::getFile(mDesktopFile);
-    return desktop->startDetached();
-}
-
-
-/************************************************
-
- ************************************************/
-bool DesktopItem::compare(const QRegExp &regExp) const
-{
-    QRegExp re(regExp);
-
-    re.setCaseSensitivity(Qt::CaseInsensitive);
-    return mSearchText.contains(re);
-}
-
-
-
-/************************************************
-
- ************************************************/
-HistoryItem::HistoryItem(const QString &command):
-    CommandItem()
-{
-    setData(XdgIcon::defaultApplicationIcon(), Qt::DecorationRole);
-    setText(command, QObject::tr("History"));
-    mCommand = command;
-}
-
-
-/************************************************
-
- ************************************************/
-bool HistoryItem::run() const
-{
-    return QProcess::startDetached(mCommand);
-}
-
-
-/************************************************
-
- ************************************************/
-bool HistoryItem::compare(const QRegExp &regExp) const
-{
-    QRegExp re(regExp);
-
-    re.setCaseSensitivity(Qt::CaseSensitive);
-    return mCommand.contains(re);
-}
+#include <QtCore/QDebug>
 
 
 /************************************************
@@ -142,11 +41,9 @@ bool HistoryItem::compare(const QRegExp &regExp) const
  ************************************************/
 CommandItemModel::CommandItemModel(QObject *parent) :
     QSortFilterProxyModel(parent),
-    mSourceModel(new QStandardItemModel(this)),
-    mXdgMenu(new XdgMenu())
+    mSourceModel(new CommandSourceItemModel(this))
 {
     setSourceModel(mSourceModel);
-//    rebuild();
 }
 
 
@@ -158,97 +55,27 @@ CommandItemModel::~CommandItemModel()
 }
 
 
+
 /************************************************
 
  ************************************************/
 bool CommandItemModel::isOutDated() const
 {
-    return mXdgMenu->isOutDated();
+    return mSourceModel->isOutDated();
 }
 
 
 /************************************************
 
  ************************************************/
-void CommandItemModel::rebuild()
-{
-    if (mXdgMenu->isOutDated())
-    {
-        mXdgMenu->read(XdgMenu::getMenuFileName());
-
-        // Remove old DesktopItems. If anyone knows a better solution tell me.
-        for (int i = mSourceModel->rowCount()-1; i>-1; --i)
-        {
-            DesktopItem *item = dynamic_cast<DesktopItem*>(mSourceModel->item(i, 0));
-            if (item)
-                mSourceModel->removeRow(i, QModelIndex());
-        }
-
-
-        rebuildMainMenu(mXdgMenu->xml().documentElement());
-    }
-}
-
-
-/************************************************
-
- ************************************************/
-void CommandItemModel::rebuildMainMenu(const QDomElement &xml)
-{
-    DomElementIterator it(xml, "");
-    while(it.hasNext())
-    {
-        QDomElement e = it.next();
-
-        // Build submenu ........................
-        if (e.tagName() == "Menu")
-            rebuildMainMenu(e);
-
-        //Build application link ................
-        else if (e.tagName() == "AppLink")
-        {
-            DesktopItem *item = new DesktopItem(e);
-            mSourceModel->appendRow(item);
-        }
-
-    }
-
-}
-
-
-/************************************************
-
- ************************************************/
-bool CommandItemModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
-{
-    QRegExp re(filterRegExp());
-
-    if (re.isEmpty())
-        return false;
-
-    CommandItem *item = dynamic_cast<CommandItem*>(mSourceModel->item(sourceRow, 0));
-
-    if (!item)
-        return false;
-
-    return item->compare(re);
-}
-
-
-/************************************************
-
- ************************************************/
-const CommandItem *CommandItemModel::command(const QModelIndex &index) const
+const CommandProviderItem *CommandItemModel::command(const QModelIndex &index) const
 {
     if (!index.isValid())
         return 0;
 
     QModelIndex ind = mapToSource(index);
-    if (!ind.isValid())
-        return 0;
 
-    CommandItem *item = dynamic_cast<CommandItem*>(mSourceModel->item(ind.row(), 0));
-    return item;
+    return mSourceModel->command(ind);
 }
 
 
@@ -257,8 +84,26 @@ const CommandItem *CommandItemModel::command(const QModelIndex &index) const
  ************************************************/
 void CommandItemModel::addHistoryCommand(const QString &command)
 {
-    HistoryItem *item = new HistoryItem(command);
-    mSourceModel->appendRow(item);
+    mSourceModel->addHistoryCommand(command);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool CommandItemModel::filterAcceptsRow(int sourceRow, const QModelIndex &/*sourceParent*/) const
+{
+    QRegExp re(filterRegExp());
+
+    if (re.isEmpty())
+        return false;
+
+    const CommandProviderItem *item = mSourceModel->command(sourceRow);
+
+    if (!item)
+        return false;
+
+    return item->compare(re);
 }
 
 
@@ -266,35 +111,191 @@ void CommandItemModel::addHistoryCommand(const QString &command)
 /************************************************
 
  ************************************************/
-void CommandItemModel::loadHistory(const QSettings *settings)
+void CommandItemModel::rebuild()
 {
-    int n=0;
-    while (true)
-    {
-        n++;
-        QString command = settings->value(QString("history/command%1").arg(n)).toString();
-        if (command.isEmpty())
-            break;
+    mSourceModel->rebuild();
+}
 
-        HistoryItem *item = new HistoryItem(command);
-        mSourceModel->appendRow(item);
-    }
+
+
+
+/************************************************
+
+ ************************************************/
+CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
+    QAbstractListModel(parent)
+{
+    mHistoryProvider = new HistoryProvider();
+    mProviders.append(mHistoryProvider);
+    mProviders.append(new AppLinkProvider());
+#ifdef MATH_ENABLED
+    mProviders.append(new MathProvider());
+#endif
+    rebuild();
 }
 
 
 /************************************************
 
  ************************************************/
-void CommandItemModel::saveHistory(QSettings *settings)
+CommandSourceItemModel::~CommandSourceItemModel()
 {
-    int n=0;
-    for (int i=0; i<mSourceModel->rowCount(); ++i)
-    {
-        HistoryItem *item = dynamic_cast<HistoryItem*>(mSourceModel->item(i, 0));
-        if (item)
-        {
-            n++;
-            settings->setValue(QString("history/command%1").arg(n), item->command());
-        }
-    }
+    qDeleteAll(mProviders);
+    mHistoryProvider = 0;
 }
+
+
+/************************************************
+
+ ************************************************/
+int CommandSourceItemModel::rowCount(const QModelIndex& /*parent*/) const
+{
+    return mRowCount;
+}
+
+
+/************************************************
+
+ ************************************************/
+QVariant CommandSourceItemModel::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();
+
+    if (index.row() >= mRowCount)
+        return QVariant();
+
+    const CommandProviderItem *item = command(index);
+    if (!item)
+        return QVariant();
+
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return QString("<b>%1</b><br>\n%2\n").arg(item->tile(), item->comment());
+
+    case Qt::DecorationRole:
+        return item->icon();
+
+    case Qt::ToolTipRole:
+        return item->toolTip();
+
+    }
+
+    return QVariant();
+}
+
+
+/************************************************
+
+ ************************************************/
+bool CommandSourceItemModel::isOutDated() const
+{
+    QListIterator<CommandProvider*> i(mProviders);
+    while (i.hasNext())
+    {
+        if (i.next()->isOutDated())
+            return true;
+    }
+
+    return false;
+}
+
+
+/************************************************
+
+ ************************************************/
+void CommandSourceItemModel::rebuild()
+{
+    int cnt = 0;
+    QListIterator<CommandProvider*> i(mProviders);
+    while (i.hasNext())
+    {
+        CommandProvider *p = i.next();
+        if (p->isOutDated())
+            p->rebuild();
+
+        cnt += p->length();
+    }
+    mRowCount = cnt;
+    emit layoutChanged();
+}
+
+
+/************************************************
+
+ ************************************************/
+const CommandProviderItem *CommandSourceItemModel::command(int row) const
+{
+    int n = row;
+    QListIterator<CommandProvider*> i(mProviders);
+    while (i.hasNext())
+    {
+        CommandProvider *p = i.next();
+        if (n < p->count())
+            return p->at(n);
+        else
+            n -=p->count();
+    }
+
+    return 0;
+}
+
+
+/************************************************
+
+ ************************************************/
+const CommandProviderItem *CommandSourceItemModel::command(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return 0;
+
+    return command(index.row());
+}
+
+
+/************************************************
+
+ ************************************************/
+void CommandSourceItemModel::addHistoryCommand(const QString &command)
+{
+    mHistoryProvider->AddCommand(command);
+}
+
+
+
+/************************************************
+
+ ************************************************/
+//void CommandItemModel::loadHistory(const QSettings *settings)
+//{
+//    int n=0;
+//    while (true)
+//    {
+//        n++;
+//        QString command = settings->value(QString("history/command%1").arg(n)).toString();
+//        if (command.isEmpty())
+//            break;
+
+//        HistoryItem *item = new HistoryItem(command);
+//        mSourceModel->appendRow(item);
+//    }
+//}
+
+
+/************************************************
+
+ ************************************************/
+//void CommandItemModel::saveHistory(QSettings *settings)
+//{
+//    int n=0;
+//    for (int i=0; i<mSourceModel->rowCount(); ++i)
+//    {
+//        HistoryItem *item = dynamic_cast<HistoryItem*>(mSourceModel->item(i, 0));
+//        if (item)
+//        {
+//            n++;
+//            settings->setValue(QString("history/command%1").arg(n), item->command());
+//        }
+//    }
+//}

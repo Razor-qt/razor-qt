@@ -26,91 +26,65 @@
 #ifndef COMMANDITEMMODEL_H
 #define COMMANDITEMMODEL_H
 
+#include <providers.h>
 #include <QtGui/QSortFilterProxyModel>
-#include <QtXml/QDomElement>
-#include <QtCore/QStringList>
-#include <QtGui/QStandardItem>
-
-class QStandardItemModel;
-class XdgMenu;
-class QSettings;
-
-class CommandItem: public QStandardItem
-{
-public:
-    CommandItem();
-    virtual ~CommandItem();
-
-    virtual bool run() const = 0;
-    virtual bool compare(const QRegExp &regExp) const = 0;
-
-protected:
-    void setText(const QString &title, const QString &comment);
-};
+//#include <QtXml/QDomElement>
+//#include <QtCore/QStringList>
+//#include <QtGui/QStandardItem>
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QVariant>
 
 
-class DesktopItem: public CommandItem
-{
-public:
-    DesktopItem(const QDomElement &element);
 
-    bool run() const;
-    bool compare(const QRegExp &regExp) const;
-
-private:
-    QString mSearchText;
-    QString mDesktopFile;
-};
-
-
-class HistoryItem: public CommandItem
-{
-public:
-    HistoryItem(const QString &command);
-
-    bool run() const;
-    bool compare(const QRegExp &regExp) const;
-
-    QString command() const { return mCommand; }
-
-private:
-    QString mCommand;
-};
-
-
-class CommandItemModel : public QSortFilterProxyModel
+class CommandSourceItemModel: public QAbstractListModel
 {
     Q_OBJECT
 public:
-//    enum DataRoles
-//    {
-//        CaseSensitiveSearchRole     = Qt::UserRole  + 1,
-//        CaseInsensitiveSearchRole,
-//        FileRole
-//    };
+    explicit CommandSourceItemModel(QObject *parent = 0);
+    virtual ~CommandSourceItemModel();
 
-    explicit CommandItemModel(QObject *parent = 0);
-    virtual ~CommandItemModel();
+    int rowCount(const QModelIndex &parent=QModelIndex()) const;
+    QVariant data(const QModelIndex &index, int role=Qt::DisplayRole) const;
 
     bool isOutDated() const;
-    const CommandItem *command(const QModelIndex &index) const;
+    const CommandProviderItem *command(const QModelIndex &index) const;
+    const CommandProviderItem *command(int row) const;
 
     void addHistoryCommand(const QString &command);
-    void loadHistory(const QSettings *settings);
-    void saveHistory(QSettings *settings);
-
-protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-
 
 public slots:
     void rebuild();
 
+
 private:
-    QStandardItemModel *mSourceModel;
-    XdgMenu *mXdgMenu;
-    void rebuildMainMenu(const QDomElement &xml);
+    QList<CommandProvider*> mProviders;
+    HistoryProvider *mHistoryProvider;
+    int mRowCount;
 };
+
+
+class CommandItemModel: public QSortFilterProxyModel
+{
+    Q_OBJECT
+public:
+    explicit CommandItemModel(QObject *parent = 0);
+    virtual ~CommandItemModel();
+
+    bool isOutDated() const;
+    const CommandProviderItem *command(const QModelIndex &index) const;
+
+    void addHistoryCommand(const QString &command);
+
+public slots:
+    void rebuild();
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+private:
+    CommandSourceItemModel *mSourceModel;
+};
+
 
 #endif // COMMANDITEMMODEL_H
 
