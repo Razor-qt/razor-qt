@@ -5,31 +5,26 @@
     <name>ConfigureDialog</name>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="14"/>
-        <location filename="../build/ui_configuredialog.h" line="129"/>
         <source>Razor-runner Settings</source>
         <translation>Настройки Razor-runner</translation>
     </message>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="20"/>
-        <location filename="../build/ui_configuredialog.h" line="130"/>
         <source>Appearance</source>
         <translation>Внешний вид</translation>
     </message>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="26"/>
-        <location filename="../build/ui_configuredialog.h" line="131"/>
         <source>Positioning:</source>
         <translation>Позиция:</translation>
     </message>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="36"/>
-        <location filename="../build/ui_configuredialog.h" line="132"/>
         <source>Show on:</source>
         <translation>Показывать на:</translation>
     </message>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="56"/>
-        <location filename="../build/ui_configuredialog.h" line="133"/>
         <source>Shortcut:</source>
         <translation>Горячая клавиша:</translation>
     </message>
@@ -58,17 +53,16 @@
     <name>Dialog</name>
     <message>
         <location filename="../dialog.ui" line="26"/>
-        <location filename="../build/ui_dialog.h" line="125"/>
         <source>Application launcher </source>
         <translation>Запускалка програм</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="83"/>
+        <location filename="../dialog.cpp" line="86"/>
         <source>Configure razor-runner</source>
         <translation>Настроить razor-runner</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="259"/>
+        <location filename="../dialog.cpp" line="267"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>Нажмите &quot;%1&quot; чтобы увидеть диалог.</translation>
     </message>
@@ -76,9 +70,14 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../commanditemmodel.cpp" line="114"/>
+        <location filename="../providers.cpp" line="216"/>
         <source>History</source>
         <translation>Из истрии</translation>
+    </message>
+    <message>
+        <location filename="../providers.cpp" line="302"/>
+        <source>Mathematics</source>
+        <translation>Математика</translation>
     </message>
 </context>
 </TS>
