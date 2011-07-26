@@ -163,8 +163,27 @@ bool Dialog::editKeyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_Up:
     case Qt::Key_PageUp:
+        if (ui->commandEd->currentText().isEmpty() &&
+            ui->commandList->isVisible() &&
+            ui->commandList->currentIndex().row() == 0
+           )
+        {
+            setFilter("", false);
+            return true;
+        }
+        qApp->sendEvent(ui->commandList, event);
+        return true;
+
     case Qt::Key_Down:
     case Qt::Key_PageDown:
+        if (ui->commandEd->currentText().isEmpty() &&
+            ui->commandList->isHidden()
+           )
+        {
+            setFilter("", true);
+            return true;
+        }
+
         qApp->sendEvent(ui->commandList, event);
         return true;
     }
@@ -279,11 +298,12 @@ void Dialog::applySettings()
 /************************************************
 
  ************************************************/
-void Dialog::setFilter(const QString &text)
+void Dialog::setFilter(const QString &text, bool onlyHistory)
 {
     if (mCommandItemModel->isOutDated())
         mCommandItemModel->rebuild();
 
+    mCommandItemModel->showOnlyHistory(onlyHistory);
     mCommandItemModel->setFilterWildcard(text);
 
     if (mCommandItemModel->rowCount())

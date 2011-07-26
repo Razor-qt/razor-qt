@@ -95,7 +95,7 @@ bool CommandItemModel::filterAcceptsRow(int sourceRow, const QModelIndex &/*sour
 {
     QRegExp re(filterRegExp());
 
-    if (re.isEmpty())
+    if (re.isEmpty() && !mOnlyHistory)
         return false;
 
     const CommandProviderItem *item = mSourceModel->command(sourceRow);
@@ -110,7 +110,19 @@ bool CommandItemModel::filterAcceptsRow(int sourceRow, const QModelIndex &/*sour
 /************************************************
 
  ************************************************/
-QModelIndex  CommandItemModel::appropriateItem(const QString &pattern) const
+bool CommandItemModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    if (mOnlyHistory)
+        return left.row() < right.row();
+    else
+        return QSortFilterProxyModel::lessThan(left, right);
+}
+
+
+/************************************************
+
+ ************************************************/
+QModelIndex CommandItemModel::appropriateItem(const QString &pattern) const
 {
     QModelIndex res;
     int delta = 0xFFFF;

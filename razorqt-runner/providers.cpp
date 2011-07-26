@@ -128,6 +128,9 @@ bool AppLinkItem::run() const
  ************************************************/
 bool AppLinkItem::compare(const QRegExp &regExp) const
 {
+    if (regExp.isEmpty())
+        return false;
+
     QRegExp re(regExp);
 
     re.setCaseSensitivity(Qt::CaseInsensitive);

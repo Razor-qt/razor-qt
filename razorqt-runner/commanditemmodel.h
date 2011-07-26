@@ -77,14 +77,19 @@ public:
 
     QModelIndex  appropriateItem(const QString &pattern) const;
 
+    bool isShowOnlyHistory() const { return mOnlyHistory; }
+    void showOnlyHistory(bool onlyHistory) { mOnlyHistory = onlyHistory; }
+
 public slots:
     void rebuild();
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 private:
     CommandSourceItemModel *mSourceModel;
+    bool mOnlyHistory;
 };
 
 

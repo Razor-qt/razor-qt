@@ -69,7 +69,7 @@ private:
 private slots:
     void applySettings();
     void showHide();
-    void setFilter(const QString &text);
+    void setFilter(const QString &text, bool onlyHistory=false);
     void runCommand();
     void showConfigDialog();
 };
