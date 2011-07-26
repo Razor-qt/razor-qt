@@ -75,6 +75,8 @@ public:
 
     void addHistoryCommand(const QString &command);
 
+    QModelIndex  appropriateItem(const QString &pattern) const;
+
 public slots:
     void rebuild();
 

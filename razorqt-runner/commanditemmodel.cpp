@@ -107,6 +107,40 @@ bool CommandItemModel::filterAcceptsRow(int sourceRow, const QModelIndex &/*sour
 }
 
 
+/************************************************
+
+ ************************************************/
+QModelIndex  CommandItemModel::appropriateItem(const QString &pattern) const
+{
+    QModelIndex res;
+    int delta = 0xFFFF;
+
+    int cnt = rowCount();
+    for (int i=0; i<cnt; ++i)
+    {
+        QModelIndex ind = index(i,0);
+        QModelIndex srcIndex = mapToSource(ind);
+        const CommandProviderItem *item = mSourceModel->command(srcIndex);
+        if (!item)
+            continue;
+
+        int d = item->tile().indexOf(pattern, 0, Qt::CaseInsensitive);
+        if (d<delta)
+        {
+            res = ind;
+            delta = d;
+        }
+
+        if (delta==0)
+            break;
+    }
+
+    if (!res.isValid())
+        res = index(0, 0);
+
+    return res;
+}
+
 
 /************************************************
 
@@ -261,41 +295,3 @@ void CommandSourceItemModel::addHistoryCommand(const QString &command)
 {
     mHistoryProvider->AddCommand(command);
 }
-
-
-
-/************************************************
-
- ************************************************/
-//void CommandItemModel::loadHistory(const QSettings *settings)
-//{
-//    int n=0;
-//    while (true)
-//    {
-//        n++;
-//        QString command = settings->value(QString("history/command%1").arg(n)).toString();
-//        if (command.isEmpty())
-//            break;
-
-//        HistoryItem *item = new HistoryItem(command);
-//        mSourceModel->appendRow(item);
-//    }
-//}
-
-
-/************************************************
-
- ************************************************/
-//void CommandItemModel::saveHistory(QSettings *settings)
-//{
-//    int n=0;
-//    for (int i=0; i<mSourceModel->rowCount(); ++i)
-//    {
-//        HistoryItem *item = dynamic_cast<HistoryItem*>(mSourceModel->item(i, 0));
-//        if (item)
-//        {
-//            n++;
-//            settings->setValue(QString("history/command%1").arg(n), item->command());
-//        }
-//    }
-//}

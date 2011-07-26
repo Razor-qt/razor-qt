@@ -289,9 +289,7 @@ void Dialog::setFilter(const QString &text)
     if (mCommandItemModel->rowCount())
     {
         mCommandItemModel->sort(0);
-        if (!ui->commandList->currentIndex().isValid())
-            ui->commandList->setCurrentIndex(mCommandItemModel->index(0, 0));
-
+        ui->commandList->setCurrentIndex(mCommandItemModel->appropriateItem(text));
         ui->commandList->scrollTo(ui->commandList->currentIndex());
         ui->commandList->show();
     }
