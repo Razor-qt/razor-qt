@@ -23,27 +23,6 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-/*
-
-#include "xdgmenureader.h"
-#include "domhelper.h"
-#include "xdgmenurules.h"
-#include "xdgmenuapplinkprocessor.h"
-#include "xdgenv.h"
-#include "xdgmenulayoutprocessor.h"
-
-#include <QDebug>
-#include <QtXml/QDomElement>
-#include <QtXml/QDomNamedNodeMap>
-#include <QtCore/QFile>
-#include <QtCore/QSettings>
-#include <QtCore/QFileInfo>
-#include <QtCore/QDir>
-#include <QtCore/QHash>
-#include <QtCore/QLocale>
-
-*/
-
 #include "xdgmenu.h"
 #include <QtCore/QObject>
 #include <QtCore/QFileSystemWatcher>

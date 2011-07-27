@@ -24,8 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGMENUREADER_H
-#define XDGMENUREADER_H
+#ifndef QTXDG_XDGMENUREADER_H
+#define QTXDG_XDGMENUREADER_H
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -75,4 +75,4 @@ private:
     XdgMenu* mMenu;
 };
 
-#endif // XDGMENUREADER_H
+#endif // QTXDG_XDGMENUREADER_H

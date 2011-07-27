@@ -29,7 +29,7 @@
 *********************************************************************/
 
 #include "xdgmenurules.h"
-#include "domhelper.h"
+#include "xmlhelper.h"
 
 #include <QStringList>
 #include <QDebug>

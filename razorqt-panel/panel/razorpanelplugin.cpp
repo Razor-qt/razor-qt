@@ -40,7 +40,7 @@
 #include <QtCore/QEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMenu>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 #include <QMetaEnum>
 #include <QtCore/QTranslator>
 

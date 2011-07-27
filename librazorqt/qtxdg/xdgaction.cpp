@@ -23,122 +23,120 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "xdgenv.h"
-#include <QtCore/QDir>
+
+#include "xdgaction.h"
+#include "xdgicon.h"
 #include <QtCore/QDebug>
 
 
 /************************************************
- Helper func.
+
  ************************************************/
-void fixBashShortcuts(QString &s)
+XdgAction::XdgAction(QObject *parent):
+    QAction(parent)
 {
-    if (s.startsWith('~'))
-        s = QString(getenv("HOME")) + (s).mid(1);
 }
 
 
 /************************************************
- Helper func.
- ************************************************/
-QString xdgSingleDir(const QString &envVar, const QString &def, bool createDir)
-{
-    QString s(getenv(envVar.toAscii()));
 
-    if (!s.isEmpty())
-        fixBashShortcuts(s);
+ ************************************************/
+XdgAction::XdgAction(const XdgDesktopFile& desktopFile, QObject *parent):
+    QAction(parent)
+{
+    load(desktopFile);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgAction::XdgAction(const XdgDesktopFile* desktopFile, QObject *parent):
+    QAction(parent)
+{
+    load(*desktopFile);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgAction::XdgAction(const QString& desktopFileName, QObject *parent):
+    QAction(parent)
+{
+    XdgDesktopFile df(desktopFileName);
+    load(df);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgAction::XdgAction(const XdgAction& other, QObject *parent):
+    QAction(parent)
+{
+    load(other.mDesktopFile);
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgAction::~XdgAction()
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgAction& XdgAction::operator=(const XdgAction& other)
+{
+    load(other.mDesktopFile);
+     return *this;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgAction::isValid() const
+{
+    return mDesktopFile.isValid();
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgAction::load(const XdgDesktopFile& desktopFile)
+{
+    mDesktopFile = desktopFile;
+    if (mDesktopFile.isValid())
+    {
+        setText(mDesktopFile.name());
+        setToolTip(mDesktopFile.comment());
+
+        setIcon(desktopFile.icon());
+        if (icon().isNull())
+            setIcon(XdgIcon::fromTheme("application-x-executable"));
+
+        connect(this, SIGNAL(triggered()), this, SLOT(runConmmand()));
+    }
     else
-        s = QString("%1/%2").arg(getenv("HOME"), def);
-
-    QDir d(s);
-    if (createDir && !d.exists())
     {
-        if (!d.mkpath("."))
-            qWarning() << QString("Can't create %1 directory.").arg(d.absolutePath());
+        setText("");
+        setToolTip("");
+        setIcon(QIcon());
     }
-
-    return d.absolutePath();
-}
-
-
-/************************************************
- Helper func.
- ************************************************/
-QStringList xdgDirList(const QString &envVar)
-{
-    QStringList dirs = QString(getenv(envVar.toAscii())).split(':', QString::SkipEmptyParts);
-    for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
-    {
-        fixBashShortcuts((*i));
-    }
-    return dirs;
 }
 
 
 /************************************************
 
  ************************************************/
-QString XdgEnv::dataHome(bool createDir)
+void XdgAction::runConmmand() const
 {
-    return xdgSingleDir("XDG_DATA_HOME", ".local/share", createDir);
-}
-
-
-/************************************************
-
- ************************************************/
-QString XdgEnv::configHome(bool createDir)
-{
-    return xdgSingleDir("XDG_CONFIG_HOME", ".config", createDir);
-}
-
-
-/************************************************
-
- ************************************************/
-QStringList XdgEnv::dataDirs()
-{
-    QStringList dirs = xdgDirList("XDG_DATA_DIRS");
-    if (dirs.isEmpty())
-    {
-        dirs << "/usr/local/share/";
-        dirs << "/usr/share/";
-    }
-
-    return dirs;
-}
-
-
-/************************************************
-
- ************************************************/
-QStringList XdgEnv::configDirs()
-{
-    QStringList dirs = xdgDirList("XDG_CONFIG_DIRS");
-    if (dirs.isEmpty())
-    {
-        dirs << "/etc/xdg";
-    }
-
-    return dirs;
-}
-
-
-/************************************************
-
- ************************************************/
-QString XdgEnv::cacheHome(bool createDir)
-{
-    return xdgSingleDir("XDG_CACHE_HOME", ".cache", createDir);
-}
-
-
-/************************************************
-
- ************************************************/
-QString XdgEnv::runtimeDir()
-{
-    QString result(getenv("XDG_RUNTIME_DIR"));
-    fixBashShortcuts(result);
-    return result;
+    if (mDesktopFile.isValid())
+        mDesktopFile.startDetached();
 }

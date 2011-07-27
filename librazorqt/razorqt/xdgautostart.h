@@ -12,7 +12,7 @@
  * @author Christopher "VdoP" Regali
   **/
 
-#include "xdgdesktopfile.h"
+#include <qtxdg/xdgdesktopfile.h>
 
 /**
  * @brief manages the xdg-correct autostart stuff

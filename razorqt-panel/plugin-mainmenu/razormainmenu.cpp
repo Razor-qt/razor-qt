@@ -28,8 +28,8 @@
 #include "razormainmenuconfiguration.h"
 #include <QDebug>
 #include <QtGui/QMenu>
-#include <razorqt/xdgdesktopfile.h>
-#include <razorqt/domhelper.h>
+#include <qtxdg/xdgdesktopfile.h>
+#include <qtxdg/xmlhelper.h>
 #include <QSettings>
 #include <QFileInfo>
 #include <QAction>
@@ -37,10 +37,9 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 
-#include <razorqt/xdgenv.h>
-#include <razorqt/xdgicon.h>
-#include <razorqt/xdgdesktopfile.h>
-#include <razorqt/xdgmenu/xdgmenuwidget.h>
+#include <qtxdg/xdgicon.h>
+#include <qtxdg/xdgdesktopfile.h>
+#include <qtxdg/xdgmenuwidget.h>
 
 #include <QStack>
 

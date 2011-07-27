@@ -33,7 +33,7 @@
 
 #include "razordeskicon.h"
 #include <razorqt/xfitman.h>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 
 
 RazorDeskIconBase::RazorDeskIconBase(

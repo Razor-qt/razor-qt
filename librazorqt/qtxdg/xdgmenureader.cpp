@@ -26,8 +26,8 @@
 
 #include "xdgmenureader.h"
 #include "xdgmenu.h"
-#include "xdgenv.h"
-#include "domhelper.h"
+#include "xdgdirs.h"
+#include "xmlhelper.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -213,7 +213,7 @@ void XdgMenuReader::processMergeFileTag(QDomElement& element, QStringList* merge
     else
     {
         QString relativeName;
-        QStringList configDirs = XdgEnv::configDirs();
+        QStringList configDirs = XdgDirs::configDirs();
 
         foreach (QString configDir, configDirs)
         {
@@ -228,7 +228,7 @@ void XdgMenuReader::processMergeFileTag(QDomElement& element, QStringList* merge
 
         if (relativeName.isEmpty())
         {
-            QString configHome = XdgEnv::configHome();
+            QString configHome = XdgDirs::configHome();
             if (mFileName.startsWith(configHome))
                 relativeName = mFileName.mid(configHome.length());
         }
@@ -280,13 +280,13 @@ void XdgMenuReader::processDefaultMergeDirsTag(QDomElement& element, QStringList
     //qDebug() << "Process " << element;// << "in" << mFileName;
 
     QString menuBaseName = QFileInfo(mFileName).baseName();
-    QStringList dirs = XdgEnv::configDirs();
-    dirs << XdgEnv::configHome();
+    QStringList dirs = XdgDirs::configDirs();
+    dirs << XdgDirs::configHome();
 
     foreach (QString dir, dirs)
         mergeDir(QString("%1/menus/%2-merged").arg(dir).arg(menuBaseName), element, mergedFiles);
 
-    mergeDir(QString("%1/menus").arg(XdgEnv::configHome()), element, mergedFiles);
+    mergeDir(QString("%1/menus").arg(XdgDirs::configHome()), element, mergedFiles);
 }
 
 
@@ -311,7 +311,7 @@ void XdgMenuReader::processAppDirTag(QDomElement& element)
 void XdgMenuReader::processDefaultAppDirsTag(QDomElement& element)
 {
     //qDebug() << "Process " << element;
-    QStringList dirs = XdgEnv::dataDirs();
+    QStringList dirs = XdgDirs::dataDirs();
 
     foreach (QString dir, dirs)
         addDirTag(element, "AppDir", dir + "/applications/");
@@ -338,7 +338,7 @@ void XdgMenuReader::processDirectoryDirTag(QDomElement& element)
 void XdgMenuReader::processDefaultDirectoryDirsTag(QDomElement& element)
 {
     //qDebug() << "Process " << element;
-    QStringList dirs = XdgEnv::dataDirs();
+    QStringList dirs = XdgDirs::dataDirs();
 
     foreach (QString dir, dirs)
         addDirTag(element, "DirectoryDir", dir + "/desktop-directories/");

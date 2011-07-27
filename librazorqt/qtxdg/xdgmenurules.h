@@ -28,12 +28,12 @@
 
 *********************************************************************/
 
-#ifndef XDGMENURULES_H
-#define XDGMENURULES_H
+#ifndef QTXDG_XDGMENURULES_H
+#define QTXDG_XDGMENURULES_H
 
-#include <QObject>
-#include <QDomElement>
-#include <QLinkedList>
+#include <QtCore/QObject>
+#include <QtXml/QDomElement>
+#include <QtCore/QLinkedList>
 
 #include "xdgdesktopfile.h"
 
@@ -129,4 +129,4 @@ protected:
     QLinkedList<XdgMenuRule*> mExcludeRules;
 };
 
-#endif // XDGMENURULES_H
+#endif // QTXDG_XDGMENURULES_H

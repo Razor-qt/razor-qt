@@ -30,9 +30,10 @@
 *********************************************************************/
 
 #include "xdgdesktopfile.h"
-#include "razormime.h"
+#include "xdgmime.h"
 #include "xdgicon.h"
-#include "xdgenv.h"
+#include "xdgdirs.h"
+
 #include <stdlib.h>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -785,7 +786,7 @@ bool XdgDesktopFilePrivate::startLinkDetached() const
     {
         // Local file
         QFileInfo fi(url);
-        RazorMimeInfo mimeInfo(fi);
+        XdgMimeInfo mimeInfo(fi);
 
         XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(mimeInfo.mimeType());
         if (desktopFile)
@@ -830,7 +831,7 @@ QString findDesktopFile(const QString& dirName, const QString& desktopName)
  ************************************************/
 QString findDesktopFile(const QString& desktopName)
 {
-    QStringList dataDirs = XdgEnv::dataDirs();
+    QStringList dataDirs = XdgDirs::dataDirs();
 
     foreach (QString dirName, dataDirs)
     {
@@ -939,7 +940,7 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
     // Initialize the cache .....................
     if (cache.isEmpty())
     {
-        QStringList dataDirs = XdgEnv::dataDirs();
+        QStringList dataDirs = XdgDirs::dataDirs();
         foreach (QString dirName, dataDirs)
             loadMimeCacheDir(dirName + "/applications", &cache);
     }

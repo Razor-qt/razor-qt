@@ -27,10 +27,10 @@
 #include "xdgmenu.h"
 #include "xdgmenu_p.h"
 #include "xdgmenureader.h"
-#include "domhelper.h"
+#include "xmlhelper.h"
 #include "xdgmenurules.h"
 #include "xdgmenuapplinkprocessor.h"
-#include "xdgenv.h"
+#include "xdgdirs.h"
 #include "xdgmenulayoutprocessor.h"
 
 #include <QDebug>
@@ -643,7 +643,7 @@ void XdgMenuPrivate::fixSeparators(QDomElement& element)
  ************************************************/
 QString XdgMenu::getMenuFileName(const QString& baseName)
 {
-    QStringList configDirs = XdgEnv::configDirs();
+    QStringList configDirs = XdgDirs::configDirs();
     QString menuPrefix = getenv("XDG_MENU_PREFIX");
 
     foreach(QString configDir, configDirs)

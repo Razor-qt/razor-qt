@@ -24,8 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef DOMHELPER_H
-#define DOMHELPER_H
+#ifndef QTXDG_XMLHELPER_H
+#define QTXDG_XMLHELPER_H
 
 #include <QtCore/QDebug>
 #include <QtXml/QDomElement>
@@ -156,4 +156,4 @@ private:
 QDebug operator<<(QDebug dbg, const QDomElement &el);
 
 
-#endif // DOMHELPER_H
+#endif // QTXDG_XMLHELPER_H

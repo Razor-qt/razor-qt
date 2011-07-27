@@ -4,7 +4,7 @@
 #include <QtCore/QDir>
 
 #include "xdgautostart.h"
-#include "xdgenv.h"
+#include <qtxdg/xdgdirs.h>
 
 /**
  * @file XdgAutoStart.cpp
@@ -23,10 +23,10 @@ void XdgAutoStart::updateList()
 {
     qDebug()<< "XdgAutoStart: getting configpaths";
     QStringList pathList;
-    QStringList config_dirs = XdgEnv::configDirs();
+    QStringList config_dirs = XdgDirs::configDirs();
     for (int i = 0; i < config_dirs.count(); i++)
         pathList.append(config_dirs.at(i)+"/autostart/");
-    pathList.push_back(XdgEnv::configHome()+"/autostart/");
+    pathList.push_back(XdgDirs::configHome()+"/autostart/");
 
     qDebug() << "XdgAutoStart: beginning building list";
 
@@ -109,13 +109,13 @@ void XdgAutoStart::cleanList()
 
 
 /**
- * @brief constructor without parameters. XdgAutoStart will use its own Xdgenv!
+ * @brief constructor without parameters. XdgAutoStart will use its own XdgDirs!
  * Useful for using this class alone without a manager.
  */
 
 XdgAutoStart::XdgAutoStart()
 {
-    qDebug() << "XdgAutoStart: initialising with on Xdgenv...";
+    qDebug() << "XdgAutoStart: initialising with on XdgDirs...";
     updateList();
 }
 

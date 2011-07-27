@@ -24,12 +24,14 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGACTION_H
-#define XDGACTION_H
+#ifndef QTXDG_XDGACTION_H
+#define QTXDG_XDGACTION_H
+
+#include "xdgdesktopfile.h"
 
 #include <QtGui/QAction>
 #include <QtCore/QString>
-#include "xdgdesktopfile.h"
+
 
 /*******************************************************************/ /*!
   @brief The XdgAction class provides an QAction object based on XdgDesktopFile.
@@ -76,4 +78,4 @@ private:
     XdgDesktopFile mDesktopFile;
 };
 
-#endif // XDGACTION_H
+#endif // QTXDG_XDGACTION_H

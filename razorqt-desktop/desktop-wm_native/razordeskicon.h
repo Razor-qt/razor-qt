@@ -29,7 +29,7 @@
 #include <QAbstractButton>
 #include "desktopplugin.h"
 
-#include <razorqt/xdgdesktopfile.h>
+#include <qtxdg/xdgdesktopfile.h>
 
 
 /*! \brief Abstract base for all desktop icons.

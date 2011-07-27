@@ -24,8 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGMENUWIDGET_H
-#define XDGMENUWIDGET_H
+#ifndef QTXDG_XDGMENUWIDGET_H
+#define QTXDG_XDGMENUWIDGET_H
 
 #include <QMenu>
 #include <QtXml/QDomElement>
@@ -87,4 +87,4 @@ private:
     Q_DECLARE_PRIVATE(XdgMenuWidget)
 };
 
-#endif // XDGMENUWIDGET_H
+#endif // QTXDG_XDGMENUWIDGET_H

@@ -24,8 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGDESKTOPFILE_H
-#define XDGDESKTOPFILE_H
+#ifndef QTXDG_XDGDESKTOPFILE_H
+#define QTXDG_XDGDESKTOPFILE_H
 
 #include <QObject>
 #include <QString>
@@ -148,6 +148,6 @@ public:
 };
 
 
-#endif // XDGDESKTOPFILE_H
+#endif // QTXDG_XDGDESKTOPFILE_H
 
 

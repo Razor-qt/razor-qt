@@ -25,10 +25,11 @@
 
 
 #include "xdgmenuwidget.h"
-#include <razorqt/xdgicon.h>
-#include <razorqt/domhelper.h>
-#include <razorqt/xdgaction.h>
+#include "xdgicon.h"
+#include "xmlhelper.h"
+#include "xdgaction.h"
 #include "xdgmenu.h"
+
 #include <QtCore/QEvent>
 #include <QtCore/QDebug>
 #include <QtCore/QUrl>

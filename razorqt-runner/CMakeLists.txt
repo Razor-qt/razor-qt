@@ -36,6 +36,7 @@ set(QRC_FILES
 set(LIBRARIES
     razorqt
     razorqxt
+qtxdg
 )
 
 set(QT_USE_QTXML true)

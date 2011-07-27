@@ -25,7 +25,7 @@
 
 
 #include "xdgmenulayoutprocessor.h"
-#include "../domhelper.h"
+#include "xmlhelper.h"
 #include <QDebug>
 #include <QtCore/QMap>
 

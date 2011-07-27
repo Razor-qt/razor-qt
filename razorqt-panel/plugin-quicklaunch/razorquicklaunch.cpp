@@ -25,9 +25,9 @@
 
 
 #include "razorquicklaunch.h"
-#include <razorqt/xdgdesktopfile.h>
-#include <razorqt/xdgicon.h>
-#include <razorqt/razormime.h>
+#include <qtxdg/xdgdesktopfile.h>
+#include <qtxdg/xdgicon.h>
+#include <qtxdg/xdgmime.h>
 
 #include <QtDebug>
 #include <QtCore/QProcess>
@@ -216,7 +216,7 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & fileName, QWidget
     }
     else
     {
-        RazorMimeInfo mi(fi);
+        XdgMimeInfo mi(fi);
         setIcon(mi.icon());
     }
     

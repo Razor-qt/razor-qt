@@ -28,7 +28,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QX11Info>
 #include <razorqxt/qxtglobalshortcut.h>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
 
 #include "showdesktop.h"

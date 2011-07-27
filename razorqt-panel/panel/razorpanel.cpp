@@ -50,7 +50,7 @@
 #include <QtCore/QLibrary>
 #include <QtGui/QSpacerItem>
 
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
 
 

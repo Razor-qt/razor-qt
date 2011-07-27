@@ -25,7 +25,7 @@
 
 #include "powermanager.h"
 #include "upower.h"
-#include "xdgicon.h"
+#include <qtxdg/xdgicon.h>
 #include <QDBusInterface>
 #include <QMessageBox>
 #include <QApplication>

@@ -26,9 +26,7 @@
 #include "commanditemmodel.h"
 
 
-//#include <razorqt/xdgdesktopfile.h>
-//#include <razorqt/domhelper.h>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 
 //#include <QtGui/QStandardItemModel>
 #include <QtCore/QFileInfo>

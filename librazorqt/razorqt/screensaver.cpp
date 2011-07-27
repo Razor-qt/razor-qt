@@ -26,7 +26,7 @@
 #include <QtCore/QProcess>
 #include <QtGui/QMessageBox>
 
-#include "xdgicon.h"
+#include <qtxdg/xdgicon.h>
 #include "screensaver.h"
 
 

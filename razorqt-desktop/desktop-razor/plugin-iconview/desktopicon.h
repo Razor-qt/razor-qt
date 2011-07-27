@@ -28,11 +28,11 @@
 
 #include <QGraphicsLayoutItem>
 #include <QGraphicsTextItem>
-#include <razorqt/xdgdesktopfile.h>
+#include <qtxdg/xdgdesktopfile.h>
 #include "desktopplugin.h"
 
 
-class RazorMimeInfo;
+class XdgMimeInfo;
 
 class IconViewLabel : public QGraphicsTextItem
 {
@@ -119,7 +119,7 @@ public:
 
 private:
     QString m_file;
-    RazorMimeInfo* m_mimeInfo;
+    XdgMimeInfo* m_mimeInfo;
 
     /**
     @brief Launch assigned m_exec binary/path.

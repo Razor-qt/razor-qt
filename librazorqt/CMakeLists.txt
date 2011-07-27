@@ -1,6 +1,8 @@
 project( razorqt )
 cmake_minimum_required( VERSION 2.6 )
 
+add_subdirectory(qtxdg)
+
 set (MAJOR_VERSION 0)
 set (MINOR_VERSION 1)
 set (PATCH_VERSION 0)
@@ -12,7 +14,6 @@ endif (NOT CMAKE_BUILD_TYPE)
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
 find_package ( X11 REQUIRED )
-find_package ( LibMagic REQUIRED )
 
 
 include ( ${QT_USE_FILE} )
@@ -31,18 +32,10 @@ set(razorqt_HDRS
     razorqt/razoraboutdlg.h
     razorqt/razorsettings.h
     razorqt/xdgautostart.h
-    razorqt/xdgenv.h
     razorqt/xfitman.h
-    razorqt/domhelper.h
-    razorqt/xdgdesktopfile.h
-    razorqt/xdgmenu/xdgmenu.h
-    razorqt/xdgicon.h
-    razorqt/xdgaction.h
-    razorqt/xdgmenu/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     razorqt/addplugindialog/addplugindialog.h
-    razorqt/razormime.h
     razorqt/screensaver.h
     razorqt/razorshortcutbutton.h
     razorqt/razorshortcutbutton_p.h
@@ -55,22 +48,10 @@ set(razorqt_HDRS
 set(razorqt_SRCS
     razorqt/razoraboutdlg.cpp
     razorqt/xdgautostart.cpp
-    razorqt/xdgdesktopfile.cpp
-    razorqt/xdgenv.cpp
-    razorqt/xdgmenu/xdgmenu.cpp
     razorqt/xfitman.cpp
-    razorqt/domhelper.cpp
-    razorqt/xdgmenu/xdgmenuapplinkprocessor.cpp
-    razorqt/xdgmenu/xdgmenureader.cpp
-    razorqt/xdgmenu/xdgmenurules.cpp
-    razorqt/xdgmenu/xdgmenulayoutprocessor.cpp
-    razorqt/xdgicon.cpp
-    razorqt/xdgaction.cpp
-    razorqt/xdgmenu/xdgmenuwidget.cpp
     razorqt/razorplugininfo.cpp
     razorqt/powermanager.cpp
     razorqt/addplugindialog/addplugindialog.cpp
-    razorqt/razormime.cpp
     razorqt/razorsettings.cpp
     razorqt/screensaver.cpp
     razorqt/razorshortcutbutton.cpp
@@ -82,14 +63,6 @@ set(razorqt_SRCS
 
 set(razorqt_MOCS
     razorqt/razoraboutdlg.h
-    razorqt/xdgmenu/xdgmenu.h
-    razorqt/xdgmenu/xdgmenu_p.h
-    razorqt/xdgdesktopfile.h
-    razorqt/xdgmenu/xdgmenuapplinkprocessor.h
-    razorqt/xdgmenu/xdgmenureader.h
-    razorqt/xdgmenu/xdgmenurules.h
-    razorqt/xdgaction.h
-    razorqt/xdgmenu/xdgmenuwidget.h
     razorqt/razorplugininfo.h
     razorqt/powermanager.h
     razorqt/addplugindialog/addplugindialog.h
@@ -120,7 +93,9 @@ add_library ( razorqt SHARED ${razorqt_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 
 target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
                                  ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
-                                 ${X11_X11_LIB} ${LIBMAGIC_LIBRARY} )
+                                 ${X11_X11_LIB} ${LIBMAGIC_LIBRARY} 
+                                 qtxdg
+                      )
 
 set_target_properties(razorqt PROPERTIES
   VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
@@ -158,7 +133,7 @@ install(TARGETS razorqxt DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razorqxt_HDRS} DESTINATION include/razorqxt)
 
 
-add_dependencies( razorqt razorqxt )
+add_dependencies( razorqt qtxdg razorqxt )
 
 
 find_package(Doxygen)
@@ -176,3 +151,4 @@ if(DOXYGEN_FOUND)
     )
 
 endif(DOXYGEN_FOUND)
+

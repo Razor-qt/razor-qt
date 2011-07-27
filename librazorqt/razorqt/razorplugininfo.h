@@ -27,7 +27,7 @@
 #ifndef RAZORPLUGININFO_H
 #define RAZORPLUGININFO_H
 
-#include "xdgdesktopfile.h"
+#include <qtxdg/xdgdesktopfile.h>
 #include <QtCore/QString>
 #include <QtCore/QList>
 

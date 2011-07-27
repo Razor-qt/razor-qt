@@ -18,7 +18,7 @@
 
 #include "addplugindialog.h"
 #include "ui_addplugindialog.h"
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 #include <QtGui/QListWidgetItem>
 #include <QtGui/QItemDelegate>
 #include <QtGui/QTextDocument>

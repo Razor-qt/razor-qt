@@ -25,6 +25,7 @@
 
 
 #include "xdgicon.h"
+
 #include <QString>
 #include <QDebug>
 #include <QDir>

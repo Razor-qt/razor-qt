@@ -35,7 +35,7 @@
 #include <QtGui/QHBoxLayout>
 
 #include <razorqt/xfitman.h>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
 #include <razorqxt/qxtglobalshortcut.h>
 

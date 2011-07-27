@@ -33,6 +33,7 @@ set(MOCS
 
 set(LIBRARIES
     razorqt
+    qtxdg
 )
 
 # QRC files .................

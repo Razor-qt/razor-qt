@@ -24,8 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGICON_H
-#define XDGICON_H
+#ifndef QTXDG_XDGICON_H
+#define QTXDG_XDGICON_H
 
 #include <QIcon>
 #include <QHash>
@@ -50,4 +50,4 @@ private:
 
 };
 
-#endif // XDGICON_H
+#endif // QTXDG_XDGICON_H

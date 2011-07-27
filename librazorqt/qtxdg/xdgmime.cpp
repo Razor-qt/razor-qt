@@ -23,17 +23,19 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razormime.h"
+#include "xdgmime.h"
+#include "xdgicon.h"
+
 #include <QFileInfo>
 #include <magic.h>
 #include <QDebug>
 #include <QtCore/QStringList>
-#include "razorqt/xdgicon.h"
+
 
 /************************************************
 
  ************************************************/
-RazorMimeInfo::RazorMimeInfo(const QString& mimeType)
+XdgMimeInfo::XdgMimeInfo(const QString& mimeType)
 {
     mType = mimeType.section('/', 0, 0);
     mSubType = mimeType.section('/', 1);
@@ -80,7 +82,7 @@ QString getFileMimeType(const QFileInfo& fileInfo)
 /************************************************
 
  ************************************************/
-RazorMimeInfo::RazorMimeInfo(const QFileInfo& file)
+XdgMimeInfo::XdgMimeInfo(const QFileInfo& file)
 {
     QString mimeType = getFileMimeType(file);
     mType = mimeType.section('/', 0, 0);
@@ -91,7 +93,7 @@ RazorMimeInfo::RazorMimeInfo(const QFileInfo& file)
 /************************************************
 
  ************************************************/
-QString RazorMimeInfo::mimeType() const
+QString XdgMimeInfo::mimeType() const
 {
     return mType + "/" + mSubType;
 }
@@ -100,7 +102,7 @@ QString RazorMimeInfo::mimeType() const
 /************************************************
 
  ************************************************/
-QIcon RazorMimeInfo::icon() const
+QIcon XdgMimeInfo::icon() const
 {
     QStringList names;
     names << QString("%1-x-%2").arg(mType, mSubType);

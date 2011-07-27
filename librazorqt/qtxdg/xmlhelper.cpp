@@ -23,31 +23,26 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORMIME_H
-#define RAZORMIME_H
+#include "xmlhelper.h"
 
-#include <QtCore/QString>
-#include <QtCore/QFileInfo>
-#include <QtGui/QIcon>
+#include <QtCore/QDebug>
+#include <QtXml/QDomElement>
+#include <QtXml/QDomNode>
 
-class RazorMimeInfo
+
+/************************************************
+
+ ************************************************/
+QDebug operator<<(QDebug dbg, const QDomElement &el)
 {
-public:
-    /// Constructs a RazorMimeInfo with the mimeType type.
-    explicit RazorMimeInfo(const QString& mimeType);
+    QDomNamedNodeMap map = el.attributes();
 
-    /// Constructs a new RazorMimeInfo that gives mime information about the given file.
-    explicit RazorMimeInfo(const QFileInfo& file);
+    QString args;
+    for (int i=0; i<map.count(); ++i)
+        args += " " + map.item(i).nodeName() + "='" + map.item(i).nodeValue() + "'";
 
-    /// Returns the name of the mime type.
-    QString mimeType() const;
+    dbg.nospace() << QString("<%1%2>%3</%1>").arg(el.tagName()).arg(args).arg(el.text());
+    return dbg.space();
+}
 
-    /// Returns an icon associated with the mime type.
-    QIcon   icon() const;
 
-private:
-    QString mType;
-    QString mSubType;
-};
-
-#endif // RAZORMIME_H

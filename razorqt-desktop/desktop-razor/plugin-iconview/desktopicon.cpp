@@ -35,8 +35,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsDropShadowEffect>
 #include <QtDebug>
-#include <razorqt/xdgicon.h>
-#include <razorqt/razormime.h>
+#include <qtxdg/xdgicon.h>
+#include <qtxdg/xdgmime.h>
 
 IconViewLabel::IconViewLabel(const QString & text, QGraphicsItem * parent)
     : QGraphicsTextItem(text, parent)
@@ -199,7 +199,7 @@ FileIcon::FileIcon(const QString & file,
 {
     QFileInfo fi(file);
 
-    m_mimeInfo = new RazorMimeInfo(fi);
+    m_mimeInfo = new XdgMimeInfo(fi);
     setText(fi.fileName());
     setToolTip(file);
     if (fi.isDir())

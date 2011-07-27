@@ -24,15 +24,15 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGMENUAPPLINKPROCESSOR_H
-#define XDGMENUAPPLINKPROCESSOR_H
+#ifndef QTXDG_XDGMENUAPPLINKPROCESSOR_H
+#define QTXDG_XDGMENUAPPLINKPROCESSOR_H
 
 #include "xdgmenurules.h"
-#include <QObject>
-#include <QDomElement>
-#include <QLinkedList>
-#include <QString>
-#include <QHash>
+#include <QtCore/QObject>
+#include <QtXml/QDomElement>
+#include <QtCore/QLinkedList>
+#include <QtCore/QString>
+#include <QtCore/QHash>
 
 class XdgMenu;
 class XdgMenuAppFileInfo;
@@ -97,4 +97,4 @@ private:
 };
 
 
-#endif // XDGMENUAPPLINKPROCESSOR_H
+#endif // QTXDG_XDGMENUAPPLINKPROCESSOR_H

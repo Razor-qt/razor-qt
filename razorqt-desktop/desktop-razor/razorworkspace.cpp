@@ -43,8 +43,8 @@
 #include <razorqt/razorsettings.h>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
-#include <razorqt/xdgmenu/xdgmenuwidget.h>
-#include <razorqt/xdgmenu/xdgmenu.h>
+#include <qtxdg/xdgmenuwidget.h>
+#include <qtxdg/xdgmenu.h>
 #include <razorqt/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
 

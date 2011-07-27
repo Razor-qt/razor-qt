@@ -24,8 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef XDGENV_H
-#define XDGENV_H
+#ifndef QTXDG_XDGDIRS_H
+#define QTXDG_XDGDIRS_H
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -37,7 +37,7 @@
  *
  * @sa http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
  */
-class XdgEnv
+class XdgDirs
 {
 public:
     /*! @brief Returns the path to the directory that corresponds to the $XDG_DATA_HOME.
@@ -96,4 +96,4 @@ public:
      static QString runtimeDir();
 };
 
-#endif // XDGENV_H
+#endif // QTXDG_XDGDIRS_H

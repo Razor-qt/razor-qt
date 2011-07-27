@@ -25,7 +25,7 @@
 
 
 #include <QDebug>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 #include <QtCore/QTimer>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>

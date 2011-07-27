@@ -26,7 +26,7 @@
 
 #include "xdgmenu.h"
 #include "xdgmenuapplinkprocessor.h"
-#include "domhelper.h"
+#include "xmlhelper.h"
 #include "xdgdesktopfile.h"
 
 #include <QDir>

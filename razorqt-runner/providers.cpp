@@ -25,11 +25,11 @@
 
 
 #include "providers.h"
-#include <razorqt/xdgicon.h>
-#include <razorqt/xdgdesktopfile.h>
-#include <razorqt/xdgmenu/xdgmenu.h>
-#include <razorqt/domhelper.h>
-#include <razorqt/xdgenv.h>
+#include <qtxdg/xdgicon.h>
+#include <qtxdg/xdgdesktopfile.h>
+#include <qtxdg/xdgmenu.h>
+#include <qtxdg/xmlhelper.h>
+#include <qtxdg/xdgdirs.h>
 
 #include <QtCore/QProcess>
 #include <QtCore/QtAlgorithms>
@@ -251,7 +251,7 @@ bool HistoryItem::compare(const QRegExp &regExp) const
 HistoryProvider::HistoryProvider():
     CommandProvider()
 {
-    QString fileName = (XdgEnv::cacheHome() + "/razor-runner.history");
+    QString fileName = (XdgDirs::cacheHome() + "/razor-runner.history");
     mHistoryFile = new QSettings(fileName, QSettings::IniFormat);
     mHistoryFile->beginGroup("commands");
     for (uint i=0; i<MAX_HISORTY; ++i)

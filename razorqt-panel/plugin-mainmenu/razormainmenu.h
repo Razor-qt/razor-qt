@@ -28,7 +28,7 @@
 #define RAZOR_MAINMENU_H
 
 #include "../panel/razorpanelplugin.h"
-#include <razorqt/xdgmenu/xdgmenu.h>
+#include <qtxdg/xdgmenu.h>
 
 #include <QPushButton>
 #include <QDomElement>
