@@ -30,7 +30,6 @@
 #define RAZORCLOCK_CPP
 
 #include "razorclock.h"
-#include <QtGui/QLabel>
 #include <QtCore/QDebug>
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
@@ -39,6 +38,10 @@
 #include <QtGui/QHBoxLayout>
 #include <QtCore/QPoint>
 #include <QtCore/QSettings>
+#include <QtCore/QRect>
+#include <QtCore/QEvent>
+
+int mon, day, hour, min, sec;
 
 /**
  * @file razorclock.cpp
@@ -56,10 +59,10 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 {
     setObjectName("Clock");
     clockFormat = "hh:mm";
-    gui = new QLabel(this);
+    gui = new ClockLabel(this);
     gui->setAlignment(Qt::AlignCenter);
     addWidget(gui);
-
+    connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
     settigsChanged();
 
     clocktimer = new QTimer(this);
@@ -86,22 +89,22 @@ RazorClock::~RazorClock()
 
 void RazorClock::settigsChanged()
 {
-    QString date;
-
     if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
     {
-        clockFormat = settings().value("timeFormat", "h:mm AP").toString();
+        timeFormat = settings().value("timeFormat", "h:mm AP").toString();
     }
     else
     {
-        clockFormat = settings().value("timeFormat", "HH:mm").toString();
+        timeFormat = settings().value("timeFormat", "HH:mm").toString();
     }
+    clockFormat = timeFormat;
 
-    date = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
+    dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
+    dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
     if (settings().value("showDate", false).toBool())
     {
-        if (settings().value("dateOnNewLine", true).toBool())
+        if (dateOnNewLine)
         {
             clockFormat.append("\n");
         }
@@ -110,30 +113,97 @@ void RazorClock::settigsChanged()
             clockFormat.append(" ");
         }
 
-        clockFormat += date;
+        clockFormat += dateFormat;
     }
 
-    // issue #18: Panel clock plugin changes your size
-    // Try to set fixed width for plugin to disallow "jumping"
-    // - find minimal width for "monospaced" font.
-    QFont f= font();
-    f.setStyleHint(QFont::TypeWriter);
-
-    QFontMetrics fm(f);
-    QStringList splitted = clockFormat.split('\n');
-    int suggestedWidth = 0;
-    foreach (QString s, splitted)
-    {
-         int tmpWidth = fm.boundingRect(s).width();
-         if (tmpWidth > suggestedWidth)
-             suggestedWidth = tmpWidth;
-    }
-    setMaximumWidth(suggestedWidth);
-    setMinimumWidth(suggestedWidth);
-    // end of issue #18
-    
+    updateMinWidth();
     updateTime();
 }
+
+
+QDate getMaxDate(const QFontMetrics &metrics, const QString &format)
+{
+    QDate d(QDate::currentDate().year(), 1, 1);
+    QDateTime dt(d);
+    QDate res;
+
+    int maxWidth = 0;
+    while (dt.date().year() == d.year())
+    {
+        int w = metrics.boundingRect(dt.toString(format)).width();
+        //qDebug() << "*" << dt.toString(format) << w;
+        if (w > maxWidth)
+        {
+            res = dt.date();
+            maxWidth = w;
+        }
+        dt = dt.addDays(1);
+    }
+
+    //qDebug() << "Max date:" << res.toString(format);
+    return res;
+}
+
+
+QTime getMaxTime(const QFontMetrics &metrics, const QString &format)
+{
+    int maxMinSec = 0;
+    for (int width=0, i=0; i<60; ++i)
+    {
+        int w = metrics.boundingRect(QString("%1").arg(i, 2, 10, QChar('0'))).width();
+        if (w > width)
+        {
+            maxMinSec = i;
+            width = w;
+        }
+    }
+
+    QTime res;
+    QDateTime dt(QDate(1, 1, 1), QTime(0, maxMinSec, maxMinSec));
+
+    int maxWidth = 0;
+    while (dt.date().day() == 1)
+    {
+        int w = metrics.boundingRect(dt.toString(format)).width();
+        //qDebug() << "*" << dt.toString(format) << w;
+        if (w > maxWidth)
+        {
+            res = dt.time();
+            maxWidth = w;
+        }
+        dt = dt.addSecs(3600);
+    }
+
+    //qDebug() << "Max time:" << res.toString();
+    return res;
+}
+
+/************************************************
+  Issue #18: Panel clock plugin changes your size
+ ************************************************/
+void RazorClock::updateMinWidth()
+{
+    QFontMetrics metrics(gui->font());
+    QDate maxDate = getMaxDate(metrics, dateFormat);
+    QTime maxTime = getMaxTime(metrics, timeFormat);
+    QDateTime dt(maxDate, maxTime);
+
+    //qDebug() << "T:" << metrics.boundingRect(dt.toString(timeFormat)).width();
+    //qDebug() << "C:" << metrics.boundingRect(QTime::currentTime().toString(timeFormat)).width() << QTime::currentTime().toString(timeFormat);
+    //qDebug() << "D:" << metrics.boundingRect(dt.toString(dateFormat)).width();
+
+    int width;
+    if (dateOnNewLine)
+        width = qMax(metrics.boundingRect(dt.toString(timeFormat)).width(),
+                     metrics.boundingRect(dt.toString(dateFormat)).width()
+                     );
+    else
+        width = metrics.boundingRect(dt.toString(clockFormat)).width();
+
+    //qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
+    gui->setMinimumWidth(width);
+}
+
 
 void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -184,6 +254,18 @@ void RazorClock::showConfigureDialog()
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+
+
+bool ClockLabel::event(QEvent *event)
+{
+    if (event->type() == QEvent::FontChange)
+    {
+        emit fontChanged();
+    }
+
+    return QLabel::event(event);
 }
 
 #endif
