@@ -32,20 +32,8 @@
 
 class QDBusInterface;
 
-
-/**
- * @file razormodman.h
- * @author Christopher "VdoP" Regali
- * @brief declares class Razormodulemanager
- */
-
-struct Module
-{
-    bool power;
-    QProcess * process;
-};
-typedef QMap<QString,Module> ModulesMap;
-typedef QMapIterator<QString,Module> ModulesMapIterator;
+typedef QMap<QString,QProcess*> ModulesMap;
+typedef QMapIterator<QString,QProcess*> ModulesMapIterator;
 
 /*! \brief RazorModuleManager manages the processes of the session
 and which modules of razor are about to load.
@@ -81,17 +69,12 @@ public slots:
     void logout();
 
 private:
-    /*! \brief Flag if the crashed process should be restarted.
-    Doespower has to be set */
-    bool autorestart;
 
     //! \brief Session configuration.
     QString mConfig;
 
     //! \brief map with Razor main modules. Window manager, and Razor components.
     ModulesMap procMap;
-    //! \brief 3rd party processes started after main modules init.
-	QList<QProcess*> autostartList;
 
     //! \brief HAL (dbus) instance for shudown and reboot actions.
     QDBusInterface* m_power;
@@ -113,10 +96,6 @@ private slots:
     be restarted automatically.
     */
     void restartModules(int exitCode, QProcess::ExitStatus exitStatus);
-
-    /*! \brief Delayed startup of autostart processes. \see autostartList
-    */
-	void autoStartSingleShot();
 };
 
 

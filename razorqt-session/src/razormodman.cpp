@@ -69,43 +69,32 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
     s.endGroup();
 
     // then rest of the config:
-    // autorestart of directly-loaded modules (when is doespower on)
-    autorestart = s.value("autorestart", true).toBool();
-
-    // razor-modules or 3rd party apps with doespower handling
-    int count = s.beginReadArray("modules");
-    QString cmd;
-    for (int i = 0; i < count; ++i)
+    
+    // window manager
+    QString wm = s.value("windowmanager", "openbox").toString();
+    QProcess * wmProcess = new QProcess(this);
+    wmProcess->start(wm);
+    connect(wmProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+            this, SLOT(logout()));
+    
+    // modules
+    s.beginGroup("modules");
+    foreach(QString i, s.childKeys())
     {
-        s.setArrayIndex(i);
-        cmd = s.value("exec", "").toString();
-        if (cmd.isEmpty())
-        {
-            qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
+        bool start = s.value(i, true).toBool();
+        if (!start)
             continue;
-        }
-        bool power = s.value("doespower", false).toBool();
 
         QProcess* tmp = new QProcess(this);
-        tmp->start(cmd);
+        tmp->start(i);
+        procMap[i] = tmp;
 
         connect(tmp, SIGNAL(finished(int, QProcess::ExitStatus)),
-                this,SLOT(restartModules(int, QProcess::ExitStatus)));
-        Module m;
-        m.power = power;
-        m.process = tmp;
-        procMap[cmd] = m;
+                this, SLOT(restartModules(int, QProcess::ExitStatus)));
     }
-    s.endArray();
+    s.endGroup();
 
-    // start 3rd party apps without doespower/restart handling
-    int delay = s.value("autostart_delay", 1).toInt();
-    QTimer::singleShot(delay * 1000, this, SLOT(autoStartSingleShot()));
-}
-
-void RazorModuleManager::autoStartSingleShot()
-{
-    RazorSettings s(mConfig);
+    // start 3rd party apps without restart handling
     int count = s.beginReadArray("autostart");
     QString cmd;
     for (int i = 0; i < count; ++i)
@@ -119,7 +108,7 @@ void RazorModuleManager::autoStartSingleShot()
         }
         QProcess* tmp = new QProcess(this);
         tmp->start(cmd);
-        autostartList << tmp;
+        procMap[cmd] = tmp;
     }
     s.endArray();
     
@@ -137,16 +126,14 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
     QProcess * proc = qobject_cast<QProcess*>(sender());
     Q_ASSERT(proc);
     QString procName;
-    bool power = false;
 
     ModulesMapIterator i(procMap);
     while (i.hasNext())
     {
         i.next();
-        if (i.value().process == proc)
+        if (i.value() == proc)
         {
             procName = i.key();
-            power = i.value().power;
             break;
         }
     }
@@ -154,17 +141,11 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
     switch (exitStatus)
     {
         case QProcess::NormalExit:
-            if (! power)
-            {
-                logout();
-            }
+            qDebug() << "Process" << procName << "(" << proc << ") exited correctly.";
             break;
         case QProcess::CrashExit:
-            if (autorestart)
-            {
-                qDebug() << "Process" << procName << "(" << proc << ") has to be restarted";
-                proc->start(procName);
-            }
+            qDebug() << "Process" << procName << "(" << proc << ") has to be restarted";
+            proc->start(procName);
             break;
     }
 
@@ -181,23 +162,13 @@ RazorModuleManager::~RazorModuleManager()
 **/
 void RazorModuleManager::logout()
 {
-    // autostart
-    foreach (QProcess * p, autostartList)
-    {
-        qDebug() << "Autostart logout:" << p;
-        p->blockSignals(true);
-        p->terminate();
-        if (!p->waitForFinished())
-            qDebug() << "Autostart" << p << "rejected to close correctly. Kill it down.";
-        delete p;
-    }
     // modules
     ModulesMapIterator i(procMap);
     while (i.hasNext())
     {
         i.next();
         qDebug() << "Module logout" << i.key();
-        QProcess * p = i.value().process;
+        QProcess * p = i.value();
         p->blockSignals(true);
         p->terminate();
         if (!p->waitForFinished())
