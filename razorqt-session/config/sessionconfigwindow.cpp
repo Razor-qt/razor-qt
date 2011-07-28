@@ -145,6 +145,9 @@ SessionConfigWindow::SessionConfigWindow()
     
     
     // UI stuff
+    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
+    //
     connect(findWmButton, SIGNAL(clicked()), this, SLOT(findWmButton_clicked()));
     //
     connect(terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
@@ -296,4 +299,14 @@ void SessionConfigWindow::envDeleteButton_clicked()
     {
         delete i;
     }
+}
+
+void SessionConfigWindow::about()
+{
+    QMessageBox::about(this,
+                       tr("About Razor Session Config"),
+                       tr("<h1>Razor Session Config</h1>"
+                          "<p><a href=\"http://razor-qt.sf.net\">Part of the Razor Desktop</a></p>")
+                      );
+    
 }

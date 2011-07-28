@@ -55,6 +55,8 @@ private:
     void closeEvent(QCloseEvent * event);
 
 private slots:
+    void about();
+    //
     void findWmButton_clicked();
     //
     void terminalButton_clicked();
