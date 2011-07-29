@@ -584,6 +584,8 @@ int XfitMan::getWindowDesktop(Window _wid) const
     // system does not use net_wm standard we use win_workspace!
     if (getWindowProperty(_wid, atom("_NET_WM_DESKTOP"), XA_CARDINAL, &length, (unsigned char**) &data))
     {
+        if (!data)
+            return res;
         res = data[0];
         XFree(data);
     }
@@ -591,6 +593,8 @@ int XfitMan::getWindowDesktop(Window _wid) const
     {
         if (getWindowProperty(_wid, atom("_WIN_WORKSPACE"), XA_CARDINAL, &length, (unsigned char**) &data))
         {
+            if (!data)
+                return res;
             res = data[0];
             XFree(data);
         }
