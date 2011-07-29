@@ -83,9 +83,20 @@ public:
     /// A list of strings identifying the environments that should display a desktop entry.
     QStringList& environments();
 
+    /*!
+     * Returns a string description of the last error that occurred if read() returns false.
+     */
     const QString errorString() const;
 
+    /*!
+     * @brief The name of the directory for the debug XML-files.
+     */
     const QString logDir() const;
+
+    /*!
+     * @brief The name of the directory for the debug XML-files. If a directory is specified,
+     * then after you run the XdgMenu::read, you can see and check the results of the each step.
+     */
     void setLogDir(const QString& directory);
 
     static QString getMenuFileName(const QString& baseName = "applications.menu");
