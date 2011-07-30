@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     QString locale = QLocale::system().name();
     QTranslator translator;
-    translator.load(QString("%1/razor-runner_%3.qm").arg(TRANSLATIONS_DIR, locale));
+    translator.load(QString("%1/razor-runner_%2.qm").arg(TRANSLATIONS_DIR, locale));
     a.installTranslator(&translator);
 
     QWidget *hiddenPreviewParent = new QWidget(0, Qt::Tool);
