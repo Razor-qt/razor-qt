@@ -32,7 +32,7 @@
 #include <QtGui/QInputDialog>
 
 #include <razorqt/razorsettings.h>
-#include <razorqt/xdgicon.h>
+#include <qtxdg/xdgicon.h>
 
 #include "sessionconfigwindow.h"
 
