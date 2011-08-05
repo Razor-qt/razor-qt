@@ -87,12 +87,21 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
 
         QProcess* tmp = new QProcess(this);
         tmp->start(i);
+        // we have to ensure modules start before we'll process
+        // autostart (some apps may require tray for example)
+        tmp->waitForStarted();
+
         procMap[i] = tmp;
 
         connect(tmp, SIGNAL(finished(int, QProcess::ExitStatus)),
                 this, SLOT(restartModules(int, QProcess::ExitStatus)));
     }
     s.endGroup();
+
+    // HACK: ensure all is prepared and running for 3rd party apps.
+    //       There is always some chance to start an app when eg. panel won't be ready yet.
+    //       I faced this issue with qsynergy (petr).
+    sleep(2); // a guess-what constant...
 
     // start 3rd party apps without restart handling
     int count = s.beginReadArray("autostart");
