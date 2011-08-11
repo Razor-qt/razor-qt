@@ -34,5 +34,6 @@ target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} 
 INSTALL(TARGETS razor-desktop RUNTIME DESTINATION bin)
 install(DIRECTORY resources/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
 
+add_subdirectory(config)
 add_subdirectory( desktop-wm_native )
 add_subdirectory( desktop-razor )
