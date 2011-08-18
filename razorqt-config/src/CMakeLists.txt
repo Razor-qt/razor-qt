@@ -26,3 +26,4 @@ target_link_libraries ( razor-config
                 qtxdg razorqt)
 
 INSTALL(TARGETS razor-config RUNTIME DESTINATION bin)
+install(FILES razor-config.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)

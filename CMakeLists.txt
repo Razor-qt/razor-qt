@@ -13,6 +13,8 @@ add_definitions(-DRAZOR_VERSION=\"${RAZOR_VERSION}\")
 
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+include(RazorConfigRegister)
+
 
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
@@ -29,7 +31,7 @@ endif ()
 
 
 # razor-config "modules"/desktop files directory
-set(RAZOR_CONFIG_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)
+set(RAZOR_CONFIG_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config/)
 add_definitions(-DRAZOR_CONFIG_MODULES_DIR=\"${RAZOR_CONFIG_MODULES_DIR}\")
 
 

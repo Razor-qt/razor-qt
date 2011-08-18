@@ -1,0 +1,14 @@
+[Desktop Entry]
+X-SuSE-translate=true
+Encoding=UTF-8
+Type=Application
+Exec=razor-config
+Terminal=false
+Type=Application
+Categories=Settings;DesktopSettings;X-SuSE-DesktopUtility;
+Icon=package_settings
+Name=Razor Configuration Center
+Comment=Configure Razor-Qt modules
+GenericName=Razor Configuration
+
+
