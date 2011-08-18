@@ -27,6 +27,13 @@ if (CMAKE_INSTALL_PREFIX)
     add_definitions(-DSHARE_DIR=\"${CMAKE_INSTALL_PREFIX}/share/razor/\")
 endif ()
 
+
+# razor-config "modules"/desktop files directory
+set(RAZOR_CONFIG_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)
+add_definitions(-DRAZOR_CONFIG_MODULES_DIR=\"${RAZOR_CONFIG_MODULES_DIR}\")
+
+
+# main build subdirs
 add_subdirectory( librazorqt )
 add_subdirectory( razorqt-session )
 add_subdirectory( razorqt-panel )
@@ -36,6 +43,7 @@ add_subdirectory( razorqt-resources )
 #add_subdirectory( razorqt-su )
 add_subdirectory( razorqt-x11info )
 add_subdirectory( razorqt-runner )
+add_subdirectory( razorqt-config )
 
 
 ########### Add uninstall target ###############
