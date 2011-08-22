@@ -313,6 +313,7 @@ void XdgMenuReader::processDefaultAppDirsTag(QDomElement& element)
 {
     //qDebug() << "Process " << element;
     QStringList dirs = XdgDirs::dataDirs();
+    dirs.prepend(XdgDirs::dataHome(false));
 
     foreach (QString dir, dirs)
         addDirTag(element, "AppDir", dir + "/applications/");
@@ -340,6 +341,7 @@ void XdgMenuReader::processDefaultDirectoryDirsTag(QDomElement& element)
 {
     //qDebug() << "Process " << element;
     QStringList dirs = XdgDirs::dataDirs();
+    dirs.prepend(XdgDirs::dataHome(false));
 
     foreach (QString dir, dirs)
         addDirTag(element, "DirectoryDir", dir + "/desktop-directories/");
