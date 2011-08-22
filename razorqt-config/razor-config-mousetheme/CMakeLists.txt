@@ -43,7 +43,7 @@ QT4_WRAP_CPP(razor-config-mousetheme_MOCS ${razor-config-mousetheme_HDRS})
 
 add_executable ( razor-config-mousetheme ${razor-config-mousetheme_SRCS} ${razor-config-mousetheme_UIS} ${razor-config-mousetheme_MOCS} )
 add_dependencies( razor-config-mousetheme razorqt qtxdg)
-target_link_libraries ( razor-config-mousetheme  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB})
+target_link_libraries ( razor-config-mousetheme  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} ${X11_Xcursor_LIB} ${X11_Xfixes_LIB})
 
 INSTALL(TARGETS razor-config-mousetheme RUNTIME DESTINATION bin)
 install(FILES razor-config-mousetheme.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
