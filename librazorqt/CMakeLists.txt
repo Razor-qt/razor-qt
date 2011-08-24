@@ -133,7 +133,8 @@ install(TARGETS razorqxt DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razorqxt_HDRS} DESTINATION include/razorqxt)
 
 
-add_dependencies( razorqt qtxdg razorqxt )
+add_subdirectory(razormount)
+add_dependencies( razorqt qtxdg razorqxt razormount)
 
 
 find_package(Doxygen)

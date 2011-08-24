@@ -27,6 +27,7 @@ setByDefault(MAINMENU_PLUGIN    Yes )
 setByDefault(TASKBAR_PLUGIN     Yes )
 setByDefault(SCREENSAVER_PLUGIN  Yes )
 setByDefault(SHOWDESKTOP_PLUGIN Yes)
+setByDefault(MOUNT_PLUGIN Yes)
 
 # *******************************************************************
 
@@ -81,6 +82,11 @@ if (MAINMENU_PLUGIN)
   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Main menu")
   add_subdirectory( plugin-mainmenu )
 endif (MAINMENU_PLUGIN)
+
+if (MOUNT_PLUGIN)
+  set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Mount")
+  add_subdirectory( plugin-mount )
+endif (MOUNT_PLUGIN)
 
 if (TASKBAR_PLUGIN)
   set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Taskbar")

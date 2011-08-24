@@ -1,0 +1,52 @@
+find_package(UDev REQUIRED)
+
+include_directories (
+	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
+	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
+	${X11_INCLUDE_DIR}
+	${LIBMAGIC_INCLUDE_DIR}
+	.
+)
+
+set(razormount_HDRS
+    # udisks. Maybe standalone lib too?
+    diskmonitor.h
+    mount.h
+    storageitem.h
+    storagemanager.h
+)
+
+set(razormount_SRCS
+    # udisks. Maybe standalone lib too?
+    diskmonitor.cpp
+    mount.cpp
+    storageitem.cpp
+    storagemanager.cpp
+)
+
+set(razormount_MOCS
+    diskmonitor.h
+    mount.h
+    storageitem.h
+    storagemanager.h
+)
+
+QT4_WRAP_CPP(razourmount_MOCS ${razormount_MOCS})
+
+#include(RazorLibSuffix)
+
+add_library ( razormount SHARED ${razormount_SRCS} ${razourmount_MOCS} )
+
+target_link_libraries ( razormount ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+                                 ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
+                                 ${UDEV_LIBS} 
+                      )
+
+set_target_properties(razorqt PROPERTIES
+  VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
+  SOVERSION ${MAJOR_VERSION}
+)
+
+install(TARGETS razormount DESTINATION lib${LIB_SUFFIX})
+install(FILES ${razormount_HDRS} DESTINATION include/razormount)
+

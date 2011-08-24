@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Mount
+Comment=Removable media handler (USB, CD, DVD, ...)
