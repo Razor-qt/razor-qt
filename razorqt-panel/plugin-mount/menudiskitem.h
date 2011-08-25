@@ -68,8 +68,6 @@ private slots:
 
 private:
     QString m_device;
-    QString m_name;
-    QString m_devtype;
 };
 
 #endif // MENUDISKITEM_H

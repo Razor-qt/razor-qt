@@ -57,16 +57,37 @@ MenuDiskItem::MenuDiskItem(const DiskInfo &info, QWidget *parent)
     setupUi(this);
 
     m_device = info.device_name;
-    m_name = info.name;
-    m_devtype = info.raw_info["DEVTYPE"];
     
     eject->setIcon(XdgIcon::fromTheme("media-eject"));
     
-    // TODO/FIXME: better icon handling. But how?
-    if (m_devtype == "disk")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical").pixmap(diskIcon->width()));
+    int w = diskIcon->width();
+    // based on: http://wiki.xfce.org/dev/thunar-volman-udev
+    // Removable Drives (CD/DVD/Blu-ray drives, no mass storage devices)
+    if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "cd")
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical").pixmap(w));
+    else if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "dvd")
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-dvd").pixmap(w));
+    else if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "blur-ay") // just guessing here
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-blu-ray").pixmap(w));
+    else if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "dvd")
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-dvd").pixmap(w));
+    // Removable Media
+    else if (info.raw_info["DEVTYPE"] == "partition" && info.raw_info["ID_TYPE"] == "disk")
+        diskIcon->setPixmap(XdgIcon::fromTheme("drive-removable-media-usb").pixmap(w));
+    // Blank CDs and DVDs
+    else if (info.raw_info["ID_CDROM_MEDIA_STATE"] == "blank" && info.raw_info["ID_CDROM_MEDIA_CD_R"] == "1")
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-recordable").pixmap(w));
+    // Audio CDs
+    else if (info.raw_info["DKD_MEDIA_AVAILABLE"] == "1" && info.raw_info["ID_CDROM_MEDIA"] == "1")
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-audio").pixmap(w));
+    // DVDs
+    else if (info.raw_info["DKD_MEDIA_AVAILABLE"] == "1" && info.raw_info["ID_CDROM_DVD"] == "1")
+        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-dvd-video").pixmap(w));
+    // Portable Music Players
+    else if (info.raw_info["DKD_PRESENTATION_ICON_NAME"] == "multimedia-player")
+        diskIcon->setPixmap(XdgIcon::fromTheme("multimedia-player").pixmap(w));    
 
-    setLabel(m_name);
+    setLabel(info.name);
     // TODO/FIXME: how to get mount status from DeviceInfo?
     setMountStatus(false /*is_mount*/);
 }
