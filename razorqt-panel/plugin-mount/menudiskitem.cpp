@@ -39,6 +39,7 @@
 
 
 #include "menudiskitem.h"
+#include "razormount/mount.h"
 #include "qtxdg/xdgicon.h"
 
 //
@@ -88,8 +89,10 @@ MenuDiskItem::MenuDiskItem(const DiskInfo &info, QWidget *parent)
         diskIcon->setPixmap(XdgIcon::fromTheme("multimedia-player").pixmap(w));    
 
     setLabel(info.name);
-    // TODO/FIXME: how to get mount status from DeviceInfo?
-    setMountStatus(false /*is_mount*/);
+
+    // get initial mount status - isMounted() is part if mount.h
+    QStringList mountList = isMounted(m_device, MC_DEVICE);
+    setMountStatus(mountList.count());
 }
 
 void MenuDiskItem::changeEvent(QEvent *e)

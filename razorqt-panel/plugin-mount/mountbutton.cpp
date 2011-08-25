@@ -103,8 +103,6 @@ void MountButton::initialScanDevices()
 
         // add device
         _sm.addDevice(*disk);
-        // TODO/FIXME: I'm just guessing here the DEVTYPE. Udev docs are horrible...
-//        qDebug() << disk->raw_info;
         addMenuItem(*disk);
 
         StorageItem *sitem = _sm.getDevice(*disk);

@@ -230,15 +230,22 @@ QStringList isMounted(const QString &name, MountCheck check)
     QFile file("/etc/mtab");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
+        qDebug() << "isMounted: cannot open /etc/mtab";
         return return_value;
     }
 
     QTextStream in(&file);
-    while(!in.atEnd())
+    // /etc/mtab is symlink to /proc... here
+    //
+    // On Unix, there are some special system files (e.g. in /proc) for which size()
+    // will always return 0, yet you may still be able to read more data from such
+    // a file; the data is generated in direct response to you calling read(). In
+    // this case, however, you cannot use atEnd()
+    QString line = in.readLine();
+    QString value;
+    while(!line.isNull())
     {
-        QString     line  = in.readLine();
         QStringList parts = line.split(QRegExp("\\s+"));
-        QString     value;
 
         switch(check)
         {
@@ -256,6 +263,8 @@ QStringList isMounted(const QString &name, MountCheck check)
             return_value = parts;
             break;
         }
+        
+        line = in.readLine();
     }
 
     return return_value;

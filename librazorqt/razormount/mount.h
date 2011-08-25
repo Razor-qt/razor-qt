@@ -63,6 +63,11 @@ bool diskUnMount(MountingType        type,
                  const QString      &device,
                  QString            &status);
 
+/*! parse /etc/mtab and check if is the device mounted.
+If is \a check MC_DEVICE \a name should be DiskInfo.device_name.
+If is \a check MC_DIR \a name should be DiskInfo.name.
+\retval QStringList with parsed mtab line.
+*/
 QStringList isMounted(const QString &name, MountCheck check);
 
 #endif // MOUNT_H
