@@ -25,6 +25,7 @@
 #include "xcrxcur.h"
 #include "xcrtheme.h"
 
+#include <razorqt/razorsettings.h>
 
 SelectWnd::SelectWnd (QWidget *parent) : QWidget(parent) {
   setupUi(this);
@@ -45,6 +46,10 @@ SelectWnd::SelectWnd (QWidget *parent) : QWidget(parent) {
   if (!mModel->searchPaths().contains(QDir::homePath() + "/.icons") || !iconsIsWritable()) btInstall->setEnabled(false);
 
   //QTimer::singleShot(0, this, SLOT(setCurrent()));
+  
+  // RAZOR: disable non-functional buttons
+  btInstall->hide();
+  btRemove->hide();
 }
 
 
@@ -117,6 +122,12 @@ void SelectWnd::on_btSet_clicked () {
   if (!theme) return;
   applyTheme(*theme);
   fixXDefaults(theme->name());
+  
+  // RAZOR: Razor settings - session requires restart!
+  RazorSettings razor("session");
+  razor.beginGroup("environment");
+  razor.setValue("XCURSOR_THEME", theme->name());
+  razor.endGroup();
 }
 
 
