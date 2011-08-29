@@ -27,6 +27,8 @@
 
 #include <razorqt/razorsettings.h>
 
+#define HOME_ICON_DIR QDir::homePath() + "/.icons"
+
 SelectWnd::SelectWnd (QWidget *parent) : QWidget(parent) {
   setupUi(this);
 
@@ -43,13 +45,12 @@ SelectWnd::SelectWnd (QWidget *parent) : QWidget(parent) {
 
   // Disable the install button if we can't install new themes to ~/.icons,
   // or Xcursor isn't set up to look for cursor themes there
-  if (!mModel->searchPaths().contains(QDir::homePath() + "/.icons") || !iconsIsWritable()) btInstall->setEnabled(false);
+    btInstall->setEnabled(mModel->searchPaths().contains(HOME_ICON_DIR) && iconsIsWritable());
+    // TODO/FIXME: btInstall functionality
+    btInstall->hide();
+    btRemove->hide();
 
   //QTimer::singleShot(0, this, SLOT(setCurrent()));
-  
-  // RAZOR: disable non-functional buttons
-  btInstall->hide();
-  btRemove->hide();
 }
 
 
@@ -78,7 +79,7 @@ void SelectWnd::setCurrent () {
 
 
 bool SelectWnd::iconsIsWritable () const {
-  const QFileInfo icons = QFileInfo(QDir::homePath() + "/.icons");
+  const QFileInfo icons = QFileInfo(HOME_ICON_DIR);
   const QFileInfo home = QFileInfo(QDir::homePath());
   return ((icons.exists() && icons.isDir() && icons.isWritable()) || (!icons.exists() && home.isWritable()));
 }
