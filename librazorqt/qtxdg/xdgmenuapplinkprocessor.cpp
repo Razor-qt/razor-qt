@@ -101,7 +101,6 @@ void XdgMenuApplinkProcessor::step1()
         }
     }
 
-
     // Process childs menus ...............................
     foreach (XdgMenuApplinkProcessor* child, mChilds)
         child->step1();
@@ -258,9 +257,12 @@ void XdgMenuApplinkProcessor::findDesktopFiles(const QString& dirName, const QSt
 
     // Working recursively ............
     QFileInfoList dirs = dir.entryInfoList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot);
-    foreach (QFileInfo dir, dirs)
-        findDesktopFiles(dir.canonicalFilePath(), dir.fileName() + "-");
-
+    foreach (QFileInfo d, dirs)
+    {
+        QString dn = d.canonicalFilePath();
+        if (dn != dirName)
+            findDesktopFiles(dn, d.fileName() + "-");
+    }
 }
 
 
