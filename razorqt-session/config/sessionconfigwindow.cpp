@@ -62,6 +62,9 @@ SessionConfigWindow::SessionConfigWindow()
 {
     setupUi(this);
 
+    action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
+    action_Clear_changes->setIcon(XdgIcon::fromTheme("edit-undo"));
+
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-display-color"), tr("Basic Settings"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-filetype-association"), tr("Default Applications"), listWidget);

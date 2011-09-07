@@ -61,6 +61,8 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
     
+    action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
+    
     qDebug() << "Reading desktop files from dir:" << RAZOR_CONFIG_MODULES_DIR;
     
     QDirIterator it(RAZOR_CONFIG_MODULES_DIR, QStringList() << "*.desktop");

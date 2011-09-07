@@ -1,5 +1,6 @@
 [Desktop Entry]
 X-SuSE-translate=true
+OnlyShowIn=RAZOR
 Encoding=UTF-8
 Type=Application
 Exec=razor-config
