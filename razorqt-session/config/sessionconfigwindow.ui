@@ -29,8 +29,14 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::NoDragDrop</enum>
+      </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="movement">
+       <enum>QListView::Static</enum>
       </property>
       <property name="viewMode">
        <enum>QListView::IconMode</enum>
@@ -95,8 +101,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>367</width>
-                <height>152</height>
+                <width>168</width>
+                <height>110</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_4">
@@ -188,8 +194,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>381</width>
-             <height>251</height>
+             <width>348</width>
+             <height>86</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_9">
@@ -420,7 +426,7 @@
      <x>0</x>
      <y>0</y>
      <width>507</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

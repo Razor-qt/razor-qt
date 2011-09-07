@@ -29,8 +29,14 @@
         <height>16777215</height>
        </size>
       </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::NoDragDrop</enum>
+      </property>
       <property name="selectionBehavior">
        <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="movement">
+       <enum>QListView::Static</enum>
       </property>
       <property name="viewMode">
        <enum>QListView::IconMode</enum>
