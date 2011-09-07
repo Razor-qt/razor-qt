@@ -39,7 +39,7 @@ add_library ( razormount SHARED ${razormount_SRCS} ${razourmount_MOCS} )
 
 target_link_libraries ( razormount ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
                                  ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
-                                 ${UDEV_LIBS} 
+				 ${UDEV_LIBRARIES} 
                       )
 
 set_target_properties(razorqt PROPERTIES
