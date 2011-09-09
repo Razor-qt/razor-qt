@@ -1,7 +1,7 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  *
  * Razor - a lightweight, Qt based, desktop toolset
- * https://sourceforge.net/projects/razor-qt/
+ * http://razor-qt.org
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
@@ -309,7 +309,7 @@ void SessionConfigWindow::about()
     QMessageBox::about(this,
                        tr("About Razor Session Config"),
                        tr("<h1>Razor Session Config</h1>"
-                          "<p><a href=\"http://razor-qt.sf.net\">Part of the Razor Desktop</a></p>")
+                          "<p><a href=\"http://razor-qt.org\">Part of the Razor Desktop</a></p>")
                       );
     
 }
