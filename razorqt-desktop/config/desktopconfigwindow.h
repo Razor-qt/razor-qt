@@ -29,6 +29,7 @@
 #include "ui_desktopconfigwindow.h"
 
 class RazorSettings;
+class RazorSettingsCache;
 class QStringListModel;
 
 
@@ -38,16 +39,22 @@ class DesktopConfigWindow : public QMainWindow, public Ui::DesktopConfigWindow
     
 public:
     DesktopConfigWindow();
+    ~DesktopConfigWindow();
     
 private:
-    // RazorSettings are used as plain QSettings here because tha session cannot
-    // reload cfg on the fly - it requires restart (ENV, autostart...)
     RazorSettings *m_settings;
+    RazorSettingsCache *m_cache;
+
+    // display restart warning
+    bool m_restart;
 
     void closeEvent(QCloseEvent * event);
+    void restoreSettings();
 
 private slots:
     void about();
+    void clearChanges();
+    void setRestart();
 
     void desktopTypeComboBox_currentIndexChanged(int ix);
     void nativeWallpaperButton_clicked();

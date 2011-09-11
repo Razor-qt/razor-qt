@@ -58,7 +58,8 @@ QStringList findExecFiles(const QStringList &names)
 
 
 SessionConfigWindow::SessionConfigWindow()
-    : QMainWindow()
+    : QMainWindow(),
+      m_restart(false)
 {
     setupUi(this);
 
@@ -71,18 +72,55 @@ SessionConfigWindow::SessionConfigWindow()
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Autostart"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-system-session-services"), tr("Environment (Advanced)"), listWidget);
     listWidget->setCurrentRow(0);
+    
+    m_autostartModel = new QStringListModel(autostartView);
+    autostartView->setModel(m_autostartModel);
 
     m_settings = new RazorSettings("session", this);
-    
-    // basic settings ****************************************************
-    
+    m_cache = new RazorSettingsCache(m_settings);
+    restoreSettings();
+
+    // UI stuff
+    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
+    //
+    connect(findWmButton, SIGNAL(clicked()), this, SLOT(findWmButton_clicked()));
+    //
+    connect(terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
+    connect(browserButton, SIGNAL(clicked()), this, SLOT(browserButton_clicked()));
+    //
+    connect(appAddButton, SIGNAL(clicked()), this, SLOT(appAddButton_clicked()));
+    connect(appDeleteButton, SIGNAL(clicked()), this, SLOT(appDeleteButton_clicked()));
+    //
+    connect(envAddButton, SIGNAL(clicked()), this, SLOT(envAddButton_clicked()));
+    connect(envDeleteButton, SIGNAL(clicked()), this, SLOT(envDeleteButton_clicked()));
+    //
+    //
+    connect(action_Clear_changes, SIGNAL(triggered()),
+            this, SLOT(clearChanges()));
+    //
+    connect(wmComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
+    connect(wmComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
+    connect(panelCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(desktopCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(runnerCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(appswitcherCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(terminalComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
+    connect(terminalComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
+    connect(browserComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
+    connect(browserComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
+
+}
+
+void SessionConfigWindow::restoreSettings()
+{
     // window managers
     QStringList knownWMs;
     QString wm = m_settings->value("windowmanager", "openbox").toString();
     knownWMs << "openbox" << "kwin" << "windowmaker" << "e16"
              << "fvwm2";
     handleCfgComboBox(wmComboBox, knownWMs, wm);
-    
+
     // modules
     QHash<QString,QCheckBox*> modules;
     modules["razor-panel"] = panelCheckBox;
@@ -98,7 +136,6 @@ SessionConfigWindow::SessionConfigWindow()
     }
     m_settings->endGroup();
 
-    
     // default applications **********************************************
     m_settings->beginGroup("environment");
     QString terminal = m_settings->value("TERM").toString();
@@ -129,14 +166,12 @@ SessionConfigWindow::SessionConfigWindow()
     }
     m_settings->endArray();
 
-    m_autostartModel = new QStringListModel(autostartView);
-    autostartView->setModel(m_autostartModel);
     m_autostartModel->setStringList(appList);
-
 
     // environment variables (advanced) **********************************
     m_settings->beginGroup("environment");
     QString value;
+    envTreeWidget->clear();
     foreach (QString i, m_settings->childKeys())
     {
         value = m_settings->value(i).toString();
@@ -145,23 +180,17 @@ SessionConfigWindow::SessionConfigWindow()
         envTreeWidget->addTopLevelItem(item);
     }
     m_settings->endGroup();
-    
-    
-    // UI stuff
-    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
-    //
-    connect(findWmButton, SIGNAL(clicked()), this, SLOT(findWmButton_clicked()));
-    //
-    connect(terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
-    connect(browserButton, SIGNAL(clicked()), this, SLOT(browserButton_clicked()));
-    //
-    connect(appAddButton, SIGNAL(clicked()), this, SLOT(appAddButton_clicked()));
-    connect(appDeleteButton, SIGNAL(clicked()), this, SLOT(appDeleteButton_clicked()));
-    //
-    connect(envAddButton, SIGNAL(clicked()), this, SLOT(envAddButton_clicked()));
-    connect(envDeleteButton, SIGNAL(clicked()), this, SLOT(envDeleteButton_clicked()));
+}
 
+SessionConfigWindow::~SessionConfigWindow()
+{
+    delete m_cache;
+}
+
+void SessionConfigWindow::clearChanges()
+{
+    m_cache->loadToSettings();
+    restoreSettings();
 }
 
 void SessionConfigWindow::closeEvent(QCloseEvent * event)
@@ -211,12 +240,13 @@ void SessionConfigWindow::closeEvent(QCloseEvent * event)
         m_settings->setValue("BROWSER", browserComboBox->currentText());
     m_settings->endGroup();
     
-    
-    QMessageBox::information(this, tr("Session Restart Required"),
-                             tr("You need to restart desktop session (razor-session) "
-                                "to reload settings. Use logout from the main menu."
-                               )
-                            );
+    if (m_restart) {
+        QMessageBox::information(this, tr("Session Restart Required"),
+                                tr("You need to restart desktop session (razor-session) "
+                                    "to reload settings. Use logout from the main menu."
+                                    )
+                                );
+    }
 }
 
 void SessionConfigWindow::handleCfgComboBox(QComboBox * cb,
@@ -225,6 +255,7 @@ void SessionConfigWindow::handleCfgComboBox(QComboBox * cb,
                                            )
 {
     QStringList realValues = findExecFiles(availableValues);
+    cb->clear();
     cb->addItems(realValues);
     
     int ix = cb->findText(value);
@@ -252,16 +283,19 @@ void SessionConfigWindow::updateCfgComboBox(QComboBox * cb,
 void SessionConfigWindow::findWmButton_clicked()
 {
     updateCfgComboBox(wmComboBox, tr("Select a window manager"));
+    m_restart = true;
 }
 
 void SessionConfigWindow::terminalButton_clicked()
 {
     updateCfgComboBox(terminalComboBox, tr("Select a terminal emulator"));
+    m_restart = true;
 }
 
 void SessionConfigWindow::browserButton_clicked()
 {
     updateCfgComboBox(browserComboBox, tr("Select a web browser"));
+    m_restart = true;
 }
 
 void SessionConfigWindow::appAddButton_clicked()
@@ -278,6 +312,7 @@ void SessionConfigWindow::appAddButton_clicked()
     l.append(fname);
     l.removeDuplicates();
     m_autostartModel->setStringList(l);
+    m_restart = true;
 }
 
 void SessionConfigWindow::appDeleteButton_clicked()
@@ -286,6 +321,7 @@ void SessionConfigWindow::appDeleteButton_clicked()
     int ix = autostartView->currentIndex().row();
     l.removeAt(ix);
     m_autostartModel->setStringList(l);
+    m_restart = true;
 }
 
 void SessionConfigWindow::envAddButton_clicked()
@@ -294,6 +330,7 @@ void SessionConfigWindow::envAddButton_clicked()
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     envTreeWidget->addTopLevelItem(item);
     envTreeWidget->setCurrentItem(item);
+    m_restart = true;
 }
 
 void SessionConfigWindow::envDeleteButton_clicked()
@@ -302,6 +339,7 @@ void SessionConfigWindow::envDeleteButton_clicked()
     {
         delete i;
     }
+    m_restart = true;
 }
 
 void SessionConfigWindow::about()
@@ -313,3 +351,9 @@ void SessionConfigWindow::about()
                       );
     
 }
+
+void SessionConfigWindow::setRestart()
+{
+    m_restart = true;
+}
+
