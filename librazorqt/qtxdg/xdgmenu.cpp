@@ -122,7 +122,7 @@ QString XdgMenu::menuFileName() const
 /************************************************
 
  ************************************************/
-QStringList& XdgMenu::environments()
+QStringList XdgMenu::environments()
 {
     Q_D(XdgMenu);
     return d->mEnvironments;
