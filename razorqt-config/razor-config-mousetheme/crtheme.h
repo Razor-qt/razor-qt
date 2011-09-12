@@ -102,7 +102,7 @@ protected:
   QString mPath;
   QString mSample;
   mutable QPixmap mIcon;
-  bool mHidden:1;
+  bool mHidden;
   uint mHash;
   QStringList mInherits;
 };
