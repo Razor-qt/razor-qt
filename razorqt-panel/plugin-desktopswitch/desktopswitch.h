@@ -29,6 +29,7 @@
 
 #include "../panel/razorpanelplugin.h"
 
+class QSignalMapper;
 class QButtonGroup;
 
 /**
@@ -45,11 +46,13 @@ public:
     
 private:
     QButtonGroup * m_buttons;
+    QSignalMapper* m_pSignalMapper ; 
 
     void wheelEvent(QWheelEvent* e);
 
 private slots:
     void setDesktop(int desktop);
+    
 
 };
 

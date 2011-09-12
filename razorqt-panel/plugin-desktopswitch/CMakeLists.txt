@@ -15,6 +15,7 @@ set(MOCS
   desktopswitch.h
 )
 
+set(LIBRARIES ${LIBRARIES} ${CMAKE_BINARY_DIR}/librazorqt/librazorqxt.so )
 
 #*******************************************
 include ("../BuildPlugin.cmake")
