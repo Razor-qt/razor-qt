@@ -5,7 +5,7 @@ Maintainer: Alexander Sokolov <sokoloff.a@gmail.com>
 Build-Depends: debhelper (>= 7.0.50~), pkg-config, cmake, 
   libqt4-dev (>= 4.5.1), libmagic-dev, libxrender-dev, libxcomposite-dev, libxdamage-dev
 Standards-Version: 3.8.4
-Homepage: http://razor-qt.sourceforge.net
+Homepage: http://razor-qt.org
 
 Package: %NAME%
 Architecture: any

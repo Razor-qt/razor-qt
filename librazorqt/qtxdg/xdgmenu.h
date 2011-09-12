@@ -1,7 +1,7 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  *
  * Razor - a lightweight, Qt based, desktop toolset
- * https://sourceforge.net/projects/razor-qt/
+ * http://razor-qt.org
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
@@ -81,7 +81,7 @@ public:
     QDomElement findMenu(QDomElement& baseElement, const QString& path, bool createNonExisting);
 
     /// A list of strings identifying the environments that should display a desktop entry.
-    QStringList& environments();
+    QStringList environments();
 
     /*!
      * Returns a string description of the last error that occurred if read() returns false.

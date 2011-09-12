@@ -1,7 +1,7 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  *
  * Razor - a lightweight, Qt based, desktop toolset
- * https://sourceforge.net/projects/razor-qt/
+ * http://razor-qt.org
  *
  * Copyright: 2010-2011 Razor team
  * Authors:

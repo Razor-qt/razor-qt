@@ -3,7 +3,7 @@
 
 NAME='razor-qt'
 KEY='29EE0D60'
-SVN='https://razor-qt.svn.sourceforge.net/svnroot/razor-qt/trunk'
+SVN='http://razor-qt.org'
 RELEASES="maverick natty"
 
 
