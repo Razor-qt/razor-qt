@@ -38,7 +38,8 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(ShowDesktop)
 
 
 ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent)
+    : RazorPanelPlugin(startInfo, parent),
+    m_bInDesktopMode( false )
 {
     setObjectName("ShowDesktop");
     
@@ -63,7 +64,8 @@ ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
 
 void ShowDesktop::showDesktop()
 {
+    m_bInDesktopMode = !m_bInDesktopMode ; 
     xfitMan().clientMessage(QX11Info::appRootWindow(),
                             xfitMan().atom("_NET_SHOWING_DESKTOP"),
-                            (unsigned long) 1, 0,0,0,0);
+                            (unsigned long) m_bInDesktopMode, 0,0,0,0);
 }

@@ -43,6 +43,7 @@ public:
 
 private:
     QxtGlobalShortcut * m_key;
+    bool m_bInDesktopMode ; 
 
 private slots:
     void showDesktop();
