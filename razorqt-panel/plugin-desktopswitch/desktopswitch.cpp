@@ -28,28 +28,42 @@
 #include <QToolButton>
 #include <QWheelEvent>
 #include <QtDebug>
+#include <QSignalMapper>
 #include <razorqt/xfitman.h>
+#include <razorqxt/qxtglobalshortcut.h>
+
 
 #include "desktopswitch.h"
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(DesktopSwitch)
 
 DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent)
+    : RazorPanelPlugin(startInfo, parent),
+    m_pSignalMapper(new QSignalMapper(this))
 {
     setObjectName("DesktopSwitch");
     m_buttons = new QButtonGroup(this);
 
     QString mask("%1");
     int numDesk = qMax(xfitMan().getNumDesktop(), 1);
+    int firstKey = Qt::Key_F1 ; 
     for (int i = 0; i < numDesk; ++i)
     {
+        QxtGlobalShortcut * pS = new QxtGlobalShortcut(this);
+        pS ->setShortcut(QKeySequence(Qt::CTRL + firstKey++));
+        
+        connect ( pS, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ; 
+        m_pSignalMapper->setMapping( pS, i);
+        
         QToolButton * m = new QToolButton(this);
         m->setText(mask.arg(i+1));
         m->setCheckable(true);
         addWidget(m);
         m_buttons->addButton(m, i);
     }
+    
+    connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));
+
 
     int activeDesk = qMax(xfitMan().getActiveDesktop(), 0);
     m_buttons->button(activeDesk)->setChecked(true);
@@ -88,3 +102,5 @@ void DesktopSwitch::wheelEvent(QWheelEvent* e)
 
     xfitMan().setActiveDesktop(current);
 }
+
+

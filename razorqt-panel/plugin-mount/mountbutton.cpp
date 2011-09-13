@@ -188,7 +188,7 @@ void MountButton::showMessage(const QString &text)
 
 void MountButton::showError(const QString &text)
 {
-    QToolTip::showText(mapToGlobal(QPoint(0, 0)), "<b>" + tr("MountTray Error") + "</b><hr>" + text);
+    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<b>Error:</b><hr>%1").arg(text), this);
 }
 
 /**************************************************************************************************/
@@ -199,14 +199,14 @@ void MountButton::onDiskAdded(DiskInfo info)
 {
     _sm.addDevice(info);
     addMenuItem(info);
-    showMessage(tr("Device connected:<br> <b>%1</b>").arg(info.name));
+    showMessage(tr("Device connected:<br> <b><nobr>%1</nobr></b>").arg(info.name));
 }
 
 void MountButton::onDiskRemoved(DiskInfo info)
 {
     _sm.removeDevice(info);
     removeMenuItem(info.device_name);
-    showMessage(tr("Device removed:<br> <b>%1</b>").arg(info.name));
+    showMessage(tr("Device removed:<br> <b><nobr>%1</nobr></b>").arg(info.name));
 }
 
 void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
