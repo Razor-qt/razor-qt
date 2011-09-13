@@ -42,6 +42,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
 #include <QtCore/QUrl>
+#include <QtGui/QToolTip>
 
 #include "qtxdg/xdgicon.h"
 #include "mountbutton.h"
@@ -186,6 +187,7 @@ void MountButton::showMessage(const QString &text)
     // TODO/FIXME: messaging!
     //_tray_icon.showMessage("MountTray", text);
     qDebug() << "MESSAGE" << text;
+    QToolTip::showText(mapToGlobal(pos()), text, this);
 }
 
 void MountButton::showError(const QString &text)
@@ -193,6 +195,7 @@ void MountButton::showError(const QString &text)
     // TODO/FIXME: messaging!
 //    _tray_icon.showMessage("MountTray Error", text, QSystemTrayIcon::Critical);
     qDebug() << "ERRMSG" << text;
+    QToolTip::showText(mapToGlobal(pos()), QString("<b>Error:</b> %1").arg(text), this);
 }
 
 /**************************************************************************************************/
