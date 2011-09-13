@@ -63,6 +63,7 @@ typedef struct _DiskInfo {
     QMap(("DEVLINKS", "/dev/scd0 /dev/disk/by-id/ata-VBOX_CD-ROM_VB2-01700376 /dev/disk/by-path/pci-0000:00:01.1-scsi-1:0:0:0 /dev/disk/by-label/FreeBSD_Install /dev/cdrom /dev/dvd")("DEVNAME", "/dev/sr0")("DEVPATH", "/devices/pci0000:00/0000:00:01.1/host2/target2:0:0/2:0:0:0/block/sr0")("DEVTYPE", "disk")("GENERATED", "1")("ID_ATA", "1")("ID_BUS", "ata")("ID_CDROM", "1")("ID_CDROM_DVD", "1")("ID_CDROM_MEDIA", "1")("ID_CDROM_MEDIA_CD", "1")("ID_CDROM_MEDIA_SESSION_COUNT", "1")("ID_CDROM_MEDIA_TRACK_COUNT", "1")("ID_CDROM_MEDIA_TRACK_COUNT_DATA", "1")("ID_CDROM_MRW", "1")("ID_CDROM_MRW_W", "1")("ID_FS_LABEL", "FreeBSD_Install")("ID_FS_LABEL_ENC", "FreeBSD_Install")("ID_FS_TYPE", "iso9660")("ID_FS_USAGE", "filesystem")("ID_MODEL", "VBOX_CD-ROM")("ID_MODEL_ENC", "VBOX\x20CD-ROM\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20")("ID_PATH", "pci-0000:00:01.1-scsi-1:0:0:0")("ID_REVISION", "1.0")("ID_SERIAL", "VBOX_CD-ROM_VB2-01700376")("ID_SERIAL_SHORT", "VB2-01700376")("ID_TYPE", "cd")("MAJOR", "11")("MINOR", "0")("REMOVABLE", "1")("SUBSYSTEM", "block")("TAGS", ":udev-acl:")("UDEV_LOG", "3")("UDISKS_PARTITION_SIZE", "")("UDISKS_PRESENTATION_NOPOLICY", "0")) 
     */
     QUdevInfo raw_info;         // Associtive massive of all udev's ops
+    QString iconName() const;
 } DiskInfo;
 
 class DiskMonitor : public QThread
@@ -93,4 +94,7 @@ private:
 
 };
 
+
+QDebug operator<<(QDebug dbg, const _DiskInfo &info);
+QDebug operator<<(QDebug dbg, const _DiskInfo *info);
 #endif // DISKMONITOR_H

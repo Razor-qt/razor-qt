@@ -57,6 +57,49 @@
 
 #include "diskmonitor.h"
 
+QString DiskInfo::iconName() const
+{
+    // based on: http://wiki.xfce.org/dev/thunar-volman-udev
+    // Removable Drives (CD/DVD/Blu-ray drives, no mass storage devices)
+    if (raw_info["DEVTYPE"] == "disk" && raw_info["ID_TYPE"] == "cd")
+        return "media-optical";
+
+    else if (raw_info["DEVTYPE"] == "disk" && raw_info["ID_TYPE"] == "dvd")
+        return "media-optical-dvd";
+
+    else if (raw_info["DEVTYPE"] == "disk" && raw_info["ID_TYPE"] == "blur-ay") // just guessing here
+        return "media-optical-blu-ray";
+
+    else if (raw_info["DEVTYPE"] == "disk" && raw_info["ID_TYPE"] == "dvd")
+        return "media-optical-dvd";
+
+    // Removable HDD
+    else if (raw_info["DEVTYPE"] == "partition" && raw_info["ID_TYPE"] == "disk")
+        return "drive-removable-media-usb";
+
+    // Removable Drive
+    else if (raw_info["DEVTYPE"] == "disk" && raw_info["ID_TYPE"] == "disk")
+        return "drive-removable-media-usb-pendrive";
+
+    // Blank CDs and DVDs
+    else if (raw_info["ID_CDROM_MEDIA_STATE"] == "blank" && raw_info["ID_CDROM_MEDIA_CD_R"] == "1")
+        return "media-optical-recordable";
+
+    // Audio CDs
+    else if (raw_info["DKD_MEDIA_AVAILABLE"] == "1" && raw_info["ID_CDROM_MEDIA"] == "1")
+        return "media-optical-audio";
+
+    // DVDs
+    else if (raw_info["DKD_MEDIA_AVAILABLE"] == "1" && raw_info["ID_CDROM_DVD"] == "1")
+        return "media-optical-dvd-video";
+
+    // Portable Music Players
+    else if (raw_info["DKD_PRESENTATION_ICON_NAME"] == "multimedia-player")
+        return "multimedia-player";
+
+    return "";
+}
+
 DiskMonitor::DiskMonitor(QObject *parent) : QThread(parent)
 {
     _udev    = NULL;
@@ -325,3 +368,37 @@ QList<DiskInfo *> DiskMonitor::scanDevices()
     return disks;
 }
 
+QDebug operator<<(QDebug dbg, const _DiskInfo &info)
+{
+
+    QString name;               // Unified field for display device name
+    QString device_name;        // Full device name with path like '/dev/sda1'
+    QString model_name;         // Hardware model like 'ST9160827AS'
+    QString file_system_type;   // File system name like 'vfat'
+    QString file_system_label;  // Label, if set
+    QString file_system_size;
+
+    QString s;
+    s+=QString("name: %1\n").arg(info.name);
+    s+=QString("device_name: %1\n").arg(info.device_name);
+    s+=QString("model_name: %1\n").arg(info.model_name);
+    s+=QString("file_system_type: %1\n").arg(info.file_system_type);
+    s+=QString("file_system_label: %1\n").arg(info.file_system_label);
+    s+=QString("file_system_size: %1\n").arg(info.file_system_size);
+
+    s+=QString("raw_info:\n");
+
+    QMapIterator<QString, QString> i(info.raw_info);
+    while (i.hasNext()) {
+         i.next();
+         s+=QString("  %1: %2\n").arg(i.key(), i.value());
+     }
+
+    dbg.nospace() << s;
+    return dbg.space();
+}
+
+QDebug operator<<(QDebug dbg, const _DiskInfo *info)
+{
+    return operator<<(dbg, *info);
+}

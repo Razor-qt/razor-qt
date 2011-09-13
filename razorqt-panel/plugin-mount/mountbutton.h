@@ -87,6 +87,7 @@ private:
     StorageManager _sm;
 
     RazorPanel *m_panel;
+    bool mInitialized;
 
 };
 

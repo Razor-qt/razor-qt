@@ -60,33 +60,13 @@ MenuDiskItem::MenuDiskItem(const DiskInfo &info, QWidget *parent)
     m_device = info.device_name;
     
     eject->setIcon(XdgIcon::fromTheme("media-eject"));
-    
     int w = diskIcon->width();
-    // based on: http://wiki.xfce.org/dev/thunar-volman-udev
-    // Removable Drives (CD/DVD/Blu-ray drives, no mass storage devices)
-    if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "cd")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical").pixmap(w));
-    else if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "dvd")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-dvd").pixmap(w));
-    else if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "blur-ay") // just guessing here
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-blu-ray").pixmap(w));
-    else if (info.raw_info["DEVTYPE"] == "disk" && info.raw_info["ID_TYPE"] == "dvd")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-dvd").pixmap(w));
-    // Removable Media
-    else if (info.raw_info["DEVTYPE"] == "partition" && info.raw_info["ID_TYPE"] == "disk")
+    QString iconName = info.iconName();
+
+    if (!iconName.isEmpty())
+        diskIcon->setPixmap(XdgIcon::fromTheme(iconName).pixmap(w));
+    else
         diskIcon->setPixmap(XdgIcon::fromTheme("drive-removable-media-usb").pixmap(w));
-    // Blank CDs and DVDs
-    else if (info.raw_info["ID_CDROM_MEDIA_STATE"] == "blank" && info.raw_info["ID_CDROM_MEDIA_CD_R"] == "1")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-recordable").pixmap(w));
-    // Audio CDs
-    else if (info.raw_info["DKD_MEDIA_AVAILABLE"] == "1" && info.raw_info["ID_CDROM_MEDIA"] == "1")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-audio").pixmap(w));
-    // DVDs
-    else if (info.raw_info["DKD_MEDIA_AVAILABLE"] == "1" && info.raw_info["ID_CDROM_DVD"] == "1")
-        diskIcon->setPixmap(XdgIcon::fromTheme("media-optical-dvd-video").pixmap(w));
-    // Portable Music Players
-    else if (info.raw_info["DKD_PRESENTATION_ICON_NAME"] == "multimedia-player")
-        diskIcon->setPixmap(XdgIcon::fromTheme("multimedia-player").pixmap(w));    
 
     setLabel(info.name);
 
@@ -115,7 +95,6 @@ void MenuDiskItem::setLabel(const QString &text)
         label = m_device;
     }
 
-    label = QString("<a href=\"%1\">%1</a>").arg(label);
     diskLabel->setText(label);
 }
 

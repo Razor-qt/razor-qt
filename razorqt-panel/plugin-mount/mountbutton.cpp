@@ -42,6 +42,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
 #include <QtCore/QUrl>
+#include <QtGui/QToolTip>
 
 #include "qtxdg/xdgicon.h"
 #include "mountbutton.h"
@@ -49,14 +50,16 @@
 
 MountButton::MountButton(QWidget * parent, RazorPanel *panel)
     : QToolButton(parent),
-      m_panel(panel)
+      m_panel(panel),
+      mInitialized(false)
 {
     if (!QDBusConnection::systemBus().isConnected())
     {
         qDebug() << "Can't connect to dbus daemon. Some functions will be omited";
     }
 
-    setIcon(XdgIcon::fromTheme("emblem-mounted"));
+    setIcon(XdgIcon::fromTheme("drive-removable-media-usb"));
+    setToolTip(tr("Removable media/devices manager"));
 
     // Display disk menu
     m_menu = new QMenu(this);
@@ -73,9 +76,6 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel)
                                   "DeviceChanged",
                                   this,
                                   SLOT(onDbusDeviceChangesMessage(QDBusObjectPath)));
-
-    // Scan already connected devices
-    initialScanDevices();
 
     connect(this, SIGNAL(clicked()), this, SLOT(showMenu()));
 
@@ -96,11 +96,11 @@ MountButton::~MountButton()
 
 void MountButton::initialScanDevices()
 {
+    mInitialized = true;
     QList<DiskInfo*> devices = _dm.scanDevices();
     for (int i = 0; i < devices.count(); i++)
     {
         DiskInfo *disk = devices.at(i);
-
         // add device
         _sm.addDevice(*disk);
         addMenuItem(*disk);
@@ -183,16 +183,12 @@ void MountButton::updateMenuItem(const QString &device, const QString &name, boo
 
 void MountButton::showMessage(const QString &text)
 {
-    // TODO/FIXME: messaging!
-    //_tray_icon.showMessage("MountTray", text);
-    qDebug() << "MESSAGE" << text;
+    QToolTip::showText(mapToGlobal(QPoint(0, 0)), text);
 }
 
 void MountButton::showError(const QString &text)
 {
-    // TODO/FIXME: messaging!
-//    _tray_icon.showMessage("MountTray Error", text, QSystemTrayIcon::Critical);
-    qDebug() << "ERRMSG" << text;
+    QToolTip::showText(mapToGlobal(QPoint(0, 0)), "<b>" + tr("MountTray Error") + "</b><hr>" + text);
 }
 
 /**************************************************************************************************/
@@ -203,14 +199,14 @@ void MountButton::onDiskAdded(DiskInfo info)
 {
     _sm.addDevice(info);
     addMenuItem(info);
-    showMessage(tr("Device connected: %1").arg(info.device_name));
+    showMessage(tr("Device connected:<br> <b>%1</b>").arg(info.name));
 }
 
 void MountButton::onDiskRemoved(DiskInfo info)
 {
     _sm.removeDevice(info);
     removeMenuItem(info.device_name);
-    showMessage(tr("Device removed: %1").arg(info.device_name));
+    showMessage(tr("Device removed:<br> <b>%1</b>").arg(info.name));
 }
 
 void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
@@ -321,6 +317,10 @@ void MountButton::onMediaEject(const QString &device)
 
 void MountButton::showMenu()
 {
+    // Scan already connected devices
+    if (!mInitialized)
+        initialScanDevices();
+
     // TODO/FIXME: shared code with MainMenu plugin. How to share? Something like "menubutton base class"?
     int x, y;
 
