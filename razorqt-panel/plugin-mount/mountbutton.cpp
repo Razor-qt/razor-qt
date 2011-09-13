@@ -57,7 +57,8 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel)
         qDebug() << "Can't connect to dbus daemon. Some functions will be omited";
     }
 
-    setIcon(XdgIcon::fromTheme("emblem-mounted"));
+    setIcon(XdgIcon::fromTheme("drive-removable-media-usb"));
+    setToolTip(tr("Removable media/devices manager"));
 
     // Display disk menu
     m_menu = new QMenu(this);
