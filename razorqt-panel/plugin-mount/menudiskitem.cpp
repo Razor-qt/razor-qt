@@ -95,6 +95,7 @@ void MenuDiskItem::setLabel(const QString &text)
         label = m_device;
     }
 
+    label = QString("<a href=\"%1\">%1</a>").arg(label);
     diskLabel->setText(label);
 }
 
