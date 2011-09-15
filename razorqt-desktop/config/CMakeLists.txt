@@ -25,4 +25,6 @@ target_link_libraries ( razor-config-desktop  ${QT_QTCORE_LIBRARY}
 INSTALL(TARGETS razor-config-desktop RUNTIME DESTINATION bin)
 install(FILES razor-config-desktop.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 
-razor_config_register(${CMAKE_INSTALL_PREFIX}/share/applications/razor-config-desktop.desktop)
+#razor_config_register(${CMAKE_INSTALL_PREFIX}/share/applications/razor-config-desktop.desktop)
+razor_config_register(razor-config-desktop.desktop)
+
