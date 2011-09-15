@@ -1,11 +1,9 @@
 [Desktop Entry]
 X-SuSE-translate=true
-OnlyShowIn=RAZOR
-Encoding=UTF-8
+OnlyShowIn=RAZOR;
 Type=Application
 Exec=razor-config
 Terminal=false
-Type=Application
 Categories=Settings;DesktopSettings;X-SuSE-DesktopUtility;
 Icon=package_settings
 Name=Razor Configuration Center

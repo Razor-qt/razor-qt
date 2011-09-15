@@ -38,6 +38,7 @@ static QHash<QString, QString> alternatives;
 
 ///////////////////////////////////////////////////////////////////////////////
 XCursorThemeData::XCursorThemeData (const QDir &aDir) {
+    mHidden = false;
   // parse configs, etc
   mPath = aDir.path();
   setName(aDir.dirName());
@@ -52,7 +53,10 @@ void XCursorThemeData::parseIndexFile () {
   if (cfg.contains("icon theme/name")) mTitle = cfg.values("icon theme/name").at(0).trimmed();
   if (cfg.contains("icon theme/comment")) mDescription = cfg.values("icon theme/comment").at(0).trimmed();
   if (cfg.contains("icon theme/example")) mSample = cfg.values("icon theme/example").at(0).trimmed();
-  //if (cfg.contains("icon theme/hidden")) mSample = cfg["icon theme/hidden"];
+  if (cfg.contains("icon theme/hidden")) {
+      QString hiddenValue = cfg.values("icon theme/hidden").at(0).toLower();
+      mHidden = hiddenValue=="false" ? false : true;
+  }
   if (cfg.contains("icon theme/inherits")) {
     QStringList i = cfg.values("icon theme/inherits"), res;
     for (int f = i.size()-1; f >= 0; f--) res << i.at(f).trimmed();

@@ -81,7 +81,7 @@ public:
     QDomElement findMenu(QDomElement& baseElement, const QString& path, bool createNonExisting);
 
     /// A list of strings identifying the environments that should display a desktop entry.
-    QStringList& environments();
+    QStringList environments();
 
     /*!
      * Returns a string description of the last error that occurred if read() returns false.

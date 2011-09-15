@@ -35,7 +35,8 @@
 
 
 DesktopConfigWindow::DesktopConfigWindow()
-    : QMainWindow()
+    : QMainWindow(),
+      m_restart(false)
 {
     setupUi(this);
     
@@ -47,21 +48,52 @@ DesktopConfigWindow::DesktopConfigWindow()
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-personal"), tr("WM Native Desktop"), listWidget);
     listWidget->setCurrentRow(0);
     
-    m_settings = new RazorSettings("desktop", this);
+    desktopTypeComboBox->addItem("Razor Desktop", "razor");
+    desktopTypeComboBox->addItem("Window Manager Native", "wm_native");
     
+    m_settings = new RazorSettings("desktop", this);
+    m_cache = new RazorSettingsCache(m_settings);
+    restoreSettings();
+    
+    connect(action_Clear_changes, SIGNAL(triggered()),
+            this, SLOT(clearChanges()));
+    connect(desktopTypeComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(desktopTypeComboBox_currentIndexChanged(int)));
+    // UI stuff
+    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
+    //
+    connect(nativeWallpaperButton, SIGNAL(clicked()), this, SLOT(nativeWallpaperButton_clicked()));
+    //
+    // notify it needs restart
+    connect(singleclickButton, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(doubleclickButton, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(nativeIconsCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(nativeWallpaperEdit, SIGNAL(textChanged(const QString&)), this, SLOT(setRestart()));
+}
+
+DesktopConfigWindow::~DesktopConfigWindow()
+{
+    delete m_cache;
+}
+
+void DesktopConfigWindow::clearChanges()
+{
+    m_cache->loadToSettings();
+    restoreSettings();
+}
+
+void DesktopConfigWindow::restoreSettings()
+{
     // basic settings ****************************************************
 
     QString desktopType = m_settings->value("desktop", "razor").toString();
-    desktopTypeComboBox->addItem("Razor Desktop", "razor");
-    desktopTypeComboBox->addItem("Window Manager Native", "wm_native");
+
     int ix = desktopTypeComboBox->findData(desktopType);
     if (ix == -1)
         ix = 0;
     desktopTypeComboBox->setCurrentIndex(ix);
     desktopTypeComboBox_currentIndexChanged(ix);
-
-    connect(desktopTypeComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(desktopTypeComboBox_currentIndexChanged(int)));
     
     QString clickType = m_settings->value("icon-launch", "singleclick").toString();
     if (clickType == "singleclick")
@@ -77,11 +109,7 @@ DesktopConfigWindow::DesktopConfigWindow()
     nativeIconsCheckBox->setChecked(wmIcons);
     m_settings->endGroup();
     
-    // UI stuff
-    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
-    //
-    connect(nativeWallpaperButton, SIGNAL(clicked()), this, SLOT(nativeWallpaperButton_clicked()));
+    m_restart = false;
 }
 
 void DesktopConfigWindow::closeEvent(QCloseEvent * event)
@@ -94,6 +122,9 @@ void DesktopConfigWindow::closeEvent(QCloseEvent * event)
     m_settings->setValue("icons", nativeIconsCheckBox->isChecked());
     m_settings->endGroup();
     
+    if (!m_restart)
+        return;
+
     if (QMessageBox::question(this, tr("Restart Desktop Module?"),
                             tr("Razor Desktop module needs to be restarted to apply changes. Restart?"),
                             QMessageBox::Yes, QMessageBox::No)
@@ -130,6 +161,8 @@ void DesktopConfigWindow::desktopTypeComboBox_currentIndexChanged(int ix)
                                      )
                                   );
     }
+    
+    m_restart = true;
 }
 
 void DesktopConfigWindow::nativeWallpaperButton_clicked()
@@ -140,4 +173,9 @@ void DesktopConfigWindow::nativeWallpaperButton_clicked()
         return;
     
     nativeWallpaperEdit->setText(fname);
+}
+
+void DesktopConfigWindow::setRestart()
+{
+    m_restart = true;
 }

@@ -29,6 +29,7 @@
 #include "ui_sessionconfigwindow.h"
 
 class RazorSettings;
+class RazorSettingsCache;
 class QStringListModel;
 
 
@@ -38,12 +39,16 @@ class SessionConfigWindow : public QMainWindow, public Ui::SessionConfigWindow
     
 public:
     SessionConfigWindow();
+    ~SessionConfigWindow();
     
 private:
     // RazorSettings are used as plain QSettings here because tha session cannot
     // reload cfg on the fly - it requires restart (ENV, autostart...)
     RazorSettings *m_settings;
+    RazorSettingsCache *m_cache;
     QStringListModel *m_autostartModel;
+    // display restart warning
+    bool m_restart;
 
     void handleCfgComboBox(QComboBox * cb,
                            const QStringList &availableValues,
@@ -53,6 +58,8 @@ private:
     void updateCfgComboBox(QComboBox * cb, const QString &prompt);
 
     void closeEvent(QCloseEvent * event);
+
+    void restoreSettings();
 
 private slots:
     void about();
@@ -67,7 +74,9 @@ private slots:
     //
     void envAddButton_clicked();
     void envDeleteButton_clicked();
-
+    //
+    void clearChanges();
+    void setRestart();
 };
 
 #endif

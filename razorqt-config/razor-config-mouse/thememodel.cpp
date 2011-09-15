@@ -186,7 +186,7 @@ bool XCursorThemeModel::handleDefault (const QDir &themeDir) {
   return false;
 }
 
-
+//#define DUMP_FOUND_THEMES
 void XCursorThemeModel::processThemeDir (const QDir &themeDir) {
 #ifdef DUMP_FOUND_THEMES
   qDebug() << "looking at:" << themeDir.path();
@@ -199,7 +199,10 @@ void XCursorThemeModel::processThemeDir (const QDir &themeDir) {
   }
   // If the directory doesn't have a cursors subdir and lacks an
   // index.theme file it can't be a cursor theme.
-  if (!themeDir.exists("index.theme") && !haveCursors) return;
+  if (!themeDir.exists("index.theme") && !haveCursors) {
+//      qDebug() << "IS NOT THEME" << themeDir;
+      return;
+  }
   // Create a cursor theme object for the theme dir
   XCursorThemeData *theme = new XCursorThemeData(themeDir);
   // Skip this theme if it's hidden
@@ -213,6 +216,7 @@ void XCursorThemeModel::processThemeDir (const QDir &themeDir) {
   ;
 #endif
   if (theme->isHidden()) {
+//      qDebug() << "HIDDEN THEME" << theme->name() << themeDir;
     delete theme;
     return;
   }
@@ -235,18 +239,21 @@ void XCursorThemeModel::insertThemes () {
   // Scan each base dir for Xcursor themes and add them to the list
   foreach (const QString &baseDir, searchPaths()) {
     QDir dir(baseDir);
+//      qDebug() << "TOPLEVEL" << baseDir;
     if (!dir.exists()) continue;
+//        qDebug() << "    continue passed";
     // Process each subdir in the directory
     foreach (const QString &name, dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Readable | QDir::Executable)) {
+//        qDebug() << " SUBDIR" << name;
       // Don't process the theme if a theme with the same name already exists
       // in the list. Xcursor will pick the first one it finds in that case,
       // and since we use the same search order, the one Xcursor picks should
       // be the one already in the list
       if (hasTheme(name)) {
-        //k8:qDebug() << "duplicate theme:" << dir.path()+name;
+        qDebug() << "duplicate theme:" << dir.path()+name;
       }
       if (!dir.cd(name)) {
-        //k8:qDebug() << "can't cd:" << dir.path()+name;
+        qDebug() << "can't cd:" << dir.path()+name;
         continue;
       }
       processThemeDir(dir);

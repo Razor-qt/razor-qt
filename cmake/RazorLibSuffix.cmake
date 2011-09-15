@@ -1,5 +1,5 @@
 # some system (rpm builds) setup LIB_SUFFIX for cmake. If there is no set, try to get it from system
-IF (NOT DEFINED LIB_SUFFIX)
+IF (NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)
     MESSAGE(STATUS "*********************************************************************")
     MESSAGE(STATUS "LIB_SUFFIX variable is not defined. It will be autodetected now")
     MESSAGE(STATUS "You can set it manually with -DLIB_SUFFIX=<value> (64 for example)")
@@ -18,7 +18,11 @@ IF (NOT DEFINED LIB_SUFFIX)
     else()
         set(LIB_SUFFIX "")
     endif()
+    
+    set(LIB_SUFFIX_ALREADY_SET 1)
 
     message(STATUS "LIB_SUFFIX autodetected as '${LIB_SUFFIX}', libraries will be installed into ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
     MESSAGE(STATUS "*********************************************************************")
-ENDIF (NOT DEFINED LIB_SUFFIX)
+#else ()
+#    message(STATUS "LIB_SUFFIX_ALREADY_SET run: ${LIB_SUFFIX}")
+ENDIF (NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)

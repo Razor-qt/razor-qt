@@ -7,7 +7,7 @@ install(DIRECTORY graphics DESTINATION share/razor/ PATTERN ".svn" EXCLUDE)
 # this file should be enough but it needs testing...
 set(SESSION_FILES
     sys/razor.desktop
-    sys/razor-eggwm.desktop
+#    sys/razor-eggwm.desktop
     sys/razor-openbox.desktop
 )
 

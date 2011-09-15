@@ -31,6 +31,9 @@
 #include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
 
+#include <X11/Xatom.h>
+#include <X11/Xlib.h>
+
 #include "showdesktop.h"
 
 
@@ -63,7 +66,18 @@ ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
 
 void ShowDesktop::showDesktop()
 {
-    xfitMan().clientMessage(QX11Info::appRootWindow(),
-                            xfitMan().atom("_NET_SHOWING_DESKTOP"),
-                            (unsigned long) 1, 0,0,0,0);
+    bool bDesktopShown=false;
+    Atom actual_type;
+    int actual_format, error;
+    Atom _NET_SHOWING_DESKTOP = xfitMan().atom("_NET_SHOWING_DESKTOP" ) ; 
+    unsigned char * data ; 
+    unsigned long nitems, after;
+    error = XGetWindowProperty(QX11Info::display(), QX11Info::appRootWindow(), _NET_SHOWING_DESKTOP, 0, 1, false, XA_CARDINAL,
+                               &actual_type, &actual_format, &nitems, &after, &data);
+    if ( error == Success && NULL != data) 
+    {
+        bDesktopShown = static_cast<bool>(data[0]);
+    }
+    
+    xfitMan().clientMessage(QX11Info::appRootWindow(),xfitMan().atom("_NET_SHOWING_DESKTOP"),(unsigned long) !bDesktopShown, 0,0,0,0);
 }

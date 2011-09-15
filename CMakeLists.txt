@@ -8,8 +8,11 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
 endif()
 
-set(RAZOR_VERSION 0.3.0)
+set(RAZOR_VERSION 0.4.0)
 add_definitions(-DRAZOR_VERSION=\"${RAZOR_VERSION}\")
+message(STATUS "")
+message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
+message(STATUS "")
 
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -63,7 +66,7 @@ ADD_CUSTOM_TARGET(uninstall
 SET(CPACK_PACKAGE_VERSION "${RAZOR_VERSION}")
 SET(CPACK_SOURCE_GENERATOR "TBZ2")
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "razorqt-${CPACK_PACKAGE_VERSION}")
-SET(CPACK_IGNORE_FILES "/CVS/;/\\\\.svn/;\\\\.swp$;\\\\.#;/#;\\\\.tar.gz$;/CMakeFiles/;CMakeCache.txt;refresh-copyright-and-license.pl")
+SET(CPACK_IGNORE_FILES "/CVS/;/\\\\.git\;/\\\\.svn/;\\\\.swp$;\\\\.#;/#;\\\\.tar.gz$;/CMakeFiles/;CMakeCache.txt;refresh-copyright-and-license.pl")
 SET(CPACK_SOURCE_IGNORE_FILES ${CPACK_IGNORE_FILES})
 INCLUDE(CPack)
 # simulate autotools' "make dist"
