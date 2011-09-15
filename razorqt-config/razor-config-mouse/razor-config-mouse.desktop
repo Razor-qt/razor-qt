@@ -1,11 +1,9 @@
 [Desktop Entry]
 X-SuSE-translate=true
-OnlyShowIn=RAZOR
-Encoding=UTF-8
+OnlyShowIn=RAZOR;
 Type=Application
 Exec=razor-config-mouse
 Terminal=false
-Type=Application
 Categories=Settings;DesktopSettings;X-SuSE-DesktopUtility;
 Icon=preferences-desktop-mouse
 Name=Razor Mouse Theme Configurator
