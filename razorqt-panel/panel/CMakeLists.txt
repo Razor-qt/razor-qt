@@ -12,6 +12,7 @@ set(HEADERS
     razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
+    razorpanelpluginconfigdialog.h
 )
 
 set(SOURCES
@@ -20,6 +21,7 @@ set(SOURCES
     razorpanelplugin.cpp
     razorpanelapplication.cpp
     razorpanellayout.cpp
+    razorpanelpluginconfigdialog.cpp
 )
 
 set(MOCS
@@ -29,6 +31,7 @@ set(MOCS
     razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
+    razorpanelpluginconfigdialog.h
 )
 
 set(LIBRARIES

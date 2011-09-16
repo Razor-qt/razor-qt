@@ -59,6 +59,14 @@ public:
     MountButton(QWidget * parent, RazorPanel * panel);
     ~MountButton();
 
+    enum DevAction {
+            DevActionNothing,
+            DevActionInfo,
+            DevActionMenu
+        };
+    DevAction devAction() const { return mDevAction; }
+    void setDevAction(DevAction devAction) { mDevAction = devAction; }
+
 private slots:
     void onDiskAdded(DiskInfo info);
     void onDiskRemoved(DiskInfo info);
@@ -88,7 +96,7 @@ private:
 
     RazorPanel *m_panel;
     bool mInitialized;
-
+    DevAction mDevAction;
 };
 
 #endif

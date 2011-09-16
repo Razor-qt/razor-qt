@@ -51,7 +51,8 @@
 MountButton::MountButton(QWidget * parent, RazorPanel *panel)
     : QToolButton(parent),
       m_panel(panel),
-      mInitialized(false)
+      mInitialized(false),
+      mDevAction(DevActionInfo)
 {
     if (!QDBusConnection::systemBus().isConnected())
     {
@@ -181,12 +182,12 @@ void MountButton::updateMenuItem(const QString &device, const QString &name, boo
 
 void MountButton::showMessage(const QString &text)
 {
-    QToolTip::showText(mapToGlobal(QPoint(0, 0)), text);
+    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
 }
 
 void MountButton::showError(const QString &text)
 {
-    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<b>Error:</b><hr>%1").arg(text), this);
+    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr><b>Error:</b><hr>%1</nobr>").arg(text), this);
 }
 
 /**************************************************************************************************/
@@ -197,14 +198,22 @@ void MountButton::onDiskAdded(DiskInfo info)
 {
     _sm.addDevice(info);
     addMenuItem(info);
-    showMessage(tr("Device connected:<br> <b><nobr>%1</nobr></b>").arg(info.name));
+    switch (mDevAction)
+    {
+    case DevActionInfo:
+        showMessage(tr("Device <b><nobr>%1</nobr></b> is connected").arg(info.name));
+        break;
+
+    case DevActionMenu:
+        showMenu();
+    }
 }
 
 void MountButton::onDiskRemoved(DiskInfo info)
 {
     _sm.removeDevice(info);
     removeMenuItem(info.device_name);
-    showMessage(tr("Device removed:<br> <b><nobr>%1</nobr></b>").arg(info.name));
+    showMessage(tr("Device removed:<br> <b>%1</b>").arg(info.name));
 }
 
 void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
@@ -270,7 +279,7 @@ void MountButton::onMediaMount(const QString &device)
     if (!item->isMounted())
     {
         // Error
-        showError(tr("Can't mount device: %1\n%2").arg(device).arg(status_text));
+        showError(tr("Can't mount device:<br> %1\n%2").arg(device).arg(status_text));
         return;
     }
 
