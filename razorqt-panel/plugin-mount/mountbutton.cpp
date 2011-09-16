@@ -66,8 +66,6 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel)
     QAction *empty_action = m_menu->addAction(tr("Empty"));
     empty_action->setEnabled(false);
     
-//    setMenu(m_menu);
-
     QDBusConnection conn = QDBusConnection::systemBus();
     // TODO: Check for connection, timer for reconect
     /*bool connected =*/ conn.connect("org.freedesktop.UDisks",
