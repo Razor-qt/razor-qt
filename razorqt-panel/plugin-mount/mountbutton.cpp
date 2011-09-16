@@ -59,13 +59,11 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel)
         qDebug() << "Can't connect to dbus daemon. Some functions will be omited";
     }
 
-    setIcon(XdgIcon::fromTheme("drive-removable-media-usb"));
+    setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
     setToolTip(tr("Removable media/devices manager"));
 
     // Display disk menu
     m_menu = new QMenu(this);
-    QAction *empty_action = m_menu->addAction(tr("Empty"));
-    empty_action->setEnabled(false);
     
     QDBusConnection conn = QDBusConnection::systemBus();
     // TODO: Check for connection, timer for reconect
@@ -118,18 +116,7 @@ void MountButton::addMenuItem(const DiskInfo &info)
     QWidgetAction *action = new QWidgetAction(this);
     action->setDefaultWidget(item);
 
-    if (m_menu_items.count() == 0)
-    {
-        // Clear 'Empty' item
-        m_menu->clear();
-        m_menu->addAction(action);
-    }
-    else
-    {
-        // Insert on Top
-        m_menu->insertAction(m_menu->actions().at(0), action);
-    }
-
+    m_menu->insertAction(m_menu->actions().at(0), action);
     m_menu_items.insert(info.device_name, action);
 
     // Connect signals
@@ -150,12 +137,6 @@ void MountButton::removeMenuItem(const QString &device)
         m_menu_items.remove(device);
         delete action;
     }
-
-    if (m_menu_items.count() == 0)
-    {
-        QAction *empty_action = m_menu->addAction(tr("Empty"));
-        empty_action->setEnabled(false);
-    }
 }
 
 void MountButton::updateMenuItem(const QString &device, const QString &name, bool is_mounted)
@@ -171,10 +152,7 @@ void MountButton::updateMenuItem(const QString &device, const QString &name, boo
             return;
         }
 
-        if (!name.isEmpty())
-        {
-            item->setLabel(name);
-        }
+        item->setLabel(name);
 
         item->setMountStatus(is_mounted);
     }
@@ -201,11 +179,15 @@ void MountButton::onDiskAdded(DiskInfo info)
     switch (mDevAction)
     {
     case DevActionInfo:
-        showMessage(tr("Device <b><nobr>%1</nobr></b> is connected").arg(info.name));
+        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is connected.").arg(info.name));
         break;
 
     case DevActionMenu:
         showMenu();
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -213,7 +195,9 @@ void MountButton::onDiskRemoved(DiskInfo info)
 {
     _sm.removeDevice(info);
     removeMenuItem(info.device_name);
-    showMessage(tr("Device removed:<br> <b>%1</b>").arg(info.name));
+    if (mDevAction == DevActionInfo)
+        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(info.name));
+
 }
 
 void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
@@ -246,12 +230,24 @@ void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
     {
         if (item->isMounted())
         {
-            QString mount_point = item->getMountPoint();
-            showMessage(tr("Device '%1' is mounted to %2").arg(dev_name).arg(mount_point));
+            switch (mDevAction)
+            {
+            case DevActionInfo:
+                showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is mounted to %2").arg(dev_name).arg(item->getMountPoint()));
+                break;
+
+            case DevActionMenu:
+                showMenu();
+                break;
+
+            default:
+                break;
+            }
         }
         else
         {
-            showMessage(tr("Device '%1' is unmounted\nNow you can eject USB Flash or CD/DVD Disk").arg(dev_name));
+            if (mDevAction == DevActionInfo)
+                showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is unmounted<br>\nNow you can eject USB Flash or CD/DVD Disk.").arg(dev_name));
         }
     }
 }
@@ -279,7 +275,7 @@ void MountButton::onMediaMount(const QString &device)
     if (!item->isMounted())
     {
         // Error
-        showError(tr("Can't mount device:<br> %1\n%2").arg(device).arg(status_text));
+        showError(tr("Can't mount device: %1<br>\n%2").arg(device).arg(status_text));
         return;
     }
 
@@ -314,7 +310,7 @@ void MountButton::onMediaEject(const QString &device)
     if (item->isMounted())
     {
         // Error
-        showError(tr("Can't unmount device: %1\n%2").arg(device).arg(status_text));
+        showError(tr("Can't unmount device: %1<br>\n%2").arg(device).arg(status_text));
         return;
     }
 
@@ -327,6 +323,12 @@ void MountButton::showMenu()
     // Scan already connected devices
     if (!mInitialized)
         initialScanDevices();
+
+    if (m_menu->isEmpty())
+    {
+        showMessage(tr("No devices Available."));
+        return;
+    }
 
     // TODO/FIXME: shared code with MainMenu plugin. How to share? Something like "menubutton base class"?
     int x, y;

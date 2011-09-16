@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>315</width>
-    <height>146</height>
+    <width>313</width>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="devAddedLabel">
         <property name="text">
-         <string>When new device was added</string>
+         <string>When a device is connected </string>
         </property>
        </widget>
       </item>
