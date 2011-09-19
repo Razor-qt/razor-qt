@@ -64,7 +64,7 @@ protected:
 
 private slots:
     void on_eject_clicked();
-    void on_diskLabel_linkActivated(const QString &link);
+    void on_diskButton_clicked();
 
 private:
     QString m_device;
