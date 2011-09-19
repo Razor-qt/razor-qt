@@ -242,6 +242,10 @@ QIcon const XdgIcon::defaultApplicationIcon()
 {
     return fromTheme(DEFAULT_APP_ICON);
 }
+QString const XdgIcon::defaultApplicationIconName()
+{
+    return DEFAULT_APP_ICON;
+}
 
 
 XdgIconCache* XdgIconCache::mInstance=0;
