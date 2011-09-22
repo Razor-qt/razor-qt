@@ -128,6 +128,15 @@ QStringList XdgMenu::environments()
     return d->mEnvironments;
 }
 
+void XdgMenu::setEnvironments(const QStringList &envs)
+{
+    Q_D(XdgMenu);
+    d->mEnvironments = envs;
+}
+void XdgMenu::setEnvironments(const QString &env)
+{
+    setEnvironments(QStringList() << env);
+}
 
 /************************************************
 
