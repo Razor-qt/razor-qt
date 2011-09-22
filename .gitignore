@@ -17,3 +17,4 @@ razorqt-panel/panel/razor-panel
 razorqt-session/razor-session
 *~
 CMakeLists.txt.user
+/build
