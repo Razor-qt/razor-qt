@@ -227,7 +227,6 @@ void MountButton::initialScanDevices()
         DiskInfo *disk = devices.at(i);
         // add device
         _sm.addDevice(*disk);
-        qDebug() << "*** Add mennu item ***" << Q_FUNC_INFO << disk->device_name;
         addMenuItem(*disk);
         delete disk;
     }
@@ -264,8 +263,10 @@ void MountButton::showError(const QString &text)
 
 void MountButton::onDiskAdded(DiskInfo info)
 {
+    if (mPopup.itemByDevice(info.device_name))
+        return;
+
     _sm.addDevice(info);
-    qDebug() << "*** Add mennu item ***" << Q_FUNC_INFO << info.device_name;
     addMenuItem(info);
     switch (mDevAction)
     {
@@ -290,7 +291,7 @@ void MountButton::onDiskRemoved(DiskInfo info)
 
     if (mDevAction == DevActionInfo)
         showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(info.name));
-    qDebug() << "*** Del mennu item ***" << Q_FUNC_INFO << info.device_name;
+
     mPopup.deleteItem(info);
 }
 
