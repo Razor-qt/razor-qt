@@ -65,8 +65,13 @@ public:
 
     void open(QPoint pos, Qt::Corner anchor=Qt::TopLeftCorner);
 
+signals:
+    void visibilityChanged(bool visible);
+
 protected:
     void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event);
 
 private:
     void realign();
@@ -104,6 +109,7 @@ private slots:
 
     void showHidePopup();
     void showPopup();
+    void setDown(bool down);
 
 private:
     void initialScanDevices();

@@ -108,6 +108,21 @@ void Popup::resizeEvent(QResizeEvent *event)
     realign();
 }
 
+
+void Popup::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+    emit visibilityChanged(true);
+}
+
+
+void Popup::hideEvent(QHideEvent *event)
+{
+    QWidget::hideEvent(event);
+    emit visibilityChanged(false);
+}
+
+
 void Popup::realign()
 {
     QRect rect;
@@ -179,6 +194,8 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
                                   this,
                                   SLOT(onDbusDeviceChangesMessage(QDBusObjectPath)));
 
+
+    connect(&mPopup, SIGNAL(visibilityChanged(bool)), this, SLOT(setDown(bool)));
 
     connect(m_panel, SIGNAL(positionChanged()), &mPopup, SLOT(hide()));
 
@@ -331,6 +348,13 @@ void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
         }
     }
 }
+
+
+void MountButton::setDown(bool down)
+{
+    QToolButton::setDown(down);
+}
+
 
 void MountButton::onMediaMount(const QString &device)
 {
