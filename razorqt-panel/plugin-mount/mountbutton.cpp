@@ -180,6 +180,8 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
                                   SLOT(onDbusDeviceChangesMessage(QDBusObjectPath)));
 
 
+    connect(m_panel, SIGNAL(positionChanged()), &mPopup, SLOT(hide()));
+
     connect(this, SIGNAL(clicked()), this, SLOT(showHidePopup()));
 
     connect(&_dm, SIGNAL(deviceConnected(DiskInfo)),
