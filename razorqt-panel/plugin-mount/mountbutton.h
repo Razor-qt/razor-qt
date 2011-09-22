@@ -6,6 +6,7 @@
  * Copyright: 2011 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.ru>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -42,14 +43,39 @@
 
 #include <QtGui/QToolButton>
 #include <QtDBus/QtDBus>
-#include <QtGui/QWidgetAction>
 #include <QtGui/QMenu>
-#include <QtCore/QHash>
 
 #include "menudiskitem.h"
 #include "razormount/diskmonitor.h"
 #include "razormount/storagemanager.h"
 #include "../panel/razorpanel.h"
+
+
+class Popup: public QWidget
+{
+    Q_OBJECT
+public:
+    explicit Popup(QWidget* parent = 0);
+
+    MenuDiskItem *addItem(const DiskInfo &info);
+    void deleteItem(const DiskInfo &info);
+    MenuDiskItem *itemByDevice(const QString &deviceName);
+
+    int count() const { return mCount; }
+
+    void open(QPoint pos, Qt::Corner anchor=Qt::TopLeftCorner);
+
+protected:
+    void resizeEvent(QResizeEvent *event);
+
+private:
+    void realign();
+
+    int mCount;
+    QPoint mPos;
+    Qt::Corner mAnchor;
+};
+
 
 
 class MountButton : public QToolButton
@@ -76,27 +102,26 @@ private slots:
     void onMediaMount(const QString &device);
     void onMediaEject(const QString &device);
 
-    void showMenu();
+    void showHidePopup();
+    void showPopup();
 
 private:
     void initialScanDevices();
     void addMenuItem(const DiskInfo &info);
-    void removeMenuItem(const QString &device);
-    void updateMenuItem(const QString &device, const QString &name, bool is_mounted);
 
     void showMessage(const QString &text);
     void showError(const QString &text);
 
 private:
-    QMenu                          *m_menu;
-    QHash<QString, QWidgetAction*>  m_menu_items;
+    Popup mPopup;
 
     DiskMonitor    _dm;
     StorageManager _sm;
 
     RazorPanel *m_panel;
-    bool mInitialized;
     DevAction mDevAction;
+    QTimer  mPopupHideTimer;
+    int mPopupHideDelay;
 };
 
 #endif

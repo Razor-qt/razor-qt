@@ -25,7 +25,7 @@
 /* Based on a "MountTray" project - modified for Razor needs
     http://hatred.homelinux.net
 
-    @date   2010-11-11
+    @date   2010-11-1
     @brief  Main application class: integrate all components
 
     Copyright (C) 2010 by hatred <hatred@inbox.ru>
@@ -43,28 +43,131 @@
 #include <QtGui/QDesktopServices>
 #include <QtCore/QUrl>
 #include <QtGui/QToolTip>
+#include <QtGui/QDesktopWidget>
 
 #include "qtxdg/xdgicon.h"
 #include "mountbutton.h"
 
 
+
+Popup::Popup(QWidget* parent):
+    QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
+    mCount(0),
+    mPos(0,0),
+    mAnchor(Qt::TopLeftCorner)
+{
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //setMinimumSize(5, 5);
+    setLayout(new QGridLayout(this));
+    //layout()->setMargin(0);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
+}
+
+
+MenuDiskItem *Popup::addItem(const DiskInfo &info)
+{
+    MenuDiskItem  *item   = new MenuDiskItem(info, this);
+    layout()->addWidget(item);
+    mCount++;
+    return item;
+}
+
+
+void Popup::deleteItem(const DiskInfo &info)
+{
+    MenuDiskItem* item = itemByDevice(info.device_name);
+    if (item)
+    {
+        mCount--;
+        layout()->removeWidget(item);
+        item->deleteLater();
+    }
+
+    if (!mCount)
+        hide();
+}
+
+
+MenuDiskItem *Popup::itemByDevice(const QString &deviceName)
+{
+    QList<MenuDiskItem*> items = this->findChildren<MenuDiskItem*>();
+    foreach (MenuDiskItem* item, items)
+    {
+        if (item->deviceName() == deviceName)
+            return item;
+    }
+
+    return 0;
+}
+
+
+void Popup::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    realign();
+}
+
+void Popup::realign()
+{
+    QRect rect;
+    rect.setSize(sizeHint());
+    switch (mAnchor)
+    {
+    case Qt::TopLeftCorner:
+        rect.moveTopLeft(mPos);
+        break;
+
+    case Qt::TopRightCorner:
+        rect.moveTopRight(mPos);
+        break;
+
+    case Qt::BottomLeftCorner:
+        rect.moveBottomLeft(mPos);
+        break;
+
+    case Qt::BottomRightCorner:
+        rect.moveBottomRight(mPos);
+        break;
+
+    }
+
+    QRect screen = QApplication::desktop()->availableGeometry(this);
+
+    if (rect.right() > screen.right())
+        rect.moveRight(screen.right());
+
+    if (rect.bottom() > screen.bottom())
+        rect.moveBottom(screen.bottom());
+
+    move(rect.topLeft());
+}
+
+
+void Popup::open(QPoint pos, Qt::Corner anchor)
+{
+    mPos = pos;
+    mAnchor = anchor;
+    realign();
+    show();
+}
+
+
 MountButton::MountButton(QWidget * parent, RazorPanel *panel)
     : QToolButton(parent),
       m_panel(panel),
-      mInitialized(false),
-      mDevAction(DevActionInfo)
+      mDevAction(DevActionInfo),
+      mPopupHideDelay(5000)
 {
     if (!QDBusConnection::systemBus().isConnected())
     {
-        qDebug() << "Can't connect to dbus daemon. Some functions will be omited";
+        qWarning() << "Can't connect to dbus daemon. Some functions will be omited";
     }
 
     setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
     setToolTip(tr("Removable media/devices manager"));
 
-    // Display disk menu
-    m_menu = new QMenu(this);
-    
+    initialScanDevices();
+
     QDBusConnection conn = QDBusConnection::systemBus();
     // TODO: Check for connection, timer for reconect
     /*bool connected =*/ conn.connect("org.freedesktop.UDisks",
@@ -74,14 +177,17 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel)
                                   this,
                                   SLOT(onDbusDeviceChangesMessage(QDBusObjectPath)));
 
-    connect(this, SIGNAL(clicked()), this, SLOT(showMenu()));
+
+    connect(this, SIGNAL(clicked()), this, SLOT(showHidePopup()));
 
     connect(&_dm, SIGNAL(deviceConnected(DiskInfo)),
             this, SLOT(onDiskAdded(DiskInfo)));
     connect(&_dm, SIGNAL(deviceDisconnected(DiskInfo)),
             this, SLOT(onDiskRemoved(DiskInfo)));
+
     _dm.start();
 }
+
 
 MountButton::~MountButton()
 {
@@ -91,9 +197,9 @@ MountButton::~MountButton()
     _dm.wait();
 }
 
+
 void MountButton::initialScanDevices()
 {
-    mInitialized = true;
     QList<DiskInfo*> devices = _dm.scanDevices();
     for (int i = 0; i < devices.count(); i++)
     {
@@ -101,24 +207,14 @@ void MountButton::initialScanDevices()
         // add device
         _sm.addDevice(*disk);
         addMenuItem(*disk);
-
-        StorageItem *sitem = _sm.getDevice(*disk);
-        updateMenuItem(disk->device_name, disk->file_system_label, sitem->isMounted());
-
-        // clear
         delete disk;
     }
 }
 
+
 void MountButton::addMenuItem(const DiskInfo &info)
 {
-    MenuDiskItem  *item   = new MenuDiskItem(info, this);
-    QWidgetAction *action = new QWidgetAction(this);
-    action->setDefaultWidget(item);
-
-    m_menu->insertAction(m_menu->actions().at(0), action);
-    m_menu_items.insert(info.device_name, action);
-
+    MenuDiskItem  *item   = mPopup.addItem(info);
     // Connect signals
     connect(item, SIGNAL(mountMedia(const QString&)),
             this, SLOT(onMediaMount(const QString&)));
@@ -127,46 +223,18 @@ void MountButton::addMenuItem(const DiskInfo &info)
             this, SLOT(onMediaEject(const QString&)));
 }
 
-void MountButton::removeMenuItem(const QString &device)
-{
-    QWidgetAction *action = 0;
-    if (m_menu_items.contains(device))
-    {
-        action = m_menu_items[device];
-        m_menu->removeAction(action);
-        m_menu_items.remove(device);
-        delete action;
-    }
-}
-
-void MountButton::updateMenuItem(const QString &device, const QString &name, bool is_mounted)
-{
-    QWidgetAction *action = 0;
-    if (m_menu_items.contains(device))
-    {
-        action = m_menu_items[device];
-        MenuDiskItem *item = static_cast<MenuDiskItem*>(action->defaultWidget());
-
-        if (item == 0)
-        {
-            return;
-        }
-
-        item->setLabel(name);
-
-        item->setMountStatus(is_mounted);
-    }
-}
 
 void MountButton::showMessage(const QString &text)
 {
     QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
 }
 
+
 void MountButton::showError(const QString &text)
 {
     QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr><b>Error:</b><hr>%1</nobr>").arg(text), this);
 }
+
 
 /**************************************************************************************************/
 /* Signals ---------------------------------------------------------------------------------------*/
@@ -183,7 +251,8 @@ void MountButton::onDiskAdded(DiskInfo info)
         break;
 
     case DevActionMenu:
-        showMenu();
+        showPopup();
+        mPopupHideTimer.singleShot(mPopupHideDelay, &mPopup, SLOT(hide()));
         break;
 
     default:
@@ -191,19 +260,21 @@ void MountButton::onDiskAdded(DiskInfo info)
     }
 }
 
+
 void MountButton::onDiskRemoved(DiskInfo info)
 {
     _sm.removeDevice(info);
-    removeMenuItem(info.device_name);
+
     if (mDevAction == DevActionInfo)
         showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(info.name));
 
+    mPopup.deleteItem(info);
 }
+
 
 void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
 {
     QString path = device.path();
-    qDebug() << "Changed: " << qPrintable(path);
 
     QDBusInterface iface("org.freedesktop.UDisks",
                          path,
@@ -224,7 +295,12 @@ void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
 
     bool old_state = item->isMounted();
     item->setMountStatus(is_mounted);
-    updateMenuItem(dev_name, QString(), item->isMounted());
+
+    MenuDiskItem *mdi = mPopup.itemByDevice(dev_name);
+    if (mdi)
+    {
+        mdi->setMountStatus(is_mounted);
+    }
 
     if (item->isMounted() != old_state)
     {
@@ -254,9 +330,6 @@ void MountButton::onDbusDeviceChangesMessage(QDBusObjectPath device)
 
 void MountButton::onMediaMount(const QString &device)
 {
-    qDebug() << "Mount media: " << qPrintable(device) << "\n";
-    m_menu->hide();
-
     StorageItem *item = _sm.getDevice(device);
     if (item == NULL)
     {
@@ -282,7 +355,7 @@ void MountButton::onMediaMount(const QString &device)
     if (item->isMounted() != old_state)
     {
         showMessage(tr("Device '%1' is mounted to %2").arg(device).arg(mount_point));
-        updateMenuItem(device, "", true);
+        //updateMenuItem(device, "", true);
     }
 
     // Run manager
@@ -292,8 +365,7 @@ void MountButton::onMediaMount(const QString &device)
 
 void MountButton::onMediaEject(const QString &device)
 {
-    qDebug() << "UnMount media: " << qPrintable(device) << "\n";
-    m_menu->hide();
+    //qDebug() << "UnMount media: " << qPrintable(device);
 
     StorageItem *item = _sm.getDevice(device);
     if (item == NULL)
@@ -315,48 +387,78 @@ void MountButton::onMediaEject(const QString &device)
     }
 
     showMessage(tr("Device '%1' is unmounted").arg(device));
-    updateMenuItem(device, "", false);
+
 }
 
-void MountButton::showMenu()
+
+void MountButton::showHidePopup()
 {
-    // Scan already connected devices
-    if (!mInitialized)
-        initialScanDevices();
-
-    if (m_menu->isEmpty())
+    if (mPopup.isVisible())
+        mPopup.hide();
+    else
     {
-        showMessage(tr("No devices Available."));
-        return;
+        mPopupHideTimer.stop();
+
+        if (mPopup.count())
+            showPopup();
+        else
+            showMessage(tr("No devices Available."));
     }
+}
 
-    // TODO/FIXME: shared code with MainMenu plugin. How to share? Something like "menubutton base class"?
-    int x, y;
 
-    switch (m_panel->position())
+void MountButton::showPopup()
+{
+    if (mPopup.isVisible())
+        return;
+
+    if (!mPopup.count())
+        return;
+
+    mPopup.updateGeometry();
+
+    QPoint p;
+    if (isLeftToRight())
     {
+        switch (m_panel->position())
+        {
         case RazorPanel::PositionTop:
-            x = mapToGlobal(QPoint(0, 0)).x();
-            y = m_panel->mapToGlobal(QPoint(0, m_panel->sizeHint().height())).y();
+            mPopup.open(mapToGlobal(geometry().bottomLeft()), Qt::TopLeftCorner);
             break;
 
         case RazorPanel::PositionBottom:
-            x = mapToGlobal(QPoint(0, 0)).x();
-            y = m_panel->mapToGlobal(QPoint(0, 0)).y() - m_menu->sizeHint().height();
+            mPopup.open(mapToGlobal(geometry().topLeft()), Qt::BottomLeftCorner);
             break;
 
         case RazorPanel::PositionLeft:
-            x = m_panel->mapToGlobal(QPoint(m_panel->sizeHint().width(), 0)).x();
-            y = mapToGlobal(QPoint(0, 0)).y();
+            mPopup.open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
             break;
 
         case RazorPanel::PositionRight:
-            x = m_panel->mapToGlobal(QPoint(0, 0)).x() - m_menu->sizeHint().width();
-            y = mapToGlobal(QPoint(0, 0)).y();
+            mPopup.open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
+            break;
+        }
+    }
+    else
+    {
+        switch (m_panel->position())
+        {
+        case RazorPanel::PositionTop:
+            mPopup.open(mapToGlobal(geometry().bottomRight()), Qt::TopRightCorner);
             break;
 
+        case RazorPanel::PositionBottom:
+            mPopup.open(mapToGlobal(geometry().topRight()), Qt::BottomRightCorner);
+            break;
+
+        case RazorPanel::PositionLeft:
+            mPopup.open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
+            break;
+
+        case RazorPanel::PositionRight:
+            mPopup.open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
+            break;
+        }
     }
 
-    QPoint pos(x, y);
-    m_menu->exec(pos);
 }

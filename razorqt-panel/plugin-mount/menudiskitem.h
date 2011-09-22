@@ -55,6 +55,8 @@ public:
     void setLabel(const QString &text);
     void setMountStatus(bool is_mount);
 
+    QString deviceName() const { return m_device; }
+
 signals:
     void ejectMedia(const QString &media_dev);
     void mountMedia(const QString &media_dev);
