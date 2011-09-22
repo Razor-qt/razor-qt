@@ -264,7 +264,10 @@ void MountButton::showError(const QString &text)
 void MountButton::onDiskAdded(DiskInfo info)
 {
     if (mPopup.itemByDevice(info.device_name))
-        return;
+    {
+        _sm.removeDevice(info);
+        mPopup.deleteItem(info);
+    }
 
     _sm.addDevice(info);
     addMenuItem(info);

@@ -8,7 +8,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
 endif()
 
-set(RAZOR_VERSION 0.4.0)
+set(RAZOR_VERSION 0.3.99)
 add_definitions(-DRAZOR_VERSION=\"${RAZOR_VERSION}\")
 message(STATUS "")
 message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
