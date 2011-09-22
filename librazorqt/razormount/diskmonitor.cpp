@@ -337,12 +337,12 @@ QList<DiskInfo *> DiskMonitor::scanDevices()
         disk = new DiskInfo();
         fillDiskInfo(device, *disk);
 
-        const char *name  = udev_list_entry_get_name(entry);
+        //const char *name  = udev_list_entry_get_name(entry);
 
-        std::cout << "Entry:       " << name << std::endl;
-        std::cout << "isRemovable: "
-            << (!disk->raw_info["REMOVABLE"].isEmpty() ? qPrintable(disk->raw_info["REMOVABLE"]) : "unknown")
-            << std::endl;
+        //std::cout << "Entry:       " << name << std::endl;
+        //std::cout << "isRemovable: "
+        //    << (!disk->raw_info["REMOVABLE"].isEmpty() ? qPrintable(disk->raw_info["REMOVABLE"]) : "unknown")
+        //    << std::endl;
 
         if (disk->raw_info["ID_FS_USAGE"] == "filesystem" &&
             disk->raw_info["REMOVABLE"]   == "1")
