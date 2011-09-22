@@ -44,6 +44,7 @@ public:
     static void setThemeName(const QString& themeName);
 
     static QIcon const defaultApplicationIcon();
+    static QString const defaultApplicationIconName();
 
 protected:
     explicit XdgIcon();

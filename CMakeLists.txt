@@ -20,12 +20,14 @@ include(RazorConfigRegister)
 
 
 add_definitions ( -Wall )
-find_package ( Qt4 REQUIRED )
+find_package ( Qt4 4.6.0 REQUIRED )
 include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
 	)
+
+find_package (UDev REQUIRED)
 
 # This allows to install and read the configs from non-standard locations
 if (CMAKE_INSTALL_PREFIX)

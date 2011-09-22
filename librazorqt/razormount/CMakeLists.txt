@@ -1,4 +1,6 @@
-find_package(UDev REQUIRED)
+if (NOT UDEV_STABLE)
+    message(WARNING "libudev is not in the stable API version. razormount will not be compiled")
+else (NOT UDEV_STABLE)
 
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
@@ -49,4 +51,6 @@ set_target_properties(razorqt PROPERTIES
 
 install(TARGETS razormount DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razormount_HDRS} DESTINATION include/razormount)
+
+endif (NOT UDEV_STABLE)
 
