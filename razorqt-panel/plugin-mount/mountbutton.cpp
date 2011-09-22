@@ -6,6 +6,7 @@
  * Copyright: 2011 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.ru>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -131,7 +132,7 @@ void Popup::realign()
 
     }
 
-    QRect screen = QApplication::desktop()->availableGeometry(this);
+    QRect screen = QApplication::desktop()->availableGeometry(mPos);
 
     if (rect.right() > screen.right())
         rect.moveRight(screen.right());
@@ -152,11 +153,12 @@ void Popup::open(QPoint pos, Qt::Corner anchor)
 }
 
 
-MountButton::MountButton(QWidget * parent, RazorPanel *panel)
-    : QToolButton(parent),
-      m_panel(panel),
-      mDevAction(DevActionInfo),
-      mPopupHideDelay(5000)
+MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
+    QToolButton(parent),
+    mPopup(this),
+    m_panel(panel),
+    mDevAction(DevActionInfo),
+    mPopupHideDelay(5000)
 {
     if (!QDBusConnection::systemBus().isConnected())
     {
@@ -355,7 +357,6 @@ void MountButton::onMediaMount(const QString &device)
     if (item->isMounted() != old_state)
     {
         showMessage(tr("Device '%1' is mounted to %2").arg(device).arg(mount_point));
-        //updateMenuItem(device, "", true);
     }
 
     // Run manager
