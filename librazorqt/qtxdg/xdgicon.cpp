@@ -231,7 +231,7 @@ QIcon* const XdgIconCache::fromTheme(const QString& iconName)
             res = new QIcon();
             foreach (QSize s, icon.availableSizes())
             {
-                res->addPixmap(icon.pixmap(s).scaled(32, 32));
+                res->addPixmap(icon.pixmap(s));
             }
         }
         else
