@@ -69,8 +69,8 @@ PowerManager::PowerManager(QObject * parent)
     m_parentWidget(0)
 {
     m_upower = new UPower();
-    connect(m_upower, SIGNAL(suspendFail()), this, SLOT(infoMessage()));
-    connect(m_upower, SIGNAL(hibernateFail()), this, SLOT(infoMessage()));
+    connect(m_upower, SIGNAL(suspendFail()), this, SLOT(suspendFailed()));
+    connect(m_upower, SIGNAL(hibernateFail()), this, SLOT(hibernateFailed()));
     connect(m_upower, SIGNAL(monitoring(const QString &)),
             this, SLOT(monitoring(const QString&)));
 }
@@ -173,12 +173,14 @@ void PowerManager::logout()
     interface.call( "logout" );
 }
 
-void PowerManager::infoMessage()
+void PowerManager::hibernateFailed()
 {
-    QAction * act = qobject_cast<QAction*>(sender());
-    // it hast to be called as a slot by an action
-    Q_ASSERT(act);
-    QMessageBox::warning(m_parentWidget, tr("Razor Power Manager Error"), tr("Action '%1' failed.").arg(act->text()));
+    QMessageBox::warning(m_parentWidget, tr("Razor Power Manager Error"), tr("Hibernate failed."));
+}
+
+void PowerManager::suspendFailed()
+{
+    QMessageBox::warning(m_parentWidget, tr("Razor Power Manager Error"), tr("Suspend failed."));
 }
 
 void PowerManager::monitoring(const QString & msg)

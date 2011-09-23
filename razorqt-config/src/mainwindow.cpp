@@ -90,7 +90,7 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     connect(action_Quit, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
     connect(actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-    connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+    connect(listWidget, SIGNAL(itemActivated(QListWidgetItem*)),//SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(listWidget_itemDoubleClicked(QListWidgetItem *)));
 }
 

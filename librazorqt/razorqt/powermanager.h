@@ -60,7 +60,8 @@ private:
     QWidget * m_parentWidget;
 
 private slots:
-    void infoMessage();
+    void hibernateFailed();
+    void suspendFailed();
     void monitoring(const QString & msg);
 };
 
