@@ -82,6 +82,9 @@ public:
 
     /// A list of strings identifying the environments that should display a desktop entry.
     QStringList environments();
+    /// Set currently running environments. Example: RAZOR, KDE, or GNOME...
+    void setEnvironments(const QStringList &envs);
+    void setEnvironments(const QString &env);
 
     /*!
      * Returns a string description of the last error that occurred if read() returns false.

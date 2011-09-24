@@ -3,6 +3,7 @@
 # UDEV_FOUND - system has a libudev
 # UDEV_INCLUDE_DIR - where to find header files
 # UDEV_LIBRARIES - the libraries to link against udev
+# UDEV_STABLE - it's true when is the version greater or equals to 143 - version when the libudev was stabilized in its API
 #
 # copyright (c) 2011 Petr Vanek <petr@scribus.info>
 # Redistribution and use is allowed according to the terms of the BSD license.
@@ -27,6 +28,14 @@ FIND_LIBRARY(
 
 IF (UDEV_LIBRARIES AND UDEV_INCLUDE_DIR)
     SET(UDEV_FOUND "YES")
+    execute_process(COMMAND pkg-config --atleast-version=143 libudev RESULT_VARIABLE UDEV_STABLE)
+    # retvale is 0 of the condition is "true" so we need to negate the value...
+    if (UDEV_STABLE)
+	set(UDEV_STABLE 0)
+    else (UDEV_STABLE)
+	set(UDEV_STABLE 1)
+    endif (UDEV_STABLE)
+    message(STATUS "libudev stable: ${UDEV_STABLE}")
 ENDIF (UDEV_LIBRARIES AND UDEV_INCLUDE_DIR)
 
 IF (UDEV_FOUND)

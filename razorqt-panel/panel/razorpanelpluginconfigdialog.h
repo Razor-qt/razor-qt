@@ -25,32 +25,38 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
+#ifndef RAZORPANELPLUGINCONFIGDIALOG_H
+#define RAZORPANELPLUGINCONFIGDIALOG_H
 
-#ifndef QTXDG_XDGICON_H
-#define QTXDG_XDGICON_H
+#include <QtGui/QAbstractButton>
+#include <QtGui/QDialog>
+#include <razorqt/razorsettings.h>
 
-#include <QIcon>
-#include <QHash>
-#include <QString>
-#include <QStringList>
+class QComboBox;
 
-class XdgIcon
+class RazorPanelPluginConfigDialog : public QDialog
 {
+    Q_OBJECT
 public:
-    static QIcon const fromTheme(const QString& iconName, const QIcon& fallback = QIcon());
-    static QIcon const fromTheme(const QStringList& iconNames, const QIcon& fallback = QIcon());
+    explicit RazorPanelPluginConfigDialog(QSettings &settings, QWidget *parent = 0);
+    virtual ~RazorPanelPluginConfigDialog();
 
-    static QString themeName();
-    static void setThemeName(const QString& themeName);
+    QSettings& settings() const;
 
-    static QIcon const defaultApplicationIcon();
-    static QString const defaultApplicationIconName();
+protected slots:
+    /*
+      Saves settings in conf file.
+    */
+    virtual void loadSettings() = 0;
+    virtual void dialogButtonsAction(QAbstractButton *btn);
 
 protected:
-    explicit XdgIcon();
-    virtual ~XdgIcon();
+    void setComboboxIndexByData(QComboBox *comboBox, const QVariant &data, int defaultIndex = 0) const;
+
 private:
+    QSettings &mSettings;
+    RazorSettingsCache mOldSettings;
 
 };
 
-#endif // QTXDG_XDGICON_H
+#endif // RAZORPANELPLUGINCONFIGDIALOG_H

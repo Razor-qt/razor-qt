@@ -64,6 +64,7 @@ public:
     bool    mount(QString &text_status);
     bool    unmount(QString &text_status);
 
+    DiskInfo diskInfo() const  { return _udev_info; }
 signals:
     void deviceMounted(QString device_name);
     void deviceUnmounted(QString device_name);

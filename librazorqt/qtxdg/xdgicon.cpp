@@ -54,7 +54,7 @@ protected:
     virtual ~XdgIconCache();
 
 private:
-    QIcon searchFile(const QString& fileName);
+    QIcon searchFile(const QString &dir, const QString& iconName);
     QHash<QString, QIcon*> mCache;
     static XdgIconCache* mInstance;
     QString mThemeName;
@@ -168,11 +168,17 @@ void XdgIconCache::setThemeName(const QString& themeName)
 /************************************************
 
  ************************************************/
-inline QIcon XdgIconCache::searchFile(const QString& fileName)
+inline QIcon XdgIconCache::searchFile(const QString &dir, const QString& iconName)
 {
-    QFileInfo file(fileName);
-    if (file.exists())
-        return QIcon(fileName);
+    QStringList exts;
+    exts << "" << ".png" << ".svg" << ".xpm";
+
+    foreach (QString ext, exts)
+    {
+        QString file= QString("%1/%2%3").arg(dir, iconName, ext);
+        if (QFileInfo(file).exists())
+            return QIcon(file);
+    }
 
     return QIcon();
 }
@@ -204,27 +210,34 @@ QIcon* const XdgIconCache::fromTheme(const QString& iconName)
         icon = QIcon::fromTheme(iconName);
 
         if (icon.isNull())
-           icon = searchFile(QString("/usr/share/pixmaps/%1").arg(iconName));
+            icon = QIcon::fromTheme(QFileInfo(iconName).completeBaseName());
 
         if (icon.isNull())
-           icon = searchFile(QString("/usr/share/pixmaps/%1.png").arg(iconName));
+            icon = searchFile("/usr/share/pixmaps", iconName);
 
         if (icon.isNull())
-           icon = searchFile(QString("/usr/share/pixmaps/%1.svg").arg(iconName));
-
-        if (icon.isNull())
-           icon = searchFile(QString("/usr/share/pixmaps/%1.xpm").arg(iconName));
-
+            icon = searchFile("/usr/local/share/pixmaps", iconName);
     }
 
 
-    // Some icons are drawn with the wrong size, this dirty hack fixes this.
+    // Some icons are drawn with the wrong size ( https://snusmumriken.nokia.kunder.linpro.no/browse/QTBUG-17953 )
+    // this dirty hack fixes this. But some valid svg based icon return empty availableSizes list.
     // If you know a better solution tell me.  [ Alex Sokoloff <sokoloff.a@gmailo.com> ]
     if (!icon.isNull())
     {
-        QIcon* res = new QIcon();
-        foreach (QSize s, icon.availableSizes())
-            res->addPixmap(icon.pixmap(s));
+        QIcon* res;
+        if (icon.availableSizes().count())
+        {
+            res = new QIcon();
+            foreach (QSize s, icon.availableSizes())
+            {
+                res->addPixmap(icon.pixmap(s));
+            }
+        }
+        else
+        {
+            res = new QIcon(icon);
+        }
 
         mCache[key]= res;
         return res;
@@ -241,6 +254,10 @@ QIcon* const XdgIconCache::fromTheme(const QString& iconName)
 QIcon const XdgIcon::defaultApplicationIcon()
 {
     return fromTheme(DEFAULT_APP_ICON);
+}
+QString const XdgIcon::defaultApplicationIconName()
+{
+    return DEFAULT_APP_ICON;
 }
 
 

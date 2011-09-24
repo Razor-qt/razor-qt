@@ -55,6 +55,8 @@ public:
     void setLabel(const QString &text);
     void setMountStatus(bool is_mount);
 
+    QString deviceName() const { return m_device; }
+
 signals:
     void ejectMedia(const QString &media_dev);
     void mountMedia(const QString &media_dev);
@@ -64,7 +66,7 @@ protected:
 
 private slots:
     void on_eject_clicked();
-    void on_diskLabel_linkActivated(const QString &link);
+    void on_diskButton_clicked();
 
 private:
     QString m_device;

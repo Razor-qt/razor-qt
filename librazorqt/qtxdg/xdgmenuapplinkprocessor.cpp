@@ -261,7 +261,9 @@ void XdgMenuApplinkProcessor::findDesktopFiles(const QString& dirName, const QSt
     {
         QString dn = d.canonicalFilePath();
         if (dn != dirName)
-            findDesktopFiles(dn, d.fileName() + "-");
+        {
+            findDesktopFiles(dn, QString("%1%2-").arg(prefix, d.fileName()));
+        }
     }
 }
 

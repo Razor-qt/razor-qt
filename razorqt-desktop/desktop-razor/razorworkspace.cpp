@@ -260,6 +260,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         {
             // TODO/FIXME: cache it?
             XdgMenu xdgMenu;
+            xdgMenu.setEnvironments("RAZOR");
             if (xdgMenu.read(XdgMenu::getMenuFileName()))
             {
                 context = new XdgMenuWidget(xdgMenu, "Context Menu", this);

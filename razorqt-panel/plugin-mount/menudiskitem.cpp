@@ -60,13 +60,12 @@ MenuDiskItem::MenuDiskItem(const DiskInfo &info, QWidget *parent)
     m_device = info.device_name;
     
     eject->setIcon(XdgIcon::fromTheme("media-eject"));
-    int w = diskIcon->width();
     QString iconName = info.iconName();
 
     if (!iconName.isEmpty())
-        diskIcon->setPixmap(XdgIcon::fromTheme(iconName).pixmap(w));
+        diskButton->setIcon(XdgIcon::fromTheme(iconName));
     else
-        diskIcon->setPixmap(XdgIcon::fromTheme("drive-removable-media-usb").pixmap(w));
+        diskButton->setIcon(XdgIcon::fromTheme("drive-removable-media-usb"));
 
     setLabel(info.name);
 
@@ -95,8 +94,7 @@ void MenuDiskItem::setLabel(const QString &text)
         label = m_device;
     }
 
-    label = QString("<a href=\"%1\">%1</a>").arg(label);
-    diskLabel->setText(label);
+    diskButton->setText(label);
 }
 
 void MenuDiskItem::setMountStatus(bool is_mount)
@@ -109,7 +107,7 @@ void MenuDiskItem::on_eject_clicked()
     emit ejectMedia(m_device);
 }
 
-void MenuDiskItem::on_diskLabel_linkActivated(const QString &/*link*/)
+void MenuDiskItem::on_diskButton_clicked()
 {
     emit mountMedia(m_device);
 }

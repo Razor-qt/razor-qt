@@ -26,31 +26,30 @@
 
 
 
-#ifndef QTXDG_XDGICON_H
-#define QTXDG_XDGICON_H
+#ifndef RAZORMOUNTCONFIGURATION_H
+#define RAZORMOUNTCONFIGURATION_H
 
-#include <QIcon>
-#include <QHash>
-#include <QString>
-#include <QStringList>
 
-class XdgIcon
+#include "../panel/razorpanelpluginconfigdialog.h"
+
+namespace Ui {
+    class RazorMountConfiguration;
+}
+
+class RazorMountConfiguration : public RazorPanelPluginConfigDialog
 {
+    Q_OBJECT
+
 public:
-    static QIcon const fromTheme(const QString& iconName, const QIcon& fallback = QIcon());
-    static QIcon const fromTheme(const QStringList& iconNames, const QIcon& fallback = QIcon());
+    explicit RazorMountConfiguration(QSettings &settings, QWidget *parent = 0);
+    ~RazorMountConfiguration();
 
-    static QString themeName();
-    static void setThemeName(const QString& themeName);
+protected slots:
+    virtual void loadSettings();
+    void devAddedChanged(int index);
 
-    static QIcon const defaultApplicationIcon();
-    static QString const defaultApplicationIconName();
-
-protected:
-    explicit XdgIcon();
-    virtual ~XdgIcon();
 private:
-
+    Ui::RazorMountConfiguration *ui;
 };
 
-#endif // QTXDG_XDGICON_H
+#endif // RAZORMOUNTCONFIGURATION_H

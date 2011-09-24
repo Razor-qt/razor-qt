@@ -142,7 +142,7 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
             settings().setArrayIndex(count);
             settings().setValue("name", fileName);
             settings().setValue("exec", fileName);
-            settings().setValue("icon", XdgIcon::defaultApplicationIcon().name());
+            settings().setValue("icon", XdgIcon::defaultApplicationIconName());
             settings().endArray();
         }
         else if (fi.exists())

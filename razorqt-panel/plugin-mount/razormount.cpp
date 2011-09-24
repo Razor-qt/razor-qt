@@ -25,9 +25,13 @@
 
 
 #include "razormount.h"
+#include "razormountconfiguration.h"
 
 #include <QtDebug>
 
+#define ACT_SHOW_MENU "showMenu"
+#define ACT_SHOW_INFO "showInfo"
+#define ACT_NOTHING   "nothing"
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMount)
 
@@ -35,12 +39,41 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMount)
 RazorMount::RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
     : RazorPanelPlugin(startInfo, parent)
 {
-    qDebug() << "RazorMount init";
+    //qDebug() << "RazorMount init";
     setObjectName("RazorMount");
     m_button = new MountButton(parent, panel());
     addWidget(m_button);
+    settigsChanged();
 }
 
 RazorMount::~RazorMount()
 {
+}
+
+
+void RazorMount::showConfigureDialog()
+{
+    RazorMountConfiguration *confWindow = this->findChild<RazorMountConfiguration*>("ClockConfigurationWindow");
+
+    if (!confWindow)
+    {
+        confWindow = new RazorMountConfiguration(settings(), this);
+    }
+
+    confWindow->show();
+    confWindow->raise();
+    confWindow->activateWindow();
+}
+
+
+void RazorMount::settigsChanged()
+{
+    QString s = settings().value("newDeviceAction", MountButton::DevActionInfo).toString();
+
+    if (s == ACT_SHOW_MENU)
+        m_button->setDevAction(MountButton::DevActionMenu);
+    else if(s == ACT_NOTHING)
+        m_button->setDevAction(MountButton::DevActionNothing);
+    else
+        m_button->setDevAction(MountButton::DevActionInfo);
 }

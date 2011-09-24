@@ -43,6 +43,12 @@ public:
     RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorMount();
 
+    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+
+protected slots:
+    virtual void showConfigureDialog();
+    virtual void settigsChanged();
+
 private:
     MountButton *m_button;
 
