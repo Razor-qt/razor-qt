@@ -32,7 +32,6 @@
 #include <QObject>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#include <QHash>
 #include <QtXml/QDomDocument>
 
 

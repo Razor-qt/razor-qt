@@ -43,6 +43,7 @@ set(razorqt_HDRS
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
     librazor-upower/upower.h
+    libtranslate.h
 )
 
 set(razorqt_SRCS
@@ -76,8 +77,18 @@ set(razorqt_MOCS
     librazor-upower/upower.h
 )
 
-QT4_WRAP_CPP(MOCS ${razorqt_MOCS})
+# Translations **********************************
+file(GLOB TS_FILES
+    razorqt/translations/*.ts
+)
+#************************************************
 
+
+QT4_WRAP_CPP(MOCS ${razorqt_MOCS})
+QT4_ADD_TRANSLATION(QM_FILES ${TS_FILES})
+
+set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/librazorqt)
+add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
 set ( razorqt_UIS
     razorqt/aboutdlg.ui
@@ -104,6 +115,7 @@ set_target_properties(razorqt PROPERTIES
 
 install(TARGETS razorqt DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razorqt_HDRS} DESTINATION include/razorqt)
+install(FILES ${QM_FILES}     DESTINATION ${APP_SHARE_DIR})
 
 # our Qxt library
 set ( razorqxt_HDRS
@@ -119,9 +131,9 @@ set ( razorqxt_SRC
 
 QT4_WRAP_CPP(qxt_MOCS ${razorqxt_HDRS})
 
-add_library ( razorqxt SHARED ${razorqxt_SRC} ${qxt_MOCS} )
+add_library( razorqxt SHARED ${razorqxt_SRC} ${qxt_MOCS}  ${QM_FILES})
 
-target_link_libraries ( razorqxt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+target_link_libraries( razorqxt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
                                  ${X11_X11_LIB} )
 
 set_target_properties(razorqxt PROPERTIES
