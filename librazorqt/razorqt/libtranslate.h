@@ -3,6 +3,7 @@
 
 #include <QtCore/QTranslator>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QLocale>
 
 inline void libTranslate(const QString &name)
 {
