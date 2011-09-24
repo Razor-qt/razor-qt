@@ -43,7 +43,7 @@ set(razorqt_HDRS
     librazor-upower/battery.h
     librazor-upower/ucpufreq.h
     librazor-upower/upower.h
-    libtranslate.h
+    razorqt/libtranslate.h
 )
 
 set(razorqt_SRCS
