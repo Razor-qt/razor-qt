@@ -111,7 +111,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
-    setObjectName("RazorPenel");
+    setObjectName("RazorPanel");
 }
 
 

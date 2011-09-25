@@ -57,6 +57,7 @@ Popup::Popup(QWidget* parent):
     mPos(0,0),
     mAnchor(Qt::TopLeftCorner)
 {
+    setObjectName("RazorMountPopup");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     //setMinimumSize(5, 5);
     setLayout(new QGridLayout(this));
@@ -451,6 +452,47 @@ void MountButton::showPopup()
     mPopup.updateGeometry();
 
     QPoint p;
+    int x, y;
+    switch (m_panel->position())
+    {
+        case RazorPanel::PositionTop:
+            x = this->mapToGlobal(QPoint(0, 0)).x();
+            y = m_panel->mapToGlobal(QPoint(0, m_panel->sizeHint().height())).y();
+
+            p.setX(x);
+            p.setY(y);
+            mPopup.open(p, Qt::TopLeftCorner);
+            break;
+
+        case RazorPanel::PositionBottom:
+            x = this->mapToGlobal(QPoint(0, 0)).x();
+            y = m_panel->mapToGlobal(QPoint(0, 0)).y() - this->sizeHint().height();
+
+            p.setX(x);
+            p.setY(y);
+            mPopup.open(p, Qt::BottomLeftCorner);
+            break;
+
+        case RazorPanel::PositionLeft:
+            x = m_panel->mapToGlobal(QPoint(m_panel->sizeHint().width(), 0)).x();
+            y = this->mapToGlobal(QPoint(0, 0)).y();
+
+            p.setX(x);
+            p.setY(y);
+            mPopup.open(p, Qt::TopLeftCorner);
+            break;
+
+        case RazorPanel::PositionRight:
+            x = m_panel->mapToGlobal(QPoint(0, 0)).x() - this->sizeHint().width();
+            y = this->mapToGlobal(QPoint(0, 0)).y();
+
+            p.setX(x);
+            p.setY(y);
+            mPopup.open(p, Qt::TopLeftCorner);
+            break;
+    }
+
+   /*
     if (isLeftToRight())
     {
         switch (m_panel->position())
@@ -493,5 +535,5 @@ void MountButton::showPopup()
             break;
         }
     }
-
+*/
 }
