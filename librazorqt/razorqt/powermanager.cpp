@@ -30,6 +30,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QDesktopWidget>
+#include "libtranslate.h"
 
 class MessageBox: public QMessageBox
 {
@@ -68,6 +69,7 @@ PowerManager::PowerManager(QObject * parent)
     : QObject(parent),
     m_parentWidget(0)
 {
+    libTranslate("librazorqt");
     m_upower = new UPower();
     connect(m_upower, SIGNAL(suspendFail()), this, SLOT(suspendFailed()));
     connect(m_upower, SIGNAL(hibernateFail()), this, SLOT(hibernateFailed()));

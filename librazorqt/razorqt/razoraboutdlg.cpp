@@ -2,6 +2,7 @@
 #define RAZORABOUTDLG_CPP
 #include "razoraboutdlg.h"
 #include "ui_aboutdlg.h"
+#include "libtranslate.h"
 
 /**
  * @brief prepares the data to show and fills the form, then shows.
@@ -16,6 +17,7 @@ public:
 //
 RazorAboutDLGPrivate::RazorAboutDLGPrivate()
 {
+    libTranslate("librazorqt");
     setupUi(this);
     QString content("<html><body>"
     "<h1>Razor Desktop Toolbox<img src=\"images://razor_logo.png\" align=\"right\" /></h1>"

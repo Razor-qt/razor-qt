@@ -74,10 +74,18 @@ set(QTXDG_MOCS
 
 set(QT_USE_QTXML True)
 
+# Translations **********************************
+file(GLOB TS_FILES
+    translations/*.ts
+)
+#************************************************
+
+
 #**********************************************************
 cmake_minimum_required( VERSION 2.6 )
 
 QT4_WRAP_CPP(QTXDG_CXX ${QTXDG_MOCS})
+qt4_add_translation(QM_FILES ${TS_FILES})
 
 if (NOT CMAKE_BUILD_TYPE)
     set ( CMAKE_BUILD_TYPE Release )
@@ -110,7 +118,10 @@ IF (NOT DEFINED LIB_SUFFIX)
 ENDIF (NOT DEFINED LIB_SUFFIX)
 
 
-add_library(qtxdg SHARED ${QTXDG_PUBLIC_HDRS} ${QTXDG_PRIVATE_HDRS} ${QTXDG_SRCS} ${QTXDG_CXX})
+set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/qtxdg)
+add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
+
+add_library(qtxdg SHARED ${QTXDG_PUBLIC_HDRS} ${QTXDG_PRIVATE_HDRS} ${QTXDG_SRCS} ${QTXDG_CXX} ${QM_FILES})
 target_link_libraries(qtxdg  ${QT_LIBRARIES} ${X11_X11_LIB} ${LIBMAGIC_LIBRARY})
 
 set_target_properties(qtxdg PROPERTIES
@@ -120,6 +131,7 @@ set_target_properties(qtxdg PROPERTIES
 
 install(TARGETS qtxdg DESTINATION lib${LIB_SUFFIX})
 install(FILES ${QTXDG_PUBLIC_HDRS} DESTINATION include/qtxdg)
+install(FILES   ${QM_FILES}        DESTINATION ${APP_SHARE_DIR})
 
 #find_package(Doxygen)
 #if(DOXYGEN_FOUND)

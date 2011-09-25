@@ -28,6 +28,7 @@
 
 #include <QtGui/QKeyEvent>
 #include <QtCore/QDebug>
+#include "libtranslate.h"
 
 /************************************************
 
@@ -36,6 +37,7 @@ RazorShortcutButton::RazorShortcutButton(QWidget *parent) :
     QToolButton(parent),
     d_ptr(new RazorShortcutButtonPrivate(this))
 {
+    libTranslate("librazorqt");
     setFocusPolicy(Qt::StrongFocus);
     setPopupMode(QToolButton::MenuButtonPopup);
     setCheckable(true);

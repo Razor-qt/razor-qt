@@ -28,11 +28,12 @@
 
 #include <qtxdg/xdgicon.h>
 #include "screensaver.h"
-
+#include "libtranslate.h"
 
 ScreenSaver::ScreenSaver(QObject * parent)
     : QObject(parent)
 {
+    libTranslate("librazorqt");
     m_xdgProcess = new QProcess(this);
     connect(m_xdgProcess, SIGNAL(finished(int,QProcess::ExitStatus)),
             this, SLOT(xdgProcess_finished(int,QProcess::ExitStatus)));
@@ -64,7 +65,7 @@ void ScreenSaver::xdgProcess_finished(int err, QProcess::ExitStatus status)
         QMessageBox::warning(p,
                              tr("Screen Saver Activation Error"),
                              tr("An error occurred starting screensaver. "
-                                "xdg-screensaver cannot be started due its crash")
+                                "xdg-screensaver cannot be started due its crash.")
                             );
     }
     else if (err == -2)
@@ -80,7 +81,7 @@ void ScreenSaver::xdgProcess_finished(int err, QProcess::ExitStatus status)
         QMessageBox::warning(p,
                              tr("Screen Saver Activation Error"),
                              tr("An error occurred starting screensaver. "
-                                "xdg-screensaver cannot be started")
+                                "xdg-screensaver cannot be started.")
                             );
     }
     else if (err == 0)

@@ -16,5 +16,5 @@ razorqt-desktop/razor-desktop
 razorqt-panel/panel/razor-panel
 razorqt-session/razor-session
 *~
-CMakeLists.txt.user
+CMakeLists.txt.user*
 /build

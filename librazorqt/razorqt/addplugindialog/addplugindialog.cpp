@@ -30,6 +30,7 @@
 #include <QAbstractTextDocumentLayout>
 
 #include <QLineEdit>
+#include "libtranslate.h"
 
 #define SEARCH_ROLE  Qt::UserRole
 #define INDEX_ROLE   SEARCH_ROLE+1
@@ -125,6 +126,7 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
     mTimerId(0)
 
 {
+    libTranslate("librazorqt");
     ui->setupUi(this);
     QListWidget* pluginList = ui->pluginList;
 

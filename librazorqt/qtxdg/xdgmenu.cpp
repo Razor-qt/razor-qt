@@ -35,7 +35,7 @@
 #include "xdgdirs.h"
 #include "xdgmenulayoutprocessor.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNamedNodeMap>
 #include <QtCore/QFile>
@@ -45,6 +45,24 @@
 #include <QtCore/QHash>
 #include <QtCore/QLocale>
 #include <QtCore/QFileSystemWatcher>
+#include <QtCore/QTranslator>
+#include <QtCore/QCoreApplication>
+
+
+void installTranslation(const QString &name)
+{
+    static bool alreadyLoaded = false;
+
+    if (alreadyLoaded)
+        return;
+
+    QString locale = QLocale::system().name();
+    QTranslator *translator = new QTranslator();
+    translator->load(QString("%1/%2_%3.qm").arg(TRANSLATIONS_DIR, name, locale));
+
+    QCoreApplication::installTranslator(translator);
+    alreadyLoaded = true;
+}
 
 
 /************************************************
@@ -54,6 +72,7 @@ XdgMenu::XdgMenu(QObject *parent) :
     QObject(parent),
     d_ptr(new XdgMenuPrivate(this))
 {
+    installTranslation("qtxdg");
 }
 
 
