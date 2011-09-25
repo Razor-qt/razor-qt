@@ -19,7 +19,7 @@
     <message>
         <location filename="../mountbutton.cpp" line="185"/>
         <source>Removable media/devices manager</source>
-        <translation>Menadżer urządzeń</translation>
+        <translation>Menedżer urządzeń</translation>
     </message>
     <message>
         <location filename="../mountbutton.cpp" line="278"/>
@@ -78,7 +78,7 @@ Teraz możesz wysunąć pamięć flash albo dysk CD/DVD.</translation>
     <message>
         <location filename="../razormountconfiguration.ui" line="14"/>
         <source>Razor Removable media manager settings</source>
-        <translation>Ustawienia Menadżera urządzeń</translation>
+        <translation>Ustawienia Menedżera urządzeń</translation>
     </message>
     <message>
         <location filename="../razormountconfiguration.ui" line="20"/>
