@@ -57,12 +57,12 @@
         <translation>Komenda</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="88"/>
+        <location filename="../dialog.cpp" line="86"/>
         <source>Configure razor-runner</source>
         <translation>Konfiguruj razor-runner</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="317"/>
+        <location filename="../dialog.cpp" line="286"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>Naciśnij &quot;%1&quot; aby zobaczyć okno.</translation>
     </message>
@@ -70,9 +70,14 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../commanditemmodel.cpp" line="114"/>
+        <location filename="../providers.cpp" line="219"/>
         <source>History</source>
         <translation>Historia</translation>
+    </message>
+    <message>
+        <location filename="../providers.cpp" line="305"/>
+        <source>Mathematics</source>
+        <translation>Matematyka</translation>
     </message>
 </context>
 </TS>

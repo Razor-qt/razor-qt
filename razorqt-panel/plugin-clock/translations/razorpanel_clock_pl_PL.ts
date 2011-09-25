@@ -21,7 +21,7 @@
     <message>
         <location filename="../razorclockconfiguration.ui" line="33"/>
         <source>12 hour style</source>
-        <translation>Styl 12-godzinny</translation>
+        <translation>Format czasu 12 godzinny</translation>
     </message>
     <message>
         <location filename="../razorclockconfiguration.ui" line="43"/>
