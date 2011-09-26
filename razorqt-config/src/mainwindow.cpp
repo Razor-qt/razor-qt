@@ -24,6 +24,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QtCore/QDirIterator>
+#include <QtGui/QStatusBar>
 
 #include "mainwindow.h"
 #include <QtDebug>
