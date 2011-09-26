@@ -62,6 +62,13 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* pare
     
     m_power = new PowerManager(this);
     m_screenSaver = new ScreenSaver(this);
+    
+    m_config->beginGroup("razor");
+    m_menuFile = m_config->value("menu_file", "").toString();
+    m_config->endGroup();
+    if (m_menuFile.isEmpty())
+        m_menuFile = XdgMenu::getMenuFileName();
+    qDebug() << "File Name:" << m_menuFile;
 
     mAvailablePlugins.load(PLUGIN_DESKTOP_FILES_DIR, "RazorDesktop/Plugin");
     
@@ -261,7 +268,7 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
             // TODO/FIXME: cache it?
             XdgMenu xdgMenu;
             xdgMenu.setEnvironments("RAZOR");
-            if (xdgMenu.read(XdgMenu::getMenuFileName()))
+            if (xdgMenu.read(m_menuFile))
             {
                 context = new XdgMenuWidget(xdgMenu, "Context Menu", this);
             }

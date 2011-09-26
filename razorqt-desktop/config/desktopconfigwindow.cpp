@@ -41,10 +41,10 @@ DesktopConfigWindow::DesktopConfigWindow()
     setupUi(this);
     
     action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
-    action_Clear_changes->setIcon(XdgIcon::fromTheme("edit-undo"));
 
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop"), tr("Basic Settings"), listWidget);
+    new QListWidgetItem(XdgIcon::fromTheme("show-menu"), tr("Menu Configuration"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-personal"), tr("WM Native Desktop"), listWidget);
     listWidget->setCurrentRow(0);
     
@@ -55,13 +55,14 @@ DesktopConfigWindow::DesktopConfigWindow()
     m_cache = new RazorSettingsCache(m_settings);
     restoreSettings();
     
-    connect(action_Clear_changes, SIGNAL(triggered()),
-            this, SLOT(clearChanges()));
     connect(desktopTypeComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(desktopTypeComboBox_currentIndexChanged(int)));
     // UI stuff
     connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
     connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
+    //
+    //
+    connect(chooseMenuFilePB, SIGNAL(clicked()), this, SLOT(chooseMenuFile()));
     //
     connect(nativeWallpaperButton, SIGNAL(clicked()), this, SLOT(nativeWallpaperButton_clicked()));
     //
@@ -70,17 +71,13 @@ DesktopConfigWindow::DesktopConfigWindow()
     connect(doubleclickButton, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(nativeIconsCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(nativeWallpaperEdit, SIGNAL(textChanged(const QString&)), this, SLOT(setRestart()));
+    //
+    connect(buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 }
 
 DesktopConfigWindow::~DesktopConfigWindow()
 {
     delete m_cache;
-}
-
-void DesktopConfigWindow::clearChanges()
-{
-    m_cache->loadToSettings();
-    restoreSettings();
 }
 
 void DesktopConfigWindow::restoreSettings()
@@ -101,6 +98,11 @@ void DesktopConfigWindow::restoreSettings()
     else
         doubleclickButton->setChecked(true);
     
+    // razor
+    m_settings->beginGroup("razor");
+    menuFilePathLE->setText(m_settings->value("menu_file").toString());
+    m_settings->endGroup();
+    
     // wm_native
     m_settings->beginGroup("wm_native");
     QString wmWallpaper = m_settings->value("wallpaper").toString();
@@ -116,6 +118,13 @@ void DesktopConfigWindow::closeEvent(QCloseEvent * event)
 {
     m_settings->setValue("desktop", desktopTypeComboBox->itemData(desktopTypeComboBox->currentIndex()).toString());
     m_settings->setValue("icon-launch", singleclickButton->isChecked() ? "singleclick" : "doubleclick");
+    
+    if (!menuFilePathLE->text().isEmpty())
+    {
+        m_settings->beginGroup("razor");
+        m_settings->setValue("menu_file", menuFilePathLE->text());
+        m_settings->endGroup();
+    }
     
     m_settings->beginGroup("wm_native");
     m_settings->setValue("wallpaper", nativeWallpaperEdit->text());
@@ -165,6 +174,16 @@ void DesktopConfigWindow::desktopTypeComboBox_currentIndexChanged(int ix)
     m_restart = true;
 }
 
+void DesktopConfigWindow::chooseMenuFile()
+{
+    QString path = QFileDialog::getOpenFileName(this, tr("Choose menu file"), "~", tr("Menu files (*.menu)"));
+    if (!path.isEmpty())
+    {
+        menuFilePathLE->setText(path);
+        m_restart = true;
+    }
+}
+
 void DesktopConfigWindow::nativeWallpaperButton_clicked()
 {
     QString fname = QFileDialog::getOpenFileName(this, tr("Select Wallpaper Image"),
@@ -178,4 +197,17 @@ void DesktopConfigWindow::nativeWallpaperButton_clicked()
 void DesktopConfigWindow::setRestart()
 {
     m_restart = true;
+}
+
+void DesktopConfigWindow::dialogButtonsAction(QAbstractButton *btn)
+{
+    if (buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
+    {
+        m_cache->loadToSettings();
+        restoreSettings();
+    }
+    else
+    {
+        close();
+    }
 }

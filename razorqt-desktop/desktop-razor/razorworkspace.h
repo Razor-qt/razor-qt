@@ -75,6 +75,7 @@ private:
 
     QGraphicsScene * m_scene;
     RazorSettings * m_config;
+    QString m_menuFile;
     int m_screen;
     Mode m_mode;
     

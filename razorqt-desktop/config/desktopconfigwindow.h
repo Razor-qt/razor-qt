@@ -53,12 +53,13 @@ private:
 
 private slots:
     void about();
-    void clearChanges();
     void setRestart();
 
     void desktopTypeComboBox_currentIndexChanged(int ix);
+    void chooseMenuFile();
     void nativeWallpaperButton_clicked();
 
+    void dialogButtonsAction(QAbstractButton *btn);
 };
 
 #endif
