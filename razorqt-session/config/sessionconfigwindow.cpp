@@ -72,7 +72,7 @@ SessionConfigWindow::SessionConfigWindow()
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Autostart"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-system-session-services"), tr("Environment (Advanced)"), listWidget);
     listWidget->setCurrentRow(0);
-    
+
     m_autostartModel = new QStringListModel(autostartView);
     autostartView->setModel(m_autostartModel);
 
@@ -110,6 +110,7 @@ SessionConfigWindow::SessionConfigWindow()
     connect(browserComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
     connect(browserComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
 
+    connect(buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 }
 
 void SessionConfigWindow::restoreSettings()
@@ -357,3 +358,15 @@ void SessionConfigWindow::setRestart()
     m_restart = true;
 }
 
+void SessionConfigWindow::dialogButtonsAction(QAbstractButton *btn)
+{
+    if (buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
+    {
+        m_cache->loadToSettings();
+        restoreSettings();
+    }
+    else
+    {
+        close();
+    }
+}

@@ -77,6 +77,8 @@ private slots:
     //
     void clearChanges();
     void setRestart();
+
+    void dialogButtonsAction(QAbstractButton *btn);
 };
 
 #endif
