@@ -64,7 +64,6 @@ SessionConfigWindow::SessionConfigWindow()
     setupUi(this);
 
     action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
-    action_Clear_changes->setIcon(XdgIcon::fromTheme("edit-undo"));
 
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-display-color"), tr("Basic Settings"), listWidget);
@@ -95,9 +94,6 @@ SessionConfigWindow::SessionConfigWindow()
     connect(envAddButton, SIGNAL(clicked()), this, SLOT(envAddButton_clicked()));
     connect(envDeleteButton, SIGNAL(clicked()), this, SLOT(envDeleteButton_clicked()));
     //
-    //
-    connect(action_Clear_changes, SIGNAL(triggered()),
-            this, SLOT(clearChanges()));
     //
     connect(wmComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
     connect(wmComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
@@ -186,12 +182,6 @@ void SessionConfigWindow::restoreSettings()
 SessionConfigWindow::~SessionConfigWindow()
 {
     delete m_cache;
-}
-
-void SessionConfigWindow::clearChanges()
-{
-    m_cache->loadToSettings();
-    restoreSettings();
 }
 
 void SessionConfigWindow::closeEvent(QCloseEvent * event)

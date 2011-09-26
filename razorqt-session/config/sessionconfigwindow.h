@@ -75,7 +75,6 @@ private slots:
     void envAddButton_clicked();
     void envDeleteButton_clicked();
     //
-    void clearChanges();
     void setRestart();
 
     void dialogButtonsAction(QAbstractButton *btn);

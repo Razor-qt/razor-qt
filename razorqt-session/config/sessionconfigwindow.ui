@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>389</height>
+    <width>516</width>
+    <height>348</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -100,8 +100,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>368</width>
-                  <height>200</height>
+                  <width>303</width>
+                  <height>112</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_4">
@@ -196,8 +196,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>382</width>
-               <height>302</height>
+               <width>348</width>
+               <height>86</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_9">
@@ -436,15 +436,14 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>660</width>
-     <height>21</height>
+     <width>516</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="action_Clear_changes"/>
     <addaction name="action_Quit"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
@@ -464,11 +463,6 @@
   <action name="action_About">
    <property name="text">
     <string>&amp;About...</string>
-   </property>
-  </action>
-  <action name="action_Clear_changes">
-   <property name="text">
-    <string>&amp;Clear changes</string>
    </property>
   </action>
  </widget>
