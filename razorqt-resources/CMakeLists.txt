@@ -34,3 +34,4 @@ INSTALL_SESSION_FILES("/usr/local/share/config/kdm/sessions")
 #ENDIF()
 
 add_subdirectory( themes )
+add_subdirectory( application-menu )

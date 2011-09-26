@@ -684,6 +684,7 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
     }
 
     QStringList wellKnownFiles;
+    wellKnownFiles << "razor-applications.menu";
     wellKnownFiles << "kde4-applications.menu";
     wellKnownFiles << "kde-applications.menu";
     wellKnownFiles << "gnome-applications.menu";

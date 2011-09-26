@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Directory
+Name=Razor-qt settings
+Name[ru]=Настройки Razor-qt
+Icon=razor-qt-system
+X-Ubuntu-Gettext-Domain=desktop_kdebase-runtime
