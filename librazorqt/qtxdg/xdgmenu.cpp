@@ -676,15 +676,25 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
     QStringList configDirs = XdgDirs::configDirs();
     QString menuPrefix = getenv("XDG_MENU_PREFIX");
 
-    foreach(QString configDir, configDirs)
+    // let's expect thet we will search for "well known files" only when
+    // there is no XDG_MENU_PREFIX. Because other case leads for "applications.menu"
+    // for all calls (fedora, suse, other?)
+    if (!menuPrefix.isEmpty())
     {
-        QFileInfo file(QString("%1/menus/%2%3").arg(configDir, menuPrefix, baseName));
-        if (file.exists())
-            return file.filePath();
+        foreach(QString configDir, configDirs)
+        {
+            QFileInfo file(QString("%1/menus/%2%3").arg(configDir, menuPrefix, baseName));
+            if (file.exists())
+                return file.filePath();
+        }
     }
 
     QStringList wellKnownFiles;
+    // razor- is a priority for us
     wellKnownFiles << "razor-applications.menu";
+    // the "global" menu file name on suse and fedora
+    wellKnownFiles << "applications.menu";
+    // rest files ordered by priority (descending)
     wellKnownFiles << "kde4-applications.menu";
     wellKnownFiles << "kde-applications.menu";
     wellKnownFiles << "gnome-applications.menu";
