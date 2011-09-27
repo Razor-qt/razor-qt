@@ -52,6 +52,12 @@ if [ "${LANGS}" = " all" ]; then
   LANGS=`find ${DIR} -type f -name "*.ts" | sed -e's/.*_\(.._..\).ts/\1/' | sort | uniq`
 fi
 
+if [ `which lrelease4 2>/dev/null` ]; then 
+    LRELEASE='lrelease-qt4'
+else
+    LRELEASE='lrelease'
+fi
+
 HEADER="All\tDone\tFile\n"
 for lang in ${LANGS}; do
     let "totalFinished = 0"
@@ -61,7 +67,7 @@ for lang in ${LANGS}; do
     echo "${lang}"
 
     for file in `find ${DIR} -type f -name "*${lang}.ts" 2>/dev/null`; do
-      s=`LANG=C lrelease-qt4 "$file" -qm /dev/null`
+      s=`LANG=C ${LRELEASE} "$file" -qm /dev/null`
       finished=`echo $s | grep --regexp="[0-9]\+ finished" --only-matching |  awk '{print ($1)}'`
       let "finished += 0"
       let "totalFinished += $finished"
@@ -94,6 +100,9 @@ for lang in ${LANGS}; do
 
       `grep "Name\[${l}\]" $file >/dev/null` && let "finished += 1 "
       `grep "Comment\[${l}\]" $file >/dev/null` && let "finished += 1 "
+
+      let "totalFinished += $finished"
+      let "totalAll += $all"
 
       if [ -n "$ALLFILES" ] || [ "$finished" != "$all" ]; then
         echo -ne $HEADER
