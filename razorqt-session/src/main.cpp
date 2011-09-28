@@ -97,7 +97,10 @@ int main(int argc, char **argv)
         }
     }
     
+    // PATH for out own bundled XDG tools
     razor_setenv_prepend("PATH", PATH_PREPEND);
+    // special variable for Razor environment menu
+    razor_setenv("XDG_MENU_PREFIX", "razor-");
 
     RazorModuleManager modman(session);
     new SessionDBusAdaptor(&modman);

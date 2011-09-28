@@ -194,7 +194,7 @@ void razor_setenv(const char *env, const QByteArray &value)
 
 void razor_setenv_prepend(const char *env, const QByteArray &value, const QByteArray &separator)
 {
-    QByteArray orig(qgetenv("PATH"));
+    QByteArray orig(qgetenv(env));
     orig = orig.prepend(separator);
     orig = orig.prepend(value);
     qDebug() << "Setting special" << env << " variable:" << orig;

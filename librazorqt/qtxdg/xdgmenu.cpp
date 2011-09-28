@@ -676,17 +676,11 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
     QStringList configDirs = XdgDirs::configDirs();
     QString menuPrefix = getenv("XDG_MENU_PREFIX");
 
-    // let's expect thet we will search for "well known files" only when
-    // there is no XDG_MENU_PREFIX. Because other case leads for "applications.menu"
-    // for all calls (fedora, suse, other?)
-    if (!menuPrefix.isEmpty())
+    foreach(QString configDir, configDirs)
     {
-        foreach(QString configDir, configDirs)
-        {
-            QFileInfo file(QString("%1/menus/%2%3").arg(configDir, menuPrefix, baseName));
-            if (file.exists())
-                return file.filePath();
-        }
+        QFileInfo file(QString("%1/menus/%2%3").arg(configDir, menuPrefix, baseName));
+        if (file.exists())
+            return file.filePath();
     }
 
     QStringList wellKnownFiles;
