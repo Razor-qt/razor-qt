@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=quicklaunch
+PROJECT=showdesktop
 
 #OPTS="-noobsolete" 
 

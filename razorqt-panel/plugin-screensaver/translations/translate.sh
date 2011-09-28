@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=quicklaunch
+PROJECT=screensaver
 
 #OPTS="-noobsolete" 
 

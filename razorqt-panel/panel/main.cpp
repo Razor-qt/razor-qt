@@ -27,8 +27,9 @@
 #include <QtCore/QLocale>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
-#include <QIcon>
-#include <QDebug>
+#include <QtGui/QIcon>
+#include <QtCore/QDebug>
+#include <QtCore/QLibraryInfo>
 
 #include "razorpanelapplication.h"
 #include "razorpanel.h"
@@ -44,9 +45,14 @@ int main(int argc, char *argv[])
     RazorPanelApplication a(argc, argv);
     a.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    a.installTranslator(&qtTranslator);
+
     QString locale = QLocale::system().name();
     QTranslator translator;
     translator.load(QString("%1/razor-panel_%3.qm").arg(TRANSLATIONS_DIR, locale));
+
     a.installTranslator(&translator);
 
     RazorPanel panel;
