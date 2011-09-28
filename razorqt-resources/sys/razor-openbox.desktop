@@ -4,3 +4,6 @@ Type=XSession
 Exec=razor-session -c session-openbox
 Name=Razor Desktop (Openbox)
 Comment=Qt4 Desktop
+
+Name[ru]=Рабочий стол Razor (openbox)
+Comment[ru]=Рабочий стол на Qt

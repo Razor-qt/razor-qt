@@ -1,6 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=XSession
-Exec=razor-session openbox
-Name=Razor-Reborn (Openbox)
-Comment=qt4 Desktop Environment
+Exec=razor-session kdm
+Name=Razor-Reborn (KDM)
+Comment=Qt4 Desktop Environment
+
+Name[ru]=Рабочий стол Razor (KDM)
+Comment[ru]=Рабочий стол на Qt

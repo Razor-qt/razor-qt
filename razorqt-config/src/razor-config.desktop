@@ -10,4 +10,6 @@ Name=Razor Configuration Center
 Comment=Configure Razor-Qt modules
 GenericName=Razor Configuration
 
-
+Name[ru]=Центр настроек Razor
+Comment[ru]=Центр настроек для модулей Razor-Qt
+GenericName[ru]=Центр настроек Razor

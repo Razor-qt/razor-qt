@@ -85,8 +85,8 @@ for lang in ${LANGS}; do
       if [ -n "$ALLFILES" ] || [ "$finished" != "$all" ]; then
         echo -ne $HEADER
         HEADER=''
-        f=`echo $file | sed s/$DIR//`
-        printf "%d\t%d\t%s\n" $all $finished $f
+#        f=`echo $file | sed s/$DIR//`
+        printf "%d\t%d\t%s\n" $all $finished $file
       fi
     done;
 
@@ -97,9 +97,12 @@ for lang in ${LANGS}; do
       let "finished = 0"
       `grep "Name" $file >/dev/null` && let "all += 1 "
       `grep "Comment" $file >/dev/null` && let "all += 1 "
+      `grep "GenericName" $file >/dev/null` && let "all += 1 "
+
 
       `grep "Name\[${l}\]" $file >/dev/null` && let "finished += 1 "
       `grep "Comment\[${l}\]" $file >/dev/null` && let "finished += 1 "
+      `grep "GenericName\[${l}\]" $file >/dev/null` && let "finished += 1 "
 
       let "totalFinished += $finished"
       let "totalAll += $all"
@@ -107,8 +110,8 @@ for lang in ${LANGS}; do
       if [ -n "$ALLFILES" ] || [ "$finished" != "$all" ]; then
         echo -ne $HEADER
         HEADER=''
-        f=`echo $file | sed s/$DIR//`
-        printf "%d\t%d\t%s\n" $all $finished $f
+#        f=`echo $file | sed s/$DIR//`
+        printf "%d\t%d\t%s\n" $all $finished $file
       fi
     done
 

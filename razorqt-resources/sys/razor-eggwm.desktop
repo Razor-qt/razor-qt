@@ -4,3 +4,6 @@ Type=XSession
 Exec=razor-session-eggwm 
 Name=Razor Desktop (eggwm)
 Comment=Qt4 Desktop
+
+Name[ru]=Рабочий стол Razor (eggwm)
+Comment[ru]=Рабочий стол на Qt

@@ -3,5 +3,7 @@ Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Desktopswitch
 Name[pl]=Obszary robocze
+Name[ru]=Переключатель рабочих столов
 Comment=Allow to switch virtual desktops
 Comment[pl]=Pozwala przełączać się pomiędzy writualnymi pulpitami
+Comment[ru]=Позволяет переключатся между виртуальными рабочими столами

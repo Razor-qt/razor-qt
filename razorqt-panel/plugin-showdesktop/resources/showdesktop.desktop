@@ -5,3 +5,5 @@ Name=Show Desktop
 Comment=Minimize all windows and show the desktop
 Name[pl]=Pokaż pulpit
 Comment[pl]=Minimalizuje wszystkie okna i pokazuje pulpit
+Name[ru]=Показать рабочий стол
+Comment[ru]=Сворачивает все окна и показывает рабочий стол

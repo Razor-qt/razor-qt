@@ -6,6 +6,10 @@ Exec=razor-config-mouse
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;RAZOR;
 Icon=preferences-desktop-mouse
-Name=Razor Mouse Theme Configurator
-Comment=Configure X11 mouse theme
-GenericName=Razor Mouse Theme Configurator
+Name=Razor Mouse Configurator
+Comment=Configure X11 mouse
+GenericName=Razor Mouse Configurator
+
+Name[ru]=Настройки мыши
+Comment[ru]=Настройки мыши для Razor-Qt
+GenericName[ru]=Настройки мыши

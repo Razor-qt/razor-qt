@@ -4,3 +4,6 @@ Type=XSession
 Exec=razor-session
 Name=Razor Desktop (Failback)
 Comment=Qt4 Desktop
+
+Name[ru]=Рабочий стол Razor (безопасный режим)
+Comment[ru]=Рабочий стол  на Qt

@@ -3,3 +3,6 @@ Type=Service
 ServiceTypes=RazorDesktop/Plugin
 Name=Clock
 Comment=Clock
+
+Name[ru]=Часы
+Comment[ru]=Часы

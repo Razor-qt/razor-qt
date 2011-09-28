@@ -10,4 +10,6 @@ Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
 
-
+Name[ru]=Настройки сесии Razor
+Comment[ru]=Настройки сессии для Razor-Qt
+GenericName[ru]=Настройки сесии Razor
