@@ -8,24 +8,10 @@ set (MINOR_VERSION 1)
 set (PATCH_VERSION 0)
 
 
-
 add_definitions(-Wall)
 find_package(Qt4 REQUIRED)
-find_package(X11 REQUIRED)
 find_package(LibMagic REQUIRED)
 
-
-include ( ${QT_USE_FILE} )
-#include_directories (
-#	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-#	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
-#	${X11_INCLUDE_DIR}
-#	${LIBMAGIC_INCLUDE_DIR}
-#	.
-#	razorqt
-#    librazor-upower
-#    qxt
-#)
 
 set(QTXDG_PUBLIC_HDRS
     xdgaction.h
@@ -72,7 +58,8 @@ set(QTXDG_MOCS
     xdgmenuwidget.h
 )
 
-set(QT_USE_QTXML True)
+set(QT_USE_QTXML TRUE)
+
 
 # Translations **********************************
 file(GLOB TS_FILES
@@ -84,6 +71,9 @@ file(GLOB TS_FILES
 #**********************************************************
 cmake_minimum_required( VERSION 2.6 )
 
+include(RazorLibSuffix)
+include(${QT_USE_FILE})
+
 QT4_WRAP_CPP(QTXDG_CXX ${QTXDG_MOCS})
 qt4_add_translation(QM_FILES ${TS_FILES})
 
@@ -92,37 +82,11 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 
-# some system (rpm builds) setup LIB_SUFFIX for cmake. If there is no set, try to get it from system
-IF (NOT DEFINED LIB_SUFFIX)
-    MESSAGE(STATUS "*********************************************************************")
-    MESSAGE(STATUS "LIB_SUFFIX variable is not defined. It will be autodetected now")
-    MESSAGE(STATUS "You can set it manually with -DLIB_SUFFIX=<value> (64 for example)")
-
-    # All 32bit system have empty lib suffix
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        # If there is lib64 dir, set suffix to 64
-        if(IS_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib64)
-            set(LIB_SUFFIX 64)
-        elseif(IS_DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib)
-            set(LIB_SUFFIX "")
-        else()
-            message(WARNING "LIB_SUFFIX cannot be autodetected. No ${CMAKE_INSTALL_PREFIX}/lib neither ${CMAKE_INSTALL_PREFIX}/lib64 found.")
-            set(LIB_SUFFIX "")
-        endif()
-    else()
-        set(LIB_SUFFIX "")
-    endif()
-
-    message(STATUS "LIB_SUFFIX autodetected as '${LIB_SUFFIX}', libraries will be installed into ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
-    MESSAGE(STATUS "*********************************************************************")
-ENDIF (NOT DEFINED LIB_SUFFIX)
-
-
 set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/qtxdg)
 add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
 add_library(qtxdg SHARED ${QTXDG_PUBLIC_HDRS} ${QTXDG_PRIVATE_HDRS} ${QTXDG_SRCS} ${QTXDG_CXX} ${QM_FILES})
-target_link_libraries(qtxdg  ${QT_LIBRARIES} ${X11_X11_LIB} ${LIBMAGIC_LIBRARY})
+target_link_libraries(qtxdg  ${QT_LIBRARIES} ${LIBMAGIC_LIBRARY})
 
 set_target_properties(qtxdg PROPERTIES
   VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
