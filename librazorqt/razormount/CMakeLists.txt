@@ -44,7 +44,7 @@ target_link_libraries ( razormount ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
 				 ${UDEV_LIBRARIES} 
                       )
 
-set_target_properties(razorqt PROPERTIES
+set_target_properties(razormount PROPERTIES
   VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
   SOVERSION ${MAJOR_VERSION}
 )
