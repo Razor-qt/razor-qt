@@ -7,7 +7,6 @@ endif (NOT CMAKE_BUILD_TYPE)
 
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED )
-find_package ( X11 REQUIRED )
 include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
@@ -29,6 +28,10 @@ set ( razor-appswitcher_SRCS
 	src/application.cpp
 	)
 
+set(LIBRARIES
+    razorqt
+    razorqxt
+)
 
 QT4_WRAP_CPP(MOCS ${razor-appswitcher_HDRS})
 QT4_WRAP_UI(UIS src/appswitcher.ui)
@@ -37,10 +40,7 @@ SET (exec razor-appswitcher)
 
 add_executable ( ${exec} ${razor-appswitcher_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 add_dependencies( ${exec} razorqt )
-target_link_libraries ( ${exec}  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
-                                 ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
-                                 ${X11_X11_LIB}
-                                 ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so
-                                 ${CMAKE_BINARY_DIR}/librazorqt/librazorqxt.so
+target_link_libraries(${exec}   ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+                                ${LIBRARIES}
                     )
 INSTALL(TARGETS ${exec} RUNTIME DESTINATION bin)

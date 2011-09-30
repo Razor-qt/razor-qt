@@ -19,9 +19,8 @@ find_package ( X11 REQUIRED )
 include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
+        ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
 	${X11_INCLUDE_DIR}
-	${LIBMAGIC_INCLUDE_DIR}
 	.
 	razorqt
     librazor-upower
@@ -106,8 +105,8 @@ include(RazorLibSuffix)
 add_library ( razorqt SHARED ${razorqt_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 
 target_link_libraries ( razorqt  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
-                                 ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
-                                 ${X11_X11_LIB} ${LIBMAGIC_LIBRARY} 
+                                 ${QT_QTDBUS_LIBRARY}
+                                 ${X11_X11_LIB}
                                  qtxdg
                       )
 

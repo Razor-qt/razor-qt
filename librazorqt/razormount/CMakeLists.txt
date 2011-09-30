@@ -4,9 +4,8 @@ else (NOT UDEV_STABLE)
 
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
+        ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
 	${X11_INCLUDE_DIR}
-	${LIBMAGIC_INCLUDE_DIR}
 	.
 )
 
@@ -40,7 +39,7 @@ QT4_WRAP_CPP(razourmount_MOCS ${razormount_MOCS})
 add_library ( razormount SHARED ${razormount_SRCS} ${razourmount_MOCS} )
 
 target_link_libraries ( razormount ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
-                                 ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}
+                                 ${QT_QTDBUS_LIBRARY}
 				 ${UDEV_LIBRARIES} 
                       )
 
