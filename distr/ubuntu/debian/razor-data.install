@@ -1,0 +1,6 @@
+/usr/share/razor/razor.conf
+/usr/share/razor/graphics/
+/usr/share/razor/themes/
+/etc/xdg/menus/*
+/usr/share/desktop-directories/
+/usr/lib/razor-xdg-tools

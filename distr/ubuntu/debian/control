@@ -1,16 +1,151 @@
-Source: %NAME%
+Source: razorqt
 Section: x11
 Priority: optional
 Maintainer: Alexander Sokolov <sokoloff.a@gmail.com>
 Build-Depends: debhelper (>= 7.0.50~), pkg-config, cmake, 
   libqt4-dev (>= 4.5.1), libmagic-dev, libxrender-dev, libxcomposite-dev, libxdamage-dev
-Standards-Version: 3.8.4
+Standards-Version: 3.9.1
 Homepage: http://razor-qt.org
 
-Package: %NAME%
+
+Package: razorqt-dev
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Razor - a lightweight, Qt based, desktop toolset
-  Razor is a toolbox-like desktop-environment. While trying to feature 
-  everything a modern desktop has to offer (panel, session, desktop) 
-  it lets the user choose what to use.
+Depends: ${misc:Depends},
+  libqtxdg-dev (= ${binary:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:RazorQt development package
+ This package provides the development files for the libraries that are
+ shared amongst the various components of Razor-qt.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: libqtxdg0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-xml
+Description:implementation of the XDG Specifications
+ This library implements functions of the XDG Specifications in Qt.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: libqtxdg-dev
+Architecture: any
+Section: libdevel
+Depends: ${misc:Depends},
+  libqtxdg0 (= ${binary:Version})
+Description:implementation of the XDG Specifications, development package
+ This package provides the development files for the qtxdg library.
+ This library implements functions of the XDG Specifications in Qt.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: librazorqt0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+  libqtxdg0 (= ${binary:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:common libraries and binaries for the Razor-Qt
+ This package provides the libraries and binaries that are shared amongst
+ the various components of Razor-qt.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-appswitcher
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  libqtxdg0 (= ${binary:Version}),
+  librazorqt0 (= ${binary:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:Razor-Qt window switcher
+ Alt-Tab window switcher for Razor-Qt.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-desktop
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version}),
+  razor-data (= ${source:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:RazorQt desktop
+ Displays widgets like file icons or clock on the desktop.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-panel
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  libqtxdg0 (= ${binary:Version}),
+  librazorqt0 (= ${binary:Version}),
+  razor-data (= ${source:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:the Razor-Qt desktop environment panel
+ It provides a taskbar (list of all opened windows), desktop
+ switcher, launchbar, clock, etc.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-data
+Architecture: all
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:shared data files for the Razor-Qt
+ This package contains the architecture-independent shared
+ data files needed for the Razor-Qt desktop environment.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-runner
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version}),
+  razor-data (= ${source:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:An application launcher for the the Razor-Qt
+ razor-runner is a tool for launching applications. On most
+ systems razor-runner can be activated by pressing the
+ Alt + F2 key combination.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-config
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0(= ${binary:Version}),
+  razor-data (= ${source:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:Razor-Qt config tools
+ Razor-config is a user interface for configuring the other
+ aspects of the Razor-qt desktop.
+ .
+ This package is part of the Razor-Qt.
+
+
+Package: razor-session
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0(= ${binary:Version}),
+  razor-data (= ${source:Version}),
+  openbox | kde-window-manager | metacity
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:Razor-Qt session manager
+ .
+ This package is part of the Razor-Qt.

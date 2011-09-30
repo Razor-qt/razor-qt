@@ -1,0 +1,5 @@
+/usr/bin/razor-session
+/usr/bin/razor-config-session
+/usr/share/xsessions/razor.desktop
+/usr/share/applications/razor-config-session.desktop
+/usr/share/razor/session*.conf
