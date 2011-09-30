@@ -147,7 +147,7 @@ AppLinkProvider::AppLinkProvider():
     CommandProvider(),
     mXdgMenu( new XdgMenu())
 {
-    mXdgMenu->setEnvironments("RAZOR");
+    mXdgMenu->setEnvironments("X-RAZOR");
 }
 
 

@@ -149,7 +149,7 @@ void RazorMainMenu::settigsChanged()
  ************************************************/
 void RazorMainMenu::buildMenu()
 {
-    mXdgMenu.setEnvironments("RAZOR");
+    mXdgMenu.setEnvironments("X-RAZOR");
     mXdgMenu.setLogDir(mLogDir);
 
     bool res = mXdgMenu.read(mMenuFile);

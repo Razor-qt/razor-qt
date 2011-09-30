@@ -32,7 +32,7 @@
 #include <QDBusInterface>
 #include <QTimer>
 #include <QCoreApplication>
-
+#include <QMessageBox>
 /**
  * @file razormodman.cpp
  * @author Christopher "VdoP" Regali
@@ -47,6 +47,7 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
     : QObject(parent),
     mConfig(config)
 {
+    QMessageBox::aboutQt(0, "Welcome to razor-qt");
     m_power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
                                "org.freedesktop.Hal.Device.SystemPowerManagement",
                                QDBusConnection::systemBus());

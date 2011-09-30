@@ -1,10 +1,10 @@
 [Desktop Entry]
 X-SuSE-translate=true
-OnlyShowIn=RAZOR;
+OnlyShowIn=X-RAZOR;
 Type=Application
 Exec=razor-config
 Terminal=false
-Categories=Settings;DesktopSettings;Qt;RAZOR;
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=package_settings
 Name=Razor Configuration Center
 Comment=Configure Razor-Qt modules
