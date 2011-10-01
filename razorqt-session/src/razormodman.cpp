@@ -43,7 +43,7 @@
 /**
  * @brief the constructor, needs a valid modules.conf
  */
-RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
+RazorModuleManager::RazorModuleManager(const QString & config, const QString & windowManager, QObject* parent)
     : QObject(parent),
     mConfig(config)
 {
@@ -71,7 +71,17 @@ RazorModuleManager::RazorModuleManager(const QString & config, QObject* parent)
     // then rest of the config:
     
     // window manager
-    QString wm = s.value("windowmanager", "openbox").toString();
+    QString wm;
+    if (windowManager.isNull())
+    {
+        wm = s.value("windowmanager", "openbox").toString();
+        qDebug() << "Using window manager from config file" << wm;
+    }
+    else
+    {
+        wm = windowManager;
+        qDebug() << "Using window manager specified with command line" << windowManager;
+    }
     QProcess * wmProcess = new QProcess(this);
     wmProcess->start(wm);
     connect(wmProcess, SIGNAL(finished(int, QProcess::ExitStatus)),

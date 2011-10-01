@@ -87,12 +87,18 @@ int main(int argc, char **argv)
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
     char* session = NULL;
+    char* winmanager = NULL;
     int c;
-    while ((c = getopt (argc, argv, "c:")) != -1)
+    while ((c = getopt (argc, argv, "c:w:")) != -1)
     {
         if (c == 'c')
         {
             session = optarg;
+            break;
+        }
+        else if (c == 'w')
+        {
+            winmanager = optarg;
             break;
         }
     }
@@ -102,7 +108,7 @@ int main(int argc, char **argv)
     // special variable for Razor environment menu
     razor_setenv("XDG_MENU_PREFIX", "razor-");
 
-    RazorModuleManager modman(session);
+    RazorModuleManager modman(session, winmanager);
     new SessionDBusAdaptor(&modman);
     // connect to D-Bus and register as an object:
     QDBusConnection::sessionBus().registerService("org.razor.session");
