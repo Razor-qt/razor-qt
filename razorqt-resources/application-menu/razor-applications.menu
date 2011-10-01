@@ -65,83 +65,96 @@
 		</Include>
 	</Menu> <!-- End Education -->
 
-	<!-- Games -->
-	<Menu>
-		<Name>Games</Name>
-		<Directory>razor-game.directory</Directory>
+    <!-- Games -->
+    <Menu>
+        <Name>Games</Name>
+        <Directory>razor-game.directory</Directory>
 
-    <Menu>
-      <Name>Arcade</Name>
-      <Directory>razor-games-arcade.directory</Directory>
-      <Include>
-        <And>
-        <Category>Game</Category>
-        <Category>ArcadeGame</Category>
-        </And>
-      </Include>
-    </Menu>
+        <Menu>
+            <Name>Arcade</Name>
+            <Directory>razor-games-arcade.directory</Directory>
+            <Include>
+                <And>
+                    <Category>Game</Category>
+                    <Category>ArcadeGame</Category>
+                </And>
+            </Include>
+        </Menu>
 
-    <Menu>
-      <Name>Board</Name>
-      <Directory>razor-games-board.directory</Directory>
-      <Include>
-        <And>
-        <Category>Game</Category>
-        <Category>BoardGame</Category>
-        </And>
-      </Include>
-    </Menu>
+        <Menu>
+            <Name>Board</Name>
+            <Directory>razor-games-board.directory</Directory>
+            <Include>
+                <And>
+                    <Category>Game</Category>
+                    <Category>BoardGame</Category>
+                </And>
+            </Include>
+        </Menu>
     
-    <Menu>
-      <Name>Card</Name>
-      <Directory>razor-games-card.directory</Directory>
-      <Include>
-        <And>
-        <Category>Game</Category>
-        <Category>CardGame</Category>
-        </And>
-      </Include>
-    </Menu>
+        <Menu>
+            <Name>Card</Name>
+            <Directory>razor-games-card.directory</Directory>
+            <Include>
+                <And>
+                    <Category>Game</Category>
+                    <Category>CardGame</Category>
+                </And>
+            </Include>
+        </Menu>
     
-    <Menu>
-      <Name>Kidsgames</Name>
-      <Directory>razor-games-kids.directory</Directory>
-      <Include>
-        <And>
-        <Category>Game</Category>
-        <Or>
-        <Category>X-KDE-KidsGame</Category>
-        <Category>KidsGame</Category>
-        </Or>
-        </And>
-      </Include>
-    </Menu>
+        <Menu>
+            <Name>Kidsgames</Name>
+            <Directory>razor-games-kids.directory</Directory>
+            <Include>
+                <And>
+                    <Category>Game</Category>
+                    <Or>
+                        <Category>X-KDE-KidsGame</Category>
+                        <Category>KidsGame</Category>
+                    </Or>
+                </And>
+            </Include>
+        </Menu>
     
-    <Menu>
-      <Name>TacticStrategy</Name>
-      <Directory>razor-games-strategy.directory</Directory>
-      <Include>
-        <And>
-        <Category>Game</Category>
-        <Category>StrategyGame</Category>
-        </And>
-      </Include>
-    </Menu>
+        <Menu>
+            <Name>TacticStrategy</Name>
+            <Directory>razor-games-strategy.directory</Directory>
+            <Include>
+                <And>
+                    <Category>Game</Category>
+                    <Category>StrategyGame</Category>
+                </And>
+            </Include>
+        </Menu>
 
-		<Include>
-			<And>
-				<Category>Game</Category>
-        <Not>
-          <Category>ArcadeGame</Category>
-          <Category>BoardGame</Category>
-          <Category>CardGame</Category>
-          <Category>X-KDE-KidsGame</Category>
-          <Category>KidsGame</Category>
-          <Category>StrategyGame</Category>
-        </Not>
-			</And>
-		</Include>
-	</Menu> <!-- End Games -->
+        <Menu>
+            <Name>Logic</Name>
+            <Directory>razaor-games-logic.directory</Directory>
+            <Include>
+                <And>
+                    <Category>Game</Category>
+                    <Category>LogicGame</Category>
+                </And>
+            </Include>
+        </Menu>
+
+        <Include>
+            <And>
+                <Category>Game</Category>
+                <Not>
+                    <Category>ArcadeGame</Category>
+                    <Category>BoardGame</Category>
+                    <Category>CardGame</Category>
+                    <Category>X-KDE-KidsGame</Category>
+                    <Category>KidsGame</Category>
+                    <Category>StrategyGame</Category>
+                    <Category>LogicGame</Category>
+                </Not>
+            </And>
+        </Include>
+    </Menu> 
+    <!-- End Games -->
 
 	<!-- Graphics -->
 	<Menu>
@@ -223,7 +236,7 @@
       <Directory>razor-settings-razor.directory</Directory>
       <Include>
         <And>
-          <Category>RAZOR</Category>
+          <Category>X-RAZOR</Category>
         <Or>
         <Category>Settings</Category>
         <Category>PackageManager</Category>
