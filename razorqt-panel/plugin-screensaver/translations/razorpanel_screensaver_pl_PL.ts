@@ -11,7 +11,7 @@
     <message>
         <location filename="../panelscreensaver.cpp" line="57"/>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished">Plugin &quot;Wygaszacz ekranu&quot;: globalny skrót &apos;%1&apos; nie może zostać zarejestrowany</translation>
+        <translation>Plugin &quot;Wygaszacz ekranu&quot;: globalny skrót &apos;%1&apos; nie może zostać zarejestrowany</translation>
     </message>
 </context>
 </TS>

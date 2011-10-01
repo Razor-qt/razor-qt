@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 Name[ru]=Центр настроек Razor
 Comment[ru]=Центр настроек для модулей Razor-Qt
 GenericName[ru]=Центр настроек Razor
+
+Name[pl]=Panel sterowania Razor
+Comment[pl]=Wszystkie ustawienia Razor-Qt
+GenericName[pl]=Panel sterowania Razor
