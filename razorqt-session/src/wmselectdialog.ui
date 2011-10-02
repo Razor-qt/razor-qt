@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>354</width>
-    <height>278</height>
+    <width>352</width>
+    <height>276</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <property name="text">
       <string>&lt;b&gt;Welcome to Razor-qt&lt;/b&gt;
 &lt;p&gt;
-Before starting to use the Razor-qt, you might want to select the Windows Manager:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+Before starting to use the Razor-qt, you might want to select the Windows Manager:</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

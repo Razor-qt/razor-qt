@@ -24,8 +24,6 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include <QtCore/QLocale>
-#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 #include <QtGui/QIcon>
 #include <QtCore/QDebug>
@@ -33,6 +31,7 @@
 
 #include "razorpanelapplication.h"
 #include "razorpanel.h"
+#include "razortranslate.h"
 
 /*! The razor-panel is the panel of Razor-qt.
   Usage: razor-panel [CONFIG_ID]
@@ -45,15 +44,7 @@ int main(int argc, char *argv[])
     RazorPanelApplication a(argc, argv);
     a.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&qtTranslator);
-
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString("%1/razor-panel_%3.qm").arg(TRANSLATIONS_DIR, locale));
-
-    a.installTranslator(&translator);
+    TRANSLATE_APP;
 
     RazorPanel panel;
     a.setPanel(&panel);

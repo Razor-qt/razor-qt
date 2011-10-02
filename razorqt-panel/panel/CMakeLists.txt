@@ -46,12 +46,12 @@ set(RESOURCES
 
 add_definitions(-DDEFULT_PANEL_PLUGINS=\"MainMenu,Quicklaunch,TaskBar,Tray,Clock\")
 
+include(RazorTranslate)
 # Translations .............. 
-set(TRANSLATIONS_DIR 
-    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}
-)
-
-add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
+#set(TRANSLATIONS_DIR
+#    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}
+#)
+#add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
 
 file (GLOB CONFIG_FILES     resources/*.conf)
 
@@ -92,7 +92,7 @@ include(${QT_USE_FILE})
 qt4_wrap_cpp(MOC_SOURCES ${MOCS})
 qt4_wrap_ui(UI_HEADERS ${FORMS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
-qt4_add_translation(QM_FILES ${TS_FILES})
+razor_translate(QM_FILES)
 
 set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
 add_definitions(-DPLUGIN_DIR=\"${PLUGIN_DIR}\")
@@ -102,5 +102,4 @@ add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
-install(FILES   ${QM_FILES}        DESTINATION ${TRANSLATIONS_DIR})
 install(FILES   ${CONFIG_FILES}    DESTINATION share/razor/razor-panel/)

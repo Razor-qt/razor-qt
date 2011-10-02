@@ -36,14 +36,12 @@ set ( razor-session_UI
 )
 
 # Translations **********************************
-file(GLOB TS_FILES
-    translations/*.ts
-)
+include(RazorTranslate)
+razor_translate(QM_FILES)
 #************************************************
 
 QT4_WRAP_CPP(MOCS ${razor-session_MOCS})
 qt4_wrap_ui(UIS ${razor-session_UI})
-qt4_add_translation(QM_FILES ${TS_FILES})
 
 add_executable ( razor-session ${razor-session_SRCS} ${UIS} ${RSCS} ${QM_FILES} ${MOCS} )
 add_dependencies( razor-session razorqt qtxdg)

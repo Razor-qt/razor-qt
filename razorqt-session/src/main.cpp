@@ -29,6 +29,7 @@
 
 #include "razormodman.h"
 #include "sessiondbusadaptor.h"
+#include "razortranslate.h"
 
 /**
 * @file main.cpp
@@ -83,8 +84,10 @@ int main(int argc, char **argv)
     qInstallMsgHandler(dbgMessageOutput);
 #endif
     QApplication app(argc, argv);
-    qDebug() << "Razor Session start";
+    //qDebug() << "Razor Session start";
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+
+    TRANSLATE_APP;
 
     char* session = NULL;
     char* winmanager = NULL;
