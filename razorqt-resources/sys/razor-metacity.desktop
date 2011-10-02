@@ -1,12 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=Application
-Exec=razor-session gdm
-Name=Razor-Reborn (gdm)
+Exec=razor-session -w metacity
+TryExec=metacity
+
+Name=Razor Desktop (metacity)
 Comment=qt4 Desktop Environment
 
-Name[ru]=Рабочий стол Razor (gdm)
+Name[ru]=Рабочий стол Razor (metacity)
 Comment[ru]=Рабочий стол  на Qt
 
-Name[pl]=Razor-Reborn (gdm)
+Name[pl]=Razor-Reborn (metacity)
 Comment[pl]=Środowisko graficzne Qt4

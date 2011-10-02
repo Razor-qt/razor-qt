@@ -9,6 +9,8 @@ set(SESSION_FILES
     sys/razor.desktop
 #    sys/razor-eggwm.desktop
     sys/razor-openbox.desktop
+    sys/razor-kwin.desktop
+    sys/razor-metacity.desktop
 )
 
 MACRO(INSTALL_SESSION_FILES directory)
