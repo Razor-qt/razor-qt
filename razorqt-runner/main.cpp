@@ -24,10 +24,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include <QtCore/QLocale>
-#include <QtCore/QTranslator>
 #include <QtGui/QApplication>
-
+#include "razortranslate.h"
 #include "dialog.h"
 
 
@@ -36,10 +34,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);
 
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString("%1/razor-runner_%2.qm").arg(TRANSLATIONS_DIR, locale));
-    a.installTranslator(&translator);
+    TRANSLATE_APP;
 
     QWidget *hiddenPreviewParent = new QWidget(0, Qt::Tool);
     Dialog d(hiddenPreviewParent);

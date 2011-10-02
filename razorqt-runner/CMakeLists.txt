@@ -1,4 +1,6 @@
 set(PROJECT razor-runner)
+project(${PROJECT})
+
 
 set(H_FILES
     dialog.h
@@ -63,9 +65,8 @@ setByDefault(RUNNER_MATH Yes )
 
 
 # Translations **********************************
-file(GLOB TS_FILES
-    translations/*.ts
-)
+include(RazorTranslate)
+razor_translate(QM_FILES)
 #************************************************
 cmake_minimum_required( VERSION 2.6 )
 
@@ -88,7 +89,6 @@ include(${QT_USE_FILE})
 
 set(RAZOR_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor)
 set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT})
-add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
 #************************************************
 
@@ -100,13 +100,11 @@ endif (RUNNER_MATH)
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})
 qt4_add_resources(QRC_SOURCES ${QRC_FILES})
-qt4_add_translation(QM_FILES ${TS_FILES})
 
 add_executable(${PROJECT} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES})
 add_dependencies(${PROJECT} razorqt)
 target_link_libraries(${PROJECT}  ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
-install(FILES   ${QM_FILES}        DESTINATION ${APP_SHARE_DIR})
 install(FILES   ${CONFIG_FILES}    DESTINATION ${APP_SHARE_DIR})
 install(DIRECTORY ${THEMES}        DESTINATION ${RAZOR_SHARE_DIR})
