@@ -35,26 +35,7 @@
 #include <qtxdg/xdgicon.h>
 
 #include "sessionconfigwindow.h"
-
-
-bool findExecFile(const QString &name)
-{
-    QFileInfo fi(name);
-    if (!name.startsWith("/"))
-        fi.setFile("/usr/bin/" + name);
-    return fi.exists();
-}
-    
-QStringList findExecFiles(const QStringList &names)
-{
-    QStringList ret;
-    foreach(QString i, names)
-    {
-        if (findExecFile(i))
-            ret.append(i);
-    }
-    return ret;
-}
+#include "../src/windowmanager.h"
 
 
 SessionConfigWindow::SessionConfigWindow()
@@ -112,10 +93,8 @@ SessionConfigWindow::SessionConfigWindow()
 void SessionConfigWindow::restoreSettings()
 {
     // window managers
-    QStringList knownWMs;
+    QStringList knownWMs = availableWindowManagers().keys();
     QString wm = m_settings->value("windowmanager", "openbox").toString();
-    knownWMs << "openbox" << "kwin" << "windowmaker" << "e16"
-             << "fvwm2";
     handleCfgComboBox(wmComboBox, knownWMs, wm);
 
     // modules
@@ -245,7 +224,12 @@ void SessionConfigWindow::handleCfgComboBox(QComboBox * cb,
                                             const QString &value
                                            )
 {
-    QStringList realValues = findExecFiles(availableValues);
+    QStringList realValues;
+    foreach (QString s, availableValues)
+    {
+        if (findProgram(s))
+            realValues << s;
+    }
     cb->clear();
     cb->addItems(realValues);
     

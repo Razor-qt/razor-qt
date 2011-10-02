@@ -23,6 +23,7 @@ set ( razor-session_SRCS
     src/main.cpp
     src/razormodman.cpp
     src/wmselectdialog.cpp
+    src/windowmanager.cpp
 	)
 
 set ( razor-session_MOCS
