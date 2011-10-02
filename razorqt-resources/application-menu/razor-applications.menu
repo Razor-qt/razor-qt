@@ -130,7 +130,7 @@
 
         <Menu>
             <Name>Logic</Name>
-            <Directory>razaor-games-logic.directory</Directory>
+            <Directory>razor-games-logic.directory</Directory>
             <Include>
                 <And>
                     <Category>Game</Category>
