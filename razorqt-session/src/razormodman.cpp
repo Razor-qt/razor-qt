@@ -32,6 +32,8 @@
 #include <QDBusInterface>
 #include <QTimer>
 #include <QCoreApplication>
+#include "wmselectdialog.h"
+#include <razorqt/xfitman.h>
 
 /**
  * @file razormodman.cpp
@@ -71,22 +73,34 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     // then rest of the config:
     
     // window manager
-    QString wm;
-    if (windowManager.isNull())
+    // If the WM is active do not run WM.
+    if (!xfitMan().isWindowManagerActive())
     {
-        wm = s.value("windowmanager", "openbox").toString();
-        qDebug() << "Using window manager from config file" << wm;
+        QString wm;
+        if (windowManager.isNull())
+        {
+            wm = s.value("windowmanager").toString();
+            if (wm.isEmpty())
+            {
+                wm = showWmSelectDialog();
+                s.setValue("windowmanager", wm);
+                s.sync();
+            }
+            //qDebug() << "Using window manager from config file" << wm;
+        }
+        else
+        {
+            wm = windowManager;
+            //qDebug() << "Using window manager specified with command line" << windowManager;
+        }
+
+        QProcess * wmProcess = new QProcess(this);
+        wmProcess->start(wm);
+        connect(wmProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+                this, SLOT(logout()));
     }
-    else
-    {
-        wm = windowManager;
-        qDebug() << "Using window manager specified with command line" << windowManager;
-    }
-    QProcess * wmProcess = new QProcess(this);
-    wmProcess->start(wm);
-    connect(wmProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
-            this, SLOT(logout()));
-    
+    // window manager
+
     // modules
     s.beginGroup("modules");
     foreach(QString i, s.childKeys())
@@ -194,6 +208,17 @@ void RazorModuleManager::logout()
             qDebug() << "Module" << p << "rejected to close correctly. Kill it down.";
     }
     QCoreApplication::exit(0);
+}
+
+QString RazorModuleManager::showWmSelectDialog()
+{
+    WmSelectDialog dlg;
+    dlg.addWindowManager("openbox", tr("Openbox - light-weight window manager"));
+    dlg.addWindowManager("kwin", tr("KWin - window manager of the KDE Software Compilation"));
+    dlg.addWindowManager("metacity", tr("Metacity - window manager of the GNOME desktop environment"));
+    dlg.setModal(true);
+    dlg.exec();
+    return dlg.windowManager();
 }
 
 void razor_setenv(const char *env, const QByteArray &value)

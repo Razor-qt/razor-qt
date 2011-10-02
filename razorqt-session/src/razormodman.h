@@ -69,6 +69,8 @@ public slots:
     void logout();
 
 private:
+    //! \brief Show Window Manager select dialog
+    QString showWmSelectDialog();
 
     //! \brief Session configuration.
     QString mConfig;

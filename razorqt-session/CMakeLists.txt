@@ -20,17 +20,32 @@ set ( razor-session_HDRS
 	)
 
 set ( razor-session_SRCS
-	src/main.cpp
-	src/razormodman.cpp
+    src/main.cpp
+    src/razormodman.cpp
+    src/wmselectdialog.cpp
 	)
 
 set ( razor-session_MOCS
-	src/razormodman.h
+    src/razormodman.h
     src/sessiondbusadaptor.h
+    src/wmselectdialog.h
 	)
-QT4_WRAP_CPP(MOCS ${razor-session_MOCS})
 
-add_executable ( razor-session ${razor-session_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+set ( razor-session_UI
+    src/wmselectdialog.ui
+)
+
+# Translations **********************************
+file(GLOB TS_FILES
+    translations/*.ts
+)
+#************************************************
+
+QT4_WRAP_CPP(MOCS ${razor-session_MOCS})
+qt4_wrap_ui(UIS ${razor-session_UI})
+qt4_add_translation(QM_FILES ${TS_FILES})
+
+add_executable ( razor-session ${razor-session_SRCS} ${UIS} ${RSCS} ${QM_FILES} ${MOCS} )
 add_dependencies( razor-session razorqt qtxdg)
 target_link_libraries ( razor-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so qtxdg)
 INSTALL(TARGETS razor-session RUNTIME DESTINATION bin)
