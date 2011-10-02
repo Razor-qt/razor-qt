@@ -5,7 +5,7 @@
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,29 +22,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  * END_COMMON_COPYRIGHT_HEADER */
+ 
+#ifndef WINDOWMANAGER_H
+#define WINDOWMANAGER_H
 
-#ifndef WMSELECTDIALOG_H
-#define WMSELECTDIALOG_H
+#include <QtCore/QMap>
+#include <QtCore/QString>
 
-#include <QtGui/QDialog>
+/*! Helper functions for window manager detection */
+QMap<QString,QString> availableWindowManagers();
 
-namespace Ui {
-    class WmSelectDialog;
-}
+bool findProgram(const QString &program);
 
-class WmSelectDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit WmSelectDialog(QWidget *parent = 0);
-    ~WmSelectDialog();
-    QString windowManager() const;
-
-private:
-    Ui::WmSelectDialog *ui;
-
-    void addWindowManager(const QString &program, const QString &description);
-};
-
-#endif // WMSELECTDIALOG_H
+#endif

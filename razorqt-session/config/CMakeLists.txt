@@ -11,6 +11,7 @@ set ( razor-sessioncfg_HDRS
 set ( razor-sessioncfg_SRCS
 	main.cpp
     sessionconfigwindow.cpp
+    ../src/windowmanager.cpp
 	)
 
 QT4_WRAP_UI(razor-sessioncfg_UIS sessionconfigwindow.ui)

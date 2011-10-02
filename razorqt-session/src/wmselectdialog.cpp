@@ -26,6 +26,7 @@
 
 #include "wmselectdialog.h"
 #include "ui_wmselectdialog.h"
+#include "windowmanager.h"
 #include <QtGui/QListView>
 #include <QtCore/QVariant>
 #include <stdlib.h>
@@ -38,7 +39,15 @@ WmSelectDialog::WmSelectDialog(QWidget *parent) :
     ui(new Ui::WmSelectDialog)
 {
     ui->setupUi(this);
+    setModal(true);
     connect(ui->wmList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+    
+    QMapIterator<QString,QString> it(availableWindowManagers());
+    while (it.hasNext())
+    {
+        it.next();
+        addWindowManager(it.key(), it.value());
+    }
 }
 
 WmSelectDialog::~WmSelectDialog()
@@ -54,19 +63,6 @@ QString WmSelectDialog::windowManager() const
         return item->data(Qt::UserRole).toString();
 
     return "";
-}
-
-bool findProgram(const QString &program)
-{
-    QString path = getenv("PATH");
-    foreach(QString dir, path.split(":"))
-    {
-
-        QFileInfo fi= QFileInfo(dir + QDir::separator() + program);
-        if (fi.isExecutable() )
-            return true;
-    }
-    return false;
 }
 
 void WmSelectDialog::addWindowManager(const QString &program, const QString &description)

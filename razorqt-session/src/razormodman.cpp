@@ -213,10 +213,6 @@ void RazorModuleManager::logout()
 QString RazorModuleManager::showWmSelectDialog()
 {
     WmSelectDialog dlg;
-    dlg.addWindowManager("openbox", tr("Openbox - light-weight window manager"));
-    dlg.addWindowManager("kwin", tr("KWin - window manager of the KDE Software Compilation"));
-    dlg.addWindowManager("metacity", tr("Metacity - window manager of the GNOME desktop environment"));
-    dlg.setModal(true);
     dlg.exec();
     return dlg.windowManager();
 }
