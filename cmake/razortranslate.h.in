@@ -1,5 +1,8 @@
+#ifndef RAZOR_TRANSLATE_H
+
 #include <QtCore/QLocale>
 #include <QtCore/QTranslator>
+#include <QtCore/QLibraryInfo>
 
 class RazorTranslator {
 public:
@@ -18,3 +21,4 @@ public:
 };
 
 #define TRANSLATE_APP  RazorTranslator::translate();
+#endif // RAZOR_TRANSLATE_H
