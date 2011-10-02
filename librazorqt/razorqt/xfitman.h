@@ -202,6 +202,11 @@ public:
                       long unsigned int data3 = 0,
                       long unsigned int data4 = 0) const;
 
+    /*!
+     * Returns true if the Window Manager is running; otherwise returns false.
+     */
+    bool isWindowManagerActive() const;
+
 private:
 
 

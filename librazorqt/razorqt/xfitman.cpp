@@ -957,3 +957,35 @@ const QRect XfitMan::availableGeometry(const QPoint &point) const
 {
     return availableGeometry(QApplication::desktop()->screenNumber(point));
 }
+
+
+/************************************************
+ The Window Manager MUST set this property on the root window to be the ID of a child
+ window created by himself, to indicate that a compliant window manager is active.
+
+ http://standards.freedesktop.org/wm-spec/wm-spec-latest.html#id2550836
+ ************************************************/
+bool XfitMan::isWindowManagerActive() const
+{
+    //Window *wins;
+
+    //getRootWindowProperty(atom("_NET_SUPPORTING_WM_CHECK"), XA_WINDOW, &length, (unsigned char**) &wins);
+
+    Atom type;
+    unsigned long length;
+    Window *wins;
+    int format;
+    unsigned long after;
+
+    XGetWindowProperty(QX11Info::display(), root, atom("_NET_SUPPORTING_WM_CHECK"),
+                       0, LONG_MAX,
+                       false, XA_WINDOW, &type, &format, &length,
+                       &after, (unsigned char **)&wins);
+
+    if ( type == XA_WINDOW && length > 0 && wins[0] != None )
+    {
+        XFree(wins);
+        return true;
+    }
+    return false;
+}
