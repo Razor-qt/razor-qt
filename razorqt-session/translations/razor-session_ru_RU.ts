@@ -2,21 +2,36 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU">
 <context>
-    <name>RazorModuleManager</name>
+    <name>QObject</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="216"/>
+        <location filename="../src/windowmanager.cpp" line="37"/>
         <source>Openbox - light-weight window manager</source>
         <translation>Openbox - легкий менеджер окон</translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="217"/>
+        <location filename="../src/windowmanager.cpp" line="38"/>
         <source>KWin - window manager of the KDE Software Compilation</source>
-        <translation>KWin -  менеджер окон используемый в KDE</translation>
+        <translation>KWin - менеджер окон используемый в KDE</translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="218"/>
+        <location filename="../src/windowmanager.cpp" line="39"/>
         <source>Metacity - window manager of the GNOME desktop environment</source>
-        <translation>metacity -  менеджер окон используемый в GNOME</translation>
+        <translation>metacity - менеджер окон используемый в GNOME</translation>
+    </message>
+    <message>
+        <location filename="../src/windowmanager.cpp" line="40"/>
+        <source>Windowmaker - a classical lightweight window manager</source>
+        <translation>Windowmaker - классический легкий менеджер окон</translation>
+    </message>
+    <message>
+        <location filename="../src/windowmanager.cpp" line="41"/>
+        <source>Enlightenement 16</source>
+        <translation>Enlightenement 16</translation>
+    </message>
+    <message>
+        <location filename="../src/windowmanager.cpp" line="42"/>
+        <source>Fvwm2 - a classical lightweight window manager</source>
+        <translation>Fvwm2 - классический легкий менеджер окон</translation>
     </message>
 </context>
 <context>
