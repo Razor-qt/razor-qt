@@ -101,7 +101,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>303</width>
-                  <height>112</height>
+                  <height>137</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_4">
@@ -431,40 +431,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>516</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menu_File">
-    <property name="title">
-     <string>&amp;File</string>
-    </property>
-    <addaction name="action_Quit"/>
-   </widget>
-   <widget class="QMenu" name="menu_Help">
-    <property name="title">
-     <string>&amp;Help</string>
-    </property>
-    <addaction name="action_About"/>
-   </widget>
-   <addaction name="menu_File"/>
-   <addaction name="menu_Help"/>
-  </widget>
-  <action name="action_Quit">
-   <property name="text">
-    <string>&amp;Quit</string>
-   </property>
-  </action>
-  <action name="action_About">
-   <property name="text">
-    <string>&amp;About...</string>
-   </property>
-  </action>
  </widget>
  <customwidgets>
   <customwidget>

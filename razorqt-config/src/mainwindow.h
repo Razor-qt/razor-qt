@@ -48,7 +48,6 @@ public:
 
 private slots:
     void listWidget_itemDoubleClicked(QListWidgetItem *item);
-    void about();
 };
 
 }; // namespace

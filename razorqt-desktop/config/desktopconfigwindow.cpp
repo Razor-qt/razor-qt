@@ -39,8 +39,6 @@ DesktopConfigWindow::DesktopConfigWindow()
       m_restart(false)
 {
     setupUi(this);
-    
-    action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
 
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop"), tr("Basic Settings"), listWidget);
@@ -58,10 +56,6 @@ DesktopConfigWindow::DesktopConfigWindow()
     connect(desktopTypeComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(desktopTypeComboBox_currentIndexChanged(int)));
     // UI stuff
-    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
-    //
-    //
     connect(chooseMenuFilePB, SIGNAL(clicked()), this, SLOT(chooseMenuFile()));
     //
     connect(nativeWallpaperButton, SIGNAL(clicked()), this, SLOT(nativeWallpaperButton_clicked()));
@@ -141,16 +135,6 @@ void DesktopConfigWindow::closeEvent(QCloseEvent * event)
     {
         QProcess::execute("killall razor-desktop");
     }
-}
-
-void DesktopConfigWindow::about()
-{
-    QMessageBox::about(this,
-                       tr("About Razor Desktop Config"),
-                       tr("<h1>Razor Desktop Config</h1>"
-                          "<p><a href=\"http://razor-qt.org\">Part of the Razor Desktop</a></p>")
-                      );
-    
 }
 
 void DesktopConfigWindow::desktopTypeComboBox_currentIndexChanged(int ix)

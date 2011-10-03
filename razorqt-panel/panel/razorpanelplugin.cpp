@@ -33,17 +33,15 @@
 #include <razorqt/razorsettings.h>
 
 #include <QStyleOptionToolBar>
-#include <QPainter>
-#include <QToolTip>
-#include <QApplication>
-#include <QDebug>
+#include <QtGui/QPainter>
+#include <QtGui/QToolTip>
+#include <QtCore/QDebug>
 #include <QtCore/QEvent>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMenu>
 #include <qtxdg/xdgicon.h>
-#include <QMetaEnum>
+#include <QtCore/QMetaEnum>
 #include <QtCore/QTranslator>
-
 
 
 /************************************************
@@ -70,16 +68,6 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     mPanel(startInfo->panel)
 {
     Q_Q(RazorPanelPlugin);
-
-    /* Load translation for plugin */
-    QString locale = QLocale::system().name();
-    QTranslator *translator = new QTranslator(this);
-    QString translationPath = QString("%1/%2/razorpanel_%2_%3.qm")
-            .arg(TRANSLATIONS_DIR, startInfo->pluginInfo->id(), locale);
-    if (translator->load(translationPath))
-    {
-        qApp->installTranslator(translator);
-    }
 
     q->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 

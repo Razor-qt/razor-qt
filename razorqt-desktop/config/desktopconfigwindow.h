@@ -52,7 +52,6 @@ private:
     void restoreSettings();
 
 private slots:
-    void about();
     void setRestart();
 
     void desktopTypeComboBox_currentIndexChanged(int ix);

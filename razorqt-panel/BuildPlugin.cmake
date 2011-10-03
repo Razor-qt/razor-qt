@@ -5,11 +5,10 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     set(PROG_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM})
     set(PLUGIN_SHARE_DIR ${PROG_SHARE_DIR}/${Name})
 
-    # Translations .............. 
-    set(TRANSLATIONS_DIR ${PLUGIN_SHARE_DIR})
-    add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
+    # Translations **********************************
+    include(RazorTranslate)
+    razor_translate(QM_FILES)
 
-    file (GLOB TS_FILES         translations/*.ts   )
     file (GLOB CONFIG_FILES     resources/*.conf    )
     file (GLOB DESKTOP_FILES    resources/*.desktop )
 
