@@ -393,8 +393,10 @@ void MountButton::onMediaMount(const QString &device)
     }
 
     // Run manager
-    QDesktopServices::openUrl(QUrl(mount_point));
-
+    // Instead of spaces, the string contains "\040" I plan to deal with it later,
+    // when I will rewrite libmount. While using this dirty hack.
+    mount_point = mount_point.replace("\\040", " ", Qt::CaseSensitive);
+    QDesktopServices::openUrl(QUrl::fromLocalFile(mount_point));
 }
 
 void MountButton::onMediaEject(const QString &device)
