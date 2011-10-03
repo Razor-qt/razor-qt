@@ -61,9 +61,7 @@ public:
 RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
-    
-    action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
-    
+        
     qDebug() << "Reading desktop files from dir:" << RAZOR_CONFIG_MODULES_DIR;
     
     QDirIterator it(RAZOR_CONFIG_MODULES_DIR, QStringList() << "*.desktop");
@@ -88,9 +86,6 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     if (listWidget->count() == 0)
         statusBar()->showMessage(tr("No config modules found in: ") + RAZOR_CONFIG_MODULES_DIR);
     
-    connect(action_Quit, SIGNAL(triggered()), qApp, SLOT(quit()));
-    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
-    connect(actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(listWidget, SIGNAL(itemActivated(QListWidgetItem*)),//SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(listWidget_itemDoubleClicked(QListWidgetItem *)));
 }
@@ -101,9 +96,3 @@ void RazorConfig::MainWindow::listWidget_itemDoubleClicked(QListWidgetItem *item
     // we know it's ConfigItem only.
     reinterpret_cast<ConfigItem*>(item)->start();
 }
-
-void RazorConfig::MainWindow::about()
-{
-    RazorAboutDLG d;
-}
-

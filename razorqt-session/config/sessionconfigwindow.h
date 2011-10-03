@@ -62,7 +62,6 @@ private:
     void restoreSettings();
 
 private slots:
-    void about();
     //
     void findWmButton_clicked();
     //

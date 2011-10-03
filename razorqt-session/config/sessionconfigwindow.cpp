@@ -44,8 +44,6 @@ SessionConfigWindow::SessionConfigWindow()
 {
     setupUi(this);
 
-    action_Quit->setIcon(XdgIcon::fromTheme("application-exit"));
-
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-display-color"), tr("Basic Settings"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-filetype-association"), tr("Default Applications"), listWidget);
@@ -61,9 +59,6 @@ SessionConfigWindow::SessionConfigWindow()
     restoreSettings();
 
     // UI stuff
-    connect(action_Quit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(action_About, SIGNAL(triggered()), this, SLOT(about()));
-    //
     connect(findWmButton, SIGNAL(clicked()), this, SLOT(findWmButton_clicked()));
     //
     connect(terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
@@ -315,16 +310,6 @@ void SessionConfigWindow::envDeleteButton_clicked()
         delete i;
     }
     m_restart = true;
-}
-
-void SessionConfigWindow::about()
-{
-    QMessageBox::about(this,
-                       tr("About Razor Session Config"),
-                       tr("<h1>Razor Session Config</h1>"
-                          "<p><a href=\"http://razor-qt.org\">Part of the Razor Desktop</a></p>")
-                      );
-    
 }
 
 void SessionConfigWindow::setRestart()
