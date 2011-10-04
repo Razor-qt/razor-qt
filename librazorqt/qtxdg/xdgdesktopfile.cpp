@@ -819,9 +819,13 @@ QString findDesktopFile(const QString& dirName, const QString& desktopName)
     QFileInfoList dirs = dir.entryInfoList(QStringList(), QDir::Dirs | QDir::NoDotAndDotDot);
     foreach (QFileInfo d, dirs)
     {
-        QString f = findDesktopFile(d.canonicalFilePath(), desktopName);
-        if (!f.isEmpty())
-            return f;
+        QString cn = d.canonicalFilePath();
+        if (dirName != cn)
+        {
+            QString f = findDesktopFile(cn, desktopName);
+            if (!f.isEmpty())
+                return f;
+        }
     }
 
     return "";
