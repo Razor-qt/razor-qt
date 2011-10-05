@@ -1,0 +1,8 @@
+/usr/bin/razor-session
+/usr/bin/razor-config-session
+/usr/share/applications/razor-config-session.desktop
+/usr/share/razor/session*.conf
+/usr/share/xsessions/
+/usr/share/apps/kdm/sessions/
+/etc/X11/sessions/
+/usr/share/razor/razor-session/
