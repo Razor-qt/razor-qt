@@ -29,6 +29,7 @@ class PreviewCursor;
 
 
 class PreviewWidget : public QWidget {
+    Q_OBJECT
 public:
   PreviewWidget (QWidget *parent=0);
   ~PreviewWidget ();

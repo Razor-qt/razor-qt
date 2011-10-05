@@ -131,7 +131,7 @@ set ( razorqxt_SRC
     razorqxt/qxtglobalshortcut_x11.cpp
     )
 
-QT4_WRAP_CPP(qxt_MOCS ${razorqxt_HDRS})
+QT4_WRAP_CPP(qxt_MOCS razorqxt/qxtglobalshortcut.h)
 
 add_library( razorqxt SHARED ${razorqxt_SRC} ${qxt_MOCS}  ${QM_FILES})
 

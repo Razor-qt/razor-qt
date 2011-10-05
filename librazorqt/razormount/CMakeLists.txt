@@ -27,7 +27,6 @@ set(razormount_SRCS
 
 set(razormount_MOCS
     diskmonitor.h
-    mount.h
     storageitem.h
     storagemanager.h
 )

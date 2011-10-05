@@ -9,17 +9,17 @@ include_directories (
     )
 
 set ( razor-config-mouse_HDRS
-    cfgfile.h
+#    cfgfile.h
     thememodel.h
     previewwidget.h
-    xcr/xcrtheme.h
-    xcr/xcrimg.h
-    xcr/xcrthemexp.h
-    xcr/xcrthemefx.h
-    xcr/xcrxcur.h
+#    xcr/xcrtheme.h
+#    xcr/xcrimg.h
+#    xcr/xcrthemexp.h
+#    xcr/xcrthemefx.h
+#    xcr/xcrxcur.h
     itemdelegate.h
-    main.h
-    crtheme.h
+#    main.h
+#    crtheme.h
     selectwnd.h
 	)
 

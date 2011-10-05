@@ -28,6 +28,7 @@ class QPainter;
 
 
 class ItemDelegate : public QAbstractItemDelegate {
+    Q_OBJECT
 public:
   ItemDelegate (QObject *parent = 0);
   ~ItemDelegate ();
