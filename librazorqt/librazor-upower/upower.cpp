@@ -1,4 +1,10 @@
- #include "upower.h"
+/*
+This is probably temporary code probably. We will merge it into potential shared library.
+
+This code is based on cool Brieuc ROBLIN's pyrotools.org applets, license GPLv3.
+*/
+
+#include "upower.h"
 
 UPower::UPower() : m_interfaceProps(0), m_interface(0) {
     m_watcher = new QDBusServiceWatcher;
