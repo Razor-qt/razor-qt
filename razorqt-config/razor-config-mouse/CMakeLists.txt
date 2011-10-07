@@ -38,13 +38,14 @@ set ( razor-config-mouse_SRCS
     thememodel.cpp
 	)
 
+find_package(ZLIB REQUIRED)
 QT4_WRAP_UI(razor-config-mouse_UIS     ui/selectwnd.ui)
 QT4_WRAP_CPP(razor-config-mouse_MOCS ${razor-config-mouse_HDRS})
 
 add_executable ( razor-config-mouse ${razor-config-mouse_SRCS} ${razor-config-mouse_UIS} ${razor-config-mouse_MOCS} )
 add_dependencies( razor-config-mouse razorqt qtxdg)
 target_link_libraries ( razor-config-mouse  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY}
-                                                 ${X11_X11_LIB} ${X11_Xcursor_LIB} razorqt z ${X11_Xfixes_LIB})
+                                                 ${X11_X11_LIB} ${X11_Xcursor_LIB} razorqt ${ZLIB_LIBRARY} ${X11_Xfixes_LIB})
 # not needed probably ${X11_Xfixes_LIB})
 
 INSTALL(TARGETS razor-config-mouse RUNTIME DESTINATION bin)
