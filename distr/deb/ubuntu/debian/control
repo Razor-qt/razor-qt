@@ -2,10 +2,33 @@ Source: razorqt
 Section: x11
 Priority: optional
 Maintainer: Alexander Sokolov <sokoloff.a@gmail.com>
-Build-Depends: debhelper (>= 7.0.50~), pkg-config, cmake, 
-  libqt4-dev (>= 4.5.1), libmagic-dev, libxrender-dev, libxcomposite-dev, libxdamage-dev
+Build-Depends: debhelper (>= 7.0.50~), pkg-config, 
+    cmake,
+    libqt4-dev (>= 4.5.1),
+    libmagic-dev,
+    libxrender-dev,
+    libxcomposite-dev,
+    libxdamage-dev,
+    libudev-dev,
+    libxcursor-dev,
+    zlib1g-dev
 Standards-Version: 3.9.1
 Homepage: http://razor-qt.org
+
+
+Package: razorqt
+Architecture: all
+Depends:  razor-appswitcher (= ${source:Version}),
+          razor-desktop (= ${source:Version}),
+          razor-panel (= ${source:Version}),
+          razor-runner (= ${source:Version}),
+          razor-session (= ${source:Version})
+Description: Razor-qt desktop environment
+ Razor-qt is an advanced, easy-to-use, and fast desktop environment
+ based on Qt technologies. Unlike desktop environments, Razor-qt
+ also works fine with weak machines.
+ .
+ This package provides all the components of Razor-qt.
 
 
 Package: razorqt-dev
