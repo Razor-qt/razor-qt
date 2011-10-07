@@ -6,13 +6,18 @@ YELLOW='\E[0;33m'
 NORM='\E[0;37;00m'
 
 
+let 'invlid=0'
 let 'lgplCnt=0'
 let 'gplCnt=0'
 let 'unknownCnt=0'
 
 for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null`; do 
 
-    if [ `grep --files-with-matches "GNU General Public License" $file` ]; then
+    if [ `grep --files-without-match "BEGIN_COMMON_COPYRIGHT_HEADER" $file` ]; then
+	license='Invalid'
+        color=$RED
+        let 'invlid++'
+    elif [ `grep --files-with-matches "GNU General Public License" $file` ]; then
 	license='GPL'
 	color=$YELLOW
 	let 'gplCnt++'
