@@ -51,5 +51,6 @@ INSTALL(TARGETS razor-session RUNTIME DESTINATION bin)
 
 install(PROGRAMS resources/xdg-open resources/xdg-mime DESTINATION lib${LIB_SUFFIX}/razor-xdg-tools)
 add_definitions ( -DPATH_PREPEND=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-xdg-tools\" )
+install(PROGRAMS src/startrazor DESTINATION bin)
 
 add_subdirectory(config)
