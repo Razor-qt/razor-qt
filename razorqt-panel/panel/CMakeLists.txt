@@ -47,17 +47,8 @@ set(RESOURCES
 add_definitions(-DDEFULT_PANEL_PLUGINS=\"MainMenu,Quicklaunch,TaskBar,Tray,Clock\")
 
 include(RazorTranslate)
-# Translations .............. 
-#set(TRANSLATIONS_DIR
-#    ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT}
-#)
-#add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
 
 file (GLOB CONFIG_FILES     resources/*.conf)
-
-file (GLOB TS_FILES 
-    translations/*.ts
-)
 
 ############################################
 
