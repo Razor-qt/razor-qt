@@ -40,7 +40,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileIconProvider>
-
+#include <QtCore/QList>
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
 
@@ -81,13 +81,13 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
         {
             execname = settings().value("name", "").toString();
             exec = settings().value("exec", "").toString();
-            icon = QIcon(settings().value("icon", "").toString());
-            if (icon.isNull())
-            {
-                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
-                continue;
-            }
-            addButton(new RazorQuickLaunchAction(execname, exec, icon, this));
+            //icon = QIcon(settings().value("icon", "").toString());
+            //if (icon.isNull())
+            //{
+//                qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
+//                continue;
+//            }
+            addButton(new RazorQuickLaunchAction(execname, exec, settings().value("icon").toString(), this));
         }
     } // for
 
@@ -136,7 +136,7 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
         }
         else if (fi.exists() && fi.isExecutable() && !fi.isDir())
         {
-            addButton(new RazorQuickLaunchAction(fileName, fileName, XdgIcon::defaultApplicationIcon(), this));
+            addButton(new RazorQuickLaunchAction(fileName, fileName, XdgIcon::defaultApplicationIconName(), this));
             int count = settings().beginReadArray("apps");
             settings().endArray();
             settings().beginWriteArray("apps", count+1);
@@ -168,15 +168,15 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
 
 RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & name,
                                                const QString & exec,
-                                               const QIcon & icon,
+                                               const QString & iconName,
                                                QWidget * parent)
-    : QAction(icon, name, parent),
-      m_valid(true)
+    : QAction(name, parent),
+      m_valid(true),
+      mIconName(iconName)
 {
     m_type = ActionLegacy;
 
-    if (icon.isNull())
-        setIcon(XdgIcon::defaultApplicationIcon());
+    updateIcon();
 
     setData(exec);
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
@@ -195,7 +195,8 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const XdgDesktopFile * xdg,
         title += " (" + gn + ")";
     setText(title);
 
-    setIcon(xdg->icon(XdgIcon::defaultApplicationIcon()));
+    mIconName = xdg->iconName();
+    updateIcon();
 
     setData(xdg->fileName());
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
@@ -218,7 +219,8 @@ RazorQuickLaunchAction::RazorQuickLaunchAction(const QString & fileName, QWidget
     else
     {
         XdgMimeInfo mi(fi);
-        setIcon(mi.icon());
+        mIconName = mi.iconName();
+        updateIcon();
     }
     
     connect(this, SIGNAL(triggered()), this, SLOT(execAction()));
@@ -242,5 +244,20 @@ void RazorQuickLaunchAction::execAction()
         case ActionFile:
             QDesktopServices::openUrl(QUrl(exec));
             break;
+    }
+}
+
+void RazorQuickLaunchAction::updateIcon()
+{
+    setIcon(XdgIcon::fromTheme(mIconName, XdgIcon::defaultApplicationIcon()));
+
+}
+
+void RazorQuickLaunch::iconThemeChanged()
+{
+    QList<RazorQuickLaunchAction*> acts = this->findChildren<RazorQuickLaunchAction*>();
+    foreach (RazorQuickLaunchAction *act, acts)
+    {
+        act->updateIcon();
     }
 }

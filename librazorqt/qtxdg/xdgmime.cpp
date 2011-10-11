@@ -104,13 +104,28 @@ QString XdgMimeInfo::mimeType() const
 /************************************************
 
  ************************************************/
-QIcon XdgMimeInfo::icon() const
+QString XdgMimeInfo::iconName() const
 {
     QStringList names;
     names << QString("%1-x-%2").arg(mType, mSubType);
     names << QString("%1-%2").arg(mType, mSubType);
     names << QString("%1-x-generic").arg(mType);
     names << QString("%1-generic").arg(mType);
-    names << "unknown";
-    return XdgIcon::fromTheme(names);
+
+    foreach (QString s, names)
+    {
+        if (!XdgIcon::fromTheme(s).isNull())
+            return s;
+    }
+
+    return "unknown";
 }
+
+/************************************************
+
+ ************************************************/
+QIcon XdgMimeInfo::icon() const
+{
+    return XdgIcon::fromTheme(iconName());
+}
+

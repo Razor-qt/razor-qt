@@ -126,7 +126,11 @@ public:
     //! This function is provided for convenience. It's equivalent to calling startDetached(QStringList(url)).
     bool startDetached(const QString& url="") const;
 
+    //! Returns an icon specified in this file.
     QIcon const icon(const QIcon& fallback = QIcon()) const;
+
+    //! Returns an icon name specified in this file.
+    QString const iconName() const;
 
     //! This function is provided for convenience. It's equivalent to calling localizedValue("Name").toString().
     QString name() const { return localizedValue("Name").toString(); }

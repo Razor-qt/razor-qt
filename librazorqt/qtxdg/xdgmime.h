@@ -47,6 +47,9 @@ public:
     /// Returns an icon associated with the mime type.
     QIcon   icon() const;
 
+    /// Returns an icon associated with the mime type.
+    QString iconName() const;
+
 private:
     QString mType;
     QString mSubType;

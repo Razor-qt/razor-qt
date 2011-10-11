@@ -338,7 +338,7 @@ bool XdgDesktopFile::startDetached(const QString& url) const
 
 
 /************************************************
-  Returns an icon specified in this file.
+
  ************************************************/
 QIcon const XdgDesktopFile::icon(const QIcon& fallback) const
 {
@@ -346,6 +346,14 @@ QIcon const XdgDesktopFile::icon(const QIcon& fallback) const
     return d->icon(fallback);
 }
 
+/************************************************
+
+ ************************************************/
+QString const XdgDesktopFile::iconName() const
+{
+    Q_D(const XdgDesktopFile);
+    return d->value("Icon").toString();
+}
 
 /************************************************
 
