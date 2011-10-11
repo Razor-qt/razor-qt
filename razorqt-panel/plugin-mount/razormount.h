@@ -45,6 +45,7 @@ public:
     ~RazorMount();
 
     virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    virtual void iconThemeChanged();
 
 protected slots:
     virtual void showConfigureDialog();

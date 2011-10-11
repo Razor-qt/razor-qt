@@ -27,6 +27,7 @@
 
 #include "razormount.h"
 #include "razormountconfiguration.h"
+#include "qtxdg/xdgicon.h"
 
 #include <QtDebug>
 
@@ -45,6 +46,7 @@ RazorMount::RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     m_button = new MountButton(parent, panel());
     addWidget(m_button);
     settigsChanged();
+    iconThemeChanged();
 }
 
 RazorMount::~RazorMount()
@@ -77,4 +79,10 @@ void RazorMount::settigsChanged()
         m_button->setDevAction(MountButton::DevActionNothing);
     else
         m_button->setDevAction(MountButton::DevActionInfo);
+}
+
+
+void RazorMount::iconThemeChanged()
+{
+     m_button->setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
 }
