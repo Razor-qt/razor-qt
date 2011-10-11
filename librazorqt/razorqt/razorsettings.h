@@ -30,6 +30,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
+#include <QtCore/QFileSystemWatcher>
 
 class QEvent;
 
@@ -53,6 +54,8 @@ public:
     //explicit RazorSettings(QObject* parent=0);
     explicit RazorSettings(const QSettings* parentSettings, const QString& subGroup, QObject* parent=0);
     explicit RazorSettings(const QSettings& parentSettings, const QString& subGroup, QObject* parent=0);
+
+    static const RazorSettings *globalSettings();
 signals:
     void settigsChanged();
 
@@ -120,5 +123,18 @@ private:
     QHash<QString, QVariant> mCache;
 };
 
+
+class GlobalRazorSettings: public RazorSettings
+{
+    Q_OBJECT
+public:
+    GlobalRazorSettings();
+
+private slots:
+    void fileChanged();
+
+private:
+    QFileSystemWatcher mWatcher;
+};
 
 #endif // RAZORSETTINGS_H

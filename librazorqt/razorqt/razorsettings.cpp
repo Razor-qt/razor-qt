@@ -198,6 +198,27 @@ bool RazorSettings::event(QEvent *event)
 /************************************************
 
  ************************************************/
+const RazorSettings *RazorSettings::globalSettings()
+{
+    static QMutex mutex;
+    static GlobalRazorSettings *instance = 0;
+    if (!instance)
+    {
+        mutex.lock();
+
+        if (!instance)
+            instance = new GlobalRazorSettings();
+
+        mutex.unlock();
+    }
+
+    return instance;
+}
+
+
+/************************************************
+
+ ************************************************/
 RazorTheme::RazorTheme():
     QObject(),
     d_ptr(new RazorThemePrivate(this))
@@ -346,4 +367,25 @@ void RazorSettingsCache::loadToSettings()
     }
 
     mSettings.sync();
+}
+
+
+/************************************************
+
+ ************************************************/
+GlobalRazorSettings::GlobalRazorSettings():
+    RazorSettings("razor")
+{
+    mWatcher.addPath(this->fileName());
+    connect(&mWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
+}
+
+
+/************************************************
+
+ ************************************************/
+void GlobalRazorSettings::fileChanged()
+{
+    sync();
+    emit settigsChanged();
 }
