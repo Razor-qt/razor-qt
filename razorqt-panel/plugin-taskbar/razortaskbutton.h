@@ -65,6 +65,9 @@ public:
     static void unCheckAll();
     int desktopNum() const;
 
+    void updateText();
+    void updateIcon();
+
 public slots:
     void raiseApplication();
     void minimizeApplication();
@@ -84,9 +87,6 @@ protected:
 
     void nextCheckState();
     void contextMenuEvent( QContextMenuEvent* event);
-
-    void updateText();
-    void updateIcon();
 
 private:
     Window mWindow;
