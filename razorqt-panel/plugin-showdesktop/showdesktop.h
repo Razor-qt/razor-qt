@@ -41,9 +41,11 @@ class ShowDesktop : public RazorPanelPlugin
 
 public:
     ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    virtual void iconThemeChanged();
 
 private:
     QxtGlobalShortcut * m_key;
+    class QAction *mAction;
 
 private slots:
     void showDesktop();
