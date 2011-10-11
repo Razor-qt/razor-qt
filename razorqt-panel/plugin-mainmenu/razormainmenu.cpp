@@ -53,7 +53,8 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMainMenu)
  ************************************************/
 RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
     RazorPanelPlugin(startInfo, parent),
-    mMenu(0)
+    mMenu(0),
+    mIsOutDated(true)
 {
     setObjectName("MainMenu");
 
@@ -69,6 +70,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     QSizePolicy sp = mButton.sizePolicy();
     sp.setVerticalPolicy(QSizePolicy::Minimum);
     mButton.setSizePolicy(sp);
+
 
 }
 
@@ -86,7 +88,7 @@ RazorMainMenu::~RazorMainMenu()
  ************************************************/
 void RazorMainMenu::showMenu()
 {
-    if (mXdgMenu.isOutDated())
+    if (mIsOutDated || mXdgMenu.isOutDated())
         buildMenu();
 
     if (!mMenu)
@@ -174,6 +176,10 @@ void RazorMainMenu::buildMenu()
     mMenu->addActions(mScreenSaver->availableActions());
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorMainMenu::showConfigureDialog()
 {
     RazorMainMenuConfiguration *confWindow =
@@ -187,4 +193,13 @@ void RazorMainMenu::showConfigureDialog()
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorMainMenu::iconThemeChanged()
+{
+    mIsOutDated = true;
 }

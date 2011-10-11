@@ -50,8 +50,7 @@ public:
     ~RazorMainMenu();
 
     virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
-
-signals:
+    virtual void iconThemeChanged();
 
 private:
     QPushButton mButton;
@@ -64,6 +63,7 @@ private:
     ScreenSaver* mScreenSaver;
     XdgMenu mXdgMenu;
     void buildMenu();
+    bool mIsOutDated;
 
 protected slots:
     virtual void showConfigureDialog();
