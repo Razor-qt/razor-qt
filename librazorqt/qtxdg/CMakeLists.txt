@@ -30,6 +30,7 @@ set(QTXDG_PRIVATE_HDRS
     xdgmenu_p.h
     xdgmenureader.h
     xdgmenurules.h
+    qiconfix/qiconloader_p.h
 )
 
 set(QTXDG_SRCS
@@ -45,6 +46,7 @@ set(QTXDG_SRCS
     xdgmenuwidget.cpp
     xdgmime.cpp
     xmlhelper.cpp
+    qiconfix/qiconloader.cpp
 )
 
 set(QTXDG_MOCS

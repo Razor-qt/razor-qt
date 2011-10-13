@@ -29,10 +29,9 @@
 #ifndef QTXDG_XDGICON_H
 #define QTXDG_XDGICON_H
 
-#include <QIcon>
-#include <QHash>
-#include <QString>
-#include <QStringList>
+#include <QtGui/QIcon>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 class XdgIcon
 {

@@ -870,11 +870,8 @@ void RazorPanelPrivate::globalSettingsChanged()
     {
         prevIconTheme = iconTheme;
         XdgIcon::setThemeName(iconTheme);
-
-        foreach (RazorPanelPlugin* plugin, mPlugins)
-        {
-            plugin->iconThemeChanged();
-        }
+        Q_Q(RazorPanel);
+        q->update();
     }
 
 
@@ -883,9 +880,7 @@ void RazorPanelPrivate::globalSettingsChanged()
     if (razorThemeName != prevRazorTheme)
     {
         prevRazorTheme = razorThemeName;
-        foreach (RazorPanelPlugin* plugin, mPlugins)
-        {
-            plugin->razorThemeChanged();
-        }
+
+        reTheme();
     }
 }

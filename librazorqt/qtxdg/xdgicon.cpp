@@ -28,37 +28,29 @@
 
 #include "xdgicon.h"
 
-#include <QString>
-#include <QDebug>
-#include <QDir>
-#include <QStringList>
-#include <QFileInfo>
+#include <QtCore/QString>
+#include <QtCore/QDebug>
+#include <QtCore/QDir>
+#include <QtCore/QStringList>
+#include <QtCore/QFileInfo>
+#include <QtCore/QCache>
+#include "qiconfix/qiconloader_p.h"
+#include <QtCore/QCoreApplication>
 
 #define DEFAULT_APP_ICON "application-x-executable"
 
 /************************************************
 
  ************************************************/
-class XdgIconCache
+static void qt_cleanup_icon_cache();
+typedef QCache<QString, QIcon> IconCache;
+Q_GLOBAL_STATIC_WITH_INITIALIZER(IconCache, qtIconCache, qAddPostRoutine(qt_cleanup_icon_cache))
+
+static void qt_cleanup_icon_cache()
 {
-friend class XdgIcon;
-public:
-    QString themeName() const { return mThemeName; }
-    void setThemeName(const QString& themeName);
+    qtIconCache()->clear();
+}
 
-    QIcon* const fromTheme(const QString& iconName);
-    static XdgIconCache* instance();
-
-protected:
-    explicit XdgIconCache();
-    virtual ~XdgIconCache();
-
-private:
-    QIcon searchFile(const QString &dir, const QString& iconName);
-    QHash<QString, QIcon*> mCache;
-    static XdgIconCache* mInstance;
-    QString mThemeName;
-};
 
 
 /************************************************
@@ -82,7 +74,7 @@ XdgIcon::~XdgIcon()
  ************************************************/
 QString XdgIcon::themeName()
 {
-    return XdgIconCache::instance()->themeName();
+    return QIcon::themeName();
 }
 
 
@@ -91,7 +83,8 @@ QString XdgIcon::themeName()
  ************************************************/
 void XdgIcon::setThemeName(const QString& themeName)
 {
-    XdgIconCache::instance()->setThemeName(themeName);
+    QIcon::setThemeName(themeName);
+    QIconLoader::instance()->updateSystemTheme();
 }
 
 
@@ -101,11 +94,22 @@ void XdgIcon::setThemeName(const QString& themeName)
  ************************************************/
 QIcon const XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
 {
-    QIcon* res = XdgIconCache::instance()->fromTheme(iconName);
-    if (res)
-        return *res;
+    QIcon icon;
 
-    return fallback;
+    if (qtIconCache()->contains(iconName)) {
+        icon = *qtIconCache()->object(iconName);
+    } else {
+        QIcon *cachedIcon  = new QIcon(new QIconLoaderEngine(iconName));
+        qtIconCache()->insert(iconName, cachedIcon);
+        icon = *cachedIcon;
+    }
+
+    // Note the qapp check is to allow lazy loading of static icons
+    // Supporting fallbacks will not work for this case.
+    if (qApp && icon.availableSizes().isEmpty())
+        return fallback;
+
+    return icon;
 }
 
 
@@ -117,134 +121,12 @@ QIcon const XdgIcon::fromTheme(const QStringList& iconNames, const QIcon& fallba
 {
     foreach (QString iconName, iconNames)
     {
-        QIcon* res = XdgIconCache::instance()->fromTheme(iconName);
-        if (res)
-            return *res;
+        QIcon icon = fromTheme(iconName);
+        if (!icon.isNull())
+            return icon;
     }
 
     return fallback;
-}
-
-
-
-
-/************************************************
-
- ************************************************/
-XdgIconCache::XdgIconCache()
-{
-    mThemeName = "oxygen";
-}
-
-
-/************************************************
-
- ************************************************/
-XdgIconCache::~XdgIconCache()
-{
-
-}
-
-/************************************************
-
- ************************************************/
-XdgIconCache* XdgIconCache::instance()
-{
-    if (!mInstance)
-        mInstance = new XdgIconCache();
-    return mInstance;
-}
-
-
-/************************************************
-
- ************************************************/
-void XdgIconCache::setThemeName(const QString& themeName)
-{
-    mThemeName = themeName;
-}
-
-
-/************************************************
-
- ************************************************/
-inline QIcon XdgIconCache::searchFile(const QString &dir, const QString& iconName)
-{
-    QStringList exts;
-    exts << "" << ".png" << ".svg" << ".xpm";
-
-    foreach (QString ext, exts)
-    {
-        QString file= QString("%1/%2%3").arg(dir, iconName, ext);
-        if (QFileInfo(file).exists())
-            return QIcon(file);
-    }
-
-    return QIcon();
-}
-
-
-/************************************************
-
- ************************************************/
-QIcon* const XdgIconCache::fromTheme(const QString& iconName)
-{
-    if (iconName.isEmpty())
-        return 0;
-
-    QString key = QString("%1 %3").arg(iconName).arg(mThemeName);
-    if (mCache.contains(key))
-        return mCache.value(key);
-
-    QIcon icon;
-
-    if (iconName.startsWith(QDir::separator()))
-    {
-        // Absolute path
-        icon = QIcon(iconName);
-    }
-    else
-    {
-        // From theme
-        QIcon::setThemeName(mThemeName);
-        icon = QIcon::fromTheme(iconName);
-
-        if (icon.isNull())
-            icon = QIcon::fromTheme(QFileInfo(iconName).completeBaseName());
-
-        if (icon.isNull())
-            icon = searchFile("/usr/share/pixmaps", iconName);
-
-        if (icon.isNull())
-            icon = searchFile("/usr/local/share/pixmaps", iconName);
-    }
-
-
-    // Some icons are drawn with the wrong size ( https://snusmumriken.nokia.kunder.linpro.no/browse/QTBUG-17953 )
-    // this dirty hack fixes this. But some valid svg based icon return empty availableSizes list.
-    // If you know a better solution tell me.  [ Alex Sokoloff <sokoloff.a@gmailo.com> ]
-    if (!icon.isNull())
-    {
-        QIcon* res;
-        if (icon.availableSizes().count())
-        {
-            res = new QIcon();
-            foreach (QSize s, icon.availableSizes())
-            {
-                res->addPixmap(icon.pixmap(s));
-            }
-        }
-        else
-        {
-            res = new QIcon(icon);
-        }
-
-        mCache[key]= res;
-        return res;
-    }
-
-    //qDebug() << "XdgIcon: not found" << iconName;
-    return 0;
 }
 
 
@@ -255,10 +137,12 @@ QIcon const XdgIcon::defaultApplicationIcon()
 {
     return fromTheme(DEFAULT_APP_ICON);
 }
+
+
+/************************************************
+
+ ************************************************/
 QString const XdgIcon::defaultApplicationIconName()
 {
     return DEFAULT_APP_ICON;
 }
-
-
-XdgIconCache* XdgIconCache::mInstance=0;
