@@ -1,0 +1,12 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-icons
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-icons
+Name=Razor Icon Theme Configuration
+Comment=Configure Icon Theme for Razor desktop
+GenericName=Razor Icon Theme Configuration
+
