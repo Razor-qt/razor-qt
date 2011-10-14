@@ -121,11 +121,11 @@ struct PixmapEntry : public QIconLoaderEngineEntry
 
 typedef QList<QIconLoaderEngineEntry*> QThemeIconEntries;
 
-class QIconLoaderEngine : public QIconEngineV2
+class QIconLoaderEngineFixed : public QIconEngineV2
 {
 public:
-    QIconLoaderEngine(const QString& iconName = QString());
-    ~QIconLoaderEngine();
+    QIconLoaderEngineFixed(const QString& iconName = QString());
+    ~QIconLoaderEngineFixed();
 
     void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state);
     QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state);
@@ -140,7 +140,7 @@ private:
     void ensureLoaded();
     void virtual_hook(int id, void *data);
     QIconLoaderEngineEntry *entryForSize(const QSize &size);
-    QIconLoaderEngine(const QIconLoaderEngine &other);
+    QIconLoaderEngineFixed(const QIconLoaderEngineFixed &other);
     QThemeIconEntries m_entries;
     QString m_iconName;
     uint m_key;

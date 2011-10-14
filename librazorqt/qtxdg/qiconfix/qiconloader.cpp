@@ -363,48 +363,48 @@ QThemeIconEntries QIconLoader::loadIcon(const QString &name) const
 // -------- Icon Loader Engine -------- //
 
 
-QIconLoaderEngine::QIconLoaderEngine(const QString& iconName)
+QIconLoaderEngineFixed::QIconLoaderEngineFixed(const QString& iconName)
         : m_iconName(iconName), m_key(0)
 {
 }
 
-QIconLoaderEngine::~QIconLoaderEngine()
+QIconLoaderEngineFixed::~QIconLoaderEngineFixed()
 {
     while (!m_entries.isEmpty())
         delete m_entries.takeLast();
     Q_ASSERT(m_entries.size() == 0);
 }
 
-QIconLoaderEngine::QIconLoaderEngine(const QIconLoaderEngine &other)
+QIconLoaderEngineFixed::QIconLoaderEngineFixed(const QIconLoaderEngineFixed &other)
         : QIconEngineV2(other),
         m_iconName(other.m_iconName),
         m_key(0)
 {
 }
 
-QIconEngineV2 *QIconLoaderEngine::clone() const
+QIconEngineV2 *QIconLoaderEngineFixed::clone() const
 {
-    return new QIconLoaderEngine(*this);
+    return new QIconLoaderEngineFixed(*this);
 }
 
-bool QIconLoaderEngine::read(QDataStream &in) {
+bool QIconLoaderEngineFixed::read(QDataStream &in) {
     in >> m_iconName;
     return true;
 }
 
-bool QIconLoaderEngine::write(QDataStream &out) const
+bool QIconLoaderEngineFixed::write(QDataStream &out) const
 {
     out << m_iconName;
     return true;
 }
 
-bool QIconLoaderEngine::hasIcon() const
+bool QIconLoaderEngineFixed::hasIcon() const
 {
     return !(m_entries.isEmpty());
 }
 
 // Lazily load the icon
-void QIconLoaderEngine::ensureLoaded()
+void QIconLoaderEngineFixed::ensureLoaded()
 {
 
     iconLoaderInstance()->ensureInitialized();
@@ -420,7 +420,7 @@ void QIconLoaderEngine::ensureLoaded()
     }
 }
 
-void QIconLoaderEngine::paint(QPainter *painter, const QRect &rect,
+void QIconLoaderEngineFixed::paint(QPainter *painter, const QRect &rect,
                              QIcon::Mode mode, QIcon::State state)
 {
     QSize pixmapSize = rect.size();
@@ -481,7 +481,7 @@ static int directorySizeDistance(const QIconDirInfo &dir, int iconsize)
     return INT_MAX;
 }
 
-QIconLoaderEngineEntry *QIconLoaderEngine::entryForSize(const QSize &size)
+QIconLoaderEngineEntry *QIconLoaderEngineFixed::entryForSize(const QSize &size)
 {
     int iconsize = qMin(size.width(), size.height());
 
@@ -516,18 +516,26 @@ QIconLoaderEngineEntry *QIconLoaderEngine::entryForSize(const QSize &size)
  * we can never return a bigger size than the requested size.
  *
  */
-QSize QIconLoaderEngine::actualSize(const QSize &size, QIcon::Mode mode,
+QSize QIconLoaderEngineFixed::actualSize(const QSize &size, QIcon::Mode mode,
                                    QIcon::State state)
 {
     ensureLoaded();
-
     QIconLoaderEngineEntry *entry = entryForSize(size);
     if (entry) {
         const QIconDirInfo &dir = entry->dir;
         if (dir.type == QIconDirInfo::Scalable)
+        {
             return size;
+        }
         else {
+            if (dir.size == 0)
+            {
+                entry->dir.size = QPixmap(entry->filename).size().width();
+                entry->dir.minSize = dir.size;
+                entry->dir.maxSize = dir.size;
+            }
             int result = qMin<int>(dir.size, qMin(size.width(), size.height()));
+
             return QSize(result, result);
         }
     }
@@ -578,24 +586,26 @@ QPixmap ScalableEntry::pixmap(const QSize &size, QIcon::Mode mode, QIcon::State 
     return svgIcon.pixmap(size, mode, state);
 }
 
-QPixmap QIconLoaderEngine::pixmap(const QSize &size, QIcon::Mode mode,
+QPixmap QIconLoaderEngineFixed::pixmap(const QSize &size, QIcon::Mode mode,
                                  QIcon::State state)
 {
+
     ensureLoaded();
 
     QIconLoaderEngineEntry *entry = entryForSize(size);
+
     if (entry)
         return entry->pixmap(size, mode, state);
 
     return QPixmap();
 }
 
-QString QIconLoaderEngine::key() const
+QString QIconLoaderEngineFixed::key() const
 {
-    return QLatin1String("QIconLoaderEngine");
+    return QLatin1String("QIconLoaderEngineFixed");
 }
 
-void QIconLoaderEngine::virtual_hook(int id, void *data)
+void QIconLoaderEngineFixed::virtual_hook(int id, void *data)
 {
     ensureLoaded();
 
