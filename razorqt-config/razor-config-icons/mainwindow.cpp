@@ -50,7 +50,6 @@ MainWindow::MainWindow()
     progress.setCancelButton(0);
     progress.setMinimumDuration(0);
     progress.show();
-    qDebug() << "AAAAA";
     qApp->processEvents();
 
     int i = 0;
