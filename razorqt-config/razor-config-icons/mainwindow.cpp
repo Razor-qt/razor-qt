@@ -27,6 +27,7 @@
 #include "mainwindow.h"
 
 #include <QtCore/QSettings>
+#include <QtGui/QProgressDialog>
 #include <qtxdg/xdgdirs.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
@@ -43,8 +44,22 @@ MainWindow::MainWindow()
 //    qDebug() << "START" << XdgDirs::dataDirs();
     
     QDir d;
-    foreach(QString basedir, XdgDirs::dataDirs())
+    QStringList dirs = XdgDirs::dataDirs();
+
+    QProgressDialog progress(tr("Searching for icon themes"), "", 0, dirs.count(), this);
+    progress.setCancelButton(0);
+    progress.setMinimumDuration(0);
+    progress.show();
+    qDebug() << "AAAAA";
+    qApp->processEvents();
+
+    int i = 0;
+    foreach(QString basedir, dirs)
     {
+        progress.setValue(i);
+        qApp->processEvents();
+        ++i;
+
 //        // TODO/FIXME: think about this "optimization"
         if (basedir == "/usr/share")
             basedir = "/usr/share/icons";
@@ -72,6 +87,7 @@ MainWindow::MainWindow()
             }
         }
     }
+    progress.hide();
 
     restoreSettings();
 
