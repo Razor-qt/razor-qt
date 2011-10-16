@@ -167,6 +167,7 @@ public:
     Window getActiveAppWindow() const;
     Window getActiveWindow() const;
     int getNumDesktop() const;
+    QStringList getDesktopNames() const;
     QString getName(Window _wid) const;
 
     bool acceptWindow(Window _wid) const;

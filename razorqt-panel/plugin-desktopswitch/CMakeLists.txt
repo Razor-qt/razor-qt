@@ -5,14 +5,17 @@ set(PLUGIN "desktopswitch")
 
 set(HEADERS
   desktopswitch.h
+  desktopswitchbutton.h
 )
 
 set(SOURCES
   desktopswitch.cpp
+  desktopswitchbutton.cpp
 )
 
 set(MOCS
   desktopswitch.h
+  desktopswitchbutton.h
 )
 
 set(LIBRARIES ${LIBRARIES} ${CMAKE_BINARY_DIR}/librazorqt/librazorqxt.so )

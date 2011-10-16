@@ -33,38 +33,55 @@
 #include <razorqt/xfitman.h>
 #include <razorqxt/qxtglobalshortcut.h>
 
-
 #include "desktopswitch.h"
+#include "desktopswitchbutton.h"
+
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(DesktopSwitch)
 
+
 DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
     : RazorPanelPlugin(startInfo, parent),
-    m_pSignalMapper(new QSignalMapper(this))
+      m_pSignalMapper(new QSignalMapper(this)),
+      m_desktopCount(1)
 {
     setObjectName("DesktopSwitch");
     m_buttons = new QButtonGroup(this);
-
-    QString mask("%1");
-    int numDesk = qMax(xfitMan().getNumDesktop(), 1);
-    int firstKey = Qt::Key_F1 ; 
-    for (int i = 0; i < numDesk; ++i)
-    {
-        QxtGlobalShortcut * pS = new QxtGlobalShortcut(this);
-        pS ->setShortcut(QKeySequence(Qt::CTRL + firstKey++));
-        
-        connect ( pS, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ; 
-        m_pSignalMapper->setMapping( pS, i);
-        
-        QToolButton * m = new QToolButton(this);
-        m->setText(mask.arg(i+1));
-        m->setCheckable(true);
-        addWidget(m);
-        m_buttons->addButton(m, i);
-    }
     
     connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));
 
+    setup();
+}
+
+void DesktopSwitch::setup()
+{
+    // clear current state
+    foreach (QAbstractButton * b, m_buttons->buttons())
+    {
+        // TODO/FIXME: maybe it has to be removed from layout too?
+        m_pSignalMapper->removeMappings(b);
+        m_buttons->removeButton(b);
+        delete b;
+    }
+
+    // create new desktop layout
+    int firstKey = Qt::Key_F1;
+    int maxKey = Qt::Key_F35; // max defined in Qt
+qDebug() << "DN" << m_desktopNames;
+    for (int i = 0; i < m_desktopCount; ++i)
+    {
+        QKeySequence sequence;
+        if (firstKey < maxKey)
+        {
+            sequence = QKeySequence(Qt::CTRL + firstKey++);
+        }
+
+        DesktopSwitchButton * m = new DesktopSwitchButton(this, i, sequence, m_desktopNames.count() > i ? m_desktopNames.at(i) : "");
+        m_pSignalMapper->setMapping(m, i);
+        connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ; 
+        addWidget(m);
+        m_buttons->addButton(m, i);
+    }
 
     int activeDesk = qMax(xfitMan().getActiveDesktop(), 0);
     m_buttons->button(activeDesk)->setChecked(true);
@@ -81,6 +98,14 @@ void DesktopSwitch::x11EventFilter(XEvent* _event)
 {
     if (_event->type == PropertyNotify)
     {
+        int count = qMax(xfitMan().getNumDesktop(), 1);
+        if (m_desktopCount != count)
+        {
+            qDebug() << "Desktop count changed from" << m_desktopCount << "to" << count;
+            m_desktopCount = count;
+            setup();
+        }
+
         int activeDesk = qMax(xfitMan().getActiveDesktop(), 0);
         m_buttons->button(activeDesk)->setChecked(true);
     }
@@ -103,5 +128,3 @@ void DesktopSwitch::wheelEvent(QWheelEvent* e)
 
     xfitMan().setActiveDesktop(current);
 }
-
-

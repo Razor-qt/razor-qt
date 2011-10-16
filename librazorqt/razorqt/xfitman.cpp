@@ -192,6 +192,30 @@ int XfitMan::getNumDesktop() const
     }
     return 0;
 }
+
+QStringList XfitMan::getDesktopNames() const
+{  
+    QStringList ret;
+    unsigned long length;
+    unsigned char *data = 0;
+
+    if (getRootWindowProperty(atom("_NET_DESKTOP_NAMES"), atom("UTF8_STRING"), &length, &data))
+    {
+        if (data)
+        {
+            QString str((const char*)data);
+            ret = str.split(QChar('\0'));
+        }
+    }
+
+    if (data)
+    {
+        XFree(data);
+    }
+
+	return ret;
+}
+
 /**
  * @brief resizes a window to the given dimensions
  */
