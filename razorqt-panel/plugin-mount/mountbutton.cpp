@@ -181,6 +181,7 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
         qWarning() << "Can't connect to dbus daemon. Some functions will be omited";
     }
 
+    setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
     setToolTip(tr("Removable media/devices manager"));
 
     initialScanDevices();

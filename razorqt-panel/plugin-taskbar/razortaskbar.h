@@ -47,7 +47,6 @@ public:
 
     virtual void x11EventFilter(XEvent* event);
     virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
-    virtual void iconThemeChanged();
 
 public slots:
     void activeWindowChanged();

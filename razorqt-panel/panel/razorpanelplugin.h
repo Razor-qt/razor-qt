@@ -161,19 +161,6 @@ public:
 
     QString configId() const;
 
-
-    /**
-      This slot is called when icon theme name are changed.
-      Reimplement this function if you want to handle this event.
-    **/
-    virtual void iconThemeChanged() {}
-
-    /**
-      This slot is called when razor theme name are changed.
-      Reimplement this function if you want to handle this event.
-    **/
-    virtual void razorThemeChanged() {}
-
 signals:
     void movableChanged(bool movable);
     void alignmentChanged();
