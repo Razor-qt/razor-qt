@@ -34,7 +34,6 @@
 #include <QtCore/QString>
 #include <QtGui/QIcon>
 
-
 class CommandProviderItem
 {
 public:
@@ -89,7 +88,6 @@ public:
     bool compare(const QRegExp &regExp) const;
 
 private:
-    QString mIcon;
     QString mSearchText;
     QString mDesktopFile;
 };

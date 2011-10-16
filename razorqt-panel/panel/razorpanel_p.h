@@ -73,7 +73,6 @@ public slots:
     void onRemovePlugin();
     void onMovePlugin();
     void startMoveWidget();
-    void globalSettingsChanged();
 
 private:
     void loadPlugins();

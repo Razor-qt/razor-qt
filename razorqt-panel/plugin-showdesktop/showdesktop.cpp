@@ -57,12 +57,11 @@ ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     
     connect(m_key, SIGNAL(activated()), this, SLOT(showDesktop()));
     
-    mAction = new QAction(tr("Show Desktop"), this);
-    connect(mAction, SIGNAL(triggered()), this, SLOT(showDesktop()));
+    QAction * act = new QAction(XdgIcon::fromTheme("user-desktop"), tr("Show Desktop"), this);
+    connect(act, SIGNAL(triggered()), this, SLOT(showDesktop()));
 
     QToolButton * button = new QToolButton(this);
-    button->setDefaultAction(mAction);
-    iconThemeChanged();
+    button->setDefaultAction(act);
     addWidget(button);
 }
 
@@ -82,9 +81,4 @@ void ShowDesktop::showDesktop()
     }
     
     xfitMan().clientMessage(QX11Info::appRootWindow(),xfitMan().atom("_NET_SHOWING_DESKTOP"),(unsigned long) !bDesktopShown, 0,0,0,0);
-}
-
-void ShowDesktop::iconThemeChanged()
-{
-    mAction->setIcon(XdgIcon::fromTheme("user-desktop"));
 }

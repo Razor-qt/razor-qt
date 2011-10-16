@@ -92,23 +92,32 @@ void XdgIcon::setThemeName(const QString& themeName)
  Returns the QIcon corresponding to name in the current icon theme. If no such icon
  is found in the current theme fallback is return instead.
  ************************************************/
-QIcon const XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
+QIcon XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
 {
+    QString name = QFileInfo(iconName).fileName();
+    if (name.endsWith(".png", Qt::CaseInsensitive) ||
+        name.endsWith(".svg", Qt::CaseInsensitive) ||
+        name.endsWith(".xpm", Qt::CaseInsensitive))
+    {
+        name.truncate(name.length() - 4);
+    }
+
     QIcon icon;
 
-    if (qtIconCache()->contains(iconName)) {
-        icon = *qtIconCache()->object(iconName);
+    if (qtIconCache()->contains(name)) {
+        icon = *qtIconCache()->object(name);
     } else {
-        QIcon *cachedIcon  = new QIcon(new QIconLoaderEngine(iconName));
-        qtIconCache()->insert(iconName, cachedIcon);
+        QIcon *cachedIcon  = new QIcon(new QIconLoaderEngineFixed(name));
+        qtIconCache()->insert(name, cachedIcon);
         icon = *cachedIcon;
     }
 
     // Note the qapp check is to allow lazy loading of static icons
     // Supporting fallbacks will not work for this case.
     if (qApp && icon.availableSizes().isEmpty())
+    {
         return fallback;
-
+    }
     return icon;
 }
 
@@ -117,7 +126,7 @@ QIcon const XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
  Returns the QIcon corresponding to names in the current icon theme. If no such icon
  is found in the current theme fallback is return instead.
  ************************************************/
-QIcon const XdgIcon::fromTheme(const QStringList& iconNames, const QIcon& fallback)
+QIcon XdgIcon::fromTheme(const QStringList& iconNames, const QIcon& fallback)
 {
     foreach (QString iconName, iconNames)
     {
@@ -133,7 +142,7 @@ QIcon const XdgIcon::fromTheme(const QStringList& iconNames, const QIcon& fallba
 /************************************************
 
  ************************************************/
-QIcon const XdgIcon::defaultApplicationIcon()
+QIcon XdgIcon::defaultApplicationIcon()
 {
     return fromTheme(DEFAULT_APP_ICON);
 }
@@ -142,7 +151,7 @@ QIcon const XdgIcon::defaultApplicationIcon()
 /************************************************
 
  ************************************************/
-QString const XdgIcon::defaultApplicationIconName()
+QString XdgIcon::defaultApplicationIconName()
 {
     return DEFAULT_APP_ICON;
 }

@@ -36,14 +36,14 @@
 class XdgIcon
 {
 public:
-    static QIcon const fromTheme(const QString& iconName, const QIcon& fallback = QIcon());
-    static QIcon const fromTheme(const QStringList& iconNames, const QIcon& fallback = QIcon());
+    static QIcon fromTheme(const QString& iconName, const QIcon& fallback = QIcon());
+    static QIcon fromTheme(const QStringList& iconNames, const QIcon& fallback = QIcon());
 
     static QString themeName();
     static void setThemeName(const QString& themeName);
 
-    static QIcon const defaultApplicationIcon();
-    static QString const defaultApplicationIconName();
+    static QIcon defaultApplicationIcon();
+    static QString defaultApplicationIconName();
 
 protected:
     explicit XdgIcon();

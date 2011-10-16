@@ -93,6 +93,9 @@ Dialog::Dialog(QWidget *parent) :
 
     applySettings();
     resize(mSettings->value("dialog/width", 400).toInt(), size().height());
+
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
+    connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(update()));
 }
 
 

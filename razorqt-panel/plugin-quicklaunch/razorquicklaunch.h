@@ -50,8 +50,6 @@ public:
     RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorQuickLaunch();
 
-    virtual void iconThemeChanged();
-
 private:
     QMap<QString,XdgDesktopFile*> m_xdgFiles;
 
@@ -82,7 +80,7 @@ public:
      */
     RazorQuickLaunchAction(const QString & name,
                            const QString & exec,
-                           const QString & iconName,
+                           const QIcon & icon,
                            QWidget * parent);
     /*! Constructor for XDG desktop handlers.
      */
@@ -94,8 +92,6 @@ public:
     //! Returns true if the action is valid (contains all required properties).
     bool isValid() { return m_valid; }
 
-    void updateIcon();
-    QString iconName() const { return mIconName; }
 public slots:
     void execAction();
 
@@ -104,7 +100,6 @@ private:
     ActionType m_type;
     QString m_data;
     bool m_valid;
-    QString mIconName;
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

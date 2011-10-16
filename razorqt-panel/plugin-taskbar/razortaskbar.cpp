@@ -332,14 +332,3 @@ void RazorTaskBar::showConfigureDialog()
     confWindow->raise();
     confWindow->activateWindow();
 }
-
-
-void RazorTaskBar::iconThemeChanged()
-{
-    QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
-    while (i.hasNext())
-    {
-        i.next();
-        i.value()->updateIcon();
-    }
-}

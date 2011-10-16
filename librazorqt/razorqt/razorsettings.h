@@ -30,7 +30,6 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
-#include <QtCore/QFileSystemWatcher>
 
 class QEvent;
 
@@ -123,6 +122,7 @@ private:
     QHash<QString, QVariant> mCache;
 };
 
+class GlobalRazorSettingsPrivate;
 
 class GlobalRazorSettings: public RazorSettings
 {
@@ -130,11 +130,19 @@ class GlobalRazorSettings: public RazorSettings
 public:
     GlobalRazorSettings();
 
+signals:
+    /// Signal emitted when the icon theme has changed.
+    void iconThemeChanged();
+
+    /// Signal emitted when the razor theme has changed.
+    void razorThemeChanged();
+
 private slots:
     void fileChanged();
 
 private:
-    QFileSystemWatcher mWatcher;
+    GlobalRazorSettingsPrivate* const d_ptr;
+    Q_DECLARE_PRIVATE(GlobalRazorSettings)
 };
 
 #endif // RAZORSETTINGS_H
