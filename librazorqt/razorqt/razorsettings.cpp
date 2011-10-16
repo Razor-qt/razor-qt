@@ -427,7 +427,7 @@ void GlobalRazorSettings::fileChanged()
     if (d->mIconTheme != rt)
     {
         d->mRazorTheme = rt;
-        emit RazorThemeChanged();
+        emit razorThemeChanged();
     }
 
     emit settigsChanged();

@@ -135,7 +135,7 @@ signals:
     void iconThemeChanged();
 
     /// Signal emitted when the razor theme has changed.
-    void RazorThemeChanged();
+    void razorThemeChanged();
 
 private slots:
     void fileChanged();
