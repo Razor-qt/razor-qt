@@ -144,7 +144,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
 
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), this, SLOT(globalSettingsChanged()));
+    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), q_ptr, SLOT(update()));
 }
 
 
@@ -859,28 +859,3 @@ void CursorAnimation::updateCurrentValue(const QVariant &value)
 }
 
 
-/************************************************
-
- ************************************************/
-void RazorPanelPrivate::globalSettingsChanged()
-{
-    static QString prevIconTheme;
-    QString iconTheme = RazorSettings::globalSettings()->value("icon_theme").toString();
-    if (iconTheme != prevIconTheme)
-    {
-        prevIconTheme = iconTheme;
-        XdgIcon::setThemeName(iconTheme);
-        Q_Q(RazorPanel);
-        q->update();
-    }
-
-
-    static QString prevRazorTheme;
-    QString razorThemeName = RazorSettings::globalSettings()->value("theme").toString();
-    if (razorThemeName != prevRazorTheme)
-    {
-        prevRazorTheme = razorThemeName;
-
-        reTheme();
-    }
-}
