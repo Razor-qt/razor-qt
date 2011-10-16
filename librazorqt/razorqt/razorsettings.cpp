@@ -26,11 +26,13 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razorsettings.h"
+#include <qtxdg/xdgicon.h>
 #include <QDebug>
 #include <QtCore/QEvent>
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
 #include <QtCore/QMutex>
+#include <QtCore/QFileSystemWatcher>
 
 
 #define RAZOR_HOME_CFG QDir::homePath() + "/.razor/"
@@ -373,11 +375,33 @@ void RazorSettingsCache::loadToSettings()
 /************************************************
 
  ************************************************/
-GlobalRazorSettings::GlobalRazorSettings():
-    RazorSettings("razor")
+class GlobalRazorSettingsPrivate
 {
-    mWatcher.addPath(this->fileName());
-    connect(&mWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
+public:
+    GlobalRazorSettingsPrivate(GlobalRazorSettings *parent):
+        mParent(parent)
+    {
+
+    }
+
+    GlobalRazorSettings *mParent;
+    QFileSystemWatcher mWatcher;
+    QString mIconTheme;
+    QString mRazorTheme;
+
+};
+
+
+/************************************************
+
+ ************************************************/
+GlobalRazorSettings::GlobalRazorSettings():
+    RazorSettings("razor"),
+    d_ptr(new GlobalRazorSettingsPrivate(this))
+{
+    d_ptr->mWatcher.addPath(this->fileName());
+    connect(&(d_ptr->mWatcher), SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
+    fileChanged();
 }
 
 
@@ -386,6 +410,25 @@ GlobalRazorSettings::GlobalRazorSettings():
  ************************************************/
 void GlobalRazorSettings::fileChanged()
 {
+    Q_D(GlobalRazorSettings);
     sync();
+
+
+    QString it = value("icon_theme").toString();
+    if (d->mIconTheme != it)
+    {
+        d->mIconTheme = it;
+        XdgIcon::setThemeName(it);
+        emit iconThemeChanged();
+    }
+
+
+    QString rt = value("razor_theme").toString();
+    if (d->mIconTheme != rt)
+    {
+        d->mRazorTheme = rt;
+        emit RazorThemeChanged();
+    }
+
     emit settigsChanged();
 }
