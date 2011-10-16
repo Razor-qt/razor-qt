@@ -94,13 +94,21 @@ void XdgIcon::setThemeName(const QString& themeName)
  ************************************************/
 QIcon XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
 {
+    QString name = QFileInfo(iconName).fileName();
+    if (name.endsWith(".png", Qt::CaseInsensitive) ||
+        name.endsWith(".svg", Qt::CaseInsensitive) ||
+        name.endsWith(".xpm", Qt::CaseInsensitive))
+    {
+        name.truncate(name.length() - 4);
+    }
+
     QIcon icon;
 
-    if (qtIconCache()->contains(iconName)) {
-        icon = *qtIconCache()->object(iconName);
+    if (qtIconCache()->contains(name)) {
+        icon = *qtIconCache()->object(name);
     } else {
-        QIcon *cachedIcon  = new QIcon(new QIconLoaderEngineFixed(iconName));
-        qtIconCache()->insert(iconName, cachedIcon);
+        QIcon *cachedIcon  = new QIcon(new QIconLoaderEngineFixed(name));
+        qtIconCache()->insert(name, cachedIcon);
         icon = *cachedIcon;
     }
 
