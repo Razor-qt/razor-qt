@@ -167,6 +167,7 @@ public:
     Window getActiveAppWindow() const;
     Window getActiveWindow() const;
     int getNumDesktop() const;
+
     /*!
      * Returns the names of all virtual desktops. This is a list of UTF-8 encoding strings.
      *

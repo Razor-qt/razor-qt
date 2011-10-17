@@ -50,7 +50,7 @@ private:
     QButtonGroup * m_buttons;
     QSignalMapper* m_pSignalMapper;
     int m_desktopCount;
-    QStringList m_desktopNames;
+    //QStringList m_desktopNames;
 
     void wheelEvent(QWheelEvent* e);
     void setup();
