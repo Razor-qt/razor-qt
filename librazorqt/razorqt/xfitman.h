@@ -167,7 +167,21 @@ public:
     Window getActiveAppWindow() const;
     Window getActiveWindow() const;
     int getNumDesktop() const;
+    /*!
+     * Returns the names of all virtual desktops. This is a list of UTF-8 encoding strings.
+     *
+     * Note: The number of names could be different from getNumDesktop(). If it is less
+     * than getNumDesktop(), then the desktops with high numbers are unnamed. If it is
+     * larger than getNumDesktop(), then the excess names outside of the getNumDesktop()
+     * are considered to be reserved in case the number of desktops is increased.
+     */
     QStringList getDesktopNames() const;
+
+    /*!
+     * Returns the name of virtual desktop.
+     */
+    QString getDesktopName(int desktopNum, const QString &defaultName=QString()) const;
+
     QString getName(Window _wid) const;
 
     bool acceptWindow(Window _wid) const;

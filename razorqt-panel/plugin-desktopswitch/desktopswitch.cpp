@@ -67,7 +67,8 @@ void DesktopSwitch::setup()
     // create new desktop layout
     int firstKey = Qt::Key_F1;
     int maxKey = Qt::Key_F35; // max defined in Qt
-qDebug() << "DN" << m_desktopNames;
+//m_desktopNames = xfitMan().getDesktopNames();
+//qDebug() << "DN" << m_desktopNames;
     for (int i = 0; i < m_desktopCount; ++i)
     {
         QKeySequence sequence;
@@ -76,7 +77,7 @@ qDebug() << "DN" << m_desktopNames;
             sequence = QKeySequence(Qt::CTRL + firstKey++);
         }
 
-        DesktopSwitchButton * m = new DesktopSwitchButton(this, i, sequence, m_desktopNames.count() > i ? m_desktopNames.at(i) : "");
+        DesktopSwitchButton * m = new DesktopSwitchButton(this, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i)));//m_desktopNames.count() > i ? m_desktopNames.at(i) : "");
         m_pSignalMapper->setMapping(m, i);
         connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ; 
         addWidget(m);

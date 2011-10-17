@@ -203,17 +203,30 @@ QStringList XfitMan::getDesktopNames() const
     {
         if (data)
         {
-            QString str((const char*)data);
-            ret = str.split(QChar('\0'));
+            char* c = (char*)data;
+            char* end = (char*)data + length;
+            while (c < end)
+            {
+                ret << QString::fromUtf8(c);
+                c += strlen(c) + 1; // for trailing \0
+            }
+
+            XFree(data);
         }
     }
 
-    if (data)
-    {
-        XFree(data);
-    }
 
-	return ret;
+    return ret;
+}
+
+
+QString XfitMan::getDesktopName(int desktopNum, const QString &defaultName) const
+{
+    QStringList names = getDesktopNames();
+    if (desktopNum<0 || desktopNum>names.count()-1)
+        return defaultName;
+
+    return names.at(desktopNum);
 }
 
 /**
