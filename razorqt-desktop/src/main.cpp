@@ -37,6 +37,7 @@
 int main (int argc, char* argv[])
 {
     QApplication app(argc,argv);
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
     RazorSettings config("desktop");
