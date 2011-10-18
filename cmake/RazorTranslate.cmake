@@ -1,7 +1,9 @@
-MACRO(razor_translate_to _QM_FILES TRANSLATIONS_DIR)
+MACRO(razor_translate_to _QM_FILES _TRANSLATIONS_DIR)
     file(GLOB TS_FILES
         translations/*.ts
     )
+
+    set(TRANSLATIONS_DIR ${_TRANSLATIONS_DIR})
     add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
     qt4_add_translation(${_QM_FILES} ${TS_FILES})
 
