@@ -30,6 +30,7 @@
 #include <QIcon>
 
 #include <razorqt/razorsettings.h>
+#include <qtxdg/xdgicon.h>
 #include "desktopplugin.h"
 
 

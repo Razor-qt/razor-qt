@@ -27,12 +27,15 @@
 #include <QtGui/QApplication>
 #include <QtGui/QIcon>
 
+#include <qtxdg/xdgicon.h>
+#include <razorqt/razorsettings.h>
 #include "mainwindow.h"
 
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
     RazorConfig::MainWindow w;
