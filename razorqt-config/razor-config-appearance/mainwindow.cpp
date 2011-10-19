@@ -46,8 +46,7 @@ MainWindow::MainWindow()
     m_settings = new RazorSettings("razor", this);
     m_cache = new RazorSettingsCache(m_settings);
 
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-icons"), tr("Icons Theme"), moduleList);
+    new QListWidgetItem(XdgIcon::fromTheme(QStringList() << "preferences-desktop-icons" << "preferences-desktop"), tr("Icons Theme"), moduleList);
     moduleList->setCurrentRow(0);
 
     initIconsThemes();
@@ -57,6 +56,8 @@ MainWindow::MainWindow()
     connect(buttons, SIGNAL(clicked(QAbstractButton*)),
             this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
+    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()),
+            this, SLOT(update()));
 }
 
 
@@ -109,6 +110,7 @@ void MainWindow::initIconsThemes()
 void MainWindow::initControls()
 {
     QString currentTheme = RazorSettings::globalSettings()->value("icon_theme").toString();
+    XdgIcon::setThemeName(currentTheme);
     QTreeWidgetItemIterator it(iconThemeList);
     while (*it) {
         if ((*it)->data(0, Qt::UserRole).toString() == currentTheme)
@@ -118,6 +120,8 @@ void MainWindow::initControls()
         }
         ++it;
     }
+
+    update();
 }
 
 
@@ -133,6 +137,7 @@ void MainWindow::iconThemeSelected(QTreeWidgetItem *item, int column)
     QString theme = item->data(0, Qt::UserRole).toString();
     if (!theme.isEmpty())
     {
+        XdgIcon::setThemeName(theme);
         m_settings->setValue("icon_theme",  theme);
         m_settings->sync();
     }
