@@ -25,41 +25,25 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef DESKTOPSWITCH_H
-#define DESKTOPSWITCH_H
+#ifndef DESKTOPSWITCHBUTTON_H
+#define DESKTOPSWITCHBUTTON_H
 
-#include "../panel/razorpanelplugin.h"
+#include <QtGui/QToolButton>
 
-class QSignalMapper;
-class QButtonGroup;
+class QxtGlobalShortcut;
 
-
-/**
- * @brief Desktop switcher. A very simple one...
- */
-class DesktopSwitch : public RazorPanelPlugin
+class DesktopSwitchButton : public QToolButton
 {
     Q_OBJECT
-public:
-    DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~DesktopSwitch();
-
-    virtual void x11EventFilter(XEvent* event);
     
+public:
+    DesktopSwitchButton(QWidget * parent, int index, const QKeySequence &sequence, const QString &title=QString());
+
+signals:
+    void activated();
+
 private:
-    QButtonGroup * m_buttons;
-    QSignalMapper* m_pSignalMapper;
-    int m_desktopCount;
-    QStringList m_desktopNames;
-
-    void wheelEvent(QWheelEvent* e);
-    void setup();
-
-private slots:
-    void setDesktop(int desktop);
+    QxtGlobalShortcut * m_shortcut;
 };
-
-
-EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif

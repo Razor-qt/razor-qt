@@ -25,41 +25,28 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef DESKTOPSWITCH_H
-#define DESKTOPSWITCH_H
+#include <QToolButton>
+#include <QtDebug>
+#include <razorqxt/qxtglobalshortcut.h>
 
-#include "../panel/razorpanelplugin.h"
+#include "desktopswitchbutton.h"
 
-class QSignalMapper;
-class QButtonGroup;
-
-
-/**
- * @brief Desktop switcher. A very simple one...
- */
-class DesktopSwitch : public RazorPanelPlugin
+DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QKeySequence &sequence, const QString &title)
+    : QToolButton(parent)
 {
-    Q_OBJECT
-public:
-    DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~DesktopSwitch();
-
-    virtual void x11EventFilter(XEvent* event);
+    QString mask("%1");
+    setText(mask.arg(index+1));
+    setCheckable(true);
     
-private:
-    QButtonGroup * m_buttons;
-    QSignalMapper* m_pSignalMapper;
-    int m_desktopCount;
-    QStringList m_desktopNames;
-
-    void wheelEvent(QWheelEvent* e);
-    void setup();
-
-private slots:
-    void setDesktop(int desktop);
-};
-
-
-EXPORT_RAZOR_PANEL_PLUGIN_H
-
-#endif
+    if (!sequence.isEmpty())
+    {
+        m_shortcut = new QxtGlobalShortcut(this);
+        m_shortcut->setShortcut(sequence);
+        connect(m_shortcut, SIGNAL(activated()), this, SIGNAL(activated()));
+    }
+    
+    if (!title.isEmpty())
+    {
+        setToolTip(title);
+    }
+}

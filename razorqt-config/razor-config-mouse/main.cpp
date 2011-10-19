@@ -9,6 +9,8 @@
 //#include <QtCore>
 #include <QDebug>
 
+#include <qtxdg/xdgicon.h>
+#include <razorqt/razorsettings.h>
 #include "main.h"
 
 #include <QApplication>
@@ -26,6 +28,7 @@ int main (int argc, char *argv[]) {
 //  QTextCodec::setCodecForLocale(QTextCodec::codecForName("koi8-r"));
 
   QApplication app(argc, argv);
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
   //qDebug() << findDefaultTheme() << getCurrentTheme();

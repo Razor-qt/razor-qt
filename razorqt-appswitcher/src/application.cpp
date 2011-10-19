@@ -25,6 +25,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razorqt/razorsettings.h"
+#include <qtxdg/xdgicon.h>
 #include "application.h"
 
 
@@ -32,6 +33,7 @@ RazorAppSwitcher::Application::Application(int & argc, char ** argv)
     : QApplication(argc, argv),
       m_as(0)
 {
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     setStyleSheet(razorTheme->qss("appswitcher"));
 
     m_as = new RazorAppSwitcher::AppSwitcher();

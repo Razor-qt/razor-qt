@@ -30,15 +30,15 @@
 #include <QIcon>
 
 #include <razorqt/razorsettings.h>
+#include <qtxdg/xdgicon.h>
 #include "desktopplugin.h"
 
 
 
 int main (int argc, char* argv[])
 {
-    //TODO make singleton QApplication that does all this shit, then make razorsettings and stylesettings available and fix all the other stuff with it
-
     QApplication app(argc,argv);
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
     RazorSettings config("desktop");

@@ -192,6 +192,43 @@ int XfitMan::getNumDesktop() const
     }
     return 0;
 }
+
+QStringList XfitMan::getDesktopNames() const
+{  
+    QStringList ret;
+    unsigned long length;
+    unsigned char *data = 0;
+
+    if (getRootWindowProperty(atom("_NET_DESKTOP_NAMES"), atom("UTF8_STRING"), &length, &data))
+    {
+        if (data)
+        {
+            char* c = (char*)data;
+            char* end = (char*)data + length;
+            while (c < end)
+            {
+                ret << QString::fromUtf8(c);
+                c += strlen(c) + 1; // for trailing \0
+            }
+
+            XFree(data);
+        }
+    }
+
+
+    return ret;
+}
+
+
+QString XfitMan::getDesktopName(int desktopNum, const QString &defaultName) const
+{
+    QStringList names = getDesktopNames();
+    if (desktopNum<0 || desktopNum>names.count()-1)
+        return defaultName;
+
+    return names.at(desktopNum);
+}
+
 /**
  * @brief resizes a window to the given dimensions
  */
