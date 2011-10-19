@@ -47,7 +47,8 @@ public:
           m_xdg(xdg)
     {
         setIcon(xdg->icon(XdgIcon::defaultApplicationIcon()));
-        setText(xdg->comment().isEmpty() ? xdg->name() : xdg->comment());
+        setText(xdg->name());
+        setToolTip(xdg->comment().isEmpty() ? xdg->name() : xdg->comment());
     }
 
     void start()
