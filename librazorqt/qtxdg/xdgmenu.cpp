@@ -453,6 +453,22 @@ QDomElement XdgMenu::findMenu(QDomElement& baseElement, const QString& path, boo
 
 
 /************************************************
+
+ ************************************************/
+bool isParent(const QDomElement& parent, const QDomElement& child)
+{
+    QDomNode  n = child;
+    while (!n.isNull())
+    {
+        if (n == parent)
+            return true;
+        n = n.parentNode();
+    }
+    return false;
+}
+
+
+/************************************************
  Recurse to resolve <Move> elements for each menu starting with any child menu before
  handling the more top level menus. So the deepest menus have their <Move> operations
  performed first. Within each <Menu>, execute <Move> operations in the order that
@@ -490,16 +506,21 @@ void XdgMenuPrivate::moveMenus(QDomElement& element)
             continue;
 
         QDomElement newMenu = q->findMenu(element, newPath, true);
+
+        if (isParent(oldMenu, newMenu))
+            continue;
+
         appendChilds(oldMenu, newMenu);
         oldMenu.parentNode().removeChild(oldMenu);
     }
-
 }
 
 
 /************************************************
  For each <Menu> containing a <Deleted> element which is not followed by a
  <NotDeleted> element, remove that menu and all its child menus.
+
+ Kmenuedit create .hidden menu entry, delete it too.
  ************************************************/
 void XdgMenuPrivate::deleteDeletedMenus(QDomElement& element)
 {
@@ -507,7 +528,9 @@ void XdgMenuPrivate::deleteDeletedMenus(QDomElement& element)
     while(i.hasNext())
     {
         QDomElement e = i.next();
-        if (e.attribute("deleted") == "1")
+        if (e.attribute("deleted") == "1" ||
+            e.attribute("name") == ".hidden"
+            )
             element.removeChild(e);
         else
             deleteDeletedMenus(e);

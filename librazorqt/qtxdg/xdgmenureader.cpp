@@ -275,22 +275,33 @@ void XdgMenuReader::processMergeDirTag(QDomElement& element, QStringList* merged
  <MergeDir> elements containing the default merge directory locations. When expanding
  <DefaultMergeDirs> to a list of <MergeDir>, the default locations that are earlier
  in the search path go later in the <Menu> so that they have priority.
+
+ Note that a system that uses either gnome-applications.menu or kde-applications.menu
+ depending on the desktop environment in use must still use applications-merged as the
+ default merge directory in both cases.
+
+ Implementations may chose to use .menu files with names other than application.menu
+ for tasks or menus other than the main application menu. In that case the first part
+ of the name of the default merge directory is derived from the name of the .menu file.
  ************************************************/
 void XdgMenuReader::processDefaultMergeDirsTag(QDomElement& element, QStringList* mergedFiles)
 {
     //qDebug() << "Process " << element;// << "in" << mFileName;
 
-    QString menuBaseName = QFileInfo(mFileName).baseName();
+    QString menuBaseName = QFileInfo(mMenu->menuFileName()).baseName();
+    int n = menuBaseName.lastIndexOf('-');
+    if (n>-1)
+        menuBaseName = menuBaseName.mid(n+1);
+
     QStringList dirs = XdgDirs::configDirs();
     dirs << XdgDirs::configHome();
 
     foreach (QString dir, dirs)
     {
         mergeDir(QString("%1/menus/%2-merged").arg(dir).arg(menuBaseName), element, mergedFiles);
-        mergeDir(QString("%1/menus/applications-merged").arg(dir), element, mergedFiles);
     }
 
-    mergeDir(QString("%1/menus").arg(XdgDirs::configHome()), element, mergedFiles);
+    mergeFile(QString("%1/menus/applications-kmenuedit.menu").arg(XdgDirs::configHome()), element, mergedFiles);
 }
 
 
