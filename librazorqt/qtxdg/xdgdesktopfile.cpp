@@ -374,7 +374,9 @@ XdgDesktopFilePrivate::XdgDesktopFilePrivate(XdgDesktopFile* parent):
  ************************************************/
 void XdgDesktopFilePrivate::setPrefix(const QString& prefix)
 {
-    mPrefix = prefix + (prefix.endsWith('/')? "" : "/");
+    mPrefix = prefix;
+    if (prefix.endsWith('/'))
+        mPrefix.truncate(mPrefix.count() - 1);
 }
 
 
@@ -405,7 +407,7 @@ bool XdgDesktopFilePrivate::read()
 
     QString section;
     QTextStream stream(&file);
-    bool valid = false;
+    bool prefixExists = false;
     while (!stream.atEnd()) {
         QString line = stream.readLine().trimmed();
 
@@ -418,8 +420,8 @@ bool XdgDesktopFilePrivate::read()
         if (line.startsWith('[') && line.endsWith(']'))
         {
             section = line.mid(1, line.length()-2);
-            if (section == "Desktop Entry")
-                valid = true;
+            if (section == mPrefix)
+                prefixExists = true;
 
             continue;
         }
@@ -439,8 +441,9 @@ bool XdgDesktopFilePrivate::read()
     }
 
     mType = detectType();
-    mIsValid = valid;
-    return valid;
+    // Not check for empty prefix
+    mIsValid = (mPrefix.isEmpty()) || prefixExists;
+    return mIsValid;
 }
 
 
@@ -449,8 +452,8 @@ bool XdgDesktopFilePrivate::read()
  ************************************************/
 QVariant XdgDesktopFilePrivate::value(const QString& key, const QVariant& defaultValue) const
 {
-    //qDebug() << "XdgDesktopFilePrivate::value mPrefix + key" << mPrefix + key;
-    QVariant v = mItems.value(mPrefix + key, defaultValue);
+    QString path = (!mPrefix.isEmpty()) ? mPrefix + "/" + key : key;
+    QVariant v = mItems.value(path, defaultValue);
     return v.toString().replace("&", "&&");
 }
 
@@ -533,7 +536,8 @@ QVariant XdgDesktopFilePrivate::localizedValue(const QString& key, const QVarian
  ************************************************/
 bool XdgDesktopFilePrivate::contains(const QString& key) const
 {
-    return mItems.contains(mPrefix + key);
+    QString path = (!mPrefix.isEmpty()) ? mPrefix + "/" + key : key;
+    return mItems.contains(path);
 }
 
 

@@ -1,11 +1,11 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  *
  * Razor - a lightweight, Qt based, desktop toolset
- * http://razor-qt.org
+ * https://sourceforge.net/projects/razor-qt/
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.ru>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -23,34 +23,41 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
- 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
 
-#include <QtCore/QDirIterator>
-#include <QtDebug>
-#include "ui_mainwindow.h"
+#ifndef ICONTHEMEINFO_H
+#define ICONTHEMEINFO_H
 
-class RazorSettings;
-class RazorSettingsCache;
+#include <QtCore/QObject>
+#include <QtGui/QIcon>
+#include <QtCore/QDir>
+#include <QtCore/QSettings>
 
-
-class MainWindow : public QMainWindow, public Ui::MainWindow
+class IconThemeInfo
 {
-    Q_OBJECT
-    
 public:
-    MainWindow();
-    ~MainWindow();
+    IconThemeInfo(const QDir &dir);
 
+    QString fileName() const { return mFileName; }
+    QString name() const { return mName; }
+    QString text() const { return mText; }
+    QString comment() const { return mComment; }
+
+    bool isValid() const { return mValid; }
+    bool isHidden() const { return mHidden; }
+    QIcon icon(const QString &iconName) const;
 private:
-    RazorSettings *m_settings;
-    RazorSettingsCache *m_cache;
+    QString mFileName;
+    QString mName;
+    QString mText;
+    QString mComment;
+    QString mActionsDir;
 
-private slots:
-    void restoreSettings();
-    void dialogButtonsAction(QAbstractButton *btn);
-    void listWidget_currentTextChanged(const QString &text);
+    bool mValid;
+    bool mHidden;
+
+    void load(const QString &fileName);
+    void loadDirsInfo(QSettings &file, const QString &path);
 };
 
-#endif
+
+#endif // ICONTHEMEINFO_H
