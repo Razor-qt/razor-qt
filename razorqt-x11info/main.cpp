@@ -36,6 +36,10 @@
 #define RAZOR_VERSION "Version n/a. Probably built out of Razor-qt tree"
 #endif
 
+#ifdef QT_NO_DEBUG_OUTPUT
+#undef QT_NO_DEBUG_OUTPUT
+#endif
+
 /*! \mainpage X11 Info for Razor-qt.
  * This tool allows to gather various useful X11/screen information.
  * Sometimes it would be useful to attach output of this command line
