@@ -85,25 +85,22 @@ void MainWindow::initIconsThemes()
                     QTreeWidgetItem *item = new QTreeWidgetItem(iconThemeList);
                     item->setData(0, Qt::UserRole, theme.name());
 
-                    item->setText(0, theme.comment().isEmpty() ? theme.text() : theme.text() + " ( " + theme.comment() + " )");
+                    item->setIcon(0, theme.icon("document-open"));
+                    item->setIcon(1, theme.icon("document-new"));
+                    item->setIcon(2, theme.icon("edit-undo"));
+                    item->setIcon(3, theme.icon("media-playback-start"));
 
-                    item->setIcon(1, theme.icon("document-open"));
-                    item->setIcon(2, theme.icon("document-edit"));
-                    item->setIcon(3, theme.icon("edit-undo"));
-                    item->setIcon(4, theme.icon("media-playback-start"));
-                    item->setIcon(5, theme.icon("download"));
+                    item->setText(4, theme.comment().isEmpty() ? theme.text() : theme.text() + " ( " + theme.comment() + " )");
                 }
             }
         }
     }
 
-    iconThemeList->setColumnCount(6);
-    for (int i=0; i<iconThemeList->header()->count(); ++i)
+    iconThemeList->setColumnCount(5);
+    for (int i=0; i<iconThemeList->header()->count()-1; ++i)
     {
         iconThemeList->resizeColumnToContents(i);
     }
-    iconThemeList->setColumnWidth(0, iconThemeList->columnWidth(0) + 16);
-
 }
 
 

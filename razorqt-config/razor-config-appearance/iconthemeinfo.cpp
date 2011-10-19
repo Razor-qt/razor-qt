@@ -80,22 +80,24 @@ void IconThemeInfo::loadDirsInfo(QSettings &file, const QString &path)
 
 QIcon IconThemeInfo::icon(const QString &iconName) const
 {
+    QDir dir(mActionsDir);
+
+    if (dir.exists(iconName + ".png"))
     {
         QIcon icon(mActionsDir + QDir::separator() + iconName + ".png");
-        if (!icon.isNull())
-            return icon;
+        return icon;
     }
 
+    if (dir.exists(iconName + ".svg"))
     {
         QIcon icon(mActionsDir + QDir::separator() + iconName + ".svg");
-        if (!icon.isNull())
-            return icon;
+        return icon;
     }
 
+    if (dir.exists(iconName + ".xpm"))
     {
         QIcon icon(mActionsDir + QDir::separator() + iconName + ".xpm");
-        if (!icon.isNull())
-            return icon;
+        return icon;
     }
 
     return QIcon();
