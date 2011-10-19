@@ -83,6 +83,7 @@ void MainWindow::initIconsThemes()
                 if (theme.isValid() && (!theme.isHidden()))
                 {
                     QTreeWidgetItem *item = new QTreeWidgetItem(iconThemeList);
+                    item->setSizeHint(0, QSize(42,42)); // make icons non-cropped
                     item->setData(0, Qt::UserRole, theme.name());
 
                     item->setIcon(0, theme.icon("document-open"));
