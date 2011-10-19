@@ -259,7 +259,8 @@ XdgAction* XdgMenuWidgetPrivate::createAction(const QDomElement& xml)
         title = xml.attribute("name");
 
 
-    if (!xml.attribute("genericName").isEmpty())
+    if (!xml.attribute("genericName").isEmpty() &&
+         xml.attribute("genericName") != title)
         title += QString(" (%1)").arg(xml.attribute("genericName"));
 
     action->setText(title);
