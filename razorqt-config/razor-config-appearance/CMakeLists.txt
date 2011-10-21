@@ -38,7 +38,7 @@ set(LIBRARIES
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
+razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)
 #************************************************
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
