@@ -204,6 +204,7 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
 
     connect(&_dm, SIGNAL(deviceConnected(DiskInfo)),
             this, SLOT(onDiskAdded(DiskInfo)));
+
     connect(&_dm, SIGNAL(deviceDisconnected(DiskInfo)),
             this, SLOT(onDiskRemoved(DiskInfo)));
 
@@ -243,6 +244,7 @@ void MountButton::addMenuItem(const DiskInfo &info)
 
     connect(item, SIGNAL(ejectMedia(const QString&)),
             this, SLOT(onMediaEject(const QString&)));
+
 }
 
 
@@ -397,6 +399,7 @@ void MountButton::onMediaMount(const QString &device)
     // when I will rewrite libmount. While using this dirty hack.
     mount_point = mount_point.replace("\\040", " ", Qt::CaseSensitive);
     QDesktopServices::openUrl(QUrl::fromLocalFile(mount_point));
+    mPopup.hide();
 }
 
 void MountButton::onMediaEject(const QString &device)
@@ -423,7 +426,7 @@ void MountButton::onMediaEject(const QString &device)
     }
 
     showMessage(tr("Device '%1' is unmounted").arg(device));
-
+    mPopup.hide();
 }
 
 
