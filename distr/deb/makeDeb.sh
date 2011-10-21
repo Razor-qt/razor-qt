@@ -9,11 +9,13 @@ function help {
   echo "  -d|--dist=DIST        buld for distributive ubuntu/debian"
   echo "  -r|--release=RELEASE  release name (sid, maveric, natty etc.)"
   echo "  -ver=VERSION          razor version"
+  echo "  -S|--sign             sign a result files"
   echo "  -b|--binary           build a binary package, if ommited build only only a source package"
 }
 
 NAME='razorqt'
 TYPE='-S'
+SIGN='-uc -us'
 OUT_DIR='./'
 
 while [ $# -gt 0 ]; do
@@ -48,6 +50,10 @@ while [ $# -gt 0 ]; do
         shift
       ;;
 
+    -s|--sign)
+        SIGN=''
+        shift
+      ;;
     --)
         shift
         break
@@ -111,6 +117,7 @@ mkdir -p ${OUT_DIR}
 DIR=${OUT_DIR}/${NAME}-${VER}
 rm -rf ${DIR}
 
+
 cp -r ${SRC_DIR} ${DIR}
 rm -rf ${DIR}/.git \
        ${DIR}/build
@@ -128,6 +135,32 @@ for f in `find ${DIR}/debian -type f `; do
         $f
 done
 
-cd ${DIR} && debuild ${TYPE} -rfakeroot
+cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
+
+echo "................................."
+echo "Check files:"
+PKGS=`awk '/Package:/ {print $2}' ${DIR}/debian/control`
+
+for file in `find ${DIR}/debian/tmp -type f 2>/dev/null`; do
+    file=`echo $file | sed -e"s|${DIR}/debian/tmp||"`
+    #echo $file
+    pkgNames=''
+    let 'pkgCount=0'
+
+    for pkg in ${PKGS}; do
+        if [ `ls "${DIR}/debian/${pkg}$file" 2>/dev/null` ]; then
+            let 'pkgCount++'
+            pkgNames="${pkgNames}\n\t${pkg}"
+        fi
+    done
+
+    if [ $pkgCount -eq 0 ]; then
+        echo -e "Missing file: ${file}";
+
+    elif [ $pkgCount -gt 1 ]; then
+        echo -e "Douplicates:  ${file}$pkgNames"
+    fi
+
+done
 
 
