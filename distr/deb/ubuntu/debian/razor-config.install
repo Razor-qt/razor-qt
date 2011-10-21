@@ -1,5 +1,7 @@
 /usr/bin/razor-config
 /usr/bin/razor-config-mouse
+/usr/bin/razor-config-appearance
 /usr/share/applications/razor-config.desktop
 /usr/share/applications/razor-config-mouse.desktop
+/usr/share/applications/razor-config-appearance.desktop
 /usr/share/razor/razor-config/

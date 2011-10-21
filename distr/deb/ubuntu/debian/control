@@ -33,7 +33,7 @@ Description: Razor-qt desktop environment
 
 Package: razorqt-dev
 Architecture: any
-Depends: ${misc:Depends},
+Depends: ${shlibs:Depends}, ${misc:Depends},
   libqtxdg-dev (= ${binary:Version})
 Replaces: razor-qt
 Conflicts: razor-qt
