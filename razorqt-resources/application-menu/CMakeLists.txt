@@ -8,6 +8,16 @@ if (EXISTS /etc/SuSE-release OR EXISTS /etc/SUSE-release OR EXISTS /etc/SuSEconf
     set(DISTRO_MENU "${DISTRO_MENU}<Menu><Name>YaST</Name><Directory>suse-yast.directory</Directory><MergeFile>yast-settings.menu</MergeFile></Menu>")
     # almost anything can be here... example:
     #set(DISTRO_MENU "${DISTRO_MENU}<Menu><Name>SUSE</Name><MergeFile>applications.menu</MergeFile></Menu>")
+
+elseif(EXISTS /etc/debian_version)
+    message(STATUS "Debian Linux distro detected building additional menu structure")
+    set(DISTRO_MENU "${DISTRO_MENU}
+        <Menu>
+            <Name>Debian</Name>
+            <MergeFile>debian-menu.menu</MergeFile>
+            <Directory>Debian.directory</Directory>
+        </Menu>"
+    )
 else()
     message(STATUS "Razor vanilla menu structure used")
 endif () # linux distro detecton
