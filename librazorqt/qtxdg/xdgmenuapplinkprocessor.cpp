@@ -231,7 +231,7 @@ void XdgMenuApplinkProcessor::fillAppFileInfoList()
         while(i.hasNext())
         {
             i.next();
-            if (!mAppFileInfoHash.contains(i.key()))
+            //if (!mAppFileInfoHash.contains(i.key()))
                 mAppFileInfoHash.insert(i.key(), i.value());
         }
     }
