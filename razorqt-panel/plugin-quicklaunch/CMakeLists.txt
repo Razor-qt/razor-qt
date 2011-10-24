@@ -9,14 +9,23 @@ set(PLUGIN "quicklaunch")
 # endif (QUICKLAUNCH_PLUGIN)
 set(HEADERS
   razorquicklaunch.h
+  quicklaunchbutton.h
+  quicklaunchlayout.h
+  quicklaunchaction.h
 )
 
 set(SOURCES
   razorquicklaunch.cpp
+  quicklaunchbutton.cpp
+  quicklaunchlayout.cpp
+  quicklaunchaction.cpp
 )
 
 set(MOCS
   razorquicklaunch.h
+  quicklaunchbutton.h
+  quicklaunchlayout.h
+  quicklaunchaction.h
 )
 
 include_directories (

@@ -62,6 +62,7 @@ QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * 
 
 QuickLaunchButton::~QuickLaunchButton()
 {
+    delete m_act;
 }
 
 QHash<QString,QString> QuickLaunchButton::settingsMap()
@@ -83,6 +84,7 @@ void QuickLaunchButton::selfRemove()
 
 void QuickLaunchButton::paintEvent(QPaintEvent *)
 {
+    // Do not paint that ugly "has menu" arrow
     QStylePainter p(this);
     QStyleOptionToolButton opt;
     initStyleOption(&opt);
@@ -96,6 +98,7 @@ void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
     {
         m_dragStart = e->pos();
     }
+    QToolButton::mousePressEvent(e);
 }
 
 void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)

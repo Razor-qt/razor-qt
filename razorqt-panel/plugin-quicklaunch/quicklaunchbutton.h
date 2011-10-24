@@ -66,7 +66,6 @@ private:
 private slots:
     void this_customContextMenuRequested(const QPoint & pos);
     void selfRemove();
-
 };
 
 #endif
