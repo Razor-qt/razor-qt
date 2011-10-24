@@ -251,6 +251,21 @@ void XdgMenu::save(const QString& fileName)
 
 
 /************************************************
+ For debug only
+ ************************************************/
+void XdgMenuPrivate::load(const QString& fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        qWarning() << QString("%1 not loading: %2").arg(fileName).arg(file.errorString());
+        return;
+    }
+    mXml.setContent(&file, true);
+}
+
+
+/************************************************
 
  ************************************************/
 void XdgMenuPrivate::saveLog(const QString& logFileName)
@@ -344,6 +359,12 @@ void XdgMenuPrivate::simplify(QDomElement& element)
         else if(n.tagName() == "NotOnlyUnallocated")
         {
             element.setAttribute("onlyUnallocated", false);
+            n.parentNode().removeChild(n);
+        }
+
+        // ......................................
+        else if(n.tagName() == "FileInfo")
+        {
             n.parentNode().removeChild(n);
         }
 

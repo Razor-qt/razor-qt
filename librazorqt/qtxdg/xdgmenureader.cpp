@@ -90,7 +90,8 @@ bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
         mErrorStr = tr("%1 not loading: %2").arg(fileName).arg(file.errorString());
         return false;
     }
-    mMenu->addWatchPath(fileName);
+    //qDebug() << "Load file:" << mFileName;
+    mMenu->addWatchPath(mFileName);
 
     QString errorStr;
     int errorLine;
@@ -106,6 +107,15 @@ bool XdgMenuReader::load(const QString& fileName, const QString& baseDir)
     }
 
     QDomElement root = mXml.documentElement();
+
+    QDomElement debugElement = mXml.createElement("FileInfo");
+    debugElement.setAttribute("file", mFileName);
+    if (mParentReader)
+        debugElement.setAttribute("parent", mParentReader->fileName());
+
+    QDomNode null;
+    root.insertBefore(debugElement, null);
+
     processMergeTags(root);
     return true;
 }
@@ -301,7 +311,8 @@ void XdgMenuReader::processDefaultMergeDirsTag(QDomElement& element, QStringList
         mergeDir(QString("%1/menus/%2-merged").arg(dir).arg(menuBaseName), element, mergedFiles);
     }
 
-    mergeFile(QString("%1/menus/applications-kmenuedit.menu").arg(XdgDirs::configHome()), element, mergedFiles);
+    if (menuBaseName == "applications")
+        mergeFile(QString("%1/menus/applications-kmenuedit.menu").arg(XdgDirs::configHome()), element, mergedFiles);
 }
 
 
@@ -330,7 +341,10 @@ void XdgMenuReader::processDefaultAppDirsTag(QDomElement& element)
     dirs.prepend(XdgDirs::dataHome(false));
 
     foreach (QString dir, dirs)
+    {
+        //qDebug() << "Add AppDir: " << dir + "/applications/";
         addDirTag(element, "AppDir", dir + "/applications/");
+    }
 }
 
 /************************************************
@@ -389,14 +403,13 @@ void XdgMenuReader::mergeFile(const QString& fileName, QDomElement& element, QSt
     if (!fileInfo.exists())
         return;
 
-    //qDebug() << "Merge file: " << fileName;
-
     if (mergedFiles->contains(fileInfo.canonicalFilePath()))
     {
         //qDebug() << "\tSkip: allredy merged";
         return;
     }
 
+    //qDebug() << "Merge file: " << fileName;
     mergedFiles->append(fileInfo.canonicalFilePath());
 
     if (reader.load(fileName, mDirName))

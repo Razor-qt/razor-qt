@@ -55,6 +55,7 @@ public:
     void appendChilds(QDomElement& srcElement, QDomElement& destElement);
 
     void saveLog(const QString& logFileName);
+    void load(const QString& fileName);
 
     void clearWatcher();
 
