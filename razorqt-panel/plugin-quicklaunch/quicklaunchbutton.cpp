@@ -157,15 +157,20 @@ void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
 {
     if (e->mimeData()->hasFormat(MIMETYPE))
         e->acceptProposedAction();
+    else
+        e->ignore();
 }
 
 void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
 {
-    int other = e->mimeData()->data(MIMETYPE).toInt();
-    // do not replace self with self
-    if (other == m_id)
-        return;
+    if (e->mimeData()->hasFormat(MIMETYPE))
+    {
+        int other = e->mimeData()->data(MIMETYPE).toInt();
+        // do not replace self with self
+        if (other == m_id)
+            return;
 
-    emit switchButtons(m_id, other);
+        emit switchButtons(m_id, other);
+    }
 }
 
