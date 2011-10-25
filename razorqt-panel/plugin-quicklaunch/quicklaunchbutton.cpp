@@ -109,14 +109,13 @@ void QuickLaunchButton::paintEvent(QPaintEvent *)
 
 void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
 {
-    if (e->button() == Qt::LeftButton)
+    if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
     {
         m_dragStart = e->pos();
+        return;
     }
-    else
-    {
-        QToolButton::mousePressEvent(e);
-    }
+
+    QToolButton::mousePressEvent(e);
 }
 
 void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
