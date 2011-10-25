@@ -47,6 +47,8 @@ public:
 signals:
     void buttonDeleted(int index);
     void switchButtons(int first, int second);
+    void movedLeft();
+    void movedRight();
 
 protected:
     //! Disable that annoying small arrow when there is a menu
@@ -59,6 +61,8 @@ protected:
 private:
     QuickLaunchAction *m_act;
     QAction *m_deleteAct;
+    QAction *m_moveLeftAct;
+    QAction *m_moveRightAct;
     QMenu *m_menu;
     QPoint m_dragStart;
     int m_id;

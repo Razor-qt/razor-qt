@@ -51,6 +51,8 @@ public:
     RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
     ~RazorQuickLaunch();
 
+    int indexOfButton(QuickLaunchButton* button) const;
+    int countOfButtons() const;
 private:
     QHash<QString,XdgDesktopFile*> m_xdgFiles;
     QuickLaunchLayout *m_layout;
@@ -68,6 +70,8 @@ private slots:
     void addButton(QuickLaunchAction* action);
     void switchButtons(int,int);
     void buttonDeleted(int);
+    void buttonMoveLeft();
+    void buttonMoveRight();
 };
 
 

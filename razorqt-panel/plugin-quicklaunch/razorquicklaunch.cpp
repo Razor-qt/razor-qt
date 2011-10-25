@@ -107,6 +107,16 @@ RazorQuickLaunch::~RazorQuickLaunch()
 {
 }
 
+int RazorQuickLaunch::indexOfButton(QuickLaunchButton* button) const
+{
+    return m_layout->indexOf(button);
+}
+
+int RazorQuickLaunch::countOfButtons() const
+{
+    return m_layout->count();
+}
+
 void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 {
     QuickLaunchButton* btn = new QuickLaunchButton(m_maxIndex, action, this);
@@ -115,6 +125,8 @@ void RazorQuickLaunch::addButton(QuickLaunchAction* action)
     
     connect(btn, SIGNAL(switchButtons(int,int)), this, SLOT(switchButtons(int,int)));
     connect(btn, SIGNAL(buttonDeleted(int)), this, SLOT(buttonDeleted(int)));
+    connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
+    connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
 
     ++m_maxIndex;
 }
@@ -123,7 +135,15 @@ void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
 {
     // Getting URL from mainmenu...
     if (e->mimeData()->hasUrls())
+    {
         e->acceptProposedAction();
+        return;
+    }
+
+    if (e->source() && e->source()->parent() == this)
+    {
+        e->acceptProposedAction();
+    }
 }
 
 void RazorQuickLaunch::dropEvent(QDropEvent *e)
@@ -175,6 +195,37 @@ void RazorQuickLaunch::buttonDeleted(int id)
     delete b;
     saveSettings();
 }
+
+void RazorQuickLaunch::buttonMoveLeft()
+{
+    QuickLaunchButton *btn1 = qobject_cast<QuickLaunchButton*>(sender());
+    if (!btn1)
+        return;
+
+    int index = indexOfButton(btn1);
+    if (index > 0)
+    {
+        QuickLaunchButton *btn2 = qobject_cast<QuickLaunchButton*>(m_layout->itemAt(index-1)->widget());
+        m_layout->swapButtons(btn1, btn2);
+    }
+}
+
+
+void RazorQuickLaunch::buttonMoveRight()
+{
+    QuickLaunchButton *btn1 = qobject_cast<QuickLaunchButton*>(sender());
+    if (!btn1)
+        return;
+
+    int index = indexOfButton(btn1);
+    if (index < countOfButtons() - 1)
+    {
+        QuickLaunchButton *btn2 = qobject_cast<QuickLaunchButton*>(m_layout->itemAt(index + 1)->widget());
+        m_layout->swapButtons(btn1, btn2);
+    }
+
+}
+
 
 void RazorQuickLaunch::saveSettings()
 {

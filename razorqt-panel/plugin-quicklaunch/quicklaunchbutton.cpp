@@ -30,10 +30,10 @@
 #include <QtGui/QStyleOptionToolButton>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QApplication>
-
 #include <qtxdg/xdgicon.h>
 
 #include "quicklaunchbutton.h"
+#include "razorquicklaunch.h"
 
 #define MIMETYPE "x-razor/quicklaunch-button"
 
@@ -49,12 +49,23 @@ QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setIconSize(QSize(22, 22));
 
+    m_moveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("Move left"), this);
+    connect(m_moveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
+
+    m_moveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("Move right"), this);
+    connect(m_moveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
+
+
     m_deleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Remove from quicklaunch"), this);
     connect(m_deleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
     addAction(m_deleteAct);
     m_menu = new QMenu(this);
+    m_menu->addAction(m_moveLeftAct);
+    m_menu->addAction(m_moveRightAct);
+    m_menu->addSeparator();
     m_menu->addAction(m_deleteAct);
-    
+
+
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(this_customContextMenuRequested(const QPoint&)));
@@ -74,6 +85,10 @@ QHash<QString,QString> QuickLaunchButton::settingsMap()
 
 void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
 {
+    RazorQuickLaunch *panel = qobject_cast<RazorQuickLaunch*>(parent());
+
+    m_moveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
+    m_moveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
     m_menu->popup(mapToGlobal(pos));
 }
 
@@ -98,7 +113,10 @@ void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
     {
         m_dragStart = e->pos();
     }
-    QToolButton::mousePressEvent(e);
+    else
+    {
+        QToolButton::mousePressEvent(e);
+    }
 }
 
 void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
@@ -124,10 +142,14 @@ void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
     ba.setNum(m_id);
     mimeData->setData(MIMETYPE, ba);
     drag->setMimeData(mimeData);
-    // TODO/FIXME: WTF? Why it does not work?
-    drag->setDragCursor(QCursor(Qt::SizeHorCursor).pixmap(), Qt::MoveAction);
 
     drag->exec(Qt::MoveAction);
+
+    // Icon was droped outside the panel, remove button
+    if (!drag->target())
+    {
+        selfRemove();
+    }
 }
 
 void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
