@@ -401,6 +401,25 @@ GlobalRazorSettings::GlobalRazorSettings():
 {
     d_ptr->mWatcher.addPath(this->fileName());
     connect(&(d_ptr->mWatcher), SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
+
+    if (value("icon_theme").toString().isEmpty())
+    {
+        QStringList failback;
+        failback << "oxygen";
+        failback << "Humanity";
+
+        QDir dir("/usr/share/icons/");
+        foreach (QString s, failback)
+        {
+            if (dir.exists(s))
+            {
+                setValue("icon_theme", s);
+                sync();
+                break;
+            }
+        }
+    }
+
     fileChanged();
 }
 
