@@ -60,6 +60,8 @@ QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * 
     connect(m_deleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
     addAction(m_deleteAct);
     m_menu = new QMenu(this);
+    m_menu->addAction(m_act);
+    m_menu->addSeparator();
     m_menu->addAction(m_moveLeftAct);
     m_menu->addAction(m_moveRightAct);
     m_menu->addSeparator();
