@@ -93,6 +93,13 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="4">
+    <widget class="QPushButton" name="closeButton">
+     <property name="text">
+      <string>&amp;Close</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -109,5 +116,22 @@
   <tabstop>btSet</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>closeButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SelectWnd</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>459</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>502</x>
+     <y>492</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

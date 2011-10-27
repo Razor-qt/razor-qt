@@ -26,11 +26,13 @@
 #include "xcrtheme.h"
 
 #include <razorqt/razorsettings.h>
+#include <qtxdg/xdgicon.h>
 
 #define HOME_ICON_DIR QDir::homePath() + "/.icons"
 
 SelectWnd::SelectWnd (QWidget *parent) : QWidget(parent) {
   setupUi(this);
+    closeButton->setIcon(XdgIcon::fromTheme("dialog-close"));
 
   mModel = new XCursorThemeModel(this);
 
