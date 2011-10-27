@@ -93,7 +93,7 @@ set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/librazorqt)
 add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
 set ( razorqt_UIS
-    razorqt/aboutdlg.ui
+    razorqt/razoraboutdlg.ui
     razorqt/addplugindialog/addplugindialog.ui
 )
 
