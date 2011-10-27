@@ -26,6 +26,9 @@
 
 #include <QtGui/QApplication>
 
+#include <qtxdg/xdgicon.h>
+#include <razorqt/razorsettings.h>
+
 #include "desktopconfigwindow.h"
 
 
@@ -34,6 +37,7 @@ int main(int argc, char** argv)
     // TODO/FIXME: maybe singleapp?
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
 
     DesktopConfigWindow w;
     w.show();
