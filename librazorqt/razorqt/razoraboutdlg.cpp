@@ -45,17 +45,22 @@ RazorAboutDLGPrivate::RazorAboutDLGPrivate()
 {
     libTranslate("librazorqt");
     setupUi(this);
-    QString content("<html><body>"
+    QString content = QString::fromUtf8("<html><body>"
     "<h1>Razor Desktop Toolbox<img src=\"images://razor_logo.png\" align=\"right\" /></h1>"
-    "<p>Version: " + QString(RAZOR_VERSION) + "</p>"
+    "<p>Version: %1</p>"
     "<p>Homepage: <a href=\"http://razor-qt.org\">razor-qt.org</a></p>"
     "<h2>License: GPL2</h2>"
     "<h2>Authors</h2>"
     "<p>The razor-qt Crew consists of (in alphabetical order):</p>"
     "<ul>"
-    "<li>Christopher 'VdoP' Regali</li>"
+    "<li>Maciej Płaza &lt;<a href='mailto:plaza.maciej@gmail.com'>plaza.maciej@gmail.com</a>&gt;</li>"
     "<li>Alexander Sokolov &lt;<a href='mailto:sokoloff.a@gmail.com'>sokoloff.a@gmail.com</a>&gt;</li>"
     "<li>Petr Vanek &lt;<a href='mailto:petr@scribus.info'>petr@scribus.info</a>&gt;</li>"
+    "<li>Christopher 'VdoP' Regali (retired)</li>"
+    "</ul>"
+    "<h2>Contributors</h2>"
+    "<ul>"
+    "<li>Luis Gustavo Spern Barreto &lt;gustavosbarreto@gmail.com&gt;</li>"
     "</ul>"
     "<p>If you want to contribute, just visit <a href=\"http://razor-qt.org\">razor-qt.org</a>.</p>"
     "<h2>Special thanks to</h2>"
@@ -70,7 +75,7 @@ RazorAboutDLGPrivate::RazorAboutDLGPrivate()
     
     QTextDocument * doc = new QTextDocument(this);
     doc->addResource(QTextDocument::ImageResource, QUrl("images://razor_logo.png"), QPixmap(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
-    doc->setHtml(content);
+    doc->setHtml(content.arg(RAZOR_VERSION));
 
     this->setAttribute(Qt::WA_DeleteOnClose);
     textBrowser->setDocument(doc);
