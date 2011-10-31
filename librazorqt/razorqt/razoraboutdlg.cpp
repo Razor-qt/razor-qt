@@ -61,6 +61,7 @@ RazorAboutDLGPrivate::RazorAboutDLGPrivate()
     "<h2>Contributors</h2>"
     "<ul>"
     "<li>Luis Gustavo Spern Barreto &lt;gustavosbarreto@gmail.com&gt;</li>"
+    "<li>Bartosz Taczala &lt;w0lanto@gmail.com&gt;</li>"
     "</ul>"
     "<p>If you want to contribute, just visit <a href=\"http://razor-qt.org\">razor-qt.org</a>.</p>"
     "<h2>Special thanks to</h2>"
