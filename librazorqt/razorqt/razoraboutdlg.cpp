@@ -27,7 +27,7 @@
 #ifndef RAZORABOUTDLG_CPP
 #define RAZORABOUTDLG_CPP
 #include "razoraboutdlg.h"
-#include "ui_aboutdlg.h"
+#include "ui_razoraboutdlg.h"
 #include "libtranslate.h"
 
 /**
