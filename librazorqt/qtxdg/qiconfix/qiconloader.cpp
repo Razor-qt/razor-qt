@@ -67,6 +67,10 @@
 //#include "qt/qt_x11_p.h"
 //#endif
 
+#if QT_VERSION < 0x040700
+#include <limits.h>
+#endif
+
 QT_BEGIN_NAMESPACE
 
 Q_GLOBAL_STATIC(QIconLoader, iconLoaderInstance)
@@ -623,12 +627,16 @@ void QIconLoaderEngineFixed::virtual_hook(int id, void *data)
             }
         }
         break;
+#if QT_VERSION >= 0x040700
     case QIconEngineV2::IconNameHook:
         {
             QString &name = *reinterpret_cast<QString*>(data);
             name = m_iconName;
         }
         break;
+#else
+#warning QIconEngineV2::IconNameHook is ignored due Qt version. Upgrade to 4.7.x
+#endif
     default:
         QIconEngineV2::virtual_hook(id, data);
     }
