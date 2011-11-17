@@ -44,7 +44,9 @@
 
 #define XEMBED_EMBEDDED_NOTIFY 0
 
+
 static bool xError;
+
 
 /************************************************
 
@@ -271,7 +273,7 @@ QRect TrayIcon::iconGeometry()
 /************************************************
 
  ************************************************/
-void TrayIcon::draw(QPaintEvent* event)
+void TrayIcon::draw(QPaintEvent* /*event*/)
 {
     Display* dsp = QX11Info::display();
 
@@ -282,36 +284,63 @@ void TrayIcon::draw(QPaintEvent* event)
         return;
     }
 
-    XRenderPictFormat *format;
-    format = XRenderFindVisualFormat(dsp, attr.visual);
-    bool hasAlpha = (format->type == PictTypeDirect && format->direct.alphaMask);
+    XImage* ximage = XGetImage(dsp, mIconId, 0, 0, attr.width, attr.height, AllPlanes, ZPixmap);
+    if (!ximage)
+    {
+        qWarning() << "    * Error image is NULL";
+        return;
+    }
+
 
 //    qDebug() << "Paint icon **************************************";
-//    qDebug() << "  * window id:  " << hex << mIconId;
-//    qDebug() << "  * window name:" << xfitMan().getName(mIconId);
-//    qDebug() << "  * size (WxH): " << attr.width << "x" << attr.height;
-//    qDebug() << "  * pos (XxY):  " << attr.x << attr.y;
-//    qDebug() << "  * color depth:" << attr.depth;
-//    qDebug() << "  * has alpha:  " << hasAlpha;
+//    qDebug() << "  * XComposite: " << isXCompositeAvailable();
+//    qDebug() << "  * Icon geometry:" << iconGeometry();
+//    qDebug() << "  Icon";
+//    qDebug() << "    * window id:  " << hex << mIconId;
+//    qDebug() << "    * window name:" << xfitMan().getName(mIconId);
+//    qDebug() << "    * size (WxH): " << attr.width << "x" << attr.height;
+//    qDebug() << "    * pos (XxY):  " << attr.x << attr.y;
+//    qDebug() << "    * color depth:" << attr.depth;
+//    qDebug() << "  XImage";
+//    qDebug() << "    * size (WxH):  " << ximage->width << "x" << ximage->height;
+//    switch (ximage->format)
+//    {
+//        case XYBitmap: qDebug() << "    * format:   XYBitmap"; break;
+//        case XYPixmap: qDebug() << "    * format:   XYPixmap"; break;
+//        case ZPixmap:  qDebug() << "    * format:   ZPixmap"; break;
+//    }
+//    qDebug() << "    * color depth:  " << ximage->depth;
+//    qDebug() << "    * bits per pixel:" << ximage->bits_per_pixel;
 
 
-    QPixmap pix(attr.width, attr.height);
-    pix.fill(Qt::transparent);
+    //const uchar* d =(uchar*) ximage->data;
+    QImage image = QImage((const uchar*) ximage->data, ximage->width, ximage->height, ximage->bytes_per_line,  QImage::Format_ARGB32_Premultiplied);
 
 
-    Picture picture = XRenderCreatePicture(dsp, mIconId, format, 0, 0);
-    XRenderComposite(dsp, PictOpSrc /*PictOpOver*/, picture, None, pix.x11PictureHandle(),
-                     0, 0, 0, 0,
-                     0, 0, attr.width, attr.height
-                     );
-    XRenderFreePicture(dsp, picture);
-
-    if (!hasAlpha)
-        pix.setMask(pix.createHeuristicMask());
-
+    // Draw QImage ...........................
     QPainter painter(this);
-    painter.drawPixmap(iconGeometry(), pix, QRect(0, 0, pix.width(), pix.height()));
+    QRect iconRect = iconGeometry();
+    if (image.size() != iconRect.size())
+    {
+        image = image.scaled(iconRect.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QRect r = image.rect();
+        r.moveCenter(iconRect.center());
+        iconRect = r;
+    }
+//    qDebug() << " Draw rect:" << iconRect;
 
-    //qDebug() << "End paint icon **********************************";
+    painter.drawImage(iconRect, image);
+
+    XDestroyImage(ximage);
+//    debug << "End paint icon **********************************";
 }
 
+
+/************************************************
+
+ ************************************************/
+bool TrayIcon::isXCompositeAvailable()
+{
+    int eventBase, errorBase;
+    return XCompositeQueryExtension(QX11Info::display(), &eventBase, &errorBase );
+}
