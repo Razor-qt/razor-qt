@@ -63,6 +63,7 @@ private:
     void refreshTaskList();
     void refreshButtonVisibility();
     QHash<Window, RazorTaskButton*> mButtonsHash;
+    QBoxLayout*  mLayout;
     RazorTaskButton* buttonByWindow(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;

@@ -50,7 +50,6 @@ public:
 
     QString configId() const { return mConfigId; }
 
-    QBoxLayout* layout() const { return mLayout; }
     void layoutDirectionChanged(QBoxLayout::Direction direction);
 
     void addWidget(QWidget* widget);
@@ -77,7 +76,6 @@ private:
     mutable RazorPanelPlugin::Alignment mAlignment;
     mutable bool mAlignmentCached;
 
-    QBoxLayout* mLayout;
     bool mMovable;
     RazorPanel* mPanel;
 

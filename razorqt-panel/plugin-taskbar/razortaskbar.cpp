@@ -59,11 +59,15 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 {
     setObjectName("TaskBar");
 
+    mLayout = qobject_cast<QBoxLayout*>(layout());
+    if (!mLayout)
+        return;
+
     QSizePolicy sp(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);
     setSizePolicy(sp);
-    layout()->addStretch();
+    mLayout->addStretch();
 
     mRootWindow = QX11Info::appRootWindow();
 
@@ -133,11 +137,11 @@ void RazorTaskBar::refreshTaskList()
             }
             mButtonsHash.insert(wnd, btn);
             // -1 is here due the last stretchable item
-            layout()->insertWidget(layout()->count()-1, btn);
+            mLayout->insertWidget(layout()->count()-1, btn);
             // now I want to set higher stretchable priority for buttons
             // to suppress stretchItem (last item) default value which
             // will remove that anoying aggresive space at the end -- petr
-            layout()->setStretch(layout()->count()-2, 1);
+            mLayout->setStretch(layout()->count()-2, 1);
         }
     }
 

@@ -150,9 +150,6 @@ public:
         The plugin does not takes ownership of widget. */
     virtual void addWidget(QWidget* widget);
 
-    //! Returns the layout manager that is installed on this plugin.
-    QBoxLayout* layout() const;
-
     bool isMovable() const;
     void setMovable(bool movable);
 

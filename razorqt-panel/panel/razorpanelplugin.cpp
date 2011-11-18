@@ -75,10 +75,11 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
 
     q->setWindowTitle(startInfo->pluginInfo->name());
-    mLayout = new QBoxLayout(mPanel->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, q);
-    mLayout->setSpacing(0);
-    mLayout->setMargin(0);
-    mLayout->setContentsMargins(0, 0, 0, 0);
+    QBoxLayout* layout = new QBoxLayout(mPanel->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, q);
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    q->setLayout(layout);
 
     q->settigsChanged();
 }
@@ -135,17 +136,8 @@ void RazorPanelPlugin::addWidget(QWidget* widget)
  ************************************************/
 void RazorPanelPluginPrivate::addWidget(QWidget* widget)
 {
-    mLayout->addWidget(widget);
-}
-
-
-/************************************************
-
- ************************************************/
-QBoxLayout* RazorPanelPlugin::layout() const
-{
-    Q_D(const RazorPanelPlugin);
-    return d->layout();
+    Q_Q(RazorPanelPlugin);
+    q->layout()->addWidget(widget);
 }
 
 
@@ -164,7 +156,10 @@ void RazorPanelPlugin::layoutDirectionChanged(QBoxLayout::Direction direction)
  ************************************************/
 void RazorPanelPluginPrivate::layoutDirectionChanged(QBoxLayout::Direction direction)
 {
-    mLayout->setDirection(direction);
+    Q_Q(RazorPanelPlugin);
+    QBoxLayout* layout = qobject_cast<QBoxLayout*>(q->layout());
+    if (layout)
+        layout->setDirection(direction);
 }
 
 
