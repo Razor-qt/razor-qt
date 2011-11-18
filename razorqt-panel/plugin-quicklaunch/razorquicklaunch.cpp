@@ -192,7 +192,7 @@ void RazorQuickLaunch::buttonDeleted(int id)
     QuickLaunchButton *b = m_buttons[id];
     m_layout->removeWidget(b);
     m_buttons.remove(id);
-    delete b;
+    b->deleteLater();
     saveSettings();
 }
 

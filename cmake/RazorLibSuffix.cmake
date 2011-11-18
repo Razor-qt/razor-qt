@@ -23,6 +23,6 @@ IF (NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)
 
     message(STATUS "LIB_SUFFIX autodetected as '${LIB_SUFFIX}', libraries will be installed into ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
     MESSAGE(STATUS "*********************************************************************")
-#else ()
-#    message(STATUS "LIB_SUFFIX_ALREADY_SET run: ${LIB_SUFFIX}")
+else ()
+    message(STATUS "LIB_SUFFIX_ALREADY_SET run: ${LIB_SUFFIX}")
 ENDIF (NOT DEFINED LIB_SUFFIX AND LIB_SUFFIX_ALREADY_SET)
