@@ -16,7 +16,7 @@
     <message>
         <location filename="../razortaskbutton.cpp" line="395"/>
         <source>&amp;All Desktops</source>
-        <translation>Вс&amp;е рабочие столы</translation>
+        <translation>&amp;Все рабочие столы</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="402"/>
@@ -26,7 +26,7 @@
     <message>
         <location filename="../razortaskbutton.cpp" line="409"/>
         <source>&amp;To Current Desktop</source>
-        <translation>Не &amp;текущий рабочий стол</translation>
+        <translation>На &amp;текущий рабочий стол</translation>
     </message>
     <message>
         <location filename="../razortaskbutton.cpp" line="438"/>
