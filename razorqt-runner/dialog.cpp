@@ -237,7 +237,7 @@ bool Dialog::listKeyPressEvent(QKeyEvent *event)
  ************************************************/
 void Dialog::showHide()
 {
-    if (isVisible())
+    if (isVisible() &&  isActiveWindow())
         hide();
     else
     {
