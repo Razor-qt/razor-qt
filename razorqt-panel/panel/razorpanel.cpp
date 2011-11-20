@@ -701,6 +701,11 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
     QMenu* menu = new QMenu(tr("Panel"), parent);
     menu->setIcon(XdgIcon::fromTheme("configure-toolbars"));
     QAction* a;
+    
+#ifdef DEBUG
+    Q_Q(const RazorPanel);
+    menu->addAction("Exit", q, SLOT(close()));
+#endif
 
     // Plugins menu .............................
     QIcon plugIco = XdgIcon::fromTheme("preferences-plugin");
