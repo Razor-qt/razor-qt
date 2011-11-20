@@ -53,6 +53,7 @@ public:
     //explicit RazorSettings(QObject* parent=0);
     explicit RazorSettings(const QSettings* parentSettings, const QString& subGroup, QObject* parent=0);
     explicit RazorSettings(const QSettings& parentSettings, const QString& subGroup, QObject* parent=0);
+    ~RazorSettings();
 
     static const RazorSettings *globalSettings();
 signals:
@@ -94,6 +95,7 @@ private:
     RazorTheme();
     RazorTheme(const RazorTheme &);
     RazorTheme& operator=(const RazorTheme &);
+    ~RazorTheme();
 
     static RazorTheme* mInstance;
     RazorThemePrivate* const d_ptr;
@@ -129,6 +131,7 @@ class GlobalRazorSettings: public RazorSettings
     Q_OBJECT
 public:
     GlobalRazorSettings();
+    ~GlobalRazorSettings();
 
 signals:
     /// Signal emitted when the icon theme has changed.

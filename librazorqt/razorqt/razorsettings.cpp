@@ -182,6 +182,12 @@ RazorSettings::RazorSettings(const QSettings& parentSettings, const QString& sub
     beginGroup(subGroup);
 }
 
+RazorSettings::~RazorSettings()
+{
+    endGroup();
+    delete d_ptr;
+}
+
 
 /************************************************
 
@@ -227,6 +233,11 @@ RazorTheme::RazorTheme():
 {
     RazorSettings settings("razor");
     d_ptr->mThemeName = settings.value("theme").toString();
+}
+
+RazorTheme::~RazorTheme()
+{
+    delete d_ptr;
 }
 
 
@@ -421,6 +432,11 @@ GlobalRazorSettings::GlobalRazorSettings():
     }
 
     fileChanged();
+}
+
+GlobalRazorSettings::~GlobalRazorSettings()
+{
+    delete d_ptr;
 }
 
 
