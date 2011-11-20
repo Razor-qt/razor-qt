@@ -46,6 +46,7 @@ QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * 
     setAcceptDrops(true);
 
     setDefaultAction(m_act);
+    m_act->setParent(this);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setIconSize(QSize(22, 22));
 
@@ -75,7 +76,7 @@ QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * 
 
 QuickLaunchButton::~QuickLaunchButton()
 {
-    delete m_act;
+    //m_act->deleteLater();
 }
 
 QHash<QString,QString> QuickLaunchButton::settingsMap()
