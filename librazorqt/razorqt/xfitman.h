@@ -225,7 +225,8 @@ public:
 
 private:
 
-
+    /** \warning Do not forget to XFree(result) after data are processed!
+    */
     bool getWindowProperty(Window window,
                            Atom atom,               // property
                            Atom reqType,            // req_type
@@ -233,6 +234,8 @@ private:
                            unsigned char** result   // prop_return
                           ) const;
 
+    /** \warning Do not forget to XFree(result) after data are processed!
+    */
     bool getRootWindowProperty(Atom atom,               // property
                                Atom reqType,            // req_type
                                unsigned long* resultLen,// nitems_return
