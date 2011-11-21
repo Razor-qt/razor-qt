@@ -39,10 +39,10 @@ inline void libTranslate(const QString &name)
         return;
 
     QString locale = QLocale::system().name();
-    QTranslator *translator = new QTranslator();
-    translator->load(QString("%1/%2_%3.qm").arg(TRANSLATIONS_DIR, name, locale));
+    QTranslator translator;
+    translator.load(QString("%1/%2_%3.qm").arg(TRANSLATIONS_DIR, name, locale));
 
-    QCoreApplication::installTranslator(translator);
+    QCoreApplication::installTranslator(&translator);
     alreadyLoaded = true;
 }
 
