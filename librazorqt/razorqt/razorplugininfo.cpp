@@ -41,7 +41,7 @@
 RazorPluginInfo::RazorPluginInfo(const QString& pluginDesktopFile, QObject *parent):
     XdgDesktopFile(pluginDesktopFile, parent)
 {
-    mId = QFileInfo(fileName()).completeBaseName();//.remove(QRegExp("^.*_"));
+    mId = QFileInfo(fileName()).completeBaseName();
 }
 
 
