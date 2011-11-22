@@ -51,6 +51,7 @@ class StorageManager : public QObject
     Q_OBJECT
 public:
     explicit StorageManager(QObject *parent = 0);
+    virtual ~StorageManager();
 
     void addDevice(const    DiskInfo &info);
     void removeDevice(const DiskInfo &info);

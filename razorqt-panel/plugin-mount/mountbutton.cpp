@@ -230,8 +230,8 @@ void MountButton::initialScanDevices()
         // add device
         _sm.addDevice(*disk);
         addMenuItem(*disk);
-        delete disk;
     }
+    qDeleteAll(devices);
 }
 
 

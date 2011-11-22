@@ -44,6 +44,11 @@ StorageManager::StorageManager(QObject *parent) :
 {
 }
 
+StorageManager::~StorageManager()
+{
+    qDeleteAll(_storage_items);
+}
+
 void StorageManager::addDevice(const DiskInfo &info)
 {
     StorageItem *item = new StorageItem(info);
