@@ -65,6 +65,8 @@ RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
     RazorPanelPlugin(startInfo, parent),
     mValid(false),
     mTrayId(0),
+    mDamageError(0),
+    mDamageEvent(0),
     mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT)
 {
     setObjectName("Tray");
