@@ -283,6 +283,14 @@ XdgDesktopFile::Type XdgDesktopFilePrivate::detectType()
 
     if (typeStr == "Directory")
         return XdgDesktopFile::DirectoryType;
+    
+    // here we are trying to be a little bit tricky.
+    // Like "guess what? I think it should be an app..."
+    // For example: users expect running incomplete
+    // desktop files as in:
+    // https://github.com/Razor-qt/razor-qt/issues/66
+    if (!value("Exec").toString().isEmpty())
+        return XdgDesktopFile::ApplicationType;
 
     return XdgDesktopFile::UnknownType;
 }
@@ -745,6 +753,13 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
         {
             continue;
         }
+        
+        // expand some environment varaibles because QProcess is not
+        // BASH to expand it itself.
+        if (token.contains('~'))
+            token = token.replace("~", qgetenv("HOME"));
+        if (token.contains('$'))
+            token = token.replace(QRegExp("\\$HOME"), qgetenv("HOME"));
 
         // ----------------------------------------------------------
         result << token;
