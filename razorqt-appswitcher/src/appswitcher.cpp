@@ -29,6 +29,7 @@
 
 #include <QtCore/QtDebug>
 #include <QtCore/QEvent>
+#include <QtCore/QTimer>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMessageBox>
@@ -52,6 +53,10 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     m_settings = new RazorSettings("appswitcher", this);
 
     installEventFilter(this);
+
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(close()));
+    m_timer->setInterval(10000);
 
     m_layout = new QHBoxLayout();
     QWidget * background = new QWidget(this);
@@ -172,12 +177,14 @@ void RazorAppSwitcher::AppSwitcher::activateXWindow()
 void RazorAppSwitcher::AppSwitcher::hideEvent(QHideEvent *e)
 {
     m_key->blockSignals(false);
+    m_timer->stop();
     QWidget::hideEvent(e);
 }
 
 void RazorAppSwitcher::AppSwitcher::showEvent(QShowEvent *e)
 {
     m_key->blockSignals(true);
+    m_timer->start();
     QWidget::showEvent(e);
 }
 

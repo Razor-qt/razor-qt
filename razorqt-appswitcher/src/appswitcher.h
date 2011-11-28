@@ -96,6 +96,9 @@ private:
         user in the dialog - m_key is blocked in this case */
     QShortcut * m_localKey;
 
+    //! Hide the appswitcher after some time if there is no user action
+    QTimer *m_timer;
+
     //! Keep history of used windows
     QList<Window> m_orderedWindows;
 
