@@ -31,7 +31,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
-#include <stdlib.h>
 
 /*! @brief The XdgMenu class implements the "XDG Base Directory Specification" from freedesktop.org.
  * This specification defines where these files should be looked for by defining one or more base

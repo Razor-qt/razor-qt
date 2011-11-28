@@ -30,6 +30,7 @@
   See: http://standards.freedesktop.org/desktop-entry-spec
 
 *********************************************************************/
+#include <stdlib.h>
 
 #include "xdgdesktopfile.h"
 #include "xdgmime.h"
@@ -77,7 +78,8 @@ public:
 protected:
     bool checkTryExec(const QString& progName) const;
     QStringList expandExecString(const QStringList& urls) const;
-
+    QString expandEnvVariables(const QString str) const;
+    QStringList expandEnvVariables(const QStringList strs) const;
 
 private:
     enum IsShow {
@@ -659,6 +661,70 @@ static QStringList parseCombinedArgString(const QString &program)
 }
 
 
+
+/************************************************
+
+ ************************************************/
+void replaceVar(QString &str, const QString &varName, const QString &after)
+{
+    str.replace(QRegExp(QString("\\$%1(?!\\w)").arg(varName)), after);
+    str.replace(QRegExp(QString("\\$\\{%1\\}").arg(varName)), after);
+}
+
+
+/************************************************
+
+ ************************************************/
+QString XdgDesktopFilePrivate::expandEnvVariables(const QString str) const
+{
+    QString scheme = QUrl(str).scheme();
+
+    if (scheme == "http"   || scheme == "https" || scheme == "shttp" ||
+        scheme == "ftp"    || scheme == "ftps"  ||
+        scheme == "pop"    || scheme == "pops"  ||
+        scheme == "imap"   || scheme == "imaps" ||
+        scheme == "mailto" ||
+        scheme == "nntp"   ||
+        scheme == "irc"    ||
+        scheme == "telnet" ||
+        scheme == "xmpp"   ||
+        scheme == "irc"    ||
+        scheme == "nfs"
+      )
+        return str;
+
+    QString res = str;
+    res.replace(QRegExp("~(?=$|/)"), getenv("HOME"));
+
+    replaceVar(res, "HOME", getenv("HOME"));
+    replaceVar(res, "USER", getenv("USER"));
+
+    replaceVar(res, "XDG_DESKTOP_DIR",   QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+    replaceVar(res, "XDG_TEMPLATES_DIR", QDesktopServices::storageLocation(QDesktopServices::TempLocation));
+    replaceVar(res, "XDG_DOCUMENTS_DIR", QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+    replaceVar(res, "XDG_MUSIC_DIR",     QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+    replaceVar(res, "XDG_PICTURES_DIR",  QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    replaceVar(res, "XDG_VIDEOS_DIR",    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+    replaceVar(res, "XDG_PHOTOS_DIR",    QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+    replaceVar(res, "XDG_MOVIES_DIR",    QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+
+    return res;
+}
+
+
+/************************************************
+
+ ************************************************/
+QStringList XdgDesktopFilePrivate::expandEnvVariables(const QStringList strs) const
+{
+    QStringList res;
+    foreach(QString s, strs)
+        res << expandEnvVariables(s);
+
+    return res;
+}
+
+
 /************************************************
 
  ************************************************/
@@ -673,7 +739,7 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
         if (token == "%f")
         {
             if (!urls.isEmpty())
-                result << urls.at(0);
+                result << expandEnvVariables(urls.at(0));
             continue;
         }
 
@@ -682,7 +748,7 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
         // Each file is passed as a separate argument to the executable program.
         if (token == "%F")
         {
-            result << urls;
+            result << expandEnvVariables(urls);
             continue;
         }
 
@@ -693,7 +759,7 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
             if (!urls.isEmpty())
             {
                 QUrl url;
-                url.setUrl(urls.at(0));
+                url.setUrl(expandEnvVariables(urls.at(0)));
                 result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
             }
             continue;
@@ -706,7 +772,7 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
         {
             foreach (QString s, urls)
             {
-                QUrl url(s);
+                QUrl url(expandEnvVariables(s));
                 result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
             }
             continue;
@@ -753,20 +819,14 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
         {
             continue;
         }
-        
-        // expand some environment varaibles because QProcess is not
-        // BASH to expand it itself.
-        if (token.contains('~'))
-            token = token.replace("~", qgetenv("HOME"));
-        if (token.contains('$'))
-            token = token.replace(QRegExp("\\$HOME"), qgetenv("HOME"));
 
         // ----------------------------------------------------------
-        result << token;
+        result << expandEnvVariables(token);
     }
 
     return result;
 }
+
 
 /************************************************
 
