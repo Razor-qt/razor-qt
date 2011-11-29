@@ -31,6 +31,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
 
+
+#define RAZOR_HOME_CFG QDir::homePath() + "/.razor/"
+
+
 class QEvent;
 
 class RazorSettingsPrivate;

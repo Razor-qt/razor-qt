@@ -35,9 +35,6 @@
 #include <QtCore/QFileSystemWatcher>
 
 
-#define RAZOR_HOME_CFG QDir::homePath() + "/.razor/"
-
-
 class RazorSettingsPrivate
 {
 public:
@@ -184,7 +181,11 @@ RazorSettings::RazorSettings(const QSettings& parentSettings, const QString& sub
 
 RazorSettings::~RazorSettings()
 {
-    endGroup();
+    // because in the RazorSettings::RazorSettings(const QString& module, QObject* parent)
+    // constructor there is no beginGroup() called...
+    if (!group().isEmpty())
+        endGroup();
+
     delete d_ptr;
 }
 
