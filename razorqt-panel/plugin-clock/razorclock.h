@@ -30,8 +30,8 @@
 
 #include "../panel/razorpanelplugin.h"
 #include "razorclockconfiguration.h"
+#include <QtGui/QLabel>
 
-class QLabel;
 class QTimer;
 class QString;
 class QDialog;
@@ -39,6 +39,8 @@ class QDialog;
 /**
  * @brief the clock-plugin for razorbar
  */
+class ClockLabel;
+
 class RazorClock : public RazorPanelPlugin
 {
     Q_OBJECT
@@ -53,6 +55,7 @@ public slots:
 
 protected:
     virtual void mouseReleaseEvent(QMouseEvent* event);
+    //virtual QSize sizeHint() const;
 
 protected slots:
     virtual void settigsChanged();
@@ -60,13 +63,34 @@ protected slots:
 
 private:
     QTimer* clocktimer;
-    QLabel * gui;
+    ClockLabel * gui;
     QString clockFormat;
     QString toolTipFormat;
     QDialog* calendarDialog;
+    QString timeFormat;
+    QString dateFormat;
+    bool dateOnNewLine;
 
 private slots:
     void confWindowDestroyed();
+    void updateMinWidth();
+};
+
+
+class ClockLabel: public QLabel
+{
+    Q_OBJECT
+public:
+    ClockLabel(QWidget* parent = 0):
+       QLabel(parent)
+    {
+    }
+
+signals:
+    void fontChanged();
+
+protected:
+    bool event(QEvent *event);
 };
 
 
