@@ -32,10 +32,15 @@
 #include <QtCore/QSettings>
 
 
-#define RAZOR_HOME_CFG QDir::homePath() + "/.razor/"
-
-
 class QEvent;
+    
+
+/*! Get the config rirectory. Usually "~/.razor/" but it can be changed
+    configuration/compilation phase.
+    \note Path includes end-slash!
+*/
+QString razorConfigDir();
+
 
 class RazorSettingsPrivate;
 class RazorSettings : public QSettings

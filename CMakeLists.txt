@@ -13,6 +13,10 @@ else()
     add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
+if (NOT CMAKE_INSTALL_PREFIX)
+    message(FATAL_ERROR "CMAKE_INSTALL_PREFIX is not set but it has to be. Something is wrong.")
+endif ()
+
 set(RAZOR_VERSION 0.3.99)
 add_definitions(-DRAZOR_VERSION=\"${RAZOR_VERSION}\")
 message(STATUS "")
@@ -34,15 +38,22 @@ include_directories (
 
 find_package (UDev REQUIRED)
 
+
 # This allows to install and read the configs from non-standard locations
-if (CMAKE_INSTALL_PREFIX)
-    add_definitions(-DSHARE_DIR=\"${CMAKE_INSTALL_PREFIX}/share/razor/\")
-endif ()
-
-
+add_definitions(-DSHARE_DIR=\"${CMAKE_INSTALL_PREFIX}/share/razor/\")
 # razor-config "modules"/desktop files directory
 set(RAZOR_CONFIG_MODULES_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config/)
 add_definitions(-DRAZOR_CONFIG_MODULES_DIR=\"${RAZOR_CONFIG_MODULES_DIR}\")
+
+# configuration directory
+message(STATUS "")
+if (RAZOR_CONFIG_DIR)
+    add_definitions(-DRAZOR_CONFIG_DIR=\"${RAZOR_CONFIG_DIR}\")
+    message(STATUS "Using config directory $HOME/${RAZOR_CONFIG_DIR}/")
+else (RAZOR_CONFIG_DIR)
+    message(STATUS "Using default config directory \"$HOME/.razor/\" It can be changed with -DRAZOR_CONFIG_DIR=\".config/razor\" for example.")
+endif(RAZOR_CONFIG_DIR)
+message(STATUS "")
 
 
 # main build subdirs

@@ -35,6 +35,16 @@
 #include <QtCore/QFileSystemWatcher>
 
 
+QString razorConfigDir()
+{
+#ifdef RAZOR_CONFIG_DIR
+    return QDir::cleanPath(QDir::homePath() + "/" + RAZOR_CONFIG_DIR) + "/";
+#else
+    return QDir::cleanPath(QDir::homePath() + "/.razor") + "/";
+#endif
+}
+
+
 class RazorSettingsPrivate
 {
 public:
@@ -86,7 +96,7 @@ QString findFile(const QString& fileName, bool onlyGlobal = false)
     QStringList paths;
 
     if (!onlyGlobal)
-        paths << RAZOR_HOME_CFG;
+        paths << razorConfigDir();
 
 #ifdef SHARE_DIR
     // test for non-standard install dirs - useful for development for example
@@ -140,7 +150,7 @@ void copySysConfig(const QString& module, const QString& homeFile)
  ************************************************/
 QString getFileName(const QString& module)
 {
-    QString homeFile(RAZOR_HOME_CFG + module + ".conf");
+    QString homeFile(razorConfigDir() + module + ".conf");
     createDir(homeFile);
     copySysConfig(module, homeFile);
     return homeFile;
