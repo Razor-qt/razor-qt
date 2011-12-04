@@ -25,7 +25,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "powermanager.h"
-#include "upower.h"
+#include "librazor-upower/upower.h"
 #include <qtxdg/xdgicon.h>
 #include <QDBusInterface>
 #include <QMessageBox>

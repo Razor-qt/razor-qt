@@ -33,7 +33,7 @@ set(TRANSLATIONS_DIR
 )
 
 include_directories (
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../librazorqt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libraries
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
@@ -43,7 +43,7 @@ qt4_add_translation(QM_FILES ${TS_FILES})
 
 add_library(${PROJECT} SHARED ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES})
 add_dependencies(${PROJECT} razorqt)
-target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so)
+target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${X11_X11_LIB} razorqt)
 
 install(TARGETS ${PROJECT} DESTINATION ${DESKTOP_PLUGIN_DIR})
 

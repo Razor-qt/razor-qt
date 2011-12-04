@@ -12,7 +12,7 @@ set(MOCS
   panelscreensaver.h
 )
 
-set(LIBRARIES ${LIBRARIES} ${CMAKE_BINARY_DIR}/librazorqt/librazorqxt.so )
+set(LIBRARIES ${LIBRARIES} razorqxt )
 
 #*******************************************
 include ("../BuildPlugin.cmake")

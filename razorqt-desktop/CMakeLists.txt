@@ -18,9 +18,9 @@ message(STATUS "Desktop plugins location: ${DESKTOP_PLUGIN_DIR}")
 
 include ( ${QT_USE_FILE} )
 include_directories (
-	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR} ${X11_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/librazorqt/
-	.
+	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
+	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR} ${X11_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/libraries/
 	src)
 
 
@@ -30,7 +30,7 @@ set ( razor-desktop_SRCS
 
 add_executable ( razor-desktop ${razor-desktop_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 add_dependencies( razor-desktop razorqt)
-target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} ${CMAKE_BINARY_DIR}/librazorqt/librazorqt.so qtxdg)
+target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} razorqt qtxdg)
 INSTALL(TARGETS razor-desktop RUNTIME DESTINATION bin)
 install(DIRECTORY resources/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
 

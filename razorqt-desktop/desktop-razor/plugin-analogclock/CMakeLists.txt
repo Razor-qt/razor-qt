@@ -36,7 +36,7 @@ set(PLUGIN_SHARE_DIR ${PROG_SHARE_DIR}/${PLUGIN})
 file (GLOB TS_FILES         translations/*.ts   )
 
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../librazorqt
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libraries
     ${CMAKE_CURRENT_SOURCE_DIR}/../
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}

@@ -13,7 +13,7 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     file (GLOB DESKTOP_FILES    resources/*.desktop )
 
     include_directories (
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../librazorqt
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../libraries
         ${CMAKE_CURRENT_SOURCE_DIR}/panel
         ${CMAKE_CURRENT_BINARY_DIR}
     )

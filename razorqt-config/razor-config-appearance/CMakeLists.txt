@@ -1,11 +1,10 @@
 project(razor-config-appearance)
 
 include_directories (
-    ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
     ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
     ${QT_QTDBUS_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/librazorqt/
-    .
+    ${CMAKE_SOURCE_DIR}/libraries/
     )
 
 set(H_FILES

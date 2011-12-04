@@ -64,7 +64,7 @@ set(QT_USE_QTXML TRUE)
 
 
 # Translations **********************************
-file(GLOB TS_FILES
+file(GLOB QTXDG_TS_FILES
     translations/*.ts
 )
 #************************************************
@@ -77,7 +77,7 @@ include(RazorLibSuffix)
 include(${QT_USE_FILE})
 
 QT4_WRAP_CPP(QTXDG_CXX ${QTXDG_MOCS})
-qt4_add_translation(QM_FILES ${TS_FILES})
+qt4_add_translation(QTXDG_QM_FILES ${QTXDG_TS_FILES})
 
 if (NOT CMAKE_BUILD_TYPE)
     set ( CMAKE_BUILD_TYPE Release )
@@ -87,7 +87,7 @@ endif (NOT CMAKE_BUILD_TYPE)
 set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/qtxdg)
 add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
-add_library(qtxdg SHARED ${QTXDG_PUBLIC_HDRS} ${QTXDG_PRIVATE_HDRS} ${QTXDG_SRCS} ${QTXDG_CXX} ${QM_FILES})
+add_library(qtxdg SHARED ${QTXDG_PUBLIC_HDRS} ${QTXDG_PRIVATE_HDRS} ${QTXDG_SRCS} ${QTXDG_CXX} ${QTXDG_QM_FILES})
 target_link_libraries(qtxdg  ${QT_LIBRARIES} ${LIBMAGIC_LIBRARY})
 
 set_target_properties(qtxdg PROPERTIES
@@ -99,18 +99,20 @@ install(TARGETS qtxdg DESTINATION lib${LIB_SUFFIX})
 install(FILES ${QTXDG_PUBLIC_HDRS} DESTINATION include/qtxdg)
 install(FILES   ${QM_FILES}        DESTINATION ${APP_SHARE_DIR})
 
-#find_package(Doxygen)
-#if(DOXYGEN_FOUND)
 
-#    configure_file(
-#        ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
-#        ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY
-#    )
-#    add_custom_target(doc
-#        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-#        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#        OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#        COMMENT "Generating API documentation with Doxygen" VERBATIM
-#    )
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
 
-#endif(DOXYGEN_FOUND)
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+        ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY
+    )
+    add_custom_target(doc_qtxdg
+        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen" VERBATIM
+    )
+
+endif(DOXYGEN_FOUND)
+

@@ -1,0 +1,4 @@
+/*! \mainpage A customized parts of Qxt shared library.
+
+This library ontains 3rd party global keyboard shortcut framework \c QxtGlobalShortcut only for now.
+*/

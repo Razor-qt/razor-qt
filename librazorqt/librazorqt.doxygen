@@ -1,6 +1,0 @@
-/*! \mainpage A minimal shared library for Razor-qt DE.
-
-Currently there are two libraries:
- - \c librazorqt containing shared classes for Razor-qt developed by Razor-qt team and contributors.
- - \c librazorqxt contains 3rd party global keyboard shortcut framework \c QxtGlobalShortcut only for now. It's not a part of this documentation. See Qxt official documentation.
-*/

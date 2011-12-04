@@ -1,8 +1,9 @@
 
 include_directories (
         ${CMAKE_CURRENT_BINARY_DIR}
-	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} 
-        ${CMAKE_SOURCE_DIR}/librazorqt )
+        ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} 
+        ${CMAKE_SOURCE_DIR}/libraries
+        )
 
 set ( razor-config_HDRS
 	)

@@ -12,8 +12,7 @@ include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
     ${X11_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/librazorqt/
-    ${CMAKE_SOURCE_DIR}/librazorqxt/
+    ${CMAKE_SOURCE_DIR}/libraries/
 	src
 )
 
