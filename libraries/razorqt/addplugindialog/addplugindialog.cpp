@@ -128,12 +128,23 @@ QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
 /************************************************
 
  ************************************************/
-AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
+AddPluginDialog::AddPluginDialog(const QString &desktopFilesDir,
+                                 const QString &serviceType,
+                                 const QString &nameFilter,
+                                 QWidget *parent):
     QDialog(parent),
     ui(new Ui::AddPluginDialog),
-    mPlugins(plugins),
     mTimerId(0)
+{
+    mPlugins = RazorPluginInfo::search(desktopFilesDir, serviceType, nameFilter);
+    init();
+}
 
+
+/************************************************
+
+ ************************************************/
+void AddPluginDialog::init()
 {
     libTranslate("librazorqt");
     ui->setupUi(this);
@@ -146,18 +157,18 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
 
     QIcon fallIco = XdgIcon::fromTheme("preferences-plugin");
 
-    for (int i=0; i< mPlugins->length(); ++i)
+    for (int i=0; i< mPlugins.length(); ++i)
     {
-        const RazorPluginInfo* plugin = mPlugins->at(i);
+        const RazorPluginInfo &plugin = mPlugins.at(i);
         QListWidgetItem* item = new QListWidgetItem(ui->pluginList);
-        item->setText(QString("<b>%1</b><br>\n%2\n").arg(plugin->name(), plugin->comment()));
-        item->setIcon(plugin->icon(fallIco));
+        item->setText(QString("<b>%1</b><br>\n%2\n").arg(plugin.name(), plugin.comment()));
+        item->setIcon(plugin.icon(fallIco));
         item->setData(INDEX_ROLE, i);
         item->setData(SEARCH_ROLE, QString("%1 %2 %3 %4").arg(
-                        plugin->name(),
-                        plugin->comment(),
-                        plugin->value("Name").toString(),
-                        plugin->value("Comment").toString()
+                        plugin.name(),
+                        plugin.comment(),
+                        plugin.value("Name").toString(),
+                        plugin.value("Comment").toString()
                        )
                      );
     }
@@ -166,9 +177,7 @@ AddPluginDialog::AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent):
 
     connect(ui->searchEdit, SIGNAL(textEdited(QString)), this, SLOT(searchEditTexChanged(QString)));
     connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(emitPluginSelected()));
-
 }
-
 
 /************************************************
 
@@ -220,7 +229,7 @@ void AddPluginDialog::emitPluginSelected()
     QListWidget* pluginList = ui->pluginList;
     if (pluginList->currentItem() && pluginList->currentItem()->isSelected())
     {
-        RazorPluginInfo* plugin = mPlugins->at(pluginList->currentItem()->data(INDEX_ROLE).toInt());
+        RazorPluginInfo plugin = mPlugins.at(pluginList->currentItem()->data(INDEX_ROLE).toInt());
         emit pluginSelected(plugin);
     }
 }

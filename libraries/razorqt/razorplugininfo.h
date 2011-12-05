@@ -56,17 +56,16 @@ This is a pure virtual class, you must implement libraryDir(), translationDir(),
 */
 class RazorPluginInfo: public XdgDesktopFile
 {
-    Q_OBJECT
-
 public:
-    /// Constructs a RazorPluginInfo object for accessing the info stored in the .desktop file called fileName.
-    explicit RazorPluginInfo(const QString& pluginDesktopFile, QObject *parent = 0);
+    /// Constructs a RazorPluginInfo object for accessing the info stored in the .desktop file.
+    explicit RazorPluginInfo();
 
     //! Reimplemented from XdgDesktopFile.
-    RazorPluginInfo(const RazorPluginInfo& other, QObject *parent = 0);
+    virtual bool load(const QString& fileName);
+
 
     //! Reimplemented from XdgDesktopFile.
-    RazorPluginInfo& operator=(const RazorPluginInfo& other);
+    //RazorPluginInfo& operator=(const RazorPluginInfo& other);
 
 
     //! Returns identification string of this plugin, identified plugin type. Now id is part of the filename.
@@ -79,37 +78,20 @@ public:
     virtual bool isValid() const;
 
     /*! Loads the library and returns QLibrary object if the library was loaded successfully; otherwise returns 0.
-        @parm libDir directory where placed the plugin .so file.
-     */
+        @parm libDir directory where placed the plugin .so file. */
     QLibrary* loadLibrary(const QString& libDir) const;
 
+
+    /*! Returns a list of RazorPluginInfo objects for the matched files in the directory.
+      @param desktopFilesDir - scanned directory name.
+      @param serviceType - type of the plugin, for example "RazorPanel/Plugin".
+      @param nameFilter  - wildcard filter that understands * and ? wildcards. */
+    static QList<RazorPluginInfo> search(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter="*");
 private:
     QString mId;
 };
 
-
-//! List of the RazorPluginInfo objects.
-class RazorPluginInfoList: public QList<RazorPluginInfo*>
-{
-public:
-    //! Constructs an empty list.
-    RazorPluginInfoList();
-
-    //! Destroys the list and its RazorPluginInfo entries.
-    virtual ~RazorPluginInfoList();
-
-
-    /*! Append RazorPluginInfo objects for the matched files in the directory.
-      The list takes ownership of created objects.
-      @param desktopFilesDir - scanned directory name.
-      @param serviceType - type of the plugin, for example "RazorPanel/Plugin".
-      @param nameFilter  - wildcard filter that understands * and ? wildcards. */
-    void load(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter="*");
-
-    //! Returns the first PluginInfo Id that matches the id parameter. Returns 0 if no item matched.
-    RazorPluginInfo* const find(const QString& id) const;
-
-};
+typedef QList<RazorPluginInfo> RazorPluginInfoList;
 
 
 QDebug operator<<(QDebug dbg, const RazorPluginInfo& pi);

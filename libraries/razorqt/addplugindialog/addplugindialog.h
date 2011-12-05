@@ -38,23 +38,34 @@ namespace Ui {
     class AddPluginDialog;
 }
 
+/*! The AddPluginDialog class provides a dialog that allow users to add plugins.
+ */
 class AddPluginDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AddPluginDialog(RazorPluginInfoList* plugins, QWidget *parent = 0);
+    /*! Constructs a dialog with the given parent that initially displays
+       RazorPluginInfo objects for the matched files in the directory
+      @param desktopFilesDir - scanned directory name.
+      @param serviceType - type of the plugin, for example "RazorPanel/Plugin".
+      @param nameFilter  - wildcard filter that understands * and ? wildcards. */
+    AddPluginDialog(const QString& desktopFilesDir,
+                    const QString& serviceType,
+                    const QString& nameFilter="*",
+                    QWidget *parent = 0);
     ~AddPluginDialog();
 
 signals:
-    void pluginSelected(RazorPluginInfo* plugin);
+    void pluginSelected(const RazorPluginInfo &plugin);
 
 protected:
     void timerEvent(QTimerEvent* event);
 
 private:
+    void init();
     Ui::AddPluginDialog *ui;
-    RazorPluginInfoList* mPlugins;
+    RazorPluginInfoList mPlugins;
     int mTimerId;
 
 private slots:

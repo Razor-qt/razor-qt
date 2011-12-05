@@ -78,7 +78,8 @@ void XdgAutoStart::addDirtoList(const QString & _dir)
     QStringList filelist = directory.entryList();
     for (int i =0; i < filelist.count(); i++)
     {
-        XdgDesktopFile * f = new XdgDesktopFile(_dir+filelist.at(i));
+        XdgDesktopFile * f = new XdgDesktopFile();
+        f->load(_dir+filelist.at(i));
         if (f->isShow())
             m_list.append(f);
         else

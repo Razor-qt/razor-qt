@@ -38,31 +38,21 @@
 /************************************************
 
  ************************************************/
-RazorPluginInfo::RazorPluginInfo(const QString& pluginDesktopFile, QObject *parent):
-    XdgDesktopFile(pluginDesktopFile, parent)
+RazorPluginInfo::RazorPluginInfo():
+    XdgDesktopFile()
 {
-    mId = QFileInfo(fileName()).completeBaseName();
+
 }
 
 
 /************************************************
 
  ************************************************/
-RazorPluginInfo::RazorPluginInfo(const RazorPluginInfo& other, QObject *parent):
-    XdgDesktopFile(other, parent)
+bool RazorPluginInfo::load(const QString& fileName)
 {
-     operator=(other);
-}
-
-
-/************************************************
-
- ************************************************/
-RazorPluginInfo& RazorPluginInfo::operator=(const RazorPluginInfo& other)
-{
-    XdgDesktopFile::operator=(other);
-    mId = other.mId;
-    return *this;
+    XdgDesktopFile::load(fileName);
+    mId = QFileInfo(fileName).completeBaseName();
+    return isValid();
 }
 
 
@@ -71,9 +61,7 @@ RazorPluginInfo& RazorPluginInfo::operator=(const RazorPluginInfo& other)
  ************************************************/
 bool RazorPluginInfo::isValid() const
 {
-    return XdgDesktopFile::isValid();// &&
-           //(value("Type").toString() == "Service");
-
+    return XdgDesktopFile::isValid();
 }
 
 
@@ -83,11 +71,9 @@ bool RazorPluginInfo::isValid() const
 QLibrary* RazorPluginInfo::loadLibrary(const QString& libDir) const
 {
     QString baseName, path;
-    {
-        QFileInfo fi = QFileInfo(fileName());
-        baseName = fi.completeBaseName();
-        path = fi.canonicalPath();
-    }
+    QFileInfo fi = QFileInfo(fileName());
+    path = fi.canonicalPath();
+    baseName = value("X-Razor-Library", fi.completeBaseName()).toString();
 
     QString soPath = QString("%1/lib%2.so").arg(libDir, baseName);
     QLibrary* library = new QLibrary(soPath);
@@ -112,56 +98,24 @@ QLibrary* RazorPluginInfo::loadLibrary(const QString& libDir) const
 /************************************************
 
  ************************************************/
-RazorPluginInfoList::RazorPluginInfoList():
-    QList<RazorPluginInfo*>()
+RazorPluginInfoList RazorPluginInfo::search(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter)
 {
-}
+    QList<RazorPluginInfo> res;
 
-
-/************************************************
-
- ************************************************/
-RazorPluginInfoList::~RazorPluginInfoList()
-{
-    qDeleteAll(*this);
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPluginInfoList::load(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter)
-{
     QDir dir(desktopFilesDir);
     QFileInfoList files = dir.entryInfoList(QStringList(nameFilter), QDir::Files | QDir::Readable);
     foreach (QFileInfo file, files)
     {
-        RazorPluginInfo* item = new RazorPluginInfo(file.canonicalFilePath());
+        RazorPluginInfo item;
+        item.load(file.canonicalFilePath());
 
-        if (item->isValid() && item->serviceType() == serviceType)
-            append(item);
-        else
-            delete item;
+        if (item.isValid() && item.serviceType() == serviceType)
+            res.append(item);
     }
 
+    return res;
 }
 
-
-/************************************************
-
- ************************************************/
-RazorPluginInfo* const RazorPluginInfoList::find(const QString& id) const
-{
-    QListIterator<RazorPluginInfo*> it(*this);
-    while (it.hasNext())
-    {
-        RazorPluginInfo* item = it.next();
-        if (item->id() == id )
-            return item;
-    }
-
-    return 0;
-}
 
 
 
@@ -182,7 +136,6 @@ QDebug operator<<(QDebug dbg, const RazorPluginInfo * const pluginInfo)
 {
     return operator<<(dbg, *pluginInfo);
 }
-
 
 
 /************************************************

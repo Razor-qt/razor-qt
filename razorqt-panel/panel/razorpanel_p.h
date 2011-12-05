@@ -54,7 +54,6 @@ public:
     RazorPanel::Position position() const { return mPosition; }
 
     QList<RazorPanelPlugin*>& plugins() { return mPlugins; }
-    RazorPluginInfoList& availablePlugins() { return mAvailablePlugins; }
     bool canPlacedOn(int screenNum, RazorPanel::Position position) const;
 
     QMenu* popupMenu(QWidget *parent) const;
@@ -69,7 +68,7 @@ public slots:
     void pluginMoved(QWidget* pluginWidget);
     void screensChangeds();
     void showAddPluginDialog();
-    void addPlugin(RazorPluginInfo* pluginInfo);
+    void addPlugin(const RazorPluginInfo &pluginInfo);
     void onRemovePlugin();
     void onMovePlugin();
     void startMoveWidget();
@@ -87,7 +86,6 @@ private:
     int mScreenNum;
     QString mConfigFile;
     RazorSettings* mSettings;
-    RazorPluginInfoList mAvailablePlugins;
     QList<RazorPanelPlugin*> mPlugins;
     RazorPanelLayout* mLayout;
     QLayoutItem* mSpacer;

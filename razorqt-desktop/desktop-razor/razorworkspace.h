@@ -80,8 +80,6 @@ private:
     int m_screen;
     Mode m_mode;
     
-    RazorPluginInfoList mAvailablePlugins;
-
     QAction * m_actArrangeWidgets;
     QAction * m_actAddNewPlugin;
     QAction * m_actRemovePlugin;
@@ -107,7 +105,7 @@ private slots:
     void removePlugin();
     void configurePlugin();
     void setDesktopBackground();
-    void addPlugin(RazorPluginInfo* pluginInfo);
+    void addPlugin(const RazorPluginInfo &pluginInfo);
 };
 
 #endif

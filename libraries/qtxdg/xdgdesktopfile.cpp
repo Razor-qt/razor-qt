@@ -38,6 +38,7 @@
 #include "xdgdirs.h"
 
 #include <stdlib.h>
+#include <QtCore/QSharedData>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
@@ -48,367 +49,45 @@
 #include <QDesktopServices>
 #include <unistd.h>
 
-class XdgDesktopFilePrivate {
+
+enum Triple {
+    Undef,
+    True,
+    False
+};
+
+class XdgDesktopFileData: public QSharedData {
 public:
-    XdgDesktopFilePrivate(XdgDesktopFile* parent);
+    XdgDesktopFileData();
+    bool read(const QString &prefix);
+    XdgDesktopFile::Type detectType(XdgDesktopFile *q) const;
+    bool startApplicationDetached(const XdgDesktopFile *q, const QStringList& urls) const;
+    bool startLinkDetached(const XdgDesktopFile *q) const;
 
-    QString prefix() const { return mPrefix; }
-    void setPrefix(const QString& prefix);
-
-    QString fileName() const { return mFileName; }
-    void setFileName(const QString& fileName) { mFileName = fileName; }
-
-    XdgDesktopFilePrivate& operator=(const XdgDesktopFilePrivate& other);
-    bool read();
-
-    bool isValid() const { return mIsValid; }
-
-    QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
-    QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
-
-    bool contains(const QString& key) const;
-    bool isShow(const QString& environment) const;
-
-    bool startApplicationDetached(const QStringList& urls) const;
-    bool startLinkDetached() const;
-
-    QIcon const icon(const QIcon& fallback = QIcon()) const;
+    QString mFileName;
+    bool mIsValid;
+    mutable bool mValidIsChecked;
+    mutable Triple mIsShow;
+    QMap<QString, QVariant> mItems;
 
     XdgDesktopFile::Type mType;
-protected:
-    bool checkTryExec(const QString& progName) const;
-    QStringList expandExecString(const QStringList& urls) const;
-    QString expandEnvVariables(const QString str) const;
-    QStringList expandEnvVariables(const QStringList strs) const;
-
-private:
-    enum IsShow {
-        ShowUndefined,
-        ShowEnabled,
-        ShowDisabled
-    };
-
-    XdgDesktopFile::Type detectType();
-    XdgDesktopFile* const q_ptr;
-    Q_DECLARE_PUBLIC(XdgDesktopFile);
-    QString mPrefix;
-    QString mFileName;
-    bool    mIsValid;
-    QMap<QString, QVariant> mItems;
-    mutable IsShow   mIsShow;
-
 };
 
 
 /************************************************
 
  ************************************************/
-XdgDesktopFile::XdgDesktopFile(QObject *parent, const QString& prefix) :
-    QObject(parent),
-    d_ptr(new XdgDesktopFilePrivate(this))
+XdgDesktopFileData::XdgDesktopFileData():
+    mIsValid(false),
+    mValidIsChecked(false)
 {
-    Q_D(XdgDesktopFile);
-    d->setPrefix(prefix);
 }
 
 
 /************************************************
 
  ************************************************/
-XdgDesktopFile::XdgDesktopFile(const QString & fileName, QObject *parent, const QString& prefix) :
-    QObject(parent),
-    d_ptr(new XdgDesktopFilePrivate(this))
-{
-    Q_D(XdgDesktopFile);
-    d->setPrefix(prefix);
-    d->setFileName(fileName);
-    d->read();
-}
-
-
-/************************************************
-
- ************************************************/
-XdgDesktopFile::XdgDesktopFile(const XdgDesktopFile& other, QObject *parent) :
-    QObject(parent),
-    d_ptr(new XdgDesktopFilePrivate(this))
-{
-    this->operator=(other);
-}
-
-
-/************************************************
-
- ************************************************/
-XdgDesktopFile& XdgDesktopFile::operator=(const XdgDesktopFile& other)
-{
-    Q_D(XdgDesktopFile);
-    d->operator =(*(other.d_func()));
-    return *this;
-}
-
-
-/************************************************
-
- ************************************************/
-XdgDesktopFile::~XdgDesktopFile()
-{
-    Q_D(XdgDesktopFile);
-    delete d;
-}
-
-
-/************************************************
-
- ************************************************/
-bool XdgDesktopFile::isValid() const
-{
-    Q_D(const XdgDesktopFile);
-    return d->isValid();
-}
-
-/************************************************
-
- ************************************************/
-QString XdgDesktopFile::fileName() const
-{
-    Q_D(const XdgDesktopFile);
-    return d->fileName();
-}
-
-
-/************************************************
-
- ************************************************/
-QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue) const
-{
-    Q_D(const XdgDesktopFile);
-    return d->value(key, defaultValue);
-}
-
-
-/************************************************
-
- ************************************************/
-QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
-{
-    Q_D(const XdgDesktopFile);
-    return d->localizedValue(key, defaultValue);
-}
-
-
-/************************************************
-
- ************************************************/
-bool XdgDesktopFile::contains(const QString& key) const
-{
-    Q_D(const XdgDesktopFile);
-    return d->contains(key);
-}
-
-
-/************************************************
-
- ************************************************/
-bool XdgDesktopFile::isShow(const QString& environment) const
-{
-    Q_D(const XdgDesktopFile);
-    return d->isShow(environment);
-}
-
-
-/************************************************
-
- ************************************************/
-QStringList XdgDesktopFile::expandExecString(const QStringList& urls) const
-{
-    Q_D(const XdgDesktopFile);
-    if (d->mType == ApplicationType)
-        return d->expandExecString(urls);
-    else
-        return QStringList();
-}
-
-
-/************************************************
-
- ************************************************/
-QString expandDynamicUrl(QString url)
-{
-    for (int i=0; environ[i]; i++)
-    {
-        QString line(environ[i]);
-        QString name = line.section("=", 0, 0);
-        QString val =  line.section("=", 1);
-        url.replace(QString("$%1").arg(name), val);
-        url.replace(QString("${%1}").arg(name), val);
-    }
-
-    return url;
-}
-
-
-/************************************************
-
- ************************************************/
-QString XdgDesktopFile::url() const
-{
-    if (type() != LinkType)
-        return "";
-
-   QString url;
-
-   url = value("URL").toString();
-   if (!url.isEmpty())
-   return url;
-
-    // WTF? What standard describes it?
-    url = expandDynamicUrl(value("URL[$e]").toString());
-    if (!url.isEmpty())
-        return url;
-
-    return "";
-}
-
-
-/************************************************
-
- ************************************************/
-XdgDesktopFile::Type XdgDesktopFilePrivate::detectType()
-{
-    QString typeStr = value("Type").toString();
-    if (typeStr == "Application")
-        return XdgDesktopFile::ApplicationType;
-
-    if (typeStr == "Link")
-        return XdgDesktopFile::LinkType;
-
-    if (typeStr == "Directory")
-        return XdgDesktopFile::DirectoryType;
-    
-    // here we are trying to be a little bit tricky.
-    // Like "guess what? I think it should be an app..."
-    // For example: users expect running incomplete
-    // desktop files as in:
-    // https://github.com/Razor-qt/razor-qt/issues/66
-    if (!value("Exec").toString().isEmpty())
-        return XdgDesktopFile::ApplicationType;
-
-    return XdgDesktopFile::UnknownType;
-}
-
-
-/************************************************
-
- ************************************************/
-XdgDesktopFile::Type XdgDesktopFile::type() const
-{
-    Q_D(const XdgDesktopFile);
-    return d->mType;
-}
-
-
-/************************************************
- Starts the program defined in this desktop file in a new process, and detaches
- from it. Returns true on success; otherwise returns false. If the calling process
- exits, the detached process will continue to live.
-
- Urls - the list of URLs or files to open, can be empty (app launched without
-  argument)
- If the function is successful then *pid is set to the process identifier of the
- started process.
- ************************************************/
-bool XdgDesktopFile::startDetached(const QStringList& urls) const
-{
-    Q_D(const XdgDesktopFile);
-    switch(d->mType)
-    {
-    case ApplicationType:
-        return d->startApplicationDetached(urls);
-
-    case LinkType:
-        return d->startLinkDetached();
-
-    default:
-        return false;
-    }
-}
-
-
-/************************************************
- This is an overloaded function.
- ************************************************/
-bool XdgDesktopFile::startDetached(const QString& url) const
-{
-    if (url.isEmpty())
-        return startDetached(QStringList());
-    else
-        return startDetached(QStringList(url));
-}
-
-
-/************************************************
-
- ************************************************/
-QIcon const XdgDesktopFile::icon(const QIcon& fallback) const
-{
-    Q_D(const XdgDesktopFile);
-    return d->icon(fallback);
-}
-
-/************************************************
-
- ************************************************/
-QString const XdgDesktopFile::iconName() const
-{
-    Q_D(const XdgDesktopFile);
-    return d->value("Icon").toString();
-}
-
-/************************************************
-
- ************************************************/
-XdgDesktopFilePrivate::XdgDesktopFilePrivate(XdgDesktopFile* parent):
-    q_ptr(parent)
-{
-    mIsValid = false;
-    mPrefix = "";
-    mFileName = "";
-    mType = XdgDesktopFile::UnknownType;
-    mIsShow = XdgDesktopFilePrivate::ShowUndefined;
-}
-
-
-/************************************************
-
- ************************************************/
-void XdgDesktopFilePrivate::setPrefix(const QString& prefix)
-{
-    mPrefix = prefix;
-    if (prefix.endsWith('/'))
-        mPrefix.truncate(mPrefix.count() - 1);
-}
-
-
-/************************************************
-
- ************************************************/
-XdgDesktopFilePrivate& XdgDesktopFilePrivate::operator=(const XdgDesktopFilePrivate& other)
-{
-    mFileName = other.mFileName;
-    mPrefix = other.mPrefix;
-    mIsValid = other.mIsValid;
-    mItems = other.mItems; // This copy map values
-    mIsShow = other.mIsShow;
-    mType = other.mType;
-    return *this;
-}
-
-
-/************************************************
-
- ************************************************/
-bool XdgDesktopFilePrivate::read()
+bool XdgDesktopFileData::read(const QString &prefix)
 {
     QFile file(mFileName);
 
@@ -430,7 +109,7 @@ bool XdgDesktopFilePrivate::read()
         if (line.startsWith('[') && line.endsWith(']'))
         {
             section = line.mid(1, line.length()-2);
-            if (section == mPrefix)
+            if (section == prefix)
                 prefixExists = true;
 
             continue;
@@ -450,9 +129,9 @@ bool XdgDesktopFilePrivate::read()
         mItems[section + "/" + key] = QVariant(value);
     }
 
-    mType = detectType();
+
     // Not check for empty prefix
-    mIsValid = (mPrefix.isEmpty()) || prefixExists;
+    mIsValid = (prefix.isEmpty()) || prefixExists;
     return mIsValid;
 }
 
@@ -460,11 +139,196 @@ bool XdgDesktopFilePrivate::read()
 /************************************************
 
  ************************************************/
-QVariant XdgDesktopFilePrivate::value(const QString& key, const QVariant& defaultValue) const
+XdgDesktopFile::Type XdgDesktopFileData::detectType(XdgDesktopFile *q) const
 {
-    QString path = (!mPrefix.isEmpty()) ? mPrefix + "/" + key : key;
-    QVariant v = mItems.value(path, defaultValue);
+    QString typeStr = q->value("Type").toString();
+    if (typeStr == "Application")
+        return XdgDesktopFile::ApplicationType;
+
+    if (typeStr == "Link")
+        return XdgDesktopFile::LinkType;
+
+    if (typeStr == "Directory")
+        return XdgDesktopFile::DirectoryType;
+
+    if (!q->value("Exec").toString().isEmpty())
+        return XdgDesktopFile::ApplicationType;
+
+    return XdgDesktopFile::UnknownType;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const QStringList& urls) const
+{
+    //qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
+    QStringList args = q->expandExecString(urls);
+
+    if (args.isEmpty())
+        return false;
+
+    if (q->value("Terminal").toBool())
+    {
+        QString term = getenv("TERM");
+        if (term.isEmpty())
+            term = "xterm";
+
+        args.prepend("-e");
+        args.prepend(term);
+    }
+
+    //qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << args;
+    QString cmd = args.takeFirst();
+    return QProcess::startDetached(cmd, args);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFileData::startLinkDetached(const XdgDesktopFile *q) const
+{
+    QString url = q->url();
+
+    if (url.isEmpty())
+    {
+        qWarning() << "XdgDesktopFilePrivate::startLinkDetached: url is empty.";
+        return false;
+    }
+
+    QString scheme = QUrl(url).scheme();
+
+    if (scheme.isEmpty() || scheme.toUpper() == "FILE")
+    {
+        // Local file
+        QFileInfo fi(url);
+        XdgMimeInfo mimeInfo(fi);
+
+        XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(mimeInfo.mimeType());
+        if (desktopFile)
+            return desktopFile->startDetached(url);
+    }
+    else
+    {
+        // Internet URL
+        return QDesktopServices::openUrl(QUrl::fromEncoded(url.toLocal8Bit()));
+    }
+
+    return false;
+}
+
+
+
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile():
+    d(new XdgDesktopFileData)
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile(const XdgDesktopFile& other):
+    d(other.d)
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::~XdgDesktopFile()
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile& XdgDesktopFile::operator=(const XdgDesktopFile& other)
+{
+    d = other.d;
+    return *this;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFile::load(const QString& fileName)
+{
+    d->mFileName = fileName;
+    d->read(prefix());
+    d->mIsValid = d->mIsValid && check();
+    d->mType = d->detectType(this);
+    return isValid();
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFile::save(QIODevice *device) const
+{
+    QTextStream stream(device);
+    QMap<QString, QVariant>::const_iterator i = d->mItems.constBegin();
+
+    QString section;
+    while (i != d->mItems.constEnd())
+    {
+        QString path = i.key();
+        QString sect =  path.section('/',0,0);
+        if (sect != section)
+        {
+            section = sect;
+            stream << "[" << section << "]" << endl;
+        }
+        QString key = path.section('/', 1);
+        stream << key << "=" << i.value().toString() << endl;
+        ++i;
+    }
+    return true;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFile::save(const QString &fileName) const
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
+
+    return save(&file);
+}
+
+
+/************************************************
+
+ ************************************************/
+QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue) const
+{
+    QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
+    QVariant v = d->mItems.value(path, defaultValue);
     return v.toString().replace("&", "&&");
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
+{
+    QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
+    d->mItems[path] = value;
 }
 
 
@@ -476,7 +340,7 @@ QVariant XdgDesktopFilePrivate::value(const QString& key, const QVariant& defaul
 // lang@MODIFIER	        lang@MODIFIER, lang, default value
 // lang	                lang, default value
 // ************************************************/
-QVariant XdgDesktopFilePrivate::localizedValue(const QString& key, const QVariant& defaultValue) const
+QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
 {
     QString lang = getenv("LC_MESSAGES");
 
@@ -544,76 +408,93 @@ QVariant XdgDesktopFilePrivate::localizedValue(const QString& key, const QVarian
 /************************************************
 
  ************************************************/
-bool XdgDesktopFilePrivate::contains(const QString& key) const
+bool XdgDesktopFile::contains(const QString& key) const
 {
-    QString path = (!mPrefix.isEmpty()) ? mPrefix + "/" + key : key;
-    return mItems.contains(path);
+    QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
+    return d->mItems.contains(path);
 }
 
 
 /************************************************
 
  ************************************************/
-bool XdgDesktopFilePrivate::isShow(const QString& environment) const
+bool XdgDesktopFile::isValid() const
 {
-    if (mIsShow != XdgDesktopFilePrivate::ShowUndefined)
-        return mIsShow == XdgDesktopFilePrivate::ShowEnabled;
-
-    mIsShow = XdgDesktopFilePrivate::ShowDisabled;
-    // Means "this application exists, but don't display it in the menus".
-    if (value("NoDisplay").toBool())
-        return false;
-
-    // Hidden should have been called Deleted. It means the user deleted
-    // (at his level) something that was present
-    if (value("Hidden").toBool())
-        return false;
-
-    // A list of strings identifying the environments that should display/not
-    // display a given desktop entry.
-    // OnlyShowIn ........
-    if (contains("OnlyShowIn"))
-    {
-        QString s = ";" + value("OnlyShowIn").toString() + ";";
-        if (!s.contains(environment))
-            return false;
-    }
-
-    // NotShowIn .........
-    if (contains("NotShowIn"))
-    {
-        QString s = ";" + value("NotShowIn").toString() + ";";
-        if (s.contains(environment))
-            return false;
-    }
-
-    // actually installed. If not, entry may not show in menus, etc.
-    QString s = value("TryExec").toString();
-    if (!s.isEmpty() && ! this->checkTryExec(s))
-        return false;
-
-    mIsShow = XdgDesktopFilePrivate::ShowEnabled;
-    return true;
+    return d->mIsValid;
 }
 
 
 /************************************************
- Check if the program is actually installed.
+
  ************************************************/
-bool XdgDesktopFilePrivate::checkTryExec(const QString& progName) const
+QString XdgDesktopFile::fileName() const
 {
-    if (progName.startsWith(QDir::separator()))
-        return QFileInfo(progName).isExecutable();
+    return d->mFileName;
+}
 
-    QStringList dirs = QString(getenv("PATH")).split(":");
 
-    foreach (QString dir, dirs)
+/************************************************
+
+ ************************************************/
+QIcon const XdgDesktopFile::icon(const QIcon& fallback) const
+{
+    return XdgIcon::fromTheme(value("Icon").toString(), fallback);
+}
+
+
+/************************************************
+
+ ************************************************/
+QString const XdgDesktopFile::iconName() const
+{
+    return value("Icon").toString();
+}
+
+
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::Type XdgDesktopFile::type() const
+{
+    return d->mType;
+}
+
+
+/************************************************
+ Starts the program defined in this desktop file in a new process, and detaches
+ from it. Returns true on success; otherwise returns false. If the calling process
+ exits, the detached process will continue to live.
+
+ Urls - the list of URLs or files to open, can be empty (app launched without
+  argument)
+ If the function is successful then *pid is set to the process identifier of the
+ started process.
+ ************************************************/
+bool XdgDesktopFile::startDetached(const QStringList& urls) const
+{
+    switch(d->mType)
     {
-        if (QFileInfo(QDir(dir), progName).isExecutable())
-            return true;
-    }
+    case ApplicationType:
+        return d->startApplicationDetached(this, urls);
 
-    return false;
+    case LinkType:
+        return d->startLinkDetached(this);
+
+    default:
+        return false;
+    }
+}
+
+
+/************************************************
+ This is an overloaded function.
+ ************************************************/
+bool XdgDesktopFile::startDetached(const QString& url) const
+{
+    if (url.isEmpty())
+        return startDetached(QStringList());
+    else
+        return startDetached(QStringList(url));
 }
 
 
@@ -661,7 +542,6 @@ static QStringList parseCombinedArgString(const QString &program)
 }
 
 
-
 /************************************************
 
  ************************************************/
@@ -675,7 +555,7 @@ void replaceVar(QString &str, const QString &varName, const QString &after)
 /************************************************
 
  ************************************************/
-QString XdgDesktopFilePrivate::expandEnvVariables(const QString str) const
+QString expandEnvVariables(const QString str)
 {
     QString scheme = QUrl(str).scheme();
 
@@ -715,7 +595,7 @@ QString XdgDesktopFilePrivate::expandEnvVariables(const QString str) const
 /************************************************
 
  ************************************************/
-QStringList XdgDesktopFilePrivate::expandEnvVariables(const QStringList strs) const
+QStringList expandEnvVariables(const QStringList strs)
 {
     QStringList res;
     foreach(QString s, strs)
@@ -728,8 +608,11 @@ QStringList XdgDesktopFilePrivate::expandEnvVariables(const QStringList strs) co
 /************************************************
 
  ************************************************/
-QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
+QStringList XdgDesktopFile::expandExecString(const QStringList& urls) const
 {
+    if (d->mType != ApplicationType)
+        return QStringList();
+
     QStringList result;
     QStringList tokens = parseCombinedArgString(value("Exec").toString());
     foreach (QString token, tokens)
@@ -828,67 +711,113 @@ QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) con
 }
 
 
-/************************************************
-
- ************************************************/
-bool XdgDesktopFilePrivate::startApplicationDetached(const QStringList& urls) const
-{
-    //qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
-    QStringList args = expandExecString(urls);
-
-    if (args.isEmpty())
-        return false;
-
-    if (value("Terminal").toBool())
-    {
-        QString term = getenv("TERM");
-        if (term.isEmpty())
-            term = "xterm";
-
-        args.prepend("-e");
-        args.prepend(term);
-    }
-
-    //qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << args;
-    QString cmd = args.takeFirst();
-    return QProcess::startDetached(cmd, args);
-}
-
 
 /************************************************
-
+ Check if the program is actually installed.
  ************************************************/
-bool XdgDesktopFilePrivate::startLinkDetached() const
+bool checkTryExec(const QString& progName)
 {
-    Q_Q(const XdgDesktopFile);
-    QString url = q->url();
+    if (progName.startsWith(QDir::separator()))
+        return QFileInfo(progName).isExecutable();
 
-    if (url.isEmpty())
+    QStringList dirs = QString(getenv("PATH")).split(":");
+
+    foreach (QString dir, dirs)
     {
-        qWarning() << "XdgDesktopFilePrivate::startLinkDetached: url is empty.";
-        return false;
-    }
-
-    QString scheme = QUrl(url).scheme();
-
-    if (scheme.isEmpty() || scheme.toUpper() == "FILE")
-    {
-        // Local file
-        QFileInfo fi(url);
-        XdgMimeInfo mimeInfo(fi);
-
-        XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(mimeInfo.mimeType());
-        if (desktopFile)
-            return desktopFile->startDetached(url);
-    }
-    else
-    {
-        // Internet URL
-        return QDesktopServices::openUrl(QUrl::fromEncoded(url.toLocal8Bit()));
+        if (QFileInfo(QDir(dir), progName).isExecutable())
+            return true;
     }
 
     return false;
 }
+
+
+/************************************************
+
+ ************************************************/
+bool XdgDesktopFile::isShow(const QString& environment) const
+{
+    if (d->mIsShow != Undef)
+        return d->mIsShow == True;
+
+    d->mIsShow = False;
+    // Means "this application exists, but don't display it in the menus".
+    if (value("NoDisplay").toBool())
+        return false;
+
+    // Hidden should have been called Deleted. It means the user deleted
+    // (at his level) something that was present
+    if (value("Hidden").toBool())
+        return false;
+
+    // A list of strings identifying the environments that should display/not
+    // display a given desktop entry.
+    // OnlyShowIn ........
+    if (contains("OnlyShowIn"))
+    {
+        QString s = ";" + value("OnlyShowIn").toString() + ";";
+        if (!s.contains(environment))
+            return false;
+    }
+
+    // NotShowIn .........
+    if (contains("NotShowIn"))
+    {
+        QString s = ";" + value("NotShowIn").toString() + ";";
+        if (s.contains(environment))
+            return false;
+    }
+
+    // actually installed. If not, entry may not show in menus, etc.
+    QString s = value("TryExec").toString();
+    if (!s.isEmpty() && ! checkTryExec(s))
+        return false;
+
+    d->mIsShow = True;
+    return true;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString expandDynamicUrl(QString url)
+{
+    for (int i=0; environ[i]; i++)
+    {
+        QString line(environ[i]);
+        QString name = line.section("=", 0, 0);
+        QString val =  line.section("=", 1);
+        url.replace(QString("$%1").arg(name), val);
+        url.replace(QString("${%1}").arg(name), val);
+    }
+
+    return url;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString XdgDesktopFile::url() const
+{
+    if (type() != LinkType)
+        return "";
+
+   QString url;
+
+   url = value("URL").toString();
+   if (!url.isEmpty())
+   return url;
+
+    // WTF? What standard describes it?
+    url = expandDynamicUrl(value("URL[$e]").toString());
+    if (!url.isEmpty())
+        return url;
+
+    return "";
+}
+
 
 
 /************************************************
@@ -938,6 +867,8 @@ QString findDesktopFile(const QString& desktopName)
 }
 
 
+
+
 /************************************************
 
  ************************************************/
@@ -952,7 +883,8 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
     {
         // Absolute path ........................
         //qDebug() << "XdgDesktopFileCache: add new file" << fileName;
-        XdgDesktopFile* desktopFile = new XdgDesktopFile(fileName);
+        XdgDesktopFile* desktopFile = new XdgDesktopFile();
+        desktopFile->load(fileName);
         mDesktopFiles.insert(fileName, desktopFile);
         return desktopFile;
     }
@@ -965,7 +897,8 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 
         if (!mDesktopFiles.contains(filePath))
         {
-            desktopFile = new XdgDesktopFile(filePath);
+            desktopFile = new XdgDesktopFile();
+            desktopFile->load(filePath);
             mDesktopFiles.insert(filePath, desktopFile);
         }
         else
@@ -1050,10 +983,226 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
 }
 
 
-/************************************************
 
- ************************************************/
-QIcon const XdgDesktopFilePrivate::icon(const QIcon& fallback) const
-{
-    return XdgIcon::fromTheme(value("Icon").toString(), fallback);
-}
+
+
+
+
+//class XdgDesktopFilePrivate {
+//public:
+//    XdgDesktopFilePrivate(XdgDesktopFile* parent);
+
+//    QString prefix() const { return mPrefix; }
+//    void setPrefix(const QString& prefix);
+
+//    QString fileName() const { return mFileName; }
+//    void setFileName(const QString& fileName) { mFileName = fileName; }
+
+//    XdgDesktopFilePrivate& operator=(const XdgDesktopFilePrivate& other);
+//    bool read();
+
+//    bool isValid() const { return mIsValid; }
+
+//    QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
+//    QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
+
+//    bool contains(const QString& key) const;
+//    bool isShow(const QString& environment) const;
+
+
+
+//    QIcon const icon(const QIcon& fallback = QIcon()) const;
+
+//    XdgDesktopFile::Type mType;
+//protected:
+//    bool checkTryExec(const QString& progName) const;
+//    QStringList expandExecString(const QStringList& urls) const;
+//    QString expandEnvVariables(const QString str) const;
+//    QStringList expandEnvVariables(const QStringList strs) const;
+
+//private:
+
+//
+//    XdgDesktopFile* const q_ptr;
+//    Q_DECLARE_PUBLIC(XdgDesktopFile);
+//    QString mPrefix;
+//    QString mFileName;
+//    bool    mIsValid;
+//    QMap<QString, QVariant> mItems;
+//    mutable IsShow   mIsShow;
+
+//};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///************************************************
+
+// ************************************************/
+//void XdgDesktopFilePrivate::setPrefix(const QString& prefix)
+//{
+//    mPrefix = prefix;
+//    if (prefix.endsWith('/'))
+//        mPrefix.truncate(mPrefix.count() - 1);
+//}
+
+
+///************************************************
+
+// ************************************************/
+//XdgDesktopFilePrivate& XdgDesktopFilePrivate::operator=(const XdgDesktopFilePrivate& other)
+//{
+//    mFileName = other.mFileName;
+//    mPrefix = other.mPrefix;
+//    mIsValid = other.mIsValid;
+//    mItems = other.mItems; // This copy map values
+//    mIsShow = other.mIsShow;
+//    mType = other.mType;
+//    return *this;
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///************************************************
+
+// ************************************************/
+//QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
+//{
+//    QStringList result;
+//    QStringList tokens = parseCombinedArgString(value("Exec").toString());
+//    foreach (QString token, tokens)
+//    {
+//        // ----------------------------------------------------------
+//        // A single file name, even if multiple files are selected.
+//        if (token == "%f")
+//        {
+//            if (!urls.isEmpty())
+//                result << expandEnvVariables(urls.at(0));
+//            continue;
+//        }
+
+//        // ----------------------------------------------------------
+//        // A list of files. Use for apps that can open several local files at once.
+//        // Each file is passed as a separate argument to the executable program.
+//        if (token == "%F")
+//        {
+//            result << expandEnvVariables(urls);
+//            continue;
+//        }
+
+//        // ----------------------------------------------------------
+//        // A single URL. Local files may either be passed as file: URLs or as file path.
+//        if (token == "%u")
+//        {
+//            if (!urls.isEmpty())
+//            {
+//                QUrl url;
+//                url.setUrl(expandEnvVariables(urls.at(0)));
+//                result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
+//            }
+//            continue;
+//        }
+
+//        // ----------------------------------------------------------
+//        // A list of URLs. Each URL is passed as a separate argument to the executable
+//        // program. Local files may either be passed as file: URLs or as file path.
+//        if (token == "%U")
+//        {
+//            foreach (QString s, urls)
+//            {
+//                QUrl url(expandEnvVariables(s));
+//                result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
+//            }
+//            continue;
+//        }
+
+//        // ----------------------------------------------------------
+//        // The Icon key of the desktop entry expanded as two arguments, first --icon
+//        // and then the value of the Icon key. Should not expand to any arguments if
+//        // the Icon key is empty or missing.
+//        if (token == "%i")
+//        {
+//            QString icon = value("Icon").toString();
+//            if (!icon.isEmpty())
+//                result << "-icon" << icon.replace('%', "%%");
+//            continue;
+//        }
+
+
+//        // ----------------------------------------------------------
+//        // The translated name of the application as listed in the appropriate Name key
+//        // in the desktop entry.
+//        if (token == "%c")
+//        {
+//            result << localizedValue("Name").toString().replace('%', "%%");
+//            continue;
+//        }
+
+//        // ----------------------------------------------------------
+//        // The location of the desktop file as either a URI (if for example gotten from
+//        // the vfolder system) or a local filename or empty if no location is known.
+//        if (token == "%k")
+//        {
+//            result << fileName().replace('%', "%%");
+//            break;
+//        }
+
+//        // ----------------------------------------------------------
+//        // Deprecated.
+//        // Deprecated field codes should be removed from the command line and ignored.
+//        if (token == "%d" || token == "%D" ||
+//            token == "%n" || token == "%N" ||
+//            token == "%v" || token == "%m"
+//            )
+//        {
+//            continue;
+//        }
+
+//        // ----------------------------------------------------------
+//        result << expandEnvVariables(token);
+//    }
+
+//    return result;
+//}
+
+
+
+
+
+

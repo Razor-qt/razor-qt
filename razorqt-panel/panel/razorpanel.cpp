@@ -237,10 +237,6 @@ void RazorPanelPrivate::saveSettings()
  ************************************************/
 void RazorPanelPrivate::loadPlugins()
 {
-    //qDebug() << "Search available plugins in" << PLUGIN_DESKTOPS_DIR;
-    mAvailablePlugins.load(PLUGIN_DESKTOPS_DIR, "RazorPanel/Plugin");
-    //qDebug() << " Found" << mAvailablePlugins;
-
     QStringList sections = mSettings->value(CFG_FULLKEY_PLUGINS).toStringList();
 
     foreach (QString sect, sections)
@@ -253,14 +249,13 @@ void RazorPanelPrivate::loadPlugins()
             continue;
         }
 
-        RazorPluginInfo* pi = mAvailablePlugins.find(type);
-        if (!pi)
-        {
-            qWarning() << QString("Plugin \"%1\" not found.").arg(type);
-            continue;
-        }
+        RazorPluginInfo pi;
+        pi.load(QString("%1/%2.desktop").arg(PLUGIN_DESKTOPS_DIR, type));
 
-        loadPlugin(pi, sect);
+        if (pi.isValid() && pi.serviceType() == "RazorPanel/Plugin")
+            loadPlugin(&pi, sect);
+        else
+            qWarning() << QString("Plugin \"%1\" not found.").arg(type);
     }
 
 
@@ -290,10 +285,6 @@ void RazorPanelPrivate::loadPlugins()
 RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection)
 {
     Q_Q(RazorPanel);
-    //RazorPanel* panel = qobject_cast<RazorPanel*>(parent);
-
-    //if (!panel)
-    //    return 0;
 
     QLibrary* lib = pluginInfo->loadLibrary(PLUGIN_DIR);
     if (!lib)
@@ -563,9 +554,9 @@ void RazorPanelPrivate::showAddPluginDialog()
 
     if (!dlg)
     {
-        dlg = new AddPluginDialog(&mAvailablePlugins, q);
+        dlg = new AddPluginDialog(PLUGIN_DESKTOPS_DIR, "RazorPanel/Plugin", "*", q);
         dlg->setAttribute(Qt::WA_DeleteOnClose);
-        connect(dlg, SIGNAL(pluginSelected(RazorPluginInfo*)), this, SLOT(addPlugin(RazorPluginInfo*)));
+        connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
 
     dlg->show();
@@ -576,29 +567,26 @@ void RazorPanelPrivate::showAddPluginDialog()
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::addPlugin(RazorPluginInfo *pluginInfo)
+void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 {
-    if (!pluginInfo)
-        return;
-
-    QString sectionName = pluginInfo->id();
+    QString sectionName = pluginInfo.id();
     QStringList groups = mSettings->childGroups();
 
     if (groups.contains(sectionName))
     {
         for (int i=2; true; ++i)
         {
-            sectionName = QString("%1%2").arg(pluginInfo->id()).arg(i);
+            sectionName = QString("%1%2").arg(pluginInfo.id()).arg(i);
             if (!groups.contains(sectionName))
                 break;
         }
     }
 
-    RazorPanelPlugin* plugin = loadPlugin(pluginInfo, sectionName);
+    RazorPanelPlugin* plugin = loadPlugin(&pluginInfo, sectionName);
     if (!plugin)
         return;
 
-    mSettings->setValue(QString("%1/type").arg(sectionName), pluginInfo->id());
+    mSettings->setValue(QString("%1/type").arg(sectionName), pluginInfo.id());
 
     if (plugin->flags().testFlag(RazorPanelPlugin::PreferRightAlignment))
         mLayout->addWidget(plugin);

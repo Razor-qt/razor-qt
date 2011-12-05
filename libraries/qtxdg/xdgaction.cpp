@@ -65,7 +65,8 @@ XdgAction::XdgAction(const XdgDesktopFile* desktopFile, QObject *parent):
 XdgAction::XdgAction(const QString& desktopFileName, QObject *parent):
     QAction(parent)
 {
-    XdgDesktopFile df(desktopFileName);
+    XdgDesktopFile df;
+    df.load(desktopFileName);
     load(df);
 }
 

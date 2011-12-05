@@ -51,7 +51,6 @@ set(QTXDG_SRCS
 
 set(QTXDG_MOCS
     xdgaction.h
-    xdgdesktopfile.h
     xdgmenuapplinkprocessor.h
     xdgmenu.h
     xdgmenu_p.h

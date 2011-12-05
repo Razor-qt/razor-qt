@@ -622,7 +622,8 @@ void XdgMenuPrivate::processDirectoryEntries(QDomElement& element, const QString
  ************************************************/
 bool XdgMenuPrivate::loadDirectoryFile(const QString& fileName, QDomElement& element)
 {
-    XdgDesktopFile file(fileName);
+    XdgDesktopFile file;
+    file.load(fileName);
 
     if (!file.isValid())
         return false;

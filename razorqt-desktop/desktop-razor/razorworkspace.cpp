@@ -71,8 +71,6 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* pare
         m_menuFile = XdgMenu::getMenuFileName();
     qDebug() << "File Name:" << m_menuFile;
 
-    mAvailablePlugins.load(PLUGIN_DESKTOP_FILES_DIR, "RazorDesktop/Plugin");
-    
     // this is mandatory for virtualized (virtualbox) installations. Dunno why.
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -161,18 +159,21 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
         QSizeF size(w, h);
         m_config->endGroup();
         
-        qDebug() << libName << position;
-        RazorPluginInfo * pluginInfo = mAvailablePlugins.find(libName);
-        if (! pluginInfo)
+        //qDebug() << libName << position;
+
+        RazorPluginInfo pluginInfo;
+        pluginInfo.load(QString("%1/%2.desktop").arg(PLUGIN_DESKTOP_FILES_DIR, libName));
+
+        if (!pluginInfo.isValid() || pluginInfo.serviceType() != "RazorDesktop/Plugin")
         {
-            qDebug() << "RazorWorkSpace::setConfig() Plugin" << libName << "not found";
+            qWarning() << "RazorWorkSpace::setConfig() Plugin" << libName << "not found";
             continue;
         }
 
-        QLibrary * lib = pluginInfo->loadLibrary(DESKTOP_PLUGIN_DIR);
+        QLibrary * lib = pluginInfo.loadLibrary(DESKTOP_PLUGIN_DIR);
         if (!lib)
         {
-            qDebug() << "RazorWorkSpace::setConfig() Library" << libName << "is not loaded";
+            qWarning() << "RazorWorkSpace::setConfig() Library" << libName << "is not loaded";
             continue;
         }
 
@@ -376,23 +377,23 @@ void RazorWorkSpace::showAddPluginDialog()
 
     if (!dlg)
     {
-        dlg = new AddPluginDialog(&mAvailablePlugins, this);
+        dlg = new AddPluginDialog(PLUGIN_DESKTOP_FILES_DIR, "RazorDesktop/Plugin", "*", this);
         dlg->move(geometry().center() - dlg->geometry().center());
         dlg->setAttribute(Qt::WA_DeleteOnClose);
-        connect(dlg, SIGNAL(pluginSelected(RazorPluginInfo*)), this, SLOT(addPlugin(RazorPluginInfo*)));
+        connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
 
     dlg->exec();
 }
 
-void RazorWorkSpace::addPlugin(RazorPluginInfo* pluginInfo)
+void RazorWorkSpace::addPlugin(const RazorPluginInfo &pluginInfo)
 {
     qDebug() << "addPlugin" << pluginInfo;
-    QLibrary * lib = pluginInfo->loadLibrary(DESKTOP_PLUGIN_DIR);
+    QLibrary * lib = pluginInfo.loadLibrary(DESKTOP_PLUGIN_DIR);
     if (!lib)
         return;
 
-    QGraphicsItem * item = loadPlugin(lib, QString("%1_%2").arg(pluginInfo->id()).arg(QUuid::createUuid().toString()));
+    QGraphicsItem * item = loadPlugin(lib, QString("%1_%2").arg(pluginInfo.id()).arg(QUuid::createUuid().toString()));
     DesktopWidgetPlugin * plugin = getPluginFromItem(item);
 
     // "clever" positioning

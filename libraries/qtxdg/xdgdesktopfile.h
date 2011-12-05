@@ -29,18 +29,20 @@
 #ifndef QTXDG_XDGDESKTOPFILE_H
 #define QTXDG_XDGDESKTOPFILE_H
 
-#include <QObject>
-#include <QString>
-#include <QVariant>
-#include <QStringList>
-#include <QIcon>
+#include <QtCore/QSharedDataPointer>
+//#include <QObject>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
+#include <QtCore/QStringList>
+#include <QtGui/QIcon>
 
 class XdgDesktopFilePrivate;
 
 /**
  \brief Desktop files handling.
  XdgDesktopFile class gives the interface for reading the values from the XDG .desktop file.
- The interface of this class is similar on QSettings.
+ The interface of this class is similar on QSettings. XdgDesktopFile objects can be passed
+ around by value since the XdgDesktopFile class uses implicit data sharing.
 
  The Desktop Entry Specification defines 3 types of desktop entries: Application, Link and
  Directory. The format of .desktop file is described on
@@ -49,15 +51,13 @@ class XdgDesktopFilePrivate;
  Note that not all methods in this class make sense for all types of desktop files.
  \author Alexander Sokoloff <sokoloff.a@gmail.ru>
  */
+class XdgDesktopFileData;
 
-class XdgDesktopFile : protected QObject
+class XdgDesktopFile
 {
-    Q_OBJECT
 public:
-
     /*! The Desktop Entry Specification defines 3 types of desktop entries: Application, Link and
-        Directory. File type is determined by the "Type" tag.
-     */
+        Directory. File type is determined by the "Type" tag. */
     enum Type
     {
         UnknownType,     //! Unknown desktop file type. Maybe is invalid.
@@ -66,13 +66,31 @@ public:
         DirectoryType    //! The file describes directory settings.
     };
 
-    explicit XdgDesktopFile(QObject *parent = 0, const QString& prefix="Desktop Entry");
-    explicit XdgDesktopFile(const QString& fileName, QObject *parent = 0, const QString& prefix="Desktop Entry");
-    XdgDesktopFile(const XdgDesktopFile& other, QObject *parent = 0);
+    //! Constructs an empty XdgDesktopFile
+    XdgDesktopFile();
+
+    /*! Constructs a copy of other.
+        This operation takes constant time, because XdgDesktopFile is implicitly shared. This makes
+        returning a XdgDesktopFile from a function very fast. If a shared instance is modified,
+        it will be copied (copy-on-write), and that takes linear time. */
+    XdgDesktopFile(const XdgDesktopFile& other);
+
+    //! Destroys the object.
     virtual ~XdgDesktopFile();
 
-
+    //! Assigns other to this DesktopFile and returns a reference to this DesktopFile.
     XdgDesktopFile& operator=(const XdgDesktopFile& other);
+
+    //! Loads an DesktopFile from the file with the given fileName.
+    virtual bool load(const QString& fileName);
+
+    //! Saves the DesktopFile to the file with the given fileName. Returns true if successful; otherwise returns false.
+    virtual bool save(const QString &fileName) const;
+
+
+    /*! This is an overloaded function.
+        This function writes a DesktopFile to the given device. */
+    virtual bool save(QIODevice *device) const;
 
     /*! Returns the value for key. If the key doesn't exist, returns defaultValue.
         If no default value is specified, a default QVariant is returned. */
@@ -85,46 +103,17 @@ public:
         If no default value is specified, a default QVariant is returned. */
     QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
 
+    //! Sets the value of setting key to value. If the key already exists, the previous value is overwritten.
+    void setValue(const QString &key, const QVariant &value);
+
     //! Returns true if there exists a setting called key; returns false otherwise.
     bool contains(const QString& key) const;
 
     //! Returns true if the XdgDesktopFile is valid; otherwise returns false.
-    virtual bool isValid() const;
+    bool isValid() const;
 
     //! Returns the file name of the desktop file.
     QString fileName() const;
-
-    /*! The desktop entry specification defines a number of fields to control the visibility of the application menu. This function
-     checks whether to display a this application or not. */
-    bool isShow(const QString& environment = "RAZOR") const;
-
-
-    /*! Returns the desktop file type.
-       @see XdgDesktopFile::Type
-     */
-    Type type() const;
-
-    /*! A Exec value consists of an executable program optionally followed by one or more arguments.
-        This function expands this arguments and returns command line string parts.
-        Note this method make sense only for Application type.
-        @par urls - A list of files or URLS. Each file is passed as a separate argument to the result string program.*/
-    QStringList expandExecString(const QStringList& urls = QStringList()) const;
-
-    /*! Returns the URL for the Link desktop file; otherwise an empty string is returned.
-     */
-    QString url() const;
-
-    /*! For file with Application type. Starts the program with the optional urls in a new process, and detaches from it.
-        Returns true on success; otherwise returns false.
-          @par urls - A list of files or URLS. Each file is passed as a separate argument to the executable program.
-
-        For file with Link type. Opens URL in the associated application. Parametr urls is not used.
-
-        For file with Directory type, do nothing.  */
-    bool startDetached(const QStringList& urls) const;
-
-    //! This function is provided for convenience. It's equivalent to calling startDetached(QStringList(url)).
-    bool startDetached(const QString& url="") const;
 
     //! Returns an icon specified in this file.
     QIcon const icon(const QIcon& fallback = QIcon()) const;
@@ -138,12 +127,44 @@ public:
     //! This function is provided for convenience. It's equivalent to calling localizedValue("Comment").toString().
     QString comment() const { return localizedValue("Comment").toString(); }
 
+    /*! Returns the desktop file type.
+        @see XdgDesktopFile::Type */
+    Type type() const;
+
+    /*! For file with Application type. Starts the program with the optional urls in a new process, and detaches from it.
+        Returns true on success; otherwise returns false.
+          @par urls - A list of files or URLS. Each file is passed as a separate argument to the executable program.
+
+        For file with Link type. Opens URL in the associated application. Parametr urls is not used.
+
+        For file with Directory type, do nothing.  */
+    bool startDetached(const QStringList& urls) const;
+
+    //! This function is provided for convenience. It's equivalent to calling startDetached(QStringList(url)).
+    bool startDetached(const QString& url="") const;
+
+    /*! A Exec value consists of an executable program optionally followed by one or more arguments.
+        This function expands this arguments and returns command line string parts.
+        Note this method make sense only for Application type.
+        @par urls - A list of files or URLS. Each file is passed as a separate argument to the result string program.*/
+    QStringList expandExecString(const QStringList& urls = QStringList()) const;
+
+    /*! Returns the URL for the Link desktop file; otherwise an empty string is returned.  */
+    QString url() const;
+
+    /*! The desktop entry specification defines a number of fields to control the visibility of the application menu. This function
+         checks whether to display a this application or not. */
+    bool isShow(const QString& environment = "RAZOR") const;
+
+protected:
+    virtual QString prefix() const { return "Desktop Entry"; }
+    virtual bool check() const { return true; }
 private:
-    XdgDesktopFilePrivate* const d_ptr;
-    Q_DECLARE_PRIVATE(XdgDesktopFile)
+    QSharedDataPointer<XdgDesktopFileData> d;
 };
 
-typedef QList<XdgDesktopFile*> XdgDesktopFileList;
+
+typedef QList<XdgDesktopFile> XdgDesktopFileList;
 
 
 class XdgDesktopFileCache

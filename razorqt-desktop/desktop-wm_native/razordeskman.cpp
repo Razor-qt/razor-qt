@@ -250,7 +250,8 @@ void RazorDeskManager::updateIconList()
 
         if (dirIter.filePath().endsWith(".desktop")) //only use .desktop files!
         {
-            XdgDesktopFile* tmp = new XdgDesktopFile(df);
+            XdgDesktopFile* tmp = new XdgDesktopFile();
+            tmp->load(df);
 
             if (tmp->isShow())
             {

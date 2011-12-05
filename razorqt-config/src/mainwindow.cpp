@@ -72,7 +72,8 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
 
     while (it.hasNext()) {
         name = it.next();
-        XdgDesktopFile *xdg = new XdgDesktopFile(name, this);
+        XdgDesktopFile *xdg = new XdgDesktopFile();
+        xdg->load(name);
         if (!xdg->isValid())
         {
             qDebug() << "INVALID DESKTOP FILE:" << name;
