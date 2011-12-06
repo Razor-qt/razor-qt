@@ -1,0 +1,20 @@
+This script will help you to build the binary or source DEB packages.
+
+USAGE
+makeDeb.sh [otions] <path-to-source>
+
+Options
+  -h|--help             display this message
+  -o|--outdirt=DIR      write result to DIR
+  -d|--dist=DIST        buld for distributive ubuntu/debian
+  -r|--release=RELEASE  release name (sid, maveric, natty etc.)
+  -ver=VERSION          razor version
+  -s|--sign             sign a result files
+  -b|--binary           build a binary package, if ommited build only only a source package
+
+EXAMPLES
+    Build the binary debs.
+        ~/razor_src/distr/deb/makeDeb.sh -d ubuntu -r oneiric  -o ./Ubuntu ~/razor_src/
+
+    Build the source DEB.
+        ~/razor_src/distr/deb/makeDeb.sh -b -d ubuntu -r oneiric  -o ./Ubuntu ~/razor_src/
