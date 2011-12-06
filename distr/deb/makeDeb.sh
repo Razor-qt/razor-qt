@@ -9,7 +9,7 @@ function help {
   echo "  -d|--dist=DIST        buld for distributive ubuntu/debian"
   echo "  -r|--release=RELEASE  release name (sid, maveric, natty etc.)"
   echo "  -ver=VERSION          razor version"
-  echo "  -S|--sign             sign a result files"
+  echo "  -s|--sign             sign a result files"
   echo "  -b|--binary           build a binary package, if ommited build only only a source package"
 }
 
@@ -80,7 +80,7 @@ if [ -z "${DIST}" ]; then
   help
   exit 2
 fi
-  
+
 
 if [ -z "${RELEASE}" ]; then
   echo "missing release option"
@@ -98,16 +98,19 @@ OUT_DIR=`cd ${OUT_DIR}; pwd`
 
 
 if [ -z "$VER" ]; then
-   VER=`awk -F'[)( ]' '/set.*RAZOR_VERSION/ {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-    #VER=`cd ${SRC_DIR} && git log '--pretty=%ai' -n 1  | awk '{print $1}' | sed -e's/-/./g'`
+   MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+   MINOR_VER=`awk -F'[)( ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+   PATCH_VER=`awk -F'[)( ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+   VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 fi
 
 
 echo "*******************************"
 echo " Name: ${NAME}"
 echo " Ver:  ${VER}"
-echo " Type: ${TYPE}"
-echo " Release: ${DIST} ${RELEASE}"
+[ "${TYPE}" = "-b" ] && echo " Type: binary"
+[ "${TYPE}" = "-S" ] && echo " Type: source"
+echo " Release: ${DIST}-${RELEASE}"
 echo " Src dir: ${SRC_DIR}"
 echo " Out dir: ${OUT_DIR}"
 echo "*******************************"
