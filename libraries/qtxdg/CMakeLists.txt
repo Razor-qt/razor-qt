@@ -96,7 +96,7 @@ set_target_properties(qtxdg PROPERTIES
 
 install(TARGETS qtxdg DESTINATION lib${LIB_SUFFIX})
 install(FILES ${QTXDG_PUBLIC_HDRS} DESTINATION include/qtxdg)
-install(FILES   ${QM_FILES}        DESTINATION ${APP_SHARE_DIR})
+install(FILES ${QTXDG_QM_FILES}    DESTINATION ${APP_SHARE_DIR})
 
 
 find_package(Doxygen)
