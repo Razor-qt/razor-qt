@@ -127,10 +127,22 @@ void UPower::halt() {
     interface.call( "Stop" );
 }
 
+bool UPower::canReboot() {
+//	qdbus --system org.freedesktop.ConsoleKit /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.CanStop
+    QDBusInterface interface( "org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager", QDBusConnection::systemBus() );
+    return interface.call( "CanRestart" ).arguments().at(0).toBool();
+}
+
+bool UPower::canHalt() {
+    QDBusInterface interface( "org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager", QDBusConnection::systemBus() );
+    return interface.call( "CanStop" ).arguments().at(0).toBool();
+}
+
 bool UPower::canHibernate() {
-    return m_interfaceProps->call( "Get", m_interface->interface(), "CanHibernate" ).arguments().at(0).value<QDBusVariant>().variant().toBool();
+    return m_interfaceProps->call( "Get", m_interface->interface(), "CanHibernate" ).arguments().at(0).toBool();
 }
 
 bool UPower::canSuspend() {
-    return m_interfaceProps->call( "Get", m_interface->interface(), "CanSuspend" ).arguments().at(0).value<QDBusVariant>().variant().toBool();
+    return m_interfaceProps->call( "Get", m_interface->interface(), "CanSuspend" ).arguments().at(0).toBool();
 }
+

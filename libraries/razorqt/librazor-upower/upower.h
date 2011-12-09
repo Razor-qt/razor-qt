@@ -25,12 +25,14 @@ public:
     void reboot();
     void halt();
 
+    bool canSuspend();
+    bool canHibernate();
+    bool canHalt();
+    bool canReboot();
+
     const QString version() const;
 
 private:
-    bool canSuspend();
-    bool canHibernate();
-
     QDBusInterface      *m_interfaceProps;
     QDBusInterface      *m_interface;
     QDBusServiceWatcher *m_watcher;
