@@ -139,10 +139,12 @@ bool UPower::canHalt() {
 }
 
 bool UPower::canHibernate() {
-    return m_interfaceProps->call( "Get", m_interface->interface(), "CanHibernate" ).arguments().at(0).toBool();
+    return m_interfaceProps->call( "Get", m_interface->interface(), "CanHibernate" ).arguments().at(0).value<QDBusVariant>().variant().toBool()
+	    && m_interface->call( "HibernateAllowed" ).arguments().at(0).toBool();
 }
 
 bool UPower::canSuspend() {
-    return m_interfaceProps->call( "Get", m_interface->interface(), "CanSuspend" ).arguments().at(0).toBool();
+    return m_interfaceProps->call( "Get", m_interface->interface(), "CanSuspend" ).arguments().at(0).value<QDBusVariant>().variant().toBool()
+	    && m_interface->call( "SuspendAllowed" ).arguments().at(0).toBool();
 }
 
