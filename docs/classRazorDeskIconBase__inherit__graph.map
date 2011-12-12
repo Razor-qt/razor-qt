@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classRazorDeskIconDesktop.html" title="Icon for the XDG desktop file. It uses XdgDesktopFile handler from librazorqt." alt="" coords="5,83,168,112"/>
+<area shape="rect" id="node5" href="$classRazorDeskIconFile.html" title="Icon for standard file. It uses QDesktopServices to launch the &quot;open with&quot; application by file mime t..." alt="" coords="192,83,325,112"/>
+</map>

@@ -1,0 +1,769 @@
+<QtHelpProject version="1.0">
+  <namespace>org.razor-qt.librazormount</namespace>
+  <virtualFolder>doc</virtualFolder>
+  <filterSection>
+    <filterAttribute>doxygen</filterAttribute>
+    <toc>
+      <section title="Razor-qt 0.3.99" ref="index.html">
+        <section title="A minimal shared library for Razor-qt DE." ref="index.html" />
+        <section title="Related Pages" ref="pages.html">
+          <section title="Todo List" ref="todo.html" />
+        </section>
+        <section title="Class List" ref="annotated.html">
+          <section title="AddPluginDialog" ref="classAddPluginDialog.html" />
+          <section title="RazorAppSwitcher::Application" ref="classRazorAppSwitcher_1_1Application.html" />
+          <section title="RazorAppSwitcher::AppSwitcher" ref="classRazorAppSwitcher_1_1AppSwitcher.html" />
+          <section title="DesktopIcon" ref="classDesktopIcon.html" />
+          <section title="DesktopSwitch" ref="classDesktopSwitch.html" />
+          <section title="FileIcon" ref="classFileIcon.html" />
+          <section title="RazorConfig::MainWindow" ref="classRazorConfig_1_1MainWindow.html" />
+          <section title="PowerManager" ref="classPowerManager.html" />
+          <section title="QuickLaunchAction" ref="classQuickLaunchAction.html" />
+          <section title="RazorDeskIconBase" ref="classRazorDeskIconBase.html" />
+          <section title="RazorDeskIconDesktop" ref="classRazorDeskIconDesktop.html" />
+          <section title="RazorDeskIconFile" ref="classRazorDeskIconFile.html" />
+          <section title="RazorDeskManager" ref="classRazorDeskManager.html" />
+          <section title="RazorModuleManager" ref="classRazorModuleManager.html" />
+          <section title="RazorMount" ref="classRazorMount.html" />
+          <section title="RazorPanel" ref="classRazorPanel.html" />
+          <section title="RazorPluginInfo" ref="classRazorPluginInfo.html" />
+          <section title="RazorQuickLaunch" ref="classRazorQuickLaunch.html" />
+          <section title="RazorShortcutButton" ref="classRazorShortcutButton.html" />
+          <section title="RazorTray" ref="classRazorTray.html" />
+          <section title="RazorWorkSpace" ref="classRazorWorkSpace.html" />
+          <section title="RazorWorkSpaceManager" ref="classRazorWorkSpaceManager.html" />
+          <section title="SessionDBusAdaptor" ref="classSessionDBusAdaptor.html" />
+          <section title="RazorAppSwitcher::SwitcherItem" ref="classRazorAppSwitcher_1_1SwitcherItem.html" />
+          <section title="XCursorThemeModel" ref="classXCursorThemeModel.html" />
+          <section title="XdgAction" ref="classXdgAction.html" />
+          <section title="XdgAutoStart" ref="classXdgAutoStart.html" />
+          <section title="XdgDesktopFile" ref="classXdgDesktopFile.html" />
+          <section title="XdgDirs" ref="classXdgDirs.html" />
+          <section title="XdgMenu" ref="classXdgMenu.html" />
+          <section title="XdgMenuWidget" ref="classXdgMenuWidget.html" />
+          <section title="XfitMan" ref="classXfitMan.html" />
+        </section>
+        <section title="Class Index" ref="classes.html" />
+        <section title="Class Hierarchy" ref="hierarchy.html">
+          <section title="AddPluginDialog" ref="classAddPluginDialog.html" />
+          <section title="RazorAppSwitcher::Application" ref="classRazorAppSwitcher_1_1Application.html" />
+          <section title="RazorAppSwitcher::AppSwitcher" ref="classRazorAppSwitcher_1_1AppSwitcher.html" />
+          <section title="DesktopIcon" ref="classDesktopIcon.html" />
+          <section title="DesktopSwitch" ref="classDesktopSwitch.html" />
+          <section title="FileIcon" ref="classFileIcon.html" />
+          <section title="RazorConfig::MainWindow" ref="classRazorConfig_1_1MainWindow.html" />
+          <section title="PowerManager" ref="classPowerManager.html" />
+          <section title="QuickLaunchAction" ref="classQuickLaunchAction.html" />
+          <section title="RazorDeskIconBase" ref="classRazorDeskIconBase.html">
+            <section title="RazorDeskIconDesktop" ref="classRazorDeskIconDesktop.html" />
+            <section title="RazorDeskIconFile" ref="classRazorDeskIconFile.html" />
+          </section>
+          <section title="RazorDeskManager" ref="classRazorDeskManager.html" />
+          <section title="RazorModuleManager" ref="classRazorModuleManager.html" />
+          <section title="RazorMount" ref="classRazorMount.html" />
+          <section title="RazorPanel" ref="classRazorPanel.html" />
+          <section title="RazorQuickLaunch" ref="classRazorQuickLaunch.html" />
+          <section title="RazorShortcutButton" ref="classRazorShortcutButton.html" />
+          <section title="RazorTray" ref="classRazorTray.html" />
+          <section title="RazorWorkSpace" ref="classRazorWorkSpace.html" />
+          <section title="RazorWorkSpaceManager" ref="classRazorWorkSpaceManager.html" />
+          <section title="SessionDBusAdaptor" ref="classSessionDBusAdaptor.html" />
+          <section title="RazorAppSwitcher::SwitcherItem" ref="classRazorAppSwitcher_1_1SwitcherItem.html" />
+          <section title="XCursorThemeModel" ref="classXCursorThemeModel.html" />
+          <section title="XdgAction" ref="classXdgAction.html" />
+          <section title="XdgAutoStart" ref="classXdgAutoStart.html" />
+          <section title="XdgDesktopFile" ref="classXdgDesktopFile.html">
+            <section title="RazorPluginInfo" ref="classRazorPluginInfo.html" />
+          </section>
+          <section title="XdgDirs" ref="classXdgDirs.html" />
+          <section title="XdgMenu" ref="classXdgMenu.html" />
+          <section title="XdgMenuWidget" ref="classXdgMenuWidget.html" />
+          <section title="XfitMan" ref="classXfitMan.html" />
+        </section>
+        <section title="Class Members" ref="functions.html" />
+        <section title="File List" ref="files.html">
+          <section title="libraries/qtxdg/xdgaction.h" />
+          <section title="libraries/qtxdg/xdgdesktopfile.h" />
+          <section title="libraries/qtxdg/xdgdirs.h" />
+          <section title="libraries/qtxdg/xdgicon.h" />
+          <section title="libraries/qtxdg/xdgmenu.h" />
+          <section title="libraries/qtxdg/xdgmenu_p.h" />
+          <section title="libraries/qtxdg/xdgmenuapplinkprocessor.h" />
+          <section title="libraries/qtxdg/xdgmenulayoutprocessor.h" />
+          <section title="libraries/qtxdg/xdgmenureader.h" />
+          <section title="libraries/qtxdg/xdgmenurules.h" />
+          <section title="libraries/qtxdg/xdgmenuwidget.h" />
+          <section title="libraries/qtxdg/xdgmime.h" />
+          <section title="libraries/qtxdg/xmlhelper.h" />
+          <section title="libraries/qtxdg/qiconfix/qiconloader_p.h" />
+          <section title="libraries/razormount/diskmonitor.h" />
+          <section title="libraries/razormount/mount.h" />
+          <section title="libraries/razormount/storageitem.h" />
+          <section title="libraries/razormount/storagemanager.h" />
+          <section title="libraries/razorqt/libtranslate.h" />
+          <section title="libraries/razorqt/pageselectwidget.h" />
+          <section title="libraries/razorqt/powermanager.h" />
+          <section title="libraries/razorqt/razoraboutdlg.h" />
+          <section title="libraries/razorqt/razorplugininfo.h" />
+          <section title="libraries/razorqt/razorsettings.h" />
+          <section title="libraries/razorqt/razorshortcutbutton.h" />
+          <section title="libraries/razorqt/razorshortcutbutton_p.h" />
+          <section title="libraries/razorqt/screensaver.h" />
+          <section title="libraries/razorqt/xdgautostart.h" ref="xdgautostart_8h.html" />
+          <section title="libraries/razorqt/xfitman.cpp" ref="xfitman_8cpp.html" />
+          <section title="libraries/razorqt/xfitman.h" ref="xfitman_8h.html" />
+          <section title="libraries/razorqt/addplugindialog/addplugindialog.h" />
+          <section title="libraries/razorqt/librazor-upower/battery.h" />
+          <section title="libraries/razorqt/librazor-upower/ucpufreq.h" />
+          <section title="libraries/razorqt/librazor-upower/upower.h" />
+          <section title="libraries/razorqxt/qxtglobal.h" />
+          <section title="libraries/razorqxt/qxtglobalshortcut.h" />
+          <section title="libraries/razorqxt/qxtglobalshortcut_p.h" />
+          <section title="qtcreator-build/razorqt-config/razor-config-appearance/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/panel/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-clock/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-desktopswitch/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-mainmenu/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-mount/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-quicklaunch/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-screensaver/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-showdesktop/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-taskbar/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-panel/plugin-tray/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-runner/razortranslate.h" />
+          <section title="qtcreator-build/razorqt-session/razortranslate.h" />
+          <section title="razorqt-appswitcher/src/application.h" />
+          <section title="razorqt-appswitcher/src/appswitcher.h" />
+          <section title="razorqt-config/razor-config-appearance/iconthemeinfo.h" />
+          <section title="razorqt-config/razor-config-appearance/mainwindow.h" />
+          <section title="razorqt-config/razor-config-mouse/cfgfile.h" />
+          <section title="razorqt-config/razor-config-mouse/crtheme.h" />
+          <section title="razorqt-config/razor-config-mouse/itemdelegate.h" />
+          <section title="razorqt-config/razor-config-mouse/main.h" />
+          <section title="razorqt-config/razor-config-mouse/previewwidget.h" />
+          <section title="razorqt-config/razor-config-mouse/selectwnd.h" />
+          <section title="razorqt-config/razor-config-mouse/thememodel.h" />
+          <section title="razorqt-config/razor-config-mouse/xcr/xcrimg.h" />
+          <section title="razorqt-config/razor-config-mouse/xcr/xcrtheme.h" />
+          <section title="razorqt-config/razor-config-mouse/xcr/xcrthemefx.h" />
+          <section title="razorqt-config/razor-config-mouse/xcr/xcrthemexp.h" />
+          <section title="razorqt-config/razor-config-mouse/xcr/xcrxcur.h" />
+          <section title="razorqt-config/src/mainwindow.h" />
+          <section title="razorqt-desktop/config/desktopconfigwindow.h" />
+          <section title="razorqt-desktop/desktop-razor/arrangeitem.h" />
+          <section title="razorqt-desktop/desktop-razor/desktopbackgrounddialog.h" />
+          <section title="razorqt-desktop/desktop-razor/desktopwidgetplugin.h" />
+          <section title="razorqt-desktop/desktop-razor/razorworkspace.h" ref="razorworkspace_8h.html" />
+          <section title="razorqt-desktop/desktop-razor/workspacemanager.h" />
+          <section title="razorqt-desktop/desktop-razor/plugin-analogclock/clock.h" />
+          <section title="razorqt-desktop/desktop-razor/plugin-analogclock/configuredialog.h" />
+          <section title="razorqt-desktop/desktop-razor/plugin-helloworld/helloworld.h" />
+          <section title="razorqt-desktop/desktop-razor/plugin-iconview/desktopicon.h" />
+          <section title="razorqt-desktop/desktop-razor/plugin-iconview/iconscene.h" />
+          <section title="razorqt-desktop/desktop-razor/plugin-iconview/iconview.h" />
+          <section title="razorqt-desktop/desktop-wm_native/razordeskicon.h" />
+          <section title="razorqt-desktop/desktop-wm_native/razordeskman.h" ref="razordeskman_8h.html" />
+          <section title="razorqt-desktop/src/desktopplugin.h" />
+          <section title="razorqt-panel/panel/razorpanel.h" />
+          <section title="razorqt-panel/panel/razorpanel_p.h" />
+          <section title="razorqt-panel/panel/razorpanelapplication.h" />
+          <section title="razorqt-panel/panel/razorpanellayout.h" />
+          <section title="razorqt-panel/panel/razorpanelplugin.h" />
+          <section title="razorqt-panel/panel/razorpanelplugin_p.h" />
+          <section title="razorqt-panel/panel/razorpanelpluginconfigdialog.h" />
+          <section title="razorqt-panel/plugin-clock/razorclock.cpp" ref="razorclock_8cpp.html" />
+          <section title="razorqt-panel/plugin-clock/razorclock.h" />
+          <section title="razorqt-panel/plugin-clock/razorclockconfiguration.h" />
+          <section title="razorqt-panel/plugin-desktopswitch/desktopswitch.h" />
+          <section title="razorqt-panel/plugin-desktopswitch/desktopswitchbutton.h" />
+          <section title="razorqt-panel/plugin-mainmenu/menustyle.h" />
+          <section title="razorqt-panel/plugin-mainmenu/razormainmenu.h" />
+          <section title="razorqt-panel/plugin-mainmenu/razormainmenuconfiguration.h" />
+          <section title="razorqt-panel/plugin-mount/menudiskitem.h" />
+          <section title="razorqt-panel/plugin-mount/mountbutton.h" />
+          <section title="razorqt-panel/plugin-mount/razormount.h" />
+          <section title="razorqt-panel/plugin-mount/razormountconfiguration.h" />
+          <section title="razorqt-panel/plugin-quicklaunch/quicklaunchaction.h" />
+          <section title="razorqt-panel/plugin-quicklaunch/quicklaunchbutton.h" />
+          <section title="razorqt-panel/plugin-quicklaunch/quicklaunchlayout.h" />
+          <section title="razorqt-panel/plugin-quicklaunch/razorquicklaunch.h" />
+          <section title="razorqt-panel/plugin-screensaver/panelscreensaver.h" />
+          <section title="razorqt-panel/plugin-showdesktop/showdesktop.h" />
+          <section title="razorqt-panel/plugin-taskbar/razortaskbar.h" />
+          <section title="razorqt-panel/plugin-taskbar/razortaskbarconfiguration.h" />
+          <section title="razorqt-panel/plugin-taskbar/razortaskbutton.h" />
+          <section title="razorqt-panel/plugin-tray/razortray.h" />
+          <section title="razorqt-panel/plugin-tray/trayicon.h" />
+          <section title="razorqt-runner/commanditemmodel.h" />
+          <section title="razorqt-runner/dialog.h" />
+          <section title="razorqt-runner/providers.h" />
+          <section title="razorqt-runner/widgets.h" />
+          <section title="razorqt-runner/configuredialog/configuredialog.h" />
+          <section title="razorqt-session/config/sessionconfigwindow.h" />
+          <section title="razorqt-session/src/razormodman.cpp" ref="razormodman_8cpp.html" />
+          <section title="razorqt-session/src/razormodman.h" />
+          <section title="razorqt-session/src/sessiondbusadaptor.h" />
+          <section title="razorqt-session/src/windowmanager.h" />
+          <section title="razorqt-session/src/wmselectdialog.h" />
+          <section title="razorqt-su/src/sudialog.h" />
+          <section title="razorqt-su/src/suprocess.h" />
+        </section>
+        <section title="File Members" ref="globals.html" />
+      </section>
+    </toc>
+    <keywords>
+      <keyword name="SOURCE_NORMAL" id="xfitman.cpp::SOURCE_NORMAL" ref="xfitman_8cpp.html#af74cafad9c161cc49b1b396b1922039a" />
+      <keyword name="SOURCE_PAGER" id="xfitman.cpp::SOURCE_PAGER" ref="xfitman_8cpp.html#afb6a5154cd79807c0fa15480efa00451" />
+      <keyword name="_NET_WM_STATE_REMOVE" id="xfitman.cpp::_NET_WM_STATE_REMOVE" ref="xfitman_8cpp.html#a50026537f9f2afdb4a6a4f3bc5dad6d3" />
+      <keyword name="_NET_WM_STATE_ADD" id="xfitman.cpp::_NET_WM_STATE_ADD" ref="xfitman_8cpp.html#af01584d4487719bb38125d1c5176a823" />
+      <keyword name="_NET_WM_STATE_TOGGLE" id="xfitman.cpp::_NET_WM_STATE_TOGGLE" ref="xfitman_8cpp.html#a3e923d9844fde85f4a21c204f1f8dbd2" />
+      <keyword name="xfitMan" id="xfitman.cpp::xfitMan" ref="xfitman_8cpp.html#a06d485552efcebb36bdd0cff8286e95d" />
+      <keyword name="_NET_WM_STATE_TOGGLE" id="xfitman.h::_NET_WM_STATE_TOGGLE" ref="xfitman_8h.html#a3e923d9844fde85f4a21c204f1f8dbd2" />
+      <keyword name="_NET_WM_STATE_ADD" id="xfitman.h::_NET_WM_STATE_ADD" ref="xfitman_8h.html#af01584d4487719bb38125d1c5176a823" />
+      <keyword name="_NET_WM_STATE_REMOVE" id="xfitman.h::_NET_WM_STATE_REMOVE" ref="xfitman_8h.html#a50026537f9f2afdb4a6a4f3bc5dad6d3" />
+      <keyword name="AtomList" id="xfitman.h::AtomList" ref="xfitman_8h.html#ab7514197d8d1493a035b9f304a9daca5" />
+      <keyword name="WindowList" id="xfitman.h::WindowList" ref="xfitman_8h.html#a0be065b9e14e328d67328fcc3a85bc79" />
+      <keyword name="xfitMan" id="xfitman.h::xfitMan" ref="xfitman_8h.html#a06d485552efcebb36bdd0cff8286e95d" />
+      <keyword name="IconMap" id="razordeskman.h::IconMap" ref="razordeskman_8h.html#a9cd1522407a504027858f6ee72c282f7" />
+      <keyword name="IconMapIterator" id="razordeskman.h::IconMapIterator" ref="razordeskman_8h.html#afbe48502a0af0c70c9834e4fe8650d4f" />
+      <keyword name="getMaxDate" id="razorclock.cpp::getMaxDate" ref="razorclock_8cpp.html#ac7cf53c4388216a6d3d21a0b1faebab5" />
+      <keyword name="getMaxTime" id="razorclock.cpp::getMaxTime" ref="razorclock_8cpp.html#ada7720c9291b830e39c302144eb91a06" />
+      <keyword name="mon" id="razorclock.cpp::mon" ref="razorclock_8cpp.html#a25b602fa15f03b01f61a900f1f68a67d" />
+      <keyword name="day" id="razorclock.cpp::day" ref="razorclock_8cpp.html#a4c11afc03fc3ee49bab660def6558f2a" />
+      <keyword name="hour" id="razorclock.cpp::hour" ref="razorclock_8cpp.html#a15df9ba285cfd842f284025f904edc9c" />
+      <keyword name="min" id="razorclock.cpp::min" ref="razorclock_8cpp.html#a3e202b201e6255d975cd6d3aff1f5a4d" />
+      <keyword name="sec" id="razorclock.cpp::sec" ref="razorclock_8cpp.html#a90c2ace84e5523d06b7162ea5928acc1" />
+      <keyword name="razor_setenv" id="razormodman.cpp::razor_setenv" ref="razormodman_8cpp.html#ad6395c017e019b70b9996bdfef45f306" />
+      <keyword name="razor_setenv_prepend" id="razormodman.cpp::razor_setenv_prepend" ref="razormodman_8cpp.html#a130c551a8fa68ea5490bf07ef32a465e" />
+      <keyword name="Todo List" id="Todo List" ref="todo.html" />
+      <keyword name="AddPluginDialog" id="AddPluginDialog" ref="classAddPluginDialog.html" />
+      <keyword name="pluginSelected" id="AddPluginDialog::pluginSelected" ref="classAddPluginDialog.html#a73027333cfe289800d494dfed41b1dcf" />
+      <keyword name="AddPluginDialog" id="AddPluginDialog::AddPluginDialog" ref="classAddPluginDialog.html#ab4edbd84e7c2306d8568c5651be1667a" />
+      <keyword name="timerEvent" id="AddPluginDialog::timerEvent" ref="classAddPluginDialog.html#a38e48278a3b792d0197dcd58b10a1656" />
+      <keyword name="DesktopIcon" id="DesktopIcon" ref="classDesktopIcon.html" />
+      <keyword name="DesktopIcon" id="DesktopIcon::DesktopIcon" ref="classDesktopIcon.html#a1520042a7fa69f7086ee98d4fc988268" />
+      <keyword name="DesktopSwitch" id="DesktopSwitch" ref="classDesktopSwitch.html" />
+      <keyword name="DesktopSwitch" id="DesktopSwitch::DesktopSwitch" ref="classDesktopSwitch.html#ad4f6cd9523cd73d89d90023b99c18a3b" />
+      <keyword name="x11EventFilter" id="DesktopSwitch::x11EventFilter" ref="classDesktopSwitch.html#a861bd06964698860a2f55de160e1f72c" />
+      <keyword name="FileIcon" id="FileIcon" ref="classFileIcon.html" />
+      <keyword name="FileIcon" id="FileIcon::FileIcon" ref="classFileIcon.html#a1779322b447ec623bf4b1a252b24d5d0" />
+      <keyword name="PowerManager" id="PowerManager" ref="classPowerManager.html" />
+      <keyword name="suspend" id="PowerManager::suspend" ref="classPowerManager.html#ac6df777894b654f566e06f7cc47bf385" />
+      <keyword name="hibernate" id="PowerManager::hibernate" ref="classPowerManager.html#a1fc9f33c94a053dd1f00881ddc956ec4" />
+      <keyword name="reboot" id="PowerManager::reboot" ref="classPowerManager.html#a9f1c13beec9f9647e7526d62fac731ec" />
+      <keyword name="halt" id="PowerManager::halt" ref="classPowerManager.html#a87212fa78459cf11e8a41525bdd26391" />
+      <keyword name="logout" id="PowerManager::logout" ref="classPowerManager.html#a2e8fe86d357aae15e7f4c19407365e3f" />
+      <keyword name="PowerManager" id="PowerManager::PowerManager" ref="classPowerManager.html#ab48a7b97d30a7617249e0a49cec166e1" />
+      <keyword name="availableActions" id="PowerManager::availableActions" ref="classPowerManager.html#ad0a71763958c4e9c3aa05bebbd5db195" />
+      <keyword name="parentWidget" id="PowerManager::parentWidget" ref="classPowerManager.html#a5464ec018fe20a256e5b365908b6a299" />
+      <keyword name="setParentWidget" id="PowerManager::setParentWidget" ref="classPowerManager.html#a26bfc85a392775260b825cfea92584b9" />
+      <keyword name="QuickLaunchAction" id="QuickLaunchAction" ref="classQuickLaunchAction.html" />
+      <keyword name="execAction" id="QuickLaunchAction::execAction" ref="classQuickLaunchAction.html#a518afac3120d8ab3f642318c9252366b" />
+      <keyword name="QuickLaunchAction" id="QuickLaunchAction::QuickLaunchAction" ref="classQuickLaunchAction.html#a9d58e37b5aaafbfdd352ffca73d5cf78" />
+      <keyword name="QuickLaunchAction" id="QuickLaunchAction::QuickLaunchAction" ref="classQuickLaunchAction.html#a1aacebdc659c294568c07b2adf0b7b6f" />
+      <keyword name="QuickLaunchAction" id="QuickLaunchAction::QuickLaunchAction" ref="classQuickLaunchAction.html#afd86b5efcf4055d30f357f108d5e8d75" />
+      <keyword name="isValid" id="QuickLaunchAction::isValid" ref="classQuickLaunchAction.html#a732da8059de594149a3e643ea5deb0ab" />
+      <keyword name="settingsMap" id="QuickLaunchAction::settingsMap" ref="classQuickLaunchAction.html#abcf589d781d879a74761efa2a09462ed" />
+      <keyword name="RazorDeskIconBase" id="RazorDeskIconBase" ref="classRazorDeskIconBase.html" />
+      <keyword name="moved" id="RazorDeskIconBase::moved" ref="classRazorDeskIconBase.html#a0d80524f3b0adfdd1e7d6a86b8691946" />
+      <keyword name="RazorDeskIconBase" id="RazorDeskIconBase::RazorDeskIconBase" ref="classRazorDeskIconBase.html#ae9c7ac5efe8871948c8a9e2c5c4f8a3e" />
+      <keyword name="sizeHint" id="RazorDeskIconBase::sizeHint" ref="classRazorDeskIconBase.html#af20c6c52b6fd8e03f3a50873bd794064" />
+      <keyword name="setIcon" id="RazorDeskIconBase::setIcon" ref="classRazorDeskIconBase.html#a9e4b02e7e9cd1c106bda54ed237128ea" />
+      <keyword name="setPos" id="RazorDeskIconBase::setPos" ref="classRazorDeskIconBase.html#a294fcbd85755beead533eb5747edf1e2" />
+      <keyword name="setLaunchMode" id="RazorDeskIconBase::setLaunchMode" ref="classRazorDeskIconBase.html#a8c61e4056838ce342fcbcbff1b6c81dc" />
+      <keyword name="mouseMoveEvent" id="RazorDeskIconBase::mouseMoveEvent" ref="classRazorDeskIconBase.html#a75fe754ff9a6538dc0175b08f6d49664" />
+      <keyword name="mousePressEvent" id="RazorDeskIconBase::mousePressEvent" ref="classRazorDeskIconBase.html#ab7b5e64da4fc3b39f56cb34f715c8d06" />
+      <keyword name="mouseReleaseEvent" id="RazorDeskIconBase::mouseReleaseEvent" ref="classRazorDeskIconBase.html#a78838bc77e8eaba2b32184b75f30a272" />
+      <keyword name="mouseDoubleClickEvent" id="RazorDeskIconBase::mouseDoubleClickEvent" ref="classRazorDeskIconBase.html#a1eed11089035db6d22b3d7b166a0ac26" />
+      <keyword name="paintEvent" id="RazorDeskIconBase::paintEvent" ref="classRazorDeskIconBase.html#a2dff7207f03efd2e066b8b36c77b6d0f" />
+      <keyword name="enterEvent" id="RazorDeskIconBase::enterEvent" ref="classRazorDeskIconBase.html#a5b0f0847bf5ce9ba17a396d3fae7e9ee" />
+      <keyword name="leaveEvent" id="RazorDeskIconBase::leaveEvent" ref="classRazorDeskIconBase.html#a6ff866c15a5e326c722bbf33f4c54532" />
+      <keyword name="RazorDeskIconDesktop" id="RazorDeskIconDesktop" ref="classRazorDeskIconDesktop.html" />
+      <keyword name="RazorDeskIconDesktop" id="RazorDeskIconDesktop::RazorDeskIconDesktop" ref="classRazorDeskIconDesktop.html#aec68e5909b6e5681354f9395b2c1f61d" />
+      <keyword name="RazorDeskIconFile" id="RazorDeskIconFile" ref="classRazorDeskIconFile.html" />
+      <keyword name="RazorDeskIconFile" id="RazorDeskIconFile::RazorDeskIconFile" ref="classRazorDeskIconFile.html#abd38cc013bd6037f20fdb85c1bc54db0" />
+      <keyword name="RazorDeskManager" id="RazorDeskManager" ref="classRazorDeskManager.html" />
+      <keyword name="saveIconState" id="RazorDeskManager::saveIconState" ref="classRazorDeskManager.html#ae534eced862a213c7c1ccc434f81d4eb" />
+      <keyword name="updateIconList" id="RazorDeskManager::updateIconList" ref="classRazorDeskManager.html#afad179e6e91b407b02038af36e0b0f66" />
+      <keyword name="RazorDeskManager" id="RazorDeskManager::RazorDeskManager" ref="classRazorDeskManager.html#a436c9ce704fc6fa76c4dc8868efe47d8" />
+      <keyword name="info" id="RazorDeskManager::info" ref="classRazorDeskManager.html#ad80fbbdeacfa94afc3fb1237ad7f8bf2" />
+      <keyword name="RazorModuleManager" id="RazorModuleManager" ref="classRazorModuleManager.html" />
+      <keyword name="logout" id="RazorModuleManager::logout" ref="classRazorModuleManager.html#ab3cd696e11eb82d6346f9b38cdebf0cf" />
+      <keyword name="RazorModuleManager" id="RazorModuleManager::RazorModuleManager" ref="classRazorModuleManager.html#a8b44d12aa187f4da2cc741ae61694b63" />
+      <keyword name="RazorMount" id="RazorMount" ref="classRazorMount.html" />
+      <keyword name="RazorMount" id="RazorMount::RazorMount" ref="classRazorMount.html#ab745473060a231cc46f109dd5d6511c8" />
+      <keyword name="flags" id="RazorMount::flags" ref="classRazorMount.html#a703be0bd99c0458a8b3c147e21912f30" />
+      <keyword name="showConfigureDialog" id="RazorMount::showConfigureDialog" ref="classRazorMount.html#a5fd6d5234b14890bf06d75f51e959efa" />
+      <keyword name="settigsChanged" id="RazorMount::settigsChanged" ref="classRazorMount.html#a4fbb2105023f7eba0871e8545feb9cd6" />
+      <keyword name="RazorPanel" id="RazorPanel" ref="classRazorPanel.html" />
+      <keyword name="show" id="RazorPanel::show" ref="classRazorPanel.html#a166f93504043debbba945b64cdcd9d1e" />
+      <keyword name="positionChanged" id="RazorPanel::positionChanged" ref="classRazorPanel.html#a21da48e283c2e5595f3ca0fd4c9b145b" />
+      <keyword name="layoutDirectionChanged" id="RazorPanel::layoutDirectionChanged" ref="classRazorPanel.html#a1d9dd4ce30032e7d198c1eb9a85c0d87" />
+      <keyword name="RazorPanel" id="RazorPanel::RazorPanel" ref="classRazorPanel.html#ad5b555828fee92676b98658abe5ac1eb" />
+      <keyword name="position" id="RazorPanel::position" ref="classRazorPanel.html#ade31dc842d33f94e1d5091bfa61fae34" />
+      <keyword name="isHorizontal" id="RazorPanel::isHorizontal" ref="classRazorPanel.html#a1d891e433001e109e069e8e2c3867887" />
+      <keyword name="popupMenu" id="RazorPanel::popupMenu" ref="classRazorPanel.html#a0d43d93c98e68ea31b3689bb5e1571ad" />
+      <keyword name="x11EventFilter" id="RazorPanel::x11EventFilter" ref="classRazorPanel.html#afbb5a0ef0a2273918f475267c6b5377e" />
+      <keyword name="event" id="RazorPanel::event" ref="classRazorPanel.html#ad768cc70f1873b2c2fd439257af974ec" />
+      <keyword name="position" id="RazorPanel::position" ref="classRazorPanel.html#a265f56c4c8a851b8abc9ab1d0ad95135" />
+      <keyword name="RazorPanelPlugin" id="RazorPanel::RazorPanelPlugin" ref="classRazorPanel.html#ae629013e58364decb2aef925985b9172" />
+      <keyword name="RazorPluginInfo" id="RazorPluginInfo" ref="classRazorPluginInfo.html" />
+      <keyword name="RazorPluginInfo" id="RazorPluginInfo::RazorPluginInfo" ref="classRazorPluginInfo.html#abc50a06e4fa852e5387e1e98b7cb9caa" />
+      <keyword name="load" id="RazorPluginInfo::load" ref="classRazorPluginInfo.html#adbf15292629082490efab5a7d4b08bb4" />
+      <keyword name="id" id="RazorPluginInfo::id" ref="classRazorPluginInfo.html#a64097de41cd64cedfe648031e5adbe9d" />
+      <keyword name="serviceType" id="RazorPluginInfo::serviceType" ref="classRazorPluginInfo.html#ac616ee661c731a6481dd92a0fe242b7c" />
+      <keyword name="isValid" id="RazorPluginInfo::isValid" ref="classRazorPluginInfo.html#a8392e8bec8ed439065aa55bbf2f06698" />
+      <keyword name="loadLibrary" id="RazorPluginInfo::loadLibrary" ref="classRazorPluginInfo.html#a71ebc3d9ca5e9aaecec3d3f1e95d7f18" />
+      <keyword name="search" id="RazorPluginInfo::search" ref="classRazorPluginInfo.html#a4ad9cd68aaa875fffafacb7540a3c917" />
+      <keyword name="RazorQuickLaunch" id="RazorQuickLaunch" ref="classRazorQuickLaunch.html" />
+      <keyword name="RazorQuickLaunch" id="RazorQuickLaunch::RazorQuickLaunch" ref="classRazorQuickLaunch.html#a87f811113fa0d7110c0fda31e42bb309" />
+      <keyword name="indexOfButton" id="RazorQuickLaunch::indexOfButton" ref="classRazorQuickLaunch.html#a9aa4674d5f38a24095a392410c145a52" />
+      <keyword name="countOfButtons" id="RazorQuickLaunch::countOfButtons" ref="classRazorQuickLaunch.html#a20c8a7006f3162c99063731b2bee69ab" />
+      <keyword name="RazorShortcutButton" id="RazorShortcutButton" ref="classRazorShortcutButton.html" />
+      <keyword name="setKeySequence" id="RazorShortcutButton::setKeySequence" ref="classRazorShortcutButton.html#aaecb7a50ca0c3a2753c54de428915d44" />
+      <keyword name="setKeySequence" id="RazorShortcutButton::setKeySequence" ref="classRazorShortcutButton.html#afee0896fba7212c3ffb148e65bb32f21" />
+      <keyword name="keySequenceChanged" id="RazorShortcutButton::keySequenceChanged" ref="classRazorShortcutButton.html#adc2ff502c17d2de1dd9be40a93a6c962" />
+      <keyword name="keySequenceChanged" id="RazorShortcutButton::keySequenceChanged" ref="classRazorShortcutButton.html#ac9f55b24fa0845e63f4e9bd8ab47eeda" />
+      <keyword name="RazorShortcutButton" id="RazorShortcutButton::RazorShortcutButton" ref="classRazorShortcutButton.html#aaae295e6bedc480b5998cf862ee47546" />
+      <keyword name="~RazorShortcutButton" id="RazorShortcutButton::~RazorShortcutButton" ref="classRazorShortcutButton.html#af1dbe7421dcf8f18794e937e6ef3245f" />
+      <keyword name="keySequence" id="RazorShortcutButton::keySequence" ref="classRazorShortcutButton.html#a53c752e12c90603fe0bf85507f5a5753" />
+      <keyword name="event" id="RazorShortcutButton::event" ref="classRazorShortcutButton.html#a6059905593a5c16b27a4cf0a17caca76" />
+      <keyword name="RazorTray" id="RazorTray" ref="classRazorTray.html" />
+      <keyword name="iconSizeChanged" id="RazorTray::iconSizeChanged" ref="classRazorTray.html#a90f6f0c703ae54c8844aad53c6bf79d4" />
+      <keyword name="RazorTray" id="RazorTray::RazorTray" ref="classRazorTray.html#a186b62fe318003fed525aa241d8f69ab" />
+      <keyword name="flags" id="RazorTray::flags" ref="classRazorTray.html#aa5d5ae38257f5328d7bef174ed167d7c" />
+      <keyword name="iconSize" id="RazorTray::iconSize" ref="classRazorTray.html#a7cfdd81afcacfa0728f4b0a42d15f160" />
+      <keyword name="setIconSize" id="RazorTray::setIconSize" ref="classRazorTray.html#a9d91dab1af1563acbaf79784e12f2059" />
+      <keyword name="x11EventFilter" id="RazorTray::x11EventFilter" ref="classRazorTray.html#ae432272b61c836efbeb3aa0af8f16f22" />
+      <keyword name="iconSize" id="RazorTray::iconSize" ref="classRazorTray.html#ab134784eb3a29b5e00d05ffa801fe590" />
+      <keyword name="RazorWorkSpace" id="RazorWorkSpace" ref="classRazorWorkSpace.html" />
+      <keyword name="RazorWorkSpace" id="RazorWorkSpace::RazorWorkSpace" ref="classRazorWorkSpace.html#a4c844431d73c146c830db22c85cbeaae" />
+      <keyword name="setConfig" id="RazorWorkSpace::setConfig" ref="classRazorWorkSpace.html#ac493f5f847ed8fa04022b528a0d0a0ca" />
+      <keyword name="getConfig" id="RazorWorkSpace::getConfig" ref="classRazorWorkSpace.html#a2f62162a3aaa3f8cbe497b038115a946" />
+      <keyword name="mouseReleaseEvent" id="RazorWorkSpace::mouseReleaseEvent" ref="classRazorWorkSpace.html#a68310fc58f3c6a8dae8d57e437812a9f" />
+      <keyword name="wheelEvent" id="RazorWorkSpace::wheelEvent" ref="classRazorWorkSpace.html#a2402862d7fd233b8f8e5cc4c04283d03" />
+      <keyword name="RazorWorkSpaceManager" id="RazorWorkSpaceManager" ref="classRazorWorkSpaceManager.html" />
+      <keyword name="RazorWorkSpaceManager" id="RazorWorkSpaceManager::RazorWorkSpaceManager" ref="classRazorWorkSpaceManager.html#a4a07f18fe77fb16f0661fd0062b26fb5" />
+      <keyword name="info" id="RazorWorkSpaceManager::info" ref="classRazorWorkSpaceManager.html#a0dd9b31478d6cd2e1c3a4f8a3f81225a" />
+      <keyword name="SessionDBusAdaptor" id="SessionDBusAdaptor" ref="classSessionDBusAdaptor.html" />
+      <keyword name="logout" id="SessionDBusAdaptor::logout" ref="classSessionDBusAdaptor.html#a56d3d4ca0d03ffa122c64d55667a7bef" />
+      <keyword name="SessionDBusAdaptor" id="SessionDBusAdaptor::SessionDBusAdaptor" ref="classSessionDBusAdaptor.html#a098f22d6a546bb4b7affe59365ec8ad1" />
+      <keyword name="XCursorThemeModel" id="XCursorThemeModel" ref="classXCursorThemeModel.html" />
+      <keyword name="XCursorThemeModel" id="XCursorThemeModel::XCursorThemeModel" ref="classXCursorThemeModel.html#ab0b9ca9ecd1acfe2ad1a9f8de30c6c7e" />
+      <keyword name="columnCount" id="XCursorThemeModel::columnCount" ref="classXCursorThemeModel.html#a932aa63aed81764e05adaaa22a5314bd" />
+      <keyword name="rowCount" id="XCursorThemeModel::rowCount" ref="classXCursorThemeModel.html#aaab42d581998a7e0d28b5fd733752609" />
+      <keyword name="headerData" id="XCursorThemeModel::headerData" ref="classXCursorThemeModel.html#a0fe9db959f963ce39051e0b608a5c4aa" />
+      <keyword name="data" id="XCursorThemeModel::data" ref="classXCursorThemeModel.html#aa36ff426ebb32202d83621b34ebad41a" />
+      <keyword name="sort" id="XCursorThemeModel::sort" ref="classXCursorThemeModel.html#a9ad995163b5bd03f8569cb898acf6112" />
+      <keyword name="theme" id="XCursorThemeModel::theme" ref="classXCursorThemeModel.html#a4a826715e521daada24f2b93c19bdf33" />
+      <keyword name="findIndex" id="XCursorThemeModel::findIndex" ref="classXCursorThemeModel.html#a4e9b3d893a72663661db6d5bff097312" />
+      <keyword name="defaultIndex" id="XCursorThemeModel::defaultIndex" ref="classXCursorThemeModel.html#aead7ca261fe19ff1e3d09ca1c9a64d3a" />
+      <keyword name="addTheme" id="XCursorThemeModel::addTheme" ref="classXCursorThemeModel.html#a5e2edcf3a942602ed6fe978eb29ba40a" />
+      <keyword name="removeTheme" id="XCursorThemeModel::removeTheme" ref="classXCursorThemeModel.html#a540e698d56f94295d7ad27ae966b97ef" />
+      <keyword name="searchPaths" id="XCursorThemeModel::searchPaths" ref="classXCursorThemeModel.html#a6db4b0b611b82eb569633dd4df3ee068" />
+      <keyword name="XdgAction" id="XdgAction" ref="classXdgAction.html" />
+      <keyword name="XdgAction" id="XdgAction::XdgAction" ref="classXdgAction.html#a5e3f096741457ffed891442576d4d9bd" />
+      <keyword name="XdgAction" id="XdgAction::XdgAction" ref="classXdgAction.html#ab701725afde6a7d85f72a16fb4fb170b" />
+      <keyword name="XdgAction" id="XdgAction::XdgAction" ref="classXdgAction.html#a018e15c4158acdc911a0cd7a9358c7cd" />
+      <keyword name="XdgAction" id="XdgAction::XdgAction" ref="classXdgAction.html#a0a273740353bac8e78ee031e6bc51655" />
+      <keyword name="XdgAction" id="XdgAction::XdgAction" ref="classXdgAction.html#aaf516ecb777c7cd78b70c1c955550546" />
+      <keyword name="~XdgAction" id="XdgAction::~XdgAction" ref="classXdgAction.html#aba3ddb8f1f5b1695b306bd915aa5c176" />
+      <keyword name="operator=" id="XdgAction::operator=" ref="classXdgAction.html#a82b556a4b79e9b95c609ddf9bf87821a" />
+      <keyword name="isValid" id="XdgAction::isValid" ref="classXdgAction.html#a1d44651e420fdda4c89acd1bd44bd409" />
+      <keyword name="desktopFile" id="XdgAction::desktopFile" ref="classXdgAction.html#ac6158849f1a8bdedaab4190a015ed810" />
+      <keyword name="XdgAutoStart" id="XdgAutoStart" ref="classXdgAutoStart.html" />
+      <keyword name="XdgAutoStart" id="XdgAutoStart::XdgAutoStart" ref="classXdgAutoStart.html#a0ac9d9cd4a97752d7201a2284e52cacb" />
+      <keyword name="~XdgAutoStart" id="XdgAutoStart::~XdgAutoStart" ref="classXdgAutoStart.html#a5bdfa78da72fa8de36e98ddb835db6e1" />
+      <keyword name="list" id="XdgAutoStart::list" ref="classXdgAutoStart.html#a84eae01f12da57125e8e1bd320a7b0d7" />
+      <keyword name="XdgDesktopFile" id="XdgDesktopFile" ref="classXdgDesktopFile.html" />
+      <keyword name="XdgDesktopFile" id="XdgDesktopFile::XdgDesktopFile" ref="classXdgDesktopFile.html#a6bbb16bdbcb38b3d9b3a996b08047075" />
+      <keyword name="XdgDesktopFile" id="XdgDesktopFile::XdgDesktopFile" ref="classXdgDesktopFile.html#a91159b876a97ac36ebecc37029fb5785" />
+      <keyword name="~XdgDesktopFile" id="XdgDesktopFile::~XdgDesktopFile" ref="classXdgDesktopFile.html#a129e6532f2748c7eb1334197d512e1bb" />
+      <keyword name="operator=" id="XdgDesktopFile::operator=" ref="classXdgDesktopFile.html#a3ebd91fdebed496bdedba6d47d70db18" />
+      <keyword name="load" id="XdgDesktopFile::load" ref="classXdgDesktopFile.html#aa78cf98529eb9b84c8530395b6f3dda4" />
+      <keyword name="save" id="XdgDesktopFile::save" ref="classXdgDesktopFile.html#a06b863812cf6778f2e2261ec13b969b3" />
+      <keyword name="save" id="XdgDesktopFile::save" ref="classXdgDesktopFile.html#aeb586ee06673aef86d6c80855352cda7" />
+      <keyword name="value" id="XdgDesktopFile::value" ref="classXdgDesktopFile.html#a1066d9d43d20ebadac9f05850596dac3" />
+      <keyword name="localizedValue" id="XdgDesktopFile::localizedValue" ref="classXdgDesktopFile.html#a0f936916a68b54fa574abe4118bd95a1" />
+      <keyword name="setValue" id="XdgDesktopFile::setValue" ref="classXdgDesktopFile.html#a315141555149063cf17f18b1b9aa62f4" />
+      <keyword name="contains" id="XdgDesktopFile::contains" ref="classXdgDesktopFile.html#a0408fa53f6430e09cdc34936dfebb878" />
+      <keyword name="isValid" id="XdgDesktopFile::isValid" ref="classXdgDesktopFile.html#a4ab07ef555447fc0cab8e537172c3c7f" />
+      <keyword name="fileName" id="XdgDesktopFile::fileName" ref="classXdgDesktopFile.html#ab9616eef42f566928897ef69092df3a3" />
+      <keyword name="icon" id="XdgDesktopFile::icon" ref="classXdgDesktopFile.html#accade347aeba83a7e39940f9df4dda0a" />
+      <keyword name="iconName" id="XdgDesktopFile::iconName" ref="classXdgDesktopFile.html#a79d818de74edd51ac27564e223cbf294" />
+      <keyword name="name" id="XdgDesktopFile::name" ref="classXdgDesktopFile.html#ad3bdd71e052199e970308875dad41d8c" />
+      <keyword name="comment" id="XdgDesktopFile::comment" ref="classXdgDesktopFile.html#afbc7ca25089106a3b584f32b593c80e7" />
+      <keyword name="type" id="XdgDesktopFile::type" ref="classXdgDesktopFile.html#abc497bce353cd13b857ef7a5ba080097" />
+      <keyword name="startDetached" id="XdgDesktopFile::startDetached" ref="classXdgDesktopFile.html#ab5fc5cc8538d65e9e95c8436bd13327b" />
+      <keyword name="startDetached" id="XdgDesktopFile::startDetached" ref="classXdgDesktopFile.html#a428f34aa4a0ca265e20582f634aa6625" />
+      <keyword name="expandExecString" id="XdgDesktopFile::expandExecString" ref="classXdgDesktopFile.html#a4de028e13574f8240d10b57472edc734" />
+      <keyword name="url" id="XdgDesktopFile::url" ref="classXdgDesktopFile.html#a1428a91bc2e125d70e28ff4d386e01e3" />
+      <keyword name="isShow" id="XdgDesktopFile::isShow" ref="classXdgDesktopFile.html#abe3f0e99b309d4071b8d9001d958e745" />
+      <keyword name="prefix" id="XdgDesktopFile::prefix" ref="classXdgDesktopFile.html#af63a01586ddb3325a20d4de468947992" />
+      <keyword name="check" id="XdgDesktopFile::check" ref="classXdgDesktopFile.html#a2a3efb557a740f73424df75fb8ec042c" />
+      <keyword name="ApplicationType" id="XdgDesktopFile::ApplicationType" ref="classXdgDesktopFile.html#a7642a26a42a92e7a83dccaa6eff3b50ba69aaa92ca88b3526bd50fa8923363d03" />
+      <keyword name="LinkType" id="XdgDesktopFile::LinkType" ref="classXdgDesktopFile.html#a7642a26a42a92e7a83dccaa6eff3b50ba6cb916555b85a83ec25f30f3b13f0087" />
+      <keyword name="DirectoryType" id="XdgDesktopFile::DirectoryType" ref="classXdgDesktopFile.html#a7642a26a42a92e7a83dccaa6eff3b50ba8cb5c25eaa531abf28836b23dd49e56f" />
+      <keyword name="XdgDirs" id="XdgDirs" ref="classXdgDirs.html" />
+      <keyword name="dataHome" id="XdgDirs::dataHome" ref="classXdgDirs.html#acd698eeed6f987b9246d256eccab4d5f" />
+      <keyword name="configHome" id="XdgDirs::configHome" ref="classXdgDirs.html#a0c043e08a26bb6152d38f9b870908899" />
+      <keyword name="dataDirs" id="XdgDirs::dataDirs" ref="classXdgDirs.html#ac370d03af7673403ba57689ee91b759c" />
+      <keyword name="configDirs" id="XdgDirs::configDirs" ref="classXdgDirs.html#ae3ef5615643c5a9e44a69df23904126c" />
+      <keyword name="cacheHome" id="XdgDirs::cacheHome" ref="classXdgDirs.html#a7df2b71ca6e9579a2755b8d9afe174e9" />
+      <keyword name="runtimeDir" id="XdgDirs::runtimeDir" ref="classXdgDirs.html#a6fe4bbd2c117b03df2f8a84dab238634" />
+      <keyword name="XdgMenu" id="XdgMenu" ref="classXdgMenu.html" />
+      <keyword name="XdgMenu" id="XdgMenu::XdgMenu" ref="classXdgMenu.html#aac8a022d3c752a26791188681500cb5c" />
+      <keyword name="read" id="XdgMenu::read" ref="classXdgMenu.html#a0534004d82f165b2539dee8837d24ea9" />
+      <keyword name="save" id="XdgMenu::save" ref="classXdgMenu.html#a2e0075806065ad1d2ac60ede90511e50" />
+      <keyword name="xml" id="XdgMenu::xml" ref="classXdgMenu.html#a113280d4bd99ebb227587e068e993425" />
+      <keyword name="menuFileName" id="XdgMenu::menuFileName" ref="classXdgMenu.html#adabdfc49bc162c8ef82bba47c7813713" />
+      <keyword name="findMenu" id="XdgMenu::findMenu" ref="classXdgMenu.html#a9dd8858111f97bfba76a08313fe34228" />
+      <keyword name="environments" id="XdgMenu::environments" ref="classXdgMenu.html#a7cd6bad2698aa83d166d82d23e087469" />
+      <keyword name="setEnvironments" id="XdgMenu::setEnvironments" ref="classXdgMenu.html#a3dfa98b56dc4647e8ea098502f91046c" />
+      <keyword name="setEnvironments" id="XdgMenu::setEnvironments" ref="classXdgMenu.html#af5adecbbdf005be0abe4a6fb92542245" />
+      <keyword name="errorString" id="XdgMenu::errorString" ref="classXdgMenu.html#a4864626056b7f9c149e9c3689332a3b4" />
+      <keyword name="logDir" id="XdgMenu::logDir" ref="classXdgMenu.html#a1b5bcc660baafbb08913ae0e91dca09f" />
+      <keyword name="setLogDir" id="XdgMenu::setLogDir" ref="classXdgMenu.html#aa66b7b31ab6187b253302b1540eac5b4" />
+      <keyword name="isOutDated" id="XdgMenu::isOutDated" ref="classXdgMenu.html#a1765243717d651354a5b6f3d0bc347ee" />
+      <keyword name="getMenuFileName" id="XdgMenu::getMenuFileName" ref="classXdgMenu.html#a76dcf52cd855da9932bcca08dfc29d36" />
+      <keyword name="addWatchPath" id="XdgMenu::addWatchPath" ref="classXdgMenu.html#a7484481b5eb8943e2492eda94e0a9a2d" />
+      <keyword name="XdgMenuReader" id="XdgMenu::XdgMenuReader" ref="classXdgMenu.html#ada3c48ff76f0d045749fc722638231e9" />
+      <keyword name="XdgMenuApplinkProcessor" id="XdgMenu::XdgMenuApplinkProcessor" ref="classXdgMenu.html#a406396dc41c904e8e42f8e55b8d60a8a" />
+      <keyword name="XdgMenuWidget" id="XdgMenuWidget" ref="classXdgMenuWidget.html" />
+      <keyword name="XdgMenuWidget" id="XdgMenuWidget::XdgMenuWidget" ref="classXdgMenuWidget.html#ae6c51d08a6c6afc318e1455fd64e3105" />
+      <keyword name="XdgMenuWidget" id="XdgMenuWidget::XdgMenuWidget" ref="classXdgMenuWidget.html#adc7215336569b9324ad4f8843639b7a4" />
+      <keyword name="XdgMenuWidget" id="XdgMenuWidget::XdgMenuWidget" ref="classXdgMenuWidget.html#a83e5f9d3eecb2d5dbf8a8a1c84a633ac" />
+      <keyword name="operator=" id="XdgMenuWidget::operator=" ref="classXdgMenuWidget.html#aedab7e20543516c49bc6b762ec4b72c1" />
+      <keyword name="~XdgMenuWidget" id="XdgMenuWidget::~XdgMenuWidget" ref="classXdgMenuWidget.html#af945bd7f1e5e12fb47df558b7a0da986" />
+      <keyword name="sizeHint" id="XdgMenuWidget::sizeHint" ref="classXdgMenuWidget.html#af55a5f2c640f50c65181c08e8b7c68d7" />
+      <keyword name="event" id="XdgMenuWidget::event" ref="classXdgMenuWidget.html#ac50e30eeef178cb12c3357879c6880a1" />
+      <keyword name="XfitMan" id="XfitMan" ref="classXfitMan.html" />
+      <keyword name="~XfitMan" id="XfitMan::~XfitMan" ref="classXfitMan.html#afee70ad02b69189e4f27345b38639ee1" />
+      <keyword name="XfitMan" id="XfitMan::XfitMan" ref="classXfitMan.html#a74fc60cbcfb53240490f8cdbbd26e5ec" />
+      <keyword name="moveWindow" id="XfitMan::moveWindow" ref="classXfitMan.html#a2e5e9d687c298a727df3b5605cff3638" />
+      <keyword name="setStrut" id="XfitMan::setStrut" ref="classXfitMan.html#af29e0119ee9d838d46f83b2d3d15d780" />
+      <keyword name="getClientList" id="XfitMan::getClientList" ref="classXfitMan.html#a92ed8293c52e4e1adfcc11a0462e8a8a" />
+      <keyword name="getClientIcon" id="XfitMan::getClientIcon" ref="classXfitMan.html#ab1408894cb38d30dbb666e398b735b47" />
+      <keyword name="getWindowDesktop" id="XfitMan::getWindowDesktop" ref="classXfitMan.html#a0877e2ec819270ebb80dd5f5650559e5" />
+      <keyword name="moveWindowToDesktop" id="XfitMan::moveWindowToDesktop" ref="classXfitMan.html#a3bd931980165ce35c50f497e8b102729" />
+      <keyword name="raiseWindow" id="XfitMan::raiseWindow" ref="classXfitMan.html#a50fd14369591bb0a375e66ee65e63938" />
+      <keyword name="minimizeWindow" id="XfitMan::minimizeWindow" ref="classXfitMan.html#a0d9b70a4ef779969aa58c17e31ec6769" />
+      <keyword name="maximizeWindow" id="XfitMan::maximizeWindow" ref="classXfitMan.html#a91f2cd3e7135b1805936a70280d264cf" />
+      <keyword name="deMaximizeWindow" id="XfitMan::deMaximizeWindow" ref="classXfitMan.html#a30d9ad52c38bf71f31f3c79e9222df7d" />
+      <keyword name="shadeWindow" id="XfitMan::shadeWindow" ref="classXfitMan.html#acf91815c41ed2296f7a732c15319af0e" />
+      <keyword name="resizeWindow" id="XfitMan::resizeWindow" ref="classXfitMan.html#ac0c6d25dec3e8ff8f6a2d3785c9bd31a" />
+      <keyword name="closeWindow" id="XfitMan::closeWindow" ref="classXfitMan.html#a87ff0c09cd8d1b03b6757eecab7f2c55" />
+      <keyword name="setWindowLayer" id="XfitMan::setWindowLayer" ref="classXfitMan.html#a30ae5c1b1b3a5a89fddc7880530e4c29" />
+      <keyword name="setActiveDesktop" id="XfitMan::setActiveDesktop" ref="classXfitMan.html#a08bd88a2a1aa569152482c2ec7b0753e" />
+      <keyword name="isHidden" id="XfitMan::isHidden" ref="classXfitMan.html#aa3b714c001fedee9cb45f8221c96960f" />
+      <keyword name="getAllowedActions" id="XfitMan::getAllowedActions" ref="classXfitMan.html#a4d704daad628da6d9e8e23f8f6585b4b" />
+      <keyword name="getWindowState" id="XfitMan::getWindowState" ref="classXfitMan.html#a9721b4b5a10484deb5623cce0a8ede87" />
+      <keyword name="getActiveDesktop" id="XfitMan::getActiveDesktop" ref="classXfitMan.html#a170703a3f0d339b5789aca84cf29eb39" />
+      <keyword name="getActiveAppWindow" id="XfitMan::getActiveAppWindow" ref="classXfitMan.html#a2ff93c00f7fca3d577e69910170389c0" />
+      <keyword name="getActiveWindow" id="XfitMan::getActiveWindow" ref="classXfitMan.html#abd9bd19cff883a6ff672867f1e6edf07" />
+      <keyword name="getNumDesktop" id="XfitMan::getNumDesktop" ref="classXfitMan.html#a3f67592080f67e1762824f3e44807a0a" />
+      <keyword name="getDesktopNames" id="XfitMan::getDesktopNames" ref="classXfitMan.html#ab7700a39833902a5f05282093428975a" />
+      <keyword name="getDesktopName" id="XfitMan::getDesktopName" ref="classXfitMan.html#a28b822ae63b2b184b8ea85952f17f1e2" />
+      <keyword name="getName" id="XfitMan::getName" ref="classXfitMan.html#a17c589510bfcb2421b28005c590648c9" />
+      <keyword name="acceptWindow" id="XfitMan::acceptWindow" ref="classXfitMan.html#a1b528f0e0ef0a6a73d4b8316b3ebd2ac" />
+      <keyword name="getWindowType" id="XfitMan::getWindowType" ref="classXfitMan.html#aff4126efb1ea1b52f33c9a0934cb32c1" />
+      <keyword name="availableGeometry" id="XfitMan::availableGeometry" ref="classXfitMan.html#a29ad9449addc35790387a8176282a642" />
+      <keyword name="availableGeometry" id="XfitMan::availableGeometry" ref="classXfitMan.html#a000e81ad2eebff9ebc6af8274a6294a7" />
+      <keyword name="availableGeometry" id="XfitMan::availableGeometry" ref="classXfitMan.html#ac7ca04f1f1ca8c01a7e531afab4eeb12" />
+      <keyword name="clientMessage" id="XfitMan::clientMessage" ref="classXfitMan.html#a1d8765ca2dc209ec082b5861a36497d7" />
+      <keyword name="isWindowManagerActive" id="XfitMan::isWindowManagerActive" ref="classXfitMan.html#a0c24bd265f0e70fffcba73cd1a023987" />
+      <keyword name="atom" id="XfitMan::atom" ref="classXfitMan.html#aa5bf5deb39c4727577501936fc926867" />
+      <keyword name="RazorAppSwitcher::Application" id="RazorAppSwitcher::Application" ref="classRazorAppSwitcher_1_1Application.html" />
+      <keyword name="Application" id="RazorAppSwitcher::Application::Application" ref="classRazorAppSwitcher_1_1Application.html#a68bb8aefc57763f0450729144b2647de" />
+      <keyword name="x11EventFilter" id="RazorAppSwitcher::Application::x11EventFilter" ref="classRazorAppSwitcher_1_1Application.html#aadeecb42f0538d8ee85f23ab905962c5" />
+      <keyword name="RazorAppSwitcher::SwitcherItem" id="RazorAppSwitcher::SwitcherItem" ref="classRazorAppSwitcher_1_1SwitcherItem.html" />
+      <keyword name="infoChanged" id="RazorAppSwitcher::SwitcherItem::infoChanged" ref="classRazorAppSwitcher_1_1SwitcherItem.html#a235c1a0f9419d7e4d26dac14f0302ff8" />
+      <keyword name="activateXWindow" id="RazorAppSwitcher::SwitcherItem::activateXWindow" ref="classRazorAppSwitcher_1_1SwitcherItem.html#ac1d74b44e3649da8850ce2fc8f0a4e98" />
+      <keyword name="SwitcherItem" id="RazorAppSwitcher::SwitcherItem::SwitcherItem" ref="classRazorAppSwitcher_1_1SwitcherItem.html#a5bf240f7909105e10b94970592f6f923" />
+      <keyword name="window" id="RazorAppSwitcher::SwitcherItem::window" ref="classRazorAppSwitcher_1_1SwitcherItem.html#a854d33e9944f3ed32199fb7c12e7d20c" />
+      <keyword name="RazorAppSwitcher::AppSwitcher" id="RazorAppSwitcher::AppSwitcher" ref="classRazorAppSwitcher_1_1AppSwitcher.html" />
+      <keyword name="handleEvent" id="RazorAppSwitcher::AppSwitcher::handleEvent" ref="classRazorAppSwitcher_1_1AppSwitcher.html#a535da1aa274ef339b38ab0470543d3aa" />
+      <keyword name="RazorConfig::MainWindow" id="RazorConfig::MainWindow" ref="classRazorConfig_1_1MainWindow.html" />
+    </keywords>
+    <files>
+      <file>tabs.css</file>
+      <file>tab_a.png</file>
+      <file>tab_b.png</file>
+      <file>tab_h.png</file>
+      <file>tab_s.png</file>
+      <file>nav_h.png</file>
+      <file>nav_f.png</file>
+      <file>bc_s.png</file>
+      <file>doxygen.png</file>
+      <file>closed.png</file>
+      <file>open.png</file>
+      <file>doxygen.css</file>
+      <file>/search/mag.png</file>
+      <file>/search/search_l.png</file>
+      <file>/search/search_m.png</file>
+      <file>/search/search_r.png</file>
+      <file>search/search.css</file>
+      <file>index.html</file>
+      <file>pages.html</file>
+      <file>qiconloader__p_8h_source.html</file>
+      <file>xdgaction_8h_source.html</file>
+      <file>xdgdesktopfile_8h_source.html</file>
+      <file>xdgdirs_8h_source.html</file>
+      <file>xdgicon_8h_source.html</file>
+      <file>xdgmenu_8h_source.html</file>
+      <file>xdgmenu__p_8h_source.html</file>
+      <file>xdgmenuapplinkprocessor_8h_source.html</file>
+      <file>xdgmenulayoutprocessor_8h_source.html</file>
+      <file>xdgmenureader_8h_source.html</file>
+      <file>xdgmenurules_8h_source.html</file>
+      <file>xdgmenuwidget_8h_source.html</file>
+      <file>xdgmime_8h_source.html</file>
+      <file>xmlhelper_8h_source.html</file>
+      <file>diskmonitor_8h_source.html</file>
+      <file>mount_8h_source.html</file>
+      <file>storageitem_8h_source.html</file>
+      <file>storagemanager_8h_source.html</file>
+      <file>addplugindialog_8h_source.html</file>
+      <file>battery_8h_source.html</file>
+      <file>ucpufreq_8h_source.html</file>
+      <file>upower_8h_source.html</file>
+      <file>libtranslate_8h_source.html</file>
+      <file>pageselectwidget_8h_source.html</file>
+      <file>powermanager_8h_source.html</file>
+      <file>razoraboutdlg_8h_source.html</file>
+      <file>razorplugininfo_8h_source.html</file>
+      <file>razorsettings_8h_source.html</file>
+      <file>razorshortcutbutton_8h_source.html</file>
+      <file>razorshortcutbutton__p_8h_source.html</file>
+      <file>screensaver_8h_source.html</file>
+      <file>xdgautostart_8h_source.html</file>
+      <file>xfitman_8h_source.html</file>
+      <file>qxtglobal_8h_source.html</file>
+      <file>qxtglobalshortcut_8h_source.html</file>
+      <file>qxtglobalshortcut__p_8h_source.html</file>
+      <file>razorqt-config_2razor-config-appearance_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2panel_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-clock_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-desktopswitch_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-mainmenu_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-mount_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-quicklaunch_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-screensaver_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-showdesktop_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-taskbar_2razortranslate_8h_source.html</file>
+      <file>razorqt-panel_2plugin-tray_2razortranslate_8h_source.html</file>
+      <file>razorqt-runner_2razortranslate_8h_source.html</file>
+      <file>razorqt-session_2razortranslate_8h_source.html</file>
+      <file>application_8h_source.html</file>
+      <file>appswitcher_8h_source.html</file>
+      <file>iconthemeinfo_8h_source.html</file>
+      <file>razor-config-appearance_2mainwindow_8h_source.html</file>
+      <file>src_2mainwindow_8h_source.html</file>
+      <file>cfgfile_8h_source.html</file>
+      <file>crtheme_8h_source.html</file>
+      <file>itemdelegate_8h_source.html</file>
+      <file>main_8h_source.html</file>
+      <file>previewwidget_8h_source.html</file>
+      <file>selectwnd_8h_source.html</file>
+      <file>thememodel_8h_source.html</file>
+      <file>xcrimg_8h_source.html</file>
+      <file>xcrtheme_8h_source.html</file>
+      <file>xcrthemefx_8h_source.html</file>
+      <file>xcrthemexp_8h_source.html</file>
+      <file>xcrxcur_8h_source.html</file>
+      <file>desktopconfigwindow_8h_source.html</file>
+      <file>arrangeitem_8h_source.html</file>
+      <file>desktopbackgrounddialog_8h_source.html</file>
+      <file>desktopwidgetplugin_8h_source.html</file>
+      <file>clock_8h_source.html</file>
+      <file>razorqt-desktop_2desktop-razor_2plugin-analogclock_2configuredialog_8h_source.html</file>
+      <file>razorqt-runner_2configuredialog_2configuredialog_8h_source.html</file>
+      <file>helloworld_8h_source.html</file>
+      <file>desktopicon_8h_source.html</file>
+      <file>iconscene_8h_source.html</file>
+      <file>iconview_8h_source.html</file>
+      <file>razorworkspace_8h_source.html</file>
+      <file>workspacemanager_8h_source.html</file>
+      <file>razordeskicon_8h_source.html</file>
+      <file>razordeskman_8h_source.html</file>
+      <file>desktopplugin_8h_source.html</file>
+      <file>razorpanel_8h_source.html</file>
+      <file>razorpanel__p_8h_source.html</file>
+      <file>razorpanelapplication_8h_source.html</file>
+      <file>razorpanellayout_8h_source.html</file>
+      <file>razorpanelplugin_8h_source.html</file>
+      <file>razorpanelplugin__p_8h_source.html</file>
+      <file>razorpanelpluginconfigdialog_8h_source.html</file>
+      <file>razorclock_8h_source.html</file>
+      <file>razorclockconfiguration_8h_source.html</file>
+      <file>desktopswitch_8h_source.html</file>
+      <file>desktopswitchbutton_8h_source.html</file>
+      <file>menustyle_8h_source.html</file>
+      <file>razormainmenu_8h_source.html</file>
+      <file>razormainmenuconfiguration_8h_source.html</file>
+      <file>menudiskitem_8h_source.html</file>
+      <file>mountbutton_8h_source.html</file>
+      <file>razormount_8h_source.html</file>
+      <file>razormountconfiguration_8h_source.html</file>
+      <file>quicklaunchaction_8h_source.html</file>
+      <file>quicklaunchbutton_8h_source.html</file>
+      <file>quicklaunchlayout_8h_source.html</file>
+      <file>razorquicklaunch_8h_source.html</file>
+      <file>panelscreensaver_8h_source.html</file>
+      <file>showdesktop_8h_source.html</file>
+      <file>razortaskbar_8h_source.html</file>
+      <file>razortaskbarconfiguration_8h_source.html</file>
+      <file>razortaskbutton_8h_source.html</file>
+      <file>razortray_8h_source.html</file>
+      <file>trayicon_8h_source.html</file>
+      <file>commanditemmodel_8h_source.html</file>
+      <file>dialog_8h_source.html</file>
+      <file>providers_8h_source.html</file>
+      <file>widgets_8h_source.html</file>
+      <file>sessionconfigwindow_8h_source.html</file>
+      <file>razormodman_8h_source.html</file>
+      <file>sessiondbusadaptor_8h_source.html</file>
+      <file>windowmanager_8h_source.html</file>
+      <file>wmselectdialog_8h_source.html</file>
+      <file>sudialog_8h_source.html</file>
+      <file>suprocess_8h_source.html</file>
+      <file>xdgautostart_8h.html</file>
+      <file>xdgautostart_8h__incl.png</file>
+      <file>xdgautostart_8h__dep__incl.png</file>
+      <file>xfitman_8cpp.html</file>
+      <file>xfitman_8cpp__incl.png</file>
+      <file>xfitman_8h.html</file>
+      <file>xfitman_8h__incl.png</file>
+      <file>xfitman_8h__dep__incl.png</file>
+      <file>razorworkspace_8h.html</file>
+      <file>razorworkspace_8h__incl.png</file>
+      <file>razorworkspace_8h__dep__incl.png</file>
+      <file>razordeskman_8h.html</file>
+      <file>razordeskman_8h__incl.png</file>
+      <file>razorclock_8cpp.html</file>
+      <file>razorclock_8cpp__incl.png</file>
+      <file>razormodman_8cpp.html</file>
+      <file>razormodman_8cpp__incl.png</file>
+      <file>todo.html</file>
+      <file>annotated.html</file>
+      <file>classes.html</file>
+      <file>hierarchy.html</file>
+      <file>functions.html</file>
+      <file>functions_func.html</file>
+      <file>functions_enum.html</file>
+      <file>functions_eval.html</file>
+      <file>classAddPluginDialog.html</file>
+      <file>classAddPluginDialog-members.html</file>
+      <file>classDesktopIcon.html</file>
+      <file>classDesktopIcon__coll__graph.png</file>
+      <file>classDesktopIcon-members.html</file>
+      <file>classDesktopSwitch.html</file>
+      <file>classDesktopSwitch-members.html</file>
+      <file>classFileIcon.html</file>
+      <file>classFileIcon-members.html</file>
+      <file>classPowerManager.html</file>
+      <file>classPowerManager-members.html</file>
+      <file>classQuickLaunchAction.html</file>
+      <file>classQuickLaunchAction-members.html</file>
+      <file>classRazorDeskIconBase.html</file>
+      <file>classRazorDeskIconBase__inherit__graph.png</file>
+      <file>classRazorDeskIconBase-members.html</file>
+      <file>classRazorDeskIconDesktop.html</file>
+      <file>classRazorDeskIconDesktop__inherit__graph.png</file>
+      <file>classRazorDeskIconDesktop__coll__graph.png</file>
+      <file>classRazorDeskIconDesktop-members.html</file>
+      <file>classRazorDeskIconFile.html</file>
+      <file>classRazorDeskIconFile__inherit__graph.png</file>
+      <file>classRazorDeskIconFile__coll__graph.png</file>
+      <file>classRazorDeskIconFile-members.html</file>
+      <file>classRazorDeskManager.html</file>
+      <file>classRazorDeskManager-members.html</file>
+      <file>classRazorModuleManager.html</file>
+      <file>classRazorModuleManager-members.html</file>
+      <file>classRazorMount.html</file>
+      <file>classRazorMount-members.html</file>
+      <file>classRazorPanel.html</file>
+      <file>classRazorPanel-members.html</file>
+      <file>classRazorPluginInfo.html</file>
+      <file>classRazorPluginInfo__inherit__graph.png</file>
+      <file>classRazorPluginInfo__coll__graph.png</file>
+      <file>classRazorPluginInfo-members.html</file>
+      <file>classRazorQuickLaunch.html</file>
+      <file>classRazorQuickLaunch-members.html</file>
+      <file>classRazorShortcutButton.html</file>
+      <file>classRazorShortcutButton-members.html</file>
+      <file>classRazorTray.html</file>
+      <file>classRazorTray-members.html</file>
+      <file>classRazorWorkSpace.html</file>
+      <file>classRazorWorkSpace__coll__graph.png</file>
+      <file>classRazorWorkSpace-members.html</file>
+      <file>classRazorWorkSpaceManager.html</file>
+      <file>classRazorWorkSpaceManager-members.html</file>
+      <file>classSessionDBusAdaptor.html</file>
+      <file>classSessionDBusAdaptor__coll__graph.png</file>
+      <file>classSessionDBusAdaptor-members.html</file>
+      <file>classXCursorThemeModel.html</file>
+      <file>classXCursorThemeModel-members.html</file>
+      <file>classXdgAction.html</file>
+      <file>classXdgAction__coll__graph.png</file>
+      <file>classXdgAction-members.html</file>
+      <file>classXdgAutoStart.html</file>
+      <file>classXdgAutoStart-members.html</file>
+      <file>classXdgDesktopFile.html</file>
+      <file>classXdgDesktopFile__inherit__graph.png</file>
+      <file>classXdgDesktopFile-members.html</file>
+      <file>classXdgDirs.html</file>
+      <file>classXdgDirs-members.html</file>
+      <file>classXdgMenu.html</file>
+      <file>classXdgMenu-members.html</file>
+      <file>classXdgMenuWidget.html</file>
+      <file>classXdgMenuWidget-members.html</file>
+      <file>classXfitMan.html</file>
+      <file>classXfitMan-members.html</file>
+      <file>inherits.html</file>
+      <file>inherit_graph_0.png</file>
+      <file>inherit_graph_1.png</file>
+      <file>inherit_graph_2.png</file>
+      <file>inherit_graph_3.png</file>
+      <file>inherit_graph_4.png</file>
+      <file>inherit_graph_5.png</file>
+      <file>inherit_graph_6.png</file>
+      <file>inherit_graph_7.png</file>
+      <file>inherit_graph_8.png</file>
+      <file>inherit_graph_9.png</file>
+      <file>inherit_graph_10.png</file>
+      <file>inherit_graph_11.png</file>
+      <file>inherit_graph_12.png</file>
+      <file>inherit_graph_13.png</file>
+      <file>inherit_graph_14.png</file>
+      <file>inherit_graph_15.png</file>
+      <file>inherit_graph_16.png</file>
+      <file>inherit_graph_17.png</file>
+      <file>inherit_graph_18.png</file>
+      <file>inherit_graph_19.png</file>
+      <file>inherit_graph_20.png</file>
+      <file>inherit_graph_21.png</file>
+      <file>inherit_graph_22.png</file>
+      <file>inherit_graph_23.png</file>
+      <file>inherit_graph_24.png</file>
+      <file>inherit_graph_25.png</file>
+      <file>inherit_graph_26.png</file>
+      <file>inherit_graph_27.png</file>
+      <file>inherit_graph_28.png</file>
+      <file>classRazorAppSwitcher_1_1Application.html</file>
+      <file>classRazorAppSwitcher_1_1Application__coll__graph.png</file>
+      <file>classRazorAppSwitcher_1_1Application-members.html</file>
+      <file>classRazorAppSwitcher_1_1SwitcherItem.html</file>
+      <file>classRazorAppSwitcher_1_1SwitcherItem-members.html</file>
+      <file>classRazorAppSwitcher_1_1AppSwitcher.html</file>
+      <file>classRazorAppSwitcher_1_1AppSwitcher-members.html</file>
+      <file>classRazorConfig_1_1MainWindow.html</file>
+      <file>classRazorConfig_1_1MainWindow-members.html</file>
+      <file>graph_legend.png</file>
+      <file>graph_legend.html</file>
+      <file>files.html</file>
+      <file>globals.html</file>
+      <file>globals_func.html</file>
+    </files>
+  </filterSection>
+</QtHelpProject>

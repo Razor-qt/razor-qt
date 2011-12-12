@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classRazorDeskIconBase.html" title="Abstract base for all desktop icons. It does all shared tasks like painting, moving, mouse action catching... &quot;Icon&quot; is QAbstractButton based now to simplufy QSS styling and implementation of well&#45;behaved minimal widgets too." alt="" coords="7,32,148,61"/>
+<area shape="rect" id="node3" href="$classRazorDeskIconDesktop.html" title="Icon for the XDG desktop file. It uses XdgDesktopFile handler from librazorqt." alt="" coords="197,5,360,35"/>
+<area shape="rect" id="node5" href="$classRazorDeskIconFile.html" title="Icon for standard file. It uses QDesktopServices to launch the &quot;open with&quot; application by file mime t..." alt="" coords="212,59,345,88"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$classRazorDeskIconBase.html" title="Abstract base for all desktop icons. It does all shared tasks like painting, moving, mouse action catching... &quot;Icon&quot; is QAbstractButton based now to simplufy QSS styling and implementation of well&#45;behaved minimal widgets too." alt="" coords="5,5,147,35"/>
+<area shape="rect" id="node4" href="$classXdgDesktopFile.html" title="Desktop files handling. XdgDesktopFile class gives the interface for reading the values from the XDG ..." alt="" coords="171,5,285,35"/>
+</map>

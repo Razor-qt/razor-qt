@@ -1,0 +1,3 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classRazorConfig_1_1MainWindow.html" title="Main config window. Just read desktop files from RAZOR_CONFIG_MODULES_DIR (defined, usually /usr/share/razor/razor&#45;config) and list them in view. Then it can start those standalone apps." alt="" coords="5,5,184,35"/>
+</map>
