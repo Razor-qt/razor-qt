@@ -332,14 +332,14 @@ void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
 }
 
 
-///************************************************
-// LC_MESSAGES value	Possible keys in order of matching
-// lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
-//                        default value
-// lang_COUNTRY	        lang_COUNTRY, lang, default value
-// lang@MODIFIER	        lang@MODIFIER, lang, default value
-// lang	                lang, default value
-// ************************************************/
+/************************************************
+ LC_MESSAGES value	Possible keys in order of matching
+ lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
+                        default value
+ lang_COUNTRY	        lang_COUNTRY, lang, default value
+ lang@MODIFIER	        lang@MODIFIER, lang, default value
+ lang	                lang, default value
+ ************************************************/
 QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
 {
     QString lang = getenv("LC_MESSAGES");
