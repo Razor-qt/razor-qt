@@ -37,7 +37,8 @@
 #include <QtGui/QIcon>
 
 class XdgDesktopFilePrivate;
-
+class XdgDesktopFileData;
+	
 /**
  \brief Desktop files handling.
  XdgDesktopFile class gives the interface for reading the values from the XDG .desktop file.
@@ -51,7 +52,6 @@ class XdgDesktopFilePrivate;
  Note that not all methods in this class make sense for all types of desktop files.
  \author Alexander Sokoloff <sokoloff.a@gmail.ru>
  */
-class XdgDesktopFileData;
 
 class XdgDesktopFile
 {
