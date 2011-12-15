@@ -71,6 +71,7 @@ RazorAboutDLGPrivate::RazorAboutDLGPrivate()
     "<li>Paul Gnther (for desktop backgrounds)</li>"
     "<li>Manuel Meier (for ideas)</li>"
     "<li>Alexander Zakher (for the name)</li>"
+    "<li>Alexey Nosov (for the A-MeGo theme)</li>"
     "<li>and KDE (http://www.kde.org)</li>"
     "</body></html>");
     
