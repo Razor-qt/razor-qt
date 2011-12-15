@@ -29,7 +29,10 @@ bool UPower::connectInterfaces() {
         m_interface = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower",
                                          QDBusConnection::systemBus());
         if(!m_interface->isValid()) {
+	    m_interface->deleteLater();
             m_interface = 0;
+	    if (m_interfaceProps)
+                m_interfaceProps->deleteLater();
             m_interfaceProps = 0;
             return false;
         }
@@ -43,7 +46,10 @@ bool UPower::connectInterfaces() {
         m_interfaceProps = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower",
                                               "org.freedesktop.DBus.Properties", QDBusConnection::systemBus());
         if(!m_interfaceProps->isValid()) {
+	    if (m_interface)
+	        m_interface->deleteLater();
             m_interface = 0;
+	    m_interfaceProps->deleteLater();
             m_interfaceProps = 0;
             return false;
         }
@@ -55,10 +61,15 @@ bool UPower::connectInterfaces() {
 }
 
 const QString UPower::version() const {
+    if (!m_interfaceProps)
+        return "n/a";
     return m_interfaceProps->call( "Get", m_interfaceProps->interface(), "DaemonVersion" ).arguments().at(0).value<QDBusVariant>().variant().toString();
 }
 
 void UPower::probeDevices() {
+    if (!m_interface)
+        return;
+
     QDBusArgument argument = m_interface->call( "EnumerateDevices" ).arguments().at(0).value<QDBusArgument>();
 
     if( m_interface->lastError().type() == QDBusError::NoError ) {
@@ -81,9 +92,12 @@ void UPower::deviceAdded(QString path) {
 }
 
 void UPower::changed() {
+    if (!m_interfaceProps)
+        return;
+
     QSettings settings;
     settings.beginGroup("Alert");
-        bool alertOnLow = settings.value( "Low", false ).toBool();
+    bool alertOnLow = settings.value( "Low", false ).toBool();
     settings.endGroup();
 
     if(alertOnLow) {
@@ -139,12 +153,12 @@ bool UPower::canHalt() {
 }
 
 bool UPower::canHibernate() {
-    return m_interfaceProps->call( "Get", m_interface->interface(), "CanHibernate" ).arguments().at(0).value<QDBusVariant>().variant().toBool()
-	    && m_interface->call( "HibernateAllowed" ).arguments().at(0).toBool();
+    return m_interfaceProps && m_interfaceProps->call( "Get", m_interface->interface(), "CanHibernate" ).arguments().at(0).value<QDBusVariant>().variant().toBool()
+	    && m_interface && m_interface->call( "HibernateAllowed" ).arguments().at(0).toBool();
 }
 
 bool UPower::canSuspend() {
-    return m_interfaceProps->call( "Get", m_interface->interface(), "CanSuspend" ).arguments().at(0).value<QDBusVariant>().variant().toBool()
-	    && m_interface->call( "SuspendAllowed" ).arguments().at(0).toBool();
+    return m_interfaceProps && m_interfaceProps->call( "Get", m_interface->interface(), "CanSuspend" ).arguments().at(0).value<QDBusVariant>().variant().toBool()
+	    && m_interface && m_interface->call( "SuspendAllowed" ).arguments().at(0).toBool();
 }
 
