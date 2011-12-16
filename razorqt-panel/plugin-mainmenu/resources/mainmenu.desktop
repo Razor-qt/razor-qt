@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Aplication menu
+Name=Application menu
 Name[ru]=Меню программ
 Name[pl]=Menu
 Comment=Menu based application launcher
