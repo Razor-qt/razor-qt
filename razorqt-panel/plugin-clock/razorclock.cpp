@@ -78,7 +78,6 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 void RazorClock::updateTime()
 {
     gui->setText(QDateTime::currentDateTime().toString(clockFormat));
-    gui->setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
 }
 
 /**
@@ -264,6 +263,11 @@ bool ClockLabel::event(QEvent *event)
     if (event->type() == QEvent::FontChange)
     {
         emit fontChanged();
+    }
+
+    if (event->type() == QEvent::ToolTip)
+    {
+        setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
     }
 
     return QLabel::event(event);
