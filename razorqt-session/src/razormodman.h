@@ -44,7 +44,7 @@ as well.
 Processes in RazorModuleManager are split into 2 sets.
  - basic processes, window manager, Razor components. Which has to be started
    first.
- - autostart processes, user defined 3rd party apps, which hast to be started
+ - autostart processes, user defined 3rd party apps, which has to be started
    *after* razor parts are running (eg. due panel's systray). Autostart is delayed
    in the RazorModuleManager constructor.
 
