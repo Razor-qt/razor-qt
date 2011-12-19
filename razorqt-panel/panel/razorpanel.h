@@ -62,6 +62,9 @@ public:
     virtual QMenu* popupMenu(QWidget *parent) const;
     void x11EventFilter(XEvent* event);
 
+
+
+
 public slots:
     void show();
 

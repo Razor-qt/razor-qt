@@ -34,6 +34,8 @@
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorplugininfo.h>
 
+#include "configpaneldialog.h"
+
 #include <QtCore/QString>
 #include <QtCore/QDebug>
 #include <QtCore/QLocale>
@@ -60,6 +62,7 @@
 #define CFG_KEY_SCREENNUM   "desktop"
 #define CFG_KEY_POSITION    "position"
 #define CFG_KEY_PLUGINS     "plugins"
+#define CFG_KEY_HEIGHT      "height"
 
 #define CFG_FULLKEY_PLUGINS "panel/plugins"
 
@@ -156,6 +159,8 @@ void RazorPanelPrivate::screensChangeds()
     if (! canPlacedOn(mScreenNum, mPosition))
         mScreenNum = findAvailableScreen(mPosition);
 
+
+    //emit RazorPanel-realign();
     realign();
 }
 
@@ -348,14 +353,20 @@ void RazorPanelPrivate::realign()
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     QRect rect = screen;
     QSize sizeHint = q->sizeHint();
+
+    // Panel height: load from file, else - use default
+    mSettings->beginGroup(CFG_PANEL_GROUP);
+    int mHeight = mSettings->value(CFG_KEY_HEIGHT, sizeHint.height()).toInt();
+    mSettings->endGroup();
+
     switch (mPosition)
     {
         case RazorPanel::PositionTop:
-            rect.setHeight(sizeHint.height());
+            rect.setHeight(mHeight);
             break;
 
         case RazorPanel::PositionBottom:
-            rect.setHeight(sizeHint.height());
+            rect.setHeight(mHeight);
             rect.moveBottom(screen.bottom());
             break;
 
@@ -563,6 +574,21 @@ void RazorPanelPrivate::showAddPluginDialog()
 
 }
 
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::showConfigPanelDialog()
+{
+    Q_Q(RazorPanel);
+    QSize sizeHint = q->sizeHint();
+
+    int heightDefault=sizeHint.height();
+    ConfigPanelDialog* dlg = new ConfigPanelDialog (heightDefault, q);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    //dlg->exec();
+    dlg->show();
+
+}
 
 /************************************************
 
@@ -689,7 +715,7 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
     QMenu* menu = new QMenu(tr("Panel"), parent);
     menu->setIcon(XdgIcon::fromTheme("configure-toolbars"));
     QAction* a;
-    
+
 #ifdef DEBUG
     Q_Q(const RazorPanel);
     menu->addAction("Exit", q, SLOT(close()));
@@ -769,6 +795,12 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
 
         positionMenu->addSeparator();
     }
+
+    menu->addSeparator();
+    a = menu->addAction(tr("Configure panel"));
+    connect(a, SIGNAL(triggered()), this, SLOT(showConfigPanelDialog()));
+    menu->addAction(a);
+
 
     return menu;
 }
