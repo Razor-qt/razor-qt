@@ -30,11 +30,10 @@
 #include "razorpanelplugin.h"
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
+#include "configpaneldialog.h"
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorplugininfo.h>
-
-#include "configpaneldialog.h"
 
 #include <QtCore/QString>
 #include <QtCore/QDebug>
@@ -63,6 +62,10 @@
 #define CFG_KEY_POSITION    "position"
 #define CFG_KEY_PLUGINS     "plugins"
 #define CFG_KEY_HEIGHT      "height"
+#define CFG_KEY_WIDTH       "width"
+#define CFG_KEY_WIDTH_TYPE  "widthType"
+#define CFG_KEY_ALIGNMENT   "alignment"
+
 
 #define CFG_FULLKEY_PLUGINS "panel/plugins"
 
@@ -98,7 +101,6 @@ QString positionToStr(RazorPanel::Position position)
 
     return "";
 }
-
 
 
 /************************************************
@@ -159,8 +161,6 @@ void RazorPanelPrivate::screensChangeds()
     if (! canPlacedOn(mScreenNum, mPosition))
         mScreenNum = findAvailableScreen(mPosition);
 
-
-    //emit RazorPanel-realign();
     realign();
 }
 
@@ -357,16 +357,53 @@ void RazorPanelPrivate::realign()
     // Panel height: load from file, else - use default
     mSettings->beginGroup(CFG_PANEL_GROUP);
     int mHeight = mSettings->value(CFG_KEY_HEIGHT, sizeHint.height()).toInt();
+    int mWidthType = mSettings->value(CFG_KEY_WIDTH_TYPE, 0).toInt();
+    int mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
+    int mAlignment = mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt();
     mSettings->endGroup();
 
     switch (mPosition)
     {
         case RazorPanel::PositionTop:
-            rect.setHeight(mHeight);
+        rect.setHeight(mHeight);
+
+        if (mWidthType==0)   // size in percents
+        {
+            if (mAlignment==2)      //align - center
+                rect.setLeft((screen.width()-(screen.width()*mWidth/100))/2);
+            if (mAlignment==1) //align - rigth
+                rect.setLeft(screen.width()-(screen.width()*mWidth/100));
+            rect.setWidth(screen.width()*mWidth/100);
+        }
+        else                // size in pixels
+        {
+            if (mAlignment==2)      //align - center
+                rect.setLeft((screen.width()-mWidth)/2);
+            if (mAlignment==1) //align - rigth
+                rect.setLeft(screen.width()-mWidth);
+            rect.setWidth(mWidth);
+        }
             break;
 
         case RazorPanel::PositionBottom:
             rect.setHeight(mHeight);
+
+            if (mWidthType==0)   // size in percents
+            {
+                if (mAlignment==2)      //align - center
+                    rect.setLeft((screen.width()-(screen.width()*mWidth/100))/2);
+                if (mAlignment==1) //align - rigth
+                    rect.setLeft(screen.width()-(screen.width()*mWidth/100));
+                rect.setWidth(screen.width()*mWidth/100);
+            }
+            else                // size in pixels
+            {
+                if (mAlignment==2)      //align - center
+                    rect.setLeft((screen.width()-mWidth)/2);
+                if (mAlignment==1) //align - rigth
+                    rect.setLeft(screen.width()-mWidth);
+                rect.setWidth(mWidth);
+            }
             rect.moveBottom(screen.bottom());
             break;
 
@@ -580,10 +617,12 @@ void RazorPanelPrivate::showAddPluginDialog()
 void RazorPanelPrivate::showConfigPanelDialog()
 {
     Q_Q(RazorPanel);
+    QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     QSize sizeHint = q->sizeHint();
 
     int heightDefault=sizeHint.height();
-    ConfigPanelDialog* dlg = new ConfigPanelDialog (heightDefault, q);
+    int widthMax=screen.width();
+    ConfigPanelDialog* dlg = new ConfigPanelDialog (heightDefault, widthMax, q);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     //dlg->exec();
     dlg->show();
@@ -800,7 +839,6 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
     a = menu->addAction(tr("Configure panel"));
     connect(a, SIGNAL(triggered()), this, SLOT(showConfigPanelDialog()));
     menu->addAction(a);
-
 
     return menu;
 }

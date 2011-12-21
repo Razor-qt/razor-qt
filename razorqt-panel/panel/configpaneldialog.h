@@ -41,20 +41,28 @@ class ConfigPanelDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit ConfigPanelDialog(int hDefault, QWidget *parent = 0);
+    explicit ConfigPanelDialog(int hDefault, int wMax, QWidget *parent = 0);
     ~ConfigPanelDialog();
 
 public slots:
     void saveSettings();
-    void defaultClicked();
-    void spinBoxValueChanged(int q);
+    void spinBoxHeightValueChanged(int q);
+    void spinBoxWidthValueChanged(int q);
+    void comboBoxWidthTypeIndexChanged(int q);
+    void comboBoxAlignmentIndexChanged(int q);
 
     
 private:
     Ui::ConfigPanelDialog *ui;
     QString mConfigFile;
     RazorSettings* mSettings;
-    int heightDefault;
+    int mHeightDefault;
+    int mHeight;
+    int mWidthMax;
+    int mWidthType;
+    int mWidth;
+    int mAlignment;
+
 };
 
 #endif // CONFIGPANELDIALOG_H

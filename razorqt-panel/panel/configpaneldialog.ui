@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>195</width>
-    <height>99</height>
+    <width>260</width>
+    <height>141</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>195</width>
-    <height>99</height>
+    <width>260</width>
+    <height>141</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>195</width>
-    <height>99</height>
+    <width>260</width>
+    <height>141</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -35,15 +35,15 @@
     </rect>
    </property>
    <property name="text">
-    <string>Height</string>
+    <string>Height:</string>
    </property>
   </widget>
-  <widget class="QSpinBox" name="spinBox">
+  <widget class="QSpinBox" name="spinBox_height">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>10</y>
-     <width>71</width>
+     <width>101</width>
      <height>22</height>
     </rect>
    </property>
@@ -54,30 +54,104 @@
     <number>250</number>
    </property>
   </widget>
-  <widget class="QPushButton" name="defaultButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>60</y>
-     <width>80</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Default</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>60</y>
+     <x>170</x>
+     <y>110</y>
      <width>80</width>
      <height>24</height>
     </rect>
    </property>
    <property name="text">
     <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_widthType">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>40</y>
+     <width>41</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>%</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>px</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>45</y>
+     <width>31</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Width:</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_width">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>40</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>250</number>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_alignment">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>70</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Left</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Right</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Center</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>75</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Alignment</string>
    </property>
   </widget>
  </widget>
