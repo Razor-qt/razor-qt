@@ -1,5 +1,6 @@
 include(RazorLibSuffix)
 
+find_package(X11 REQUIRED)
 
 # our Qxt library
 set ( razorqxt_HDRS
