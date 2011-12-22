@@ -21,3 +21,7 @@ GenericName[pl]=Ustawienia pulpitu Razor-Qt
 Name[es]=Configurador de Escritorio Razor
 Comment[es]=Configura el módulo de escritorio de Razor-Qt
 GenericName[es]=Configurador de Escritorio Razor
+
+Name[hu]=Razor asztalbeállító
+Comment[hu]=A Razor-Qt asztali modul beállítása
+GenericName[hu]=Razor asztalbeállító
