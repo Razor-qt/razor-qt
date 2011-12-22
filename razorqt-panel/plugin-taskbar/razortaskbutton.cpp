@@ -358,7 +358,7 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
 //    qDebug() << "    * BelowLayer    " << state.BelowLayer;
 //    qDebug() << "    * Attention     " << state.Attention;
 
-    QMenu menu(tr("Appliction"));
+    QMenu menu(tr("Application"));
     QAction* a;
 
     /* KDE menu *******

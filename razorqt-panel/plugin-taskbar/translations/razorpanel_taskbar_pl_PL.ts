@@ -5,7 +5,7 @@
     <name>RazorTaskButton</name>
     <message>
         <location filename="../razortaskbutton.cpp" line="360"/>
-        <source>Appliction</source>
+        <source>Application</source>
         <translation>Aplikacja</translation>
     </message>
     <message>
