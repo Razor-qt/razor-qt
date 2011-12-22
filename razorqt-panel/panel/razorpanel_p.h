@@ -68,6 +68,7 @@ public slots:
     void pluginMoved(QWidget* pluginWidget);
     void screensChangeds();
     void showAddPluginDialog();
+    void showConfigPanelDialog();
     void addPlugin(const RazorPluginInfo &pluginInfo);
     void onRemovePlugin();
     void onMovePlugin();

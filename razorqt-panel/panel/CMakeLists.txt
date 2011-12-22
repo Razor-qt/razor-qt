@@ -13,6 +13,7 @@ set(HEADERS
     razorpanelapplication.h
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
+    configpaneldialog.h
 )
 
 set(SOURCES
@@ -22,6 +23,7 @@ set(SOURCES
     razorpanelapplication.cpp
     razorpanellayout.cpp
     razorpanelpluginconfigdialog.cpp
+    configpaneldialog.cpp
 )
 
 set(MOCS
@@ -32,6 +34,7 @@ set(MOCS
     razorpanelapplication.h
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
+    configpaneldialog.h
 )
 
 set(LIBRARIES
@@ -43,6 +46,12 @@ set(LIBRARIES
 set(RESOURCES
 
 )
+
+set ( razorqt_UIS
+    configpaneldialog.ui
+)
+
+QT4_WRAP_UI(UI_HEADERS ${razorqt_UIS})
 
 add_definitions(-DDEFULT_PANEL_PLUGINS=\"MainMenu,Quicklaunch,TaskBar,Tray,Clock\")
 
