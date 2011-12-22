@@ -5,7 +5,7 @@
     <name>RazorTaskButton</name>
     <message>
         <location filename="../razortaskbutton.cpp" line="360"/>
-        <source>Appliction</source>
+        <source>Application</source>
         <translation>Program</translation>
     </message>
     <message>
@@ -119,7 +119,7 @@
     </message>
     <message>
         <location filename="../razortaskbarconfiguration.ui" line="49"/>
-        <source>Window List Apperance</source>
+        <source>Window List Appearance</source>
         <translation>Vzhled seznamu oken</translation>
     </message>
     <message>
