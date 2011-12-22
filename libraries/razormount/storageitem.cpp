@@ -1,4 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)GPL2
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org

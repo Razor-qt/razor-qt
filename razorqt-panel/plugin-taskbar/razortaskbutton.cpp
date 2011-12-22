@@ -115,6 +115,15 @@ void RazorTaskButton::updateIcon()
 /************************************************
 
  ************************************************/
+void RazorTaskButton::setShowOnlyCurrentDesktopTasks(bool value)
+{
+    mShowOnlyCurrentDesktopTasks = value;
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorTaskButton::nextCheckState()
 {
     setChecked(xfitMan().getActiveAppWindow() == mWindow);
@@ -527,6 +536,16 @@ void  RazorTaskButton::handlePropertyNotify(XPropertyEvent* event)
         return;
     }
 
+    if (event->atom == XfitMan::atom("_NET_WM_DESKTOP"))
+    {
+        if (mShowOnlyCurrentDesktopTasks)
+        {
+            int desktop = desktopNum();
+            setHidden(desktop != -1 && desktop != xfitMan().getActiveDesktop());
+        }
+        return;
+    }
+
 
 //    char* aname = XGetAtomName(QX11Info::display(), event->atom);
 //    qDebug() << "** XPropertyEvent ********************";
@@ -547,3 +566,4 @@ int RazorTaskButton::desktopNum() const
 
 RazorTaskButton* RazorTaskButton::mCheckedBtn = 0;
 
+bool RazorTaskButton::mShowOnlyCurrentDesktopTasks = false;

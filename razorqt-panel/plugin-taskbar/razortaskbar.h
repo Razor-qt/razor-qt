@@ -65,6 +65,7 @@ private:
     QHash<Window, RazorTaskButton*> mButtonsHash;
     QBoxLayout*  mLayout;
     RazorTaskButton* buttonByWindow(Window window) const;
+    bool windowOnActiveDesktop(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;
     int buttonMaxWidth;
@@ -73,6 +74,7 @@ private:
     bool mShowOnlyCurrentDesktopTasks;
 
     void handlePropertyNotify(XPropertyEvent* event);
+    void wheelEvent(QWheelEvent* event);
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

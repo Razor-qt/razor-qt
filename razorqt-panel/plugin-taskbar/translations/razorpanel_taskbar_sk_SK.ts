@@ -2,7 +2,7 @@
 <context>
     <name>RazorTaskButton</name>
     <message>
-        <source>Appliction</source>
+        <source>Application</source>
         <translation>Aplikácia</translation>
     </message>
     <message>
@@ -93,7 +93,7 @@
         <translation>Zobraziť okná z každej plochy</translation>
     </message>
     <message>
-        <source>Window List Apperance</source>
+        <source>Window List Appearance</source>
         <translation>Vzhľad zoznamu okien</translation>
     </message>
     <message>
