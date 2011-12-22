@@ -79,7 +79,8 @@ public:
  ************************************************/
 XdgDesktopFileData::XdgDesktopFileData():
     mIsValid(false),
-    mValidIsChecked(false)
+    mValidIsChecked(false),
+    mIsShow(Undef)
 {
 }
 
