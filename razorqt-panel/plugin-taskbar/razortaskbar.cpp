@@ -162,7 +162,8 @@ void RazorTaskBar::refreshButtonVisibility()
     {
         i.next();
         i.value()->setHidden(mShowOnlyCurrentDesktopTasks &&
-                             i.value()->desktopNum() != curretDesktop
+                             i.value()->desktopNum() != curretDesktop &&
+                             i.value()->desktopNum() != -1
                             );
     }
 }
@@ -230,6 +231,8 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
         if (event->atom == XfitMan::atom("_NET_ACTIVE_WINDOW"))
         {
             activeWindowChanged();
+            if (mShowOnlyCurrentDesktopTasks)
+                refreshTaskList();
             return;
         }
 
