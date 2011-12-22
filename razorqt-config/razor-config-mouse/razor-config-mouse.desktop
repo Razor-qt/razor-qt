@@ -17,3 +17,7 @@ GenericName[ru]=Настройки мыши
 Name[pl]=Ustawienia myszy Razor-Qt
 Comment[pl]=Konfiguracja myszy w Razor-Qt
 GenericName[pl]=Ustawuenua myszy Razor-Qt
+
+Name[es]=Configuración de Ratón Razor
+Comment[es]=Configura un ratón X11
+GenericName[es]=Configuración de Ratón Razor
