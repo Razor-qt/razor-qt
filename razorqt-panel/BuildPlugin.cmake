@@ -28,7 +28,7 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     qt4_add_resources(QRC_SOURCES ${RESOURCES})
     qt4_wrap_ui(UI_SOURCES ${UIS})
 
-    add_library(${Name} SHARED ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UIS})
+    add_library(${Name} MODULE ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UIS})
     target_link_libraries(${Name} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBRARIES})
 
     install(TARGETS ${Name} DESTINATION ${PLUGIN_DIR})
