@@ -119,7 +119,7 @@
     </message>
     <message>
         <location filename="../razortaskbarconfiguration.ui" line="49"/>
-        <source>Window List Apperance</source>
+        <source>Window List Appearance</source>
         <translation>Vzhled seznamu oken</translation>
     </message>
     <message>

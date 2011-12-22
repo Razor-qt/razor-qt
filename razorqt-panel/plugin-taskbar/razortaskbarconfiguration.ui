@@ -46,7 +46,7 @@
    <item>
     <widget class="QGroupBox" name="WLApperanceGB">
      <property name="title">
-      <string>Window List Apperance</string>
+      <string>Window List Appearance</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
