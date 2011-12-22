@@ -1,4 +1,6 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL2
+
  ****************************************************************************
  **
  ** Copyright (C) Qxt Foundation. Some rights reserved.

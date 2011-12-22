@@ -1,4 +1,5 @@
 /*
+ * (c)GPL3
 This is probably temporary code probably. We will merge it into potential shared library.
 
 This code is based on cool Brieuc ROBLIN's pyrotools.org applets, license GPLv3.

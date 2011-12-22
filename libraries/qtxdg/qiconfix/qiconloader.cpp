@@ -1,4 +1,6 @@
-// BEGIN_COMMON_COPYRIGHT_HEADER
+/* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL2
+ */
 /****************************************************************************
 **
 ** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
