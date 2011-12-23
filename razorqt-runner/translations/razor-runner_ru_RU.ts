@@ -72,7 +72,7 @@
     <message>
         <location filename="../providers.cpp" line="216"/>
         <source>History</source>
-        <translation>Из истрии</translation>
+        <translation>Из истории</translation>
     </message>
     <message>
         <location filename="../providers.cpp" line="302"/>
