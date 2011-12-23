@@ -231,8 +231,6 @@ void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
         if (event->atom == XfitMan::atom("_NET_ACTIVE_WINDOW"))
         {
             activeWindowChanged();
-            if (mShowOnlyCurrentDesktopTasks)
-                refreshTaskList();
             return;
         }
 
@@ -323,6 +321,7 @@ void RazorTaskBar::settigsChanged()
     }
 
     mShowOnlyCurrentDesktopTasks = settings().value("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks).toBool();
+    RazorTaskButton::setShowOnlyCurrentDesktopTasks(mShowOnlyCurrentDesktopTasks);
     refreshTaskList();
 }
 
