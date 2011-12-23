@@ -39,6 +39,7 @@
 
 
 #include <QDesktopWidget>
+#include <QWheelEvent>
 
 #include <X11/Xlib.h>
 #include "razortaskbutton.h"
@@ -93,6 +94,24 @@ RazorTaskButton* RazorTaskBar::buttonByWindow(Window window) const
     return 0;
 }
 
+/************************************************
+
+ ************************************************/
+bool RazorTaskBar::windowOnActiveDesktop(Window window) const
+{
+    if (!mShowOnlyCurrentDesktopTasks)
+        return true;
+
+    XfitMan xf = xfitMan();
+    int desktop = xf.getWindowDesktop(window);
+    if (desktop == -1) // Show on all desktops
+        return true;
+
+    if (desktop == xf.getActiveDesktop())
+        return true;
+
+    return false;
+}
 
 /************************************************
 
@@ -156,15 +175,11 @@ void RazorTaskBar::refreshTaskList()
  ************************************************/
 void RazorTaskBar::refreshButtonVisibility()
 {
-    int curretDesktop = xfitMan().getActiveDesktop();
     QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
     while (i.hasNext())
     {
         i.next();
-        i.value()->setHidden(mShowOnlyCurrentDesktopTasks &&
-                             i.value()->desktopNum() != curretDesktop &&
-                             i.value()->desktopNum() != -1
-                            );
+        i.value()->setHidden(!windowOnActiveDesktop(i.key()));
     }
 }
 
@@ -217,7 +232,6 @@ void RazorTaskBar::x11EventFilter(XEvent* event)
  ************************************************/
 void RazorTaskBar::handlePropertyNotify(XPropertyEvent* event)
 {
-
     if (event->window == mRootWindow)
     {
         // Windows list changed ...............................
@@ -337,4 +351,22 @@ void RazorTaskBar::showConfigureDialog()
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+void RazorTaskBar::wheelEvent(QWheelEvent* event)
+{
+    XfitMan xf = xfitMan();
+    QList<Window> winList = xf.getClientList();
+    int current = winList.indexOf(xf.getActiveAppWindow());
+    int delta = event->delta() < 0 ? 1 : -1;
+
+    for (int ix = current + delta; 0 <= ix && ix < winList.size(); ix += delta)
+    {
+        Window window = winList.at(ix);
+        if (xf.acceptWindow(window) && windowOnActiveDesktop(window))
+        {
+            xf.raiseWindow(window);
+            break;
+        }
+    }
 }

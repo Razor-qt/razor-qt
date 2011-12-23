@@ -125,7 +125,7 @@ void DesktopSwitch::setDesktop(int desktop)
 void DesktopSwitch::wheelEvent(QWheelEvent* e)
 {
     int max = xfitMan().getNumDesktop() - 1;
-    int delta = e->delta() > 0 ? 1 : -1;
+    int delta = e->delta() < 0 ? 1 : -1;
     int current = xfitMan().getActiveDesktop() + delta;
     
     if (current > max)
