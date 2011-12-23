@@ -1,7 +1,7 @@
 project(libqtxdg)
 
 # additional cmake files
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 set (MAJOR_VERSION 0)
 set (MINOR_VERSION 1)
@@ -98,4 +98,5 @@ install(TARGETS qtxdg DESTINATION lib${LIB_SUFFIX})
 install(FILES ${QTXDG_PUBLIC_HDRS} DESTINATION include/qtxdg)
 install(FILES ${QTXDG_QM_FILES}    DESTINATION ${APP_SHARE_DIR})
 
-
+include(create_pkgconfig_file)
+create_pkgconfig_file(qtxdg "QtXdg, a Qt implementation of XDG standards")

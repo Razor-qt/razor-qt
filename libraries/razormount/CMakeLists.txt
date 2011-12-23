@@ -50,5 +50,8 @@ set_target_properties(razormount PROPERTIES
 install(TARGETS razormount DESTINATION lib${LIB_SUFFIX})
 install(FILES ${razormount_HDRS} DESTINATION include/razormount)
 
+include(create_pkgconfig_file)
+create_pkgconfig_file(razormount "Razor-qt library for removable media/devices")
+
 endif (NOT UDEV_STABLE)
 

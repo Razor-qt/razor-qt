@@ -27,7 +27,7 @@ message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
 message(STATUS "")
 
 # additional cmake files
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 include(RazorConfigRegister)
 
 
