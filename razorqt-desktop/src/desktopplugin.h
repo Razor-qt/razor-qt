@@ -1,4 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL3+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -44,13 +45,13 @@ public:
     };
 
     virtual QString info() { return QObject::tr("No info available"); };
-    
+
     static IconLaunchMode launchModeFromString(const QString & txt)
     {
         if (txt.toLower() == "doubleclick") return DoubleClick;
         return SingleClick;
     }
-    
+
     static QString stringFromLaunchMode(IconLaunchMode mode)
     {
         switch (mode)

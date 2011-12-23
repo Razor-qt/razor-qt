@@ -1,4 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL3+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -42,13 +43,13 @@ public:
 
     virtual QString info() { return QObject::tr("No info available"); };
     virtual QString instanceInfo() = 0;
-    
+
     virtual void setSizeAndPosition(const QPointF & position, const QSizeF & size) = 0;
     virtual void save() = 0;
     virtual void configure() = 0;
-    
+
     virtual bool blockGlobalMenu() = 0;
-    
+
     QString configId() { return m_configId; }
 
     //! \todo TODO/FIXME: maybe a candidate for RazorSettings...

@@ -1,4 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL3+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -35,7 +36,7 @@ class SuProcess : public QObject
 
 public:
     SuProcess(const QString & username, const QString & password, const QString & command);
-    
+
     int execute();
 
 private:

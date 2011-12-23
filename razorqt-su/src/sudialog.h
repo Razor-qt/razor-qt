@@ -1,4 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL3+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -23,7 +24,7 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
- 
+
 #ifndef SUDIALOG_H
 #define SUDIALOG_H
 

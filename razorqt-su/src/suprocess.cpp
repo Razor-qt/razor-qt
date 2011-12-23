@@ -1,4 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL3+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -23,7 +24,7 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
- 
+
 #include "suprocess.h"
 
 #include <QProcess>
@@ -43,12 +44,12 @@ int SuProcess::execute()
     qDebug() << "SuProcess execute:" << m_username << m_command;
     QProcess proc;
     QStringList args;
-    
+
     args << "-c" << m_command << m_username;
-    
+
     proc.start("su", args);
     qDebug() << "starting... with args:" << args;
-    
+
     if (!proc.waitForStarted())
     {
         qDebug() << "waitForStarted failed";
@@ -75,6 +76,6 @@ int SuProcess::execute()
     {
         QMessageBox::warning(0, tr("su error"), tr("Subshell cannot be found or subshell cannot be invoked."));
     }
-    
+
     return ret;
 }
