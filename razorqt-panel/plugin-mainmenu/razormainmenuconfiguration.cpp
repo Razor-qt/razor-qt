@@ -51,6 +51,8 @@ RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, QWid
     connect(ui->showTextCB, SIGNAL(toggled(bool)), this, SLOT(showTextChanged(bool)));
     connect(ui->textLE, SIGNAL(textEdited(QString)), this, SLOT(textButtonChanged(QString)));
     connect(ui->chooseMenuFilePB, SIGNAL(clicked()), this, SLOT(chooseMenuFile()));
+    
+    connect(ui->shortcutEd, SIGNAL(keySequenceChanged(QString)), this, SLOT(shortcutChanged(QString)));
 }
 
 RazorMainMenuConfiguration::~RazorMainMenuConfiguration()
@@ -69,9 +71,10 @@ void RazorMainMenuConfiguration::loadSettings()
         menuFile = XdgMenu::getMenuFileName();
     }
     ui->menuFilePathLE->setText(menuFile);
+    ui->shortcutEd->setKeySequence(mSettings.value("shortcut", "Alt+F1").toString());
 }
 
-void RazorMainMenuConfiguration::textButtonChanged(QString value)
+void RazorMainMenuConfiguration::textButtonChanged(const QString &value)
 {
     mSettings.setValue("text", value);
 }
@@ -89,6 +92,11 @@ void RazorMainMenuConfiguration::chooseMenuFile()
         ui->menuFilePathLE->setText(path);
         mSettings.setValue("menu_file", path);
     }
+}
+
+void RazorMainMenuConfiguration::shortcutChanged(const QString &value)
+{
+    mSettings.setValue("shortcut", ui->shortcutEd->keySequence().toString());
 }
 
 void RazorMainMenuConfiguration::dialogButtonsAction(QAbstractButton *btn)
