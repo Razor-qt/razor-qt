@@ -37,6 +37,7 @@
 #include <QtGui/QMessageBox>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
+#include <razorqxt/qxtglobalshortcut.h>
 
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgdesktopfile.h>
@@ -63,6 +64,9 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     mPowerManager->setParentWidget(panel());
 
     mScreenSaver = new ScreenSaver(this);
+    
+    mShortcut = new QxtGlobalShortcut(this);
+    connect(mShortcut, SIGNAL(activated()), this, SLOT(showMenu()));
 
     settigsChanged();
 
@@ -142,6 +146,8 @@ void RazorMainMenu::settigsChanged()
     mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
+    
+    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
 }
 
 

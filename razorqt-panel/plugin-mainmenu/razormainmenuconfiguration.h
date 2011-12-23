@@ -58,9 +58,10 @@ private slots:
     */
     void loadSettings();
     void dialogButtonsAction(QAbstractButton *btn);
-    void textButtonChanged(QString value);
+    void textButtonChanged(const QString &value);
     void showTextChanged(bool value);
     void chooseMenuFile();
+    void shortcutChanged(const QString &value);
 };
 
 #endif // RAZORMAINMENUCONFIGURATION_H

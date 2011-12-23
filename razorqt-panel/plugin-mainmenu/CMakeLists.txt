@@ -27,6 +27,7 @@ set(UIS
 
 set(LIBRARIES
   razorqt
+  razorqxt
 )
 
 set(QT_USE_QTXML 1)
