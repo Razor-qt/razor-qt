@@ -2,7 +2,7 @@
 
 #ALL=''
 #ONLY_ERRORS=0
-#COLOR=0
+COLOR='YES'
 DIR=../
 
 if [ -n "$COLOR" ]; then
@@ -45,7 +45,7 @@ for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null
     esac
 
     let "div = 20 - ${#license}"
-    printf "${color}%-20s %s${NORM}\n"  "${license}" $file$
+    printf "${color}%-20s %s${NORM}\n"  "${license}" "$file"
 done
 #echo
 #echo "LGPL:    $lgplCnt"
