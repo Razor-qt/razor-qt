@@ -25,6 +25,10 @@
         <source>Fvwm2 - a classical lightweight window manager</source>
         <translation>Fvwm2 - klasický odľahčený správca okien</translation>
     </message>
+    <message>
+        <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
+        <translation>Xfwm4 - správca okien pracovného prostredia Xfce</translation>
+    </message>
 </context>
 <context>
     <name>WmSelectDialog</name>

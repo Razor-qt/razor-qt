@@ -2,14 +2,23 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Task Manager
-Name[ru]=Панель задач
-Name[pl]=Pasek zadań
-Name[es]=Administrador de Tareas
-Name[hu]=Feladatkezelő
-Name[de]=Anwendungsverwalter
 Comment=Switch between running applications
-Comment[ru]=Переключение между запущенными программами
-Comment[pl]=Przełączaj się pomiędzy otwartymi aplikacjami
-Comment[es]=Cambia entre aplicaciones activas
-Comment[hu]=Váltás a futú alkalmazások között
+
+Name[de]=Anwendungsverwalter
 Comment[de]=Wechsel zwischen laufenden Anwendungen
+
+Name[es]=Administrador de Tareas
+Comment[es]=Cambia entre aplicaciones activas
+
+Name[hu]=Feladatkezelő
+Comment[hu]=Váltás a futú alkalmazások között
+
+Name[pl]=Pasek zadań
+Comment[pl]=Przełączaj się pomiędzy otwartymi aplikacjami
+
+Name[ru]=Панель задач
+Comment[ru]=Переключение между запущенными программами
+
+Name[sk]=Správca úloh
+Comment[sk]=Prepínanie medzi bežiacimi aplikáciami
+

@@ -88,7 +88,7 @@ void Clock::startClock()
 
 QString Clock::instanceInfo()
 {
-    return tr("Clock");
+    return QObject::tr("Clock");
 }
 
 

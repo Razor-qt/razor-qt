@@ -2,14 +2,23 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=System tray
-Name[ru]=Системный лоток
-Name[pl]=Tacka systemowa
-Name[es]=Bandeja del sistema
-Name[hu]=Paneltálca
-Name[de]=Fensterleiste
 Comment=Access hidden applications minimized in the system tray
-Comment[ru]=Значки программ, свернутых в системный лоток
-Comment[pl]=Udostępnia ukryte aplikacje
-Comment[es]=Accede a aplicaciones ocultas minimizadas en la bandeja del sistema
-Comment[hu]=A paneltálcára minimalizált, rejtett alkalmazások elérése
+
+Name[de]=Fensterleiste
 Comment[de]=Zugang zu minimierten Anwendungen in der Fensterleiste
+
+Name[es]=Bandeja del sistema
+Comment[es]=Accede a aplicaciones ocultas minimizadas en la bandeja del sistema
+
+Name[hu]=Paneltálca
+Comment[hu]=A paneltálcára minimalizált, rejtett alkalmazások elérése
+
+Name[pl]=Tacka systemowa
+Comment[pl]=Udostępnia ukryte aplikacje
+
+Name[ru]=Системный лоток
+Comment[ru]=Значки программ, свернутых в системный лоток
+
+Name[sk]=Oznamovacia oblasť
+Comment[sk]=Prístup k skrytým aplikáciám minimalizovaným v oznamovacej oblasti
+

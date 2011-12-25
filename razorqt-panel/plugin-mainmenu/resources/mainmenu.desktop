@@ -2,14 +2,23 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Application menu
-Name[ru]=Меню программ
-Name[pl]=Menu
-Name[es]=Menu de Aplicaciones
-Name[hu]=Alkalmazásmenü
-Name[de]=Anwendungsmenü
 Comment=Menu based application launcher
-Comment[ru]=Меню запуска программ
-Comment[pl]=Główne menu
-Comment[es]=Lanzador de aplicaciones con menú
-Comment[hu]=Alkalmazásindító alapú menü
+
+Name[de]=Anwendungsmenü
 Comment[de]=Menü basierter Anwendungsstarter
+
+Name[es]=Menu de Aplicaciones
+Comment[es]=Lanzador de aplicaciones con menú
+
+Name[hu]=Alkalmazásmenü
+Comment[hu]=Alkalmazásindító alapú menü
+
+Name[pl]=Menu
+Comment[pl]=Główne menu
+
+Name[ru]=Меню программ
+Comment[ru]=Меню запуска программ
+
+Name[sk]=Menu aplikácií
+Comment[sk]=Spúšťanie aplikácií z menu
+

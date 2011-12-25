@@ -10,6 +10,14 @@ Name=Razor Configuration Center
 Comment=Configure Razor-Qt modules
 GenericName=Razor Configuration
 
+Name[es]=Centro de Configuración Razor
+Comment[es]=Configura módulos de Razor-Qt
+GenericName[es]=Configuración Razor
+
+Name[hu]=Razor beállítóközpont
+Comment[hu]=A Razor-Qt modulok beállítása
+GenericName[hu]=Razor beállítóközpont
+
 Name[ru]=Центр настроек Razor
 Comment[ru]=Центр настроек для модулей Razor-Qt
 GenericName[ru]=Центр настроек Razor
@@ -18,11 +26,7 @@ Name[pl]=Panel sterowania Razor
 Comment[pl]=Wszystkie ustawienia Razor-Qt
 GenericName[pl]=Panel sterowania Razor
 
-Name[es]=Centro de Configuración Razor
-Comment[es]=Configura módulos de Razor-Qt
-GenericName[es]=Configuración Razor
-
-Name[hu]=Razor beállítóközpont
-Comment[hu]=A Razor-Qt modulok beállítása
-GenericName[hu]=Razor beállítóközpont
+Name[sk]=Centrum nastavení
+Comment[sk]=Centrum nastavení prostredia Razor-Qt
+GenericName[sk]=Centrum nastavení
 

@@ -7,15 +7,18 @@ TryExec=metacity
 Name=Razor Desktop (metacity)
 Comment=Qt4 Desktop Environment
 
-Name[ru]=Рабочий стол Razor (metacity)
-Comment[ru]=Рабочий стол  на Qt
-
-Name[pl]=Pulpit Razor (metacity)
-Comment[pl]=Środowisko graficzne Qt4
-
 Name[es]=Escritorio Razor (metacity)
 Comment[es]=Entorno de Escritorio Qt4
 
 Name[hu]=Razor asztal (metacity)
 Comment[hu]=Qt4 asztali környezet
+
+Name[pl]=Pulpit Razor (metacity)
+Comment[pl]=Środowisko graficzne Qt4
+
+Name[ru]=Рабочий стол Razor (metacity)
+Comment[ru]=Рабочий стол  на Qt
+
+Name[sk]=Prostredie Razor (metacity)
+Comment[sk]=Pracovné prostredie v Qt4
 

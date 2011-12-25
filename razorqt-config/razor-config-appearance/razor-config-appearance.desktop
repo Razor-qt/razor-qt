@@ -11,10 +11,6 @@ Name=Razor Appearance Configuration
 Comment=Configure appearance of Razor desktop
 GenericName=Razor Appearance Configuration
 
-Name[ru]=Настройки внешнего вида
-Comment[ru]=Настройки внешнего вида Razor
-GenericName[ru]=Настройки внешнего вида
-
 Name[es]=Configuración de Aspecto Razor
 Comment[es]=Configura el aspecto del escritorio Razor
 GenericName[es]=Configuración de Aspecto Razor
@@ -26,3 +22,12 @@ GenericName[hu]=Razor megjelenésbeállító
 Name[de]=Razor Erscheinungsbild Einstellunegn
 Comment[de]=Einstellungen zum Aussehen der Razor Arbeitsfläche
 GenericName[de]=Razor Erscheinungsbild Einstellunegn
+
+Name[ru]=Настройки внешнего вида
+Comment[ru]=Настройки внешнего вида Razor
+GenericName[ru]=Настройки внешнего вида
+
+Name[sk]=Nastavenie vzhľadu
+Comment[sk]=Nastavenie vzhľadu prostredia Razor
+GenericName[sk]=Nastavenie vzhľadu
+

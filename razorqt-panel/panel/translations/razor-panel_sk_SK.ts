@@ -1,5 +1,48 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>ConfigPanelDialog</name>
+    <message>
+        <source>Configure panel</source>
+        <translation>Nastaviť panel</translation>
+    </message>
+    <message>
+        <source>Height:</source>
+        <translation>Výška:</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <source>%</source>
+        <translation>%</translation>
+    </message>
+    <message>
+        <source>px</source>
+        <translation>px</translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation>Šírka:</translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation>Vľavo</translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation>Vpravo</translation>
+    </message>
+    <message>
+        <source>Center</source>
+        <translation>Stred</translation>
+    </message>
+    <message>
+        <source>Alignment</source>
+        <translation>Zarovnanie</translation>
+    </message>
+</context>
+<context>
     <name>PositionAction</name>
     <message>
         <source>Top of desktop</source>
@@ -63,6 +106,10 @@
     <message>
         <source>Show this panel at</source>
         <translation>Zobraziť tento panel na</translation>
+    </message>
+    <message>
+        <source>Configure panel</source>
+        <translation>Nastaviť panel</translation>
     </message>
 </context>
 </TS>

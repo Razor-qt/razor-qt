@@ -2,14 +2,21 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Desktopswitch
-Name[pl]=Obszary robocze
-Name[ru]=Переключатель рабочих столов
-Name[es]=Cambiador de escritorios
-Name[hu]=Aszatlváltó
-Name[de]=Arbeitsflächenumschalter
 Comment=Allow to switch virtual desktops
-Comment[pl]=Pozwala przełączać się pomiędzy writualnymi pulpitami
-Comment[ru]=Позволяет переключатся между виртуальными рабочими столами
-Comment[es]=Permite cambiar entre escritorios virtuales
-Comment[hu]=Lehetővé teszi a virtuális asztalok közötti váltást
+Name[de]=Arbeitsflächenumschalter
 Comment[de]=Erlaubt es zwichen den virtuellen Arbeitsflächen zu schalten
+
+Name[es]=Cambiador de escritorios
+Comment[es]=Permite cambiar entre escritorios virtuales
+
+Name[hu]=Aszatlváltó
+Comment[hu]=Lehetővé teszi a virtuális asztalok közötti váltást
+
+Name[ru]=Переключатель рабочих столов
+Comment[ru]=Позволяет переключатся между виртуальными рабочими столами
+
+Name[pl]=Obszary robocze
+Comment[pl]=Pozwala przełączać się pomiędzy writualnymi pulpitami
+
+Name[sk]=Prepínač plôch
+Comment[sk]=Umožňuje prepínanie medzi virtuálnymi plochami
