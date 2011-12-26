@@ -66,7 +66,7 @@ public:
 
     void contextMenuEvent(QContextMenuEvent* event);
 
-    QMenu* popupMenu(QWidget *parent);
+    QMenu* popupMenu() const;
 
 private:
     RazorPanelPlugin* const q_ptr;
