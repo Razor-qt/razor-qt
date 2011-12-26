@@ -1,11 +1,10 @@
 [Desktop Entry]
-X-SuSE-translate=true
 OnlyShowIn=X-RAZOR;
 Type=Application
 Exec=razor-config-session
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
-Icon=package_settings
+Icon=preferences-system-session-services
 Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
