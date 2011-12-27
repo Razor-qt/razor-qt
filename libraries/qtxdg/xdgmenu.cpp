@@ -751,7 +751,7 @@ QString XdgMenu::getMenuFileName(const QString& baseName)
     }
 
 
-    return "";
+    return QString();
 }
 
 

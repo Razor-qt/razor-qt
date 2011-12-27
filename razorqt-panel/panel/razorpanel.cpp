@@ -100,7 +100,7 @@ QString positionToStr(RazorPanel::Position position)
         case RazorPanel::PositionBottom: return QString("Bottom");
     }
 
-    return "";
+    return QString();
 }
 
 
