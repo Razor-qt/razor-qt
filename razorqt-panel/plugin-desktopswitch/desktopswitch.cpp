@@ -85,7 +85,9 @@ void DesktopSwitch::setup()
     }
 
     int activeDesk = qMax(xfitMan().getActiveDesktop(), 0);
-    m_buttons->button(activeDesk)->setChecked(true);
+    QAbstractButton * button = m_buttons->button(activeDesk);
+    if (button)
+        button->setChecked(true);
 
     connect(m_buttons, SIGNAL(buttonClicked(int)),
             this, SLOT(setDesktop(int)));
