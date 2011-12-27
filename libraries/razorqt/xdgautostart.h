@@ -52,15 +52,14 @@ public:
     XdgAutoStart();
     ~XdgAutoStart();
     QList<XdgDesktopFile*> list();
+    QMap< QString, XdgDesktopFile* > map();
 
 private:
-    QList<XdgDesktopFile*> m_list;
-    QStringList badNames;
+    QMap<QString, XdgDesktopFile*> mMap;
 
     void updateList();
     void addDirtoList(const QString & _dir);
     void debugAutostart();
-    void cleanList();
 };
 
 
