@@ -54,7 +54,6 @@ static bool xError;
 ************************************************/
 int windowErrorHandler(Display *d, XErrorEvent *e)
 {
-    d=d;e=e;
     xError = true;
     if (e->error_code != BadWindow) {
         char str[1024];
