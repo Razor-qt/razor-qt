@@ -40,6 +40,8 @@
  * @author Christopher "VdoP" Regali
   **/
 
+#include <QtCore/QSet>
+
 #include <qtxdg/xdgdesktopfile.h>
 
 /**
@@ -49,13 +51,16 @@
 class XdgAutoStart
 {
 public:
-    XdgAutoStart();
+    XdgAutoStart(bool excludeHidden = true);
     ~XdgAutoStart();
+    bool saveAutoStartFile(XdgDesktopFile* file);
     QList<XdgDesktopFile*> list();
     QMap< QString, XdgDesktopFile* > map();
 
 private:
     QMap<QString, XdgDesktopFile*> mMap;
+    QSet<QString> mBadNames;
+    bool mExcludeHidden;
 
     void updateList();
     void addDirtoList(const QString & _dir);

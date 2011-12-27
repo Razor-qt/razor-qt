@@ -8,6 +8,7 @@
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *   Chris "VdoP" Regali
+ *   Alec Moskvin <alecm@gmx.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -28,6 +29,7 @@
 
 
 #include <QtCore/QtDebug>
+#include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 
 #include "xdgautostart.h"
@@ -80,14 +82,19 @@ void XdgAutoStart::addDirtoList(const QString & _dir)
         QString fileName = filelist.at(i);
 
         // The file in the "most important directory" overrides all others of the same filename
-        if (!mMap.contains(fileName))
+        if (!mBadNames.contains(fileName) && !mMap.contains(fileName))
         {
             XdgDesktopFile * file = new XdgDesktopFile();
             file->load(_dir + fileName);
-            if (file->isApplicable())
+            if (file->isApplicable(mExcludeHidden))
+            {
                 mMap.insert(fileName, file);
+            }
             else
+            {
+                mBadNames.insert(fileName);
                 delete file;
+            }
         }
     }
 }
@@ -121,10 +128,32 @@ XdgAutoStart::~XdgAutoStart()
  * @brief constructor without parameters. XdgAutoStart will use its own XdgDirs!
  * Useful for using this class alone without a manager.
  */
-XdgAutoStart::XdgAutoStart()
+XdgAutoStart::XdgAutoStart(bool excludeHidden)
 {
+    mExcludeHidden = excludeHidden;
     qDebug() << "XdgAutoStart: initialising with on XdgDirs...";
     updateList();
+}
+
+
+/**
+ * @brief saves the specified file in the home autostart directory, modifying
+ * or overriding the original entry.
+ */
+bool XdgAutoStart::saveAutoStartFile(XdgDesktopFile* file)
+{
+    QString filePath = file->fileName();
+    QString fileName = QFileInfo(filePath).fileName();
+    if (!mMap.contains(fileName))
+    {
+        mMap.insert(fileName, file);
+    }
+    else if (mMap.value(fileName)->fileName() != filePath)
+    {
+        delete mMap.take(fileName);
+        mMap.insert(fileName, file);
+    }
+    return file->save(XdgDirs::configHome() + "/autostart/" + fileName);
 }
 
 
