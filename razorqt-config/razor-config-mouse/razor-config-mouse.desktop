@@ -24,3 +24,7 @@ GenericName[es]=Configuración de Ratón Razor
 Name[hu]=Razor egérbeállító
 Comment[hu]=Az X11 egér beállítása
 GenericName[hu]=Razor egérbeállító
+
+Name[de]=Razor Maus konfiguration
+Comment[de]=Konfiguration der X11 Maus
+GenericName[de]=Razor Maus konfiguration
