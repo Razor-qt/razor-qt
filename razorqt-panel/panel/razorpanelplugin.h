@@ -139,6 +139,7 @@ public:
 
     RazorPanel* panel() const;
     QSettings& settings() const;
+    QMenu* popupMenu() const;
 
     /*! If you reimplement this function, you get direct access to all X events that the
         are received from the X server. The events are passed in the event parameter.
@@ -171,6 +172,11 @@ public slots:
      **/
     virtual void showConfigureDialog() {}
 
+    /**
+      This function can be reimplemented in order to modify or replace the plugin's context menu.
+      The default menu is available through RazorPanelPlugin::popupMenu().
+     **/
+    virtual void showContextMenu(const QPoint &pos);
 
 protected slots:
     /**
