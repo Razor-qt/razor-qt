@@ -64,7 +64,7 @@ QString WmSelectDialog::windowManager() const
     if (item)
         return item->data(Qt::UserRole).toString();
 
-    return "";
+    return QString();
 }
 
 void WmSelectDialog::addWindowManager(const QString &program, const QString &description)

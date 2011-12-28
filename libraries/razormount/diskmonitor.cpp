@@ -99,7 +99,7 @@ QString DiskInfo::iconName() const
     else if (raw_info["DKD_PRESENTATION_ICON_NAME"] == "multimedia-player")
         return "multimedia-player";
 
-    return "";
+    return QString();
 }
 
 DiskMonitor::DiskMonitor(QObject *parent) : QThread(parent)

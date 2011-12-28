@@ -817,7 +817,7 @@ QString expandDynamicUrl(QString url)
 QString XdgDesktopFile::url() const
 {
     if (type() != LinkType)
-        return "";
+        return QString();
 
    QString url;
 
@@ -830,7 +830,7 @@ QString XdgDesktopFile::url() const
     if (!url.isEmpty())
         return url;
 
-    return "";
+    return QString();
 }
 
 
@@ -859,7 +859,7 @@ QString findDesktopFile(const QString& dirName, const QString& desktopName)
         }
     }
 
-    return "";
+    return QString();
 }
 
 
@@ -878,7 +878,7 @@ QString findDesktopFile(const QString& desktopName)
             return f;
     }
 
-    return "";
+    return QString();
 }
 
 

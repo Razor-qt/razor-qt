@@ -120,7 +120,7 @@ QString findFile(const QString& fileName, bool onlyGlobal = false)
             return file;
     }
 
-    return "";
+    return QString();
 }
 
 
@@ -287,7 +287,7 @@ QString RazorTheme::qss(const QString& module) const
         return d->loadQss(path);
 
     qWarning() << "QSS file cannot be found in any location:" << QString("%1/%2.qss").arg(d->mThemeName, module);
-    return "";
+    return QString();
 }
 
 
@@ -300,14 +300,14 @@ QString RazorThemePrivate::loadQss(const QString& qssFile) const
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qWarning() << "Theme: Canot open file for reading:" << qssFile;
-        return "";
+        return QString();
     }
 
     QString qss = f.readAll();
     f.close();
 
     if (qss.isEmpty())
-        return "";
+        return QString();
 
     // handle relative paths
     QString qssDir = QFileInfo(qssFile).canonicalPath();
@@ -326,7 +326,7 @@ QString RazorTheme::desktopBackground(int screen) const
     QString wallpapperCfgFileName = findFile(QString("themes/%1/wallpapper.cfg").arg(d->mThemeName));
 
     if (wallpapperCfgFileName.isEmpty())
-        return "";
+        return QString();
 
     QSettings s(wallpapperCfgFileName, QSettings::IniFormat);
     QString themeDir = QFileInfo(wallpapperCfgFileName).absolutePath();
