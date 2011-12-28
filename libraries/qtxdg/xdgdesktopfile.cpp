@@ -242,6 +242,33 @@ XdgDesktopFile::XdgDesktopFile(const XdgDesktopFile& other):
 {
 }
 
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile(Type type, const QString& name, const QString &value):
+    d(new XdgDesktopFileData)
+{
+    d->mFileName = name + ".desktop";
+    d->mType = type;
+    setValue("Version", "1.0");
+    setValue("Name", name);
+    if (type == XdgDesktopFile::ApplicationType)
+    {
+        setValue("Type", "Application");
+        setValue("Exec", value);
+    }
+    else if (type == XdgDesktopFile::LinkType)
+    {
+        setValue("Type", "Link");
+        setValue("URL", value);
+    }
+    else if (type == XdgDesktopFile::DirectoryType)
+    {
+        setValue("Type", "Directory");
+    }
+    d->mIsValid = check();
+}
+
 
 /************************************************
 

@@ -76,6 +76,12 @@ public:
         it will be copied (copy-on-write), and that takes linear time. */
     XdgDesktopFile(const XdgDesktopFile& other);
 
+    /*! Constructs a new basic DesktopFile. If type is:
+        - ApplicationType, "value" should be the Exec value;
+        - LinkType, "value" should be the URL;
+        - DirectoryType, "value" should be omitted */
+    XdgDesktopFile(XdgDesktopFile::Type type, const QString& name, const QString& value = 0);
+
     //! Destroys the object.
     virtual ~XdgDesktopFile();
 
