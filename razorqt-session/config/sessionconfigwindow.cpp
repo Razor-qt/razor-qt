@@ -34,6 +34,8 @@
 #include <QtGui/QInputDialog>
 
 #include <razorqt/razorsettings.h>
+#include <qtxdg/xdgdesktopfile.h>
+#include <qtxdg/xdgdirs.h>
 #include <qtxdg/xdgicon.h>
 
 #include "sessionconfigwindow.h"
@@ -49,12 +51,16 @@ SessionConfigWindow::SessionConfigWindow()
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-display-color"), tr("Basic Settings"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-filetype-association"), tr("Default Applications"), listWidget);
-    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Autostart"), listWidget);
+    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Global Autostart"), listWidget);
+    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Razor Autostart"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-system-session-services"), tr("Environment (Advanced)"), listWidget);
     listWidget->setCurrentRow(0);
 
     m_autostartModel = new QStringListModel(autostartView);
     autostartView->setModel(m_autostartModel);
+
+    mXdgAutoStartModel = new QStandardItemModel(xdgAutoStartView);
+    xdgAutoStartView->setModel(mXdgAutoStartModel);
 
     m_settings = new RazorSettings("session", this);
     m_cache = new RazorSettingsCache(m_settings);
@@ -125,6 +131,22 @@ void SessionConfigWindow::restoreSettings()
     knownBrowsers << "firefox" << "arora" << "konqueror" << "opera";
     handleCfgComboBox(browserComboBox, knownBrowsers, browser);
 
+    // XDG autostart *****************************************************
+    QStandardItem* globalAutoStartItem = new QStandardItem(tr("Global Autostart"));
+    mXdgAutoStartModel->appendRow(globalAutoStartItem);
+    globalAutoStartItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+    xdgAutoStartView->setExpanded(globalAutoStartItem->index(), true);
+    mXdgAutoStart = new XdgAutoStart(false);
+    for (QMapIterator<QString, XdgDesktopFile*> iter(mXdgAutoStart->map()); iter.hasNext();)
+    {
+        iter.next();
+        QStandardItem* item = new QStandardItem(iter.value()->name());
+        item->setData(iter.key());
+        item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+        item->setCheckState(iter.value()->value("Hidden").toBool() ? Qt::Unchecked : Qt::Checked);
+        globalAutoStartItem->appendRow(item);
+    }
+    connect(mXdgAutoStartModel, SIGNAL(itemChanged(QStandardItem*)), SLOT(autoStartItem_changed(QStandardItem*)));
 
     // 3rd party autostart ***********************************************
     int count = m_settings->beginReadArray("autostart");
@@ -285,6 +307,14 @@ void SessionConfigWindow::appAddButton_clicked()
     l.removeDuplicates();
     m_autostartModel->setStringList(l);
     m_restart = true;
+}
+
+void SessionConfigWindow::autoStartItem_changed(QStandardItem* item)
+{
+    QString key = item->data().toString();
+    XdgDesktopFile* file = mXdgAutoStart->map().value(key);
+    file->setValue("Hidden", item->checkState() == Qt::Checked ? "false" : "true");
+    mXdgAutoStart->saveAutoStartFile(file);
 }
 
 void SessionConfigWindow::appDeleteButton_clicked()

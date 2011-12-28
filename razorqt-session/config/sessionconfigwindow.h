@@ -28,6 +28,11 @@
 #ifndef SESSIONCONFIGWINDOW_H
 #define SESSIONCONFIGWINDOW_H
 
+#include <QStringListModel>
+#include <QtGui/QStandardItemModel>
+
+#include <razorqt/xdgautostart.h>
+
 #include "ui_sessionconfigwindow.h"
 
 class RazorSettings;
@@ -49,6 +54,8 @@ private:
     RazorSettings *m_settings;
     RazorSettingsCache *m_cache;
     QStringListModel *m_autostartModel;
+    XdgAutoStart *mXdgAutoStart;
+    QStandardItemModel *mXdgAutoStartModel;
     // display restart warning
     bool m_restart;
 
@@ -72,6 +79,8 @@ private slots:
     //
     void appAddButton_clicked();
     void appDeleteButton_clicked();
+    //
+    void autoStartItem_changed(QStandardItem* item);
     //
     void envAddButton_clicked();
     void envDeleteButton_clicked();
