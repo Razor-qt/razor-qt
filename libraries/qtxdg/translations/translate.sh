@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT=qtxdg
+export PROJECT=qtxdg
 export OPTS="-noobsolete"
 export TARGET="-recursive .."
 
