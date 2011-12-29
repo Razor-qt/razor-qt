@@ -52,7 +52,7 @@
     <message>
         <location filename="../powermanager.cpp" line="102"/>
         <source>Suspend</source>
-        <translation>Stand-by</translation>
+        <translation>Energie sparen</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="109"/>
@@ -72,12 +72,12 @@
     <message>
         <location filename="../powermanager.cpp" line="133"/>
         <source>Razor Session Suspend</source>
-        <translation>Razor Sitzung Stand-by</translation>
+        <translation>Razor Sitzung Energie sparen</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="134"/>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
-        <translation>Wollen sie wirklich Ihren Computer in den Stand-by schicken?&lt;p&gt;Schickt den Computer in einen Energiesparmodus. Der Stand des Systems ist verloren, wenn die Energieversorgung ausfällt.</translation>
+        <translation>Wollen sie wirklich Ihren Computer in den Energiesparmodus schicken?&lt;p&gt;Schickt den Computer in einen Energiesparmodus. Der Zustand des Systems geht verloren, wenn die Energieversorgung ausfällt.</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="145"/>
@@ -128,12 +128,12 @@
     <message>
         <location filename="../powermanager.cpp" line="194"/>
         <source>Hibernate failed.</source>
-        <translation>Ruhestand fehlgeschalgen.</translation>
+        <translation>Ruhestand fehlgeschlagen.</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="199"/>
         <source>Suspend failed.</source>
-        <translation>Stand-by fehlgeschalgen.</translation>
+        <translation>Energiesparmodus fehlgeschlagen.</translation>
     </message>
 </context>
 <context>
