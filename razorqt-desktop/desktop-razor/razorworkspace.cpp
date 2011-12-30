@@ -54,6 +54,7 @@
 RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* parent)
     : QGraphicsView(parent),
       m_config(config),
+      m_wheelDesktopSwitch(false),
       m_screen(screen),
       m_mode(ModeNormal)
 {
@@ -67,6 +68,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* pare
     
     m_config->beginGroup("razor");
     m_menuFile = m_config->value("menu_file", "").toString();
+    m_wheelDesktopSwitch = m_config->value("mouse_wheel_desktop_switch", false).toBool();
     m_config->endGroup();
     if (m_menuFile.isEmpty())
         m_menuFile = XdgMenu::getMenuFileName();
@@ -314,8 +316,12 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 
 void RazorWorkSpace::wheelEvent(QWheelEvent * e)
 {
-    //! \todo TODO/FIXME: wheel event is disabled because openbox handles it on its owns. Check it for different WMs... maybe we should consume XLib event instead...s
-#if 0
+    if (!m_wheelDesktopSwitch)
+    {
+        QGraphicsView::wheelEvent(e);
+        return;
+    }
+
     int max = xfitMan().getNumDesktop() - 1;
     int delta = e->delta() > 0 ? 1 : -1;
     int current = xfitMan().getActiveDesktop() + delta;
@@ -326,9 +332,6 @@ void RazorWorkSpace::wheelEvent(QWheelEvent * e)
         current = max;
 
     xfitMan().setActiveDesktop(current);
-#else
-    QGraphicsView::wheelEvent(e);
-#endif
 }
 
 void RazorWorkSpace::arrangeWidgets(bool start)

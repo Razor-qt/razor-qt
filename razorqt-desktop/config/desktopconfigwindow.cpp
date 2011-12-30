@@ -67,6 +67,7 @@ DesktopConfigWindow::DesktopConfigWindow()
     connect(doubleclickButton, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(nativeIconsCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(nativeWallpaperEdit, SIGNAL(textChanged(const QString&)), this, SLOT(setRestart()));
+    connect(wheelDesktopCheckBox, SIGNAL(toggled(bool)), this, SLOT(setRestart()));
     //
     connect(buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 }
@@ -97,6 +98,7 @@ void DesktopConfigWindow::restoreSettings()
     // razor
     m_settings->beginGroup("razor");
     menuFilePathLE->setText(m_settings->value("menu_file").toString());
+    wheelDesktopCheckBox->setChecked(m_settings->value("mouse_wheel_desktop_switch", false).toBool());
     m_settings->endGroup();
     
     // wm_native
@@ -114,13 +116,14 @@ void DesktopConfigWindow::closeEvent(QCloseEvent * event)
 {
     m_settings->setValue("desktop", desktopTypeComboBox->itemData(desktopTypeComboBox->currentIndex()).toString());
     m_settings->setValue("icon-launch", singleclickButton->isChecked() ? "singleclick" : "doubleclick");
-    
+
+    m_settings->beginGroup("razor");    
     if (!menuFilePathLE->text().isEmpty())
     {
-        m_settings->beginGroup("razor");
         m_settings->setValue("menu_file", menuFilePathLE->text());
-        m_settings->endGroup();
     }
+    m_settings->setValue("mouse_wheel_desktop_switch", wheelDesktopCheckBox->isChecked());
+    m_settings->endGroup();
     
     m_settings->beginGroup("wm_native");
     m_settings->setValue("wallpaper", nativeWallpaperEdit->text());

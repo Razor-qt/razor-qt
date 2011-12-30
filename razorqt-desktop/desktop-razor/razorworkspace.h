@@ -78,6 +78,7 @@ private:
     QGraphicsScene * m_scene;
     RazorSettings * m_config;
     QString m_menuFile;
+    bool m_wheelDesktopSwitch;
     int m_screen;
     Mode m_mode;
     
