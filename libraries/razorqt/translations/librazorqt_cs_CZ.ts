@@ -29,7 +29,7 @@
     <message>
         <location filename="../powermanager.cpp" line="91"/>
         <source>Hibernate</source>
-        <translation>Přezimovat</translation>
+        <translation>Hibernovat</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="95"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../powermanager.cpp" line="99"/>
         <source>Reboot</source>
-        <translation>Spustit znovu</translation>
+        <translation>Restartovat</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="103"/>
@@ -64,7 +64,7 @@
     <message>
         <location filename="../powermanager.cpp" line="131"/>
         <source>Razor Session Hibernate</source>
-        <translation>Přezimování sezení Razoru</translation>
+        <translation>Zazimování sezení Razoru</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="132"/>
@@ -74,7 +74,7 @@
     <message>
         <location filename="../powermanager.cpp" line="143"/>
         <source>Razor Session Reboot</source>
-        <translation>Znovuspuštění sezení Razoru</translation>
+        <translation>Spuštění sezení Razoru znovu</translation>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="144"/>
