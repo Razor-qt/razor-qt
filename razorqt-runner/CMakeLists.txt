@@ -44,9 +44,6 @@ set(LIBRARIES
 set(QT_USE_QTXML true)
 set(QT_USE_QTSCRIPT true)
 
-set(THEMES
-    resources/themes
-)
 
 macro( setByDefault VAR_NAME VAR_VALUE )
   if (NOT DEFINED ${VAR_NAME})
@@ -107,4 +104,3 @@ target_link_libraries(${PROJECT}  ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES   ${CONFIG_FILES}    DESTINATION ${APP_SHARE_DIR})
-install(DIRECTORY ${THEMES}        DESTINATION ${RAZOR_SHARE_DIR})
