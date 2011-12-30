@@ -34,6 +34,7 @@
 #include <razorqt/xdgautostart.h>
 
 #include "ui_sessionconfigwindow.h"
+#include "autostartmodel.h"
 
 class RazorSettings;
 class RazorSettingsCache;
@@ -54,8 +55,7 @@ private:
     RazorSettings *m_settings;
     RazorSettingsCache *m_cache;
     QStringListModel *m_autostartModel;
-    XdgAutoStart *mXdgAutoStart;
-    QStandardItemModel *mXdgAutoStartModel;
+    AutoStartItemModel *mXdgAutoStartModel;
     // display restart warning
     bool m_restart;
 
@@ -80,7 +80,9 @@ private slots:
     void appAddButton_clicked();
     void appDeleteButton_clicked();
     //
-    void autoStartItem_changed(QStandardItem* item);
+    void autoStartAddButton_clicked();
+    void autoStartEditButton_clicked();
+    void autoStartDeleteButton_clicked();
     //
     void envAddButton_clicked();
     void envDeleteButton_clicked();

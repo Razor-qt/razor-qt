@@ -53,9 +53,9 @@ class XdgAutoStart
 public:
     XdgAutoStart(bool excludeHidden = true);
     ~XdgAutoStart();
-    bool saveAutoStartFile(XdgDesktopFile* file);
     QList<XdgDesktopFile*> list();
     QMap< QString, XdgDesktopFile* > map();
+    static QString localPath(XdgDesktopFile* file);
 
 private:
     QMap<QString, XdgDesktopFile*> mMap;

@@ -6,15 +6,22 @@ include_directories (
 
 set ( razor-sessioncfg_HDRS
     sessionconfigwindow.h
+    autostartmodel.h
+    autostartedit.h
 	)
 
 set ( razor-sessioncfg_SRCS
-	main.cpp
+    main.cpp
     sessionconfigwindow.cpp
+    autostartmodel.cpp
+    autostartedit.cpp
     ../src/windowmanager.cpp
 	)
 
-QT4_WRAP_UI(razor-sessioncfg_UIS sessionconfigwindow.ui)
+QT4_WRAP_UI(razor-sessioncfg_UIS
+    sessionconfigwindow.ui
+    autostartedit.ui
+        )
 QT4_WRAP_CPP(razor-sessioncfg_MOCS ${razor-sessioncfg_HDRS})
 
 add_executable ( razor-config-session ${razor-sessioncfg_SRCS} ${razor-sessioncfg_UIS} ${razor-sessioncfg_MOCS} )
