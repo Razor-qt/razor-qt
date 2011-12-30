@@ -32,6 +32,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QtDebug>
 #include "libtranslate.h"
 
 class MessageBox: public QMessageBox

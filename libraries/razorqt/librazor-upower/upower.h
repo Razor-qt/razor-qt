@@ -8,9 +8,11 @@ This code is based on cool Brieuc ROBLIN's pyrotools.org applets, license GPLv3.
 #ifndef DBUS_H
 #define DBUS_H
 
-#include <QtDBus>
-
 #include "battery.h"
+
+class QDBusInterface;
+class QDBusServiceWatcher;
+
 
 class UPower : public QObject{
     Q_OBJECT

@@ -5,7 +5,12 @@ This is probably temporary code probably. We will merge it into potential shared
 This code is based on cool Brieuc ROBLIN's pyrotools.org applets, license GPLv3.
 */
 
+#include <QDBusServiceWatcher>
+#include <QDBusInterface>
+#include <QDBusArgument>
+
 #include "upower.h"
+
 
 UPower::UPower() : m_interfaceProps(0), m_interface(0) {
     m_watcher = new QDBusServiceWatcher;
@@ -95,11 +100,14 @@ void UPower::deviceAdded(QString path) {
 void UPower::changed() {
     if (!m_interfaceProps)
         return;
-
+#if 0
     QSettings settings;
     settings.beginGroup("Alert");
     bool alertOnLow = settings.value( "Low", false ).toBool();
     settings.endGroup();
+#else
+    bool alertOnLow = true;
+#endif
 
     if(alertOnLow) {
         bool onLowBatteryVal = m_interfaceProps->call( "Get", m_interface->interface(), "OnLowBattery" ).arguments().at(0).value<QDBusVariant>().variant().toBool();
