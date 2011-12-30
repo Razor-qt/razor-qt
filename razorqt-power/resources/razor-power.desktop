@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-power
+Icon=system-shutdown
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Qt;System;X-RAZOR;
+
+Name=Leave
+GenericName=Leave the system
+
+Name[ru]=Выход
+GenericName[ru]=Выход из системы
