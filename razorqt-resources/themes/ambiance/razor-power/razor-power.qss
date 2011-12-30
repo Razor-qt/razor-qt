@@ -1,0 +1,61 @@
+QWidget {
+
+	color: #DDDDDD;
+}
+
+Dialog {
+    border: 1px solid #B0B0B0;
+	background-color: #4D4C47;
+
+}
+
+QToolButton {
+    border: 1px solid #33322E;
+}
+
+QToolButton:focus,
+QToolButton:hover {
+	background-color: #555555;
+}
+
+
+#hibernateButton,
+#logoutButton,
+#rebootButton,
+#shutdownButton,
+#suspendButton {
+	qproperty-iconSize: 48px;
+	min-width: 80px;
+	min-height: 80px;
+    border-radius: 5px;
+}
+
+#cancelButton {
+	qproperty-icon: url(cancel.png);
+    border-radius: 3px;
+    padding: 4px;
+}
+
+#hibernateButton {
+	qproperty-icon: url(hibernate.png);
+}
+
+#logoutButton {
+	qproperty-icon: url(logout.png);
+}
+
+#rebootButton {
+	qproperty-icon: url(reboot.png);
+}
+
+#shutdownButton {
+	qproperty-icon: url(shutdown.png);
+}
+
+#suspendButton {
+	qproperty-icon: url(suspend.png);
+}
+
+
+
+
