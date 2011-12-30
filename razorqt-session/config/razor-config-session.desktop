@@ -32,3 +32,7 @@ GenericName[sk]=Nastavenie relácie prostredia Razor
 Name[de]=Razor Sitzungskonfiguration
 Comment[de]=Konfiguriere die Razor-Qt Sitzungsmodule
 GenericName[de]=Razor Sitzungskonfiguration
+
+Name[cs]=Nastavení sezení Razoru
+Comment[cs]=Nastavení modulu sezení Razor-Qt
+GenericName[cs]=Nastavení sezení Razoru

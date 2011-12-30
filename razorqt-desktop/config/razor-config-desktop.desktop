@@ -36,3 +36,7 @@ GenericName[hu]=Razor asztalbeállító
 Name[de]=Razor Arbeitsflächen Einstellungen
 Comment[de]=Konfiguration der Razor-Qt Arbeitsflächen Module
 GenericName[de]=Razor Arbeitsflächen Einstellungen
+
+Name[cs]=Nastavení plochy Razoru
+Comment[cs]=Nastavení modulů plochy Razor-Qt
+GenericName[cs]=Nastavení plochy Razoru
