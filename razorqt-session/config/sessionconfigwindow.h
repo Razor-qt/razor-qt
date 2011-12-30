@@ -54,7 +54,6 @@ private:
     // reload cfg on the fly - it requires restart (ENV, autostart...)
     RazorSettings *m_settings;
     RazorSettingsCache *m_cache;
-    QStringListModel *m_autostartModel;
     AutoStartItemModel *mXdgAutoStartModel;
     // display restart warning
     bool m_restart;
@@ -76,9 +75,6 @@ private slots:
     //
     void terminalButton_clicked();
     void browserButton_clicked();
-    //
-    void appAddButton_clicked();
-    void appDeleteButton_clicked();
     //
     void autoStartAddButton_clicked();
     void autoStartEditButton_clicked();

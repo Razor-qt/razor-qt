@@ -35,5 +35,7 @@ INSTALL_SESSION_FILES("/usr/share/apps/kdm/sessions")
 #	install (DIRECTORY res/linux/ DESTINATION share/razor PATTERN ".svn" EXCLUDE)
 #ENDIF()
 
+install(DIRECTORY autostart/ DESTINATION /etc/xdg/autostart)
+
 add_subdirectory( themes )
 add_subdirectory( application-menu )

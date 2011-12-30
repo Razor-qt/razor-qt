@@ -52,13 +52,9 @@ SessionConfigWindow::SessionConfigWindow()
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-display-color"), tr("Basic Settings"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-filetype-association"), tr("Default Applications"), listWidget);
-    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Global Autostart"), listWidget);
-    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Razor Autostart"), listWidget);
+    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Autostart"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-system-session-services"), tr("Environment (Advanced)"), listWidget);
     listWidget->setCurrentRow(0);
-
-    m_autostartModel = new QStringListModel(autostartView);
-    autostartView->setModel(m_autostartModel);
 
     m_settings = new RazorSettings("session", this);
     m_cache = new RazorSettingsCache(m_settings);
@@ -69,9 +65,6 @@ SessionConfigWindow::SessionConfigWindow()
     //
     connect(terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
     connect(browserButton, SIGNAL(clicked()), this, SLOT(browserButton_clicked()));
-    //
-    connect(appAddButton, SIGNAL(clicked()), this, SLOT(appAddButton_clicked()));
-    connect(appDeleteButton, SIGNAL(clicked()), this, SLOT(appDeleteButton_clicked()));
     //
     connect(envAddButton, SIGNAL(clicked()), this, SLOT(envAddButton_clicked()));
     connect(envDeleteButton, SIGNAL(clicked()), this, SLOT(envDeleteButton_clicked()));
@@ -140,21 +133,6 @@ void SessionConfigWindow::restoreSettings()
     xdgAutoStartView->setExpanded(mXdgAutoStartModel->index(0, 0), true);
     xdgAutoStartView->setExpanded(mXdgAutoStartModel->index(1, 0), true);
 
-    // 3rd party autostart ***********************************************
-    int count = m_settings->beginReadArray("autostart");
-    QString app;
-    QStringList appList;
-    for (int i=0; i < count; ++i)
-    {
-        m_settings->setArrayIndex(i);
-        app = m_settings->value("exec").toString();
-        if (!app.isEmpty())
-            appList << app;
-    }
-    m_settings->endArray();
-
-    m_autostartModel->setStringList(appList);
-
     // environment variables (advanced) **********************************
     m_settings->beginGroup("environment");
     QString value;
@@ -195,18 +173,6 @@ void SessionConfigWindow::closeEvent(QCloseEvent * event)
 
     // XDG Autostart *****************************************************
     mXdgAutoStartModel->writeChanges();
-
-    // 3rd party autostart ***********************************************
-    m_settings->beginWriteArray("autostart");
-    int ix = 0;
-    foreach(QString i, m_autostartModel->stringList())
-    {
-        m_settings->setArrayIndex(ix);
-        m_settings->setValue("exec", i);
-        ++ix;
-    }
-    m_settings->endArray();
-
 
     // environment variables (advanced) **********************************
     m_settings->beginGroup("environment");
@@ -286,23 +252,6 @@ void SessionConfigWindow::browserButton_clicked()
     m_restart = true;
 }
 
-void SessionConfigWindow::appAddButton_clicked()
-{
-    QString fname = QFileDialog::getOpenFileName(this, tr("Select Application"), "/usr/bin/");
-    if (fname.isEmpty())
-        return;
-    
-    QFileInfo fi(fname);
-    if (!fi.exists() || !fi.isExecutable())
-        return;
-    
-    QStringList l = m_autostartModel->stringList();
-    l.append(fname);
-    l.removeDuplicates();
-    m_autostartModel->setStringList(l);
-    m_restart = true;
-}
-
 void SessionConfigWindow::autoStartAddButton_clicked()
 {
     AutoStartEdit edit;
@@ -329,15 +278,6 @@ void SessionConfigWindow::autoStartDeleteButton_clicked()
 {
     QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
     mXdgAutoStartModel->removeRow(index.row(), index.parent());
-}
-
-void SessionConfigWindow::appDeleteButton_clicked()
-{
-    QStringList l = m_autostartModel->stringList();
-    int ix = autostartView->currentIndex().row();
-    l.removeAt(ix);
-    m_autostartModel->setStringList(l);
-    m_restart = true;
 }
 
 void SessionConfigWindow::envAddButton_clicked()
