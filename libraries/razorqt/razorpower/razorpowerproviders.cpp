@@ -7,6 +7,7 @@
  * Copyright: 2010-2011 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -39,9 +40,9 @@
 #define CONSOLEKIT_PATH         "/org/freedesktop/ConsoleKit/Manager"
 #define CONSOLEKIT_INTERFACE    "org.freedesktop.ConsoleKit.Manager"
 
-#define RAZOR_SERVICE      "org.razor.session"
+#define RAZOR_SERVICE      "org.razorqt.session"
 #define RAZOR_PATH         "/RazorSession"
-#define RAZOR_INTERFACE    "org.razor.session"
+#define RAZOR_INTERFACE    "org.razorqt.session"
 
 
 #define PROPERTIES_INTERFACE    "org.freedesktop.DBus.Properties"
@@ -71,7 +72,10 @@ bool dbusCall(const QString &service,
 {
     QDBusInterface dbus(service, path, interface, connection);
     if (!dbus.isValid())
+    {
+        qWarning() << "dbusCall: QDBusInterface is invalid" << service << path << interface << method;
         return false;
+    }
 
     QDBusMessage msg = dbus.call(method);
 
@@ -95,7 +99,10 @@ bool dbusGetProperty(const QString &service,
 {
     QDBusInterface dbus(service, path, interface, connection);
     if (!dbus.isValid())
+    {
+        qWarning() << "dbusGetProperty: QDBusInterface is invalid" << service << path << interface << property;
         return false;
+    }
 
     QDBusMessage msg = dbus.call("Get", dbus.interface(), property);
 
@@ -288,7 +295,15 @@ RazorProvider::~RazorProvider()
 
 bool RazorProvider::canAction(RazorPower::Action action) const
 {
-    return action == RazorPower::PowerLogout;
+    switch (action)
+    {
+        case RazorPower::PowerLogout:
+            // there can be case when razo-session does not run
+            return dbusCall(RAZOR_SERVICE, RAZOR_PATH, RAZOR_SERVICE,
+                            QDBusConnection::sessionBus(), "canLogout");
+        default:
+            return false;
+    }
 }
 
 

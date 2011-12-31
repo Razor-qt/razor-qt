@@ -41,7 +41,7 @@ It's a part of "Razor Power Management" - see librazorqt.
 class SessionDBusAdaptor : public QDBusAbstractAdaptor
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "org.razor.session")
+    Q_CLASSINFO("D-Bus Interface", "org.razorqt.session")
 
 public:
     SessionDBusAdaptor(RazorModuleManager * manager)
@@ -51,6 +51,14 @@ public:
     }
 
 public slots:
+
+    // there can be a situation when is the session asked for availability.
+    // And the razor-session is not always required to be started...
+    bool canLogout()
+    {
+        return true;
+    }
+
     Q_NOREPLY void logout()
     {
         m_manager->logout();

@@ -31,12 +31,9 @@
 #include <QObject>
 #include <QAction>
 
-class UPower;
+class RazorPower;
 
-
-/*! \brief Simple UPower based backend interface.
-\todo TODO/FIXME: HAL required too probably. Autodetection... whatever...
-\todo TODO/FIXME: autodetection is mandatory! for example minimal suse does not run upower...
+/*! QAction centric menu aware wrapper around razorpower
 */
 class PowerManager : public QObject
 {
@@ -49,22 +46,21 @@ public:
     QWidget* parentWidget() const { return m_parentWidget; }
     void setParentWidget(QWidget* parentWidget) { m_parentWidget = parentWidget; }
 public slots:
-    // upower
+    // power management
     void suspend();
     void hibernate();
     void reboot();
-    void halt();
+    void shutdown();
     // razor session
     void logout();
 
 private:
-    UPower * m_upower;
+    RazorPower * m_power;
     QWidget * m_parentWidget;
 
 private slots:
     void hibernateFailed();
     void suspendFailed();
-    void monitoring(const QString & msg);
 };
 
 #endif

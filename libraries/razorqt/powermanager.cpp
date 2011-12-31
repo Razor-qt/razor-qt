@@ -26,7 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "powermanager.h"
-#include "librazor-upower/upower.h"
+#include "razorpower/razorpower.h"
 #include <qtxdg/xdgicon.h>
 #include <QDBusInterface>
 #include <QMessageBox>
@@ -73,16 +73,16 @@ PowerManager::PowerManager(QObject * parent)
     m_parentWidget(0)
 {
     libTranslate("librazorqt");
-    m_upower = new UPower();
-    connect(m_upower, SIGNAL(suspendFail()), this, SLOT(suspendFailed()));
-    connect(m_upower, SIGNAL(hibernateFail()), this, SLOT(hibernateFailed()));
-    connect(m_upower, SIGNAL(monitoring(const QString &)),
-            this, SLOT(monitoring(const QString&)));
+    m_power = new RazorPower(this);
+//    connect(m_power, SIGNAL(suspendFail()), this, SLOT(suspendFailed()));
+//    connect(m_power, SIGNAL(hibernateFail()), this, SLOT(hibernateFailed()));
+//    connect(m_power, SIGNAL(monitoring(const QString &)),
+//            this, SLOT(monitoring(const QString&)));
 }
 
 PowerManager::~PowerManager()
 {
-    delete m_upower;
+//    delete m_power;
 }
 
 QList<QAction*> PowerManager::availableActions()
@@ -91,37 +91,40 @@ QList<QAction*> PowerManager::availableActions()
     QAction * act;
 
     // TODO/FIXME: icons
-    if (m_upower->canHibernate())
+    if (m_power->canHibernate())
     {
         act = new QAction(XdgIcon::fromTheme("system-suspend-hibernate"), tr("Hibernate"), this);
         connect(act, SIGNAL(triggered()), this, SLOT(hibernate()));
         ret.append(act);
     }
 
-    if (m_upower->canSuspend())
+    if (m_power->canSuspend())
     {
         act = new QAction(XdgIcon::fromTheme("system-suspend"), tr("Suspend"), this);
         connect(act, SIGNAL(triggered()), this, SLOT(suspend()));
         ret.append(act);
     }
 
-    if (m_upower->canReboot())
+    if (m_power->canReboot())
     {
         act = new QAction(XdgIcon::fromTheme("system-reboot"), tr("Reboot"), this);
         connect(act, SIGNAL(triggered()), this, SLOT(reboot()));
         ret.append(act);
     }
 
-    if (m_upower->canHalt())
+    if (m_power->canShutdown())
     {
         act = new QAction(XdgIcon::fromTheme("system-shutdown"), tr("Shutdown"), this);
-        connect(act, SIGNAL(triggered()), this, SLOT(halt()));
+        connect(act, SIGNAL(triggered()), this, SLOT(shutdown()));
         ret.append(act);
     }
 
-    act = new QAction(XdgIcon::fromTheme("system-log-out"), tr("Logout"), this);
-    connect(act, SIGNAL(triggered()), this, SLOT(logout()));
-    ret.append(act);
+    if (m_power->canLogout())
+    {
+        act = new QAction(XdgIcon::fromTheme("system-log-out"), tr("Logout"), this);
+        connect(act, SIGNAL(triggered()), this, SLOT(logout()));
+        ret.append(act);
+    }
 
     return ret;
 }
@@ -138,7 +141,7 @@ void PowerManager::suspend()
         return;
     }
 
-    m_upower->suspend();
+    m_power->suspend();
 }
 
 void PowerManager::hibernate()
@@ -150,7 +153,7 @@ void PowerManager::hibernate()
         return;
     }
 
-    m_upower->hibernate();
+    m_power->hibernate();
 }
 
 void PowerManager::reboot()
@@ -162,10 +165,10 @@ void PowerManager::reboot()
         return;
     }
 
-    m_upower->reboot();
+    m_power->reboot();
 }
 
-void PowerManager::halt()
+void PowerManager::shutdown()
 {
     if (MessageBox::question(m_parentWidget, tr("Razor Session Shutdown"),
                              tr("Do you want to really switch off your computer? All unsaved work will be lost..."),
@@ -174,7 +177,7 @@ void PowerManager::halt()
         return;
     }
 
-    m_upower->halt();
+    m_power->shutdown();
 }
 
 void PowerManager::logout()
@@ -186,8 +189,7 @@ void PowerManager::logout()
         return;
     }
 
-    QDBusInterface interface("org.razor.session", "/RazorSession", "org.razor.session");
-    interface.call( "logout" );
+    m_power->logout();
 }
 
 void PowerManager::hibernateFailed()
@@ -198,10 +200,4 @@ void PowerManager::hibernateFailed()
 void PowerManager::suspendFailed()
 {
     QMessageBox::warning(m_parentWidget, tr("Razor Power Manager Error"), tr("Suspend failed."));
-}
-
-void PowerManager::monitoring(const QString & msg)
-{
-    // TODO/FIXME: XDG messages?
-    qDebug() << "PowerManager::monitoring" << msg;
 }
