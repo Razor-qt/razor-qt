@@ -76,6 +76,12 @@ public:
         it will be copied (copy-on-write), and that takes linear time. */
     XdgDesktopFile(const XdgDesktopFile& other);
 
+    /*! Constructs a new basic DesktopFile. If type is:
+        - ApplicationType, "value" should be the Exec value;
+        - LinkType, "value" should be the URL;
+        - DirectoryType, "value" should be omitted */
+    XdgDesktopFile(XdgDesktopFile::Type type, const QString& name, const QString& value = 0);
+
     //! Destroys the object.
     virtual ~XdgDesktopFile();
 
@@ -106,6 +112,10 @@ public:
 
     //! Sets the value of setting key to value. If the key already exists, the previous value is overwritten.
     void setValue(const QString &key, const QVariant &value);
+
+    /*! Sets the value of setting key to value. If a localized version of the key already exists, the previous value is
+        overwritten. Otherwise, it overwrites the the un-localized version. */
+    void setLocalizedValue(const QString &key, const QVariant &value);
 
     //! Returns true if there exists a setting called key; returns false otherwise.
     bool contains(const QString& key) const;
@@ -167,6 +177,10 @@ protected:
     virtual QString prefix() const { return "Desktop Entry"; }
     virtual bool check() const { return true; }
 private:
+    /*! Returns the localized version of the key if the Desktop File already contains a localized version of it.
+        If not, returns the same key back */
+    QString localizedKey(const QString& key) const;
+
     QSharedDataPointer<XdgDesktopFileData> d;
 };
 

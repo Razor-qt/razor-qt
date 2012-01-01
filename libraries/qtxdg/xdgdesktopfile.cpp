@@ -242,6 +242,33 @@ XdgDesktopFile::XdgDesktopFile(const XdgDesktopFile& other):
 {
 }
 
+/************************************************
+
+ ************************************************/
+XdgDesktopFile::XdgDesktopFile(Type type, const QString& name, const QString &value):
+    d(new XdgDesktopFileData)
+{
+    d->mFileName = name + ".desktop";
+    d->mType = type;
+    setValue("Version", "1.0");
+    setValue("Name", name);
+    if (type == XdgDesktopFile::ApplicationType)
+    {
+        setValue("Type", "Application");
+        setValue("Exec", value);
+    }
+    else if (type == XdgDesktopFile::LinkType)
+    {
+        setValue("Type", "Link");
+        setValue("URL", value);
+    }
+    else if (type == XdgDesktopFile::DirectoryType)
+    {
+        setValue("Type", "Directory");
+    }
+    d->mIsValid = check();
+}
+
 
 /************************************************
 
@@ -335,6 +362,15 @@ void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
 
 
 /************************************************
+
+ ************************************************/
+void XdgDesktopFile::setLocalizedValue(const QString &key, const QVariant &value)
+{
+    setValue(localizedKey(key), value);
+}
+
+
+/************************************************
  LC_MESSAGES value	Possible keys in order of matching
  lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
                         default value
@@ -342,7 +378,7 @@ void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
  lang@MODIFIER	        lang@MODIFIER, lang, default value
  lang	                lang, default value
  ************************************************/
-QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
+QString XdgDesktopFile::localizedKey(const QString& key) const
 {
     QString lang = getenv("LC_MESSAGES");
 
@@ -379,32 +415,43 @@ QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defa
     {
         QString k = QString("%1[%2_%3@%4]").arg(key, lang, country, modifier);
         //qDebug() << "\t try " << k << contains(k);
-        if (contains(k)) return value(k, defaultValue);
+        if (contains(k))
+            return k;
     }
 
     if (!country.isEmpty())
     {
         QString k = QString("%1[%2_%3]").arg(key, lang, country);
         //qDebug() << "\t try " << k  << contains(k);
-        if (contains(k)) return value(k, defaultValue);
+        if (contains(k))
+            return k;
     }
 
     if (!modifier.isEmpty())
     {
         QString k = QString("%1[%2@%3]").arg(key, lang, modifier);
         //qDebug() << "\t try " << k  << contains(k);
-        if (contains(k)) return value(k, defaultValue);
+        if (contains(k))
+            return k;
     }
 
     QString k = QString("%1[%2]").arg(key, lang);
     //qDebug() << "\t try " << k  << contains(k);
-    if (contains(k)) return value(k, defaultValue);
+    if (contains(k))
+        return k;
 
 
     //qDebug() << "\t try " << key  << contains(key);
-    return value(key, defaultValue);
+    return key;
 }
 
+/************************************************
+
+ ************************************************/
+QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defaultValue) const
+{
+    return value(localizedKey(key), defaultValue);
+}
 
 
 /************************************************

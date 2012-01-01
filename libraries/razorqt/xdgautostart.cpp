@@ -137,23 +137,13 @@ XdgAutoStart::XdgAutoStart(bool excludeHidden)
 
 
 /**
- * @brief saves the specified file in the home autostart directory, modifying
- * or overriding the original entry.
+ * @brief returns corresponding file name in the user's autostart directory
  */
-bool XdgAutoStart::saveAutoStartFile(XdgDesktopFile* file)
+QString XdgAutoStart::localPath(XdgDesktopFile* file)
 {
     QString filePath = file->fileName();
     QString fileName = QFileInfo(filePath).fileName();
-    if (!mMap.contains(fileName))
-    {
-        mMap.insert(fileName, file);
-    }
-    else if (mMap.value(fileName)->fileName() != filePath)
-    {
-        delete mMap.take(fileName);
-        mMap.insert(fileName, file);
-    }
-    return file->save(XdgDirs::configHome() + "/autostart/" + fileName);
+    return XdgDirs::configHome() + "/autostart/" + fileName;
 }
 
 

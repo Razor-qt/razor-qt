@@ -128,24 +128,6 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     //       I faced this issue with qsynergy (petr).
     sleep(2); // a guess-what constant...
 
-    // start 3rd party apps without restart handling
-    int count = s.beginReadArray("autostart");
-    QString cmd;
-    for (int i = 0; i < count; ++i)
-    {
-        s.setArrayIndex(i);
-        cmd = s.value("exec", "").toString();
-        if (cmd.isEmpty())
-        {
-            qDebug() << __FILE__ << ":" << __LINE__ << "empty name for module. Skipping.";
-            continue;
-        }
-        QProcess* tmp = new QProcess(this);
-        tmp->start(cmd);
-        procMap[cmd] = tmp;
-    }
-    s.endArray();
-    
     // XDG autostart
     XdgAutoStart xdgautostart;
     foreach (XdgDesktopFile* f, xdgautostart.list())

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=qxkb
+TryExec=qxkb
+Exec=qxkb
+OnlyShowIn=RAZOR;

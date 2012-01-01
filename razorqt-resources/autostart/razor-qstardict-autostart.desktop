@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=QStarDict
+TryExec=qstardict
+Exec=qstardict
+OnlyShowIn=RAZOR;

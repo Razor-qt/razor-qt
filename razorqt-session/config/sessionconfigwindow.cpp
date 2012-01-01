@@ -39,6 +39,7 @@
 #include <qtxdg/xdgicon.h>
 
 #include "sessionconfigwindow.h"
+#include "autostartedit.h"
 #include "../src/windowmanager.h"
 
 
@@ -51,16 +52,9 @@ SessionConfigWindow::SessionConfigWindow()
     // pages
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-display-color"), tr("Basic Settings"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-filetype-association"), tr("Default Applications"), listWidget);
-    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Global Autostart"), listWidget);
-    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Razor Autostart"), listWidget);
+    new QListWidgetItem(XdgIcon::fromTheme("preferences-desktop-launch-feedback"), tr("Autostart"), listWidget);
     new QListWidgetItem(XdgIcon::fromTheme("preferences-system-session-services"), tr("Environment (Advanced)"), listWidget);
     listWidget->setCurrentRow(0);
-
-    m_autostartModel = new QStringListModel(autostartView);
-    autostartView->setModel(m_autostartModel);
-
-    mXdgAutoStartModel = new QStandardItemModel(xdgAutoStartView);
-    xdgAutoStartView->setModel(mXdgAutoStartModel);
 
     m_settings = new RazorSettings("session", this);
     m_cache = new RazorSettingsCache(m_settings);
@@ -72,12 +66,12 @@ SessionConfigWindow::SessionConfigWindow()
     connect(terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
     connect(browserButton, SIGNAL(clicked()), this, SLOT(browserButton_clicked()));
     //
-    connect(appAddButton, SIGNAL(clicked()), this, SLOT(appAddButton_clicked()));
-    connect(appDeleteButton, SIGNAL(clicked()), this, SLOT(appDeleteButton_clicked()));
-    //
     connect(envAddButton, SIGNAL(clicked()), this, SLOT(envAddButton_clicked()));
     connect(envDeleteButton, SIGNAL(clicked()), this, SLOT(envDeleteButton_clicked()));
     //
+    connect(autoStartAddButton, SIGNAL(clicked()), SLOT(autoStartAddButton_clicked()));
+    connect(autoStartEditButton, SIGNAL(clicked()), SLOT(autoStartEditButton_clicked()));
+    connect(autoStartDeleteButton, SIGNAL(clicked()), SLOT(autoStartDeleteButton_clicked()));
     //
     connect(wmComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
     connect(wmComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
@@ -132,36 +126,12 @@ void SessionConfigWindow::restoreSettings()
     handleCfgComboBox(browserComboBox, knownBrowsers, browser);
 
     // XDG autostart *****************************************************
-    QStandardItem* globalAutoStartItem = new QStandardItem(tr("Global Autostart"));
-    mXdgAutoStartModel->appendRow(globalAutoStartItem);
-    globalAutoStartItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-    xdgAutoStartView->setExpanded(globalAutoStartItem->index(), true);
-    mXdgAutoStart = new XdgAutoStart(false);
-    for (QMapIterator<QString, XdgDesktopFile*> iter(mXdgAutoStart->map()); iter.hasNext();)
-    {
-        iter.next();
-        QStandardItem* item = new QStandardItem(iter.value()->name());
-        item->setData(iter.key());
-        item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        item->setCheckState(iter.value()->value("Hidden").toBool() ? Qt::Unchecked : Qt::Checked);
-        globalAutoStartItem->appendRow(item);
-    }
-    connect(mXdgAutoStartModel, SIGNAL(itemChanged(QStandardItem*)), SLOT(autoStartItem_changed(QStandardItem*)));
-
-    // 3rd party autostart ***********************************************
-    int count = m_settings->beginReadArray("autostart");
-    QString app;
-    QStringList appList;
-    for (int i=0; i < count; ++i)
-    {
-        m_settings->setArrayIndex(i);
-        app = m_settings->value("exec").toString();
-        if (!app.isEmpty())
-            appList << app;
-    }
-    m_settings->endArray();
-
-    m_autostartModel->setStringList(appList);
+    QAbstractItemModel* oldModel = xdgAutoStartView->model();
+    mXdgAutoStartModel = new AutoStartItemModel(xdgAutoStartView);
+    xdgAutoStartView->setModel(mXdgAutoStartModel);
+    delete oldModel;
+    xdgAutoStartView->setExpanded(mXdgAutoStartModel->index(0, 0), true);
+    xdgAutoStartView->setExpanded(mXdgAutoStartModel->index(1, 0), true);
 
     // environment variables (advanced) **********************************
     m_settings->beginGroup("environment");
@@ -201,18 +171,8 @@ void SessionConfigWindow::closeEvent(QCloseEvent * event)
     // default applications **********************************************
     // see environment section
 
-
-    // 3rd party autostart ***********************************************
-    m_settings->beginWriteArray("autostart");
-    int ix = 0;
-    foreach(QString i, m_autostartModel->stringList())
-    {
-        m_settings->setArrayIndex(ix);
-        m_settings->setValue("exec", i);
-        ++ix;
-    }
-    m_settings->endArray();
-
+    // XDG Autostart *****************************************************
+    mXdgAutoStartModel->writeChanges();
 
     // environment variables (advanced) **********************************
     m_settings->beginGroup("environment");
@@ -292,38 +252,32 @@ void SessionConfigWindow::browserButton_clicked()
     m_restart = true;
 }
 
-void SessionConfigWindow::appAddButton_clicked()
+void SessionConfigWindow::autoStartAddButton_clicked()
 {
-    QString fname = QFileDialog::getOpenFileName(this, tr("Select Application"), "/usr/bin/");
-    if (fname.isEmpty())
-        return;
-    
-    QFileInfo fi(fname);
-    if (!fi.exists() || !fi.isExecutable())
-        return;
-    
-    QStringList l = m_autostartModel->stringList();
-    l.append(fname);
-    l.removeDuplicates();
-    m_autostartModel->setStringList(l);
-    m_restart = true;
+    AutoStartEdit edit;
+    XdgDesktopFile* file = edit.createXdgFile();
+    if (file)
+    {
+        QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
+        mXdgAutoStartModel->addEntry(index, file);
+    }
 }
 
-void SessionConfigWindow::autoStartItem_changed(QStandardItem* item)
+void SessionConfigWindow::autoStartEditButton_clicked()
 {
-    QString key = item->data().toString();
-    XdgDesktopFile* file = mXdgAutoStart->map().value(key);
-    file->setValue("Hidden", item->checkState() == Qt::Checked ? "false" : "true");
-    mXdgAutoStart->saveAutoStartFile(file);
+    AutoStartEdit edit;
+    QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
+    XdgDesktopFile* file = static_cast<XdgDesktopFile*>(index.internalPointer());
+    if (!file)
+        return;
+    if (edit.editXdgFile(file))
+        mXdgAutoStartModel->setData(index, 0, Qt::UserRole);
 }
 
-void SessionConfigWindow::appDeleteButton_clicked()
+void SessionConfigWindow::autoStartDeleteButton_clicked()
 {
-    QStringList l = m_autostartModel->stringList();
-    int ix = autostartView->currentIndex().row();
-    l.removeAt(ix);
-    m_autostartModel->setStringList(l);
-    m_restart = true;
+    QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
+    mXdgAutoStartModel->removeRow(index.row(), index.parent());
 }
 
 void SessionConfigWindow::envAddButton_clicked()

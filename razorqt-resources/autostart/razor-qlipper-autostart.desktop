@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Qlipper
+TryExec=qlipper
+Exec=qlipper
+OnlyShowIn=RAZOR;
