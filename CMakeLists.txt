@@ -75,6 +75,7 @@ add_subdirectory( razorqt-x11info )
 add_subdirectory( razorqt-runner )
 add_subdirectory( razorqt-config )
 add_subdirectory( razorqt-power )
+add_subdirectory( razorqt-policykit )
 
 
 ########### Add uninstall target ###############
