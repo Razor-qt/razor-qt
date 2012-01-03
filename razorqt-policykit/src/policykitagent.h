@@ -1,23 +1,29 @@
-// This is an example not a library
-/***************************************************************************
- *   Copyright (C) 2008 Daniel Nicoletti <dantti85-pk@yahoo.com.br>        *
- *   Copyright (C) 2009 Radek Novacek    <rnovacek@redhat.com>             *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
- ***************************************************************************/
+/* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL3+
+ *
+ * Razor - a lightweight, Qt based, desktop toolset
+ * http://razor-qt.org
+ *
+ * Copyright: 2011-2012 Razor team
+ * Authors:
+ *   Petr Vanek <petr@scribus.info>
+ *
+ * This program or library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA
+ *
+ * END_COMMON_COPYRIGHT_HEADER */
 
 #ifndef POLICYKITAGENT_H
 #define POLICYKITAGENT_H
@@ -29,8 +35,8 @@
 #include <polkitqt1-details.h>
 #include <polkitqt1-agent-listener.h>
 
-#include <QtDBus/QDBusContext>
 #include <QtGui/QApplication>
+#include <QtCore/QHash>
 
 
 
@@ -66,6 +72,7 @@ public slots:
 private:
     bool m_inProgress;
     PolicykitAgentGUI * m_gui;
+    QHash<PolkitQt1::Agent::Session*,PolkitQt1::Identity> m_SessionIdentity;
 };
 
 } // namespace

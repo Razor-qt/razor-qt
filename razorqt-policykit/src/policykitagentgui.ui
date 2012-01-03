@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>321</width>
-    <height>372</height>
+    <width>310</width>
+    <height>173</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,32 +74,6 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QTreeWidget" name="detailsWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="columnCount">
-      <number>2</number>
-     </property>
-     <column>
-      <property name="text">
-       <string>Details</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Value</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
