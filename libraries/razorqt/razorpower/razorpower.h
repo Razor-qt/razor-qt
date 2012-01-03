@@ -77,22 +77,22 @@ public:
 
 public slots:
     /// Performs the requested action.
-    void doAction(Action action);
+    bool doAction(Action action);
 
     //! This function is provided for convenience. It's equivalent to calling doAction(PowerLogout).
-    void logout();
+    bool logout();
 
     //! This function is provided for convenience. It's equivalent to calling doAction(PowerHibernate).
-    void hibernate();
+    bool hibernate();
 
     //! This function is provided for convenience. It's equivalent to calling doAction(PowerReboot).
-    void reboot();
+    bool reboot();
 
     //! This function is provided for convenience. It's equivalent to calling doAction(PowerShutdown).
-    void shutdown();
+    bool shutdown();
 
     //! This function is provided for convenience. It's equivalent to calling doAction(PowerSuspend).
-    void suspend();
+    bool suspend();
 
 private:
     QList<RazorPowerProvider*> mProviders;

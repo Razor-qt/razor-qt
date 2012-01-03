@@ -82,8 +82,9 @@ bool dbusCall(const QString &service,
     if (!msg.errorName().isEmpty())
         printDBusMsg(msg);
 
-    return !msg.arguments().isEmpty() &&
-            msg.arguments().first().toBool();
+    // If the method no returns value, we believe that it was successful.
+    return msg.arguments().isEmpty() ||
+           msg.arguments().first().toBool();
 }
 
 
@@ -183,7 +184,7 @@ bool UPowerProvider::canAction(RazorPower::Action action) const
 }
 
 
-void UPowerProvider::doAction(RazorPower::Action action)
+bool UPowerProvider::doAction(RazorPower::Action action)
 {
     QString command;
 
@@ -198,10 +199,11 @@ void UPowerProvider::doAction(RazorPower::Action action)
         break;
 
     default:
-        return;
+        return false;
     }
 
-    dbusCall(UPOWER_SERVICE,
+
+    return dbusCall(UPOWER_SERVICE,
              UPOWER_PATH,
              UPOWER_INTERFACE,
              QDBusConnection::systemBus(),
@@ -251,7 +253,7 @@ bool ConsoleKitProvider::canAction(RazorPower::Action action) const
 }
 
 
-void ConsoleKitProvider::doAction(RazorPower::Action action)
+bool ConsoleKitProvider::doAction(RazorPower::Action action)
 {
     QString command;
 
@@ -266,10 +268,10 @@ void ConsoleKitProvider::doAction(RazorPower::Action action)
         break;
 
     default:
-        return;
+        return false;
     }
 
-    dbusCall(CONSOLEKIT_SERVICE,
+    return dbusCall(CONSOLEKIT_SERVICE,
              CONSOLEKIT_PATH,
              CONSOLEKIT_INTERFACE,
              QDBusConnection::systemBus(),
@@ -307,7 +309,7 @@ bool RazorProvider::canAction(RazorPower::Action action) const
 }
 
 
-void RazorProvider::doAction(RazorPower::Action action)
+bool RazorProvider::doAction(RazorPower::Action action)
 {
     QString command;
 
@@ -318,10 +320,10 @@ void RazorProvider::doAction(RazorPower::Action action)
         break;
 
     default:
-        return;
+        return false;
     }
 
-    dbusCall(RAZOR_SERVICE,
+    return dbusCall(RAZOR_SERVICE,
              RAZOR_PATH,
              RAZOR_INTERFACE,
              QDBusConnection::sessionBus(),
@@ -351,6 +353,7 @@ bool HalProvider::canAction(RazorPower::Action action) const
 }
 
 
-void HalProvider::doAction(RazorPower::Action action)
+bool HalProvider::doAction(RazorPower::Action action)
 {
+    return false;
 }

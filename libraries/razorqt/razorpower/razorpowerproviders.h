@@ -46,7 +46,7 @@ public:
 public slots:
     /*! Performs the requested action.
         This is a pure virtual function, and must be reimplemented in subclasses. */
-    virtual void doAction(RazorPower::Action action) = 0;
+    virtual bool doAction(RazorPower::Action action) = 0;
 };
 
 
@@ -59,7 +59,7 @@ public:
     bool canAction(RazorPower::Action action) const;
 
 public slots:
-    void doAction(RazorPower::Action action);
+    bool doAction(RazorPower::Action action);
 };
 
 
@@ -72,7 +72,7 @@ public:
     bool canAction(RazorPower::Action action) const;
 
 public slots:
-    void doAction(RazorPower::Action action);
+    bool doAction(RazorPower::Action action);
 };
 
 
@@ -85,7 +85,7 @@ public:
     bool canAction(RazorPower::Action action) const;
 
 public slots:
-    void doAction(RazorPower::Action action);
+    bool doAction(RazorPower::Action action);
 };
 
 
@@ -98,7 +98,7 @@ public:
     bool canAction(RazorPower::Action action) const;
 
 public slots:
-    void doAction(RazorPower::Action action);
+    bool doAction(RazorPower::Action action);
 };
 
 #endif // RAZORPOWER_PROVIDERS_H

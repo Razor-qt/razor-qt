@@ -57,16 +57,18 @@ bool RazorPower::canAction(RazorPower::Action action) const
 }
 
 
-void RazorPower::doAction(RazorPower::Action action)
+bool RazorPower::doAction(RazorPower::Action action)
 {
     foreach(RazorPowerProvider* provider, mProviders)
     {
-        if (provider->canAction(action))
+        if (provider->canAction(action) &&
+            provider->doAction(action)
+           )
         {
-            provider->doAction(action);
-            return;
+            return true;
         }
     }
+    return false;
 }
 
 
@@ -76,8 +78,8 @@ bool RazorPower::canReboot()    const { return canAction(PowerReboot);    }
 bool RazorPower::canShutdown()  const { return canAction(PowerShutdown);  }
 bool RazorPower::canSuspend()   const { return canAction(PowerSuspend);   }
 
-void RazorPower::logout()       { doAction(PowerLogout);    }
-void RazorPower::hibernate()    { doAction(PowerHibernate); }
-void RazorPower::reboot()       { doAction(PowerReboot);    }
-void RazorPower::shutdown()     { doAction(PowerShutdown);  }
-void RazorPower::suspend()      { doAction(PowerSuspend);   }
+bool RazorPower::logout()       { return doAction(PowerLogout);    }
+bool RazorPower::hibernate()    { return doAction(PowerHibernate); }
+bool RazorPower::reboot()       { return doAction(PowerReboot);    }
+bool RazorPower::shutdown()     { return doAction(PowerShutdown);  }
+bool RazorPower::suspend()      { return doAction(PowerSuspend);   }
