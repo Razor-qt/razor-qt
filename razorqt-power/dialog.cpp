@@ -38,7 +38,6 @@ Dialog::Dialog(QWidget *parent) :
     QDialog(parent, Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint),
     ui(new Ui::Dialog)
 {
-    qDebug() << Q_FUNC_INFO;
     ui->setupUi(this);
     setStyleSheet(razorTheme->qss("razor-power/razor-power"));
 
