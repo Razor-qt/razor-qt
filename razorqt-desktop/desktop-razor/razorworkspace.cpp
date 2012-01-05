@@ -307,6 +307,10 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
             }
         }
 
+#ifdef DEBUG
+        context->addAction("Exit (debug only)", this, SLOT(close()));
+#endif
+
         context->exec(QCursor::pos());
         delete context;
     }

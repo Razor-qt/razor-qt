@@ -758,7 +758,7 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
 
 #ifdef DEBUG
     Q_Q(const RazorPanel);
-    menu->addAction("Exit", q, SLOT(close()));
+    menu->addAction("Exit (debug only)", q, SLOT(close()));
 #endif
 
     // Plugins menu .............................
