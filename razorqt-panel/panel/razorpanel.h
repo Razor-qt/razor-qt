@@ -54,6 +54,12 @@ public:
         PositionRight
     };
 
+    enum Alignment {
+        AlignmentLeft   = -1,
+        AlignmentCenter =  0,
+        AlignmentRight  =  1
+    };
+
     RazorPanel(QWidget *parent = 0);
     virtual ~RazorPanel();
 
