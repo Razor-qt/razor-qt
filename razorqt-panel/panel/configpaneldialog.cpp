@@ -27,110 +27,118 @@
 
 #include "configpaneldialog.h"
 #include "ui_configpaneldialog.h"
-#include "razorpanel.h"
 
 #define CFG_PANEL_GROUP     "panel"
 #define CFG_KEY_HEIGHT      "height"
 #define CFG_KEY_WIDTH       "width"
-#define CFG_KEY_WIDTH_TYPE  "widthType"
+#define CFG_KEY_PERCENT     "width-percent"
 #define CFG_KEY_ALIGNMENT   "alignment"
 
 
-ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, QWidget *parent) :
+ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigPanelDialog)
 {
     ui->setupUi(this);
-    connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveSettings()));
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
     connect(ui->spinBox_height, SIGNAL(valueChanged(int)),this, SLOT(spinBoxHeightValueChanged(int)));
     connect(ui->comboBox_widthType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxWidthTypeIndexChanged(int)));
     connect(ui->comboBox_alignment, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAlignmentIndexChanged(int)));
     connect(ui->spinBox_width, SIGNAL(valueChanged(int)),this, SLOT(spinBoxWidthValueChanged(int)));
     mHeightDefault=hDefault;
     mWidthMax=wMax;
+    mSettings = settings;
+    mCache = new RazorSettingsCache(mSettings);
 
-    // FIXME
-    // I think, need use something like this
-    // int mHeight = settings().value(CFG_KEY_HEIGHT, 37).toInt();
-    // but I can't do in now =((
+    initControls();
+}
 
-    mConfigFile = "panel";
-    if (qApp->arguments().count() > 1)
-    {
-        mConfigFile = qApp->arguments().at(1);
-        if (mConfigFile.endsWith(".conf"))
-            mConfigFile.chop(5);
-    }
-
-    mSettings = new RazorSettings("razor-panel/" + mConfigFile, this);
+void ConfigPanelDialog::initControls()
+{
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mHeight = mSettings->value(CFG_KEY_HEIGHT, mHeightDefault).toInt();
-    mWidthType = mSettings->value(CFG_KEY_WIDTH_TYPE, 0).toInt();
-    mAlignment = mSettings->value(CFG_KEY_ALIGNMENT, 2).toInt();
-    if (mWidthType==0)      // size in percents
-    {
-        mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
-        ui->spinBox_width->setMaximum(100);
-    }
-    else                    // size in pixels
-    {
-        ui->spinBox_width->setMaximum(mWidthMax);
-        mWidth = mSettings->value(CFG_KEY_WIDTH, mWidthMax).toInt();
-    }
+    mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
+    mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
+    mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, RazorPanel::AlignmentCenter).toInt());
     mSettings->endGroup();
 
     ui->spinBox_height->setValue(mHeight);
-    ui->comboBox_widthType->setCurrentIndex(mWidthType);
+    ui->spinBox_width->setMaximum(mWidthInPercents ? 100 : mWidthMax);
     ui->spinBox_width->setValue(mWidth);
-    ui->comboBox_alignment->setCurrentIndex(mAlignment);
+    ui->comboBox_widthType->setCurrentIndex(mWidthInPercents ? 0 : 1);
+    ui->comboBox_alignment->setCurrentIndex(mAlignment + 1);
+    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
 }
 
 ConfigPanelDialog::~ConfigPanelDialog()
 {
     delete ui;
+    delete mCache;
 }
 
-void ConfigPanelDialog::saveSettings()
+void ConfigPanelDialog::dialogButtonsAction(QAbstractButton *button)
 {
+    if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole)
+    {
+        mCache->loadToSettings();
+        initControls();
+    }
+    else
+    {
+        close();
+    }
+}
+
+void ConfigPanelDialog::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mSettings->setValue(CFG_KEY_WIDTH, mWidth);
-    mSettings->setValue(CFG_KEY_WIDTH_TYPE, mWidthType);
+    mSettings->setValue(CFG_KEY_PERCENT, mWidthInPercents);
     mSettings->setValue(CFG_KEY_HEIGHT, mHeight);
     mSettings->setValue(CFG_KEY_ALIGNMENT, mAlignment);
     mSettings->endGroup();
-
-    RazorPanel *parent = qobject_cast<RazorPanel*>(this->parentWidget());
-    parent->show();
-    this->close();
+    mSettings->sync();
 }
 
 void ConfigPanelDialog::spinBoxWidthValueChanged(int q)
 {
     mWidth=q;
     // if panel width not max, user can plased it on left/rigth/center
-    if ((mWidthType==0 && ui->spinBox_width->value()<100) || (mWidthType==1 && ui->spinBox_width->value()<mWidthMax))
+    if ((mWidthInPercents && mWidth < 100) || (!mWidthInPercents && mWidth < mWidthMax))
         ui->comboBox_alignment->setEnabled(true);
     else
        ui->comboBox_alignment->setEnabled(false);
+
+    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
 }
 
 void ConfigPanelDialog::comboBoxWidthTypeIndexChanged(int q)
 {
-    mWidthType=q;
-    if (mWidthType==0)  // %
-        //ui->spinBox_width->setValue(mWidth*100/mWidthMax);        // px to %
-        ui->spinBox_width->setMaximum(100);
+    bool inPercents = (q == 0);
+    if (inPercents == mWidthInPercents)
+        return;
+    mWidthInPercents = inPercents;
+
+    int width;
+    if (mWidthInPercents)  // %
+        width = mWidth * 100 / mWidthMax;
     else                // px
-        //ui->spinBox_width->setValue((mWidth*mWidthMax)/100);        // % to px
-        ui->spinBox_width->setMaximum(mWidthMax);
+        width = (mWidth * mWidthMax) / 100;
+
+    ui->spinBox_width->setMaximum(mWidthInPercents ? 100 : mWidthMax);
+    ui->spinBox_width->setValue(width);
+    mWidth = width;
 }
 
 void ConfigPanelDialog::comboBoxAlignmentIndexChanged(int q)
 {
-    mAlignment=q;
+    mAlignment = RazorPanel::Alignment(q - 1);
+    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
 }
 
 void ConfigPanelDialog::spinBoxHeightValueChanged(int q)
 {
     mHeight=q;
+    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
 }
