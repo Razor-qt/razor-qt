@@ -346,8 +346,7 @@ bool XdgDesktopFile::save(const QString &fileName) const
 QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue) const
 {
     QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
-    QVariant v = d->mItems.value(path, defaultValue);
-    return v.toString().replace("&", "&&");
+    return d->mItems.value(path, defaultValue);
 }
 
 
