@@ -57,11 +57,13 @@ Dialog::Dialog(QWidget *parent) :
     QDialog(parent, Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint),
     ui(new Ui::Dialog),
     mSettings(new RazorSettings("razor-runner", this)),
-    mGlobalShortcut(new QxtGlobalShortcut(this)),
-    mCommandItemModel(new CommandItemModel(this))
+    mGlobalShortcut(new QxtGlobalShortcut(this))
 {
     ui->setupUi(this);
     setStyleSheet(razorTheme->qss("razor-runner/razor-runner"));
+    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
+    connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(update()));
+
     connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(hide()));
 
     connect(mSettings, SIGNAL(settigsChanged()), this, SLOT(applySettings()));
@@ -75,6 +77,7 @@ Dialog::Dialog(QWidget *parent) :
     connect(ui->commandEd->lineEdit(), SIGNAL(returnPressed()), this, SLOT(runCommand()));
 
 
+    mCommandItemModel = new CommandItemModel(this);
     ui->commandList->installEventFilter(this);
     ui->commandList->setModel(mCommandItemModel);
     ui->commandList->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -94,9 +97,6 @@ Dialog::Dialog(QWidget *parent) :
 
     applySettings();
     resize(mSettings->value("dialog/width", 400).toInt(), size().height());
-
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(update()));
 }
 
 
