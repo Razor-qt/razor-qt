@@ -28,7 +28,7 @@ setByDefault(TASKBAR_PLUGIN     Yes )
 setByDefault(SCREENSAVER_PLUGIN  Yes )
 setByDefault(SHOWDESKTOP_PLUGIN Yes)
 setByDefault(MOUNT_PLUGIN Yes)
-
+setByDefault(HELLOWORLD_PLUGIN No)
 # *******************************************************************
 
 
@@ -105,6 +105,11 @@ if (SHOWDESKTOP_PLUGIN)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "ShowDesktop")
     add_subdirectory(plugin-showdesktop)
 endif (SHOWDESKTOP_PLUGIN)
+
+if (HELLOWORLD_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "HelloWorld")
+    add_subdirectory(plugin-helloworld)
+endif (HELLOWORLD_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
