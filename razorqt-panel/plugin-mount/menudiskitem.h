@@ -1,5 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2
+ * (c)LGPL2+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -32,11 +32,7 @@
 
     Copyright (C) 2010 by hatred <hatred@inbox.ru>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the version 2 of GNU General Public License as
-    published by the Free Software Foundation.
-
-    For more information see LICENSE and LICENSE.ru files
+    Comparing current version the file seems rewriten completely.
 */
 
 #ifndef MENUDISKITEM_H
