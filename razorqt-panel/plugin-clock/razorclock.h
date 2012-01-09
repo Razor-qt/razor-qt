@@ -7,7 +7,7 @@
  * Copyright: 2010-2011 Razor team
  * Authors:
  *   Christopher "VdoP" Regali
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *   Maciej Płaza <plaza.maciej@gmail.com>
  *
  * This program or library is free software; you can redistribute it
