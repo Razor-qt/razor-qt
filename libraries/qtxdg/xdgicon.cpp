@@ -95,6 +95,11 @@ void XdgIcon::setThemeName(const QString& themeName)
  ************************************************/
 QIcon XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
 {
+    if (iconName.isEmpty())
+        return fallback;
+
+    bool isAbsolute = (iconName[0] == '/');
+
     QString name = QFileInfo(iconName).fileName();
     if (name.endsWith(".png", Qt::CaseInsensitive) ||
         name.endsWith(".svg", Qt::CaseInsensitive) ||
@@ -108,14 +113,18 @@ QIcon XdgIcon::fromTheme(const QString& iconName, const QIcon& fallback)
     if (qtIconCache()->contains(name)) {
         icon = *qtIconCache()->object(name);
     } else {
-        QIcon *cachedIcon  = new QIcon(new QIconLoaderEngineFixed(name));
+        QIcon *cachedIcon;
+        if (!isAbsolute)
+            cachedIcon = new QIcon(new QIconLoaderEngineFixed(name));
+        else
+            cachedIcon = new QIcon(iconName);
         qtIconCache()->insert(name, cachedIcon);
         icon = *cachedIcon;
     }
 
     // Note the qapp check is to allow lazy loading of static icons
     // Supporting fallbacks will not work for this case.
-    if (qApp && icon.availableSizes().isEmpty())
+    if (qApp && !isAbsolute && icon.availableSizes().isEmpty())
     {
         return fallback;
     }
