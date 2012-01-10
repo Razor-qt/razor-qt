@@ -1,34 +1,24 @@
-if (NOT UDEV_STABLE)
-    message(WARNING "libudev is not in the stable API version. razormount will not be compiled")
-else (NOT UDEV_STABLE)
 
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-        ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
+    ${QT_INCLUDES}
 	${X11_INCLUDE_DIR}
 	.
 )
 
 set(razormount_HDRS
-    # udisks. Maybe standalone lib too?
-    diskmonitor.h
-    mount.h
-    storageitem.h
-    storagemanager.h
+    udisksinfo.h
+    udisksmanager.h
 )
 
 set(razormount_SRCS
-    # udisks. Maybe standalone lib too?
-    diskmonitor.cpp
-    mount.cpp
-    storageitem.cpp
-    storagemanager.cpp
+    udisksinfo.cpp
+    udisksmanager.cpp
 )
 
 set(razormount_MOCS
-    diskmonitor.h
-    storageitem.h
-    storagemanager.h
+    udisksinfo.h
+    udisksmanager.h
 )
 
 QT4_WRAP_CPP(razourmount_MOCS ${razormount_MOCS})
@@ -52,6 +42,3 @@ install(FILES ${razormount_HDRS} DESTINATION include/razormount)
 
 include(create_pkgconfig_file)
 create_pkgconfig_file(razormount "Razor-qt library for removable media/devices")
-
-endif (NOT UDEV_STABLE)
-

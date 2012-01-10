@@ -24,43 +24,33 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
-/* Based on a "MountTray" project - modified for Razor needs
-    http://hatred.homelinux.net
 
-    @date   2010-11-11
-    @brief  Main application class: integrate all components
-
-    Copyright (C) 2010 by hatred <hatred@inbox.ru>
-
-    Comparing current version the file seems rewriten completely.
-*/
-
-
+#include <QtGui/QDesktopServices>
 #include "menudiskitem.h"
-#include "razormount/mount.h"
-#include "qtxdg/xdgicon.h"
+#include <razormount/udisksinfo.h>
+#include <qtxdg/xdgicon.h>
 
 
-MenuDiskItem::MenuDiskItem(const DiskInfo &info, QWidget *parent)
-    : QWidget(parent)
+MenuDiskItem::MenuDiskItem(UdisksInfo *info, QWidget *parent)
+    : QWidget(parent),
+      m_info(info)
 {
     setupUi(this);
-
-    m_device = info.device_name;
     
     eject->setIcon(XdgIcon::fromTheme("media-eject"));
-    QString iconName = info.iconName();
+    QString iconName(info->iconName());
+    
+    connect(info, SIGNAL(error(QString)),
+            this, SIGNAL(error(QString)));
 
     if (!iconName.isEmpty())
         diskButton->setIcon(XdgIcon::fromTheme(iconName));
     else
         diskButton->setIcon(XdgIcon::fromTheme("drive-removable-media-usb"));
 
-    setLabel(info.name);
+    setLabel(info->displayName() + " (" + info->fileSystem() + ")");
 
-    // get initial mount status - isMounted() is part if mount.h
-    QStringList mountList = isMounted(m_device, MC_DEVICE);
-    setMountStatus(mountList.count());
+    setMountStatus(info->isMounted());
 }
 
 void MenuDiskItem::changeEvent(QEvent *e)
@@ -80,7 +70,7 @@ void MenuDiskItem::setLabel(const QString &text)
     QString label = text;
     if (label.isEmpty())
     {
-        label = m_device;
+        label = m_info->displayName();;
     }
 
     diskButton->setText(label);
@@ -93,10 +83,18 @@ void MenuDiskItem::setMountStatus(bool is_mount)
 
 void MenuDiskItem::on_eject_clicked()
 {
-    emit ejectMedia(m_device);
+    qWarning() << "void MenuDiskItem::on_eject_clicked()" ;
+    setMountStatus(!m_info->unmount());
+    qobject_cast<QWidget*>(parent())->hide();
 }
 
 void MenuDiskItem::on_diskButton_clicked()
 {
-    emit mountMedia(m_device);
+    qWarning() << "void MenuDiskItem::on_diskButton_clicked()" << m_info->path();
+    bool success = m_info->mount();
+    setMountStatus(success);
+    if (success)
+        QDesktopServices::openUrl(QUrl(m_info->path()));
+
+    qobject_cast<QWidget*>(parent())->hide();
 }
