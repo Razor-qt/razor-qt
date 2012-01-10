@@ -356,40 +356,66 @@ void RazorPanelPrivate::realign()
     else  mLayout->setDirection(QBoxLayout::TopToBottom);
 
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
-    QRect rect = screen;
-    QSize sizeHint = q->sizeHint();
+    QRect rect;
 
-    switch (mPosition)
+    if (q->isHorizontal())
     {
-        case RazorPanel::PositionTop:
-            rect.setHeight(mHeight);
-            break;
+        // Size .....................
+        rect.setHeight(mHeight);
+        if (mWidthInPercents)
+            rect.setWidth(screen.width() * mWidth / 100);
+        else
+            rect.setWidth(mWidth);
 
-        case RazorPanel::PositionBottom:
-            rect.setHeight(mHeight);
-            rect.moveBottom(screen.bottom());
+        // Horiz ....................
+        switch (mAlignment)
+        {
+        case RazorPanel::AlignmentLeft:
+            rect.moveLeft(screen.left());
             break;
-
-        case RazorPanel::PositionLeft:
-            rect.setWidth(sizeHint.width());
+        case RazorPanel::AlignmentCenter:
+            rect.moveCenter(QPoint(screen.center()));
             break;
-
-        case RazorPanel::PositionRight:
-            rect.setWidth(sizeHint.width());
+        case RazorPanel::AlignmentRight:
             rect.moveRight(screen.right());
             break;
+        }
+
+        // Vert .....................
+        if (mPosition == RazorPanel::PositionTop)
+            rect.moveTop(screen.top());
+        else
+            rect.moveBottom(screen.bottom());
     }
+    else
+    {
+        // Size .....................
+        rect.setWidth(mHeight);
+        if (mWidthInPercents)
+            rect.setHeight(screen.width() * mWidth / 100);
+        else
+            rect.setHeight(mWidth);
 
-    int width = mWidth;
-    if (mWidthInPercents)
-        width = screen.width() * width / 100;
+        // Vert .....................
+        switch (mAlignment)
+        {
+        case RazorPanel::AlignmentLeft:
+            rect.moveTop(screen.top());
+            break;
+        case RazorPanel::AlignmentCenter:
+            rect.moveCenter(QPoint(screen.center()));
+            break;
+        case RazorPanel::AlignmentRight:
+            rect.moveBottom(screen.bottom());
+            break;
+        }
 
-    if (mAlignment == RazorPanel::AlignmentCenter)
-        rect.setLeft((screen.width() - width) / 2);
-    else if (mAlignment == RazorPanel::AlignmentRight)
-        rect.setLeft(screen.width() - width);
-    rect.setWidth(width);
-
+        // Horiz ....................
+        if (mPosition == RazorPanel::PositionLeft)
+            rect.moveLeft(screen.left());
+        else
+            rect.moveRight(screen.right());
+    }
     q->setGeometry(rect);
 
 
