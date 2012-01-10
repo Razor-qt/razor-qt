@@ -24,38 +24,38 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+ 
+#ifndef UDISKSMANAGER_H
+#define UDISKSMANAGER_H
 
-#ifndef MENUDISKITEM_H
-#define MENUDISKITEM_H
+#include <QtCore/QObject>
+
+#include "udisksinfo.h"
 
 
-#include "ui_menudiskitem.h"
-class UdisksInfo;
-
-
-class MenuDiskItem : public QWidget, private Ui::MenuDiskItem
+class UdisksManager : public QObject
 {
     Q_OBJECT
 
 public:
-//    explicit MenuDiskItem(QWidget *parent = 0);
-    explicit MenuDiskItem(UdisksInfo *info, QWidget *parent);
+    UdisksManager(QObject *parent=0);
+    ~UdisksManager();
 
-    void setMountStatus(bool is_mount);
+    QList<UdisksInfo*> devices() { return m_devices.values(); }
 
 signals:
     void error(const QString &msg);
+    void addDevice(UdisksInfo *info);
+    void removeDevice(UdisksInfo *info);
 
-protected:
-    void changeEvent(QEvent *e);
-
-private slots:
-    void on_eject_clicked();
-    void on_diskButton_clicked();
+public slots:
+    void addDevice(const QDBusObjectPath &device);
+    void removeDevice(const QDBusObjectPath &device);
+    void changeDevice(const QDBusObjectPath &device);
 
 private:
-    UdisksInfo *m_info;
-    void setLabel(const QString &text);
+
+    QHash<QString,UdisksInfo*> m_devices;
 };
 
-#endif // MENUDISKITEM_H
+#endif /* _YAUD_TRAY_APP_H_ */
