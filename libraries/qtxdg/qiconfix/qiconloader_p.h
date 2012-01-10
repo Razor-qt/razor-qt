@@ -158,10 +158,12 @@ public:
     QStringList parents() { return m_parents; }
     QList <QIconDirInfo> keyList() { return m_keyList; }
     QString contentDir() { return m_contentDir; }
+    QStringList contentDirs() { return m_contentDirs; }
     bool isValid() { return m_valid; }
 
 private:
     QString m_contentDir;
+    QStringList m_contentDirs;
     QList <QIconDirInfo> m_keyList;
     QStringList m_parents;
     bool m_valid;
