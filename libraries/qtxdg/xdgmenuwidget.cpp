@@ -1,17 +1,17 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL3+
+ * (c)LGPL2+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -63,6 +63,7 @@ public:
 
 private:
     XdgAction* createAction(const QDomElement& xml);
+    static QString escape(QString string);
 };
 
 
@@ -75,9 +76,8 @@ XdgMenuWidget::XdgMenuWidget(const XdgMenu& xdgMenu, const QString& title, QWidg
     d_ptr(new XdgMenuWidgetPrivate(this))
 {
     d_ptr->init(xdgMenu.xml().documentElement());
-    setTitle(title);
+    setTitle(XdgMenuWidgetPrivate::escape(title));
 }
-
 
 /************************************************
 
@@ -112,10 +112,12 @@ void XdgMenuWidgetPrivate::init(const QDomElement& xml)
     q->clear();
     mNeedBuild = true;
 
+    QString title;
     if (! xml.attribute("title").isEmpty())
-        q->setTitle(xml.attribute("title"));
+        title = xml.attribute("title");
     else
-        q->setTitle(xml.attribute("name"));
+        title = xml.attribute("name");
+    q->setTitle(escape(title));
 
     q->setToolTip(xml.attribute("comment"));
 
@@ -264,8 +266,18 @@ XdgAction* XdgMenuWidgetPrivate::createAction(const QDomElement& xml)
          xml.attribute("genericName") != title)
         title += QString(" (%1)").arg(xml.attribute("genericName"));
 
-    action->setText(title);
+    action->setText(escape(title));
     return action;
+}
+
+
+/************************************************
+ This should be used when a menu item text is set
+ otherwise Qt uses the &'s for creating mnemonics
+ ************************************************/
+QString XdgMenuWidgetPrivate::escape(QString string)
+{
+    return string.replace("&", "&&");
 }
 
 

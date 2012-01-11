@@ -68,6 +68,7 @@
 //#ifdef Q_WS_X11
 //#include "qt/qt_x11_p.h"
 //#endif
+#include <QDebug>
 
 #if QT_VERSION < 0x040700
 #include <limits.h>
@@ -156,7 +157,8 @@ void QIconLoader::setThemeSearchPath(const QStringList &searchPaths)
 
 QStringList QIconLoader::themeSearchPaths() const
 {
-    if (m_iconDirs.isEmpty()) {
+    if (m_iconDirs.isEmpty())
+    {
         m_iconDirs = QIcon::themeSearchPaths();//qt_guiPlatformPlugin()->iconThemeSearchPaths();
         // Always add resource directory as search path
         m_iconDirs.append(QLatin1String(":/icons"));
@@ -180,9 +182,19 @@ QIconTheme::QIconTheme(const QString &themeName)
         if (themeIndex.exists()) {
             m_contentDir = themeDir;
             m_valid = true;
+
+            QStringList themeSearchPaths = QIcon::themeSearchPaths();
+            foreach (QString path, themeSearchPaths)
+            {
+                if (!path.startsWith(':'))
+                    m_contentDirs.append(path + QLatin1Char('/') + themeName);
+            }
+
             break;
         }
     }
+
+
 #ifndef QT_NO_SETTINGS
     if (themeIndex.exists()) {
         const QSettings indexReader(themeIndex.fileName(), QSettings::IniFormat);
@@ -261,38 +273,48 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
         themeList.insert(themeName, theme);
     }
 
-    QString contentDir = theme.contentDir() + QLatin1Char('/');
+    QStringList contentDirs = theme.contentDirs();
     QList<QIconDirInfo> subDirs = theme.keyList();
 
     const QString svgext(QLatin1String(".svg"));
     const QString pngext(QLatin1String(".png"));
     const QString xpmext(QLatin1String(".xpm"));
 
-    // Add all relevant files
-    for (int i = 0; i < subDirs.size() ; ++i) {
-        const QIconDirInfo &dirInfo = subDirs.at(i);
-        QString subdir = dirInfo.path;
-        QDir currentDir(contentDir + subdir);
-        if (currentDir.exists(iconName + pngext)) {
-            PixmapEntry *iconEntry = new PixmapEntry;
-            iconEntry->dir = dirInfo;
-            iconEntry->filename = currentDir.filePath(iconName + pngext);
-            // Notice we ensure that pixmap entries always come before
-            // scalable to preserve search order afterwards
-            entries.prepend(iconEntry);
-        } else if (m_supportsSvg &&
-            currentDir.exists(iconName + svgext)) {
-            ScalableEntry *iconEntry = new ScalableEntry;
-            iconEntry->dir = dirInfo;
-            iconEntry->filename = currentDir.filePath(iconName + svgext);
-            entries.append(iconEntry);
-        } else if (currentDir.exists(iconName + xpmext)) {
-            PixmapEntry *iconEntry = new PixmapEntry;
-            iconEntry->dir = dirInfo;
-            iconEntry->filename = currentDir.filePath(iconName + xpmext);
-            // Notice we ensure that pixmap entries always come before
-            // scalable to preserve search order afterwards
-            entries.append(iconEntry);
+    foreach (QString contentDir, contentDirs)
+    {
+        // Add all relevant files
+        for (int i = 0; i < subDirs.size() ; ++i)
+        {
+            const QIconDirInfo &dirInfo = subDirs.at(i);
+            QString subdir = dirInfo.path;
+            QDir currentDir(contentDir + '/' + subdir);
+
+            if (currentDir.exists(iconName + pngext))
+            {
+                PixmapEntry *iconEntry = new PixmapEntry;
+                iconEntry->dir = dirInfo;
+                iconEntry->filename = currentDir.filePath(iconName + pngext);
+                // Notice we ensure that pixmap entries always come before
+                // scalable to preserve search order afterwards
+                entries.prepend(iconEntry);
+            }
+            else if (m_supportsSvg &&
+                     currentDir.exists(iconName + svgext))
+            {
+                ScalableEntry *iconEntry = new ScalableEntry;
+                iconEntry->dir = dirInfo;
+                iconEntry->filename = currentDir.filePath(iconName + svgext);
+                entries.append(iconEntry);
+            }
+            else if (currentDir.exists(iconName + xpmext))
+            {
+                PixmapEntry *iconEntry = new PixmapEntry;
+                iconEntry->dir = dirInfo;
+                iconEntry->filename = currentDir.filePath(iconName + xpmext);
+                // Notice we ensure that pixmap entries always come before
+                // scalable to preserve search order afterwards
+                entries.append(iconEntry);
+            }
         }
     }
 

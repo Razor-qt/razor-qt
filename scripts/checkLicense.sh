@@ -3,7 +3,11 @@
 #ALL=''
 #ONLY_ERRORS=0
 COLOR='YES'
-DIR=../
+
+DIR=$1
+if [ -z "$DIR" ]; then
+    DIR='../'
+fi
 
 if [ -n "$COLOR" ]; then
     RED='\E[0;31m'
@@ -26,8 +30,12 @@ for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null
     license=`head -n 5 "$file"| grep '(c)' | sed -e 's/*//'`;# | sed -e 's/\([()]\)/\\1/g'`;
 
     case "$license" in
-        *LGPL2+*|*LGPL3+*|*DWTFYW*|*BSD3*)
+        *LGPL2+*)
             [ -z "$ALL" ] && continue
+            color=$GREEN
+            ;;
+
+        *LGPL3+*|*DWTFYW*|*BSD3*)
             color=$GREEN
             ;;
 

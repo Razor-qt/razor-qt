@@ -43,9 +43,6 @@
      <property name="toolTip">
       <string>Click to access this device from other applications.</string>
      </property>
-     <property name="text">
-      <string notr="true">...</string>
-     </property>
      <property name="toolButtonStyle">
       <enum>Qt::ToolButtonTextBesideIcon</enum>
      </property>
@@ -55,9 +52,6 @@
     <widget class="QToolButton" name="eject">
      <property name="toolTip">
       <string>Click to eject this disc.</string>
-     </property>
-     <property name="text">
-      <string notr="true">...</string>
      </property>
      <property name="iconSize">
       <size>

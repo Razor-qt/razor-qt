@@ -6,7 +6,7 @@
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *   Petr Vanek <petr@scribus.info>
  *
  * This program or library is free software; you can redistribute it

@@ -1,5 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2
+ * (c)LGPL2+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -7,7 +7,7 @@
  * Copyright: 2011 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,20 +25,6 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
-/* Based on a "MountTray" project - modified for Razor needs
-    http://hatred.homelinux.net
-
-    @date   2010-11-11
-    @brief  Main application class: integrate all components
-
-    Copyright (C) 2010 by hatred <hatred@inbox.ru>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the version 2 of GNU General Public License as
-    published by the Free Software Foundation.
-
-    For more information see LICENSE and LICENSE.ru files
-*/
 
 #ifndef MOUNTBUTTON_H
 #define MOUNTBUTTON_H
@@ -47,11 +33,12 @@
 #include <QtDBus/QtDBus>
 #include <QtGui/QMenu>
 
+#include <razormount/udisksinfo.h>
+
 #include "menudiskitem.h"
-#include "razormount/diskmonitor.h"
-#include "razormount/storagemanager.h"
 #include "../panel/razorpanel.h"
 
+class UdisksManager;
 
 class Popup: public QWidget
 {
@@ -59,11 +46,10 @@ class Popup: public QWidget
 public:
     explicit Popup(QWidget* parent = 0);
 
-    MenuDiskItem *addItem(const DiskInfo &info);
-    void deleteItem(const DiskInfo &info);
-    MenuDiskItem *itemByDevice(const QString &deviceName);
+    MenuDiskItem *addItem(UdisksInfo *info);
+    void deleteItem(UdisksInfo *info);
 
-    int count() const { return mCount; }
+    int count() const { return m_items.count(); }
 
     void open(QPoint pos, Qt::Corner anchor=Qt::TopLeftCorner);
 
@@ -78,7 +64,7 @@ protected:
 private:
     void realign();
 
-    int mCount;
+    QHash<UdisksInfo*,MenuDiskItem*> m_items;
     QPoint mPos;
     Qt::Corner mAnchor;
 };
@@ -100,14 +86,12 @@ public:
     DevAction devAction() const { return mDevAction; }
     void setDevAction(DevAction devAction) { mDevAction = devAction; }
 
+public slots:
+    void showError(const QString &text);
+
 private slots:
-    void onDiskAdded(DiskInfo info);
-    void onDiskRemoved(DiskInfo info);
-
-    void onDbusDeviceChangesMessage(QDBusObjectPath device);
-
-    void onMediaMount(const QString &device);
-    void onMediaEject(const QString &device);
+    void onDiskAdded(UdisksInfo *info);
+    void onDiskRemoved(UdisksInfo *info);
 
     void showHidePopup();
     void showPopup();
@@ -115,16 +99,13 @@ private slots:
 
 private:
     void initialScanDevices();
-    void addMenuItem(const DiskInfo &info);
+    void addMenuItem(UdisksInfo *info);
 
     void showMessage(const QString &text);
-    void showError(const QString &text);
 
-private:
     Popup mPopup;
 
-    DiskMonitor    _dm;
-    StorageManager _sm;
+    UdisksManager *m_manager;
 
     RazorPanel *m_panel;
     DevAction mDevAction;

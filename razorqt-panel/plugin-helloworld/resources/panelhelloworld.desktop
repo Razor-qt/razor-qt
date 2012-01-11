@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Hell World
+Comment=A "hello world" plugin.
+
+Name[ru]=Привет мир
+Comment[ru]=Супер плагин "Привет Мир".
+

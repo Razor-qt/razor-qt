@@ -6,7 +6,7 @@
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.ru>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -74,6 +74,7 @@ public slots:
     void onRemovePlugin();
     void onMovePlugin();
     void startMoveWidget();
+    void updateSize(int height, int width, bool percent, RazorPanel::Alignment alignment);
 
 private:
     void loadPlugins();
@@ -85,6 +86,10 @@ private:
     Q_DECLARE_PUBLIC(RazorPanel)
 
     RazorPanel::Position mPosition;
+    RazorPanel::Alignment mAlignment;
+    int mHeight;
+    int mWidth;
+    bool mWidthInPercents;
     int mScreenNum;
     QString mConfigFile;
     RazorSettings* mSettings;

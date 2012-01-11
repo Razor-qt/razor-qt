@@ -40,7 +40,7 @@ include_directories (
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
 	)
 
-find_package (UDev REQUIRED)
+#find_package (UDev REQUIRED)
 
 
 # This allows to install and read the configs from non-standard locations

@@ -25,13 +25,14 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razorpanelplugin_p.h"
-#include <razorqt/razorplugininfo.h>
-
 #ifndef CONFIGPANELDIALOG_H
 #define CONFIGPANELDIALOG_H
 
-#include <QDialog>
+#include "razorpanel.h"
+#include <razorqt/razorsettings.h>
+
+#include <QtGui/QDialog>
+#include <QtGui/QAbstractButton>
 
 namespace Ui {
 class ConfigPanelDialog;
@@ -42,28 +43,33 @@ class ConfigPanelDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit ConfigPanelDialog(int hDefault, int wMax, QWidget *parent = 0);
+    explicit ConfigPanelDialog(int hDefault, int wMax, RazorSettings *settings, QWidget *parent = 0);
     ~ConfigPanelDialog();
 
-public slots:
-    void saveSettings();
+signals:
+    void configChanged(int height, int width, bool percent, RazorPanel::Alignment);
+
+private slots:
+    void dialogButtonsAction(QAbstractButton *button);
     void spinBoxHeightValueChanged(int q);
     void spinBoxWidthValueChanged(int q);
     void comboBoxWidthTypeIndexChanged(int q);
     void comboBoxAlignmentIndexChanged(int q);
 
-    
 private:
     Ui::ConfigPanelDialog *ui;
     QString mConfigFile;
     RazorSettings* mSettings;
+    RazorSettingsCache *mCache;
     int mHeightDefault;
     int mHeight;
     int mWidthMax;
-    int mWidthType;
     int mWidth;
-    int mAlignment;
+    bool mWidthInPercents;
+    RazorPanel::Alignment mAlignment;
 
+    void initControls();
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // CONFIGPANELDIALOG_H
