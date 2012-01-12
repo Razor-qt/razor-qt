@@ -27,7 +27,9 @@
 
 #include <QtCore/QAbstractItemModel>
 
-#include <razorqt/xdgautostart.h>
+#include <qtxdg/xdgautostart.h>
+#include <QtCore/QList>
+#include <QtCore/QSet>
 
 class AutoStartItemModel : public QAbstractItemModel
 {
@@ -50,14 +52,14 @@ public slots:
     bool writeChanges();
 
 private:
-    XdgAutoStart* mXdgAutoStart;
+    XdgDesktopFileList mAllItems;
     QPersistentModelIndex mGlobalIndex;
     QPersistentModelIndex mRazorIndex;
     QList<XdgDesktopFile*> mGlobalItems;
     QList<XdgDesktopFile*> mRazorItems;
     QSet<XdgDesktopFile*> mEditedItems;
     QSet<XdgDesktopFile*> mDeletedItems;
-    bool showOnlyInRazor(XdgDesktopFile* file) const;
+    bool showOnlyInRazor(const XdgDesktopFile& file) const;
 };
 
 #endif // AUTOSTARTMODEL_H

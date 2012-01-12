@@ -31,7 +31,7 @@
 #include <QStringListModel>
 #include <QtGui/QStandardItemModel>
 
-#include <razorqt/xdgautostart.h>
+#include <qtxdg/xdgautostart.h>
 
 #include "ui_sessionconfigwindow.h"
 #include "autostartmodel.h"

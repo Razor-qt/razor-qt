@@ -27,7 +27,7 @@
 
 #include "razormodman.h"
 #include <razorqt/razorsettings.h>
-#include <razorqt/xdgautostart.h>
+#include <qtxdg/xdgautostart.h>
 
 #include <QtDebug>
 #include <QDBusInterface>
@@ -129,10 +129,9 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     sleep(2); // a guess-what constant...
 
     // XDG autostart
-    XdgAutoStart xdgautostart;
-    foreach (XdgDesktopFile* f, xdgautostart.list())
+    foreach (XdgDesktopFile f, XdgAutoStart::desktopFileList())
     {
-        f->startDetached();
+        f.startDetached();
     }
 }
 

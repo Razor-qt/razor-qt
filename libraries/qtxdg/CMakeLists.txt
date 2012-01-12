@@ -22,6 +22,7 @@ set(QTXDG_PUBLIC_HDRS
     xdgmenuwidget.h
     xdgmime.h
     xmlhelper.h
+    xdgautostart.h
 )
 
 set(QTXDG_PRIVATE_HDRS
@@ -46,6 +47,7 @@ set(QTXDG_SRCS
     xdgmenuwidget.cpp
     xdgmime.cpp
     xmlhelper.cpp
+    xdgautostart.cpp
     qiconfix/qiconloader.cpp
 )
 

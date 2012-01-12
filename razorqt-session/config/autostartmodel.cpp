@@ -25,33 +25,47 @@
 #include <QtCore/QFile>
 
 #include "autostartmodel.h"
-
+#include <QDebug>
 AutoStartItemModel::AutoStartItemModel(QObject* parent) :
     QAbstractItemModel(parent),
     mGlobalIndex(QAbstractItemModel::createIndex(0, 0)),
     mRazorIndex(QAbstractItemModel::createIndex(1, 0))
 {
-    mXdgAutoStart = new XdgAutoStart(false);
-    foreach (XdgDesktopFile* file, mXdgAutoStart->list())
+
+    mAllItems = XdgAutoStart::desktopFileList(false);
+
+    XdgDesktopFileList::iterator i;
+    for (i = mAllItems.begin(); i != mAllItems.end(); ++i)
     {
-        if (showOnlyInRazor(file))
-            mRazorItems.append(file);
+        if (showOnlyInRazor(*i))
+            mRazorItems.append(&(*i));
         else
-            mGlobalItems.append(file);
+            mGlobalItems.append(&(*i));
     }
 }
 
 AutoStartItemModel::~AutoStartItemModel()
 {
-    delete mXdgAutoStart;
 }
 
 bool AutoStartItemModel::writeChanges()
 {
     foreach (XdgDesktopFile* file, mDeletedItems)
-        QFile::remove(file->fileName());
+    {
+        if (!QFile::remove(file->fileName()))
+        {
+        /* If an application autostarts by having a .desktop file installed in the system
+           wide autostart directory, an individual user can disable the autotomatic start
+           by placing a .desktop file of the same name in its personal autostart directory
+           which contains the key Hidden=true.
+         */
+            file->setValue("Hidden", true);
+            file->save(XdgAutoStart::localPath(*file));
+        }
+    }
+
     foreach (XdgDesktopFile* file, mEditedItems)
-        file->save(XdgAutoStart::localPath(file));
+        file->save(XdgAutoStart::localPath(*file));
     return true;
 }
 
@@ -139,9 +153,9 @@ QVariant AutoStartItemModel::data(const QModelIndex& index, int role) const
         if (index.parent().isValid())
             return file->name();
         else if (index.row() == 0)
-            return QString("Global Autostart");
+            return QString(tr("Global Autostart"));
         else if (index.row() == 1)
-            return QString("Razor Autostart");
+            return QString(tr("Razor Autostart"));
     }
     else if (role == Qt::CheckStateRole && index.parent().isValid())
         return file->value("Hidden").toBool() ? Qt::Unchecked : Qt::Checked;
@@ -163,7 +177,7 @@ QModelIndex AutoStartItemModel::parent(const QModelIndex& child) const
     XdgDesktopFile* file = static_cast<XdgDesktopFile*>(child.internalPointer());
     if (file)
     {
-        if (showOnlyInRazor(file))
+        if (showOnlyInRazor(*file))
            return mRazorIndex;
         return mGlobalIndex;
     }
@@ -187,7 +201,7 @@ int AutoStartItemModel::rowCount(const QModelIndex& parent) const
     return 0;
 }
 
-bool AutoStartItemModel::showOnlyInRazor(XdgDesktopFile* file) const
+bool AutoStartItemModel::showOnlyInRazor(const XdgDesktopFile& file) const
 {
-    return file->value("OnlyShowIn") == "RAZOR;";
+    return file.value("OnlyShowIn") == "RAZOR;";
 }

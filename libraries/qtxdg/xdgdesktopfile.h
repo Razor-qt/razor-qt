@@ -185,6 +185,7 @@ private:
 };
 
 
+/// Synonym for QList<XdgDesktopFile>
 typedef QList<XdgDesktopFile> XdgDesktopFileList;
 
 

@@ -24,7 +24,7 @@
 
 #include <QtGui/QFileDialog>
 
-#include <razorqt/xdgautostart.h>
+#include <qtxdg/xdgautostart.h>
 
 #include "autostartedit.h"
 #include "ui_autostartedit.h"
