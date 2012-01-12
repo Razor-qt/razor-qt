@@ -73,7 +73,6 @@ PageSelectWidget::PageSelectWidget(QWidget *parent) :
     setSelectionRectVisible(false);
     setViewMode(IconMode);
     setSpacing(2);
-    setUniformItemSizes(true);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     setWordWrap(true);
     setDragEnabled(NoDragDrop);
