@@ -7,9 +7,11 @@ fi
 
 EDIT=`echo "$@" | grep -o "\-edit"`
 
-TS_FILE=${PROJECT}_`echo $LANG | awk -F"." '{print($1)}'`.ts
+if [ "$TS_FILE" = "" ]; then
+    TS_FILE=${PROJECT}_`echo $LANG | awk -F"." '{print($1)}'`.ts
+fi
 
-lupdate $OPTS $TARGET -ts $TS_FILE \
+lupdate $OPTS $SILENT $TARGET -ts $TS_FILE \
 && if [ "$EDIT" != "" ]; then
 	echo "Running linguist (GUI)..."
 	linguist $TS_FILE
