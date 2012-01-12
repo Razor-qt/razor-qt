@@ -29,6 +29,7 @@
 
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
+#include <razorqt/razorconfigdialog.h>
 #include "mainwindow.h"
 #include "razortranslate.h"
 
@@ -39,8 +40,13 @@ int main (int argc, char **argv)
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     TRANSLATE_APP;
 
-    MainWindow *mw = new MainWindow();
-    mw->show();
+    RazorSettings* settings = new RazorSettings("razor");
+    RazorConfigDialog* dialog = new RazorConfigDialog(QObject::tr("Razor Appearance Configuration"), settings);
+    IconThemeConfig* iconPage = new IconThemeConfig(settings);
+    dialog->addPage(iconPage, QObject::tr("Icons Theme"), "preferences-desktop-icons");
+    QObject::connect(dialog, SIGNAL(reset()), iconPage, SLOT(initControls()));
+    dialog->show();
+
     return app.exec();
 }
 

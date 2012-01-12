@@ -27,42 +27,30 @@
  
 #include "mainwindow.h"
 
-#include <QtCore/QSettings>
-#include <QtGui/QProgressDialog>
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
 #include <QtCore/QDebug>
-#include <QtGui/QAbstractButton>
-#include <QtGui/QListWidget>
 
 
-MainWindow::MainWindow()
+IconThemeConfig::IconThemeConfig(RazorSettings* settings):
+    m_settings(settings)
 {
     setupUi(this);
-    moduleList->setCurrentRow(0);
-
-    m_settings = new RazorSettings("razor", this);
-    m_cache = new RazorSettingsCache(m_settings);
-
-    new QListWidgetItem(XdgIcon::fromTheme(QStringList() << "preferences-desktop-icons" << "preferences-desktop"), tr("Icons Theme"), moduleList);
-    moduleList->setCurrentRow(0);
 
     initIconsThemes();
     initControls();
     connect(iconThemeList, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
             this, SLOT(iconThemeSelected(QTreeWidgetItem*,int)));
-    connect(buttons, SIGNAL(clicked(QAbstractButton*)),
-            this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
     connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()),
             this, SLOT(update()));
 }
 
 
-void MainWindow::initIconsThemes()
+void IconThemeConfig::initIconsThemes()
 {
     QStringList processed;
     QStringList baseDirs = QIcon::themeSearchPaths();
@@ -106,7 +94,7 @@ void MainWindow::initIconsThemes()
 }
 
 
-void MainWindow::initControls()
+void IconThemeConfig::initControls()
 {
     QString currentTheme = RazorSettings::globalSettings()->value("icon_theme").toString();
     XdgIcon::setThemeName(currentTheme);
@@ -124,13 +112,12 @@ void MainWindow::initControls()
 }
 
 
-MainWindow::~MainWindow()
+IconThemeConfig::~IconThemeConfig()
 {
-    delete m_cache;
 }
 
 
-void MainWindow::iconThemeSelected(QTreeWidgetItem *item, int column)
+void IconThemeConfig::iconThemeSelected(QTreeWidgetItem *item, int column)
 {
     Q_UNUSED(column);
     QString theme = item->data(0, Qt::UserRole).toString();
@@ -139,20 +126,6 @@ void MainWindow::iconThemeSelected(QTreeWidgetItem *item, int column)
         XdgIcon::setThemeName(theme);
         m_settings->setValue("icon_theme",  theme);
         m_settings->sync();
-    }
-}
-
-
-void MainWindow::dialogButtonsAction(QAbstractButton *btn)
-{
-    if (buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
-    {
-        m_cache->loadToSettings();
-        initControls();
-    }
-    else
-    {
-        close();
     }
 }
 
