@@ -99,25 +99,40 @@ QLibrary* RazorPluginInfo::loadLibrary(const QString& libDir) const
 /************************************************
 
  ************************************************/
-RazorPluginInfoList RazorPluginInfo::search(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter)
+RazorPluginInfoList RazorPluginInfo::search(const QStringList& desktopFilesDirs, const QString& serviceType, const QString& nameFilter)
 {
     QList<RazorPluginInfo> res;
+    QSet<QString> processed;
 
-    QDir dir(desktopFilesDir);
-    QFileInfoList files = dir.entryInfoList(QStringList(nameFilter), QDir::Files | QDir::Readable);
-    foreach (QFileInfo file, files)
+    foreach (QString desktopFilesDir, desktopFilesDirs)
     {
-        RazorPluginInfo item;
-        item.load(file.canonicalFilePath());
+        QDir dir(desktopFilesDir);
+        QFileInfoList files = dir.entryInfoList(QStringList(nameFilter), QDir::Files | QDir::Readable);
+        foreach (QFileInfo file, files)
+        {
+            if (processed.contains(file.fileName()))
+                continue;
 
-        if (item.isValid() && item.serviceType() == serviceType)
-            res.append(item);
+            processed << file.fileName();
+
+            RazorPluginInfo item;
+            item.load(file.canonicalFilePath());
+
+            if (item.isValid() && item.serviceType() == serviceType)
+                res.append(item);
+        }
     }
-
     return res;
 }
 
 
+/************************************************
+
+ ************************************************/
+RazorPluginInfoList RazorPluginInfo::search(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter)
+{
+    return search(QStringList(desktopFilesDir), serviceType, nameFilter);
+}
 
 
 /************************************************

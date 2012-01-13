@@ -78,7 +78,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     q->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(q, SIGNAL(customContextMenuRequested(const QPoint&)), q, SLOT(showContextMenu(QPoint)));
 
-    q->setWindowTitle(startInfo->pluginInfo->name());
+    q->setWindowTitle(startInfo->pluginInfo.name());
     QBoxLayout* layout = new QBoxLayout(mPanel->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, q);
     layout->setSpacing(0);
     layout->setMargin(0);

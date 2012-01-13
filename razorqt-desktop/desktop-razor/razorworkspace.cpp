@@ -49,7 +49,7 @@
 #include <qtxdg/xdgmenu.h>
 #include <razorqt/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
-
+#include <qtxdg/xdgdirs.h>
 
 RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* parent)
     : QGraphicsView(parent),
@@ -144,7 +144,7 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
     setBackgroundBrush(background);
     
     // load plugins
-    
+    QStringList desktopDirs = pluginDesktopDirs();
     foreach (QString configId, bg.plugins)
     {
         qDebug() << "RazorWorkSpace::setConfig() Plugin conf id" << configId << m_config;
@@ -163,17 +163,14 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
         m_config->endGroup();
         
         //qDebug() << libName << position;
-
-        RazorPluginInfo pluginInfo;
-        pluginInfo.load(QString("%1/%2.desktop").arg(PLUGIN_DESKTOP_FILES_DIR, libName));
-
-        if (!pluginInfo.isValid() || pluginInfo.serviceType() != "RazorDesktop/Plugin")
+        RazorPluginInfoList list = RazorPluginInfo::search(desktopDirs, "RazorDesktop/Plugin", QString("%1.desktop").arg(libName));
+        if( !list.count())
         {
-            qWarning() << "RazorWorkSpace::setConfig() Plugin" << libName << "not found";
+            qWarning() << QString("Plugin \"%1\" not found.").arg(libName);
             continue;
         }
 
-        QLibrary * lib = pluginInfo.loadLibrary(DESKTOP_PLUGIN_DIR);
+        QLibrary* lib = loadPluginLib(list.first());
         if (!lib)
         {
             qWarning() << "RazorWorkSpace::setConfig() Library" << libName << "is not loaded";
@@ -379,13 +376,22 @@ void RazorWorkSpace::arrangeWidgets(bool start)
     }
 }
 
+QStringList RazorWorkSpace::pluginDesktopDirs()
+{
+    QStringList dirs;
+    dirs << QString(getenv("RAZORQT_DESKTOP_PLUGINS_DIR")).split(':', QString::SkipEmptyParts);
+    dirs << QString("%1/%2").arg(XdgDirs::dataHome(), "/razor/razor-desktop");
+    dirs << PLUGIN_DESKTOP_FILES_DIR;
+    return dirs;
+}
+
 void RazorWorkSpace::showAddPluginDialog()
 {
     AddPluginDialog* dlg = findChild<AddPluginDialog*>();
 
     if (!dlg)
     {
-        dlg = new AddPluginDialog(PLUGIN_DESKTOP_FILES_DIR, "RazorDesktop/Plugin", "*", this);
+        dlg = new AddPluginDialog(pluginDesktopDirs(), "RazorDesktop/Plugin", "*", this);
         dlg->move(geometry().center() - dlg->geometry().center());
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
@@ -394,10 +400,23 @@ void RazorWorkSpace::showAddPluginDialog()
     dlg->exec();
 }
 
+QLibrary* RazorWorkSpace::loadPluginLib(const RazorPluginInfo &pluginInfo)
+{
+    QLibrary* lib = 0;
+
+    if (getenv("RAZORQT_DESKTOP_PLUGINS_SO_DIR"))
+        lib = pluginInfo.loadLibrary(getenv("RAZORQT_DESKTOP_PLUGINS_SO_DIR"));
+
+    if (!lib)
+        lib = pluginInfo.loadLibrary(DESKTOP_PLUGIN_DIR);
+
+    return lib;
+}
+
+
 void RazorWorkSpace::addPlugin(const RazorPluginInfo &pluginInfo)
 {
-    qDebug() << "addPlugin" << pluginInfo;
-    QLibrary * lib = pluginInfo.loadLibrary(DESKTOP_PLUGIN_DIR);
+    QLibrary* lib = loadPluginLib(pluginInfo);
     if (!lib)
         return;
 

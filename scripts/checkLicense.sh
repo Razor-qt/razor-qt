@@ -27,7 +27,7 @@ fi
 # License compatibility: BSD 3-Clause; LGPL v2.1 or later
 
 for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null`; do
-    license=`head -n 3 "$file"| grep '(c)' | sed -e 's/*//'`;# | sed -e 's/\([()]\)/\\1/g'`;
+    license=`head -n 5 "$file"| grep '(c)' | sed -e 's/*//'`;# | sed -e 's/\([()]\)/\\1/g'`;
 
     case "$license" in
         *LGPL2+*|*DWTFYW*|*BSD3*)
@@ -36,7 +36,7 @@ for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null
             ;;
 
         *LGPL3+*)
-            color=$YELLOW
+            color=$GREEN
             ;;
 
         *LGPL2*|*LGPL3*)

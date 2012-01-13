@@ -98,6 +98,8 @@ private:
     DesktopWidgetPlugin * getPluginFromItem(QGraphicsItem * item);
     QGraphicsItem * loadPlugin(QLibrary * lib, const QString & configId="default");
     void saveConfig();
+    QStringList pluginDesktopDirs();
+    QLibrary* loadPluginLib(const RazorPluginInfo &pluginInfo);
 
 private slots:
     void about();
