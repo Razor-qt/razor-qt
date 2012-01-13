@@ -1,6 +1,5 @@
 /* Copyright © 2003-2007 Fredrik Höglund <fredrik@kde.org>
- * (c)GPL2
- * (c)GPL3
+ * (c)GPL2 (c)GPL3
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
