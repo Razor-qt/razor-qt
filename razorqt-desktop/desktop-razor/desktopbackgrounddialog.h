@@ -39,7 +39,7 @@ class DesktopBackgroundDialog : public QDialog, public Ui::DesktopBackgroundDial
     Q_OBJECT
     
 public:
-    DesktopBackgroundDialog(RazorSettings * cfg, int screen, QSize desktopSize, const QBrush & brush, QWidget * parent);
+    DesktopBackgroundDialog(RazorSettings * cfg, int screen, int desktop, QSize desktopSize, const QBrush & brush, QWidget * parent);
     ~DesktopBackgroundDialog();
     QBrush background();
 
@@ -51,6 +51,7 @@ private:
 
     RazorSettings * m_config;
     int m_screen;
+    int m_desktop;
 
     void save();
 

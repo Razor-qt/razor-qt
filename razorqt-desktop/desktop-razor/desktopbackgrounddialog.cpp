@@ -33,12 +33,13 @@
 #include <razorqt/razorsettings.h>
 
 
-DesktopBackgroundDialog::DesktopBackgroundDialog(RazorSettings * cfg, int screen, QSize desktopSize, const QBrush & brush, QWidget * parent)
+DesktopBackgroundDialog::DesktopBackgroundDialog(RazorSettings * cfg, int screen, int desktop, QSize desktopSize, const QBrush & brush, QWidget * parent)
     : QDialog(parent),
       m_desktopSize(desktopSize),
       m_type(RazorWorkSpaceManager::BackgroundColor),
       m_config(cfg),
-      m_screen(screen)
+      m_screen(screen),
+      m_desktop(desktop)
 {
     setupUi(this);
     // center it to current desktop
@@ -101,8 +102,10 @@ void DesktopBackgroundDialog::save()
     // It's strange. Event that I set array size to desktop count, there is always
     // index used. A bug in Qt? But it does not matter. I use screenCount()
     // in the array reading routine...
-    m_config->beginWriteArray("desktops", QApplication::desktop()->screenCount());
+    m_config->beginWriteArray("screens", QApplication::desktop()->screenCount());
     m_config->setArrayIndex(m_screen);
+    m_config->beginWriteArray("desktops");
+    m_config->setArrayIndex(m_desktop);
     if (m_type == RazorWorkSpaceManager::BackgroundColor)
     {
         m_config->setValue("wallpaper_type", "color");
@@ -114,7 +117,8 @@ void DesktopBackgroundDialog::save()
         m_config->setValue("wallpaper", m_wallpaper);
         m_config->setValue("keep_aspect_ratio", keepAspectCheckBox->isChecked());
     }
-    m_config->endArray();
+    m_config->endArray();  // desktops
+    m_config->endArray();  // screens
     m_config->endGroup();
 }
 

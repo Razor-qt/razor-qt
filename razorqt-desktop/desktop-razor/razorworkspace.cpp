@@ -51,11 +51,12 @@
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <qtxdg/xdgdirs.h>
 
-RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, QWidget* parent)
+RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, QWidget* parent)
     : QGraphicsView(parent),
       m_config(config),
       m_wheelDesktopSwitch(false),
       m_screen(screen),
+      m_desktop(desktop),
       m_mode(ModeNormal)
 {
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
@@ -197,9 +198,12 @@ void RazorWorkSpace::saveConfig()
         plugins.append(plug->configId());
     }
     m_config->beginGroup("razor");
-    m_config->beginWriteArray("desktops");
+    m_config->beginWriteArray("screens");
     m_config->setArrayIndex(m_screen);
+    m_config->beginWriteArray("desktops");
+    m_config->setArrayIndex(m_desktop);
     m_config->setValue("plugins", plugins);
+    m_config->endArray();
     m_config->endArray();
     m_config->endGroup();
 }
@@ -514,7 +518,7 @@ void RazorWorkSpace::configurePlugin()
 
 void RazorWorkSpace::setDesktopBackground()
 {
-    DesktopBackgroundDialog dia(m_config, m_screen, size(), backgroundBrush(), this);
+    DesktopBackgroundDialog dia(m_config, m_screen, m_desktop, size(), backgroundBrush(), this);
     if (dia.exec())
     {
         setBackgroundBrush(dia.background());

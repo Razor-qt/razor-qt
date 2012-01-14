@@ -40,7 +40,7 @@
 
 /**
  * @file razorworkspace.h
- * @brief declares class Razorworkspace and Razorworkspacemanager
+ * @brief declares class Razorworkspace
  * @author Christopher "VdoP" Regali
  */
 
@@ -58,7 +58,7 @@ class RazorWorkSpace : public QGraphicsView
 {
     Q_OBJECT
 public:
-    RazorWorkSpace(RazorSettings * config, int screen=-1, QWidget * parent=0);
+    RazorWorkSpace(RazorSettings * config, int screen, int desktop, QWidget * parent=0);
     ~RazorWorkSpace();
 
     void setConfig(const WorkspaceConfig & bg);
@@ -80,6 +80,7 @@ private:
     QString m_menuFile;
     bool m_wheelDesktopSwitch;
     int m_screen;
+    int m_desktop;
     Mode m_mode;
     
     QAction * m_actArrangeWidgets;

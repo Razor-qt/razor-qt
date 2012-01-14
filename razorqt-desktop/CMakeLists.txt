@@ -26,6 +26,7 @@ include_directories (
 
 set ( razor-desktop_SRCS
 	src/main.cpp
+  src/razordesktopapplication.cpp
 	)
 
 add_executable ( razor-desktop ${razor-desktop_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
