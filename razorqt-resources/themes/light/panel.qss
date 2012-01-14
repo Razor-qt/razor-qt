@@ -20,7 +20,6 @@ RazorPanel[position="1"] {
  * General plugins settings
  */
 RazorPanelPlugin {
-    margin: 3px 0 3px 0;
     padding: 0 2px 0 2px;
     spacing: 20px;
 }
@@ -73,16 +72,17 @@ QToolButton:hover{
 #TaskBar QToolButton{
      border: 2px groove silver;
      border-radius: 6px;
+     margin: 3px 0 3px 0;
 }
 
 #TaskBar QToolButton:on{
     background: rgba(255, 255, 255, 80%);
     border: 1px solid #80a8d3;
-    margin: 1px;
+    margin: 4px 1px 4px 1px;
 }
 
 #TaskBar QToolButton:hover{
-   margin: 1px;
+   margin: 4px 1px 4px 1px;
    border: 1px solid #80a8d3;
 }
 
