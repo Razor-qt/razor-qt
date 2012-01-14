@@ -163,9 +163,14 @@ public:
 signals:
     void movableChanged(bool movable);
     void alignmentChanged();
+    void move();
+    void remove();
 
 public slots:
     void layoutDirectionChanged(QBoxLayout::Direction direction);
+    void requestMove();
+    void requestRemove();
+
     /**
       Reimplement this function to show plugin settings dialog.
       To save the settings you should use a ready-to-use RazorPanelPlugin::settings() object.

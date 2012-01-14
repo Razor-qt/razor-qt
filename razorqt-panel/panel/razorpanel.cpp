@@ -337,6 +337,8 @@ RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo& pluginInf
 
     connect(q, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)),
             plugin, SLOT(layoutDirectionChanged(QBoxLayout::Direction)));
+    connect(plugin, SIGNAL(move()), SLOT(onMovePlugin()));
+    connect(plugin, SIGNAL(remove()), SLOT(onRemovePlugin()));
 
     mPlugins.append(plugin);
     return plugin;
@@ -882,16 +884,25 @@ QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
  ************************************************/
 void RazorPanelPrivate::onMovePlugin()
 {
+    RazorPanelPlugin* plugin;
     PluginAction* a = qobject_cast<PluginAction*>(sender());
-    if (!a)
-        return;
+    if (a)
+    {
+        plugin = a->plugin();
+    }
+    else
+    {
+        plugin = qobject_cast<RazorPanelPlugin*>(sender());
+        if (!plugin)
+            return;
+    }
 
-    CursorAnimation *cursorAnimation = new CursorAnimation(a->plugin());
+    CursorAnimation *cursorAnimation = new CursorAnimation(plugin);
     connect(cursorAnimation, SIGNAL(finished()), SLOT(startMoveWidget()));
     cursorAnimation->setEasingCurve(QEasingCurve::InOutQuad);
     cursorAnimation->setDuration(150);
     cursorAnimation->setStartValue(QCursor::pos());
-    cursorAnimation->setEndValue(a->plugin()->mapToGlobal(a->plugin()->rect().center()));
+    cursorAnimation->setEndValue(plugin->mapToGlobal(plugin->rect().center()));
     cursorAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
@@ -908,13 +919,22 @@ void RazorPanelPrivate::startMoveWidget()
  ************************************************/
 void RazorPanelPrivate::onRemovePlugin()
 {
+    RazorPanelPlugin* plugin;
     PluginAction* a = qobject_cast<PluginAction*>(sender());
-    if (!a)
-        return;
+    if (a)
+    {
+        plugin = a->plugin();
+    }
+    else
+    {
+        plugin = qobject_cast<RazorPanelPlugin*>(sender());
+        if (!plugin)
+            return;
+    }
 
-    mSettings->remove(a->plugin()->configId());
-    mPlugins.removeAll(a->plugin());
-    delete a->plugin();
+    mSettings->remove(plugin->configId());
+    mPlugins.removeAll(plugin);
+    delete plugin;
     saveSettings();
 }
 
