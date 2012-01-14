@@ -185,6 +185,12 @@ protected slots:
     **/
     virtual void settigsChanged() {}
 
+    /**
+      This slot is called when main panel is resized or moved.
+      Reimplement this function to your plugin corresponded the new panel geometry.
+    **/
+    virtual void realign() {}
+
 protected:
     void paintEvent(QPaintEvent* event);
 

@@ -44,6 +44,7 @@
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgmenuwidget.h>
 
+#include <QPixmap>
 #include <QStack>
 
 #include <QCursor>
@@ -59,8 +60,15 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
 {
     setObjectName("MainMenu");
 
-    addWidget(&mButton);
+    layout()->setAlignment(Qt::AlignCenter);
+    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    mMainMenuButton.setAlignment(Qt::AlignCenter);
+    mMainMenuButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);    
+
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
+    connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
+
     mPowerManager = new PowerManager(this);
     mPowerManager->setParentWidget(panel());
 
@@ -69,12 +77,8 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     mShortcut = new QxtGlobalShortcut(this);
     connect(mShortcut, SIGNAL(activated()), this, SLOT(showMenu()));
 
-    settigsChanged();
-
-    QSizePolicy sp = mButton.sizePolicy();
-    sp.setVerticalPolicy(QSizePolicy::Minimum);
-    mButton.setSizePolicy(sp);
-
+    addWidget(&mButton);
+        settigsChanged();
 }
 
 
@@ -144,6 +148,7 @@ void RazorMainMenu::settigsChanged()
     mLogDir = settings().value("log_dir", "").toString();
     mTopMenuStyle.setIconSize(settings().value("top_icon_size", 16).toInt());
 
+    mButton.setIconSize(QSize(panel()->width(), panel()->width()));
     mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
@@ -194,4 +199,19 @@ void RazorMainMenu::showConfigureDialog()
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+void RazorMainMenu::realign()
+{
+    RazorPanel::Position pos = panel()->position();
+
+    if (pos == RazorPanel::PositionTop || pos == RazorPanel::PositionBottom)
+    {
+        mButton.setMaximumSize(QSize(panel()->height(), panel()->height()));
+    }
+
+    if(pos == RazorPanel::PositionLeft || pos == RazorPanel::PositionRight)
+    {
+        mButton.setMaximumSize(QSize(panel()->width(), panel()->width()));
+    }
 }

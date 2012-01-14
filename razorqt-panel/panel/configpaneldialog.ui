@@ -59,7 +59,7 @@
    <item row="0" column="1" colspan="4">
     <widget class="QSpinBox" name="spinBox_height">
      <property name="minimum">
-      <number>1</number>
+      <number>10</number>
      </property>
     </widget>
    </item>

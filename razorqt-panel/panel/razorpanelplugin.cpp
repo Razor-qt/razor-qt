@@ -71,7 +71,9 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
 {
     Q_Q(RazorPanelPlugin);
 
-    q->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    q->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    q->setMinimumSize(1, 1);
+    qDebug() << q->minimumSize();
 
     connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
 
@@ -84,7 +86,6 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     layout->setMargin(0);
     layout->setContentsMargins(0, 0, 0, 0);
     q->setLayout(layout);
-
     q->settigsChanged();
 }
 

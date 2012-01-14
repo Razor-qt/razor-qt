@@ -75,6 +75,7 @@ public slots:
 signals:
     void positionChanged();
     void layoutDirectionChanged(QBoxLayout::Direction direction);
+    void panelRealigned();
     
 protected:
     virtual bool event(QEvent* e);

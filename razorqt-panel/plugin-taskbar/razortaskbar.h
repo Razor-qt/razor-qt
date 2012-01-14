@@ -59,6 +59,7 @@ private slots:
 protected slots:
     virtual void settigsChanged();
     virtual void showConfigureDialog();
+    virtual void realign();
 
 private:
     void refreshTaskList();
@@ -71,7 +72,7 @@ private:
     Qt::ToolButtonStyle mButtonStyle;
     int buttonMaxWidth;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
-    void setButtonMaxWidth(int maxWidth);
+    void setButtonMaxWidth();
     bool mShowOnlyCurrentDesktopTasks;
 
     void handlePropertyNotify(XPropertyEvent* event);

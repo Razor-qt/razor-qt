@@ -61,9 +61,15 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 {
     setObjectName("Clock");
     clockFormat = "hh:mm";
+
     gui = new ClockLabel(this);
-    gui->setAlignment(Qt::AlignCenter);
+    gui->setAlignment(Qt::AlignCenter);    
+    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    gui->setSizePolicy(sizePolicy);
     addWidget(gui);
+
     connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
     settigsChanged();
 

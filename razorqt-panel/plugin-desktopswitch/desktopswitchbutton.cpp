@@ -38,6 +38,7 @@ DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QKey
     QString mask("%1");
     setText(mask.arg(index+1));
     setCheckable(true);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
     if (!sequence.isEmpty())
     {

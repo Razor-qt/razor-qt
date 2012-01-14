@@ -32,6 +32,7 @@
 #include "../panel/razorpanelplugin.h"
 #include <qtxdg/xdgmenu.h>
 
+#include <QtGui/QLabel>
 #include <QPushButton>
 #include <QDomElement>
 #include <QAction>
@@ -55,6 +56,7 @@ public:
 
 private:
     QPushButton mButton;
+    QLabel mMainMenuButton;
     QString mLogDir;
     QString mMenuFile;
     QMenu* mMenu;
@@ -69,6 +71,7 @@ private:
 protected slots:
     virtual void showConfigureDialog();
     virtual void settigsChanged();
+    virtual void realign();
 
 private slots:
     void showMenu();

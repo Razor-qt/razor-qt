@@ -184,6 +184,7 @@ void RazorPanelPrivate::init()
 
     q->setLayout(mLayout);
 
+    realign();
     loadPlugins();
     reTheme();
 }
@@ -352,8 +353,10 @@ void RazorPanelPrivate::realign()
     q->style()->polish(q);
     // ..............................
 
-    if (q->isHorizontal()) mLayout->setDirection(QBoxLayout::LeftToRight);
-    else  mLayout->setDirection(QBoxLayout::TopToBottom);
+    if (q->isHorizontal())
+        mLayout->setDirection(QBoxLayout::LeftToRight);
+    else
+        mLayout->setDirection(QBoxLayout::TopToBottom);
 
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     QRect rect;
@@ -385,14 +388,16 @@ void RazorPanelPrivate::realign()
         if (mPosition == RazorPanel::PositionTop)
             rect.moveTop(screen.top());
         else
+        {
             rect.moveBottom(screen.bottom());
+        }
     }
     else
     {
         // Size .....................
         rect.setWidth(mHeight);
         if (mWidthInPercents)
-            rect.setHeight(screen.width() * mWidth / 100);
+            rect.setHeight(screen.height() * mWidth / 100);
         else
             rect.setHeight(mWidth);
 
@@ -464,6 +469,7 @@ void RazorPanelPrivate::realign()
             break;
     }
 
+    emit q->panelRealigned();
 }
 
 
@@ -491,18 +497,18 @@ bool RazorPanelPrivate::canPlacedOn(int screenNum, RazorPanel::Position position
                 return true;
 
         case RazorPanel::PositionLeft:
-//            for (int i=0; i < dw->screenCount(); ++i)
-//                if (dw->screenGeometry(i).right() < dw->screenGeometry(screenNum).left())
-//                    return false;
-//            return true;
-            return false;
+            for (int i=0; i < dw->screenCount(); ++i)
+                if (dw->screenGeometry(i).right() < dw->screenGeometry(screenNum).left())
+                    return false;
+                return true;
+//            return false;
 
         case RazorPanel::PositionRight:
-//            for (int i=0; i < dw->screenCount(); ++i)
-//                if (dw->screenGeometry(i).left() > dw->screenGeometry(screenNum).right())
-//                    return false;
-//            return true;
-            return false;
+            for (int i=0; i < dw->screenCount(); ++i)
+                if (dw->screenGeometry(i).left() > dw->screenGeometry(screenNum).right())
+                    return false;
+                return true;
+//            return false;
     }
     return false;
 }

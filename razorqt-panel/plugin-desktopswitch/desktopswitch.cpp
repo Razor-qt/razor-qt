@@ -47,10 +47,18 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
       m_desktopCount(1)
 {
     setObjectName("DesktopSwitch");
+    connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
+
+    QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    sp.setHorizontalStretch(1);
+    sp.setVerticalStretch(1);
+    setSizePolicy(sp);
+
     m_buttons = new QButtonGroup(this);
     
     connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));
 
+    layout()->setAlignment(Qt::AlignCenter);
     setup();
 }
 
@@ -79,7 +87,7 @@ void DesktopSwitch::setup()
 
         DesktopSwitchButton * m = new DesktopSwitchButton(this, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
         m_pSignalMapper->setMapping(m, i);
-        connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ; 
+        connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ;
         addWidget(m);
         m_buttons->addButton(m, i);
     }
@@ -91,6 +99,8 @@ void DesktopSwitch::setup()
 
     connect(m_buttons, SIGNAL(buttonClicked(int)),
             this, SLOT(setDesktop(int)));
+
+    realign();
 }
 
 DesktopSwitch::~DesktopSwitch()
@@ -137,4 +147,43 @@ void DesktopSwitch::wheelEvent(QWheelEvent* e)
         current = max;
 
     xfitMan().setActiveDesktop(current);
+}
+
+void DesktopSwitch::realign()
+{
+    realignButtons();
+
+    switch (panel()->position())
+    {
+    case RazorPanel::PositionTop:
+    case RazorPanel::PositionBottom:
+        setMaximumWidth(m_buttons->buttons().count() * panel()->height());
+        break;
+
+    case RazorPanel::PositionLeft:
+    case RazorPanel::PositionRight:
+        setMaximumHeight(m_buttons->buttons().count() * panel()->width());
+        break;
+
+    }
+}
+
+void DesktopSwitch::realignButtons()
+{
+    foreach (QAbstractButton *btn, m_buttons->buttons())
+    {
+        switch (panel()->position())
+        {
+        case RazorPanel::PositionTop:
+        case RazorPanel::PositionBottom:
+            btn->setMaximumSize(QSize(panel()->height(), panel()->height()));
+            break;
+
+        case RazorPanel::PositionLeft:
+        case RazorPanel::PositionRight:
+            btn->setMaximumSize(QSize(panel()->width(), panel()->width()));
+            break;
+
+        }
+    }
 }
