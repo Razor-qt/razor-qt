@@ -43,7 +43,7 @@ int main (int argc, char **argv)
     RazorSettings* settings = new RazorSettings("razor");
     RazorConfigDialog* dialog = new RazorConfigDialog(QObject::tr("Razor Appearance Configuration"), settings);
     IconThemeConfig* iconPage = new IconThemeConfig(settings);
-    dialog->addPage(iconPage, QObject::tr("Icons Theme"), "preferences-desktop-icons");
+    dialog->addPage(iconPage, QObject::tr("Icons Theme"), QStringList() << "preferences-desktop-icons" << "preferences-desktop");
     QObject::connect(dialog, SIGNAL(reset()), iconPage, SLOT(initControls()));
     dialog->show();
 

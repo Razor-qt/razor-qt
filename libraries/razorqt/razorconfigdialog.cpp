@@ -41,7 +41,13 @@ RazorConfigDialog::RazorConfigDialog(const QString& title, RazorSettings* settin
 
 void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QString& iconName)
 {
-    new QListWidgetItem(XdgIcon::fromTheme(iconName, XdgIcon::fromTheme("application-x-executable")), name, ui->moduleList);
+    addPage(page, name, QStringList() << iconName);
+}
+
+void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QStringList& iconNames)
+{
+    QStringList icons = QStringList(iconNames) << "application-x-executable";
+    new QListWidgetItem(XdgIcon::fromTheme(icons), name, ui->moduleList);
     ui->stackedWidget->addWidget(page);
     ui->moduleList->setVisible(true /*ui->stackedWidget->count() > 1*/);
     ui->moduleList->setCurrentRow(0);

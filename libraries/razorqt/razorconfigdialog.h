@@ -47,6 +47,11 @@ public:
      */
     void addPage(QWidget* page, const QString& name, const QString& iconName="application-x-executable");
 
+    /*!
+     * Add a page to the configure dialog, attempting several alternative icons to find one in the theme
+     */
+    void addPage(QWidget* page, const QString& name, const QStringList& iconNames);
+
 signals:
     /*!
      * This signal is emitted when the user pressed the "Reset" button.
