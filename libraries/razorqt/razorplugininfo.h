@@ -83,11 +83,18 @@ public:
     QLibrary* loadLibrary(const QString& libDir) const;
 
 
-    /*! Returns a list of RazorPluginInfo objects for the matched files in the directory.
-      @param desktopFilesDir - scanned directory name.
+    /*! Returns a list of RazorPluginInfo objects for the matched files in the directories.
+      @param desktopFilesDirs - scanned directories names.
       @param serviceType - type of the plugin, for example "RazorPanel/Plugin".
-      @param nameFilter  - wildcard filter that understands * and ? wildcards. */
+      @param nameFilter  - wildcard filter that understands * and ? wildcards.
+
+      If the same filename is located under multiple directories only the first file should be used.
+    */
+    static QList<RazorPluginInfo> search(const QStringList& desktopFilesDirs, const QString& serviceType, const QString& nameFilter="*");
+
+    /// This function is provided for convenience. It's equivalent to new calling search(QString(desktopFilesDir), serviceType, nameFilter)
     static QList<RazorPluginInfo> search(const QString& desktopFilesDir, const QString& serviceType, const QString& nameFilter="*");
+
 private:
     QString mId;
 };

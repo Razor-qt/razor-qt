@@ -47,14 +47,15 @@ class AddPluginDialog : public QDialog
 
 public:
     /*! Constructs a dialog with the given parent that initially displays
-       RazorPluginInfo objects for the matched files in the directory
-      @param desktopFilesDir - scanned directory name.
+       RazorPluginInfo objects for the matched files in the directories
+      @param desktopFilesDirs - list of the scanned directories names.
       @param serviceType - type of the plugin, for example "RazorPanel/Plugin".
       @param nameFilter  - wildcard filter that understands * and ? wildcards. */
-    AddPluginDialog(const QString& desktopFilesDir,
+    AddPluginDialog(const QStringList& desktopFilesDirs,
                     const QString& serviceType,
                     const QString& nameFilter="*",
                     QWidget *parent = 0);
+
     ~AddPluginDialog();
 
 signals:

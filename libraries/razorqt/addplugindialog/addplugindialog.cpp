@@ -129,7 +129,7 @@ QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
 /************************************************
 
  ************************************************/
-AddPluginDialog::AddPluginDialog(const QString &desktopFilesDir,
+AddPluginDialog::AddPluginDialog(const QStringList& desktopFilesDirs,
                                  const QString &serviceType,
                                  const QString &nameFilter,
                                  QWidget *parent):
@@ -137,7 +137,7 @@ AddPluginDialog::AddPluginDialog(const QString &desktopFilesDir,
     ui(new Ui::AddPluginDialog),
     mTimerId(0)
 {
-    mPlugins = RazorPluginInfo::search(desktopFilesDir, serviceType, nameFilter);
+    mPlugins = RazorPluginInfo::search(desktopFilesDirs, serviceType, nameFilter);
     init();
 }
 

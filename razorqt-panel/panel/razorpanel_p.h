@@ -78,9 +78,10 @@ public slots:
 
 private:
     void loadPlugins();
-    RazorPanelPlugin* loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection);
+    RazorPanelPlugin* loadPlugin(const RazorPluginInfo& pluginInfo, const QString configSection);
     void reTheme();
     int findAvailableScreen(RazorPanel::Position position);
+    QStringList pluginDesktopDirs();
 
     RazorPanel* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanel)

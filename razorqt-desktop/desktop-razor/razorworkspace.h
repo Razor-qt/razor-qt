@@ -1,5 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL3+
+ * (c)LGPL2+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -11,7 +11,7 @@
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
+ * version 2.1 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -98,6 +98,8 @@ private:
     DesktopWidgetPlugin * getPluginFromItem(QGraphicsItem * item);
     QGraphicsItem * loadPlugin(QLibrary * lib, const QString & configId="default");
     void saveConfig();
+    QStringList pluginDesktopDirs();
+    QLibrary* loadPluginLib(const RazorPluginInfo &pluginInfo);
 
 private slots:
     void about();

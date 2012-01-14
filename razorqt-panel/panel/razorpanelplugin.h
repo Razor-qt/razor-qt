@@ -49,12 +49,15 @@ as in the "name" constructor's argument.
 #include <QtGui/QFrame>
 #include <QtGui/QBoxLayout>
 #include "razorpanel.h"
+//#include <razorqt/razorplugininfo.h>
 
 class QSettings;
 class RazorSettings;
 class QToolButton;
 class QMenu;
 class QStyleOptionToolBar;
+class RazorPanelPluginPrivate;
+class RazorPluginInfo;
 
 /*! \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
@@ -70,16 +73,13 @@ position of the panel (top, bottom, left, right) and panel size (height,
 width).
 */
 
-class RazorPanelPluginPrivate;
-class RazorPluginInfo;
-
 class RazorPanelPluginStartInfo
 {
 public:
     RazorPanelPluginStartInfo(const QSettings* _settings,
                               const QString& _configSection,
                               RazorPanel* _panel,
-                              const RazorPluginInfo* _pluginInfo
+                              const RazorPluginInfo& _pluginInfo
                               ):
         settings(_settings),
         configSection(_configSection),
@@ -89,7 +89,7 @@ public:
     const QSettings* settings;
     const QString configSection;
     RazorPanel* panel;
-    const RazorPluginInfo * pluginInfo;
+    const RazorPluginInfo& pluginInfo;
 };
 
 class RazorPanelPlugin : public QFrame

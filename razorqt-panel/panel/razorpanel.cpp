@@ -55,7 +55,7 @@
 
 #include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
-
+#include <qtxdg/xdgdirs.h>
 
 #define CFG_PANEL_GROUP     "panel"
 
@@ -245,8 +245,22 @@ void RazorPanelPrivate::saveSettings()
 /************************************************
 
  ************************************************/
+QStringList RazorPanelPrivate::pluginDesktopDirs()
+{
+    QStringList dirs;
+    dirs << QString(getenv("RAZORQT_PANEL_PLUGINS_DIR")).split(':', QString::SkipEmptyParts);
+    dirs << QString("%1/%2").arg(XdgDirs::dataHome(), "/razor/razor-panel");
+    dirs << PLUGIN_DESKTOPS_DIR;
+    return dirs;
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPrivate::loadPlugins()
 {
+    QStringList desktopDirs = pluginDesktopDirs();
     QStringList sections = mSettings->value(CFG_FULLKEY_PLUGINS).toStringList();
 
     foreach (QString sect, sections)
@@ -259,13 +273,15 @@ void RazorPanelPrivate::loadPlugins()
             continue;
         }
 
-        RazorPluginInfo pi;
-        pi.load(QString("%1/%2.desktop").arg(PLUGIN_DESKTOPS_DIR, type));
 
-        if (pi.isValid() && pi.serviceType() == "RazorPanel/Plugin")
-            loadPlugin(&pi, sect);
-        else
+        RazorPluginInfoList list = RazorPluginInfo::search(desktopDirs, "RazorPanel/Plugin", QString("%1.desktop").arg(type));
+        if( !list.count())
+        {
             qWarning() << QString("Plugin \"%1\" not found.").arg(type);
+            continue;
+        }
+
+        loadPlugin(list.first(), sect);
     }
 
 
@@ -292,13 +308,21 @@ void RazorPanelPrivate::loadPlugins()
 /************************************************
 
  ************************************************/
-RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo* pluginInfo, const QString configSection)
+RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo& pluginInfo, const QString configSection)
 {
     Q_Q(RazorPanel);
 
-    QLibrary* lib = pluginInfo->loadLibrary(PLUGIN_DIR);
+    QLibrary* lib = 0;
+
+    if (getenv("RAZORQT_PANEL_PLUGINS_SO_DIR"))
+        lib = pluginInfo.loadLibrary(getenv("RAZORQT_PANEL_PLUGINS_SO_DIR"));
+
+    if (!lib)
+        lib = pluginInfo.loadLibrary(PLUGIN_DIR);
+
     if (!lib)
         return 0;
+
 
     PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
 
@@ -306,10 +330,6 @@ RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo* pluginInf
         return 0;
 
     RazorPanelPluginStartInfo startInfo(mSettings, configSection, q, pluginInfo);
-    //startInfo.configFile = mSettings->fileName();
-    //startInfo.configSection = configSection;
-    //startInfo.panel = q;
-    //startInfo.pluginInfo = pluginInfo;
     RazorPanelPlugin* plugin = initFunc(&startInfo, q);
     if (!plugin)
         return 0;
@@ -601,7 +621,7 @@ void RazorPanelPrivate::showAddPluginDialog()
 
     if (!dlg)
     {
-        dlg = new AddPluginDialog(PLUGIN_DESKTOPS_DIR, "RazorPanel/Plugin", "*", q);
+        dlg = new AddPluginDialog(pluginDesktopDirs(), "RazorPanel/Plugin", "*", q);
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
@@ -655,7 +675,7 @@ void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
         }
     }
 
-    RazorPanelPlugin* plugin = loadPlugin(&pluginInfo, sectionName);
+    RazorPanelPlugin* plugin = loadPlugin(pluginInfo, sectionName);
     if (!plugin)
         return;
 
