@@ -32,3 +32,7 @@ GenericName[sk]=Centrum nastavení
 Name[cs]=Středisko nastavení Razoru
 Comment[cs]=Nastavení modulů Razor-Qt
 GenericName[cs]=Nastavení Razoru
+
+Name[it]=Centro di Configurazione Razor
+Comment[it]=Configura moduli di Razor-qt
+GenericName[it]=Configura Razor
