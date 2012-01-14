@@ -87,6 +87,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     //qDebug() << "Razor Session start";
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+    app.setQuitOnLastWindowClosed(false);
 
     TRANSLATE_APP;
 

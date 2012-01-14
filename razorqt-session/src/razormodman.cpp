@@ -31,16 +31,12 @@
 
 #include <QtDebug>
 #include <QDBusInterface>
-#include <QTimer>
 #include <QCoreApplication>
+#include <QMessageBox>
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>
 
-/**
- * @file razormodman.cpp
- * @author Christopher "VdoP" Regali
- * @brief implements class Razormodulemanager
- */
+#define MAX_CRASHES_PER_APP 5
 
 
 /**
@@ -133,6 +129,9 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     {
         f.startDetached();
     }
+    
+    m_crashTimer.setInterval(60000);
+    connect(&m_crashTimer, SIGNAL(timeout()), this, SLOT(resetCrashReport()));
 }
 
 void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitStatus)
@@ -159,9 +158,23 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
             qDebug() << "Process" << procName << "(" << proc << ") exited correctly.";
             break;
         case QProcess::CrashExit:
+        {
             qDebug() << "Process" << procName << "(" << proc << ") has to be restarted";
-            proc->start(procName);
+            if (!m_crashReport.contains(procName))
+                m_crashReport[procName] = 0;
+            int stat = m_crashReport[procName]++;
+            if (stat >= MAX_CRASHES_PER_APP)
+            {
+                procMap.take(procName)->deleteLater();
+                QMessageBox::warning(0, tr("Razor Session Crash Report"),
+                                    tr("Application '%1' crashed too many times. Its autorestart has been disabled for current session.").arg(procName));
+            }
+            else
+            {
+                proc->start(procName);
+            }
             break;
+        }
     }
 
 }
@@ -197,6 +210,11 @@ QString RazorModuleManager::showWmSelectDialog()
     WmSelectDialog dlg;
     dlg.exec();
     return dlg.windowManager();
+}
+
+void RazorModuleManager::resetCrashReport()
+{
+    m_crashReport.clear();
 }
 
 void razor_setenv(const char *env, const QByteArray &value)
