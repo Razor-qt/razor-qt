@@ -37,6 +37,7 @@ RazorConfigDialog::RazorConfigDialog(const QString& title, RazorSettings* settin
     setWindowTitle(title);
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), SLOT(dialogButtonsAction(QAbstractButton*)));
     ui->moduleList->setVisible(false);
+    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), this, SLOT(updateIcons()));
 }
 
 void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QString& iconName)
@@ -48,6 +49,7 @@ void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QStrin
 {
     QStringList icons = QStringList(iconNames) << "application-x-executable";
     new QListWidgetItem(XdgIcon::fromTheme(icons), name, ui->moduleList);
+    mIcons.append(icons);
     ui->stackedWidget->addWidget(page);
     ui->moduleList->setVisible(true /*ui->stackedWidget->count() > 1*/);
     ui->moduleList->setCurrentRow(0);
@@ -74,6 +76,13 @@ void RazorConfigDialog::dialogButtonsAction(QAbstractButton* button)
     {
         close();
     }
+}
+
+void RazorConfigDialog::updateIcons()
+{
+    for (int ix = 0; ix < mIcons.size(); ix++)
+        ui->moduleList->item(ix)->setIcon(XdgIcon::fromTheme(mIcons.at(ix)));
+    update();
 }
 
 RazorConfigDialog::~RazorConfigDialog()

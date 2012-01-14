@@ -69,11 +69,14 @@ private:
     Ui::RazorConfigDialog* ui;
     RazorSettings* mSettings;
     RazorSettingsCache* mCache;
+    QList<QStringList> mIcons;
     QSize maxSize;
     void closeEvent(QCloseEvent* event);
 
 private slots:
     void dialogButtonsAction(QAbstractButton* button);
+    void updateIcons();
+
 };
 
 #endif // RAZORCONFIGDIALOG_H
