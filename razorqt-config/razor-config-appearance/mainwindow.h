@@ -30,30 +30,26 @@
 
 #include "ui_mainwindow.h"
 #include "iconthemeinfo.h"
-#include <QtGui/QTreeWidgetItem>
 
-class QAbstractButton;
 class RazorSettings;
-class RazorSettingsCache;
 
 
-
-class MainWindow : public QMainWindow, public Ui::MainWindow
+class IconThemeConfig : public QWidget, public Ui::IconThemeConfig
 {
     Q_OBJECT
     
 public:
-    MainWindow();
-    ~MainWindow();
+    IconThemeConfig(RazorSettings *settings);
+    ~IconThemeConfig();
 
 private:
     RazorSettings *m_settings;
-    RazorSettingsCache *m_cache;
     void initIconsThemes();
+
+public slots:
     void initControls();
 
 private slots:
-    void dialogButtonsAction(QAbstractButton *btn);
     void iconThemeSelected(QTreeWidgetItem *item, int column);
 };
 
