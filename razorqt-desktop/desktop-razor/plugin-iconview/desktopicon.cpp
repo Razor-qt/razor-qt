@@ -121,13 +121,20 @@ void IconBase::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
 void IconBase::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    qDebug() << "IconBase::mousePressEvent" << event;
+    m_oldPosition = event->pos();
 }
 
 void IconBase::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     if (m_launchMode == DesktopPlugin::DoubleClick)
         return;
-//    qDebug() << "IconBase::mouseReleaseEvent" << event;
+
+    // do not launch app when it's in "drag" mode
+    if ((event->pos() - m_oldPosition).manhattanLength() > QApplication::startDragDistance())
+    {
+        return;
+    }
+
     switch (event->button())
     {
         case Qt::LeftButton:
@@ -218,7 +225,6 @@ void FileIcon::launchApp()
     qDebug() << "FileIcon::launchApp()" << m_file << m_mimeInfo->mimeType();
 
     XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(m_mimeInfo->mimeType());
-    qDebug() << "FOUND:" << (desktopFile != 0);
     if (desktopFile)
         desktopFile->startDetached(m_file);
 }
