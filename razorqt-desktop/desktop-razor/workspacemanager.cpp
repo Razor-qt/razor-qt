@@ -37,57 +37,125 @@ EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
 
 RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSettings * config)
     : DesktopPlugin(configId, config)
+    , m_configId(configId)
+    , m_desktopCount(1)
 {
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
+    setup();
+}
     
-    m_config->beginGroup(configId);
+void RazorWorkSpaceManager::setup()
+{
+    m_config->sync();
+    m_config->beginGroup(m_configId);
     
-    QMap<int,WorkspaceConfig> desktops;
+    bool useCommonWallpaper = m_config->value("use_common_wallpaper", true).toBool();
+
+    QMap< int,QMap<int,WorkspaceConfig> > desktops;
+
     WorkspaceConfig defaults(
                             strToBackgroundType(m_config->value("wallpaper_type", "color").toString(), RazorWorkSpaceManager::BackgroundColor),
                             false,
                             m_config->value("wallpaper", "#006600").toString(),
                             m_config->value("plugins", QStringList()).toStringList()
                         );
+
     // important: here is used screenCount() instead of beginReadArray()
     // QSettings can contain more/les/or none desktop defined.
-    m_config->beginReadArray("desktops");
-    int size = QApplication::desktop()->screenCount();
-    QString themeWallpaper;
-    for (int i = 0; i < size; ++i) {
-        m_config->setArrayIndex(i);
-        themeWallpaper = razorTheme->desktopBackground(i+1);
+    m_config->beginReadArray("screens");
+    int numScreens = QApplication::desktop()->screenCount();
 
-        desktops[i] = WorkspaceConfig (
-                            strToBackgroundType(m_config->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
-                            m_config->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
-                            m_config->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString(),
-                            m_config->value("plugins", defaults.plugins).toStringList()
-                        );
+    // Loop over screens
+    for (int screen = 0; screen < numScreens; ++screen) {
+       m_config->setArrayIndex(screen);
+       m_config->beginReadArray("desktops");
+
+       // Loop over virtual desktops
+       for (int desktop = 0; desktop < m_desktopCount; ++desktop) {
+           if (useCommonWallpaper && desktop > 0)
+               break;
+
+           m_config->setArrayIndex(desktop);
+           QString themeWallpaper = razorTheme->desktopBackground(desktop + 1);
+
+           desktops[screen][desktop] = WorkspaceConfig (
+                               strToBackgroundType(m_config->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
+                               m_config->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
+                               m_config->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString(),
+                               m_config->value("plugins", defaults.plugins).toStringList()
+                           );
+        }
+
+        m_config->endArray();  // desktops
     }
-    m_config->endArray();
-    
+    m_config->endArray();  // screens
+     
     m_config->endGroup();
-    
-    for (int i = 0; i < QApplication::desktop()->screenCount(); ++i)
-    {
-        qDebug() << "workspace for screen" << i;
-        RazorWorkSpace * ws = new RazorWorkSpace(config, i);
-        if (desktops.contains(i))
-            ws->setConfig(desktops.value(i));
-        else
-            ws->setConfig(defaults);
-        
-        ws->show();
-        
-        // This X11 call seems mandatory for issue #3:
-        // "There is only one desktop when on plasma-desktop"
-        // for some WM it is not enough to use Qt::WA_X11NetWmWindowTypeDesktop
-        // Note: this has to be called after is ws shown to take an effect.
-        // EWMH specs: Cardinal to determine the desktop the window is in (or wants to be) starting with 0 for the first desktop. A Client MAY choose not to set this property, in which case the Window Manager SHOULD place it as it wishes. 0xFFFFFFFF indicates that the window SHOULD appear on all desktops.
-        xfitMan().moveWindowToDesktop(ws->winId(), 0xFFFFFFFF);
-        
-        m_workspaces.append(ws);
+     
+    // Remove workspaces of additional screens
+    int toRemove = m_workspaces.count() - numScreens;
+    for (int i = 0; i < toRemove; ++i) {
+        qDeleteAll(m_workspaces.last());
+        m_workspaces.removeLast();
+    }
+
+    // Loop over screens
+    for (int screen = 0; screen < numScreens; ++screen) {
+        QList<RazorWorkSpace*>* screenWorkspaces;
+        if (screen < m_workspaces.count()) {
+            // Existing screen
+            screenWorkspaces = &m_workspaces[screen];
+        }
+        else {
+            // New screen
+            Q_ASSERT(screen == m_workspaces.count());
+            m_workspaces.append(QList<RazorWorkSpace*>());
+            screenWorkspaces = &m_workspaces.last();
+        }
+
+        // Remove additional workspaces
+        int toRemove = screenWorkspaces->count() - m_desktopCount;
+        for (int i = 0; i < toRemove; ++i)
+            delete screenWorkspaces->takeLast();
+
+        // Loop over virtual desktops
+        for (int desktop = 0; desktop < m_desktopCount; ++desktop) {
+            if (useCommonWallpaper && desktop > 0)
+                break;
+
+            qDebug() << "workspace screen: " << screen;
+            qDebug() << "virtual desktop: " << desktop;
+
+            // Use existing RazorWorkSpace instance or create a new one
+            RazorWorkSpace * ws;
+            if (desktop < screenWorkspaces->count()) {
+                // Existing workspace
+                ws = screenWorkspaces->at(desktop);
+            }
+            else {
+                // New workspace
+                Q_ASSERT(desktop == m_workspaces.count());
+                ws = new RazorWorkSpace(m_config, screen, desktop);
+                screenWorkspaces->append(ws);
+            }
+
+            if (desktops.contains(screen) && desktops[screen].contains(desktop))
+                ws->setConfig(desktops.value(screen).value(desktop));
+            else
+                ws->setConfig(defaults);
+            
+            ws->show();
+            
+            // This X11 call seems mandatory for issue #3:
+            // "There is only one desktop when on plasma-desktop"
+            // for some WM it is not enough to use Qt::WA_X11NetWmWindowTypeDesktop
+            // Note: this has to be called after is ws shown to take an effect.
+            // EWMH specs: Cardinal to determine the desktop the window is in (or wants to be) starting with 0 for the first desktop. A Client MAY choose not to set this property, in which case the Window Manager SHOULD place it as it wishes. 0xFFFFFFFF indicates that the window SHOULD appear on all desktops.
+            if (useCommonWallpaper)
+                xfitMan().moveWindowToDesktop(ws->winId(), 0xFFFFFFFF);
+            else
+                xfitMan().moveWindowToDesktop(ws->winId(), desktop);
+        }
     }
 }
 
@@ -102,13 +170,26 @@ RazorWorkSpaceManager::BackgroundType RazorWorkSpaceManager::strToBackgroundType
 
 RazorWorkSpaceManager::~RazorWorkSpaceManager()
 {
-    foreach (RazorWorkSpace* i, m_workspaces)
-        delete i;
-    m_workspaces.clear();
+    foreach (const QList<RazorWorkSpace*>& screenWorkspaces, m_workspaces)
+        qDeleteAll(screenWorkspaces);
 }
 
 QString RazorWorkSpaceManager::info()
 {
     return tr("Fully featured desktop implementation with all Razor's "
               "bells and whistles");
+}
+
+void RazorWorkSpaceManager::x11EventFilter(XEvent* _event)
+{
+    if (_event->type == PropertyNotify)
+    {
+        int count = qMax(xfitMan().getNumDesktop(), 1);
+        if (m_desktopCount != count)
+        {
+            qDebug() << "Desktop count changed from" << m_desktopCount << "to" << count;
+            m_desktopCount = count;
+            setup();
+        }
+    }
 }
