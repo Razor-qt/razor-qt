@@ -144,13 +144,45 @@ QMenu* RazorPanelPluginPrivate::popupMenu() const
     Q_Q(const RazorPanelPlugin);
 
     QMenu* menu = panel()->popupMenu(0);
+    QMenu* submenu = new QMenu(q->windowTitle(), menu);
+
     if (q->flags().testFlag(RazorPanelPlugin::HaveConfigDialog))
     {
-        QAction* configAction = new QAction(tr("Configure %1").arg(q->windowTitle()), menu);
-        menu->addAction(configAction);
+        QAction* configAction = new QAction(tr("Configure"), submenu);
+        submenu->addAction(configAction);
         connect(configAction, SIGNAL(triggered()), q, SLOT(showConfigureDialog()));
     }
+
+    QAction* moveAction = new QAction(XdgIcon::fromTheme("transform-move"), tr("Move"), submenu);
+    submenu->addAction(moveAction);
+    connect(moveAction, SIGNAL(triggered()), q, SLOT(requestMove()));
+
+    submenu->addSeparator();
+
+    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Delete"), submenu);
+    submenu->addAction(removeAction);
+    connect(removeAction, SIGNAL(triggered()), q, SLOT(requestRemove()));
+
+    menu->addMenu(submenu);
     return menu;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::requestMove()
+{
+    emit move();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::requestRemove()
+{
+    emit remove();
 }
 
 
