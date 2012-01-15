@@ -90,7 +90,7 @@ void DesktopConfigWindow::restoreSettings()
     desktopTypeComboBox->setCurrentIndex(ix);
     desktopTypeComboBox_currentIndexChanged(ix);
     
-    QString clickType = m_settings->value("icon-launch", "singleclick").toString();
+    QString clickType = m_settings->value("icon-launch-mode", "singleclick").toString();
     if (clickType == "singleclick")
         singleclickButton->setChecked(true);
     else
@@ -117,7 +117,7 @@ void DesktopConfigWindow::restoreSettings()
 void DesktopConfigWindow::closeEvent(QCloseEvent * event)
 {
     m_settings->setValue("desktop", desktopTypeComboBox->itemData(desktopTypeComboBox->currentIndex()).toString());
-    m_settings->setValue("icon-launch", singleclickButton->isChecked() ? "singleclick" : "doubleclick");
+    m_settings->setValue("icon-launch-mode", singleclickButton->isChecked() ? "singleclick" : "doubleclick");
 
     m_settings->beginGroup("razor");    
     if (!menuFilePathLE->text().isEmpty())
