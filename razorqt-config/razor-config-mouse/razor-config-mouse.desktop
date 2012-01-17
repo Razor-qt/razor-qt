@@ -14,6 +14,10 @@ Name[es]=Configuración de Ratón Razor
 Comment[es]=Configura un ratón X11
 GenericName[es]=Configuración de Ratón Razor
 
+Name[it]=Impostazioni Mouse Razor
+Comment[it]=Configura il mouse di Razor
+GenericName[it]=Impostazioni Mouse Razor
+
 Name[hu]=Razor egérbeállító
 Comment[hu]=Az X11 egér beállítása
 GenericName[hu]=Razor egérbeállító

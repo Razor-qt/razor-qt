@@ -55,7 +55,7 @@ QList<QAction*> ScreenSaver::availableActions()
 
 void ScreenSaver::lockScreen()
 {
-    m_xdgProcess->start("xdg-screensaver", QStringList() << "activate");
+    m_xdgProcess->start("xdg-screensaver", QStringList() << "lock");
 }
 
 void ScreenSaver::xdgProcess_finished(int err, QProcess::ExitStatus status)

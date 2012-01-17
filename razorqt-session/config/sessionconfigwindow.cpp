@@ -79,6 +79,7 @@ SessionConfigWindow::SessionConfigWindow()
     connect(desktopCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(runnerCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(appswitcherCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(policyKitCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(terminalComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
     connect(terminalComboBox, SIGNAL(editTextChanged(const QString &)), this, SLOT(setRestart()));
     connect(browserComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setRestart()));
@@ -100,6 +101,7 @@ void SessionConfigWindow::restoreSettings()
     modules["razor-desktop"] = desktopCheckBox;
     modules["razor-runner"] = runnerCheckBox;
     modules["razor-appswitcher"] = appswitcherCheckBox;
+    modules["razor-policykit-agent"] = policyKitCheckBox;
     
     m_settings->beginGroup("modules");
     foreach(QString i, modules.keys())
@@ -165,6 +167,7 @@ void SessionConfigWindow::closeEvent(QCloseEvent * event)
     m_settings->setValue("razor-desktop", desktopCheckBox->isChecked());
     m_settings->setValue("razor-runner", runnerCheckBox->isChecked());
     m_settings->setValue("razor-appswitcher", appswitcherCheckBox->isChecked());
+    m_settings->setValue("razor-policykit-agent", policyKitCheckBox->isChecked());
     m_settings->endGroup();
 
     

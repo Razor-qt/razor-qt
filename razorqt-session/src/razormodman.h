@@ -30,11 +30,13 @@
 
 #include <QProcess>
 #include <QMap>
+#include <QTimer>
 
 class QDBusInterface;
 
 typedef QMap<QString,QProcess*> ModulesMap;
 typedef QMapIterator<QString,QProcess*> ModulesMapIterator;
+typedef QMap<QString,int> ModulesCrashReport;
 
 /*! \brief RazorModuleManager manages the processes of the session
 and which modules of razor are about to load.
@@ -79,6 +81,12 @@ private:
     //! \brief map with Razor main modules. Window manager, and Razor components.
     ModulesMap procMap;
 
+    /*! \brief Keep creashes for given process to raise a message in the
+        case of repeating crashes
+     */
+    ModulesCrashReport m_crashReport;
+    QTimer m_crashTimer;
+
     //! \brief HAL (dbus) instance for shudown and reboot actions.
     QDBusInterface* m_power;
 
@@ -99,6 +107,10 @@ private slots:
     be restarted automatically.
     */
     void restartModules(int exitCode, QProcess::ExitStatus exitStatus);
+
+    /*! Clear m_crashReport after some amount of time
+     */
+    void resetCrashReport();
 };
 
 
