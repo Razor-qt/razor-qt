@@ -49,7 +49,7 @@
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="101"/>
-        <source>Click the button to recort shortcut:</source>
+        <source>Click the button to record shortcut:</source>
         <translation>Clicca sul bottone per registrare una scorciatoia:</translation>
     </message>
     <message>
