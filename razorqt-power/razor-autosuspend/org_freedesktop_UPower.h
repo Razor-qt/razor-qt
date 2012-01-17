@@ -21,7 +21,7 @@
 #include <QtDBus/QtDBus>
 
 /*
- * Proxy class for interface org.freedesktop.UPower
+ * Proxy class for interface org.freedesktop.UPower - to be replaced by razorpower library functionality
  */
 class OrgFreedesktopUPowerInterface: public QDBusAbstractInterface
 {
