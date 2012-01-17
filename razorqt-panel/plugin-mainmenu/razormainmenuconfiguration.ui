@@ -98,7 +98,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Click the button to recort shortcut:</string>
+         <string>Click the button to record shortcut:</string>
         </property>
        </widget>
       </item>
