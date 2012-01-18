@@ -16,6 +16,16 @@ RazorPanel[position="1"] {
     border-bottom: 1px solid #B0B0B0; 
 }
 
+/* PositionLeft */
+RazorPanel[position="2"] {
+    border-right: 1px solid #B0B0B0;
+}
+
+/* PositionRight */
+RazorPanel[position="3"] {
+    border-left: 1px solid #B0B0B0;
+}
+
 /* 
  * General plugins settings
  */
@@ -115,6 +125,7 @@ TrayIcon {
  */
 #MainMenu {
     border: 0; 
+    padding: 0;
 }
 
 #MainMenu > QPushButton {
