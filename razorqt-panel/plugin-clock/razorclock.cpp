@@ -63,11 +63,13 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     clockFormat = "hh:mm";
 
     gui = new ClockLabel(this);
-    gui->setAlignment(Qt::AlignCenter);    
-    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    gui->setAlignment(Qt::AlignCenter);
+    this->layout()->setAlignment(Qt::AlignCenter);
+    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     gui->setSizePolicy(sizePolicy);
+    this->setSizePolicy(sizePolicy);
     addWidget(gui);
 
     connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
@@ -109,7 +111,8 @@ void RazorClock::settigsChanged()
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
     dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
-    if (settings().value("showDate", false).toBool())
+    showDate = settings().value("showDate", false).toBool();
+    if (showDate)
     {
         if (dateOnNewLine)
         {
@@ -200,15 +203,19 @@ void RazorClock::updateMinWidth()
     //qDebug() << "D:" << metrics.boundingRect(dt.toString(dateFormat)).width();
 
     int width;
-    if (dateOnNewLine)
+    if (dateOnNewLine && showDate)
         width = qMax(metrics.boundingRect(dt.toString(timeFormat)).width(),
                      metrics.boundingRect(dt.toString(dateFormat)).width()
                      );
     else
         width = metrics.boundingRect(dt.toString(clockFormat)).width();
 
-    //qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
-    gui->setMinimumWidth(width);
+    qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
+//    gui->setMinimumWidth(width + 5);
+    this->setMinimumWidth(width + 5);
+
+//    gui->setMaximumWidth(width + 5);
+//    this->setMaximumWidth(width + 5);
 }
 
 

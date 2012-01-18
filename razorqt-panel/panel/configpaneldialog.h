@@ -47,7 +47,7 @@ public:
     ~ConfigPanelDialog();
 
 signals:
-    void configChanged(int height, int width, bool percent, RazorPanel::Alignment);
+    void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool useThemeSize);
 
 private slots:
     void dialogButtonsAction(QAbstractButton *button);
@@ -55,17 +55,19 @@ private slots:
     void spinBoxWidthValueChanged(int q);
     void comboBoxWidthTypeIndexChanged(int q);
     void comboBoxAlignmentIndexChanged(int q);
+    void checkBoxUseThemeSizeChanged(bool state);
 
 private:
     Ui::ConfigPanelDialog *ui;
     QString mConfigFile;
     RazorSettings* mSettings;
     RazorSettingsCache *mCache;
-    int mHeightDefault;
-    int mHeight;
-    int mWidthMax;
-    int mWidth;
+    int mSizeDefault;
+    int mSize;
+    int mLengthMax;
+    int mLength;
     bool mWidthInPercents;
+    bool useThemeSize;
     RazorPanel::Alignment mAlignment;
 
     void initControls();
