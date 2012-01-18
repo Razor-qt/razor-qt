@@ -61,7 +61,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     setObjectName("MainMenu");
 
     layout()->setAlignment(Qt::AlignCenter);
-    mButton.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
