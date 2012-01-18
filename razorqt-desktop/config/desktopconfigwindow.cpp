@@ -68,7 +68,7 @@ DesktopConfigWindow::DesktopConfigWindow()
     connect(nativeIconsCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     connect(nativeWallpaperEdit, SIGNAL(textChanged(const QString&)), this, SLOT(setRestart()));
     connect(wheelDesktopCheckBox, SIGNAL(toggled(bool)), this, SLOT(setRestart()));
-    connect(useCommonWallpaperCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
+    connect(useDifferentWallpapersCheckBox, SIGNAL(clicked()), this, SLOT(setRestart()));
     //
     connect(buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 }
@@ -100,7 +100,7 @@ void DesktopConfigWindow::restoreSettings()
     m_settings->beginGroup("razor");
     menuFilePathLE->setText(m_settings->value("menu_file").toString());
     wheelDesktopCheckBox->setChecked(m_settings->value("mouse_wheel_desktop_switch", false).toBool());
-    useCommonWallpaperCheckBox->setChecked(m_settings->value("use_common_wallpaper", true).toBool());
+    useDifferentWallpapersCheckBox->setChecked(m_settings->value("use_different_wallpapers", false).toBool());
     m_settings->endGroup();
     
     // wm_native
@@ -125,7 +125,7 @@ void DesktopConfigWindow::closeEvent(QCloseEvent * event)
         m_settings->setValue("menu_file", menuFilePathLE->text());
     }
     m_settings->setValue("mouse_wheel_desktop_switch", wheelDesktopCheckBox->isChecked());
-    m_settings->setValue("use_common_wallpaper", useCommonWallpaperCheckBox->isChecked());
+    m_settings->setValue("use_different_wallpapers", useDifferentWallpapersCheckBox->isChecked());
     m_settings->endGroup();
     
     m_settings->beginGroup("wm_native");

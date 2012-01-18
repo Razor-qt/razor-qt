@@ -49,7 +49,7 @@ void RazorWorkSpaceManager::setup()
     m_config->sync();
     m_config->beginGroup(m_configId);
     
-    bool useCommonWallpaper = m_config->value("use_common_wallpaper", true).toBool();
+    bool useDifferentWallpapers = m_config->value("use_different_wallpapers", false).toBool();
 
     QMap< int,QMap<int,WorkspaceConfig> > desktops;
 
@@ -72,7 +72,7 @@ void RazorWorkSpaceManager::setup()
 
        // Loop over virtual desktops
        for (int desktop = 0; desktop < m_desktopCount; ++desktop) {
-           if (useCommonWallpaper && desktop > 0)
+           if (!useDifferentWallpapers && desktop > 0)
                break;
 
            m_config->setArrayIndex(desktop);
@@ -120,7 +120,7 @@ void RazorWorkSpaceManager::setup()
 
         // Loop over virtual desktops
         for (int desktop = 0; desktop < m_desktopCount; ++desktop) {
-            if (useCommonWallpaper && desktop > 0)
+            if (!useDifferentWallpapers && desktop > 0)
                 break;
 
             qDebug() << "workspace screen: " << screen;
@@ -151,10 +151,10 @@ void RazorWorkSpaceManager::setup()
             // for some WM it is not enough to use Qt::WA_X11NetWmWindowTypeDesktop
             // Note: this has to be called after is ws shown to take an effect.
             // EWMH specs: Cardinal to determine the desktop the window is in (or wants to be) starting with 0 for the first desktop. A Client MAY choose not to set this property, in which case the Window Manager SHOULD place it as it wishes. 0xFFFFFFFF indicates that the window SHOULD appear on all desktops.
-            if (useCommonWallpaper)
-                xfitMan().moveWindowToDesktop(ws->winId(), 0xFFFFFFFF);
-            else
+            if (useDifferentWallpapers)
                 xfitMan().moveWindowToDesktop(ws->winId(), desktop);
+            else
+                xfitMan().moveWindowToDesktop(ws->winId(), 0xFFFFFFFF);
         }
     }
 }
