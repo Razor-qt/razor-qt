@@ -44,6 +44,7 @@ RazorMount::RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     //qDebug() << "RazorMount init";
     setObjectName("RazorMount");
     m_button = new MountButton(parent, panel());
+    this->layout()->setAlignment(Qt::AlignCenter);
     addWidget(m_button);
     settigsChanged();
 }

@@ -61,10 +61,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     setObjectName("MainMenu");
 
     layout()->setAlignment(Qt::AlignCenter);
-    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-    mMainMenuButton.setAlignment(Qt::AlignCenter);
-    mMainMenuButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);    
+    mButton.setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
@@ -78,7 +75,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     connect(mShortcut, SIGNAL(activated()), this, SLOT(showMenu()));
 
     addWidget(&mButton);
-        settigsChanged();
+    settigsChanged();
 }
 
 
@@ -148,7 +145,6 @@ void RazorMainMenu::settigsChanged()
     mLogDir = settings().value("log_dir", "").toString();
     mTopMenuStyle.setIconSize(settings().value("top_icon_size", 16).toInt());
 
-    mButton.setIconSize(QSize(panel()->width(), panel()->width()));
     mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
@@ -203,15 +199,14 @@ void RazorMainMenu::showConfigureDialog()
 
 void RazorMainMenu::realign()
 {
-    RazorPanel::Position pos = panel()->position();
-
-    if (pos == RazorPanel::PositionTop || pos == RazorPanel::PositionBottom)
+    if (panel()->isHorizontal())
     {
         mButton.setMaximumSize(QSize(panel()->height(), panel()->height()));
+        this->setMaximumSize(QSize(panel()->height(), panel()->height()));
     }
-
-    if(pos == RazorPanel::PositionLeft || pos == RazorPanel::PositionRight)
+    else
     {
         mButton.setMaximumSize(QSize(panel()->width(), panel()->width()));
+        this->setMaximumSize(QSize(panel()->width(), panel()->width()));
     }
 }

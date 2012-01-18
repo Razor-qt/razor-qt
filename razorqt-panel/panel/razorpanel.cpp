@@ -66,6 +66,7 @@
 #define CFG_KEY_WIDTH       "width"
 #define CFG_KEY_PERCENT     "width-percent"
 #define CFG_KEY_ALIGNMENT   "alignment"
+#define CFG_KEY_THEMESIZE   "theme-size"
 
 
 #define CFG_FULLKEY_PLUGINS "panel/plugins"
@@ -180,13 +181,15 @@ void RazorPanelPrivate::init()
     mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt());
     mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
     mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
+    mUseThemeSize = mSettings->value(CFG_KEY_THEMESIZE, true).toBool();
     mSettings->endGroup();
 
     q->setLayout(mLayout);
 
-    realign();
     loadPlugins();
     reTheme();
+    updatePluginsMinSize();
+    realign();
 }
 
 
@@ -390,8 +393,10 @@ void RazorPanelPrivate::realign()
         if (mWidthInPercents)
             rect.setWidth(screen.width() * mWidth / 100);
         else
-            rect.setWidth(mWidth);
+            rect.setWidth(mWidth);        
 
+        q->setGeometry(rect);
+        rect = q->geometry();
         // Horiz ....................
         switch (mAlignment)
         {
@@ -423,6 +428,9 @@ void RazorPanelPrivate::realign()
         else
             rect.setHeight(mWidth);
 
+        q->setGeometry(rect);
+        rect = q->geometry();
+
         // Vert .....................
         switch (mAlignment)
         {
@@ -444,7 +452,7 @@ void RazorPanelPrivate::realign()
             rect.moveRight(screen.right());
     }
     q->setGeometry(rect);
-
+    qDebug() << q->geometry();
 
     // Reserve our space on the screen ..........
     XfitMan xf = xfitMan();
@@ -647,8 +655,8 @@ void RazorPanelPrivate::showConfigPanelDialog()
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     ConfigPanelDialog* dlg = new ConfigPanelDialog (mHeight, screen.width(), mSettings, q);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    connect(dlg, SIGNAL(configChanged(int, int, bool, RazorPanel::Alignment)),
-                      SLOT(updateSize(int, int, bool, RazorPanel::Alignment)));
+    connect(dlg, SIGNAL(configChanged(int, int, bool, RazorPanel::Alignment, bool)),
+                      SLOT(updateSize(int, int, bool, RazorPanel::Alignment, bool)));
     dlg->show();
 }
 
@@ -656,13 +664,47 @@ void RazorPanelPrivate::showConfigPanelDialog()
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::updateSize(int height, int width, bool percent, RazorPanel::Alignment alignment)
+void RazorPanelPrivate::updateSize(int height, int width, bool percent, RazorPanel::Alignment alignment, bool useThemeSize)
 {
     mHeight = height;
     mWidth = width;
     mWidthInPercents = percent;
-    mAlignment = alignment;
+    mAlignment = alignment;    
+    mUseThemeSize = useThemeSize;
+
+    updatePluginsMinSize();
     realign();
+}
+
+void RazorPanelPrivate::updatePluginsMinSize()
+{
+    Q_Q(RazorPanel);
+    if (mUseThemeSize)
+    {
+        foreach (RazorPanelPlugin *plugin, mPlugins)
+        {
+            plugin->setMinimumSize(QSize(0,0));
+        }
+
+        mHeight = -1;
+        reTheme();
+    }
+    else
+    {
+        foreach (RazorPanelPlugin *plugin, mPlugins)
+        {
+            plugin->setMinimumSize(QSize(1,1));
+        }
+
+        if (q->isHorizontal())
+        {
+            q->setMaximumHeight(mHeight);
+        }
+        else
+        {
+            q->setMaximumWidth(mHeight);
+        }
+    }
 }
 
 /************************************************
@@ -948,12 +990,38 @@ void RazorPanelPrivate::switchPosition()
     if (!a)
         return;
 
-    Q_Q(RazorPanel);
+    Q_Q(RazorPanel);   
+    QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
+
     mPosition = a->position();
-    mScreenNum = a->displayNum();
-    realign();
+    mScreenNum = a->displayNum();   
     emit q->layoutDirectionChanged(q->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom);
     emit q->positionChanged();
+
+    if (q->isHorizontal())
+    {
+        if (!mUseThemeSize)
+        {
+            q->setMaximumSize(screen.width(), mHeight);
+        }
+        else
+        {
+            q->setMaximumWidth(screen.width());
+        }
+    }
+    else
+    {
+        if (!mUseThemeSize)
+        {
+            q->setMaximumSize(mHeight, screen.height());
+        }
+        else
+        {
+            q->setMaximumHeight(screen.height());
+        }
+    }
+
+    realign();
     saveSettings();
 }
 

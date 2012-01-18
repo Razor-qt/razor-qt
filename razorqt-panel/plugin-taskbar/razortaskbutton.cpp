@@ -61,6 +61,7 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     setMinimumWidth(1);
+    setMinimumHeight(1);
     setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     setAcceptDrops(true);
 
