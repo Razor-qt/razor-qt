@@ -7,18 +7,18 @@ include_directories (
 )
 
 set(razormount_HDRS
-    udisksinfo.h
-    udisksmanager.h
+    razormount.h
+    rzmountproviders.h
 )
 
 set(razormount_SRCS
-    udisksinfo.cpp
-    udisksmanager.cpp
+    razormount.cpp
+    rzmountproviders.cpp
 )
 
 set(razormount_MOCS
-    udisksinfo.h
-    udisksmanager.h
+    razormount.h
+    rzmountproviders.h
 )
 
 QT4_WRAP_CPP(razourmount_MOCS ${razormount_MOCS})

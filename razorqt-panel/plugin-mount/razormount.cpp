@@ -41,7 +41,6 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMount)
 RazorMount::RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
     : RazorPanelPlugin(startInfo, parent)
 {
-    //qDebug() << "RazorMount init";
     setObjectName("RazorMount");
     m_button = new MountButton(parent, panel());
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

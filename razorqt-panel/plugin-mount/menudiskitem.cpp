@@ -27,31 +27,52 @@
 
 #include <QtGui/QDesktopServices>
 #include "menudiskitem.h"
-#include <razormount/udisksinfo.h>
+#include <razormount/razormount.h>
 #include <qtxdg/xdgicon.h>
+#include <QtCore/QDebug>
+#include <QtCore/QUrl>
 
-
-MenuDiskItem::MenuDiskItem(UdisksInfo *info, QWidget *parent)
+MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent)
     : QWidget(parent),
-      m_info(info)
+      mDevice(device)
 {
     setupUi(this);
-    
     eject->setIcon(XdgIcon::fromTheme("media-eject"));
-    QString iconName(info->iconName());
-    
-    connect(info, SIGNAL(error(QString)),
-            this, SIGNAL(error(QString)));
 
-    if (!iconName.isEmpty())
-        diskButton->setIcon(XdgIcon::fromTheme(iconName));
-    else
-        diskButton->setIcon(XdgIcon::fromTheme("drive-removable-media-usb"));
+    connect(device, SIGNAL(destroyed()),
+              this, SLOT(free()));
 
-    setLabel(info->displayName() + " (" + info->fileSystem() + ")");
+    connect(device, SIGNAL(changed()),
+              this, SLOT(update()));
 
-    setMountStatus(info->isMounted());
+    connect(device, SIGNAL(mounted()),
+              this, SLOT(mounted()));
+
+    connect(device, SIGNAL(unmounted()),
+              this, SLOT(unmounted()));
+
+    update();
 }
+
+void MenuDiskItem::free()
+{
+    this->deleteLater();
+}
+
+void MenuDiskItem::update()
+{
+    diskButton->setIcon(XdgIcon::fromTheme(QStringList()
+                                            << mDevice->iconName()
+                                            << "drive-removable-media-usb"
+                                           )
+                        );
+
+    QString label = mDevice->label();
+    diskButton->setText(label);
+
+    setMountStatus(mDevice->isMounted());
+}
+
 
 void MenuDiskItem::changeEvent(QEvent *e)
 {
@@ -65,36 +86,43 @@ void MenuDiskItem::changeEvent(QEvent *e)
     }
 }
 
-void MenuDiskItem::setLabel(const QString &text)
-{
-    QString label = text;
-    if (label.isEmpty())
-    {
-        label = m_info->displayName();;
-    }
-
-    diskButton->setText(label);
-}
 
 void MenuDiskItem::setMountStatus(bool is_mount)
 {
     eject->setEnabled(is_mount);
 }
 
-void MenuDiskItem::on_eject_clicked()
-{
-    qWarning() << "void MenuDiskItem::on_eject_clicked()" ;
-    setMountStatus(!m_info->unmount());
-    qobject_cast<QWidget*>(parent())->hide();
-}
 
 void MenuDiskItem::on_diskButton_clicked()
 {
-    qWarning() << "void MenuDiskItem::on_diskButton_clicked()" << m_info->path();
-    bool success = m_info->mount();
-    setMountStatus(success);
-    if (success)
-        QDesktopServices::openUrl(QUrl(m_info->path()));
+    if (!mDevice->isMounted())
+        mDevice->mount();
+    else
+        mounted();
 
     qobject_cast<QWidget*>(parent())->hide();
 }
+
+
+
+void MenuDiskItem::mounted()
+{
+    QDesktopServices::openUrl(QUrl(mDevice->mountPath()));
+}
+
+
+void MenuDiskItem::on_eject_clicked()
+{
+    mDevice->unmount();
+    setMountStatus(mDevice->isMounted());
+
+    qobject_cast<QWidget*>(parent())->hide();
+}
+
+
+void MenuDiskItem::unmounted()
+{
+    if (mDevice->isEjectable())
+        mDevice->eject();
+}
+

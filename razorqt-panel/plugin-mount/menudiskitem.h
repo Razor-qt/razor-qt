@@ -28,9 +28,8 @@
 #ifndef MENUDISKITEM_H
 #define MENUDISKITEM_H
 
-
 #include "ui_menudiskitem.h"
-class UdisksInfo;
+class RazorMountDevice;
 
 
 class MenuDiskItem : public QWidget, private Ui::MenuDiskItem
@@ -38,8 +37,7 @@ class MenuDiskItem : public QWidget, private Ui::MenuDiskItem
     Q_OBJECT
 
 public:
-//    explicit MenuDiskItem(QWidget *parent = 0);
-    explicit MenuDiskItem(UdisksInfo *info, QWidget *parent);
+    explicit MenuDiskItem(RazorMountDevice *device, QWidget *parent);
 
     void setMountStatus(bool is_mount);
 
@@ -52,10 +50,13 @@ protected:
 private slots:
     void on_eject_clicked();
     void on_diskButton_clicked();
+    void update();
+    void free();
+    void mounted();
+    void unmounted();
 
 private:
-    UdisksInfo *m_info;
-    void setLabel(const QString &text);
+    RazorMountDevice *mDevice;
 };
 
 #endif // MENUDISKITEM_H
