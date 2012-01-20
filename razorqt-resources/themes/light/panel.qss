@@ -159,24 +159,20 @@ TrayIcon {
 /* 
  * Mount plugin
  */
-/*
 MountButton {}
 
 #RazorMountPopup {
     background-color: #d7d3cc;
     border: 1px solid #a59f94;
 }
-*/
 
 /* 
  * Screensaver
  */
-/*
 #PanelScreenSaver {}
 
 /*
  * ShowDesktop
  */
-/*
 #ShowDesktop {}
 
