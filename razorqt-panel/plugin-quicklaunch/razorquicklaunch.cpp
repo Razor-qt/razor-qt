@@ -55,8 +55,9 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
 {
     setObjectName("QuickLaunch");
     setAcceptDrops(true);
-    
+       
     m_layout = new QuickLaunchLayout(this);
+    m_layout->setAlignment(Qt::AlignCenter);
     delete layout();
     setLayout(m_layout);
 

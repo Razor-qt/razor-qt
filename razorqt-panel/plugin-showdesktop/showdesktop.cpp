@@ -63,6 +63,8 @@ ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
 
     QToolButton * button = new QToolButton(this);
     button->setDefaultAction(act);
+    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->layout()->setAlignment(Qt::AlignCenter);
     addWidget(button);
 }
 

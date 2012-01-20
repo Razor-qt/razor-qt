@@ -35,6 +35,7 @@
 
 #include <razorqt/xfitman.h>
 #include <razorqt/razorplugininfo.h>
+#include <qtxdg/xdgmenu.h>
 #include "arrangeitem.h"
 
 
@@ -82,6 +83,8 @@ private:
     int m_screen;
     int m_desktop;
     Mode m_mode;
+    QMenu *m_menu;
+    XdgMenu m_xdgMenu;
     
     QAction * m_actArrangeWidgets;
     QAction * m_actAddNewPlugin;

@@ -74,7 +74,7 @@ public slots:
     void onRemovePlugin();
     void onMovePlugin();
     void startMoveWidget();
-    void updateSize(int height, int width, bool percent, RazorPanel::Alignment alignment);
+    void updateSize(int height, int width, bool percent, RazorPanel::Alignment alignment, bool useThemeSize);
 
 private:
     void loadPlugins();
@@ -97,6 +97,8 @@ private:
     QList<RazorPanelPlugin*> mPlugins;
     RazorPanelLayout* mLayout;
     QLayoutItem* mSpacer;
+    bool mUseThemeSize;
+    void updatePluginsMinSize();
 };
 
 

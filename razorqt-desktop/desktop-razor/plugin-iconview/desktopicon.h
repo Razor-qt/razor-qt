@@ -76,6 +76,8 @@ private:
     bool m_highlight;
     QString m_text;
     DesktopPlugin::IconLaunchMode m_launchMode;
+    // track drag mode
+    QPointF m_oldPosition;
 
     /**
     @brief Launch assigned m_exec binary/path.

@@ -13,6 +13,10 @@ Name[es]=Configuración de Sesiones Razor
 Comment[es]=Configura el módulo de sesiones de Razor-Qt
 GenericName[es]=Configuración de Sesiones Razor
 
+Name[it]=Impostazioni della sessione Razor
+Comment[it]=Configura la sessione Razor
+GenericName[it]=Impostazioni della sessione Razor
+
 Name[hu]=Razor munkamenetbeállíó
 Comment[hu]=A Razor-Qt munkamenetmodul beállítása
 GenericName[hu]=Razor munkamenetbeállíó

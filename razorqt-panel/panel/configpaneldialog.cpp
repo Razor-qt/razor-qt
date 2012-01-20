@@ -6,7 +6,7 @@
  *
  * Copyright: 2010-2011 Razor team
  * Authors:
- *   Marat "Morion" Talipov <morion-self@mail.ru>
+ *   Marat "Morion" Talipov <morion.self@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,7 @@
 #define CFG_KEY_WIDTH       "width"
 #define CFG_KEY_PERCENT     "width-percent"
 #define CFG_KEY_ALIGNMENT   "alignment"
+#define CFG_KEY_THEMESIZE   "theme-size"
 
 
 ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *settings, QWidget *parent) :
@@ -41,12 +42,13 @@ ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *sett
 {
     ui->setupUi(this);
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
-    connect(ui->spinBox_height, SIGNAL(valueChanged(int)),this, SLOT(spinBoxHeightValueChanged(int)));
+    connect(ui->spinBox_size, SIGNAL(valueChanged(int)),this, SLOT(spinBoxHeightValueChanged(int)));
     connect(ui->comboBox_widthType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxWidthTypeIndexChanged(int)));
     connect(ui->comboBox_alignment, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAlignmentIndexChanged(int)));
-    connect(ui->spinBox_width, SIGNAL(valueChanged(int)),this, SLOT(spinBoxWidthValueChanged(int)));
-    mHeightDefault=hDefault;
-    mWidthMax=wMax;
+    connect(ui->spinBox_length, SIGNAL(valueChanged(int)),this, SLOT(spinBoxWidthValueChanged(int)));
+    connect(ui->checkBox_useTheme, SIGNAL(toggled(bool)), this, SLOT(checkBoxUseThemeSizeChanged(bool)));
+    mSizeDefault=hDefault;
+    mLengthMax=wMax;
     mSettings = settings;
     mCache = new RazorSettingsCache(mSettings);
 
@@ -56,18 +58,20 @@ ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *sett
 void ConfigPanelDialog::initControls()
 {
     mSettings->beginGroup(CFG_PANEL_GROUP);
-    mHeight = mSettings->value(CFG_KEY_HEIGHT, mHeightDefault).toInt();
+    mSize = mSettings->value(CFG_KEY_HEIGHT, mSizeDefault).toInt();
     mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
-    mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
+    mLength = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
+    useThemeSize = mSettings->value(CFG_KEY_THEMESIZE, true).toBool();
     mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, RazorPanel::AlignmentCenter).toInt());
     mSettings->endGroup();
 
-    ui->spinBox_height->setValue(mHeight);
-    ui->spinBox_width->setMaximum(mWidthInPercents ? 100 : mWidthMax);
-    ui->spinBox_width->setValue(mWidth);
+    ui->spinBox_size->setValue(mSize);
+    ui->spinBox_length->setMaximum(mWidthInPercents ? 100 : mLengthMax);
+    ui->spinBox_length->setValue(mLength);
     ui->comboBox_widthType->setCurrentIndex(mWidthInPercents ? 0 : 1);
     ui->comboBox_alignment->setCurrentIndex(mAlignment + 1);
-    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
+    ui->checkBox_useTheme->setChecked(useThemeSize);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, useThemeSize);
 }
 
 ConfigPanelDialog::~ConfigPanelDialog()
@@ -93,24 +97,25 @@ void ConfigPanelDialog::closeEvent(QCloseEvent *event)
 {
     Q_UNUSED(event);
     mSettings->beginGroup(CFG_PANEL_GROUP);
-    mSettings->setValue(CFG_KEY_WIDTH, mWidth);
+    mSettings->setValue(CFG_KEY_WIDTH, mLength);
     mSettings->setValue(CFG_KEY_PERCENT, mWidthInPercents);
-    mSettings->setValue(CFG_KEY_HEIGHT, mHeight);
+    mSettings->setValue(CFG_KEY_HEIGHT, mSize);
     mSettings->setValue(CFG_KEY_ALIGNMENT, mAlignment);
+    mSettings->setValue(CFG_KEY_THEMESIZE, useThemeSize);
     mSettings->endGroup();
     mSettings->sync();
 }
 
 void ConfigPanelDialog::spinBoxWidthValueChanged(int q)
 {
-    mWidth=q;
+    mLength=q;
     // if panel width not max, user can plased it on left/rigth/center
-    if ((mWidthInPercents && mWidth < 100) || (!mWidthInPercents && mWidth < mWidthMax))
+    if ((mWidthInPercents && mLength < 100) || (!mWidthInPercents && mLength < mLengthMax))
         ui->comboBox_alignment->setEnabled(true);
     else
        ui->comboBox_alignment->setEnabled(false);
 
-    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, useThemeSize);
 }
 
 void ConfigPanelDialog::comboBoxWidthTypeIndexChanged(int q)
@@ -122,23 +127,43 @@ void ConfigPanelDialog::comboBoxWidthTypeIndexChanged(int q)
 
     int width;
     if (mWidthInPercents)  // %
-        width = mWidth * 100 / mWidthMax;
+        width = mLength * 100 / mLengthMax;
     else                // px
-        width = (mWidth * mWidthMax) / 100;
+        width = (mLength * mLengthMax) / 100;
 
-    ui->spinBox_width->setMaximum(mWidthInPercents ? 100 : mWidthMax);
-    ui->spinBox_width->setValue(width);
-    mWidth = width;
+    ui->spinBox_length->setMaximum(mWidthInPercents ? 100 : mLengthMax);
+    ui->spinBox_length->setValue(width);
+    mLength = width;
 }
 
 void ConfigPanelDialog::comboBoxAlignmentIndexChanged(int q)
 {
     mAlignment = RazorPanel::Alignment(q - 1);
-    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, useThemeSize);
 }
 
 void ConfigPanelDialog::spinBoxHeightValueChanged(int q)
 {
-    mHeight=q;
-    emit configChanged(mHeight, mWidth, mWidthInPercents, mAlignment);
+    mSize=q;
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, useThemeSize);
+}
+
+void ConfigPanelDialog::checkBoxUseThemeSizeChanged(bool state)
+{
+    useThemeSize = state;
+
+    if (useThemeSize)
+    {
+        ui->label_size->setEnabled(false);
+        ui->spinBox_size->setEnabled(false);
+        ui->label_px->setEnabled(false);
+    }
+    else
+    {
+        ui->label_size->setEnabled(true);
+        ui->spinBox_size->setEnabled(true);
+        ui->label_px->setEnabled(true);
+    }
+
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, useThemeSize);
 }

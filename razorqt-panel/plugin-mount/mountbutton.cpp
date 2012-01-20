@@ -145,7 +145,9 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
     mPopupHideDelay(5000)
 {
     setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
+
     setToolTip(tr("Removable media/devices manager"));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     mPopup = new Popup(&mManager, this);
 

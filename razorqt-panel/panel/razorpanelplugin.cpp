@@ -71,9 +71,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
 {
     Q_Q(RazorPanelPlugin);
 
-    q->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    q->setMinimumSize(1, 1);
-    qDebug() << q->minimumSize();
+    q->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
 

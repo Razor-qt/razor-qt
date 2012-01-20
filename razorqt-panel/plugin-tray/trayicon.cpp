@@ -76,7 +76,7 @@ TrayIcon::TrayIcon(Window iconId, QWidget* parent):
     mDamage(0)
 {
     setObjectName("TrayIcon");
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     mValid = init();
 }
 

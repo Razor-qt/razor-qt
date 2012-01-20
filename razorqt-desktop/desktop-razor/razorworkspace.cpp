@@ -57,7 +57,8 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
       m_wheelDesktopSwitch(false),
       m_screen(screen),
       m_desktop(desktop),
-      m_mode(ModeNormal)
+      m_mode(ModeNormal),
+      m_menu(0)
 {
     qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
@@ -265,37 +266,48 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         return;
     }
     
-    // "context" menu
-    if (_ev->button() == Qt::RightButton)
+    if (m_xdgMenu.isOutDated())
     {
-        QMenu * context = 0;
-        if (m_mode == ModeNormal)
-        {
-            // TODO/FIXME: cache it?
-            XdgMenu xdgMenu;
-            xdgMenu.setEnvironments("X-RAZOR");
-            if (xdgMenu.read(m_menuFile))
-            {
-                context = new XdgMenuWidget(xdgMenu, "Context Menu", this);
-            }
-            else
-            {
-                QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
-                context = new QMenu("Context Menu", this);
-            }
+        m_xdgMenu.setEnvironments("X-RAZOR");
 
-            context->addSeparator();
-            context->addAction(m_actArrangeWidgets);
-            context->addAction(m_actSetbackground);
-            context->addAction(m_actAbout);
-            context->addSeparator();
-            context->addActions(m_power->availableActions());
-            context->addSeparator();
-            context->addActions(m_screenSaver->availableActions());
+        bool res = m_xdgMenu.read(m_menuFile);
+        if (res)
+        {
+            m_menu = new XdgMenuWidget(m_xdgMenu, "", this);
+            m_menu->setObjectName("TopLevelMainMenu");
         }
         else
         {
-            context = new QMenu("Context Menu");
+            QMessageBox::warning(this, "Parse error", m_xdgMenu.errorString());
+            return;
+        }
+
+        m_menu->addSeparator();
+        m_menu->addAction(m_actArrangeWidgets);
+        m_menu->addAction(m_actSetbackground);
+        m_menu->addAction(m_actAbout);
+        m_menu->addSeparator();
+        m_menu->addActions(m_power->availableActions());
+        m_menu->addSeparator();
+        m_menu->addActions(m_screenSaver->availableActions());
+#ifdef DEBUG
+        m_menu->addAction("Exit (debug only)", this, SLOT(close()));
+#endif
+    }
+
+    if (!m_menu)
+        return;
+    
+    // "context" menu
+    if (_ev->button() == Qt::RightButton)
+    {
+        if (m_mode == ModeNormal)
+        {
+            m_menu->exec(QCursor::pos());
+        }
+        else
+        {
+            QMenu * context = new QMenu("Context Menu", this);
             context->addAction(m_actArrangeWidgets);
             context->addAction(m_actAddNewPlugin);
             ArrangeItem * curr = dynamic_cast<ArrangeItem*>(m_scene->itemAt(_ev->posF()));
@@ -306,14 +318,9 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
                 context->addAction(m_actConfigurePlugin);
                 m_actConfigurePlugin->setData(_ev->posF());
             }
+            context->exec(QCursor::pos());
+            context->deleteLater();
         }
-
-#ifdef DEBUG
-        context->addAction("Exit (debug only)", this, SLOT(close()));
-#endif
-
-        context->exec(QCursor::pos());
-        delete context;
     }
 
     QGraphicsView::mouseReleaseEvent(_ev);

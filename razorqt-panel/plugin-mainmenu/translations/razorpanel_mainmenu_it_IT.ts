@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<TS version="2.0" language="it_IT">
 <context>
     <name>RazorMainMenu</name>
     <message>
         <location filename="../razormainmenu.cpp" line="178"/>
         <source>Leave</source>
-        <translation>Verlassen</translation>
+        <translation>Esci</translation>
     </message>
 </context>
 <context>
@@ -14,53 +14,53 @@
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="14"/>
         <source>Razor Main Menu settings</source>
-        <translation>Razor Hauptmenü Einstellungen</translation>
+        <translation>Impostazioni Menu Principale</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="20"/>
         <source>General</source>
-        <translation>Allgemein</translation>
+        <translation>Generali</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="35"/>
         <source>Show text</source>
-        <translation>Zeige Text</translation>
+        <translation>Mostra testo</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="45"/>
         <source>Button text</source>
-        <translation>Schaltflächen Text</translation>
+        <translation>Testo del pulsante</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="65"/>
         <location filename="../razormainmenuconfiguration.ui" line="71"/>
         <source>Menu file</source>
-        <translation>Menü Datei</translation>
+        <translation>File del menu</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="85"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation>Scegli...</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="95"/>
         <source>Keyboard Shortcut</source>
-        <translation>Tastenkürzel</translation>
+        <translation>Scorciatoie da tastiera</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.ui" line="101"/>
         <source>Click the button to record shortcut:</source>
-        <translation>Klicke um Tastenkürzel zu ändern:</translation>
+        <translation>Clicca sul bottone per registrare una scorciatoia:</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Choose menu file</source>
-        <translation>Wähle Menü Datei</translation>
+        <translation>Scegli file di menu</translation>
     </message>
     <message>
         <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Menu files (*.menu)</source>
-        <translation>Menü Datei (*.menu)</translation>
+        <translation>Files di menu (*.menu)</translation>
     </message>
 </context>
 </TS>

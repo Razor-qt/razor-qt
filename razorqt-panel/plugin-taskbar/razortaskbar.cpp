@@ -68,7 +68,7 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
     if (!mLayout)
         return;
 
-    QSizePolicy sp(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     sp.setHorizontalStretch(1);
     sp.setVerticalStretch(1);
     setSizePolicy(sp);

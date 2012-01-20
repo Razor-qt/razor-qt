@@ -9,6 +9,10 @@ Name=Razor Desktop Configurator
 Comment=Configure Razor-Qt desktop module
 GenericName=Razor Desktop Configurator
 
+Name[it]=Impostazioni Desktop Razor
+Comment[it]=Configura i moduli del desktop Razor
+GenericName[it]=Impostazioni Desktop Razor
+
 Name[pl]=Ustawienia pulpitu Razor-Qt
 Comment[pl]=Konfiguracja pulpitów Razor-Qt
 GenericName[pl]=Ustawienia pulpitu Razor-Qt

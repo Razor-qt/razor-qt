@@ -72,6 +72,7 @@ private:
     QString timeFormat;
     QString dateFormat;
     bool dateOnNewLine;
+    bool showDate;
 
 private slots:
     void confWindowDestroyed();

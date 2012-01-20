@@ -63,11 +63,13 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     clockFormat = "hh:mm";
 
     gui = new ClockLabel(this);
-    gui->setAlignment(Qt::AlignCenter);    
-    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    gui->setAlignment(Qt::AlignCenter);
+    this->layout()->setAlignment(Qt::AlignCenter);
+    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     gui->setSizePolicy(sizePolicy);
+    this->setSizePolicy(sizePolicy);
     addWidget(gui);
 
     connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
@@ -109,7 +111,8 @@ void RazorClock::settigsChanged()
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
     dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
-    if (settings().value("showDate", false).toBool())
+    showDate = settings().value("showDate", false).toBool();
+    if (showDate)
     {
         if (dateOnNewLine)
         {
@@ -200,21 +203,25 @@ void RazorClock::updateMinWidth()
     //qDebug() << "D:" << metrics.boundingRect(dt.toString(dateFormat)).width();
 
     int width;
-    if (dateOnNewLine)
+    if (dateOnNewLine && showDate)
         width = qMax(metrics.boundingRect(dt.toString(timeFormat)).width(),
                      metrics.boundingRect(dt.toString(dateFormat)).width()
                      );
     else
         width = metrics.boundingRect(dt.toString(clockFormat)).width();
 
-    //qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
-    gui->setMinimumWidth(width);
+    qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
+//    gui->setMinimumWidth(width + 5);
+    this->setMinimumWidth(width + 5);
+
+//    gui->setMaximumWidth(width + 5);
+//    this->setMaximumWidth(width + 5);
 }
 
 
 void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 {
-/*    if (!calendarDialog)
+    if (!calendarDialog)
     {
         calendarDialog = new QDialog(this);
         //calendarDialog->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -224,21 +231,38 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 
         QCalendarWidget* cal = new QCalendarWidget(calendarDialog);
         calendarDialog->layout()->addWidget(cal);
+        calendarDialog->adjustSize();
 
-        QPoint p;
+        int x, y;
+        RazorPanel::Position pos = panel()->position();
+        QRect panelRect = panel()->geometry();
+        int calHeight = calendarDialog->height();
+        int calWidth = calendarDialog->width();
 
-        switch (panel()->position())
+        if (pos == RazorPanel::PositionBottom || pos == RazorPanel::PositionTop)
         {
-            case RazorPanel::PositionTop:
-                p.setX(panel()->mapToGlobal(this->geometry().topLeft()).x());
-                p.setY(panel()->geometry().bottom());
-                break;
-
-        default:
-                break;
+            int rightMax = panelRect.topRight().x() - calWidth + 1;
+            x = panel()->mapToGlobal(this->geometry().topLeft()).x();
+            if (x > rightMax)
+                x = rightMax;
+            if (pos == RazorPanel::PositionBottom)
+                y = panelRect.top() - calHeight;
+            else
+                y = panelRect.bottom() + 1;
+        }
+        else // PositionRight or PositionLeft
+        {
+            int bottomMax = panelRect.bottomRight().y() - calHeight + 1;
+            y = panel()->mapToGlobal(this->geometry().topRight()).y();
+            if (y > bottomMax)
+                y = bottomMax;
+            if (pos == RazorPanel::PositionRight)
+                x = panelRect.left() - calWidth;
+            else
+                x = panelRect.right() + 1;
         }
 
-        calendarDialog->move(p);
+        calendarDialog->move(QPoint(x, y));
         calendarDialog->show();
     }
     else
@@ -246,7 +270,6 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
         delete calendarDialog;
         calendarDialog = 0;
     }
-*/
 }
 
 void RazorClock::showConfigureDialog()
