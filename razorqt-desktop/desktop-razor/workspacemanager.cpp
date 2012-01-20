@@ -134,7 +134,7 @@ void RazorWorkSpaceManager::setup()
             }
             else {
                 // New workspace
-                Q_ASSERT(desktop == screenWorkspaces->count());
+                Q_ASSERT(desktop == m_workspaces.count());
                 ws = new RazorWorkSpace(m_config, screen, desktop);
                 screenWorkspaces->append(ws);
             }
