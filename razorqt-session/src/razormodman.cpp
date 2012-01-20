@@ -38,7 +38,6 @@
 
 #define MAX_CRASHES_PER_APP 5
 
-
 /**
  * @brief the constructor, needs a valid modules.conf
  */
@@ -96,7 +95,18 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
         connect(wmProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
                 this, SLOT(logout()));
     }
+
+    // Wait until the WM loads
+    int waitCnt = 300;
+    while (!xfitMan().isWindowManagerActive() && waitCnt)
+    {
+        qDebug() << "******************** Wait until the WM loads" << waitCnt;
+        waitCnt--;
+        usleep(100000);
+    }
+
     // window manager
+
 
     // modules
     s.beginGroup("modules");
