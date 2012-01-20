@@ -158,6 +158,7 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
 
     setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
     setToolTip(tr("Removable media/devices manager"));
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     initialScanDevices();
 

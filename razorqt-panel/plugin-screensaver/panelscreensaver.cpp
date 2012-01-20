@@ -47,6 +47,7 @@ PanelScreenSaver::PanelScreenSaver(const RazorPanelPluginStartInfo* startInfo, Q
     {
         QToolButton * button = new QToolButton(this);
         button->setDefaultAction(i);
+        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         addWidget(button);
     }
     
