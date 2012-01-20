@@ -54,16 +54,10 @@ public:
     
     QString info();
 
-protected:
-    virtual void x11EventFilter(XEvent* event);
-
 private:
-    QString m_configId;
-    QList< QList<RazorWorkSpace*> > m_workspaces;
-    int m_desktopCount;
+    QList<RazorWorkSpace*> m_workspaces;
 
     RazorWorkSpaceManager::BackgroundType strToBackgroundType(const QString& str, BackgroundType defaultValue) const;
-    void setup();
 };
 
 struct WorkspaceConfig

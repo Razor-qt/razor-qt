@@ -33,13 +33,12 @@
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgicon.h>
 #include "desktopplugin.h"
-#include "razordesktopapplication.h"
 
 
 
 int main (int argc, char* argv[])
 {
-    RazorDesktopApplication app(argc,argv);
+    QApplication app(argc,argv);
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
@@ -70,8 +69,6 @@ int main (int argc, char* argv[])
         qDebug() << "    * Plugin loaded.";
         qDebug() << plugin->info();
     }
-
-    app.setDesktopPlugin(plugin);
 
     return app.exec();
 }

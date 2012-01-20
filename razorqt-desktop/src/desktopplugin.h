@@ -29,7 +29,6 @@
 #define DESKTOPPLUGIN_H
 
 #include <razorqt/razorsettings.h>
-#include <QtGui/qwindowdefs.h>  // For XEvent
 
 
 class DesktopPlugin
@@ -46,15 +45,6 @@ public:
     };
 
     virtual QString info() { return QObject::tr("No info available"); };
-
-    /*! If you reimplement this function, you get direct access to all X events that the
-        are received from the X server. The events are passed in the event parameter.
-
-        The default implementation do nothing.
-    */
-    virtual void x11EventFilter(XEvent*)
-    {
-    }
 
     static IconLaunchMode launchModeFromString(const QString & txt)
     {
