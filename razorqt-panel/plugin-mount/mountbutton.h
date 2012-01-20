@@ -33,7 +33,7 @@
 #include <QtDBus/QtDBus>
 #include <QtGui/QMenu>
 
-#include <razormount/udisksinfo.h>
+#include <razormount/razormount.h>
 
 #include "menudiskitem.h"
 #include "../panel/razorpanel.h"
@@ -44,12 +44,7 @@ class Popup: public QWidget
 {
     Q_OBJECT
 public:
-    explicit Popup(QWidget* parent = 0);
-
-    MenuDiskItem *addItem(UdisksInfo *info);
-    void deleteItem(UdisksInfo *info);
-
-    int count() const { return m_items.count(); }
+    explicit Popup(RazorMountManager *manager, QWidget* parent = 0);
 
     void open(QPoint pos, Qt::Corner anchor=Qt::TopLeftCorner);
 
@@ -61,10 +56,12 @@ protected:
     void showEvent(QShowEvent *event);
     void hideEvent(QHideEvent *event);
 
+private slots:
+    MenuDiskItem *addItem(RazorMountDevice *device);
+
 private:
     void realign();
-
-    QHash<UdisksInfo*,MenuDiskItem*> m_items;
+    RazorMountManager *mManager;
     QPoint mPos;
     Qt::Corner mAnchor;
 };
@@ -86,28 +83,23 @@ public:
     DevAction devAction() const { return mDevAction; }
     void setDevAction(DevAction devAction) { mDevAction = devAction; }
 
-public slots:
-    void showError(const QString &text);
-
 private slots:
-    void onDiskAdded(UdisksInfo *info);
-    void onDiskRemoved(UdisksInfo *info);
+    void onDeviceAdded(RazorMountDevice *device);
+    void onDeviceRemoved(RazorMountDevice *device);
 
     void showHidePopup();
     void showPopup();
+    void hidePopup();
     void setDown(bool down);
 
 private:
-    void initialScanDevices();
-    void addMenuItem(UdisksInfo *info);
-
     void showMessage(const QString &text);
 
-    Popup mPopup;
+    Popup *mPopup;
 
-    UdisksManager *m_manager;
+    RazorMountManager mManager;
 
-    RazorPanel *m_panel;
+    RazorPanel *mPanel;
     DevAction mDevAction;
     QTimer  mPopupHideTimer;
     int mPopupHideDelay;

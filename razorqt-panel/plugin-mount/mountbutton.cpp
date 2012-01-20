@@ -35,13 +35,12 @@
 #include <QtGui/QDesktopWidget>
 
 #include <qtxdg/xdgicon.h>
-#include <razormount/udisksmanager.h>
-
 #include "mountbutton.h"
+#include <razormount/razormount.h>
 
-
-Popup::Popup(QWidget* parent):
+Popup::Popup(RazorMountManager *manager, QWidget* parent):
     QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
+    mManager(manager),
     mPos(0,0),
     mAnchor(Qt::TopLeftCorner)
 {
@@ -51,30 +50,26 @@ Popup::Popup(QWidget* parent):
     setLayout(new QGridLayout(this));
     //layout()->setMargin(0);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
+
+    setAttribute(Qt::WA_AlwaysShowToolTips);
+
+    connect(mManager, SIGNAL(deviceAdded(RazorMountDevice*)),
+                this, SLOT(addItem(RazorMountDevice*)));
+
+    foreach(RazorMountDevice *device, *(mManager->devices()))
+    {
+        addItem(device);
+    }
 }
 
 
-MenuDiskItem *Popup::addItem(UdisksInfo *info)
+MenuDiskItem *Popup::addItem(RazorMountDevice *device)
 {
-    MenuDiskItem  *item   = new MenuDiskItem(info, this);
+    MenuDiskItem  *item   = new MenuDiskItem(device, this);
     layout()->addWidget(item);
-    m_items[info] = item;
     return item;
 }
 
-
-void Popup::deleteItem(UdisksInfo *info)
-{
-    MenuDiskItem* item = m_items.take(info);
-    if (item)
-    {
-        layout()->removeWidget(item);
-        item->deleteLater();
-    }
-
-    if (!count())
-        hide();
-}
 
 void Popup::resizeEvent(QResizeEvent *event)
 {
@@ -144,33 +139,29 @@ void Popup::open(QPoint pos, Qt::Corner anchor)
 
 MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
     QToolButton(parent),
-    mPopup(this),
-    m_panel(panel),
+    mPopup(0),
+    mPanel(panel),
     mDevAction(DevActionInfo),
     mPopupHideDelay(5000)
 {
-    if (!QDBusConnection::systemBus().isConnected())
-    {
-        qWarning() << "Can't connect to dbus daemon. Some functions will be omited";
-    }
-    
-    m_manager = new UdisksManager(this);
-
     setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb"));
     setToolTip(tr("Removable media/devices manager"));
 
-    initialScanDevices();
+    mPopup = new Popup(&mManager, this);
 
-    connect(&mPopup, SIGNAL(visibilityChanged(bool)), this, SLOT(setDown(bool)));
+    connect(mPopup, SIGNAL(visibilityChanged(bool)), this, SLOT(setDown(bool)));
 
-    connect(m_panel, SIGNAL(positionChanged()), &mPopup, SLOT(hide()));
+    connect(mPanel, SIGNAL(positionChanged()), mPopup, SLOT(hide()));
 
     connect(this, SIGNAL(clicked()), this, SLOT(showHidePopup()));
 
-    connect(m_manager, SIGNAL(addDevice(UdisksInfo*)),
-            this, SLOT(onDiskAdded(UdisksInfo*)));
-    connect(m_manager, SIGNAL(removeDevice(UdisksInfo*)),
-            this, SLOT(onDiskRemoved(UdisksInfo*)));
+    connect(&mManager, SIGNAL(deviceAdded(RazorMountDevice*)),
+            this, SLOT(onDeviceAdded(RazorMountDevice*)));
+
+    connect(&mManager, SIGNAL(deviceRemoved(RazorMountDevice*)),
+            this, SLOT(onDeviceRemoved(RazorMountDevice*)));
+
+    mManager.update();
 }
 
 
@@ -179,20 +170,6 @@ MountButton::~MountButton()
 }
 
 
-void MountButton::initialScanDevices()
-{
-    foreach (UdisksInfo *i, m_manager->devices())
-    {
-        addMenuItem(i);
-    }
-}
-
-
-void MountButton::addMenuItem(UdisksInfo *info)
-{
-    mPopup.addItem(info);
-}
-
 
 void MountButton::showMessage(const QString &text)
 {
@@ -200,41 +177,40 @@ void MountButton::showMessage(const QString &text)
 }
 
 
-void MountButton::showError(const QString &text)
+void MountButton::onDeviceAdded(RazorMountDevice *device)
 {
-    qWarning() << "MountButton::showError" << text;
-    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr><b>Error:</b><hr>%1</nobr>").arg(text), this);
-}
-
-
-void MountButton::onDiskAdded(UdisksInfo *info)
-{
-    MenuDiskItem *item = mPopup.addItem(info);
-    connect(item, SIGNAL(error(QString)), this, SLOT(showError(QString)));
-
     switch (mDevAction)
     {
     case DevActionInfo:
-        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is connected.").arg(info->displayName()));
+        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is connected.").arg(device->label()));
         break;
 
     case DevActionMenu:
         showPopup();
-        mPopupHideTimer.singleShot(mPopupHideDelay, &mPopup, SLOT(hide()));
+        mPopupHideTimer.singleShot(mPopupHideDelay, mPopup, SLOT(hide()));
         break;
 
-    default:
+    case DevActionNothing:
         break;
     }
 }
 
-
-void MountButton::onDiskRemoved(UdisksInfo *info)
+void MountButton::onDeviceRemoved(RazorMountDevice *device)
 {
-    if (mDevAction == DevActionInfo)
-        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(info->displayName()));
+    switch (mDevAction)
+    {
+    case DevActionInfo:
+        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(device->label()));
+        break;
 
-    mPopup.deleteItem(info);
+    case DevActionMenu:
+        if (mManager.devices()->isEmpty())
+            hidePopup();
+        break;
+
+    case DevActionNothing:
+        break;
+    }
 }
 
 void MountButton::setDown(bool down)
@@ -243,132 +219,80 @@ void MountButton::setDown(bool down)
 }
 
 
-//void MountButton::onMediaMount(UdisksInfo *item)
-//{
-//    bool    old_state   = item->isMounted();
-//    QString status_text;
-//    if (!item->isMounted())
-//    {
-//        item->mount(status_text);
-//    }
-//
-//    QString mount_point = item->getMountPoint();
-//
-//    if (!item->isMounted())
-//    {
-        // Error
-//        showError(tr("Can't mount device: %1<br>\n%2").arg(device).arg(status_text));
-//        return;
-//    }
-//
-//    if (item->isMounted() != old_state)
-//    {
-//        showMessage(tr("Device '%1' is mounted to %2").arg(device).arg(mount_point));
-//    }
-//
-    // Run manager
-    // Instead of spaces, the string contains "\040" I plan to deal with it later,
-    // when I will rewrite libmount. While using this dirty hack.
-//    mount_point = mount_point.replace("\\040", " ", Qt::CaseSensitive);
-//    QDesktopServices::openUrl(QUrl::fromLocalFile(mount_point));
-//    mPopup.hide();
-//}
-//
-//void MountButton::onMediaEject(const QString &device)
-//{
-    //qDebug() << "UnMount media: " << qPrintable(device);
-//
-//    StorageItem *item = _sm.getDevice(device);
-//    if (item == NULL)
-//    {
-//        return;
-//    }
-//
-//    QString status_text;
-//    if (item->isMounted())
-//    {
-//        item->unmount(status_text);
-//    }
-//
-//    if (item->isMounted())
-//    {
-        // Error
-//        showError(tr("Can't unmount device: %1<br>\n%2").arg(device).arg(status_text));
-//        return;
-//    }
-//
-//    showMessage(tr("Device '%1' is unmounted").arg(device));
-//    mPopup.hide();
-//}
-
-
 void MountButton::showHidePopup()
 {
-    if (mPopup.isVisible())
-        mPopup.hide();
+    if (mPopup->isVisible())
+        mPopup->hide();
     else
     {
         mPopupHideTimer.stop();
 
-        if (mPopup.count())
-            showPopup();
-        else
+        if (mManager.devices()->isEmpty())
             showMessage(tr("No devices Available."));
+        else
+            showPopup();
     }
 }
 
 
 void MountButton::showPopup()
 {
-    if (mPopup.isVisible())
+
+    if (mPopup->isVisible())
         return;
 
-    if (!mPopup.count())
+    if (mManager.devices()->isEmpty())
         return;
 
-    mPopup.updateGeometry();
+    mPopup->updateGeometry();
 
     QPoint p;
     if (isLeftToRight())
     {
-        switch (m_panel->position())
+        switch (mPanel->position())
         {
         case RazorPanel::PositionTop:
-            mPopup.open(mapToGlobal(geometry().bottomLeft()), Qt::TopLeftCorner);
+            mPopup->open(mapToGlobal(geometry().bottomLeft()), Qt::TopLeftCorner);
             break;
 
         case RazorPanel::PositionBottom:
-            mPopup.open(mapToGlobal(geometry().topLeft()), Qt::BottomLeftCorner);
+            mPopup->open(mapToGlobal(geometry().topLeft()), Qt::BottomLeftCorner);
             break;
 
         case RazorPanel::PositionLeft:
-            mPopup.open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
+            mPopup->open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
             break;
 
         case RazorPanel::PositionRight:
-            mPopup.open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
+            mPopup->open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
             break;
         }
     }
     else
     {
-        switch (m_panel->position())
+        switch (mPanel->position())
         {
         case RazorPanel::PositionTop:
-            mPopup.open(mapToGlobal(geometry().bottomRight()), Qt::TopRightCorner);
+            mPopup->open(mapToGlobal(geometry().bottomRight()), Qt::TopRightCorner);
             break;
 
         case RazorPanel::PositionBottom:
-            mPopup.open(mapToGlobal(geometry().topRight()), Qt::BottomRightCorner);
+            mPopup->open(mapToGlobal(geometry().topRight()), Qt::BottomRightCorner);
             break;
 
         case RazorPanel::PositionLeft:
-            mPopup.open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
+            mPopup->open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
             break;
 
         case RazorPanel::PositionRight:
-            mPopup.open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
+            mPopup->open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
             break;
         }
     }
+}
+
+
+void MountButton::hidePopup()
+{
+    mPopup->hide();
 }
