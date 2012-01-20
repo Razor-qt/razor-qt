@@ -45,7 +45,11 @@ QToolButton {
 
 QToolButton:hover{
     margin: 1px;
-    border: 1px solid #80a8d3;
+    border: none;
+}
+
+QToolButton:pressed {
+    margin: 2px 0 0 2px;
 }
 
 /* 
@@ -58,6 +62,13 @@ QToolButton:hover{
     color: #555555;    
     border: 1px solid #B0B0B0;    
     background: rgba(0, 0, 0, 5%); 
+}
+
+RazorPanel[position="0"] #DesktopSwitch QToolButton,
+RazorPanel[position="1"] #DesktopSwitch QToolButton
+{
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 #DesktopSwitch QToolButton:on {
@@ -148,44 +159,24 @@ TrayIcon {
 /* 
  * Mount plugin
  */
-MountButton:hover {
-    margin: 0;
-    border: 2px solid transparent;
-}
-
-MountButton:pressed {
-    margin: 2px;
-    border: 2px solid transparent;
-}
+/*
+MountButton {}
 
 #RazorMountPopup {
     background-color: #d7d3cc;
     border: 1px solid #a59f94;
 }
+*/
 
 /* 
  * Screensaver
  */
-#PanelScreenSaver > QToolButton:hover {
-    margin: 0;
-    border: 2px solid transparent;
-}
-
-#PanelScreenSaver > QToolButton:pressed {
-    margin: 2px;
-    border: 2px solid transparent;
-}
+/*
+#PanelScreenSaver {}
 
 /*
  * ShowDesktop
  */
-#ShowDesktop > QToolButton:hover {
-    margin: 0px;
-    border: 2px solid transparent;
-}
-
-#ShowDesktop > QToolButton:pressed {
-    margin: 2px;
-    border: 2px solid transparent;
-}
+/*
+#ShowDesktop {}
 
