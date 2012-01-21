@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>471</width>
-    <height>420</height>
+    <width>522</width>
+    <height>513</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,15 +131,62 @@
             <property name="title">
              <string>Virtual Desktops</string>
             </property>
-            <layout class="QGridLayout" name="gridLayout_8">
-             <item row="1" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QCheckBox" name="useDifferentWallpapersCheckBox">
+               <property name="text">
+                <string>Use different widgets and wallpapers for each virtual desktop</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <italic>true</italic>
+                </font>
+               </property>
+               <property name="text">
+                <string>Please note that this setting is not supported by all window managers!</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::PlainText</enum>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>5</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
               <widget class="QCheckBox" name="wheelDesktopCheckBox">
                <property name="text">
                 <string>Use mouse wheel for desktop changing</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
+             <item>
               <widget class="QLabel" name="label_5">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -147,21 +194,19 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="font">
+                <font>
+                 <italic>true</italic>
+                </font>
+               </property>
                <property name="text">
                 <string>&quot;On&quot; means that razor-desktop will switch desktops (may conflict with selected window manager). &quot;Off&quot; means that mouse wheel events are ignored by razor-desktop.</string>
                </property>
                <property name="textFormat">
-                <enum>Qt::LogText</enum>
+                <enum>Qt::PlainText</enum>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="useCommonWallpaperCheckBox">
-               <property name="text">
-                <string>Use common wallpaper and widgets for all desktops</string>
                </property>
               </widget>
              </item>
