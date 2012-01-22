@@ -405,6 +405,7 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
 
         a = deskMenu->addAction(tr("&All Desktops"));
         a->setData(-1);
+        a->setEnabled(winDesk != -1);
         connect(a, SIGNAL(triggered(bool)), this, SLOT(moveApplicationToDesktop()));
         deskMenu->addSeparator();
 
