@@ -92,11 +92,15 @@ bool QxtGlobalShortcutPrivate::unsetShortcut()
     return res;
 }
 
-void QxtGlobalShortcutPrivate::activateShortcut(quint32 nativeKey, quint32 nativeMods)
+bool QxtGlobalShortcutPrivate::activateShortcut(quint32 nativeKey, quint32 nativeMods)
 {
     QxtGlobalShortcut* shortcut = shortcuts.value(qMakePair(nativeKey, nativeMods));
     if (shortcut && shortcut->isEnabled())
+    {
         emit shortcut->activated();
+        return true;
+    }
+    return false;
 }
 
 /*!

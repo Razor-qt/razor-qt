@@ -41,6 +41,7 @@ public:
     explicit RazorShortcutButtonPrivate(RazorShortcutButton *parent);
 
     bool keyPressEvent(QKeyEvent *event);
+    bool keyReleaseEvent(QKeyEvent *event);
 
 public slots:
     void clear();
@@ -52,6 +53,7 @@ private:
 
     QKeySequence mSequence;
     QMenu mMenu;
+    int mKeysCount;
 };
 
 #endif // RAZORSHORTCUTBUTTON_P_H
