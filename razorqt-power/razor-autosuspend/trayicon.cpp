@@ -36,7 +36,7 @@ TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent),
     settings("razor-autosuspend")
 
 {
-    setIcon(QIcon(":icons/icon.svg"));
+    setIcon(QIcon(":icons/razor-autosuspend.svg"));
     makeContextMenu();
 
     connect(&powerInterface, SIGNAL(Changed()), this, SLOT(upowerPropertyChanged()));
