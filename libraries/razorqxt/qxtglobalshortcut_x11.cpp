@@ -65,7 +65,7 @@ bool QxtGlobalShortcutPrivate::eventFilter(void* message)
     if (event->type == KeyPress)
     {
         XKeyEvent* key = (XKeyEvent*) event;
-        activateShortcut(key->keycode, 
+        return activateShortcut(key->keycode,
             // Mod1Mask == Alt, Mod4Mask == Meta
             key->state & (ShiftMask | ControlMask | Mod1Mask | Mod4Mask));
     }
