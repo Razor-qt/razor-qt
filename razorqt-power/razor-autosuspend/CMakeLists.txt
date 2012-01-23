@@ -2,7 +2,7 @@ set(PROJECT razor-autosuspend)
 project($PROJECT)
 include_directories (
         ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-	${CMAKE_SOURCE_DIR}/libraries/
+    ${CMAKE_SOURCE_DIR}/libraries/
         )
 
 set ( razor-autosuspend_HDRS
@@ -35,5 +35,12 @@ QT4_WRAP_CPP(MOCS ${razor-autosuspend_MOCS})
 add_executable ( razor-autosuspend ${razor-autosuspend_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 target_link_libraries ( razor-autosuspend  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} )
 
-install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+file(GLOB DESKTOP_FILES
+    resources/*.desktop
+)
+file(GLOB ICON_FILES
+    icons/*.svg)
 
+install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+install(FILES   ${DESKTOP_FILES}   DESTINATION share/applications)
+install(FILES   ${ICON_FILES}      DESTINATION share/pixmaps)
