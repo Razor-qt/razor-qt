@@ -3,4 +3,4 @@ Type=Application
 Name=Qlipper
 TryExec=qlipper
 Exec=qlipper
-OnlyShowIn=RAZOR;
+OnlyShowIn=X-RAZOR;

@@ -3,4 +3,4 @@ Type=Application
 Name=qxkb
 TryExec=qxkb
 Exec=qxkb
-OnlyShowIn=RAZOR;
+OnlyShowIn=X-RAZOR;

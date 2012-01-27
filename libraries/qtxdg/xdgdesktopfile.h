@@ -165,13 +165,13 @@ public:
 
     /*! The desktop entry specification defines a number of fields to control the visibility of the application menu. This function
          checks whether to display a this application or not. */
-    bool isShow(const QString& environment = "RAZOR") const;
+    bool isShow(const QString& environment = "X-RAZOR") const;
 
     /*! This fuction returns true if the desktop file is applicable to the current environment.
         @par excludeHidden - if set to true (default), files with "Hidden=true" will be considered "not applicable".
                              Setting this to false is be useful when the user wants to enable/disable items and wants to see those
                              that are Hidden */
-    bool isApplicable(bool excludeHidden = true, const QString& environment = "RAZOR") const;
+    bool isApplicable(bool excludeHidden = true, const QString& environment = "X-RAZOR") const;
 
 protected:
     virtual QString prefix() const { return "Desktop Entry"; }
