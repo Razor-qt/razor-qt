@@ -43,4 +43,4 @@ file(GLOB ICON_FILES
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES   ${DESKTOP_FILES}   DESTINATION share/applications)
-install(FILES   ${ICON_FILES}      DESTINATION share/icons/hicolor/apps)
+install(FILES   ${ICON_FILES}      DESTINATION share/icons/hicolor/scalable/apps)

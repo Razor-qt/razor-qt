@@ -6,4 +6,5 @@
 /usr/share/razor/razor-session/
 /usr/share/xsessions/
 /usr/share/apps/kdm/sessions/
+/etc/xdg/autostart/*
 

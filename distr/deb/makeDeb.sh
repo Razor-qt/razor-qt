@@ -4,13 +4,13 @@ function help {
   echo "Usage: makeDeb.sh [otions] <path-to-source>"
   echo
   echo "Options"
-  echo "  -h|--help             display this message"
-  echo "  -o|--outdirt=DIR      write result to DIR"
-  echo "  -d|--dist=DIST        buld for distributive ubuntu/debian"
-  echo "  -r|--release=RELEASE  release name (sid, maveric, natty etc.)"
-  echo "  -ver=VERSION          razor version"
-  echo "  -s|--sign             sign a result files"
-  echo "  -b|--binary           build a binary package, if ommited build only only a source package"
+  echo "  -h|--help               display this message"
+  echo "  -o|--outdirt=DIR        write result to DIR"
+  echo "  -d|--dist=DIST          buld for distributive ubuntu/debian"
+  echo "  -r|--release=RELEASES   release name, you can specify several releases - \"maveric oneiric\""
+  echo "  -ver=VERSION            razor version"
+  echo "  -s|--sign               sign a result files"
+  echo "  -b|--binary             build a binary package, if ommited build only only a source package"
 }
 
 NAME='razorqt'
@@ -36,7 +36,7 @@ while [ $# -gt 0 ]; do
       ;;
 
     -r|--release)
-        RELEASE=$2
+        RELEASES=$2
         shift 2
       ;;
 
@@ -82,7 +82,7 @@ if [ -z "${DIST}" ]; then
 fi
 
 
-if [ -z "${RELEASE}" ]; then
+if [ -z "${RELEASES}" ]; then
   echo "missing release option"
   help
   exit 2
@@ -110,7 +110,7 @@ echo " Name: ${NAME}"
 echo " Ver:  ${VER}"
 [ "${TYPE}" = "-b" ] && echo " Type: binary"
 [ "${TYPE}" = "-S" ] && echo " Type: source"
-echo " Release: ${DIST}-${RELEASE}"
+echo " Release: ${DIST}:: ${RELEASES}"
 echo " Src dir: ${SRC_DIR}"
 echo " Out dir: ${OUT_DIR}"
 echo "*******************************"
@@ -125,45 +125,54 @@ cp -r ${SRC_DIR} ${DIR}
 rm -rf ${DIR}/.git \
        ${DIR}/build
 
-cd ${DIR}/.. && tar czf ${NAME}_${VER}.orig.tar.gz ${NAME}-${VER}
-cp --force -R ${DIR}/distr/deb/$DIST/debian ${DIR}/
+cd ${DIR}/.. && tar  -czf ${NAME}_${VER}.orig.tar.gz ${NAME}-${VER}
 
-DATE=`date -R`
-for f in `find ${DIR}/debian -type f `; do
-    sed -i \
-        -e"s/%NAME%/${NAME}/g"  \
-        -e"s/%VERSION%/${VER}/g" \
-        -e"s/%DIST%/${RELEASE}/g" \
-        -e"s/%DATE%/${DATE}/g" \
-        $f
-done
+for RELEASE in ${RELEASES}; do
+    rm -r ${DIR}/debian
+    cp --force -R ${DIR}/distr/deb/$DIST/debian ${DIR}/
 
-cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
-
-echo "................................."
-echo "Check files:"
-PKGS=`awk '/Package:/ {print $2}' ${DIR}/debian/control`
-
-for file in `find ${DIR}/debian/tmp -type f 2>/dev/null`; do
-    file=`echo $file | sed -e"s|${DIR}/debian/tmp||"`
-    #echo $file
-    pkgNames=''
-    let 'pkgCount=0'
-
-    for pkg in ${PKGS}; do
-        if [ `ls "${DIR}/debian/${pkg}$file" 2>/dev/null` ]; then
-            let 'pkgCount++'
-            pkgNames="${pkgNames}\n\t${pkg}"
-        fi
+    DATE=`date -R`
+    for f in `find ${DIR}/debian -type f `; do
+        sed -i \
+            -e"s/%NAME%/${NAME}/g"  \
+            -e"s/%VERSION%/${VER}/g" \
+            -e"s/%DIST%/${RELEASE}/g" \
+            -e"s/%DATE%/${DATE}/g" \
+            $f
     done
 
-    if [ $pkgCount -eq 0 ]; then
-        echo -e "Missing file: ${file}";
+    cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
+    RES=$?
 
-    elif [ $pkgCount -gt 1 ]; then
-        echo -e "Douplicates:  ${file}$pkgNames"
+
+    if [ $RES -ne 0 ]; then
+        exit $RES
     fi
 
+    echo "................................."
+    echo "Check files:"
+    PKGS=`awk '/Package:/ {print $2}' ${DIR}/debian/control`
+
+    for file in `find ${DIR}/debian/tmp -type f 2>/dev/null`; do
+        file=`echo $file | sed -e"s|${DIR}/debian/tmp||"`
+        #echo $file
+        pkgNames=''
+        let 'pkgCount=0'
+
+        for pkg in ${PKGS}; do
+            if [ `ls "${DIR}/debian/${pkg}$file" 2>/dev/null` ]; then
+                let 'pkgCount++'
+                pkgNames="${pkgNames}\n\t${pkg}"
+            fi
+        done
+
+        if [ $pkgCount -eq 0 ]; then
+            echo -e "Missing file: ${file}";
+
+        elif [ $pkgCount -gt 1 ]; then
+            echo -e "Douplicates:  ${file}$pkgNames"
+        fi
+    done
 done
 
 
