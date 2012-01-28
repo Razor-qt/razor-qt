@@ -14,10 +14,10 @@ Copyright:
 
     Copyright (C) 2010-2011 Razor team 
 
-License: GPL-2 and LGPL-3+
+License: GPL-2 and LGPL-2.1+
  On Debian systems the full text of the GNU Library General Public License can
  be found in the '/usr/share/common-licenses/GPL-2' and
- '/usr/share/common-licenses/LGPL-3' files.
+ '/usr/share/common-licenses/LGPL-2.1' files.
 
 The Debian packaging is:
 
