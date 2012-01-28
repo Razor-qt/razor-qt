@@ -29,22 +29,22 @@
         <translation>Горячая клавиша:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="68"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="70"/>
         <source>Top edge of screen</source>
         <translation>Наверху экрана</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="69"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="71"/>
         <source>Center of screen</source>
         <translation>В центре экрана</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="75"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="77"/>
         <source>Monitor where the mouse</source>
         <translation>Монитор на котором мышь</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="80"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="82"/>
         <source>Always on %1 monitor</source>
         <translation>Всегда на %1 мониторе</translation>
     </message>
@@ -57,12 +57,12 @@
         <translation>Запускалка програм</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="86"/>
+        <location filename="../dialog.cpp" line="91"/>
         <source>Configure razor-runner</source>
         <translation>Настроить razor-runner</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="267"/>
+        <location filename="../dialog.cpp" line="291"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>Нажмите &quot;%1&quot; чтобы увидеть диалог.</translation>
     </message>
@@ -70,12 +70,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../providers.cpp" line="216"/>
+        <location filename="../providers.cpp" line="221"/>
         <source>History</source>
         <translation>Из истории</translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="302"/>
+        <location filename="../providers.cpp" line="307"/>
         <source>Mathematics</source>
         <translation>Математика</translation>
     </message>

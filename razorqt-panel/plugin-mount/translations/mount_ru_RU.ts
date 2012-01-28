@@ -9,7 +9,7 @@
         <translation>Сделать носитель доступным для приложений.</translation>
     </message>
     <message>
-        <location filename="../menudiskitem.ui" line="57"/>
+        <location filename="../menudiskitem.ui" line="54"/>
         <source>Click to eject this disc.</source>
         <translation>Извлечь носитель.</translation>
     </message>
@@ -17,58 +17,22 @@
 <context>
     <name>MountButton</name>
     <message>
-        <location filename="../mountbutton.cpp" line="63"/>
+        <location filename="../mountbutton.cpp" line="148"/>
         <source>Removable media/devices manager</source>
         <translation>Менеджер сменных носителей</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="182"/>
+        <location filename="../mountbutton.cpp" line="186"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
         <translation>Устройство  &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; подключено.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="199"/>
+        <location filename="../mountbutton.cpp" line="204"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Устройство  &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; отключено.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="236"/>
-        <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is mounted to %2</source>
-        <translation>Устройство &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; примонтированно в %2</translation>
-    </message>
-    <message>
-        <location filename="../mountbutton.cpp" line="250"/>
-        <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is unmounted&lt;br&gt;
-Now you can eject USB Flash or CD/DVD Disk.</source>
-        <translation>Устройство &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; отмонтированно&lt;br&gt;
-Вы можете вытащить USB FLash или CD/DVD диск.</translation>
-    </message>
-    <message>
-        <location filename="../mountbutton.cpp" line="278"/>
-        <source>Can&apos;t mount device: %1&lt;br&gt;
-%2</source>
-        <translation>Не получилось примонтировать: %1&lt;br&gt;
-%2</translation>
-    </message>
-    <message>
-        <location filename="../mountbutton.cpp" line="313"/>
-        <source>Can&apos;t unmount device: %1&lt;br&gt;
-%2</source>
-        <translation>Не получилось отмонтировать: %1&lt;br&gt;
-%2</translation>
-    </message>
-    <message>
-        <location filename="../mountbutton.cpp" line="284"/>
-        <source>Device &apos;%1&apos; is mounted to %2</source>
-        <translation>Устройство &quot;%1&quot; примонтированно в %2</translation>
-    </message>
-    <message>
-        <location filename="../mountbutton.cpp" line="317"/>
-        <source>Device &apos;%1&apos; is unmounted</source>
-        <translation>Устройство &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; отмонтированно</translation>
-    </message>
-    <message>
-        <location filename="../mountbutton.cpp" line="329"/>
+        <location filename="../mountbutton.cpp" line="232"/>
         <source>No devices Available.</source>
         <translation>Нет доступных устройств.</translation>
     </message>
@@ -91,17 +55,17 @@ Now you can eject USB Flash or CD/DVD Disk.</source>
         <translation>При подключении устройства</translation>
     </message>
     <message>
-        <location filename="../razormountconfiguration.cpp" line="43"/>
+        <location filename="../razormountconfiguration.cpp" line="44"/>
         <source>Popup menu</source>
         <translation>Открывать меню</translation>
     </message>
     <message>
-        <location filename="../razormountconfiguration.cpp" line="44"/>
+        <location filename="../razormountconfiguration.cpp" line="45"/>
         <source>Show info</source>
         <translation>Показывать сообщение</translation>
     </message>
     <message>
-        <location filename="../razormountconfiguration.cpp" line="45"/>
+        <location filename="../razormountconfiguration.cpp" line="46"/>
         <source>Do nothing</source>
         <translation>Ничего не делать</translation>
     </message>

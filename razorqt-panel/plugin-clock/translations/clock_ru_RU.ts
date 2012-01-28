@@ -41,7 +41,7 @@
     <message>
         <location filename="../razorclockconfiguration.ui" line="66"/>
         <source>Date format</source>
-        <translation>Формат:</translation>
+        <translation>Формат даты</translation>
     </message>
 </context>
 </TS>

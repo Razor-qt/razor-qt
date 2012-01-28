@@ -4,7 +4,7 @@
 <context>
     <name>RazorMainMenu</name>
     <message>
-        <location filename="../razormainmenu.cpp" line="170"/>
+        <location filename="../razormainmenu.cpp" line="183"/>
         <source>Leave</source>
         <translation>Выход</translation>
     </message>
@@ -43,12 +43,22 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../razormainmenuconfiguration.cpp" line="83"/>
+        <location filename="../razormainmenuconfiguration.ui" line="95"/>
+        <source>Keyboard Shortcut</source>
+        <translation>Горячая клавиша</translation>
+    </message>
+    <message>
+        <location filename="../razormainmenuconfiguration.ui" line="101"/>
+        <source>Click the button to record shortcut:</source>
+        <translation>Нажмите для записи горячей клавиши:</translation>
+    </message>
+    <message>
+        <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Choose menu file</source>
         <translation>Укажите файл меню</translation>
     </message>
     <message>
-        <location filename="../razormainmenuconfiguration.cpp" line="83"/>
+        <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Menu files (*.menu)</source>
         <translation>Файлы меню (*.menu)</translation>
     </message>
