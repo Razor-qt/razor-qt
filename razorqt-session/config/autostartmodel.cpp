@@ -86,7 +86,7 @@ void AutoStartItemModel::addEntry(const QModelIndex& index, XdgDesktopFile* entr
     }
     else
     {
-        entry->setValue("OnlyShowIn", "X-RAZOR;");
+        entry->setValue("OnlyShowIn", "Razor;");
         mRazorItems.append(entry);
     }
     endInsertRows();
@@ -203,5 +203,5 @@ int AutoStartItemModel::rowCount(const QModelIndex& parent) const
 
 bool AutoStartItemModel::showOnlyInRazor(const XdgDesktopFile& file) const
 {
-    return file.value("OnlyShowIn") == "X-RAZOR;";
+    return file.value("OnlyShowIn") == "Razor;";
 }

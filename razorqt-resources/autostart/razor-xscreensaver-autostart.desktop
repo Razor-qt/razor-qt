@@ -4,4 +4,4 @@ Version=1.0
 Name=XScreenSaver
 TryExec=xscreensaver
 Exec=xscreensaver
-OnlyShowIn=X-RAZOR;
+OnlyShowIn=Razor;

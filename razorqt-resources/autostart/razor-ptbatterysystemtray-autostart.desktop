@@ -3,4 +3,4 @@ Type=Application
 Name=PtBatterySystemTray
 TryExec=ptbatterysystemtray
 Exec=ptbatterysystemtray
-OnlyShowIn=X-RAZOR;
+OnlyShowIn=Razor;
