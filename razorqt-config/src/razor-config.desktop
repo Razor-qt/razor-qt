@@ -5,6 +5,7 @@ Exec=razor-config
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-system
+
 Name=Razor Configuration Center
 Comment=Configure Razor-Qt modules
 GenericName=Razor Configuration
@@ -36,3 +37,7 @@ GenericName[cs]=Nastavení Razoru
 Name[it]=Centro di Configurazione Razor
 Comment[it]=Configura moduli di Razor-qt
 GenericName[it]=Configura Razor
+
+Name[da]=Razor Indstillingscenter
+Comment[da]=Indstil Razor-Qt moduler
+GenericName[da]=Razor Indstillingscenter

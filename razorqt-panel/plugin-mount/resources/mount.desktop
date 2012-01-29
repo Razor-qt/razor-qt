@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Removable media
 Comment=Removable media handler (USB, CD, DVD, ...)
 
@@ -24,3 +25,6 @@ Comment[de]=Wechseldatenträger Verwaltung (USB, CD, DVD, ...)
 
 Name[cs]=Správce zařízení
 Comment[cs]=Správa odstranitelných zařízení (USB, CD, DVD, ...)
+
+Name[da]=Flytbare enheder
+Comment[da]=Håndtering af flytbare enheder og medier (USB, CD, DVD, ...)

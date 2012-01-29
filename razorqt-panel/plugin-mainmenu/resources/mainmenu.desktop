@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Application menu
 Comment=Menu based application launcher
 
@@ -24,3 +25,6 @@ Comment[sk]=Spúšťanie aplikácií z menu
 
 Name[cs]=Nabídka
 Comment[cs]=Hlavní nabídka
+
+Name[da]=Programmenu
+Comment[da]=Menubaseret programstarter

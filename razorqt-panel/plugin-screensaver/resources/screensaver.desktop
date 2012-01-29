@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Screensaver
 Comment=Activate a screensaver and/or lock the screen
 
@@ -24,3 +25,6 @@ Comment[de]=Aktiviere einen Bildschirmschoner und/oder sperre den Bildschirm
 
 Name[cs]=Šetřič obrazovky
 Comment[cs]=Zapne šetřič obrazovky a/nebo zamkne obrazovku
+
+Name[da]=Pauseskærm
+Comment[da]=Aktiverer en pauseskærm og/eller låser skærmen

@@ -4,7 +4,7 @@ Type=XSession
 Exec=razor-session -w kwin
 TryExec=kwin
 
-Name=Razor Desktop (kwin)
+Name=Razor Desktop (eggwm)
 Comment=Qt4 Desktop Environment
 
 Name[es]=Razor Escritorio (kwin)
@@ -24,3 +24,6 @@ Comment[sk]=Pracovné prostredie v Qt4
 
 Name[cs]=Plocha Razor (kwin)
 Comment[cs]=Prostředí pracovní plochy na Qt4
+
+Name[da]=Razor Desktop (eggwm)
+Comment[da]=Qt4 Desktop Environment

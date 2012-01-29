@@ -4,3 +4,7 @@ Name=qxkb
 TryExec=qxkb
 Exec=qxkb
 OnlyShowIn=Razor;
+
+Name[da]=Tastaturhåndtering
+Comment[da]=Håndtering af tastaturindstillinger
+GenericName[da]=Tastaturhåndtering

@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorDesktop/Plugin
+
 Name=Icon View
 Comment=Display content (as icons) of the specified directory
 
@@ -21,3 +22,6 @@ Comment[sk]=Zobrazenie obsahu určeného adresára vo forme ikon
 
 Name[cs]=Ikony
 Comment[cs]=Zobrazí obsah vybraného adresáře jako ikony
+
+Name[da]=Ikonvisning
+Comment[da]=Fremviser indhold af specifieret folder, som ikoner

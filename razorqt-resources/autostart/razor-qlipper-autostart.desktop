@@ -4,3 +4,7 @@ Name=Qlipper
 TryExec=qlipper
 Exec=qlipper
 OnlyShowIn=Razor;
+
+Name[da]=Klippebord
+Comment[da]=Qt klippebord
+GenericName[da]=Klippebord

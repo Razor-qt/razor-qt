@@ -6,3 +6,6 @@ Terminal=false
 Categories=Application;Qt;Utility
 Name=Razor autosuspend
 GenericName=Power management
+
+Name[da]=Automatisk slumrefunktionalitet
+GenericName[da]=Strømstyring

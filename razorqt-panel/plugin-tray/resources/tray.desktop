@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=System tray
 Comment=Access hidden applications minimized in the system tray
 
@@ -24,3 +25,6 @@ Comment[sk]=Prístup k skrytým aplikáciám minimalizovaným v oznamovacej obla
 
 Name[cs]=Oznamovací oblast panelu
 Comment[cs]=Přístup ke skrytým programům zmenšeným v oznamovací oblasti panelu
+
+Name[da]=Systembakke
+Comment[da]=Adgang til skjulte programmer der er minimeret til systembakken

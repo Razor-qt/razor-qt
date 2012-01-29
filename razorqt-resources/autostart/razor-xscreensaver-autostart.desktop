@@ -5,3 +5,7 @@ Name=XScreenSaver
 TryExec=xscreensaver
 Exec=xscreensaver
 OnlyShowIn=Razor;
+
+Name[da]=Pauseskærm
+Comment[da]=Pauseskærm til XWindow
+GenericName[da]=Pauseskærm

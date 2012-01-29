@@ -1,8 +1,10 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Desktopswitch
 Comment=Allow to switch virtual desktops
+
 Name[de]=Arbeitsflächenumschalter
 Comment[de]=Erlaubt es zwichen den virtuellen Arbeitsflächen zu schalten
 
@@ -23,3 +25,6 @@ Comment[sk]=Umožňuje prepínanie medzi virtuálnymi plochami
 
 Name[cs]=Přepínání ploch
 Comment[cs]=Povolit přepínání virtuálních ploch
+
+Name[da]=Skrivebordsskifter
+Comment[da]=Tillader skift imellem virtuelle skriveborde
