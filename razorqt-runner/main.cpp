@@ -40,7 +40,6 @@ int main(int argc, char *argv[])
 
     QWidget *hiddenPreviewParent = new QWidget(0, Qt::Tool);
     Dialog d(hiddenPreviewParent);
-    //Dialog d;
     //d.show();
 
     return a.exec();
