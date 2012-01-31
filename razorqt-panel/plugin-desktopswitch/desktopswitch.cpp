@@ -150,11 +150,10 @@ void DesktopSwitch::realign()
     bool isHorizontal = panel()->isHorizontal();
     foreach (QAbstractButton *btn, m_buttons->buttons())
     {
-        btn->adjustSize();
         if (isHorizontal)
-            max = qMax(max, btn->width());
+            max = qMax(max, btn->sizeHint().width());
         else
-            max = qMax(max, btn->height());
+            max = qMax(max, btn->sizeHint().height());
     }
 
     foreach (QAbstractButton *btn, m_buttons->buttons())
