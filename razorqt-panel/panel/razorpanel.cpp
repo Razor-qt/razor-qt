@@ -370,6 +370,11 @@ void RazorPanelPrivate::realign()
     qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mScreenNum);
     */
 
+    foreach (RazorPanelPlugin* plugin, mPlugins)
+    {
+        plugin->updateSizePolicy();
+    }
+
     // Update stylesheet ............
     q->style()->unpolish(q);
     q->style()->polish(q);
@@ -694,6 +699,7 @@ void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
     else
         mLayout->insertWidget(0, plugin);
 
+    realign();
     saveSettings();
 }
 

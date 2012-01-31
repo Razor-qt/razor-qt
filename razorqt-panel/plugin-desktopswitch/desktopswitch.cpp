@@ -49,11 +49,6 @@ DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget
     setObjectName("DesktopSwitch");
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
 
-    QSizePolicy sp(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    sp.setHorizontalStretch(1);
-    sp.setVerticalStretch(1);
-    setSizePolicy(sp);
-
     m_buttons = new QButtonGroup(this);
     
     connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));

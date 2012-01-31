@@ -59,20 +59,6 @@ class QStyleOptionToolBar;
 class RazorPanelPluginPrivate;
 class RazorPluginInfo;
 
-/*! \brief Base abstract class for Razor panel widgets/plugins.
-All plugins *must* be inherited from this one.
-
-This class provides some basic API and inherited/implemented
-plugins GUIs will be responsible on the functionality itself.
-
-For better behavior handling there are arguments to provide
-an access to Razor environment - see panel, parent.
-
-For example, to correctly show the main menu, I need to know the
-position of the panel (top, bottom, left, right) and panel size (height,
-width).
-*/
-
 class RazorPanelPluginStartInfo
 {
 public:
@@ -92,6 +78,20 @@ public:
     const RazorPluginInfo& pluginInfo;
 };
 
+/*! \brief Base abstract class for Razor panel widgets/plugins.
+All plugins *must* be inherited from this one.
+
+This class provides some basic API and inherited/implemented
+plugins GUIs will be responsible on the functionality itself.
+
+For better behavior handling there are arguments to provide
+an access to Razor environment - see panel, parent.
+
+For example, to correctly show the main menu, I need to know the
+position of the panel (top, bottom, left, right) and panel size (height,
+width).
+*/
+
 class RazorPanelPlugin : public QFrame
 {
     Q_OBJECT
@@ -100,6 +100,7 @@ class RazorPanelPlugin : public QFrame
     Q_PROPERTY(bool movable READ isMovable WRITE setMovable NOTIFY movableChanged)
     Q_PROPERTY(Alignment alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
     Q_ENUMS(Alignment)
+    friend class RazorPanelPrivate;
 
 public:
     enum Alignment {
@@ -197,7 +198,16 @@ protected slots:
     virtual void realign() {}
 
 protected:
+    /**
+      Reimplemented from QWidget::paintEvent().
+     **/
     void paintEvent(QPaintEvent* event);
+
+    /**
+     This function is called before the panel's size or position has been changed.
+     **/
+    virtual void updateSizePolicy();
+
 
     /*!
     If the value of the Qt property changes after the style sheet has been set, you will probably have to force a style sheet recomputation.

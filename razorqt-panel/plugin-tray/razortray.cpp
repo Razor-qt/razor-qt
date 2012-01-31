@@ -71,7 +71,6 @@ RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
     mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT)
 {
     setObjectName("Tray");
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     layout()->setAlignment(Qt::AlignCenter);
     mValid = startTray();
 }
@@ -365,7 +364,3 @@ void RazorTray::addIcon(Window winId)
     addWidget(icon);
 }
 
-void RazorTray::realign()
-{
-
-}

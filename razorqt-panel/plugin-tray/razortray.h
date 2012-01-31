@@ -78,8 +78,6 @@ private:
     int mDamageError;
     QSize mIconSize;
 
-protected slots:
-    virtual void realign();
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

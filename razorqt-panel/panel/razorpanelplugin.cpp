@@ -71,9 +71,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
 {
     Q_Q(RazorPanelPlugin);
 
-    q->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     q->setMinimumSize(1, 1);
-    qDebug() << q->minimumSize();
 
     connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
 
@@ -378,6 +376,18 @@ RazorPanelPlugin::Alignment RazorPanelPlugin::alignment() const
 {
     Q_D(const RazorPanelPlugin);
     return d->alignment();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPlugin::updateSizePolicy()
+{
+    if (panel()->isHorizontal())
+        setSizePolicy(QSizePolicy::Maximum, QSizePolicy::MinimumExpanding);
+    else
+        setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 }
 
 
