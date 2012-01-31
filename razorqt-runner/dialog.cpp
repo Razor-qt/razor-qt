@@ -239,13 +239,18 @@ bool Dialog::listKeyPressEvent(QKeyEvent *event)
 void Dialog::showHide()
 {
     if (isVisible() &&  isActiveWindow())
+    {
         hide();
+    }
     else
     {
         realign();
         show();
-        QApplication::setActiveWindow(this);
-        activateWindow();
+        // I do not know why but next 2 lines don't work
+        // in KWIN. So we use the native X11.
+        //QApplication::setActiveWindow(this);
+        //activateWindow();
+        xfitMan().raiseWindow(this->effectiveWinId());
     }
 }
 
