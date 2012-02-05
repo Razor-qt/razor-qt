@@ -14,6 +14,55 @@ Options
 HELP_TEXT
 }
 
+function checkIf
+{
+  shift
+  for i in $@ ; do
+    [ "$i" = "${RELEASE}" ] && return 0
+  done
+
+  return 1
+}
+
+
+function prepareFile
+{
+  local file=$1
+  local skip=0
+  while  IFS='' read "line"; do
+    local cmd=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'` 
+    case $cmd in	
+      %IF)
+        checkIf $line || skip=1
+        ;;
+		
+      %IFNOT)
+        checkIf $line && skip=1
+        ;;
+
+      %ELSE)
+        let "skip = 1-$skip"
+        ;;
+			
+      %ENDIF)
+        skip=0
+        ;;
+			
+      *)
+        if [ "$skip" = 0 ]; then
+			echo "$line" | sed            \
+				-e"s/%NAME%/${NAME}/g"    \
+				-e"s/%VERSION%/${VER}/g"  \
+				-e"s/%DIST%/${RELEASE}/g" \
+				-e"s/%DATE%/${DATE}/g"
+		fi
+        ;;
+    esac
+		
+  done < "${file}"
+}
+
+
 NAME='razorqt'
 TYPE='-b'
 SIGN='-uc -us'
@@ -72,9 +121,9 @@ done
 
 
 if [ -z "${SRC_DIR}" ]; then
-  echo "missing path-to-source operand" >&2
-  help
-  exit 2
+    echo "missing path-to-source operand" >&2
+    help
+    exit 2
 fi
 
 SRC_DIR=`cd ${SRC_DIR}; pwd`
@@ -84,9 +133,9 @@ if [ -z "${RELEASE}" ]; then
 fi
 
 if [ -z "${RELEASE}" ]; then
-  echo "missing release option"
-  help
-  exit 2
+    echo "missing release option"
+    help
+    exit 2
 fi
 
 if [ ! -d ${DEST_DIR} ]; then
@@ -95,10 +144,10 @@ if [ ! -d ${DEST_DIR} ]; then
 fi
 
 if [ -z "$VER" ]; then
-   MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-   MINOR_VER=`awk -F'[)( ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-   PATCH_VER=`awk -F'[)( ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-   VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
+    MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    MINOR_VER=`awk -F'[)( ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    PATCH_VER=`awk -F'[)( ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 fi
 
 OUT_DIR=`cd ${DEST_DIR}; pwd`/razorqt_${VER}_deb
@@ -126,17 +175,17 @@ rm -rf ${DIR}/.git \
        ${DIR}/build
 
 cd ${DIR}/.. && tar czf ${NAME}_${VER}.orig.tar.gz ${NAME}-${VER}
-cp --force -R ${DIR}/distr/deb/debian ${DIR}/
 
+# Debin directory .....................
+mkdir -p ${DIR}/debian
+mkdir -p ${DIR}/debian/source
 DATE=`date -R`
-for f in `find ${DIR}/debian -type f `; do
-    sed -i \
-        -e"s/%NAME%/${NAME}/g"  \
-        -e"s/%VERSION%/${VER}/g" \
-        -e"s/%DIST%/${RELEASE}/g" \
-        -e"s/%DATE%/${DATE}/g" \
-        $f
+for src in `find ${DIR}/distr/deb/debian -type f `; do
+    dest=`echo $src | sed -e's|/distr/deb||'`
+    prepareFile "${src}" > ${dest}
 done
+# Debin directory .....................
+
 
 cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
 
