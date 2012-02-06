@@ -60,6 +60,7 @@ protected:
 };
 
 
+
 class UDiskMountDevice: public RazorMountDevice
 {
     Q_OBJECT
@@ -71,7 +72,6 @@ public:
     virtual bool mount();
     virtual bool unmount();
     virtual bool eject();
-    bool isUsable() const;
 
 private:
     QDBusInterface *mDbus;
@@ -85,6 +85,8 @@ private:
 private slots:
     void dbusError(const QDBusError &err, const QDBusMessage &msg);
 };
+
+
 
 class UDiskProvider: public RzMountProvider
 {

@@ -41,7 +41,7 @@ public:
     enum MediaType {
         MediaTypeUnknown,
         MediaTypeDrive,
-        MediaTypeFlash,
+        MediaTypePartition,
         MediaTypeFdd,
         MediaTypeOptical
     };
@@ -50,6 +50,7 @@ public:
     virtual bool unmount() = 0;
     virtual bool eject() = 0;
 
+    QString devFile() const { return mDevFile; }
     QString label() const { return mLabel; }
     QString vendor() const { return mVendor; }
     QString model() const { return mModel; }
@@ -66,6 +67,7 @@ public:
     bool isMounted() const { return mIsMounted; }
     bool isEjectable() const { return mIsEjectable; }
 
+    static QString sizeToString(qulonglong size);
 signals:
      void changed();
      void error(const QString &msg);
@@ -75,6 +77,7 @@ signals:
 protected:
     explicit RazorMountDevice();
 
+    bool setDevFile(const QString &value)   BOOL_SETTER(mDevFile)
     bool setLabel(const QString &value)     BOOL_SETTER(mLabel)
     bool setVendor(const QString &value)    BOOL_SETTER(mVendor)
     bool setModel(const QString &value)     BOOL_SETTER(mModel)
@@ -90,6 +93,7 @@ protected:
     bool setIsMounted(bool value)       BOOL_SETTER(mIsMounted)
     bool setIsEjectable(bool value)     BOOL_SETTER(mIsEjectable)
 
+    QString mDevFile;
     QString mLabel;
     QString mVendor;
     QString mModel;
@@ -136,5 +140,8 @@ private:
     RzMountProvider *mProvider;
 
 };
+
+QDebug operator<<(QDebug dbg, const RazorMountDevice& device);
+QDebug operator<<(QDebug dbg, const RazorMountDevice* const device);
 
 #endif // RAZORMOUNT_RAZORMOUNT_H

@@ -183,7 +183,8 @@ void MountButton::onDeviceAdded(RazorMountDevice *device)
     switch (mDevAction)
     {
     case DevActionInfo:
-        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is connected.").arg(device->label()));
+        if (MenuDiskItem::isUsableDevice(device))
+            showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is connected.").arg(device->label()));
         break;
 
     case DevActionMenu:
@@ -201,7 +202,8 @@ void MountButton::onDeviceRemoved(RazorMountDevice *device)
     switch (mDevAction)
     {
     case DevActionInfo:
-        showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(device->label()));
+        if (MenuDiskItem::isUsableDevice(device))
+            showMessage(tr("The device <b><nobr>\"%1\"</nobr></b> is removed.").arg(device->label()));
         break;
 
     case DevActionMenu:

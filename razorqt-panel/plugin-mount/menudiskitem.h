@@ -41,6 +41,8 @@ public:
 
     void setMountStatus(bool is_mount);
 
+    static bool isUsableDevice(const RazorMountDevice *device);
+
 signals:
     void error(const QString &msg);
 
