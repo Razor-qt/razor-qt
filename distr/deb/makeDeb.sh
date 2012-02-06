@@ -1,22 +1,73 @@
 #!/bin/bash
 
 function help {
-  echo "Usage: makeDeb.sh [otions] <path-to-source>"
-  echo
-  echo "Options"
-  echo "  -h|--help               display this message"
-  echo "  -o|--outdirt=DIR        write result to DIR"
-  echo "  -d|--dist=DIST          buld for distributive ubuntu/debian"
-  echo "  -r|--release=RELEASES   release name, you can specify several releases - \"maveric oneiric\""
-  echo "  -ver=VERSION            razor version"
-  echo "  -s|--sign               sign a result files"
-  echo "  -b|--binary             build a binary package, if ommited build only only a source package"
+  cat << HELP_TEXT
+Usage: makeDeb.sh [otions] <path-to-source>
+
+Options
+  -h|--help             display this message
+  -o|--outdirt=DIR      write result to DIR, home directory by default
+  -r|--release=RELEASE  release name (sid, maveric, natty etc.), autodetect if ommited
+  -ver=VERSION          razor version
+  -S|--sign             sign a result files
+  -s|--source           build a source package, if ommited build a binary package
+HELP_TEXT
 }
 
+function checkIf
+{
+  shift
+  for i in $@ ; do
+    [ "$i" = "${RELEASE}" ] && return 0
+  done
+
+  return 1
+}
+
+
+function prepareFile
+{
+  local file=$1
+  local skip=0
+  while  IFS='' read "line"; do
+    local cmd=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'` 
+    case $cmd in	
+      %IF)
+        checkIf $line || skip=1
+        ;;
+		
+      %IFNOT)
+        checkIf $line && skip=1
+        ;;
+
+      %ELSE)
+        let "skip = 1-$skip"
+        ;;
+			
+      %ENDIF)
+        skip=0
+        ;;
+			
+      *)
+        if [ "$skip" = 0 ]; then
+			echo "$line" | sed            \
+				-e"s/%NAME%/${NAME}/g"    \
+				-e"s/%VERSION%/${VER}/g"  \
+				-e"s/%DIST%/${RELEASE}/g" \
+				-e"s/%DATE%/${DATE}/g"
+		fi
+        ;;
+    esac
+		
+  done < "${file}"
+}
+
+
 NAME='razorqt'
-TYPE='-S'
+TYPE='-b'
 SIGN='-uc -us'
-OUT_DIR='./'
+DEST_DIR=${HOME}
+SRC_DIR="../.."
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -36,7 +87,7 @@ while [ $# -gt 0 ]; do
       ;;
 
     -r|--release)
-        RELEASES=$2
+        RELEASE=$2
         shift 2
       ;;
 
@@ -45,15 +96,16 @@ while [ $# -gt 0 ]; do
         shift 2
       ;;
 
-    -b|--binary)
-        TYPE='-b'
+    -s|--source)
+        TYPE='-S'
         shift
       ;;
 
-    -s|--sign)
+    -S|--sign)
         SIGN=''
         shift
       ;;
+
     --)
         shift
         break
@@ -69,40 +121,37 @@ done
 
 
 if [ -z "${SRC_DIR}" ]; then
-  echo "missing path-to-source operand" >&2
-  help
-  exit 2
-fi
-
-
-if [ -z "${DIST}" ]; then
-  echo "missing dist option"
-  help
-  exit 2
-fi
-
-
-if [ -z "${RELEASES}" ]; then
-  echo "missing release option"
-  help
-  exit 2
-fi
-
-if [ ! -d ${OUT_DIR} ]; then
-    echo "${OUT_DIR}: No such directory"
+    echo "missing path-to-source operand" >&2
+    help
     exit 2
 fi
 
-OUT_DIR=`cd ${OUT_DIR}; pwd`
+SRC_DIR=`cd ${SRC_DIR}; pwd`
 
+if [ -z "${RELEASE}" ]; then
+    RELEASE=`awk -F"=" '/DISTRIB_CODENAME=/ {print($2)}' /etc/lsb-release`
+fi
 
+if [ -z "${RELEASE}" ]; then
+    echo "missing release option"
+    help
+    exit 2
+fi
+
+if [ ! -d ${DEST_DIR} ]; then
+    echo "${DEST_DIR}: No such directory"
+    exit 2
+fi
 
 if [ -z "$VER" ]; then
-   MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-   MINOR_VER=`awk -F'[)( ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-   PATCH_VER=`awk -F'[)( ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-   VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
+    MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    MINOR_VER=`awk -F'[)( ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    PATCH_VER=`awk -F'[)( ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 fi
+
+OUT_DIR=`cd ${DEST_DIR}; pwd`/razorqt_${VER}_deb
+
 
 
 echo "*******************************"
@@ -110,7 +159,7 @@ echo " Name: ${NAME}"
 echo " Ver:  ${VER}"
 [ "${TYPE}" = "-b" ] && echo " Type: binary"
 [ "${TYPE}" = "-S" ] && echo " Type: source"
-echo " Release: ${DIST}:: ${RELEASES}"
+echo " Release: ${RELEASE}"
 echo " Src dir: ${SRC_DIR}"
 echo " Out dir: ${OUT_DIR}"
 echo "*******************************"
@@ -125,54 +174,45 @@ cp -r ${SRC_DIR} ${DIR}
 rm -rf ${DIR}/.git \
        ${DIR}/build
 
-cd ${DIR}/.. && tar  -czf ${NAME}_${VER}.orig.tar.gz ${NAME}-${VER}
+cd ${DIR}/.. && tar czf ${NAME}_${VER}.orig.tar.gz ${NAME}-${VER}
 
-for RELEASE in ${RELEASES}; do
-    rm -r ${DIR}/debian
-    cp --force -R ${DIR}/distr/deb/$DIST/debian ${DIR}/
-
-    DATE=`date -R`
-    for f in `find ${DIR}/debian -type f `; do
-        sed -i \
-            -e"s/%NAME%/${NAME}/g"  \
-            -e"s/%VERSION%/${VER}/g" \
-            -e"s/%DIST%/${RELEASE}/g" \
-            -e"s/%DATE%/${DATE}/g" \
-            $f
-    done
-
-    cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
-    RES=$?
+# Debin directory .....................
+mkdir -p ${DIR}/debian
+mkdir -p ${DIR}/debian/source
+DATE=`date -R`
+for src in `find ${DIR}/distr/deb/debian -type f `; do
+    dest=`echo $src | sed -e's|/distr/deb||'`
+    prepareFile "${src}" > ${dest}
+done
+# Debin directory .....................
 
 
-    if [ $RES -ne 0 ]; then
-        exit $RES
-    fi
+cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
 
-    echo "................................."
-    echo "Check files:"
-    PKGS=`awk '/Package:/ {print $2}' ${DIR}/debian/control`
+echo "................................."
+echo "Check files:"
+PKGS=`awk '/Package:/ {print $2}' ${DIR}/debian/control`
 
-    for file in `find ${DIR}/debian/tmp -type f 2>/dev/null`; do
-        file=`echo $file | sed -e"s|${DIR}/debian/tmp||"`
-        #echo $file
-        pkgNames=''
-        let 'pkgCount=0'
+for file in `find ${DIR}/debian/tmp -type f 2>/dev/null`; do
+    file=`echo $file | sed -e"s|${DIR}/debian/tmp||"`
+    #echo $file
+    pkgNames=''
+    let 'pkgCount=0'
 
-        for pkg in ${PKGS}; do
-            if [ `ls "${DIR}/debian/${pkg}$file" 2>/dev/null` ]; then
-                let 'pkgCount++'
-                pkgNames="${pkgNames}\n\t${pkg}"
-            fi
-        done
-
-        if [ $pkgCount -eq 0 ]; then
-            echo -e "Missing file: ${file}";
-
-        elif [ $pkgCount -gt 1 ]; then
-            echo -e "Douplicates:  ${file}$pkgNames"
+    for pkg in ${PKGS}; do
+        if [ `ls "${DIR}/debian/${pkg}$file" 2>/dev/null` ]; then
+            let 'pkgCount++'
+            pkgNames="${pkgNames}\n\t${pkg}"
         fi
     done
+
+    if [ $pkgCount -eq 0 ]; then
+        echo -e "Missing file: ${file}";
+
+    elif [ $pkgCount -gt 1 ]; then
+        echo -e "Douplicates:  ${file}$pkgNames"
+    fi
+
 done
 
 

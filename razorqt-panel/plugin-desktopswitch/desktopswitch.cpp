@@ -146,39 +146,21 @@ void DesktopSwitch::wheelEvent(QWheelEvent* e)
 
 void DesktopSwitch::realign()
 {
-    realignButtons();
-
-    switch (panel()->position())
-    {
-    case RazorPanel::PositionTop:
-    case RazorPanel::PositionBottom:
-        setMaximumWidth(m_buttons->buttons().count() * panel()->height());
-        break;
-
-    case RazorPanel::PositionLeft:
-    case RazorPanel::PositionRight:
-        setMaximumHeight(m_buttons->buttons().count() * panel()->width());
-        break;
-
-    }
-}
-
-void DesktopSwitch::realignButtons()
-{
+    int max = 0;
+    bool isHorizontal = panel()->isHorizontal();
     foreach (QAbstractButton *btn, m_buttons->buttons())
     {
-        switch (panel()->position())
-        {
-        case RazorPanel::PositionTop:
-        case RazorPanel::PositionBottom:
-            btn->setMaximumSize(QSize(panel()->height(), panel()->height()));
-            break;
+        if (isHorizontal)
+            max = qMax(max, btn->sizeHint().width());
+        else
+            max = qMax(max, btn->sizeHint().height());
+    }
 
-        case RazorPanel::PositionLeft:
-        case RazorPanel::PositionRight:
-            btn->setMaximumSize(QSize(panel()->width(), panel()->width()));
-            break;
-
-        }
+    foreach (QAbstractButton *btn, m_buttons->buttons())
+    {
+        if (isHorizontal)
+            btn->setMinimumWidth(max);
+        else
+            btn->setMinimumHeight(max);
     }
 }

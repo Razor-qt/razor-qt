@@ -11,6 +11,9 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
     libxdamage-dev,
     libudev-dev,
     libxcursor-dev,
+%ifnot lucid maverick	
+    libpolkit-agent-1-dev,
+%endif
     zlib1g-dev
 Standards-Version: 3.9.1
 Homepage: http://razor-qt.org
@@ -184,3 +187,19 @@ Conflicts: razor-qt
 Description:RazorQt power management apps
  .
  This package is part of the Razor-Qt.
+
+
+%ifnot lucid maverick
+Package: razorqt-policykit-agent
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version}),
+  razorqt-data (= ${source:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description:A lightweight PolicyKit agent primarily 
+ writen for Razor-qt DE. But it can be used 
+ standalone as well.
+ .
+ This package is part of the Razor-Qt.
+%endif
