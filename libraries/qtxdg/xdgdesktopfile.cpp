@@ -54,6 +54,76 @@
 /************************************************
 
  ************************************************/
+QString &doEscape(QString& str, const QHash<QChar,QChar> &repl)
+{
+    // First we replace slash.
+    str.replace('\\', "\\\\");
+
+    QHashIterator<QChar,QChar> i(repl);
+    while (i.hasNext()) {
+        i.next();
+        if (i.key() != '\\')
+            str.replace(i.key(), QString("\\\\%1").arg(i.value()));
+    }
+
+    return str;
+}
+
+/************************************************
+ The escape sequences \s, \n, \t, \r, and \\ are supported for values
+ of type string and localestring, meaning ASCII space, newline, tab,
+ carriage return, and backslash, respectively.
+ ************************************************/
+QString &escape(QString& str)
+{
+    QHash<QChar,QChar> repl;
+    repl.insert(' ',   's');
+    repl.insert('\n',  'n');
+    repl.insert('\t',  't');
+    repl.insert('\r',  'r');
+
+    return doEscape(str, repl);
+}
+
+
+/************************************************
+ Quoting must be done by enclosing the argument between double quotes and
+ escaping the
+    double quote character,
+    backtick character ("`"),
+    dollar sign ("$") and
+    backslash character ("\")
+by preceding it with an additional backslash character.
+Implementations must undo quoting before expanding field codes and before
+passing the argument to the executable program.
+
+Note that the general escape rule for values of type string states that the
+backslash character can be escaped as ("\\") as well and that this escape
+rule is applied before the quoting rule. As such, to unambiguously represent a
+literal backslash character in a quoted argument in a desktop entry file
+requires the use of four successive backslash characters ("\\\\").
+Likewise, a literal dollar sign in a quoted argument in a desktop entry file
+is unambiguously represented with ("\\$").
+ ************************************************/
+QString &escapeExec(QString& str)
+{
+    QHash<QChar,QChar> repl;
+    // The parseCombinedArgString() splits the string by the space symbols,
+    // we temporarily replace them on the special characters.
+    // Replacement will reverse after the splitting.
+    repl.insert('"', '"');    // double quote,
+    repl.insert('\'', '\'');  // single quote ("'"),
+    repl.insert('\\', '\\');  // backslash character ("\"),
+    repl.insert('$', '$');    // dollar sign ("$"),
+
+    return doEscape(str, repl);
+}
+
+
+
+/************************************************
+
+ ************************************************/
 QString &doUnEscape(QString& str, const QHash<QChar,QChar> &repl)
 {
     int n = 0;
@@ -88,6 +158,78 @@ QString &unEscape(QString& str)
     repl.insert('n',  '\n');
     repl.insert('t',  '\t');
     repl.insert('r',  '\r');
+
+    return doUnEscape(str, repl);
+}
+
+
+
+/************************************************
+ Quoting must be done by enclosing the argument between double quotes and
+ escaping the
+    double quote character,
+    backtick character ("`"),
+    dollar sign ("$") and
+    backslash character ("\")
+by preceding it with an additional backslash character.
+Implementations must undo quoting before expanding field codes and before
+passing the argument to the executable program.
+
+Reserved characters are
+    space (" "),
+    tab,
+    newline,
+    double quote,
+    single quote ("'"),
+    backslash character ("\"),
+    greater-than sign (">"),
+    less-than sign ("<"),
+    tilde ("~"),
+    vertical bar ("|"),
+    ampersand ("&"),
+    semicolon (";"),
+    dollar sign ("$"),
+    asterisk ("*"),
+    question mark ("?"),
+    hash mark ("#"),
+    parenthesis ("(") and (")")
+    backtick character ("`").
+
+Note that the general escape rule for values of type string states that the
+backslash character can be escaped as ("\\") as well and that this escape
+rule is applied before the quoting rule. As such, to unambiguously represent a
+literal backslash character in a quoted argument in a desktop entry file
+requires the use of four successive backslash characters ("\\\\").
+Likewise, a literal dollar sign in a quoted argument in a desktop entry file
+is unambiguously represented with ("\\$").
+ ************************************************/
+QString &unEscapeExec(QString& str)
+{
+    unEscape(str);
+    QHash<QChar,QChar> repl;
+    // The parseCombinedArgString() splits the string by the space symbols,
+    // we temporarily replace them on the special characters.
+    // Replacement will reverse after the splitting.
+    repl.insert(' ',  01);    // space
+    repl.insert('\t', 02);    // tab
+    repl.insert('\n', 03);    // newline,
+
+    repl.insert('"', '"');    // double quote,
+    repl.insert('\'', '\'');  // single quote ("'"),
+    repl.insert('\\', '\\');  // backslash character ("\"),
+    repl.insert('>', '>');    // greater-than sign (">"),
+    repl.insert('<', '<');    // less-than sign ("<"),
+    repl.insert('~', '~');    // tilde ("~"),
+    repl.insert('|', '|');    // vertical bar ("|"),
+    repl.insert('&', '&');    // ampersand ("&"),
+    repl.insert(';', ';');    // semicolon (";"),
+    repl.insert('$', '$');    // dollar sign ("$"),
+    repl.insert('*', '*');    // asterisk ("*"),
+    repl.insert('?', '?');    // question mark ("?"),
+    repl.insert('#', '#');    // hash mark ("#"),
+    repl.insert('(', '(');    // parenthesis ("(")
+    repl.insert(')', ')');    // parenthesis (")")
+    repl.insert('`', '`');    // backtick character ("`").
 
     return doUnEscape(str, repl);
 }
@@ -404,7 +546,21 @@ QVariant XdgDesktopFile::value(const QString& key, const QVariant& defaultValue)
 void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
 {
     QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
-    d->mItems[path] = value;
+    if (value.type() == QVariant::String)
+    {
+
+        QString s=value.toString();
+        if (key.toUpper() == "EXEC")
+            escapeExec(s);
+        else
+            escape(s);
+
+        d->mItems[path] = QVariant(s);
+    }
+    else
+    {
+        d->mItems[path] = value;
+    }
 }
 
 
@@ -698,78 +854,6 @@ QStringList expandEnvVariables(const QStringList strs)
         res << expandEnvVariables(s);
 
     return res;
-}
-
-
-/************************************************
- Quoting must be done by enclosing the argument between double quotes and
- escaping the
-    double quote character,
-    backtick character ("`"),
-    dollar sign ("$") and
-    backslash character ("\")
-by preceding it with an additional backslash character.
-Implementations must undo quoting before expanding field codes and before
-passing the argument to the executable program.
-
-Reserved characters are
-    space (" "),
-    tab,
-    newline,
-    double quote,
-    single quote ("'"),
-    backslash character ("\"),
-    greater-than sign (">"),
-    less-than sign ("<"),
-    tilde ("~"),
-    vertical bar ("|"),
-    ampersand ("&"),
-    semicolon (";"),
-    dollar sign ("$"),
-    asterisk ("*"),
-    question mark ("?"),
-    hash mark ("#"),
-    parenthesis ("(") and (")")
-    backtick character ("`").
-
-Note that the general escape rule for values of type string states that the
-backslash character can be escaped as ("\\") as well and that this escape
-rule is applied before the quoting rule. As such, to unambiguously represent a
-literal backslash character in a quoted argument in a desktop entry file
-requires the use of four successive backslash characters ("\\\\").
-Likewise, a literal dollar sign in a quoted argument in a desktop entry file
-is unambiguously represented with ("\\$").
- ************************************************/
-QString &unEscapeExec(QString& str)
-{
-    unEscape(str);
-    qDebug() << str;
-    QHash<QChar,QChar> repl;
-    // The parseCombinedArgString() splits the string by the space symbols,
-    // we temporarily replace them on the special characters.
-    // Replacement will reverse after the splitting.
-    repl.insert(' ',  01);    // space
-    repl.insert('\t', 02);    // tab
-    repl.insert('\n', 03);    // newline,
-
-    repl.insert('"', '"');    // double quote,
-    repl.insert('\'', '\'');  // single quote ("'"),
-    repl.insert('\\', '\\');  // backslash character ("\"),
-    repl.insert('>', '>');    // greater-than sign (">"),
-    repl.insert('<', '<');    // less-than sign ("<"),
-    repl.insert('~', '~');    // tilde ("~"),
-    repl.insert('|', '|');    // vertical bar ("|"),
-    repl.insert('&', '&');    // ampersand ("&"),
-    repl.insert(';', ';');    // semicolon (";"),
-    repl.insert('$', '$');    // dollar sign ("$"),
-    repl.insert('*', '*');    // asterisk ("*"),
-    repl.insert('?', '?');    // question mark ("?"),
-    repl.insert('#', '#');    // hash mark ("#"),
-    repl.insert('(', '(');    // parenthesis ("(")
-    repl.insert(')', ')');    // parenthesis (")")
-    repl.insert('`', '`');    // backtick character ("`").
-
-    return doUnEscape(str, repl);
 }
 
 
