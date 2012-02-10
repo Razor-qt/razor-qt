@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Notepad
+Comment=Screen notepad
+
+Name[ru]=Блокнот
+Comment[ru]=Экранный блокнот

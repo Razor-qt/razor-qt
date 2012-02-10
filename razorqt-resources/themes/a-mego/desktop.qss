@@ -1,0 +1,30 @@
+/* Notepad plugin style */
+NotepadWin {
+        background: transparent;
+        margin: 0;
+        padding: 0;
+}
+
+NotepadWin QTextEdit {
+        background: rgba(0, 0, 0, 60%);
+        color: #ffffff;
+        margin: 0;
+}
+
+NotepadWin QToolButton {
+	background: rgba(0, 0, 0, 80%);
+	color: #ffffff;
+	min-width: 19px;
+	padding: 3px 2px;
+	margin-right: 1px;
+	margin-left: 0px;
+}
+
+NotepadWin QToolButton#leftSided {
+	margin-left: 6px;
+}
+
+NotepadWin QToolButton#justified {
+	margin-right: 0px;
+}
+/* ~Notepad plugin style */
