@@ -5,18 +5,18 @@ function help {
   echo
   echo "Options"
   echo "  -h|--help             display this message"
-  echo "  -o|--outdirt=DIR      write result to DIR, home directory by default"
-  echo "  -r|--release=RELEASE  release name (sid, maveric, natty etc.), autodetect if ommited"
+  echo "  -o|--outdirt=DIR      write result to DIR"
+  echo "  -d|--dist=DIST        buld for distributive ubuntu/debian"
+  echo "  -r|--release=RELEASE  release name (sid, maveric, natty etc.)"
   echo "  -ver=VERSION          razor version"
-  echo "  -S|--sign             sign a result files"
-  echo "  -s|--source           build a source package, if ommited build a binary package"
+  echo "  -s|--sign             sign a result files"
+  echo "  -b|--binary           build a binary package, if ommited build only only a source package"
 }
 
 NAME='razorqt'
-TYPE='-b'
+TYPE='-S'
 SIGN='-uc -us'
-DEST_DIR=${HOME}
-SRC_DIR="../.."
+OUT_DIR='./'
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -45,16 +45,15 @@ while [ $# -gt 0 ]; do
         shift 2
       ;;
 
-    -s|--source)
-        TYPE='-S'
+    -b|--binary)
+        TYPE='-b'
         shift
       ;;
 
-    -S|--sign)
+    -s|--sign)
         SIGN=''
         shift
       ;;
-
     --)
         shift
         break
@@ -75,11 +74,13 @@ if [ -z "${SRC_DIR}" ]; then
   exit 2
 fi
 
-SRC_DIR=`cd ${SRC_DIR}; pwd`
 
-if [ -z "${RELEASE}" ]; then
-    RELEASE=`awk -F"=" '/DISTRIB_CODENAME=/ {print($2)}' /etc/lsb-release`
+if [ -z "${DIST}" ]; then
+  echo "missing dist option"
+  help
+  exit 2
 fi
+
 
 if [ -z "${RELEASE}" ]; then
   echo "missing release option"
@@ -87,10 +88,14 @@ if [ -z "${RELEASE}" ]; then
   exit 2
 fi
 
-if [ ! -d ${DEST_DIR} ]; then
-    echo "${DEST_DIR}: No such directory"
+if [ ! -d ${OUT_DIR} ]; then
+    echo "${OUT_DIR}: No such directory"
     exit 2
 fi
+
+OUT_DIR=`cd ${OUT_DIR}; pwd`
+
+
 
 if [ -z "$VER" ]; then
    MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
@@ -99,16 +104,13 @@ if [ -z "$VER" ]; then
    VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 fi
 
-OUT_DIR=`cd ${DEST_DIR}; pwd`/razorqt_${VER}_deb
-
-
 
 echo "*******************************"
 echo " Name: ${NAME}"
 echo " Ver:  ${VER}"
 [ "${TYPE}" = "-b" ] && echo " Type: binary"
 [ "${TYPE}" = "-S" ] && echo " Type: source"
-echo " Release: ${RELEASE}"
+echo " Release: ${DIST}-${RELEASE}"
 echo " Src dir: ${SRC_DIR}"
 echo " Out dir: ${OUT_DIR}"
 echo "*******************************"
@@ -124,7 +126,7 @@ rm -rf ${DIR}/.git \
        ${DIR}/build
 
 cd ${DIR}/.. && tar czf ${NAME}_${VER}.orig.tar.gz ${NAME}-${VER}
-cp --force -R ${DIR}/distr/deb/debian ${DIR}/
+cp --force -R ${DIR}/distr/deb/$DIST/debian ${DIR}/
 
 DATE=`date -R`
 for f in `find ${DIR}/debian -type f `; do
