@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Quicklaunch
 Comment=Launch your favorite Applications
 
@@ -24,3 +25,6 @@ Comment[sk]=Spúšťanie vašich obľúbených aplikácií
 
 Name[cs]=Rychlé spouštění
 Comment[cs]=Spouštěte své oblíbené programy
+
+Name[da]=Quicklaunch
+Comment[da]=Start dine favoritprogrammer

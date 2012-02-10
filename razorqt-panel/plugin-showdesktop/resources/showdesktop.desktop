@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Show Desktop
 Comment=Minimize all windows and show the desktop
 
@@ -24,3 +25,6 @@ Comment[de]=Minimiere alle Fenster und zeige den Desktop
 
 Name[cs]=Ukázat plochu
 Comment[cs]=Zmenšit všechna okna a ukázat plochu
+
+Name[da]=Vis Skrivebord
+Comment[da]=Minimerer alle programmer og viser skrivebord

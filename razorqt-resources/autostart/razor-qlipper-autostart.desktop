@@ -3,4 +3,8 @@ Type=Application
 Name=Qlipper
 TryExec=qlipper
 Exec=qlipper
-OnlyShowIn=RAZOR;
+OnlyShowIn=Razor;
+
+Name[da]=Klippebord
+Comment[da]=Qt klippebord
+GenericName[da]=Klippebord

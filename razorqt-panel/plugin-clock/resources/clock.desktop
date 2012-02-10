@@ -1,8 +1,10 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Clock
 Comment=Clock and calendar
+
 Name[de]=Uhr
 Comment[de]=Uhr und Kalender
 
@@ -23,3 +25,6 @@ Comment[sk]=Hodiny a kalendár
 
 Name[cs]=Hodiny
 Comment[cs]=Hodiny a kalendář
+
+Name[da]=Ur
+Comment[da]=Ur og kalender

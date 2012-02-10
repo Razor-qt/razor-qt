@@ -207,8 +207,7 @@ void RazorQuickLaunch::buttonMoveLeft()
     int index = indexOfButton(btn1);
     if (index > 0)
     {
-        QuickLaunchButton *btn2 = qobject_cast<QuickLaunchButton*>(m_layout->itemAt(index-1)->widget());
-        m_layout->swapButtons(btn1, btn2);
+        switchButtons(index, index - 1);
     }
 }
 
@@ -222,10 +221,8 @@ void RazorQuickLaunch::buttonMoveRight()
     int index = indexOfButton(btn1);
     if (index < countOfButtons() - 1)
     {
-        QuickLaunchButton *btn2 = qobject_cast<QuickLaunchButton*>(m_layout->itemAt(index + 1)->widget());
-        m_layout->swapButtons(btn1, btn2);
+        switchButtons(index, index + 1);
     }
-
 }
 
 

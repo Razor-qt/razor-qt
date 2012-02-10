@@ -55,7 +55,6 @@ private:
 
     void wheelEvent(QWheelEvent* e);
     void setup();
-    void realignButtons();
 
 private slots:
     void setDesktop(int desktop);

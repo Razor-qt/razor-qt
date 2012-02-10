@@ -3,4 +3,8 @@ Type=Application
 Name=PtBatterySystemTray
 TryExec=ptbatterysystemtray
 Exec=ptbatterysystemtray
-OnlyShowIn=RAZOR;
+OnlyShowIn=Razor;
+
+Name[da]=Systembakke Batteritilstand
+Comment[da]=Viser batteritilstand fra systembakke
+GenericName[da]=Systembakke Batteritilstand

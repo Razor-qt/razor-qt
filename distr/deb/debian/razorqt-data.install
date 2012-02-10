@@ -3,4 +3,4 @@
 /usr/share/razor/themes/
 /etc/xdg/menus/*
 /usr/share/desktop-directories/
-/usr/lib/razor-xdg-tools
+/usr/lib*/razor-xdg-tools

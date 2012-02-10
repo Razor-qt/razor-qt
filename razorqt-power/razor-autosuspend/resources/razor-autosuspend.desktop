@@ -1,9 +1,11 @@
 [Desktop Entry]
 Type=Application
 Exec=razor-autosuspend
-Icon=razor-autosuspend.svg
+Icon=razor-autosuspend
 Terminal=false
-OnlyShowIn=X-RAZOR;
-Categories=Qt;System;X-RAZOR;
+Categories=Application;Qt;Utility
 Name=Razor autosuspend
 GenericName=Power management
+
+Name[da]=Automatisk slumrefunktionalitet
+GenericName[da]=Strømstyring

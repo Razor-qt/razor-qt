@@ -3,4 +3,8 @@ Type=Application
 Name=qxkb
 TryExec=qxkb
 Exec=qxkb
-OnlyShowIn=RAZOR;
+OnlyShowIn=Razor;
+
+Name[da]=Tastaturhåndtering
+Comment[da]=Håndtering af tastaturindstillinger
+GenericName[da]=Tastaturhåndtering

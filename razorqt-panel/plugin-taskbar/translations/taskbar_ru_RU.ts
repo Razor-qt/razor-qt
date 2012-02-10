@@ -4,87 +4,87 @@
 <context>
     <name>RazorTaskButton</name>
     <message>
-        <location filename="../razortaskbutton.cpp" line="360"/>
+        <location filename="../razortaskbutton.cpp" line="371"/>
         <source>Application</source>
         <translation>Программа</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="393"/>
+        <location filename="../razortaskbutton.cpp" line="404"/>
         <source>To &amp;Desktop</source>
         <translation>&amp;На рабочий стол</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="395"/>
+        <location filename="../razortaskbutton.cpp" line="406"/>
         <source>&amp;All Desktops</source>
         <translation>&amp;Все рабочие столы</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="402"/>
+        <location filename="../razortaskbutton.cpp" line="414"/>
         <source>Desktop &amp;%1</source>
         <translation>Рабочий стол &amp;%1</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="409"/>
+        <location filename="../razortaskbutton.cpp" line="421"/>
         <source>&amp;To Current Desktop</source>
         <translation>На &amp;текущий рабочий стол</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="438"/>
+        <location filename="../razortaskbutton.cpp" line="450"/>
         <source>&amp;Restore</source>
         <translation>&amp;Восстановить</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="442"/>
+        <location filename="../razortaskbutton.cpp" line="454"/>
         <source>Mi&amp;nimize</source>
         <translation>&amp;Свернуть</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="418"/>
+        <location filename="../razortaskbutton.cpp" line="430"/>
         <source>Ma&amp;ximize</source>
         <translation>Р&amp;аспахнуть</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="427"/>
+        <location filename="../razortaskbutton.cpp" line="439"/>
         <source>Maximize vertically</source>
         <translation>Распахнуть по вертикали</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="432"/>
+        <location filename="../razortaskbutton.cpp" line="444"/>
         <source>Maximize horizontally</source>
         <translation>Распахнуть по горизонтали</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="448"/>
+        <location filename="../razortaskbutton.cpp" line="460"/>
         <source>Roll down</source>
         <translation>Развернуть из заголовока</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="454"/>
+        <location filename="../razortaskbutton.cpp" line="466"/>
         <source>Roll up</source>
         <translation>Свернуть в заголовок</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="463"/>
+        <location filename="../razortaskbutton.cpp" line="475"/>
         <source>&amp;Layer</source>
         <translation>&amp;Положение</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="465"/>
+        <location filename="../razortaskbutton.cpp" line="477"/>
         <source>Always on &amp;top</source>
         <translation>Всегда на &amp;верху</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="470"/>
+        <location filename="../razortaskbutton.cpp" line="482"/>
         <source>&amp;Normal</source>
         <translation>&amp;Обычное</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="475"/>
+        <location filename="../razortaskbutton.cpp" line="487"/>
         <source>Always on &amp;bottom</source>
         <translation>Всегда в&amp;низу</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="483"/>
+        <location filename="../razortaskbutton.cpp" line="495"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
@@ -133,17 +133,17 @@
         <translation>Макс. ширина кнопки</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.cpp" line="41"/>
+        <location filename="../razortaskbarconfiguration.cpp" line="43"/>
         <source>Icon and text</source>
         <translation>Иконки и текст</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.cpp" line="42"/>
+        <location filename="../razortaskbarconfiguration.cpp" line="44"/>
         <source>Only icon</source>
         <translation>Только иконки</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.cpp" line="43"/>
+        <location filename="../razortaskbarconfiguration.cpp" line="45"/>
         <source>Only text</source>
         <translation>Только текст</translation>
     </message>

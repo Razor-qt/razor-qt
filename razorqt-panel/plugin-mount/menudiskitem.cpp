@@ -32,6 +32,9 @@
 #include <QtCore/QDebug>
 #include <QtCore/QUrl>
 
+/************************************************
+
+ ************************************************/
 MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent)
     : QWidget(parent),
       mDevice(device)
@@ -54,11 +57,19 @@ MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent)
     update();
 }
 
+
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::free()
 {
     this->deleteLater();
 }
 
+
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::update()
 {
     diskButton->setIcon(XdgIcon::fromTheme(QStringList()
@@ -71,9 +82,42 @@ void MenuDiskItem::update()
     diskButton->setText(label);
 
     setMountStatus(mDevice->isMounted());
+
+
+    this->setVisible(isUsableDevice(mDevice));
 }
 
 
+/************************************************
+
+ ************************************************/
+bool MenuDiskItem::isUsableDevice(const RazorMountDevice *device)
+{
+    switch (device->mediaType())
+    {
+    case RazorMountDevice::MediaTypeFdd:
+        return  true;
+
+    case RazorMountDevice::MediaTypeOptical:
+        return true;
+        break;
+
+    case RazorMountDevice::MediaTypePartition:
+    case RazorMountDevice::MediaTypeDrive:
+        return device->isExternal();
+        break;
+
+    default:
+        return false;
+    }
+
+    return false;
+}
+
+
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::changeEvent(QEvent *e)
 {
     QWidget::changeEvent(e);
@@ -87,12 +131,18 @@ void MenuDiskItem::changeEvent(QEvent *e)
 }
 
 
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::setMountStatus(bool is_mount)
 {
     eject->setEnabled(is_mount);
 }
 
 
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::on_diskButton_clicked()
 {
     if (!mDevice->isMounted())
@@ -104,13 +154,18 @@ void MenuDiskItem::on_diskButton_clicked()
 }
 
 
+/************************************************
 
+ ************************************************/
 void MenuDiskItem::mounted()
 {
     QDesktopServices::openUrl(QUrl(mDevice->mountPath()));
 }
 
 
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::on_eject_clicked()
 {
     mDevice->unmount();
@@ -120,6 +175,9 @@ void MenuDiskItem::on_eject_clicked()
 }
 
 
+/************************************************
+
+ ************************************************/
 void MenuDiskItem::unmounted()
 {
     if (mDevice->isEjectable())

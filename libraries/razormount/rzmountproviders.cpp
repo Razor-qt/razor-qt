@@ -33,6 +33,10 @@
 #include <QtDBus/QDBusMessage>
 #include <QtCore/QDebug>
 
+
+/************************************************
+
+ ************************************************/
 RzMountProvider::RzMountProvider(QObject *parent):
     QObject(parent),
     mIsValid(false)
@@ -40,6 +44,9 @@ RzMountProvider::RzMountProvider(QObject *parent):
 }
 
 
+/************************************************
+
+ ************************************************/
 UDiskProvider::UDiskProvider(QObject *parent):
     RzMountProvider(parent)
 {
@@ -74,6 +81,10 @@ UDiskProvider::UDiskProvider(QObject *parent):
     mIsValid = true;
 }
 
+
+/************************************************
+
+ ************************************************/
 void UDiskProvider::update()
 {
 
@@ -115,6 +126,9 @@ void UDiskProvider::update()
 }
 
 
+/************************************************
+
+ ************************************************/
 UDiskMountDevice *UDiskProvider::getDevice(const QDBusObjectPath &path) const
 {
     if (mDevicesByPath.contains(path.path()))
@@ -124,6 +138,9 @@ UDiskMountDevice *UDiskProvider::getDevice(const QDBusObjectPath &path) const
 }
 
 
+/************************************************
+
+ ************************************************/
 void UDiskProvider::addDevice(UDiskMountDevice *device)
 {
     mDevicesByPath.insert(device->udiskPath(), device);
@@ -131,6 +148,9 @@ void UDiskProvider::addDevice(UDiskMountDevice *device)
 }
 
 
+/************************************************
+
+ ************************************************/
 void UDiskProvider::delDevice(UDiskMountDevice *device)
 {
     mDevices.removeAll(device);
@@ -139,22 +159,21 @@ void UDiskProvider::delDevice(UDiskMountDevice *device)
 }
 
 
+/************************************************
+
+ ************************************************/
 void UDiskProvider::dbusDeviceAdded(const QDBusObjectPath &path)
 {
     UDiskMountDevice *device = new UDiskMountDevice(path);
 
-    if (device->isUsable())
-    {
-        addDevice(device);
-        emit deviceAdded(device);
-    }
-    else
-    {
-        delete device;
-    }
+     addDevice(device);
+     emit deviceAdded(device);
 }
 
 
+/************************************************
+
+ ************************************************/
 void UDiskProvider::dbusDeviceRemoved(const QDBusObjectPath &path)
 {
     UDiskMountDevice *device = getDevice(path);
@@ -166,6 +185,9 @@ void UDiskProvider::dbusDeviceRemoved(const QDBusObjectPath &path)
 }
 
 
+/************************************************
+
+ ************************************************/
 void UDiskProvider::dbusDeviceChanged(const QDBusObjectPath &path)
 {
     UDiskMountDevice *device = getDevice(path);
@@ -177,6 +199,9 @@ void UDiskProvider::dbusDeviceChanged(const QDBusObjectPath &path)
 }
 
 
+/************************************************
+
+ ************************************************/
 UDiskMountDevice::UDiskMountDevice(const QDBusObjectPath &path):
     RazorMountDevice(),
     mUdiskPath(path.path())
@@ -190,12 +215,17 @@ UDiskMountDevice::UDiskMountDevice(const QDBusObjectPath &path):
 }
 
 
+/************************************************
+
+ ************************************************/
 bool UDiskMountDevice::update()
 {
     bool res = false;
+    res = setDevFile(mDbus->property("DeviceFile").toString()) || res;
+
+    res = setMediaType(calcMediaType()) || res;
     res = setLabel(calcLabel()) || res;
     res = setIsExternal(calcIsExternal()) || res;
-    res = setMediaType(calcMediaType()) || res;
     res = setIconName(calcIconName()) || res;
 
     res = setIsMounted(mDbus->property("DeviceIsMounted").toBool()) || res;
@@ -219,6 +249,9 @@ bool UDiskMountDevice::update()
 }
 
 
+/************************************************
+
+ ************************************************/
 RazorMountDevice::MediaType UDiskMountDevice::calcMediaType()
 {
     if (mDbus->property("DeviceIsOpticalDisc").toBool())
@@ -226,61 +259,98 @@ RazorMountDevice::MediaType UDiskMountDevice::calcMediaType()
 
     const QString media = mDbus->property("DriveMedia").toString();
     const QString mediaCompat = mDbus->property("DriveMediaCompatibility").toString();
+    const QString idUsage = mDbus->property("IdUsage").toString();
 
-    if (media.startsWith("flash"))
-        return RazorMountDevice::MediaTypeFlash;
+    if (mDbus->property("DeviceIsDrive").toBool())
+    {
+        if (mediaCompat == "floppy")
+            return RazorMountDevice::MediaTypeFdd;
 
-    if (mediaCompat == "floppy" ) // the good ol' floppy
-        return RazorMountDevice::MediaTypeFdd;
+        if (idUsage == "filesystem")
+            return RazorMountDevice::MediaTypeDrive;
 
-    if (mDbus->property("DeviceIsDrive").toBool() ||
-        mDbus->property("DeviceIsRemovable").toBool()
-       )
-        return RazorMountDevice::MediaTypeDrive;
+        return RazorMountDevice::MediaTypeUnknown;
+    }
+
+    if (mDbus->property("DeviceIsPartition").toBool())
+    {
+        if (idUsage == "filesystem")
+            return RazorMountDevice::MediaTypePartition;
+
+        return RazorMountDevice::MediaTypeUnknown;
+    }
 
     return RazorMountDevice::MediaTypeUnknown;
 }
 
 
+/************************************************
+
+ ************************************************/
 QString UDiskMountDevice::calcLabel()
 {
-    if (mDbus->property("DeviceIsDrive").toBool())
+    const QString idLabel = mDbus->property("IdLabel").toString();
+
+    if (mMediaType ==  MediaTypeFdd)
+        return tr("Floppy drive");
+
+    if (mMediaType ==  MediaTypeOptical)
+        return idLabel;
+
+
+    const QString driveVendor = mDbus->property("DriveVendor").toString();
+    const QString driveModel  = mDbus->property("DriveModel").toString();
+    const qulonglong size = mDbus->property("DeviceSize").toULongLong();
+
+    QString label;
+    if (!idLabel.isEmpty())
     {
-        return QString("%1 %2").arg(
-                mDbus->property("DriveVendor").toString(),
-                mDbus->property("DriveModel").toString()
-               );
+        label = idLabel;
+    }
+    else
+    {
+       if (!driveVendor.isEmpty())
+            label = driveVendor;
+
+       if (!driveModel.isEmpty())
+            label += QString(" - %1").arg(driveModel);
     }
 
-    foreach (const char *i, QList<const char*>() << "IdLabel" << "DeviceFile" << "IdUuid")
-    {
-        QString s = mDbus->property(i).toString();
-        if (!s.isEmpty())
-            return s;
-    }
+    if (label.isEmpty())
+        label = mDevFile;
 
-    return "";
+    if (mSize)
+        label += QString(" [%3]").arg(sizeToString(size));
+
+    return label;
 }
 
 
+/************************************************
+
+ ************************************************/
 bool UDiskMountDevice::calcIsExternal()
 {
-    if (mDbus->property("DeviceIsSystemInternal").toBool())
-        return false;
+    return ! mDbus->property("DeviceIsSystemInternal").toBool();
+//    if (mDbus->property("DeviceIsSystemInternal").toBool())
+//        return false;
 
-    if (mDbus->property("DeviceIsMediaAvailable").toBool()
-        && mDbus->property("IdUsage").toString() == "filesystem")
-        return true;
+//    if (mDbus->property("DeviceIsMediaAvailable").toBool()
+//        && mDbus->property("IdUsage").toString() == "filesystem")
+//        return true;
 
-    if (mDbus->property("DeviceIsDrive").toBool())
-    {
-        return true;
-    }
+//    if (mDbus->property("DeviceIsDrive").toBool())
+//    {
+//        return true;
+//    }
 
-    return false;
+ //   return false;
 }
 
 
+/************************************************
+
+ ************************************************/
 QString UDiskMountDevice::calcIconName()
 {
     const QString media = mDbus->property( "DriveMedia" ).toString();
@@ -289,6 +359,7 @@ QString UDiskMountDevice::calcIconName()
     {
     // ..............................................
     case MediaTypeDrive:
+    case MediaTypePartition:
         {
             // handle drives
             const QString conn = mDbus->property( "DriveConnectionInterface" ).toString();
@@ -307,21 +378,21 @@ QString UDiskMountDevice::calcIconName()
 
 
     // ..............................................
-    case MediaTypeFlash:
-        {
-            if ( media == "flash_ms" ) // Flash & Co.
-                return "media-flash-memory-stick";
+//    case MediaTypeFlash:
+//        {
+//            if ( media == "flash_ms" ) // Flash & Co.
+//                return "media-flash-memory-stick";
 
-            if ( media == "flash_sd" ||
-                 media == "flash_sdhc" ||
-                 media == "flash_mmc" )
-                return "media-flash-sd-mmc";
+//            if ( media == "flash_sd" ||
+//                 media == "flash_sdhc" ||
+//                 media == "flash_mmc" )
+//                return "media-flash-sd-mmc";
 
-            if ( media == "flash_sm" )
-                return "media-flash-smart-media";
+//            if ( media == "flash_sm" )
+//                return "media-flash-smart-media";
 
-            return "media-flash";
-        }
+//            return "media-flash";
+//        }
 
 
     // ..............................................
@@ -353,22 +424,10 @@ QString UDiskMountDevice::calcIconName()
      return "drive-harddisk";
 }
 
-bool UDiskMountDevice::isUsable() const
-{
-    if (mMediaType == MediaTypeFdd)
-        return true;
 
-    return !mDbus->property("DeviceIsSystemInternal").toBool() &&
-            mDbus->property("DeviceIsMediaAvailable").toBool() &&
-            mDbus->property("IdUsage").toString() == "filesystem";
-}
+/************************************************
 
-
-//void UDiskMountDevice::dbusSuccess(const QDBusMessage &msg)
-//{
-//}
-
-
+ ************************************************/
 void UDiskMountDevice::dbusError(const QDBusError &err, const QDBusMessage &msg)
 {
     qWarning() << "UdisksInfo::mDbus_error" << err.message();
@@ -376,6 +435,9 @@ void UDiskMountDevice::dbusError(const QDBusError &err, const QDBusMessage &msg)
 }
 
 
+/************************************************
+
+ ************************************************/
 bool UDiskMountDevice::mount()
 {
     if (mIsMounted)
@@ -401,6 +463,9 @@ bool UDiskMountDevice::mount()
 }
 
 
+/************************************************
+
+ ************************************************/
 bool UDiskMountDevice::unmount()
 {
     if (!mIsMounted)
@@ -418,6 +483,9 @@ bool UDiskMountDevice::unmount()
 }
 
 
+/************************************************
+
+ ************************************************/
 bool UDiskMountDevice::eject()
 {
     if (!mIsMounted)

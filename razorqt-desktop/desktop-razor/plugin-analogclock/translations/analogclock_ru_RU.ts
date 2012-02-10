@@ -17,6 +17,7 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../clock.cpp" line="91"/>
         <source>Clock</source>
         <translation>Часы</translation>
     </message>

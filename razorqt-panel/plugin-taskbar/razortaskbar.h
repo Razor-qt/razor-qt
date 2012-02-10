@@ -52,6 +52,9 @@ public:
 public slots:
     void activeWindowChanged();
 
+protected:
+    void updateSizePolicy();
+
 private slots:
     void readSettings();
     void writeSettings();

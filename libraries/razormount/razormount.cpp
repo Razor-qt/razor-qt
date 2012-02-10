@@ -38,6 +38,24 @@ RazorMountDevice::RazorMountDevice():
 {
 }
 
+QString RazorMountDevice::sizeToString(qulonglong size)
+{
+    double n;
+    n = size / (1024 * 1024 * 1024);
+    if (n > 0)
+        return QObject::tr("%1 GB").arg(n, 0, 'f', 1);
+
+    n = size / (1024 * 1024);
+    if (n > 0)
+        return QObject::tr("%1 MB").arg(n, 0, 'f', 1);
+
+    n = size / (1024);
+    if (n > 0)
+        return QObject::tr("%1 KB").arg(n, 0, 'f', 1);
+
+    return QObject::tr("%1 B").arg(size);
+}
+
 
 RazorMountManager::RazorMountManager(QObject *parent):
     QObject(parent),
@@ -89,3 +107,26 @@ const RazorMountDeviceList *RazorMountManager::devices() const
 }
 
 
+QDebug operator<<(QDebug dbg, const RazorMountDevice &device)
+{
+    dbg << device.devFile();
+
+    switch (device.mediaType())
+    {
+    case RazorMountDevice::MediaTypeUnknown:    dbg<<"Type: MediaTypeUnknown";  break;
+    case RazorMountDevice::MediaTypeDrive:      dbg<<"Type: MediaTypeDrive";    break;
+    case RazorMountDevice::MediaTypePartition:  dbg<<"Type: MediaTypePartition";break;
+    case RazorMountDevice::MediaTypeFdd:        dbg<<"Type: MediaTypeFdd";      break;
+    case RazorMountDevice::MediaTypeOptical:    dbg<<"Type: MediaTypeOptical";  break;
+    default:                                    dbg<<"Type: "<<device.mediaType();break;
+    }
+    dbg << "Label: " << device.label();
+    dbg << "Mount path:" << device.mountPath();
+    return dbg.space();
+}
+
+
+QDebug operator<<(QDebug dbg, const RazorMountDevice *device)
+{
+    return operator<<(dbg, *device);
+}

@@ -5,6 +5,7 @@ Exec=razor-config-session
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-system-session-services
+
 Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
@@ -40,3 +41,7 @@ GenericName[de]=Razor Sitzungskonfiguration
 Name[cs]=Nastavení sezení Razoru
 Comment[cs]=Nastavení modulu sezení Razor-Qt
 GenericName[cs]=Nastavení sezení Razoru
+
+Name[da]=Indstilling af Razor-sessioner
+Comment[da]=Indstil Razor-Qt Sessionsmodul
+GenericName[da]=Indstilling af Razor-sessioner

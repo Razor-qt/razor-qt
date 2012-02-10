@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
+
 Name=Task Manager
 Comment=Switch between running applications
 
@@ -24,3 +25,6 @@ Comment[sk]=Prepínanie medzi bežiacimi aplikáciami
 
 Name[cs]=Správce úkolů
 Comment[cs]=Přepínání mezi běžícími programy
+
+Name[da]=Programadministrator
+Comment[da]=Skifter imellem kørende programmer
