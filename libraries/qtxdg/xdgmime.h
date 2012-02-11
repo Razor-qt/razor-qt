@@ -32,7 +32,8 @@
 #include <QtCore/QString>
 #include <QtCore/QFileInfo>
 #include <QtGui/QIcon>
-
+/*! @brief The XdgMimeInfo class provides mime information about file.
+ */
 class XdgMimeInfo
 {
 public:
