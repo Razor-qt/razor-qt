@@ -34,21 +34,31 @@
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorCpuLoad)
 
 RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-		RazorPanelPlugin(startInfo, parent)
+	RazorPanelPlugin(startInfo, parent)
 {
 	setObjectName("CpuLoad");
-	addWidget(&m_label);
-	m_label.setText("     ");
+	addWidget(&m_stuff);
 
 	getLoadCpu();
 
 	startTimer(500);
-//	setMinimumWidth(250);
-//	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 }
 
 RazorCpuLoad::~RazorCpuLoad()
 {
+}
+
+void RazorCpuLoad::resizeEvent(QResizeEvent *)
+{
+	if( panel()->isHorizontal() )
+	{
+		m_stuff.setMinimumWidth(m_stuff.height() * 0.5);
+		m_stuff.setMinimumHeight(0);
+	} else
+	{
+		m_stuff.setMinimumHeight(m_stuff.width() * 2.0);
+		m_stuff.setMinimumWidth(0);
+	}
 }
 
 
@@ -83,6 +93,8 @@ void RazorCpuLoad::getLoadCpu()
 			quint64 total = Ud + Nd + Sd + Id;
 			avg = 100 * (Ud + Nd + Sd)/total;
 
+			setToolTip(tr("Cpu load %1%").arg(avg));
+
 			break;
 		}
 	}
@@ -94,7 +106,7 @@ void RazorCpuLoad::timerEvent(QTimerEvent *event)
 	update();
 }
 
-void RazorCpuLoad::paintEvent ( QPaintEvent * event )
+void RazorCpuLoad::paintEvent ( QPaintEvent * )
 {
 	QPainter p(this);
 	QPen pen;
@@ -107,7 +119,6 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * event )
 	shade.setColorAt(1, Qt::green);
 
 	float o = rect().height()*(1-avg*0.01);
-//	QMessageBox::information(this, "error", QString::number(o));
 	QRect r = rect();
 
 	QRect r1(r.left(), r.top()+o, r.width(), r.height()-o );

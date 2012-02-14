@@ -42,10 +42,11 @@ public:
 protected:
 	void virtual timerEvent(QTimerEvent *event);
 	void virtual paintEvent ( QPaintEvent * event );
+	void virtual resizeEvent(QResizeEvent *);
 
 private:
 	void getLoadCpu();
-	QLabel m_label;
+	QWidget m_stuff;
 
 	quint64 U1, N1, S1, I1;
 	int avg;
