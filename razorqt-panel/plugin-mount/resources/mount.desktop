@@ -28,3 +28,12 @@ Comment[cs]=Správa odstranitelných zařízení (USB, CD, DVD, ...)
 
 Name[da]=Flytbare enheder
 Comment[da]=Håndtering af flytbare enheder og medier (USB, CD, DVD, ...)
+
+Name[sr]=Уклоњиви медији
+Name[sr@ijekavian]=Уклоњиви медији
+Name[sr@latin]=Uklonjivi mediji
+Name[sr@ijekavianlatin]=Uklonjivi mediji
+Comment[sr]=Руковаоц уклоњивим медијима (УСБ, ЦД, ДВД...)
+Comment[sr@ijekavian]=Руковаоц уклоњивим медијима (УСБ, ЦД, ДВД...)
+Comment[sr@latin]=Rukovaoc uklonjivim medijima (USB, CD, DVD...)
+Comment[sr@ijekavianlatin]=Rukovaoc uklonjivim medijima (USB, CD, DVD...)

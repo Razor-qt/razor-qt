@@ -28,3 +28,12 @@ Comment[cs]=Přístup ke skrytým programům zmenšeným v oznamovací oblasti p
 
 Name[da]=Systembakke
 Comment[da]=Adgang til skjulte programmer der er minimeret til systembakken
+
+Name[sr]=Системска касета
+Name[sr@ijekavian]=Системска касета
+Name[sr@latin]=Sistemska kaseta
+Name[sr@ijekavianlatin]=Sistemska kaseta
+Comment[sr]=Приступ скривеним програмима минимизованим у системску касету
+Comment[sr@ijekavian]=Приступ скривеним програмима минимизованим у системску касету
+Comment[sr@latin]=Pristup skrivenim programima minimizovanim u sistemsku kasetu
+Comment[sr@ijekavianlatin]=Pristup skrivenim programima minimizovanim u sistemsku kasetu

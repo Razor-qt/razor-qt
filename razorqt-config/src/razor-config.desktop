@@ -41,3 +41,16 @@ GenericName[it]=Configura Razor
 Name[da]=Razor Indstillingscenter
 Comment[da]=Indstil Razor-Qt moduler
 GenericName[da]=Razor Indstillingscenter
+
+Name[sr]=Центар за подешавање
+Name[sr@ijekavian]=Центар за подешавање
+Name[sr@latin]=Centar za podešavanje
+Name[sr@ijekavianlatin]=Centar za podešavanje
+Comment[sr]=Подесите Рејзорове модуле
+Comment[sr@ijekavian]=Подесите Рејзорове модуле
+Comment[sr@latin]=Podesite Rejzorove module
+Comment[sr@ijekavianlatin]=Podesite Rejzorove module
+GenericName[sr]=Подешавање Рејзора
+GenericName[sr@ijekavian]=Подешавање Рејзора
+GenericName[sr@latin]=Podešavanje Rejzora
+GenericName[sr@ijekavianlatin]=Podešavanje Rejzora

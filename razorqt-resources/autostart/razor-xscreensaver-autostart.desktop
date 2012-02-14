@@ -2,6 +2,10 @@
 Type=Application
 Version=1.0
 Name=XScreenSaver
+Name[sr]=Икс-ЧуварЕкрана
+Name[sr@ijekavian]=Икс-ЧуварЕкрана
+Name[sr@latin]=Iks-ČuvarEkrana
+Name[sr@ijekavianlatin]=Iks-ČuvarEkrana
 TryExec=xscreensaver
 Exec=xscreensaver
 OnlyShowIn=Razor;

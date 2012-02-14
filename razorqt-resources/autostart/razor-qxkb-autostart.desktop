@@ -1,6 +1,10 @@
 [Desktop Entry]
 Type=Application
 Name=qxkb
+Name[sr]=КјуИксКБ
+Name[sr@ijekavian]=КјуИксКБ
+Name[sr@latin]=QXKB
+Name[sr@ijekavianlatin]=QXKB
 TryExec=qxkb
 Exec=qxkb
 OnlyShowIn=Razor;

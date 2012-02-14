@@ -28,3 +28,12 @@ Comment[cs]=Hlavní nabídka
 
 Name[da]=Programmenu
 Comment[da]=Menubaseret programstarter
+
+Name[sr]=Мени програма
+Name[sr@ijekavian]=Мени програма
+Name[sr@latin]=Meni programa
+Name[sr@ijekavianlatin]=Meni programa
+Comment[sr]=Мени покретача програма
+Comment[sr@ijekavian]=Мени покретача програма
+Comment[sr@latin]=Meni pokretača programa
+Comment[sr@ijekavianlatin]=Meni pokretača programa

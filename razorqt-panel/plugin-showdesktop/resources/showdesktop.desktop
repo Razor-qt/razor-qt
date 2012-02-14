@@ -28,3 +28,12 @@ Comment[cs]=Zmenšit všechna okna a ukázat plochu
 
 Name[da]=Vis Skrivebord
 Comment[da]=Minimerer alle programmer og viser skrivebord
+
+Name[sr]=Приказ површи
+Name[sr@ijekavian]=Приказ површи
+Name[sr@latin]=Prikaz površi
+Name[sr@ijekavianlatin]=Prikaz površi
+Comment[sr]=Минимизуј све прозоре и прикажи радну површ
+Comment[sr@ijekavian]=Минимизуј све прозоре и прикажи радну површ
+Comment[sr@latin]=Minimizuj sve prozore i prikaži radnu površ
+Comment[sr@ijekavianlatin]=Minimizuj sve prozore i prikaži radnu površ

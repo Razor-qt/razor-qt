@@ -24,3 +24,12 @@ Comment[cs]=Zobrazí formátovaný text na obrazovce
 
 Name[da]=Hello World
 Comment[da]=Vis formateret test på skærmen
+
+Name[sr]=Здраво свете
+Name[sr@ijekavian]=Здраво свијете
+Name[sr@latin]=Zdravo svete
+Name[sr@ijekavianlatin]=Zdravo svijete
+Comment[sr]=Приказ обогаћеног текста на екрану
+Comment[sr@ijekavian]=Приказ обогаћеног текста на екрану
+Comment[sr@latin]=Prikaz obogaćenog teksta na ekranu
+Comment[sr@ijekavianlatin]=Prikaz obogaćenog teksta na ekranu

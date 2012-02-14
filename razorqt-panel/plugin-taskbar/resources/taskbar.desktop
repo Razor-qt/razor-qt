@@ -28,3 +28,12 @@ Comment[cs]=Přepínání mezi běžícími programy
 
 Name[da]=Programadministrator
 Comment[da]=Skifter imellem kørende programmer
+
+Name[sr]=Менаџер задатака
+Name[sr@ijekavian]=Менаџер задатака
+Name[sr@latin]=Menadžer zadataka
+Name[sr@ijekavianlatin]=Menadžer zadataka
+Comment[sr]=Пребацујте између програма у раду
+Comment[sr@ijekavian]=Пребацујте између програма у раду
+Comment[sr@latin]=Prebacujte između programa u radu
+Comment[sr@ijekavianlatin]=Prebacujte između programa u radu

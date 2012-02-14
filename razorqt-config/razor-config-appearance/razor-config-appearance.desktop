@@ -31,6 +31,19 @@ Name[sk]=Nastavenie vzhľadu
 Comment[sk]=Nastavenie vzhľadu prostredia Razor
 GenericName[sk]=Nastavenie vzhľadu
 
+Name[sr]=Подешавање изгледа Рејзора
+Name[sr@ijekavian]=Подешавање изгледа Рејзора
+Name[sr@latin]=Podešavanje izgleda Rejzora
+Name[sr@ijekavianlatin]=Podešavanje izgleda Rejzora
+Comment[sr]=Подесите изглед Рејзорове радне површи
+Comment[sr@ijekavian]=Подесите изглед Рејзорове радне површи
+Comment[sr@latin]=Podesite izgled Rejzorove radne površi
+Comment[sr@ijekavianlatin]=Podesite izgled Rejzorove radne površi
+GenericName[sr]=Подешавање изгледа
+GenericName[sr@ijekavian]=Подешавање изгледа
+GenericName[sr@latin]=Podešavanje izgleda
+GenericName[sr@ijekavianlatin]=Podešavanje izgleda
+
 Name[cs]=Nastavení vzhledu
 Comment[cs]=Nastavení vzhledu plochy Razor
 GenericName[cs]=Nastavení vzhledu

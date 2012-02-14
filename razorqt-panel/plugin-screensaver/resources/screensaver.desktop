@@ -28,3 +28,12 @@ Comment[cs]=Zapne šetřič obrazovky a/nebo zamkne obrazovku
 
 Name[da]=Pauseskærm
 Comment[da]=Aktiverer en pauseskærm og/eller låser skærmen
+
+Name[sr]=Чувар екрана
+Name[sr@ijekavian]=Чувар екрана
+Name[sr@latin]=Čuvar ekrana
+Name[sr@ijekavianlatin]=Čuvar ekrana
+Comment[sr]=Активирајте чувара екрана и/или закључајте екран
+Comment[sr@ijekavian]=Активирајте чувара екрана и/или закључајте екран
+Comment[sr@latin]=Aktivirajte čuvara ekrana i/ili zaključajte ekran
+Comment[sr@ijekavianlatin]=Aktivirajte čuvara ekrana i/ili zaključajte ekran
