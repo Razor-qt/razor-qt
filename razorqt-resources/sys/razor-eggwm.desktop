@@ -26,3 +26,12 @@ Comment[cs]=Prostředí pracovní plochy na Qt4
 
 Name[da]=Razor Desktop (eggwm)
 Comment[da]=Qt4 Desktop Environment
+
+Name[sr]=Рејзорова радна површ (ЕгВМ)
+Name[sr@ijekavian]=Рејзорова радна површ (ЕгВМ)
+Name[sr@latin]=Rejzorova radna površ (EgVM)
+Name[sr@ijekavianlatin]=Rejzorova radna površ (EgVM)
+Comment[sr]=Кјут4 окружење радне површи
+Comment[sr@ijekavian]=Кјут4 окружење радне површи
+Comment[sr@latin]=Qt4 okruženje radne površi
+Comment[sr@ijekavianlatin]=Qt4 okruženje radne površi

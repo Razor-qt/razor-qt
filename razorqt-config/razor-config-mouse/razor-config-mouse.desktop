@@ -45,3 +45,16 @@ GenericName[cs]=Nastavení myši
 Name[da]=Indstilling af Razor Mus
 Comment[da]=Indstilling af X11 mus
 GenericName[da]=Indstilling af Razor Mus
+
+Name[sr]=Подешавање миша
+Name[sr@ijekavian]=Подешавање миша
+Name[sr@latin]=Podešavanje miša
+Name[sr@ijekavianlatin]=Podešavanje miša
+Comment[sr]=Подесите Икс11 миш за Рејзор
+Comment[sr@ijekavian]=Подесите Икс11 миш за Рејзор
+Comment[sr@latin]=Podesite X11 miš za Rejzor
+Comment[sr@ijekavianlatin]=Podesite X11 miš za Rejzor
+GenericName[sr]=Подешавање миша
+GenericName[sr@ijekavian]=Подешавање миша
+GenericName[sr@latin]=Podešavanje miša
+GenericName[sr@ijekavianlatin]=Podešavanje miša

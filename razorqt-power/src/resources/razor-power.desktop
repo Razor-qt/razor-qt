@@ -14,3 +14,12 @@ GenericName[ru]=Выход из системы
 
 Name[da]=Forlad
 GenericName[da]=Forlad systemet
+
+Name[sr]=Напуштање
+Name[sr@ijekavian]=Напуштање
+Name[sr@latin]=Napuštanje
+Name[sr@ijekavianlatin]=Napuštanje
+GenericName[sr]=Напусти систем
+GenericName[sr@ijekavian]=Напусти систем
+GenericName[sr@latin]=Napusti sistem
+GenericName[sr@ijekavianlatin]=Napusti sistem

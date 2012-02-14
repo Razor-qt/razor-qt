@@ -25,3 +25,12 @@ Comment[cs]=Zobrazí obsah vybraného adresáře jako ikony
 
 Name[da]=Ikonvisning
 Comment[da]=Fremviser indhold af specifieret folder, som ikoner
+
+Name[sr]=Приказ икона
+Name[sr@ijekavian]=Приказ икона
+Name[sr@latin]=Prikaz ikona
+Name[sr@ijekavianlatin]=Prikaz ikona
+Comment[sr]=Приказ садржаја (као икона) одређене фасцикле
+Comment[sr@ijekavian]=Приказ садржаја (као икона) одређене фасцикле
+Comment[sr@latin]=Prikaz sadržaja (kao ikona) određene fascikle
+Comment[sr@ijekavianlatin]=Prikaz sadržaja (kao ikona) određene fascikle

@@ -1,6 +1,10 @@
 [Desktop Entry]
 Type=Application
 Name=Qlipper
+Name[sr]=Кјулипер
+Name[sr@ijekavian]=Кјулипер
+Name[sr@latin]=Kjuliper
+Name[sr@ijekavianlatin]=Kjuliper
 TryExec=qlipper
 Exec=qlipper
 OnlyShowIn=Razor;

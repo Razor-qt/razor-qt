@@ -6,3 +6,12 @@ Comment=Screen notepad
 
 Name[ru]=Блокнот
 Comment[ru]=Экранный блокнот
+
+Name[sr]=Бележница
+Name[sr@ijekavian]=Биљежница
+Name[sr@latin]=Beležnica
+Name[sr@ijekavianlatin]=Bilježnica
+Comment[sr]=Екранска бележница
+Comment[sr@ijekavian]=Екранска биљежница
+Comment[sr@latin]=Ekranska beležnica
+Comment[sr@ijekavianlatin]=Ekranska bilježnica
