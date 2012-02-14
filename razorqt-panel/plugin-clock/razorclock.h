@@ -75,7 +75,6 @@ private:
     bool showDate;
 
 private slots:
-    void confWindowDestroyed();
     void updateMinWidth();
 };
 

@@ -55,10 +55,6 @@ public slots:
 protected:
     void updateSizePolicy();
 
-private slots:
-    void readSettings();
-    void writeSettings();
-
 protected slots:
     virtual void settigsChanged();
     virtual void showConfigureDialog();

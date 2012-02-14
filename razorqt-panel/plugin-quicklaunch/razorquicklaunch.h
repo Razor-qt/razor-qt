@@ -66,8 +66,6 @@ private:
     void saveSettings();
 
 private slots:
-    //! run command in the action
-    void execAction(QAction*);
     void addButton(QuickLaunchAction* action);
     void switchButtons(int,int);
     void buttonDeleted(int);
