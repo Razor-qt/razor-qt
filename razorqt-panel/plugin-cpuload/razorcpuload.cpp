@@ -26,7 +26,6 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razorcpuload.h"
-#include <QtGui/QMessageBox>
 #include <QtCore>
 #include <QPainter>
 #include <QLinearGradient>
@@ -75,25 +74,25 @@ void RazorCpuLoad::getLoadCpu()
 		if( line.startsWith("cpu "))
 		{
 			QStringList params = line.split(QRegExp("[ \t]+"));
-			quint64 U0 = U1;
-			quint64 N0 = N1;
-			quint64 S0 = S1;
-			quint64 I0 = I1;
+			quint64 oldUser		= currentUser;
+			quint64 oldNice		= currentNice;
+			quint64 oldSystem	= currentSystem;
+			quint64 oldIdle		= currentIdle;
 
-			U1 = params[1].toInt();
-			N1 = params[2].toInt();
-			S1 = params[3].toInt();
-			I1 = params[4].toInt();
+			currentUser = params[1].toInt();
+			currentNice = params[2].toInt();
+			currentSystem= params[3].toInt();
+			currentIdle	= params[4].toInt();
 
-			quint64 Ud = U1 - U0;
-			quint64 Nd = N1 - N0;
-			quint64 Sd = S1 - S0;
-			quint64 Id = I1 - I0;
+			quint64 deltaUser = currentUser - oldUser;
+			quint64 deltaNice = currentNice - oldNice;
+			quint64 deltaSystem= currentSystem - oldSystem;
+			quint64 deltaIdle = currentIdle - oldIdle;
 
-			quint64 total = Ud + Nd + Sd + Id;
-			avg = 100 * (Ud + Nd + Sd)/total;
+			quint64 total = deltaUser+deltaNice+deltaSystem+deltaIdle;
+			m_avg = 100 * (deltaUser+deltaNice+deltaSystem)/total;
 
-			setToolTip(tr("Cpu load %1%").arg(avg));
+			setToolTip(tr("Cpu load %1%").arg(m_avg));
 
 			break;
 		}
@@ -118,11 +117,11 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 	shade.setColorAt(0, Qt::red);
 	shade.setColorAt(1, Qt::green);
 
-	float o = rect().height()*(1-avg*0.01);
-	QRect r = rect();
+	float o = rect().height()*(1-m_avg*0.01);
+	QRectF r = rect();
 
-	QRect r1(r.left(), r.top()+o, r.width(), r.height()-o );
+	QRectF r1(r.left(), r.top()+o, r.width(), r.height()-o );
 	p.fillRect(r1, shade);
-	p.drawText(rect(), Qt::AlignCenter, QString::number(avg));
+	p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
 }
 
