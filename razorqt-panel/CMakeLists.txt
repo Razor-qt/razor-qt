@@ -112,10 +112,16 @@ if (HELLOWORLD_PLUGIN)
 	add_subdirectory(plugin-helloworld)
 endif (HELLOWORLD_PLUGIN)
 
-if (CPULOAD_PLUGIN)
-	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "CpuLoad")
-	add_subdirectory(plugin-cpuload)
-endif (CPULOAD_PLUGIN)
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	if (CPULOAD_PLUGIN)
+		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "CpuLoad")
+		add_subdirectory(plugin-cpuload)
+	endif (CPULOAD_PLUGIN)
+
+    SET(OperatingSystem "Linux")
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux") 
+
+
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
