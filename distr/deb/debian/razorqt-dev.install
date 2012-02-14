@@ -2,4 +2,4 @@
 /usr/include/razorqt/
 /usr/include/razorqxt/
 /usr/bin/razor-x11info
-/usr/lib64/pkgconfig/razor*.pc
+/usr/lib*/pkgconfig/razor*.pc

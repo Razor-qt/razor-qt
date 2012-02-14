@@ -11,8 +11,9 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
     libxdamage-dev,
     libudev-dev,
     libxcursor-dev,
-%ifnot lucid maverick	
+%ifnot lucid maverick
     libpolkit-agent-1-dev,
+    libpolkit-qt-1-dev,
 %endif
     zlib1g-dev
 Standards-Version: 3.9.1
@@ -197,8 +198,8 @@ Depends: ${shlibs:Depends},  ${misc:Depends},
   razorqt-data (= ${source:Version})
 Replaces: razor-qt
 Conflicts: razor-qt
-Description:A lightweight PolicyKit agent primarily 
- writen for Razor-qt DE. But it can be used 
+Description:A lightweight PolicyKit agent primarily
+ writen for Razor-qt DE. But it can be used
  standalone as well.
  .
  This package is part of the Razor-Qt.
