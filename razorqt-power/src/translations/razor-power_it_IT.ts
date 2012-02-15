@@ -16,7 +16,7 @@
     <message>
         <location filename="../dialog.ui" line="38"/>
         <source>Logout</source>
-        <translation>Esci</translation>
+        <translation>Termina sessione</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="54"/>
