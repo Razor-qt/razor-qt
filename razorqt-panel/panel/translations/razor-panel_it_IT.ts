@@ -27,7 +27,7 @@
     <message>
         <location filename="../configpaneldialog.ui" line="41"/>
         <source>Alignment:</source>
-        <translation>Allinemento:</translation>
+        <translation>Allineamento:</translation>
     </message>
     <message>
         <location filename="../configpaneldialog.ui" line="48"/>
