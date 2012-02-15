@@ -38,6 +38,8 @@
 #include <QMessageBox>
 #include <QUuid>
 
+#include <QObjectList>
+
 #include "razorworkspace.h"
 #include "workspacemanager.h"
 #include "desktopwidgetplugin.h"
@@ -90,7 +92,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     setRenderHint(QPainter::Antialiasing);
     setRenderHint(QPainter::TextAntialiasing);
     setRenderHint(QPainter::SmoothPixmapTransform);
-    setRenderHint(QPainter::HighQualityAntialiasing);
+    //setRenderHint(QPainter::HighQualityAntialiasing);
     
     setDragMode(QGraphicsView::RubberBandDrag);
     
@@ -171,7 +173,6 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
             qWarning() << QString("Plugin \"%1\" not found.").arg(libName);
             continue;
         }
-
         QLibrary* lib = loadPluginLib(list.first());
         if (!lib)
         {
@@ -328,22 +329,31 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 
 void RazorWorkSpace::wheelEvent(QWheelEvent * e)
 {
-    if (!m_wheelDesktopSwitch)
-    {
-        QGraphicsView::wheelEvent(e);
-        return;
+    bool undMouse = true;
+    QList<QGraphicsItem*> items = m_scene->items();
+	QWidget *wid;
+    foreach(QGraphicsItem *item, items) {
+        DesktopWidgetPlugin * plug = getPluginFromItem(item);
+		wid = dynamic_cast<QWidget *>(plug);
+		if(wid && (wid->underMouse())) {
+			undMouse = false;
+			break;
+		}
     }
+    if(undMouse) {
 
-    int max = xfitMan().getNumDesktop() - 1;
-    int delta = e->delta() > 0 ? 1 : -1;
-    int current = xfitMan().getActiveDesktop() + delta;
-    
-    if (current > max)
-        current = 0;
-    else if (current < 0)
-        current = max;
+		int max = xfitMan().getNumDesktop() - 1;
+		int delta = e->delta() > 0 ? 1 : -1;
+		int current = xfitMan().getActiveDesktop() + delta;
+		
+		if (current > max)
+			current = 0;
+		else if (current < 0)
+			current = max;
 
-    xfitMan().setActiveDesktop(current);
+		xfitMan().setActiveDesktop(current);
+	}
+	QGraphicsView::wheelEvent(e);
 }
 
 void RazorWorkSpace::arrangeWidgets(bool start)
