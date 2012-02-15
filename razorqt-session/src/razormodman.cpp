@@ -33,6 +33,7 @@
 #include <QDBusInterface>
 #include <QCoreApplication>
 #include <QMessageBox>
+#include <QtGui/QSystemTrayIcon>
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>
 
@@ -129,10 +130,13 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     }
     s.endGroup();
 
-    // HACK: ensure all is prepared and running for 3rd party apps.
-    //       There is always some chance to start an app when eg. panel won't be ready yet.
-    //       I faced this issue with qsynergy (petr).
-    sleep(2); // a guess-what constant...
+    waitCnt = 300;
+    while (!QSystemTrayIcon::isSystemTrayAvailable())
+    {
+        qWarning() << "******************** Wait for tray" << waitCnt;
+        waitCnt--;
+        usleep(100000);
+    }
 
     // XDG autostart
     foreach (XdgDesktopFile f, XdgAutoStart::desktopFileList())
