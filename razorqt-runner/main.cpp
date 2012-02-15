@@ -26,14 +26,14 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include <QtGui/QApplication>
+#include <razorqt/razorapplication.h>
 #include "razortranslate.h"
 #include "dialog.h"
 
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    RazorApplication a(argc, argv, "razor-runner/razor-runner");
     a.setQuitOnLastWindowClosed(false);
 
     TRANSLATE_APP;

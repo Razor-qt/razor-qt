@@ -14,7 +14,7 @@
 #include <razorqt/razorsettings.h>
 #include "main.h"
 
-#include <QApplication>
+#include <razorqt/razorapplication.h>
 #include <QFile>
 #include <QImage>
 #include <QString>
@@ -28,9 +28,7 @@ int main (int argc, char *argv[]) {
 //  QTextCodec::setCodecForCStrings(QTextCodec::codecForName("koi8-r"));
 //  QTextCodec::setCodecForLocale(QTextCodec::codecForName("koi8-r"));
 
-  QApplication app(argc, argv);
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+    RazorApplication app(argc, argv);
 
   //qDebug() << findDefaultTheme() << getCurrentTheme();
 

@@ -29,11 +29,11 @@
 #ifndef RAZORPANELAPPLICATION_H
 #define RAZORPANELAPPLICATION_H
 
-#include <QApplication>
+#include <razorqt/razorapplication.h>
 
 class RazorPanel;
 
-class RazorPanelApplication : public QApplication
+class RazorPanelApplication : public RazorApplication
 {
     Q_OBJECT
 public:
