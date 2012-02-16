@@ -52,6 +52,7 @@
 #include <razorqt/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <qtxdg/xdgdirs.h>
+#include <qtxdg/xdgicon.h>
 
 RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, QWidget* parent)
     : QGraphicsView(parent),
@@ -101,6 +102,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     setCacheMode(QGraphicsView::CacheBackground);
     
     m_actArrangeWidgets = new QAction(tr("Edit Desktop..."), this);
+    m_actArrangeWidgets->setIcon(XdgIcon::fromTheme("preferences-desktop-display"));
     m_actArrangeWidgets->setCheckable(true);
     connect(m_actArrangeWidgets, SIGNAL(toggled(bool)),
             this, SLOT(arrangeWidgets(bool)));
@@ -118,10 +120,12 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
             this, SLOT(configurePlugin()));
             
     m_actSetbackground = new QAction(tr("Set Desktop Background..."), this);
+    m_actSetbackground->setIcon(XdgIcon::fromTheme("preferences-desktop-wallpaper"));
     connect(m_actSetbackground, SIGNAL(triggered()),
             this, SLOT(setDesktopBackground()));
             
     m_actAbout = new QAction(tr("About Razor..."), this);
+    m_actAbout->setIcon(XdgIcon::fromTheme("help-browser"));
     connect(m_actAbout, SIGNAL(triggered()), this, SLOT(about()));
 }
 

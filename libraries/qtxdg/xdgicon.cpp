@@ -152,6 +152,25 @@ QIcon XdgIcon::fromTheme(const QStringList& iconNames, const QIcon& fallback)
 /************************************************
 
  ************************************************/
+QIcon XdgIcon::fromTheme(const QString &iconName,
+                         const QString &fallbackIcon1,
+                         const QString &fallbackIcon2,
+                         const QString &fallbackIcon3,
+                         const QString &fallbackIcon4)
+{
+    QStringList icons;
+    icons << iconName;
+    if (!fallbackIcon1.isEmpty())   icons << fallbackIcon1;
+    if (!fallbackIcon2.isEmpty())   icons << fallbackIcon2;
+    if (!fallbackIcon3.isEmpty())   icons << fallbackIcon3;
+    if (!fallbackIcon4.isEmpty())   icons << fallbackIcon4;
+
+    return fromTheme(icons);
+}
+
+/************************************************
+
+ ************************************************/
 QIcon XdgIcon::defaultApplicationIcon()
 {
     return fromTheme(DEFAULT_APP_ICON);
