@@ -34,6 +34,7 @@
 #include <QHBoxLayout>
 #include <QTextEdit>
 #include <QToolButton>
+#include <QString>
 
 class Notepad;
 
@@ -45,16 +46,19 @@ Q_OBJECT
 	QTextEdit *edit;
 	QVBoxLayout *layout;
 	QHBoxLayout *panelLayout;
-	SaveFunctionPointer saveText;
+	SaveFunctionPointer saveText, rpnt;
 	Notepad *pad;
 	QWidget *panel;
-        QToolButton *bold, *italic, *underline, *strikethrough, *leftSided, *centered, *rightSided, *justified;
+    QToolButton *bold, *italic, *underline, *strikethrough, *leftSided, *centered, *rightSided, *justified;
 public:
-    NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent = 0);
+    NotepadWin(Notepad *notepad, SaveFunctionPointer sv, SaveFunctionPointer rpnt, QWidget *parent = 0);
 
     void setParentSize(const QSizeF &size);
 	QString text();
 	void setText(QString &text);
+
+protected:
+	void paintEvent(QPaintEvent *event);
 
 private slots:
 	void textChanged();

@@ -38,7 +38,6 @@
 #include <qtxdg/xdgmenu.h>
 #include "arrangeitem.h"
 
-
 /**
  * @file razorworkspace.h
  * @brief declares class Razorworkspace
@@ -70,7 +69,7 @@ protected:
     void wheelEvent(QWheelEvent* e);
 
 private:
-    
+   
     enum Mode {
         ModeNormal,
         ModeArrange
@@ -85,14 +84,14 @@ private:
     Mode m_mode;
     QMenu *m_menu;
     XdgMenu m_xdgMenu;
-    
+
     QAction * m_actArrangeWidgets;
     QAction * m_actAddNewPlugin;
     QAction * m_actRemovePlugin;
     QAction * m_actConfigurePlugin;
     QAction * m_actSetbackground;
     QAction * m_actAbout;
-    
+
     ArrangeItem * m_arrangeRoot;
     QList<ArrangeItem*> m_arrangeList;
     
