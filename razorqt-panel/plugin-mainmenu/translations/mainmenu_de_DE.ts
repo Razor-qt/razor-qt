@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de_DE" version="2.0">
 <context>
     <name>RazorMainMenu</name>
     <message>
-        <location filename="../razormainmenu.cpp" line="178"/>
+        <location filename="../razormainmenu.cpp" line="179"/>
         <source>Leave</source>
         <translation>Verlassen</translation>
     </message>

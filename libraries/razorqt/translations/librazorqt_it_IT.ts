@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it_IT">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.0">
 <context>
     <name>AddPluginDialog</name>
     <message>
@@ -74,45 +72,38 @@
     <message>
         <location filename="../powermanager.cpp" line="161"/>
         <source>Razor Session Reboot</source>
-        <translatorcomment>Riavvia la sessione Razor</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="162"/>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
-        <translatorcomment>Vuoi davvero riavviare il computer? Eventuali modifiche a documenti non salvati saranno cancellate</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="173"/>
         <source>Razor Session Shutdown</source>
-        <translatorcomment>Spegni la sessione Razor</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="174"/>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
-        <translatorcomment>Vuoi davvero spegnere il computer? Eventuali modifiche a documenti non salvati saranno cancellate</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="185"/>
         <source>Razor Session Logout</source>
-        <translatorcomment>Logout dalla sessione Razor</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="186"/>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
-        <translatorcomment>Vuoi davvero  eseguire il logout? Eventuali modifiche a documenti non salvati saranno cancellate</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="197"/>
         <location filename="../powermanager.cpp" line="202"/>
         <source>Razor Power Manager Error</source>
-        <translatorcomment>Errore del gestore di energia Razor</translatorcomment>
-        <translation></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../powermanager.cpp" line="197"/>
@@ -126,6 +117,14 @@
     </message>
 </context>
 <context>
+    <name>RazorConfigDialog</name>
+    <message>
+        <location filename="../razorconfigdialog.ui" line="6"/>
+        <source>Dialog</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>RazorShortcutButton</name>
     <message>
         <location filename="../razorshortcutbutton.cpp" line="49"/>
@@ -133,7 +132,7 @@
         <translation>Pulisci</translation>
     </message>
     <message>
-        <location filename="../razorshortcutbutton.cpp" line="161"/>
+        <location filename="../razorshortcutbutton.cpp" line="199"/>
         <source>None</source>
         <translation>Nessuna</translation>
     </message>

@@ -1,14 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
-<context>
-    <name>Clock</name>
-    <message>
-        <location filename="../clock.cpp" line="89"/>
-        <source>Clock</source>
-        <translation>时钟</translation>
-    </message>
-</context>
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
 <context>
     <name>ConfigureDialog</name>
     <message>
@@ -20,6 +10,14 @@
         <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
         <translation>显示&amp;秒针</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../clock.cpp" line="91"/>
+        <source>Clock</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

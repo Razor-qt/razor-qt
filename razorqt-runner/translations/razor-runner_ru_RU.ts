@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru_RU" version="2.0">
 <context>
     <name>ConfigureDialog</name>
     <message>
@@ -62,7 +60,7 @@
         <translation>Настроить razor-runner</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="291"/>
+        <location filename="../dialog.cpp" line="296"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>Нажмите &quot;%1&quot; чтобы увидеть диалог.</translation>
     </message>

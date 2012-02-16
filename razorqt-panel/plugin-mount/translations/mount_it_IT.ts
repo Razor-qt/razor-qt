@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it_IT">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.0">
 <context>
     <name>MenuDiskItem</name>
     <message>
@@ -17,22 +15,22 @@
 <context>
     <name>MountButton</name>
     <message>
-        <location filename="../mountbutton.cpp" line="160"/>
+        <location filename="../mountbutton.cpp" line="149"/>
         <source>Removable media/devices manager</source>
         <translation>Gestore di dispositivi removibili</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="218"/>
+        <location filename="../mountbutton.cpp" line="188"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
         <translation>Il dispositivo &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; è connesso.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="235"/>
+        <location filename="../mountbutton.cpp" line="207"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Il dispositivo &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; è stato rimosso.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="316"/>
+        <location filename="../mountbutton.cpp" line="235"/>
         <source>No devices Available.</source>
         <translation>Nessun dispositivo disponibile.</translation>
     </message>

@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs_CZ">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs_CZ" version="2.0">
 <context>
     <name>RazorMainMenu</name>
     <message>
-        <location filename="../razormainmenu.cpp" line="170"/>
+        <location filename="../razormainmenu.cpp" line="179"/>
         <source>Leave</source>
         <translation>Opustit</translation>
     </message>
@@ -43,12 +41,22 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../razormainmenuconfiguration.cpp" line="83"/>
+        <location filename="../razormainmenuconfiguration.ui" line="95"/>
+        <source>Keyboard Shortcut</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../razormainmenuconfiguration.ui" line="101"/>
+        <source>Click the button to record shortcut:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Choose menu file</source>
         <translation>Vybrat soubor s nabídkou</translation>
     </message>
     <message>
-        <location filename="../razormainmenuconfiguration.cpp" line="83"/>
+        <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Menu files (*.menu)</source>
         <translation>Soubory s nabídkami (*.menu)</translation>
     </message>

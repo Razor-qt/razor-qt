@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="el_GR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el_GR" version="2.0">
 <context>
     <name>MenuDiskItem</name>
     <message>
@@ -22,17 +20,17 @@
         <translation>Διαχειριστής αφαιρούμενων μέσων/συσκευών</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="187"/>
+        <location filename="../mountbutton.cpp" line="188"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
         <translation>Συνδέθηκε η συσκευή &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="205"/>
+        <location filename="../mountbutton.cpp" line="207"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Αφαιρέθηκε η συσκευή &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="233"/>
+        <location filename="../mountbutton.cpp" line="235"/>
         <source>No devices Available.</source>
         <translation>Καμία διαθέσιμη συσκευή.</translation>
     </message>

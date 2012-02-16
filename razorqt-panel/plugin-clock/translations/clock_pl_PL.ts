@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl_PL">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl_PL" version="2.0">
 <context>
     <name>RazorClockConfiguration</name>
     <message>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="da_DK">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="da_DK" version="2.0">
 <context>
     <name>MenuDiskItem</name>
     <message>
@@ -22,17 +20,17 @@
         <translation>Håndtering af flytbare medier</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="187"/>
+        <location filename="../mountbutton.cpp" line="188"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
         <translation>Enheden &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; er forbundet.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="205"/>
+        <location filename="../mountbutton.cpp" line="207"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Enheden &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; er fjernet.</translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="233"/>
+        <location filename="../mountbutton.cpp" line="235"/>
         <source>No devices Available.</source>
         <translation>Ingen enheder tilgængelige.</translation>
     </message>

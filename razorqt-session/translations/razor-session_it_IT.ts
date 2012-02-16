@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it_IT">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.0">
 <context>
     <name>AutoStartEdit</name>
     <message>
@@ -77,12 +75,25 @@
     <message>
         <location filename="../src/windowmanager.cpp" line="45"/>
         <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
-        <translation>Xfwm4 - Un window manager per l'mabiente Xfce</translation>
+        <translation>Xfwm4 - Un window manager per l&apos;mabiente Xfce</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="46"/>
         <source>Sawfish - a lightweight, flexible window manager</source>
         <translation>Sawfish - un window manager leggero e flessibile</translation>
+    </message>
+</context>
+<context>
+    <name>RazorModuleManager</name>
+    <message>
+        <location filename="../src/razormodman.cpp" line="179"/>
+        <source>Razor Session Crash Report</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/razormodman.cpp" line="180"/>
+        <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -99,8 +110,8 @@
     </message>
     <message>
         <location filename="../config/sessionconfigwindow.ui" line="77"/>
-        <location filename="../config/sessionconfigwindow.ui" line="227"/>
-        <location filename="../config/sessionconfigwindow.ui" line="254"/>
+        <location filename="../config/sessionconfigwindow.ui" line="234"/>
+        <location filename="../config/sessionconfigwindow.ui" line="261"/>
         <source>Search...</source>
         <translation>Cerca...</translation>
     </message>
@@ -130,61 +141,66 @@
         <translation>Switcher applicazioni</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="165"/>
+        <location filename="../config/sessionconfigwindow.ui" line="152"/>
+        <source>PolicyKit Handler</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../config/sessionconfigwindow.ui" line="172"/>
         <location filename="../config/sessionconfigwindow.cpp" line="53"/>
         <source>Basic Settings</source>
         <translation>Impostazioni base</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="182"/>
+        <location filename="../config/sessionconfigwindow.ui" line="189"/>
         <location filename="../config/sessionconfigwindow.cpp" line="54"/>
         <source>Default Applications</source>
         <translation>Applicazioni di default</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="207"/>
+        <location filename="../config/sessionconfigwindow.ui" line="214"/>
         <source>Terminal Emulation:</source>
         <translation>Emulatore di terminale:</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="234"/>
+        <location filename="../config/sessionconfigwindow.ui" line="241"/>
         <source>Web Browser:</source>
         <translation>Web Browser:</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="282"/>
-        <location filename="../config/sessionconfigwindow.ui" line="373"/>
+        <location filename="../config/sessionconfigwindow.ui" line="289"/>
+        <location filename="../config/sessionconfigwindow.ui" line="380"/>
         <source>Delete</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="289"/>
-        <location filename="../config/sessionconfigwindow.ui" line="366"/>
+        <location filename="../config/sessionconfigwindow.ui" line="296"/>
+        <location filename="../config/sessionconfigwindow.ui" line="373"/>
         <source>Add</source>
         <translation>Aggiungi</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="296"/>
+        <location filename="../config/sessionconfigwindow.ui" line="303"/>
         <source>Edit</source>
         <translation>Modifica</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="309"/>
+        <location filename="../config/sessionconfigwindow.ui" line="316"/>
         <source>Application Autostart</source>
         <translation>Applicazioni all&apos;avvio</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="399"/>
+        <location filename="../config/sessionconfigwindow.ui" line="406"/>
         <source>Environment Variables (Advanced)</source>
         <translation>Variabili dell&apos;ambiente (avanzato)</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="410"/>
+        <location filename="../config/sessionconfigwindow.ui" line="417"/>
         <source>Variable Name</source>
         <translation>Nome variabile</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="415"/>
+        <location filename="../config/sessionconfigwindow.ui" line="422"/>
         <source>Value</source>
         <translation>Valore</translation>
     </message>
@@ -199,27 +215,27 @@
         <translation>Ambiente (avanzato)</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="193"/>
+        <location filename="../config/sessionconfigwindow.cpp" line="196"/>
         <source>Session Restart Required</source>
         <translation>Richiesto riavvio della sessione</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="194"/>
+        <location filename="../config/sessionconfigwindow.cpp" line="197"/>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
         <translation>Devi riavviare la sessione desktop (razor-session) per ricaricare le impostazioni. Usa il logout nel menu principale.</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="239"/>
+        <location filename="../config/sessionconfigwindow.cpp" line="242"/>
         <source>Select a window manager</source>
         <translation>Seleziona un gestore delle finestre</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="245"/>
+        <location filename="../config/sessionconfigwindow.cpp" line="248"/>
         <source>Select a terminal emulator</source>
         <translation>Seleziona un emulatore di terminale</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="251"/>
+        <location filename="../config/sessionconfigwindow.cpp" line="254"/>
         <source>Select a web browser</source>
         <translation>Seleziona un browser web</translation>
     </message>

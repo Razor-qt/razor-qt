@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="da_DK">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="da_DK" version="2.0">
 <context>
     <name>ConfigureDialog</name>
     <message>
@@ -62,7 +60,7 @@
         <translation>Indstil Razor programstarter</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="291"/>
+        <location filename="../dialog.cpp" line="296"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>Tryk &quot;%1&quot; for at se dialog.</translation>
     </message>

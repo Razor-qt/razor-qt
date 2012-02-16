@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs_CZ">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs_CZ" version="2.0">
 <context>
     <name>ConfigureDialog</name>
     <message>
@@ -29,22 +27,22 @@
         <translation>Klávesová zkratka:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="68"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="70"/>
         <source>Top edge of screen</source>
         <translation>Horní okraj obrazovky</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="69"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="71"/>
         <source>Center of screen</source>
         <translation>Střed obrazovky</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="75"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="77"/>
         <source>Monitor where the mouse</source>
         <translation>Tam, kde je myš</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="80"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="82"/>
         <source>Always on %1 monitor</source>
         <translation>Vždy na %1 obrazovce</translation>
     </message>
@@ -57,12 +55,12 @@
         <translation>Spouštěč programů</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="86"/>
+        <location filename="../dialog.cpp" line="91"/>
         <source>Configure razor-runner</source>
         <translation>Nastavit razor-runner</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="286"/>
+        <location filename="../dialog.cpp" line="296"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>Stisknětej &quot;%1&quot; pro zobrazení dialogu.</translation>
     </message>
@@ -70,12 +68,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../providers.cpp" line="219"/>
+        <location filename="../providers.cpp" line="221"/>
         <source>History</source>
         <translation>Historie</translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="305"/>
+        <location filename="../providers.cpp" line="307"/>
         <source>Mathematics</source>
         <translation>Matematika</translation>
     </message>

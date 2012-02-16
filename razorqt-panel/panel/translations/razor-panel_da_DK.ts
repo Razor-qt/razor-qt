@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="da_DK">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="da_DK" version="2.0">
 <context>
     <name>ConfigPanelDialog</name>
     <message>
@@ -68,42 +66,42 @@
 <context>
     <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="578"/>
+        <location filename="../razorpanel.cpp" line="583"/>
         <source>Top of desktop</source>
         <translation>Toppen af skrivebordet</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="579"/>
+        <location filename="../razorpanel.cpp" line="584"/>
         <source>Bottom of desktop</source>
         <translation>Bunden af skrivebordet</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="580"/>
+        <location filename="../razorpanel.cpp" line="585"/>
         <source>Left of desktop</source>
         <translation>Venstre side af skrivebordet</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="581"/>
+        <location filename="../razorpanel.cpp" line="586"/>
         <source>Right of desktop</source>
         <translation>Højre side af skrivebordet</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="588"/>
+        <location filename="../razorpanel.cpp" line="593"/>
         <source>Top of desktop %1</source>
         <translation>Toppen af skrivebord %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="589"/>
+        <location filename="../razorpanel.cpp" line="594"/>
         <source>Bottom of desktop %1</source>
         <translation>Bunden af skrivebord %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="590"/>
+        <location filename="../razorpanel.cpp" line="595"/>
         <source>Left of desktop %1</source>
         <translation>Venstre side af skrivebord %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="591"/>
+        <location filename="../razorpanel.cpp" line="596"/>
         <source>Right of desktop %1</source>
         <translation>Højre side af skrivebord %1</translation>
     </message>
@@ -129,42 +127,42 @@
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="832"/>
+        <location filename="../razorpanel.cpp" line="838"/>
         <source>Panel</source>
         <translation>Panel</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="843"/>
+        <location filename="../razorpanel.cpp" line="849"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="845"/>
+        <location filename="../razorpanel.cpp" line="851"/>
         <source>Add plugins ...</source>
         <translation>Tilføj plugins ...</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="854"/>
+        <location filename="../razorpanel.cpp" line="860"/>
         <source>Move plugin</source>
         <translation>Flyt plugin</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="860"/>
+        <location filename="../razorpanel.cpp" line="866"/>
         <source>Configure plugin</source>
         <translation>Indstil plugin</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="867"/>
+        <location filename="../razorpanel.cpp" line="873"/>
         <source>Delete plugin</source>
         <translation>Slet plugin</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="874"/>
+        <location filename="../razorpanel.cpp" line="880"/>
         <source>Show this panel at</source>
         <translation>Vis dette panel i</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="917"/>
+        <location filename="../razorpanel.cpp" line="923"/>
         <source>Configure panel</source>
         <translation>Indstil panel</translation>
     </message>

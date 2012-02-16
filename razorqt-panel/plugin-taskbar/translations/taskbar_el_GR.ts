@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="el_GR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el_GR" version="2.0">
 <context>
     <name>RazorTaskButton</name>
     <message>
@@ -99,7 +97,7 @@
     <message>
         <location filename="../razortaskbarconfiguration.ui" line="20"/>
         <source>Window List Content</source>
-        <translation type="unfinished">Παράθυρο Λίστας Περιεχομένων</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../razortaskbarconfiguration.ui" line="26"/>
@@ -120,7 +118,7 @@
     <message>
         <location filename="../razortaskbarconfiguration.ui" line="49"/>
         <source>Window List Appearance</source>
-        <translation type="unfinished">Παράθυρο Λίστας Εμφάνισης</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../razortaskbarconfiguration.ui" line="55"/>

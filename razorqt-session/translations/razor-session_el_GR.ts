@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="el_GR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el_GR" version="2.0">
 <context>
     <name>AutoStartEdit</name>
     <message>
@@ -135,7 +133,7 @@
     <message>
         <location filename="../config/sessionconfigwindow.ui" line="125"/>
         <source>Runner</source>
-        <translation type="unfinished">Runner</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../config/sessionconfigwindow.ui" line="132"/>
@@ -145,7 +143,7 @@
     <message>
         <location filename="../config/sessionconfigwindow.ui" line="152"/>
         <source>PolicyKit Handler</source>
-        <translation type="unfinished">Χειριστής PolicyKit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../config/sessionconfigwindow.ui" line="172"/>

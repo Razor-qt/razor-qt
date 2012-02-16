@@ -1,90 +1,88 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de_DE" version="2.0">
 <context>
     <name>RazorTaskButton</name>
     <message>
-        <location filename="../razortaskbutton.cpp" line="371"/>
+        <location filename="../razortaskbutton.cpp" line="372"/>
         <source>Application</source>
         <translation>Anwendung</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="404"/>
+        <location filename="../razortaskbutton.cpp" line="405"/>
         <source>To &amp;Desktop</source>
         <translation>Zur &amp;Arbeitsfläche</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="406"/>
+        <location filename="../razortaskbutton.cpp" line="407"/>
         <source>&amp;All Desktops</source>
         <translation>&amp;Alle Arbeitsflächen</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="413"/>
+        <location filename="../razortaskbutton.cpp" line="415"/>
         <source>Desktop &amp;%1</source>
         <translation>Arbeitsfläche &amp;%1</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="420"/>
+        <location filename="../razortaskbutton.cpp" line="422"/>
         <source>&amp;To Current Desktop</source>
         <translation>&amp;Zur aktuellen Arbeitsfläche</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="429"/>
+        <location filename="../razortaskbutton.cpp" line="431"/>
         <source>Ma&amp;ximize</source>
         <translation>Ma&amp;ximieren</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="438"/>
+        <location filename="../razortaskbutton.cpp" line="440"/>
         <source>Maximize vertically</source>
         <translation>Maximiere vertikal</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="443"/>
+        <location filename="../razortaskbutton.cpp" line="445"/>
         <source>Maximize horizontally</source>
         <translation>Maximiere horizintal</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="449"/>
+        <location filename="../razortaskbutton.cpp" line="451"/>
         <source>&amp;Restore</source>
         <translation>&amp;Wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="453"/>
+        <location filename="../razortaskbutton.cpp" line="455"/>
         <source>Mi&amp;nimize</source>
         <translation>Mi&amp;nimieren</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="459"/>
+        <location filename="../razortaskbutton.cpp" line="461"/>
         <source>Roll down</source>
         <translation>Roll runter</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="465"/>
+        <location filename="../razortaskbutton.cpp" line="467"/>
         <source>Roll up</source>
         <translation>Roll hoch</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="474"/>
+        <location filename="../razortaskbutton.cpp" line="476"/>
         <source>&amp;Layer</source>
         <translation>&amp;Schicht</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="476"/>
+        <location filename="../razortaskbutton.cpp" line="478"/>
         <source>Always on &amp;top</source>
         <translation>Immer &amp;oben</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="481"/>
+        <location filename="../razortaskbutton.cpp" line="483"/>
         <source>&amp;Normal</source>
         <translation>&amp;Normal</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="486"/>
+        <location filename="../razortaskbutton.cpp" line="488"/>
         <source>Always on &amp;bottom</source>
         <translation>Immer &amp;unten</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="494"/>
+        <location filename="../razortaskbutton.cpp" line="496"/>
         <source>&amp;Close</source>
         <translation>&amp;Schließen</translation>
     </message>

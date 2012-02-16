@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
 <context>
     <name>ConfigureDialog</name>
     <message>
@@ -29,22 +27,22 @@
         <translation>快捷键:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="68"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="70"/>
         <source>Top edge of screen</source>
         <translation>屏幕顶部</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="69"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="71"/>
         <source>Center of screen</source>
         <translation>屏幕中部</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="75"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="77"/>
         <source>Monitor where the mouse</source>
         <translation>鼠标所在的显示器</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="80"/>
+        <location filename="../configuredialog/configuredialog.cpp" line="82"/>
         <source>Always on %1 monitor</source>
         <translation>总是在 %1 显示器</translation>
     </message>
@@ -57,12 +55,12 @@
         <translation>应用程序启动器</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="86"/>
+        <location filename="../dialog.cpp" line="91"/>
         <source>Configure razor-runner</source>
         <translation>配置Razor启动器</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="267"/>
+        <location filename="../dialog.cpp" line="296"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation>按下 &quot;%1&quot; 以查看对话框。</translation>
     </message>
@@ -70,12 +68,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../providers.cpp" line="216"/>
+        <location filename="../providers.cpp" line="221"/>
         <source>History</source>
         <translation>历史</translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="302"/>
+        <location filename="../providers.cpp" line="307"/>
         <source>Mathematics</source>
         <translation>数学</translation>
     </message>

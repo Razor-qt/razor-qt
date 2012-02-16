@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de_DE" version="2.0">
 <context>
     <name>QuickLaunchButton</name>
     <message>
@@ -22,12 +20,12 @@
 <context>
     <name>RazorQuickLaunch</name>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="175"/>
+        <location filename="../razorquicklaunch.cpp" line="176"/>
         <source>Drop Error</source>
         <translation>Drop Error</translation>
     </message>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="176"/>
+        <location filename="../razorquicklaunch.cpp" line="177"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation>Datei/Pfad &apos;%1&apos; kann im moment nicht in den Schnellstarter integriert werden</translation>
     </message>

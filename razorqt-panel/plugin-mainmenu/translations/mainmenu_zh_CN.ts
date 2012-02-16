@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
 <context>
     <name>RazorMainMenu</name>
     <message>
-        <location filename="../razormainmenu.cpp" line="171"/>
+        <location filename="../razormainmenu.cpp" line="179"/>
         <source>Leave</source>
         <translation>离开</translation>
     </message>
@@ -43,12 +41,22 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../razormainmenuconfiguration.cpp" line="85"/>
+        <location filename="../razormainmenuconfiguration.ui" line="95"/>
+        <source>Keyboard Shortcut</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../razormainmenuconfiguration.ui" line="101"/>
+        <source>Click the button to record shortcut:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Choose menu file</source>
         <translation>选择菜单文件</translation>
     </message>
     <message>
-        <location filename="../razormainmenuconfiguration.cpp" line="85"/>
+        <location filename="../razormainmenuconfiguration.cpp" line="89"/>
         <source>Menu files (*.menu)</source>
         <translation>菜单文件 (*.menu)</translation>
     </message>

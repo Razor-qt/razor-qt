@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="hu_HU">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="hu_HU" version="2.0">
 <context>
     <name>DesktopSwitch</name>
     <message>
-        <location filename="../desktopswitch.cpp" line="79"/>
+        <location filename="../desktopswitch.cpp" line="83"/>
         <source>Desktop %1</source>
         <translation>%1. asztal</translation>
     </message>

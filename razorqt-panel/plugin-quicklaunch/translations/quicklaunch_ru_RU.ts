@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru_RU" version="2.0">
 <context>
     <name>QuickLaunchButton</name>
     <message>
@@ -22,12 +20,12 @@
 <context>
     <name>RazorQuickLaunch</name>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="175"/>
+        <location filename="../razorquicklaunch.cpp" line="176"/>
         <source>Drop Error</source>
         <translation>Ощибка</translation>
     </message>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="176"/>
+        <location filename="../razorquicklaunch.cpp" line="177"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
         <translation>Файл или URL %1 нельзя пристроить на панель</translation>
     </message>

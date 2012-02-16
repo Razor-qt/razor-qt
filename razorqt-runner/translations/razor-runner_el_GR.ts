@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="el_GR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el_GR" version="2.0">
 <context>
     <name>ConfigureDialog</name>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="14"/>
         <source>Razor-runner Settings</source>
-        <translation type="unfinished">Ρυθμίσεις Razor-runner</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../configuredialog/configuredialog.ui" line="20"/>
@@ -41,7 +39,7 @@
     <message>
         <location filename="../configuredialog/configuredialog.cpp" line="77"/>
         <source>Monitor where the mouse</source>
-        <translation type="unfinished">Οθόνη όπου βρίσκεται το ποντίκι</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../configuredialog/configuredialog.cpp" line="82"/>

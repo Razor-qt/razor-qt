@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru_RU" version="2.0">
 <context>
     <name>AddPluginDialog</name>
     <message>
@@ -123,7 +121,7 @@
     <message>
         <location filename="../razorconfigdialog.ui" line="6"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

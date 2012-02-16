@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="el_GR">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el_GR" version="2.0">
 <context>
     <name>ConfigPanelDialog</name>
     <message>
@@ -68,42 +66,42 @@
 <context>
     <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="578"/>
+        <location filename="../razorpanel.cpp" line="583"/>
         <source>Top of desktop</source>
         <translation>Επάνω στην επιφάνεια εργασίας</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="579"/>
+        <location filename="../razorpanel.cpp" line="584"/>
         <source>Bottom of desktop</source>
         <translation>Κάτω στην επιφάνεια εργασίας</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="580"/>
+        <location filename="../razorpanel.cpp" line="585"/>
         <source>Left of desktop</source>
         <translation>Αριστερά στην επιφάνεια εργασίας</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="581"/>
+        <location filename="../razorpanel.cpp" line="586"/>
         <source>Right of desktop</source>
         <translation>Δεξιά στην επιφάνεια εργασίας</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="588"/>
+        <location filename="../razorpanel.cpp" line="593"/>
         <source>Top of desktop %1</source>
         <translation>Επάνω στην επιφάνεια εργασίας %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="589"/>
+        <location filename="../razorpanel.cpp" line="594"/>
         <source>Bottom of desktop %1</source>
         <translation>Κάτω στην επιφάνεια εργασίας %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="590"/>
+        <location filename="../razorpanel.cpp" line="595"/>
         <source>Left of desktop %1</source>
         <translation>Αριστερά στην επιφάνεια εργασίας %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="591"/>
+        <location filename="../razorpanel.cpp" line="596"/>
         <source>Right of desktop %1</source>
         <translation>Δεξιά στην επιφάνεια εργασίας %1</translation>
     </message>
@@ -129,42 +127,42 @@
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="832"/>
+        <location filename="../razorpanel.cpp" line="838"/>
         <source>Panel</source>
         <translation>Πίνακας</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="843"/>
+        <location filename="../razorpanel.cpp" line="849"/>
         <source>Plugins</source>
         <translation>Πρόσθετα</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="845"/>
+        <location filename="../razorpanel.cpp" line="851"/>
         <source>Add plugins ...</source>
         <translation>Προσθήκη προσθέτων ...</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="854"/>
+        <location filename="../razorpanel.cpp" line="860"/>
         <source>Move plugin</source>
         <translation>Μετακίνηση πρόσθετου</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="860"/>
+        <location filename="../razorpanel.cpp" line="866"/>
         <source>Configure plugin</source>
         <translation>Ρύθμιση πρόσθετου</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="867"/>
+        <location filename="../razorpanel.cpp" line="873"/>
         <source>Delete plugin</source>
         <translation>Διαγραφή πρόσθετου</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="874"/>
+        <location filename="../razorpanel.cpp" line="880"/>
         <source>Show this panel at</source>
         <translation>Εμφάνιση αυτού του πίνακα στο</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="917"/>
+        <location filename="../razorpanel.cpp" line="923"/>
         <source>Configure panel</source>
         <translation>Ρύθμιση πίνακα</translation>
     </message>
