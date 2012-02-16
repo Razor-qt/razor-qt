@@ -35,7 +35,6 @@ Notepad::Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *
     : DesktopWidgetPlugin(scene, configId, config)
 {
     setObjectName("Notepad");
-	//gscene = scene;
     m_config->beginGroup(configId);
 	QString text = m_config->value("text", "").toString();
 	int x = m_config->value("x", 0).toInt();
@@ -46,43 +45,17 @@ Notepad::Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *
 
 	resize(w, h);
 	move(x, y);
-    // Hack to ensure the fully transparent QGraphicsView background
-    QPalette palette;
-    palette.setBrush(QPalette::Base, Qt::NoBrush);
-    setPalette(palette);
-    // Required to display wallpaper
-    setAttribute(Qt::WA_TranslucentBackground);
-    // no border at all finally
-    setFrameShape(QFrame::NoFrame);
-    
-    setAcceptDrops(true);
-    
+	palette = new QPalette();
+	palette->setColor(backgroundRole(), Qt::transparent);
+	setPalette(*palette);
+   
 	layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 	setLayout(layout);
 	
-    win = new NotepadWin(this, &Notepad::save);
-	
+    win = new NotepadWin(this, &Notepad::save, &Notepad::repaint);
 	layout->addWidget(win);
-	
 	win->setText(text);
-    
-    setRenderHint(QPainter::Antialiasing);
-    setRenderHint(QPainter::TextAntialiasing);
-    setRenderHint(QPainter::SmoothPixmapTransform);
-    setRenderHint(QPainter::HighQualityAntialiasing);
-    
-    setDragMode(QGraphicsView::RubberBandDrag);
-    
-    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    
-    setCacheMode(QGraphicsView::CacheBackground);
-    
-    setAlignment(Qt::AlignTop | Qt::AlignRight);
-    
-    // "cool" display effect
-    setWindowOpacity(0.0);
-	save();
 }
 
 Notepad::~Notepad()

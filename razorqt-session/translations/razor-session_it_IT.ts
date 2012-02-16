@@ -34,7 +34,7 @@
     <message>
         <location filename="../config/autostartmodel.cpp" line="156"/>
         <source>Global Autostart</source>
-        <translation>Autostart Global</translation>
+        <translation>Autostart Globale</translation>
     </message>
     <message>
         <location filename="../config/autostartmodel.cpp" line="158"/>
@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/windowmanager.cpp" line="39"/>
         <source>Openbox - light-weight window manager</source>
-        <translation>Openbox - Windows manager leggero</translation>
+        <translation>Openbox - Window manager leggero</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="40"/>
@@ -57,32 +57,32 @@
     <message>
         <location filename="../src/windowmanager.cpp" line="41"/>
         <source>Metacity - window manager of the GNOME desktop environment</source>
-        <translation>Metacity - il windows manager di GNOME</translation>
+        <translation>Metacity - il window manager di GNOME</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="42"/>
         <source>Windowmaker - a classical lightweight window manager</source>
-        <translation>Windowsmaker - classico e leggero</translation>
+        <translation>Windowsmaker - classico e leggero window manager</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="43"/>
         <source>Enlightenement 16</source>
-        <translation>Enlightenement 16</translation>
+        <translation>Enlightenment 16</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="44"/>
         <source>Fvwm2 - a classical lightweight window manager</source>
-        <translation>Fvwm2 - classico e leggero</translation>
+        <translation>Fvwm2 - classico e leggero window manager</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="45"/>
         <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
-        <translation>Xfwm4 - Il window manager dell&apos;ambiente Xfce</translation>
+        <translation>Xfwm4 - Un window manager per l'mabiente Xfce</translation>
     </message>
     <message>
         <location filename="../src/windowmanager.cpp" line="46"/>
         <source>Sawfish - a lightweight, flexible window manager</source>
-        <translation>Sawfish - leggero e flessibile </translation>
+        <translation>Sawfish - un window manager leggero e flessibile</translation>
     </message>
 </context>
 <context>

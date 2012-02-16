@@ -34,15 +34,16 @@
 #include <QGraphicsView>
 #include <QPropertyAnimation>
 #include <QVBoxLayout>
+#include <QPalette>
 
 #include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 #include "notepadwin.h"
 
-class Notepad : public DesktopWidgetPlugin, public QGraphicsView {
+class Notepad : public DesktopWidgetPlugin, public QWidget {
 	NotepadWin *win;
 	QVBoxLayout *layout;
-	//QGraphicsScene *gscene;
+	QPalette *palette;
 public:
 	Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *config);
 	~Notepad();
@@ -54,7 +55,7 @@ public:
 	void save();
 	void configure();
 
-        bool blockGlobalMenu() { return true; }
+    bool blockGlobalMenu() { return true; }
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H

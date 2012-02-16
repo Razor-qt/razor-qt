@@ -182,7 +182,7 @@ QString RazorWorkSpaceManager::info()
 
 void RazorWorkSpaceManager::x11EventFilter(XEvent* _event)
 {
-    if (_event->type == PropertyNotify)
+    /*if (_event->type == PropertyNotify)
     {
         int count = qMax(xfitMan().getNumDesktop(), 1);
         if (m_desktopCount != count)
@@ -191,5 +191,5 @@ void RazorWorkSpaceManager::x11EventFilter(XEvent* _event)
             m_desktopCount = count;
             setup();
         }
-    }
+    }*/
 }

@@ -38,10 +38,11 @@
 #include <QToolButton>
 #include <qtxdg/xdgicon.h>
 
-NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent) : QWidget(parent)
+NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, SaveFunctionPointer rpnt, QWidget *parent) : QWidget(parent)
 {
     pad = notepad;
     saveText = sv;
+    this->rpnt = rpnt;
     layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
@@ -51,11 +52,6 @@ NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent
     panel = new QWidget();
     panel->setFixedHeight(25);
     layout->addWidget(edit);
-	/*QFile file("/home/nay/.razor/desktop/notepad.qss");
-    file.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(file.readAll());
-	setStyleSheet(styleSheet);
-	file.close();*/
     panelLayout = new QHBoxLayout();
     layout->addLayout(panelLayout);
     bold = new QToolButton();
@@ -118,6 +114,7 @@ NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent
     centered->setObjectName(QString("centered"));
     rightSided->setObjectName(QString("rightSided"));
     justified->setObjectName(QString("justified"));
+	setObjectName(QString("notepadWin"));
     
     panelLayout->addWidget(bold);
     panelLayout->addWidget(italic);
@@ -130,6 +127,7 @@ NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent
     panelLayout->addWidget(rightSided);
     panelLayout->addWidget(justified);
     layout->setAlignment(panelLayout, Qt::AlignLeft);
+	
     connect(bold, SIGNAL(clicked()), this, SLOT(setBold()));
     connect(italic, SIGNAL(clicked()), this, SLOT(setItalic()));
     connect(underline, SIGNAL(clicked()), this, SLOT(setUnderline()));
@@ -363,4 +361,10 @@ void NotepadWin::onSelectionChanged()
     centered->setChecked(aCenter ? true : false);
     rightSided->setChecked(aRight ? true : false);
     justified->setChecked(aJustify ? true : false);
+}
+
+void NotepadWin::paintEvent(QPaintEvent *event)
+{
+	(pad->*saveText)();
+	QWidget::paintEvent(event);
 }
