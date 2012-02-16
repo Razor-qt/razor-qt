@@ -38,12 +38,6 @@ source_file = razorqt-runner/translations/razor-runner.ts.src
 source_lang = en
 type = QT
 
-[razor-qt.tray]
-file_filter = razorqt-panel/plugin-tray/translations/tray_<lang>.ts
-source_file = razorqt-panel/plugin-tray/translations/tray.ts.src
-source_lang = en
-type = QT
-
 [razor-qt.screensaver]
 file_filter = razorqt-panel/plugin-screensaver/translations/screensaver_<lang>.ts
 source_file = razorqt-panel/plugin-screensaver/translations/screensaver.ts.src
