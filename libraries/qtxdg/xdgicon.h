@@ -38,6 +38,11 @@ class XdgIcon
 {
 public:
     static QIcon fromTheme(const QString& iconName, const QIcon& fallback = QIcon());
+    static QIcon fromTheme(const QString& iconName,
+                           const QString &fallbackIcon1,
+                           const QString &fallbackIcon2 = QString(),
+                           const QString &fallbackIcon3 = QString(),
+                           const QString &fallbackIcon4 = QString());
     static QIcon fromTheme(const QStringList& iconNames, const QIcon& fallback = QIcon());
 
     static QString themeName();
