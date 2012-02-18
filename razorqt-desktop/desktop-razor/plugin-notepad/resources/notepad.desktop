@@ -7,6 +7,9 @@ Comment=Screen notepad
 Name[ru]=Блокнот
 Comment[ru]=Экранный блокнот
 
+Name[zh_TW]=記事本
+Comment=螢幕上的記事本
+
 Name[sr]=Бележница
 Name[sr@ijekavian]=Биљежница
 Name[sr@latin]=Beležnica

@@ -25,6 +25,9 @@ Comment[cs]=Zobrazí formátovaný text na obrazovce
 Name[da]=Hello World
 Comment[da]=Vis formateret test på skærmen
 
+Name[zh_TW]=Hello World
+Comment[zh_TW]=在螢幕上顯示純文字
+
 Name[sr]=Здраво свете
 Name[sr@ijekavian]=Здраво свијете
 Name[sr@latin]=Zdravo svete

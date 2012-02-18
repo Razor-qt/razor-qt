@@ -2,7 +2,7 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Hell World
+Name=Hello World
 Comment=A "hello world" plugin.
 
 Name[ru]=Привет мир
@@ -10,6 +10,9 @@ Comment[ru]=Супер плагин "Привет Мир".
 
 Name[da]=Hello World
 Comment[da]=Et "hello world" eksempel plugin.
+
+Name[zh_TW]=Hello World
+Comment[zh_TW]=一個"hello world"的小工具。
 
 Name[sr]=Здраво свете
 Name[sr@ijekavian]=Здраво свијете
