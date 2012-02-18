@@ -60,8 +60,6 @@ Dialog::Dialog(QWidget *parent) :
     mGlobalShortcut(new QxtGlobalShortcut(this))
 {
     ui->setupUi(this);
-    setStyleSheet(razorTheme->qss("razor-runner/razor-runner"));
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(update()));
 
     connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(hide()));

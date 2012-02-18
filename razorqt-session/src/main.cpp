@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QApplication>
-#include <QIcon>
+#include <razorqt/razorapplication.h>
+#include <QtGui/QIcon>
 
 #include "razormodman.h"
 #include "sessiondbusadaptor.h"
@@ -84,10 +84,8 @@ int main(int argc, char **argv)
 #ifdef DEBUG
     qInstallMsgHandler(dbgMessageOutput);
 #endif
-    QApplication app(argc, argv);
+    RazorApplication app(argc, argv);
     //qDebug() << "Razor Session start";
-    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
-    app.setQuitOnLastWindowClosed(false);
 
     TRANSLATE_APP;
 

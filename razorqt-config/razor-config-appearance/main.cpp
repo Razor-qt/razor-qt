@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QApplication>
+#include <razorqt/razorapplication.h>
 
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
@@ -35,9 +35,7 @@
 
 int main (int argc, char **argv)
 {
-    QApplication app(argc, argv);
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+    RazorApplication app(argc, argv);
     TRANSLATE_APP;
 
     RazorSettings* settings = new RazorSettings("razor");

@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QApplication>
+#include <razorqt/razorapplication.h>
 
 #include <glib-object.h>
 
@@ -38,9 +38,7 @@ int main(int argc, char *argv[])
 {
     g_type_init();
 
-    QApplication app(argc, argv);    
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+    RazorApplication app(argc, argv);    
     
     app.setQuitOnLastWindowClosed(false);
 

@@ -31,12 +31,9 @@
 
 
 RazorAppSwitcher::Application::Application(int & argc, char ** argv)
-    : QApplication(argc, argv),
+    : RazorApplication(argc, argv, "appswitcher"),
       m_as(0)
 {
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    setStyleSheet(razorTheme->qss("appswitcher"));
-
     m_as = new RazorAppSwitcher::AppSwitcher();
 }
 

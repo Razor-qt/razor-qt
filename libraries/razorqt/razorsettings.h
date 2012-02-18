@@ -44,6 +44,7 @@ QString razorConfigDir();
 
 
 class RazorSettingsPrivate;
+/*! \brief User settings handling */
 class RazorSettings : public QSettings
 {
     Q_OBJECT
@@ -81,6 +82,7 @@ private:
 
 
 class RazorThemePrivate;
+/*! \brief QSS theme handling */
 class RazorTheme : public QObject
 {
     Q_OBJECT
