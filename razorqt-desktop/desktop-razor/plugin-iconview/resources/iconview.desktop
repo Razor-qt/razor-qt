@@ -26,6 +26,9 @@ Comment[cs]=Zobrazí obsah vybraného adresáře jako ikony
 Name[da]=Ikonvisning
 Comment[da]=Fremviser indhold af specifieret folder, som ikoner
 
+Name[zh_TW]=圖形檢視
+Comment[zh_TW]=以圖示顯示特定的目錄
+
 Name[sr]=Приказ икона
 Name[sr@ijekavian]=Приказ икона
 Name[sr@latin]=Prikaz ikona

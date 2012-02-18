@@ -28,6 +28,9 @@ Comment[cs]=Hodiny
 Name[da]=Ur
 Comment[da]=Ur widget
 
+Name=Clo時鐘
+Comment=桌面時鐘
+
 Name[sr]=Сат
 Name[sr@ijekavian]=Сат
 Name[sr@latin]=Sat

@@ -29,6 +29,9 @@ Comment[cs]=Hlavní nabídka
 Name[da]=Programmenu
 Comment[da]=Menubaseret programstarter
 
+Name[zh_TW]=應用程式選單
+Comment[zh_TW]=基於應用程式啟動器的選單
+
 Name[sr]=Мени програма
 Name[sr@ijekavian]=Мени програма
 Name[sr@latin]=Meni programa

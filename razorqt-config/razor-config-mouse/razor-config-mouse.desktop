@@ -46,6 +46,14 @@ Name[da]=Indstilling af Razor Mus
 Comment[da]=Indstilling af X11 mus
 GenericName[da]=Indstilling af Razor Mus
 
+Name[zh_TW]=Razor滑鼠設定
+Comment[zh_TW]=設定X11下的滑鼠
+GenericName[zh_TW]=Razor滑鼠設定
+
+Name[zh_CN]=Razor鼠标设定
+Comment[zh_CN]=设定X11下的鼠标
+GenericName[zh_CN]=Razor鼠标设定
+
 Name[sr]=Подешавање миша
 Name[sr@ijekavian]=Подешавање миша
 Name[sr@latin]=Podešavanje miša

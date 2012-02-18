@@ -29,6 +29,9 @@ Comment[cs]=Povolit přepínání virtuálních ploch
 Name[da]=Skrivebordsskifter
 Comment[da]=Tillader skift imellem virtuelle skriveborde
 
+Name[zh_TW]=桌面切換
+Comment[zh_TW]=允許虛擬桌面的切換
+
 Name[sr]=Пребацивач површи
 Name[sr@ijekavian]=Пребацивач површи
 Name[sr@latin]=Prebacivač površi
