@@ -4,20 +4,21 @@ set(PLUGIN "cpuload")
 
 
 set(HEADERS
-    razorcpuload.h
+	razorcpuload.h
 )
 
 set(SOURCES
-    razorcpuload.cpp
+	razorcpuload.cpp
 )
 
 set(MOCS
-    razorcpuload.h
+	razorcpuload.h
 )
 
 set(UIS
 )
 
+LINK_LIBRARIES(${PLUGIN} ${STATGRAB_LIB})
 
 #*******************************************
 include ("../BuildPlugin.cmake")

@@ -112,16 +112,14 @@ if (HELLOWORLD_PLUGIN)
 	add_subdirectory(plugin-helloworld)
 endif (HELLOWORLD_PLUGIN)
 
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	if (CPULOAD_PLUGIN)
+if (CPULOAD_PLUGIN)
+	FIND_LIBRARY(STATGRAB_LIB statgrab)
+
+	IF ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
 		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "CpuLoad")
 		add_subdirectory(plugin-cpuload)
-	endif (CPULOAD_PLUGIN)
-
-    SET(OperatingSystem "Linux")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux") 
-
-
+	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
+endif (CPULOAD_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})

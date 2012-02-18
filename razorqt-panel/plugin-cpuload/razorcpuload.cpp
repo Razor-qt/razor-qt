@@ -30,6 +30,11 @@
 #include <QPainter>
 #include <QLinearGradient>
 
+extern "C" {
+#include <statgrab.h>
+}
+
+
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorCpuLoad)
 
 RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
@@ -37,6 +42,14 @@ RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 {
 	setObjectName("CpuLoad");
 	addWidget(&m_stuff);
+
+	/* Initialise statgrab */
+	sg_init();
+
+	/* Drop setuid/setgid privileges. */
+	if (sg_drop_privileges() != 0) {
+		perror("Error. Failed to drop privileges");
+	}
 
 	getLoadCpu();
 
@@ -63,45 +76,14 @@ void RazorCpuLoad::resizeEvent(QResizeEvent *)
 
 void RazorCpuLoad::getLoadCpu()
 {
-	QFile f("/proc/stat");
-	f.open(QIODevice::ReadOnly);
-	QTextStream st(&f);
-	QStringList lines = st.readAll().split("\n");
-
-	for( int i = 0 ; i< lines.count(); i++)
-	{
-		const QString& line = lines[i];
-		if( line.startsWith("cpu "))
-		{
-			QStringList params = line.split(QRegExp("[ \t]+"));
-			quint64 oldUser		= currentUser;
-			quint64 oldNice		= currentNice;
-			quint64 oldSystem	= currentSystem;
-			quint64 oldIdle		= currentIdle;
-
-			currentUser = params[1].toInt();
-			currentNice = params[2].toInt();
-			currentSystem= params[3].toInt();
-			currentIdle	= params[4].toInt();
-
-			quint64 deltaUser = currentUser - oldUser;
-			quint64 deltaNice = currentNice - oldNice;
-			quint64 deltaSystem= currentSystem - oldSystem;
-			quint64 deltaIdle = currentIdle - oldIdle;
-
-			quint64 total = deltaUser+deltaNice+deltaSystem+deltaIdle;
-			m_avg = 100 * (deltaUser+deltaNice+deltaSystem)/total;
-
-			setToolTip(tr("Cpu load %1%").arg(m_avg));
-
-			break;
-		}
-	}
+	sg_cpu_percents* cur = sg_get_cpu_percents();
+	m_avg = (cur->user + cur->kernel + cur->nice);
 }
 
 void RazorCpuLoad::timerEvent(QTimerEvent *event)
 {
 	getLoadCpu();
+	setToolTip(tr("Cpu load %1%").arg(m_avg));
 	update();
 }
 

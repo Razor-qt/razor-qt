@@ -48,11 +48,6 @@ private:
 	void getLoadCpu();
 	QWidget m_stuff;
 
-	quint64 currentUser;
-	quint64 currentNice;
-	quint64 currentSystem;
-	quint64 currentIdle;
-
 	//! average load
 	int m_avg;
 };
