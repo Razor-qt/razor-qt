@@ -29,6 +29,9 @@ Comment[cs]=Přístup ke skrytým programům zmenšeným v oznamovací oblasti p
 Name[da]=Systembakke
 Comment[da]=Adgang til skjulte programmer der er minimeret til systembakken
 
+Name=通知列
+Comment=在通知列中讀取隱藏系統圖示以及應用程式
+
 Name[sr]=Системска касета
 Name[sr@ijekavian]=Системска касета
 Name[sr@latin]=Sistemska kaseta

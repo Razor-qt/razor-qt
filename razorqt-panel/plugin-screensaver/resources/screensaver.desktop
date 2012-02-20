@@ -29,6 +29,9 @@ Comment[cs]=Zapne šetřič obrazovky a/nebo zamkne obrazovku
 Name[da]=Pauseskærm
 Comment[da]=Aktiverer en pauseskærm og/eller låser skærmen
 
+Name[zh_TW]=螢幕保護程式
+Comment[zh_TW]=啟動螢幕保護程式並/或鎖上螢幕
+
 Name[sr]=Чувар екрана
 Name[sr@ijekavian]=Чувар екрана
 Name[sr@latin]=Čuvar ekrana

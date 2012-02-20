@@ -29,6 +29,9 @@ Comment[cs]=Přepínání mezi běžícími programy
 Name[da]=Programadministrator
 Comment[da]=Skifter imellem kørende programmer
 
+Name[zh_TW]=工作管理員
+Comment[zh_TW]=切換正在運行的視窗
+
 Name[sr]=Менаџер задатака
 Name[sr@ijekavian]=Менаџер задатака
 Name[sr@latin]=Menadžer zadataka
