@@ -29,11 +29,47 @@
 #include "razorsettings.h"
 #include <qtxdg/xdgicon.h>
 
-
+#ifdef DEBUG
+#include <cstdio>
+#include <cstdlib>
+#include <QDateTime>
+/*! \biref Log qDebug input to file
+Used only in pure Debug builds.
+*/
+void dbgMessageOutput(QtMsgType type, const char *msg)
+ {
+    FILE *f;
+    f = fopen (razorConfigDir().toUtf8() + "/debug.log", "a+");
+    const char * dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(f, "%s Debug: %s\n", dt, msg);
+        break;
+    case QtWarningMsg:
+        fprintf(f, "%s Warning: %s\n", dt, msg);
+        printf("%s Warning: %s\n", dt, msg);
+        break;
+    case QtCriticalMsg:
+        fprintf(f, "%s Critical: %s\n", dt, msg);
+        printf("%s Critical: %s\n", dt, msg);
+        break;
+    case QtFatalMsg:
+        fprintf(f, "%s Fatal: %s\n", dt, msg);
+        printf("%s Fatal: %s\n", dt, msg);
+        fclose(f);
+        abort();
+    }
+    fclose(f);
+}
+#endif
 
 RazorApplication::RazorApplication(int &argc, char** argv, const QString &stylesheetKey)
     : QApplication(argc, argv)
 {
+#ifdef DEBUG
+    qInstallMsgHandler(dbgMessageOutput);
+#endif
+
     setStyle(new RazorQProxyStyle());
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));

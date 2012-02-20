@@ -45,45 +45,11 @@ session-openbox.conf
 session-eggwm.conf
 */
 
-#ifdef DEBUG
-#include <cstdio>
-#include <cstdlib>
-#include <QDateTime>
-/*! \biref Log qDebug input to file
-Used only in pure Debug builds.
-*/
-void dbgMessageOutput(QtMsgType type, const char *msg)
- {
-    FILE *f;
-    f = fopen (".razor-session.log", "a+");
-    const char * dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
-    switch (type) {
-    case QtDebugMsg:
-        fprintf(f, "%s Debug: %s\n", dt, msg);
-        break;
-    case QtWarningMsg:
-        fprintf(f, "%s Warning: %s\n", dt, msg);
-        break;
-    case QtCriticalMsg:
-        fprintf(f, "%s Critical: %s\n", dt, msg);
-        break;
-    case QtFatalMsg:
-        fprintf(f, "%s Fatal: %s\n", dt, msg);
-        fclose(f);
-        abort();
-    }
-    fclose(f);
-}
-#endif
-
 /**
 * @brief our main function doing the loading
 */
 int main(int argc, char **argv)
 {
-#ifdef DEBUG
-    qInstallMsgHandler(dbgMessageOutput);
-#endif
     RazorApplication app(argc, argv);
     //qDebug() << "Razor Session start";
 
