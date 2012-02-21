@@ -17,7 +17,7 @@
     <message>
         <location filename="../clock.cpp" line="91"/>
         <source>Clock</source>
-        <translation>時鐘</traslation>
+        <translation>時鐘</translation>
     </message>
 </context>
 </TS>
