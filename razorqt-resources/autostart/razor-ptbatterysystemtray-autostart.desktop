@@ -5,6 +5,10 @@ TryExec=ptbatterysystemtray
 Exec=ptbatterysystemtray
 OnlyShowIn=Razor;
 
+Name[zh_TW]=電池電量顯示器
+Comment[zh_TW]=在通知列中顯示電池的現況
+GenericName[zh_TW]=電池現況顯示
+
 Name[da]=Systembakke Batteritilstand
 Comment[da]=Viser batteritilstand fra systembakke
 GenericName[da]=Systembakke Batteritilstand

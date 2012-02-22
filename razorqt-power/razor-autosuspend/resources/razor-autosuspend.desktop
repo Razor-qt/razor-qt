@@ -10,6 +10,9 @@ GenericName=Power management
 Name[da]=Automatisk slumrefunktionalitet
 GenericName[da]=Strømstyring
 
+Name[zh_TW]=Razor自動暫停
+GenericName[zh_TW]=電源管理員
+
 Name[sr]=Аутоматско суспендовање
 Name[sr@ijekavian]=Аутоматско суспендовање
 Name[sr@ijekavianlatin]=Automatsko suspendovanje

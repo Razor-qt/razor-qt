@@ -9,6 +9,10 @@ TryExec=qlipper
 Exec=qlipper
 OnlyShowIn=Razor;
 
+Name[zh_TW]=剪貼簿
+Comment[zh_TW]=剪貼內容存取
+GenericName[zh_TW]=剪貼簿
+
 Name[da]=Klippebord
 Comment[da]=Qt klippebord
 GenericName[da]=Klippebord

@@ -46,6 +46,10 @@ Name[da]=Indstilling af Razor-sessioner
 Comment[da]=Indstil Razor-Qt Sessionsmodul
 GenericName[da]=Indstilling af Razor-sessioner
 
+Name=Razor會話設定
+Comment=設定Razor-Qt會話模組
+GenericName=Razor會話設定
+
 Name[sr]=Подешавање сесије Рејзора
 Name[sr@ijekavian]=Подешавање сесије Рејзора
 Name[sr@latin]=Podešavanje sesije Rejzora

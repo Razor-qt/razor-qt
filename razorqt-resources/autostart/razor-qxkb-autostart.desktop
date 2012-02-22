@@ -9,6 +9,10 @@ TryExec=qxkb
 Exec=qxkb
 OnlyShowIn=Razor;
 
+Name[zh_TW]=鍵盤操作
+Comment[zh_TW]=鍵盤輸出切換器
+GenericName[zh_TW]=鍵盤操作
+
 Name[da]=Tastaturhåndtering
 Comment[da]=Håndtering af tastaturindstillinger
 GenericName[da]=Tastaturhåndtering
