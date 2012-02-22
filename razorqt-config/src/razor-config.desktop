@@ -42,6 +42,10 @@ Name[da]=Razor Indstillingscenter
 Comment[da]=Indstil Razor-Qt moduler
 GenericName[da]=Razor Indstillingscenter
 
+Name[zh_TW]=Razor設定中心
+Comment[zh_TW]=設定Razor-Qt模組
+GenericName[zh_TW]=Razor設定
+
 Name[sr]=Центар за подешавање
 Name[sr@ijekavian]=Центар за подешавање
 Name[sr@latin]=Centar za podešavanje
