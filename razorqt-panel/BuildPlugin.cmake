@@ -8,9 +8,11 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     # Translations **********************************
     include(RazorTranslate)
     razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM}/${PROJECT_NAME})
+    file (GLOB DESKTOP_FILES_IN resources/*.desktop.in)
+    razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
+    #************************************************
 
     file (GLOB CONFIG_FILES     resources/*.conf    )
-    file (GLOB DESKTOP_FILES    resources/*.desktop )
 
     include_directories (
         ${CMAKE_CURRENT_SOURCE_DIR}/../../libraries
@@ -28,7 +30,7 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     qt4_add_resources(QRC_SOURCES ${RESOURCES})
     qt4_wrap_ui(UI_SOURCES ${UIS})
 
-    add_library(${Name} MODULE ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UIS})
+    add_library(${Name} MODULE ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UIS} ${DESKTOP_FILES})
     target_link_libraries(${Name} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBRARIES})
 
     install(TARGETS ${Name} DESTINATION ${PLUGIN_DIR})

@@ -28,13 +28,14 @@ set(LIBRARIES
     razorqt
 )
 
-file(GLOB DESKTOP_FILES
-    resources/*.desktop
+file(GLOB DESKTOP_FILES_IN
+    resources/*.desktop.in
 )
 
 # Translations **********************************
 include(RazorTranslate)
 razor_translate(QM_FILES)
+razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN} )
 #************************************************
 cmake_minimum_required( VERSION 2.6 )
 
@@ -69,7 +70,7 @@ qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})
 qt4_add_resources(QRC_SOURCES ${QRC_FILES})
 
-add_executable(${PROJECT} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES})
+add_executable(${PROJECT} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES} ${DESKTOP_FILES})
 add_dependencies(${PROJECT} razorqt)
 target_link_libraries(${PROJECT}  ${LIBRARIES} ${QT_LIBRARIES})
 
