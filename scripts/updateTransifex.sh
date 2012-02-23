@@ -1,6 +1,5 @@
 #!/bin/bash
 
-EXCLUDE="sr_BA"
 PROJECT_ID=razor-qt
 
 DIR=$1
@@ -8,62 +7,90 @@ if [ -z "$DIR" ]; then
     DIR='../'
 fi
 
+function searchConfig()
+{
+  local d=$1
+  
+  while [ "$d" != "/" ]; do
+    if [ -f "$d/.tx/config" ]; then
+      echo "$d/.tx/config"
+      return 0
+    fi
+    
+    d=`dirname $d`
+  done
 
-function scanRecource()
+  return 1
+}
+
+function addTsFile()
 {
   local SRC_FILE=$1
   local RESOURCE_ID=`basename ${SRC_FILE} .ts.src`
-  local D=`dirname ${SRC_FILE}`
+  local local TR_DIR=`dirname ${SRC_FILE}`
 
-  tx --quiet set --source -r ${PROJECT_ID}.${RESOURCE_ID} -l en ${SRC_FILE}
-  echo "${PROJECT_ID}.${RESOURCE_ID}:"
-  echo -n "  "
-  for f in `find ${D} -name *.ts`; do
-    local lang=`echo $f | sed -e's/.*\(.._..\)\.ts/\1/'`
-    #echo "** $lang **************************************************"
+  local FIXED_SRC=`echo ${SRC_FILE} | sed -e"s|${PROJECT_BASE}/*||"`
+  local FIXED_DIR=`echo ${TR_DIR}   | sed -e"s|${PROJECT_BASE}/*||"`
+  local FILTER=${FIXED_DIR}/`basename ${SRC_FILE} .ts.src`'_<lang>.ts'
+  
+  echo "${PROJECT_ID}.${RESOURCE_ID}"
 
-    if `echo $EXCLUDE | grep -q $lang`; then
-      #echo "   Skip"
-      continue
-    fi
+  echo "[${PROJECT_ID}.${RESOURCE_ID}]" >> ${TX_CONFIG}
+  echo "type = QT"                      >> ${TX_CONFIG}
+  echo "source_file = ${FIXED_SRC}"     >> ${TX_CONFIG}
+  echo "source_lang = en"               >> ${TX_CONFIG}
+  echo "file_filter = ${FILTER}"        >> ${TX_CONFIG}
+  echo                                  >> ${TX_CONFIG}
+}
 
-    tx --quiet set -r ${PROJECT_ID}.${RESOURCE_ID}  -l ${lang} ${f}
-    echo -n " ${lang}"
-  done
-  echo
+
+function addDesktopFile
+{
+  local SRC_FILE=$1
+  local TR_DIR=$2
+  
+  local SRC_DIR=`dirname ${SRC_FILE}`
+  local RESOURCE_ID=`basename ${SRC_FILE} .desktop.in`_desktop
+  local FIXED_SRC=`echo ${SRC_FILE} | sed -e"s|${PROJECT_BASE}/*||"`
+  local FIXED_DIR=`readlink -m "${SRC_DIR}/${TR_DIR}" | sed -e"s|${PROJECT_BASE}/*||"`
+  local FILTER=${FIXED_DIR}/`basename ${SRC_FILE} .desktop.in`'_<lang>.desktop'
+  
+  echo "${PROJECT_ID}.${RESOURCE_ID}"
+
+  echo "[${PROJECT_ID}.${RESOURCE_ID}]" >> ${TX_CONFIG}
+  echo "type = DESKTOP"                 >> ${TX_CONFIG}
+  echo "source_file = ${FIXED_SRC}"     >> ${TX_CONFIG}
+  echo "source_lang = en"               >> ${TX_CONFIG}
+  echo "file_filter = ${FILTER}"        >> ${TX_CONFIG}
+  echo                                  >> ${TX_CONFIG}
+
 }
 
 
 
+DIR=`readlink -m "$DIR"`
+TX_CONFIG=`searchConfig $DIR` 
+PROJECT_BASE=`dirname \`dirname "${TX_CONFIG}"\``
+
+
+if [ -z "${TX_CONFIG}" ]; then
+  echo "Not a git Transifex (or any of the parent directories): .tx" >&2
+  exit 2
+fi
+
+echo -n                                  > ${TX_CONFIG}
+echo "[main]"                           >> ${TX_CONFIG} 
+echo "host = https://www.transifex.net" >> ${TX_CONFIG}
+echo "type = QT"                        >> ${TX_CONFIG}
+echo                                    >> ${TX_CONFIG}
+
 for SRC_FILE in `find ${DIR} -name *.ts.src`; do
-    scanRecource ${SRC_FILE}
+    addTsFile ${SRC_FILE}
 done
 
+for SRC_FILE in `find ${DIR} -name *.desktop.in`; do
+  TR_DIR=`awk -F"=" '/#TRANSLATIONS_DIR=/ {print($2)}' ${SRC_FILE}`
+  
+  addDesktopFile ${SRC_FILE} ${TR_DIR}
+done
 
-#PWD=`pwd`
-#DIR=`basename $PWD`
-#IN_ROOT=`ls | grep -o "scripts" > /dev/null; echo $?`
-
-#if [ "$DIR" = "scripts" ]; then
-#	ROOT='..'
-#elif [ "$IN_ROOT" = "0" ]; then
-#	ROOT='.'
-#else
-#	echo "This script must be run from the project root or from the scripts/ directory."
-#	exit 1
-#fi
-
-#cd ..
-#echo $ROOT
-#for i in `find  -name *ts.src`; do
-#    echo $i
-#    FILE=`echo $i | sed -e's|\.\./||'`
-#    ./addTtranslation.sh ${FILE}
-#	cd `dirname $i`
-#	LANG=en ./translate.sh "$@"
-#	FILE=`ls *_en.ts`
-#	PROJECT=`basename ${FILE} _en.ts`
-#	echo $PROJECT
-#	mv ${FILE} "${PROJECT}.ts.src"
-#	cd - > /dev/null
-#done
