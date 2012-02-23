@@ -5,60 +5,8 @@ Exec=razor-config-session
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-system-session-services
-
 Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
 
-Name[es]=Configuración de Sesiones Razor
-Comment[es]=Configura el módulo de sesiones de Razor-Qt
-GenericName[es]=Configuración de Sesiones Razor
-
-Name[it]=Impostazioni della sessione Razor
-Comment[it]=Configura la sessione Razor
-GenericName[it]=Impostazioni della sessione Razor
-
-Name[hu]=Razor munkamenetbeállíó
-Comment[hu]=A Razor-Qt munkamenetmodul beállítása
-GenericName[hu]=Razor munkamenetbeállíó
-
-Name[pl]=Ustawienia sesji Razor
-Comment[pl]=Ustawienia sesji Razor-Qt
-GenericName[pl]=Ustawienia sesji Razor
-
-Name[ru]=Настройки сесии Razor
-Comment[ru]=Настройки сессии для Razor-Qt
-GenericName[ru]=Настройки сесии Razor
-
-Name[sk]=Nastavenie relácie
-Comment[sk]=Nastavenie relácie prostredia Razor-Qt
-GenericName[sk]=Nastavenie relácie prostredia Razor
-
-Name[de]=Razor Sitzungskonfiguration
-Comment[de]=Konfiguriere die Razor-Qt Sitzungsmodule
-GenericName[de]=Razor Sitzungskonfiguration
-
-Name[cs]=Nastavení sezení Razoru
-Comment[cs]=Nastavení modulu sezení Razor-Qt
-GenericName[cs]=Nastavení sezení Razoru
-
-Name[da]=Indstilling af Razor-sessioner
-Comment[da]=Indstil Razor-Qt Sessionsmodul
-GenericName[da]=Indstilling af Razor-sessioner
-
-Name=Razor會話設定
-Comment=設定Razor-Qt會話模組
-GenericName=Razor會話設定
-
-Name[sr]=Подешавање сесије Рејзора
-Name[sr@ijekavian]=Подешавање сесије Рејзора
-Name[sr@latin]=Podešavanje sesije Rejzora
-Name[sr@ijekavianlatin]=Podešavanje sesije Rejzora
-Comment[sr]=Подесите Рејзоров модул сесије
-Comment[sr@ijekavian]=Подесите Рејзоров модул сесије
-Comment[sr@latin]=Podesite Rejzorov modul sesije
-Comment[sr@ijekavianlatin]=Podesite Rejzorov modul sesije
-GenericName[sr]=Подешавање сесије
-GenericName[sr@ijekavian]=Подешавање сесије
-GenericName[sr@latin]=Podešavanje sesije
-GenericName[sr@ijekavianlatin]=Podešavanje sesije
+#TRANSLATIONS_DIR=translations

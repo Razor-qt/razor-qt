@@ -5,56 +5,8 @@ Exec=razor-config
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-system
-
 Name=Razor Configuration Center
 Comment=Configure Razor-Qt modules
 GenericName=Razor Configuration
 
-Name[es]=Centro de Configuración Razor
-Comment[es]=Configura módulos de Razor-Qt
-GenericName[es]=Configuración Razor
-
-Name[hu]=Razor beállítóközpont
-Comment[hu]=A Razor-Qt modulok beállítása
-GenericName[hu]=Razor beállítóközpont
-
-Name[ru]=Центр настроек Razor
-Comment[ru]=Центр настроек для модулей Razor-Qt
-GenericName[ru]=Центр настроек Razor
-
-Name[pl]=Panel sterowania Razor
-Comment[pl]=Wszystkie ustawienia Razor-Qt
-GenericName[pl]=Panel sterowania Razor
-
-Name[sk]=Centrum nastavení
-Comment[sk]=Centrum nastavení prostredia Razor-Qt
-GenericName[sk]=Centrum nastavení
-
-Name[cs]=Středisko nastavení Razoru
-Comment[cs]=Nastavení modulů Razor-Qt
-GenericName[cs]=Nastavení Razoru
-
-Name[it]=Centro di Configurazione Razor
-Comment[it]=Configura moduli di Razor-qt
-GenericName[it]=Configura Razor
-
-Name[da]=Razor Indstillingscenter
-Comment[da]=Indstil Razor-Qt moduler
-GenericName[da]=Razor Indstillingscenter
-
-Name[zh_TW]=Razor設定中心
-Comment[zh_TW]=設定Razor-Qt模組
-GenericName[zh_TW]=Razor設定
-
-Name[sr]=Центар за подешавање
-Name[sr@ijekavian]=Центар за подешавање
-Name[sr@latin]=Centar za podešavanje
-Name[sr@ijekavianlatin]=Centar za podešavanje
-Comment[sr]=Подесите Рејзорове модуле
-Comment[sr@ijekavian]=Подесите Рејзорове модуле
-Comment[sr@latin]=Podesite Rejzorove module
-Comment[sr@ijekavianlatin]=Podesite Rejzorove module
-GenericName[sr]=Подешавање Рејзора
-GenericName[sr@ijekavian]=Подешавање Рејзора
-GenericName[sr@latin]=Podešavanje Rejzora
-GenericName[sr@ijekavianlatin]=Podešavanje Rejzora
+#TRANSLATIONS_DIR=translations

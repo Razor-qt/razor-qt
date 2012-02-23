@@ -6,56 +6,8 @@ Exec=razor-config-appearance
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-desktop-theme
-
 Name=Razor Appearance Configuration
 Comment=Configure appearance of Razor desktop
 GenericName=Razor Appearance Configuration
 
-Name[es]=Configuración de Aspecto Razor
-Comment[es]=Configura el aspecto del escritorio Razor
-GenericName[es]=Configuración de Aspecto Razor
-
-Name[hu]=Razor megjelenésbeállító
-Comment[hu]=A Razor asztal megjelenésének beállítása
-GenericName[hu]=Razor megjelenésbeállító
-
-Name[de]=Razor Erscheinungsbild Einstellunegn
-Comment[de]=Einstellungen zum Aussehen der Razor Arbeitsfläche
-GenericName[de]=Razor Erscheinungsbild Einstellunegn
-
-Name[ru]=Настройки внешнего вида
-Comment[ru]=Настройки внешнего вида Razor
-GenericName[ru]=Настройки внешнего вида
-
-Name[sk]=Nastavenie vzhľadu
-Comment[sk]=Nastavenie vzhľadu prostredia Razor
-GenericName[sk]=Nastavenie vzhľadu
-
-Name[zh_TW]=Razor外觀設定
-Comment[zh_TW]=設定Razor桌面的外觀
-GenericName[zh_TW]=Razor外觀設定
-
-Name[sr]=Подешавање изгледа Рејзора
-Name[sr@ijekavian]=Подешавање изгледа Рејзора
-Name[sr@latin]=Podešavanje izgleda Rejzora
-Name[sr@ijekavianlatin]=Podešavanje izgleda Rejzora
-Comment[sr]=Подесите изглед Рејзорове радне површи
-Comment[sr@ijekavian]=Подесите изглед Рејзорове радне површи
-Comment[sr@latin]=Podesite izgled Rejzorove radne površi
-Comment[sr@ijekavianlatin]=Podesite izgled Rejzorove radne površi
-GenericName[sr]=Подешавање изгледа
-GenericName[sr@ijekavian]=Подешавање изгледа
-GenericName[sr@latin]=Podešavanje izgleda
-GenericName[sr@ijekavianlatin]=Podešavanje izgleda
-
-Name[cs]=Nastavení vzhledu
-Comment[cs]=Nastavení vzhledu plochy Razor
-GenericName[cs]=Nastavení vzhledu
-
-Name[it]=Impostazioni aspetto Razor
-Comment[it]=Configura l'aspetto di Razor
-GenericName[it]=Impostazioni aspetto Razor
-
-Name[da]=Indstilling af Razor Udseende
-Comment[da]=Indstilling af Razor-Qt udseende
-GenericName[da]=Indstilling af Razor Udseende
+#TRANSLATIONS_DIR=translations
