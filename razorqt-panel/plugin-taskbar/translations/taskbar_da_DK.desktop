@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Task Manager
+Comment=Switch between running applications
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[da_DK]=Skift imellem kørende programmer
+Name[da_DK]=Jobliste

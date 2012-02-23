@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=System tray
+Comment=Access hidden applications minimized in the system tray
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[sr@latin]=Pristup skrivenim programima minimizovanim u sistemsku kasetu
+Name[sr@latin]=Sistemska kaseta

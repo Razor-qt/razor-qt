@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Icon View
+Comment=Display content (as icons) of the specified directory
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[sr]=Приказ садржаја (као икона) одређене фасцикле
+Name[sr]=Приказ икона

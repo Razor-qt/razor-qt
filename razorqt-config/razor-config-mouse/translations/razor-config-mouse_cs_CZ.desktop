@@ -1,0 +1,21 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-mouse
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-mouse
+Name=Razor Mouse Configurator
+Comment=Configure X11 mouse
+GenericName=Razor Mouse Configurator
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[cs_CZ]=Nastavit myš X11
+GenericName[cs_CZ]=Nastavení myši v Razoru
+Name[cs_CZ]=Nastavení myši v Razoru
+Icon[cs_CZ]=
+Nastavení myši pro pracovní plochu

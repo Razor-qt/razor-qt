@@ -1,0 +1,18 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-system
+Name=Razor Configuration Center
+Comment=Configure Razor-Qt modules
+GenericName=Razor Configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[sr@latin]=Podesite Rejzorove module
+GenericName[sr@latin]=Podešavanje Rejzora
+Name[sr@latin]=Centar za podešavanje

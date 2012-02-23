@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor-session-eggwm 
+Name=Razor Desktop (eggwm)
+Comment=Qt4 Desktop Environment
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[hu]=Qt4 asztali környezet
+Name[hu]=Razor asztal (eggwm)

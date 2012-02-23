@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=System tray
+Comment=Access hidden applications minimized in the system tray
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[uk]=Значки програм, згорнутих до лотка
+Name[uk]=Лоток сповіщень
