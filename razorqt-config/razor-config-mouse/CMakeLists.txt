@@ -41,17 +41,22 @@ set ( razor-config-mouse_SRCS
 find_package(ZLIB REQUIRED)
 QT4_WRAP_UI(razor-config-mouse_UIS     ui/selectwnd.ui)
 QT4_WRAP_CPP(razor-config-mouse_MOCS ${razor-config-mouse_HDRS})
+# Translations **********************************
+include(RazorTranslate)
+razor_translate(QM_FILES)
+razor_translate_desktop(DESKTOP_FILES razor-config-mouse.desktop.in)
+#************************************************
 
-add_executable ( razor-config-mouse ${razor-config-mouse_SRCS} ${razor-config-mouse_UIS} ${razor-config-mouse_MOCS} )
+add_executable ( razor-config-mouse ${razor-config-mouse_SRCS} ${razor-config-mouse_UIS} ${razor-config-mouse_MOCS} ${DESKTOP_FILES})
 add_dependencies( razor-config-mouse razorqt qtxdg)
 target_link_libraries ( razor-config-mouse  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY}
                                                  ${X11_X11_LIB} ${X11_Xcursor_LIB} razorqt ${ZLIB_LIBRARY} ${X11_Xfixes_LIB})
 # not needed probably ${X11_Xfixes_LIB})
 
 INSTALL(TARGETS razor-config-mouse RUNTIME DESTINATION bin)
-install(FILES razor-config-mouse.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 
 #razor_config_register(${CMAKE_INSTALL_PREFIX}/share/applications/razor-config-mouse.desktop)
-razor_config_register(razor-config-mouse.desktop)
+razor_config_register(${DESKTOP_FILES})
 
 

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-autosuspend
+Icon=razor-autosuspend
+Terminal=false
+Categories=Application;Qt;Utility
+Name=Razor autosuspend
+GenericName=Power management
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+GenericName[cs_CZ]=Správa energie
+Name[cs_CZ]=Automatické uspání Razor
+Icon[cs_CZ]=Automatické uspání Razor

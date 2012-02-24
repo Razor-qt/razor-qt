@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Hello World
+Comment=Display rich text on the screen
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[da_DK]=Vis formateret tekst på skærmen
+Name[da_DK]=Hej verden

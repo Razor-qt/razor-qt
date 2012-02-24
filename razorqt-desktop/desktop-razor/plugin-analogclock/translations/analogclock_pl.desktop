@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Clock
+Comment=Clock
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[pl]=Zegar
+Name[pl]=Zegar

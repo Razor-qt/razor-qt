@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=QStarDict
+TryExec=qstardict
+Exec=qstardict
+OnlyShowIn=Razor;
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[uk]=QStarDict

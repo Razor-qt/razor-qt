@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor-session
+Name=Razor Desktop
+Comment=Qt4 Desktop
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[da_DK]=Razor Desktop
+Comment[da_DK]=Qt4 Desktop

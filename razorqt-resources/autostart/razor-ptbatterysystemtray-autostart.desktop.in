@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=PtBatterySystemTray
+TryExec=ptbatterysystemtray
+Exec=ptbatterysystemtray
+OnlyShowIn=Razor;
+
+#TRANSLATIONS_DIR=translations

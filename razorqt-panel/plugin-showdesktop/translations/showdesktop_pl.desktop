@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Show Desktop
+Comment=Minimize all windows and show the desktop
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[pl]=Minimalizuje wszystkie okna i pokazuje pulpit
+Name[pl]=Pokaż pulpit
