@@ -49,27 +49,27 @@ Used only in pure Debug builds.
 void dbgMessageOutput(QtMsgType type, const char *msg)
  {
     FILE *f;
-    QDir dir(XdgDirs::dataHome().toUtf8() + "razor");
+    QDir dir(XdgDirs::dataHome().toUtf8() + "/razor");
     dir.mkpath(".");
 
-    f = fopen (XdgDirs::dataHome().toUtf8() + "razor/debug.log", "a+");
+    f = fopen (dir.absoluteFilePath("debug.log").toUtf8(), "a+");
     const char * dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
     switch (type) {
     case QtDebugMsg:
         fprintf(f, "%s %s(%p) Debug: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s %s(%p) Debug: %s%s\n", dt, COLOR_DEBUG, QAPP_NAME, qApp, msg, COLOR_RESET);
+        fprintf(stderr, "%s %s(%p) Debug: %s%s\n", COLOR_DEBUG, QAPP_NAME, qApp, msg, COLOR_RESET);
         break;
     case QtWarningMsg:
         fprintf(f, "%s %s(%p) Warning: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s %s(%p) Warning: %s%s\n", dt, COLOR_WARN, QAPP_NAME, qApp, msg, COLOR_RESET);
+        fprintf(stderr, "%s %s(%p) Warning: %s%s\n", COLOR_WARN, QAPP_NAME, qApp, msg, COLOR_RESET);
         break;
     case QtCriticalMsg:
         fprintf(f, "%s %s(%p) Critical: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s %s(%p) Critical: %s%s\n", dt, COLOR_CRITICAL, QAPP_NAME, qApp, msg, COLOR_RESET);
+        fprintf(stderr, "%s %s(%p) Critical: %s%s\n", COLOR_CRITICAL, QAPP_NAME, qApp, msg, COLOR_RESET);
         break;
     case QtFatalMsg:
         fprintf(f, "%s %s(%p) Fatal: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s %s(%p) Fatal: %s%s\n", dt, COLOR_FATAL, QAPP_NAME, qApp, msg, COLOR_RESET);
+        fprintf(stderr, "%s %s(%p) Fatal: %s%s\n", COLOR_FATAL, QAPP_NAME, qApp, msg, COLOR_RESET);
         fclose(f);
         abort();
     }
