@@ -456,7 +456,6 @@ void RazorPanelPrivate::realign()
             rect.moveRight(screen.right());
     }
     q->setGeometry(rect);
-    qDebug() << q->geometry();
 
     // Reserve our space on the screen ..........
     XfitMan xf = xfitMan();

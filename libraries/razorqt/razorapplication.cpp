@@ -28,10 +28,12 @@
 #include "razorapplication.h"
 #include "razorsettings.h"
 #include <qtxdg/xdgicon.h>
+#include <qtxdg/xdgdirs.h>
+#include <QtCore/QDir>
 
 #ifdef DEBUG
-#define COLOR_DEBUG "\033[32;1m"
-#define COLOR_WARN "\033[33;1m"
+#define COLOR_DEBUG "\033[32;2m"
+#define COLOR_WARN "\033[33;2m"
 #define COLOR_CRITICAL "\033[31;1m"
 #define COLOR_FATAL "\033[33;1m"
 #define COLOR_RESET "\033[0m"
@@ -47,7 +49,10 @@ Used only in pure Debug builds.
 void dbgMessageOutput(QtMsgType type, const char *msg)
  {
     FILE *f;
-    f = fopen (razorConfigDir().toUtf8() + "/debug.log", "a+");
+    QDir dir(XdgDirs::dataHome().toUtf8() + "razor");
+    dir.mkpath(".");
+
+    f = fopen (XdgDirs::dataHome().toUtf8() + "razor/debug.log", "a+");
     const char * dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
     switch (type) {
     case QtDebugMsg:

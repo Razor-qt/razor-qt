@@ -35,14 +35,6 @@
 
 class QEvent;
     
-
-/*! Get the config rirectory. Usually "~/.razor/" but it can be changed
-    configuration/compilation phase.
-    \note Path includes end-slash!
-*/
-QString razorConfigDir();
-
-
 class RazorSettingsPrivate;
 /*! \brief User settings handling */
 class RazorSettings : public QSettings
