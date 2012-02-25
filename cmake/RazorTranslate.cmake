@@ -39,14 +39,14 @@ MACRO(razor_translate_desktop _RESULT)
     #.......................................
     set(_OUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/${_FILE_NAME}${_FILE_EXT}")
 
-    
+
     file(GLOB TR_FILES
         translations/${_FILE_NAME}_*${_FILE_EXT}
         translations/local/${_FILE_NAME}_*${_FILE_EXT}
     )
 
     if (NOT TR_FILES)
-        message(FATAL_ERROR "Translations files not found for ${_current_FILE}")
+        message(WARNING "Translations files not found for ${_current_FILE}")
     endif()
 
     #message(status ".:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:")
@@ -58,11 +58,18 @@ MACRO(razor_translate_desktop _RESULT)
     #message(status ".:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:.:")
 
     set(PATTERN "'\\[.*]\\s*='")
-    add_custom_command(OUTPUT ${_OUT_FILE}
-        COMMAND grep -v "'#TRANSLATIONS_DIR='" ${_IN_FILE} > ${_OUT_FILE}
-        COMMAND grep --no-filename -P ${PATTERN} ${TR_FILES} >> ${_OUT_FILE}
-        COMMENT "Generating ${_FILE_NAME}${_FILE_EXT}"
-    )
+    if (TR_FILES)
+        add_custom_command(OUTPUT ${_OUT_FILE}
+            COMMAND grep -v "'#TRANSLATIONS_DIR='" ${_IN_FILE} > ${_OUT_FILE}
+            COMMAND grep --no-filename -P ${PATTERN} ${TR_FILES} >> ${_OUT_FILE}
+            COMMENT "Generating ${_FILE_NAME}${_FILE_EXT}"
+        )
+    else()
+        add_custom_command(OUTPUT ${_OUT_FILE}
+            COMMAND grep -v "'#TRANSLATIONS_DIR='" ${_IN_FILE} > ${_OUT_FILE}
+            COMMENT "Generating ${_FILE_NAME}${_FILE_EXT}"
+        )
+    endif()
 
     SET(${_RESULT} ${${_RESULT}} ${_OUT_FILE})
   endforeach(_current_FILE)
