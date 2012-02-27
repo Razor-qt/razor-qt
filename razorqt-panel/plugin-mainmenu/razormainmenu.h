@@ -33,7 +33,7 @@
 #include <qtxdg/xdgmenu.h>
 
 #include <QtGui/QLabel>
-#include <QPushButton>
+#include <QToolButton>
 #include <QDomElement>
 #include <QAction>
 
@@ -55,7 +55,7 @@ public:
     virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
 
 private:
-    QPushButton mButton;
+    QToolButton mButton;
     QLabel mMainMenuButton;
     QString mLogDir;
     QString mMenuFile;
@@ -71,7 +71,6 @@ private:
 protected slots:
     virtual void showConfigureDialog();
     virtual void settigsChanged();
-    virtual void realign();
 
 private slots:
     void showMenu();

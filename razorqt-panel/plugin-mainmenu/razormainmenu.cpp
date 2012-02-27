@@ -62,6 +62,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
 
     layout()->setAlignment(Qt::AlignCenter);
     mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mButton.setObjectName("Button");
 
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
@@ -134,16 +135,17 @@ void RazorMainMenu::showMenu()
  ************************************************/
 void RazorMainMenu::settigsChanged()
 {
-    if (settings().value("showText", false).toBool() == false)
+    if (settings().value("showText", false).toBool())
     {
-        mButton.setText(NULL);
+        mButton.setText(settings().value("text", "Start").toString());
+        mButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     }
     else
     {
-        mButton.setText(settings().value("text", "Start").toString());
+        mButton.setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
+
     mLogDir = settings().value("log_dir", "").toString();
-    mTopMenuStyle.setIconSize(settings().value("top_icon_size", 16).toInt());
 
     mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
@@ -197,16 +199,3 @@ void RazorMainMenu::showConfigureDialog()
     confWindow->activateWindow();
 }
 
-void RazorMainMenu::realign()
-{
-    if (panel()->isHorizontal())
-    {
-        mButton.setMaximumSize(QSize(panel()->height(), panel()->height()));
-        this->setMaximumSize(QSize(panel()->height(), panel()->height()));
-    }
-    else
-    {
-        mButton.setMaximumSize(QSize(panel()->width(), panel()->width()));
-        this->setMaximumSize(QSize(panel()->width(), panel()->width()));
-    }
-}
