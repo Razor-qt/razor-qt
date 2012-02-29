@@ -29,6 +29,8 @@
 #define WMSELECTDIALOG_H
 
 #include <QtGui/QDialog>
+#include "windowmanager.h"
+class QModelIndex;
 
 namespace Ui {
     class WmSelectDialog;
@@ -39,14 +41,21 @@ class WmSelectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit WmSelectDialog(QWidget *parent = 0);
+    explicit WmSelectDialog(const WindowManagerList &availableWindowManagers,
+                            QWidget *parent = 0);
     ~WmSelectDialog();
     QString windowManager() const;
+
+public slots:
+    void done(int);
+
+private slots:
+    void selectFileDialog(const QModelIndex &index);
 
 private:
     Ui::WmSelectDialog *ui;
 
-    void addWindowManager(const QString &program, const QString &description);
+    void addWindowManager(const WindowManager &wm);
 };
 
 #endif // WMSELECTDIALOG_H

@@ -91,7 +91,12 @@ SessionConfigWindow::SessionConfigWindow()
 void SessionConfigWindow::restoreSettings()
 {
     // window managers
-    QStringList knownWMs = availableWindowManagers().keys();
+    QStringList knownWMs;
+    foreach (WindowManager i, getWindowManagerList(true))
+    {
+        knownWMs << i.command;
+    }
+
     QString wm = m_settings->value("windowmanager", "openbox").toString();
     handleCfgComboBox(wmComboBox, knownWMs, wm);
 
@@ -214,7 +219,7 @@ void SessionConfigWindow::handleCfgComboBox(QComboBox * cb,
     }
     cb->clear();
     cb->addItems(realValues);
-    
+
     int ix = cb->findText(value);
     if (ix == -1)
         cb->lineEdit()->setText(value);

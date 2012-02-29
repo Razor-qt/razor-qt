@@ -31,8 +31,18 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
+struct WindowManager
+{
+    QString name;
+    QString command;
+    QString comment;
+    bool    exists;
+};
+
+typedef QList<WindowManager> WindowManagerList;
+
 /*! Helper functions for window manager detection */
-QMap<QString,QString> availableWindowManagers();
+WindowManagerList  getWindowManagerList(bool onlyAvailable=true);
 
 bool findProgram(const QString &program);
 

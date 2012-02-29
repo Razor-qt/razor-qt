@@ -36,6 +36,7 @@
 #include <QtGui/QSystemTrayIcon>
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>
+#include "windowmanager.h"
 
 #define MAX_CRASHES_PER_APP 5
 
@@ -221,7 +222,11 @@ void RazorModuleManager::logout()
 
 QString RazorModuleManager::showWmSelectDialog()
 {
-    WmSelectDialog dlg;
+    WindowManagerList availableWM = getWindowManagerList(true);
+    if (availableWM.count() == 1)
+        return availableWM.at(0).command;
+
+    WmSelectDialog dlg(availableWM);
     dlg.exec();
     return dlg.windowManager();
 }

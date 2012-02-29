@@ -28,29 +28,44 @@
 
 #include "wmselectdialog.h"
 #include "ui_wmselectdialog.h"
-#include "windowmanager.h"
-#include <QtGui/QListView>
+#include <QtGui/QTreeWidget>
 #include <QtCore/QVariant>
 #include <stdlib.h>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
+#include <QtGui/QApplication>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QFileDialog>
+#include <QDebug>
 
+#define TYPE_ROLE   Qt::UserRole + 1
+#define SELECT_DLG_TYPE 12345
 
-WmSelectDialog::WmSelectDialog(QWidget *parent) :
+WmSelectDialog::WmSelectDialog(const WindowManagerList &availableWindowManagers, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::WmSelectDialog)
 {
+    qApp->setStyle("plastique");
     ui->setupUi(this);
     setModal(true);
     connect(ui->wmList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
-    
-    QMapIterator<QString,QString> it(availableWindowManagers());
-    while (it.hasNext())
+    connect(ui->wmList, SIGNAL(clicked(QModelIndex)), this, SLOT(selectFileDialog(QModelIndex)));
+
+    foreach (WindowManager wm, availableWindowManagers)
     {
-        it.next();
-        addWindowManager(it.key(), it.value());
+        addWindowManager(wm);
     }
+
+
+    QTreeWidgetItem *item = new QTreeWidgetItem();
+    item->setText(0, tr("Other ..."));
+    item->setText(1, tr("Choose your favorite one."));
+    item->setData(1, TYPE_ROLE, SELECT_DLG_TYPE);
+
+    ui->wmList->setCurrentItem(ui->wmList->topLevelItem(0));
+    ui->wmList->addTopLevelItem(item);
 }
+
 
 WmSelectDialog::~WmSelectDialog()
 {
@@ -58,25 +73,56 @@ WmSelectDialog::~WmSelectDialog()
 }
 
 
+void WmSelectDialog::done( int r ) {
+    if (r==1 && findProgram(windowManager()))
+    {
+        QDialog::done( r );
+        close();
+    }
+}
+
+
 QString WmSelectDialog::windowManager() const
 {
-    QListWidgetItem *item = ui->wmList->currentItem();
+    QTreeWidgetItem *item = ui->wmList->currentItem();
     if (item)
-        return item->data(Qt::UserRole).toString();
+        return item->data(0, Qt::UserRole).toString();
 
     return QString();
 }
 
-void WmSelectDialog::addWindowManager(const QString &program, const QString &description)
-{
-     QListWidgetItem *item = new QListWidgetItem(description, ui->wmList);
-     item->setData(Qt::UserRole, QVariant(program));
-     bool enable = findProgram(program);
-     if (!enable)
-        item->setFlags(Qt::NoItemFlags);
 
-     if (enable && ui->wmList->currentRow() < 0)
-     {
-        ui->wmList->setCurrentItem(item);
-     }
+void WmSelectDialog::addWindowManager(const WindowManager &wm)
+{
+    QTreeWidgetItem *item = new QTreeWidgetItem();
+
+    item->setText(0, wm.name);
+    item->setText(1, wm.comment);
+    item->setData(0, Qt::UserRole, wm.command);
+
+    ui->wmList->addTopLevelItem(item);
+}
+
+
+void WmSelectDialog::selectFileDialog(const QModelIndex &index)
+{
+    QTreeWidget *wmList = ui->wmList;
+    QTreeWidgetItem *item = wmList->currentItem();
+    if (item->data(1, TYPE_ROLE) != SELECT_DLG_TYPE)
+        return;
+
+    QString fname = QFileDialog::getOpenFileName(this, "", "/usr/bin/");
+    if (fname.isEmpty())
+        return;
+
+    QFileInfo fi(fname);
+    if (!fi.exists() || !fi.isExecutable())
+        return;
+
+    QTreeWidgetItem *wmItem = new QTreeWidgetItem();
+
+    wmItem->setText(0, fi.baseName());
+    wmItem->setData(0, Qt::UserRole, fi.absoluteFilePath());
+    wmList->insertTopLevelItem(wmList->topLevelItemCount() -1, wmItem);
+    ui->wmList->setCurrentItem(wmItem);
 }
