@@ -44,6 +44,8 @@ public:
     {
     }
 
+    QString localizedKey(const QString& key) const;
+
 private:
     RazorSettings* mParent;
 };
@@ -164,6 +166,102 @@ const RazorSettings *RazorSettings::globalSettings()
     }
 
     return instance;
+}
+
+
+/************************************************
+ LC_MESSAGES value	Possible keys in order of matching
+ lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
+                        default value
+ lang_COUNTRY	        lang_COUNTRY, lang, default value
+ lang@MODIFIER	        lang@MODIFIER, lang, default value
+ lang	                lang, default value
+ ************************************************/
+QString RazorSettingsPrivate::localizedKey(const QString& key) const
+{
+
+    QString lang = getenv("LC_MESSAGES");
+
+    if (lang.isEmpty())
+        lang = getenv("LC_ALL");
+
+    if (lang.isEmpty())
+         lang = getenv("LANG");
+
+
+    QString modifier = lang.section('@', 1);
+    if (!modifier.isEmpty())
+        lang.truncate(lang.length() - modifier.length() - 1);
+
+    QString encoding = lang.section('.', 1);
+    if (!encoding.isEmpty())
+        lang.truncate(lang.length() - encoding.length() - 1);
+
+
+    QString country = lang.section('_', 1);
+    if (!country.isEmpty())
+        lang.truncate(lang.length() - country.length() - 1);
+
+
+
+    //qDebug() << "LC_MESSAGES: " << getenv("LC_MESSAGES");
+    //qDebug() << "Lang:" << lang;
+    //qDebug() << "Country:" << country;
+    //qDebug() << "Encoding:" << encoding;
+    //qDebug() << "Modifier:" << modifier;
+
+    if (!modifier.isEmpty() && !country.isEmpty())
+    {
+        QString k = QString("%1[%2_%3@%4]").arg(key, lang, country, modifier);
+        //qDebug() << "\t try " << k << mParent->contains(k);
+        if (mParent->contains(k))
+            return k;
+    }
+
+    if (!country.isEmpty())
+    {
+        QString k = QString("%1[%2_%3]").arg(key, lang, country);
+        //qDebug() << "\t try " << k  << mParent->contains(k);
+        if (mParent->contains(k))
+            return k;
+    }
+
+    if (!modifier.isEmpty())
+    {
+        QString k = QString("%1[%2@%3]").arg(key, lang, modifier);
+        //qDebug() << "\t try " << k  << mParent->contains(k);
+        if (mParent->contains(k))
+            return k;
+    }
+
+    QString k = QString("%1[%2]").arg(key, lang);
+    //qDebug() << "\t try " << k  << mParent->contains(k);
+    if (mParent->contains(k))
+        return k;
+
+
+    //qDebug() << "\t try " << key  << mParent->contains(key);
+    return key;
+}
+
+
+/************************************************
+
+ ************************************************/
+QVariant RazorSettings::localizedValue(const QString& key, const QVariant& defaultValue) const
+{
+    Q_D(const RazorSettings);
+    return value(d->localizedKey(key), defaultValue);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorSettings::setLocalizedValue(const QString &key, const QVariant &value)
+{
+    Q_D(const RazorSettings);
+    setValue(d->localizedKey(key), value);
 }
 
 

@@ -36,6 +36,8 @@
 class QEvent;
     
 class RazorSettingsPrivate;
+
+
 /*! \brief User settings handling */
 class RazorSettings : public QSettings
 {
@@ -59,6 +61,19 @@ public:
     ~RazorSettings();
 
     static const RazorSettings *globalSettings();
+
+
+    /*! Returns the localized value for key. In the desktop file keys may be postfixed by [LOCALE]. If the
+        localized value doesn't exist, returns non lokalized value. If non localized value doesn't exist, returns defaultValue.
+        LOCALE must be of the form lang_COUNTRY.ENCODING@MODIFIER, where _COUNTRY, .ENCODING, and @MODIFIER may be omitted.
+
+        If no default value is specified, a default QVariant is returned. */
+    QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
+
+    /*! Sets the value of setting key to value. If a localized version of the key already exists, the previous value is
+        overwritten. Otherwise, it overwrites the the un-localized version. */
+    void setLocalizedValue(const QString &key, const QVariant &value);
+
 signals:
     void settigsChanged();
 
