@@ -73,7 +73,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     mScreenSaver = new ScreenSaver(this);
     
     mShortcut = new QxtGlobalShortcut(this);
-    connect(mShortcut, SIGNAL(activated()), this, SLOT(showMenu()));
+    connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
 
     addWidget(&mButton);
     settigsChanged();
@@ -85,6 +85,18 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
  ************************************************/
 RazorMainMenu::~RazorMainMenu()
 {
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorMainMenu::showHideMenu()
+{
+    if (mMenu && mMenu->isVisible())
+        mMenu->hide();
+    else
+        showMenu();
 }
 
 

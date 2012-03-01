@@ -74,6 +74,7 @@ protected slots:
 
 private slots:
     void showMenu();
+    void showHideMenu();
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
