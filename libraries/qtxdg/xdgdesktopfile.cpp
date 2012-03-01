@@ -660,6 +660,16 @@ QVariant XdgDesktopFile::localizedValue(const QString& key, const QVariant& defa
 /************************************************
 
  ************************************************/
+void XdgDesktopFile::removeEntry(const QString& key)
+{
+    QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
+    d->mItems.remove(path);
+}
+
+
+/************************************************
+
+ ************************************************/
 bool XdgDesktopFile::contains(const QString& key) const
 {
     QString path = (!prefix().isEmpty()) ? prefix() + "/" + key : key;
