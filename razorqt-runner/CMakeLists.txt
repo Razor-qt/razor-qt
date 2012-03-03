@@ -94,9 +94,13 @@ if (RUNNER_MATH)
     add_definitions(-DMATH_ENABLED)
 endif (RUNNER_MATH)
 
-if (RUNNER_MATH)
+if (RUNNER_VBOX)
+	# FIX ME
+	set(QRC_FILES 
+		virtualbox-icons.qrc
+	)
 	add_definitions(-DVBOX_ENABLED)
-endif (RUNNER_MATH)
+endif (RUNNER_VBOX)
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})

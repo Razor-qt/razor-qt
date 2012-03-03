@@ -171,6 +171,7 @@ public:
 #include <QtCore/QDateTime>
 #include <QtGui/QDesktopServices>
 #include <QtCore/QFileInfo>
+#include <QtCore/QMap>
 class VirtualBoxItem: public CommandProviderItem
 {
 public:
@@ -189,6 +190,7 @@ public:
   
 private:
   QFile fp;
+  QMap<QString,QString> osIcons;
   QString virtualBoxConfig;
   QDateTime timeStamp;
 };
