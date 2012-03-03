@@ -37,6 +37,7 @@
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
+#include </secure/Common/OSS Group/git/razor-qt/razorqt-runner/providers.h>
 
 #define MAX_HISORTY 100
 
@@ -292,6 +293,91 @@ void HistoryProvider::AddCommand(const QString &command)
         mHistoryFile->setValue(key, static_cast<HistoryItem*>(at(i))->command());
     }
 }
+
+#ifdef VBOX_ENABLED
+VirtualBoxItem::VirtualBoxItem(const QString & MachineName , const QIcon & Icon):
+    CommandProviderItem()
+{
+    setTile (MachineName);
+    setIcon (Icon);
+}
+
+bool VirtualBoxItem::run() const
+{
+    return QProcess::startDetached ("VBoxManage startvm " + tile ());
+}
+
+bool VirtualBoxItem::compare(const QRegExp &regExp) const
+{
+    QRegExp re(regExp);
+    re.setCaseSensitivity(Qt::CaseInsensitive);
+    return ( ! re.isEmpty() && ( (-1 != re.indexIn (tile ())) || (-1 != re.indexIn (comment())) ) );
+}
+
+///////
+VirtualBoxProvider::VirtualBoxProvider():
+virtualBoxConfig ( QDesktopServices::storageLocation (QDesktopServices::HomeLocation) 
+  + "/.VirtualBox/VirtualBox.xml")
+{
+    fp.setFileName (virtualBoxConfig);
+}
+
+void VirtualBoxProvider::rebuild()
+{
+    qDebug() << "Rebuilding ..";
+  
+    QDomDocument d;
+    if ( !d.setContent( &fp ) )
+    {
+        qDebug() << "Unable to parse: " << fp.fileName();
+        return;
+    }
+
+    QDomNodeList _dnlist = d.elementsByTagName( "MachineEntry" );
+    for ( int i = 0; i < _dnlist.count(); i++ )
+    {
+        QDomNode node = _dnlist.at( i );
+        QString ref = node.toElement().attribute( "src" );
+        if ( ref.isEmpty() )
+        {
+            qDebug() << "MachineEntry with no src attribute";
+            continue;
+        }
+
+        QFile m( ref );
+
+        QDomDocument mspec;
+        if ( !mspec.setContent( &m ) )
+        {
+            qDebug() << "Could not parse machine file " << m.fileName();
+            continue;
+        }
+
+        QDomNodeList _mlist = mspec.elementsByTagName( "Machine" );
+        for ( int j = 0; j < _mlist.count(); j++ )
+        {
+            QDomNode mnode = _mlist.at( j );
+            QString type = mnode.toElement().attribute( "OSType" );
+
+            VirtualBoxItem *virtualBoxItem = new VirtualBoxItem 
+            ( 
+            mnode.toElement().attribute( "name" ) ,
+            QIcon( ":/virtualbox-ose" ) 
+	    );
+
+            append ( virtualBoxItem );
+        }
+    }
+
+    timeStamp = QDateTime::currentDateTime();
+  
+}
+
+bool VirtualBoxProvider::isOutDated() const
+{
+  return fp.exists() && ( timeStamp < QFileInfo ( virtualBoxConfig ).lastModified () );
+}
+#endif
 
 
 #ifdef MATH_ENABLED

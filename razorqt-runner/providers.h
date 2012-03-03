@@ -167,4 +167,31 @@ public:
     //virtual ~MathProvider();
 };
 
+#ifdef VBOX_ENABLED
+#include <QtCore/QDateTime>
+#include <QtGui/QDesktopServices>
+#include <QtCore/QFileInfo>
+class VirtualBoxItem: public CommandProviderItem
+{
+public:
+  VirtualBoxItem(const QString & MachineName , const QIcon & Icon);
+  
+  bool run() const;
+  bool compare(const QRegExp &regExp) const;
+};
+
+class VirtualBoxProvider: public CommandProvider
+{
+public:
+  VirtualBoxProvider ();
+  void rebuild();
+  bool isOutDated() const;
+  
+private:
+  QFile fp;
+  QString virtualBoxConfig;
+  QDateTime timeStamp;
+};
+#endif
+
 #endif // PROVIDERS_H
