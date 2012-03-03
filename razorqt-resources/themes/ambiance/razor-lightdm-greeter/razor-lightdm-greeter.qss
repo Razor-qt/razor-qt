@@ -1,0 +1,15 @@
+QWidget {
+    border-radius: 5px;
+}
+
+QComboBox,
+QPushButton {
+    border: 1px solid silver;
+    background-color: rgb(200, 200, 200);
+}
+
+
+#leaveButton {
+    qproperty-iconSize: 25px;
+    qproperty-icon: url(leaveIcon.svg);
+}
