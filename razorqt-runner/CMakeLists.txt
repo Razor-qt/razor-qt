@@ -95,8 +95,8 @@ if (RUNNER_MATH)
 endif (RUNNER_MATH)
 
 if (RUNNER_VBOX)
-	# FIX ME
 	set(QRC_FILES 
+		${QRC_FILES}
 		virtualbox-icons.qrc
 	)
 	add_definitions(-DVBOX_ENABLED)
