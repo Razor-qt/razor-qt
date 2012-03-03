@@ -186,7 +186,7 @@ QIconTheme::QIconTheme(const QString &themeName)
             QStringList themeSearchPaths = QIcon::themeSearchPaths();
             foreach (QString path, themeSearchPaths)
             {
-                if (!path.startsWith(':'))
+                if (!path.startsWith(':') && QFileInfo(path).isDir())
                     m_contentDirs.append(path + QLatin1Char('/') + themeName);
             }
 
@@ -280,13 +280,14 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
     const QString pngext(QLatin1String(".png"));
     const QString xpmext(QLatin1String(".xpm"));
 
-    foreach (QString contentDir, contentDirs)
+    // Add all relevant files
+    for (int i = 0; i < subDirs.size() ; ++i)
     {
-        // Add all relevant files
-        for (int i = 0; i < subDirs.size() ; ++i)
+        const QIconDirInfo &dirInfo = subDirs.at(i);
+        QString subdir = dirInfo.path;
+
+        foreach (QString contentDir, contentDirs)
         {
-            const QIconDirInfo &dirInfo = subDirs.at(i);
-            QString subdir = dirInfo.path;
             QDir currentDir(contentDir + '/' + subdir);
 
             if (currentDir.exists(iconName + pngext))
@@ -297,6 +298,7 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
                 // Notice we ensure that pixmap entries always come before
                 // scalable to preserve search order afterwards
                 entries.prepend(iconEntry);
+                break;
             }
             else if (m_supportsSvg &&
                      currentDir.exists(iconName + svgext))
@@ -305,6 +307,7 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
                 iconEntry->dir = dirInfo;
                 iconEntry->filename = currentDir.filePath(iconName + svgext);
                 entries.append(iconEntry);
+                break;
             }
             else if (currentDir.exists(iconName + xpmext))
             {
@@ -314,6 +317,7 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
                 // Notice we ensure that pixmap entries always come before
                 // scalable to preserve search order afterwards
                 entries.append(iconEntry);
+                break;
             }
         }
     }
