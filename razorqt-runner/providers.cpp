@@ -37,7 +37,7 @@
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
-#include </secure/Common/OSS Group/git/razor-qt/razorqt-runner/providers.h>
+#include <razorqt-runner/providers.h>
 
 #define MAX_HISORTY 100
 
