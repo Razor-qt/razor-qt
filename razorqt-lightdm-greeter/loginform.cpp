@@ -59,7 +59,10 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
 
     ui->hostnameLabel->setText(QLightDM::hostname());
 
-    connect(ui->loginButton, SIGNAL(clicked()), SLOT(doLogin()));
+    connect(ui->loginButton, SIGNAL(pressed()), this, SLOT(doLogin()));
+    connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(doLogin()));
+    qDebug() << "Default: " << ui->loginButton->isDefault();
+
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(doCancel()));
     connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::PromptType)), this, SLOT(onPrompt(QString,QLightDM::PromptType)));
     connect(&m_Greeter, SIGNAL(authenticationComplete()), this, SLOT(authenticationDone()));
@@ -79,6 +82,7 @@ LoginForm::~LoginForm()
 
 void LoginForm::doLogin()
 {
+    qDebug() << "In login";
     m_Greeter.authenticate(ui->userIdInput->text());
 }
 
@@ -90,11 +94,13 @@ void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
 
 void LoginForm::authenticationDone()
 {
-    if (m_Greeter.isAuthenticated()) {
+    if (m_Greeter.isAuthenticated())
+    {
         QString session = ui->sessionCombo->itemData(ui->sessionCombo->currentIndex(), QLightDM::SessionsModel::IdRole).toString();
         m_Greeter.startSessionSync(session);
     }
-    else {
+    else
+    {
         doCancel();
     }
 }
@@ -102,6 +108,7 @@ void LoginForm::authenticationDone()
 
 void LoginForm::doCancel()
 {
+    ui->hostnameLabel->setFocus();
     ui->userIdInput->setText("");
     ui->passwordInput->setText("");
 }
@@ -114,4 +121,13 @@ void LoginForm::doLeave()
 
 void LoginForm::razorPowerDone() {
     setEnabled(true);
+}
+
+void LoginForm::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
+    {
+        qDebug() << "Enter hit...";
+        emit ui->loginButton->click();
+    }
 }

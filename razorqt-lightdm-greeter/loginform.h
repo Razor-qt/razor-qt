@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QLightDM/Greeter>
 #include <QProcess>
+#include <QDialog>
+#include <QKeyEvent>
 
 namespace Ui {
 class LoginForm;
@@ -24,6 +26,9 @@ public slots:
     void razorPowerDone();
     void onPrompt(QString prompt, QLightDM::PromptType promptType);
     void authenticationDone();
+
+protected:
+    virtual void keyPressEvent(QKeyEvent *event);
 
 private:
     Ui::LoginForm *ui;
