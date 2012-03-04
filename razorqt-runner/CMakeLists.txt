@@ -59,6 +59,7 @@ endmacro()
 #    cmake -DRUNNER_MATH=No ..  # Disable math plugin
 
 setByDefault(RUNNER_MATH Yes )
+setByDefault(RUNNER_VBOX Yes )
 
 
 # Translations **********************************
@@ -93,6 +94,13 @@ if (RUNNER_MATH)
     add_definitions(-DMATH_ENABLED)
 endif (RUNNER_MATH)
 
+if (RUNNER_VBOX)
+	set(QRC_FILES 
+		${QRC_FILES}
+		virtualbox-icons.qrc
+	)
+	add_definitions(-DVBOX_ENABLED)
+endif (RUNNER_VBOX)
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})

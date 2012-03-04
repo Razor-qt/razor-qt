@@ -175,6 +175,9 @@ CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
 #ifdef MATH_ENABLED
     mProviders.append(new MathProvider());
 #endif
+#ifdef VBOX_ENABLED
+    mProviders.append(new VirtualBoxProvider());
+#endif
     rebuild();
 }
 
