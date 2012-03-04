@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Razor LightDM Greeter
+Comment=This runs the Razor LightDM greeter, it should only be run from LightDM
+Exec=razor-lightdm-greeter
+Type=Application
+X-Ubuntu-Gettext-Domain=lightdm
