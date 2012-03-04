@@ -2,13 +2,13 @@ project( razor-panel )
 cmake_minimum_required( VERSION 2.6 )
 
 if (NOT CMAKE_BUILD_TYPE)
-    set ( CMAKE_BUILD_TYPE Release )
+	set ( CMAKE_BUILD_TYPE Release )
 endif (NOT CMAKE_BUILD_TYPE)
 
 
 macro( setByDefault VAR_NAME VAR_VALUE )
   if (NOT DEFINED ${VAR_NAME})
-    set (${VAR_NAME} ${VAR_VALUE})
+	set (${VAR_NAME} ${VAR_VALUE})
   endif (NOT DEFINED ${VAR_NAME})
 endmacro()
 
@@ -29,6 +29,7 @@ setByDefault(SCREENSAVER_PLUGIN  Yes )
 setByDefault(SHOWDESKTOP_PLUGIN Yes)
 setByDefault(MOUNT_PLUGIN Yes)
 setByDefault(HELLOWORLD_PLUGIN No)
+setByDefault(CPULOAD_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -43,8 +44,8 @@ include ( ${QT_USE_FILE} )
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR} ${QT_QTXML_INCLUDE_DIR} ${QT_QTDBUS_INCLUDE_DIR}
-    ${X11_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/libraries/
+	${X11_INCLUDE_DIR}
+	${CMAKE_SOURCE_DIR}/libraries/
 	src)
 
 set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
@@ -86,9 +87,9 @@ if (MOUNT_PLUGIN)
 	#  if (NOT UDEV_STABLE)
 	#message(WARNING "lubudev is not stable - panel mount plugin is disabled")
 	#else (NOT UDEV_STABLE)
-    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Mount")
-    add_subdirectory( plugin-mount )
-    #endif (NOT UDEV_STABLE)
+	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}  "Mount")
+	add_subdirectory( plugin-mount )
+	#endif (NOT UDEV_STABLE)
 endif (MOUNT_PLUGIN)
 
 if (TASKBAR_PLUGIN)
@@ -97,19 +98,28 @@ if (TASKBAR_PLUGIN)
 endif (TASKBAR_PLUGIN)
 
 if (SCREENSAVER_PLUGIN)
-    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Screensaver")
-    add_subdirectory( plugin-screensaver )
+	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Screensaver")
+	add_subdirectory( plugin-screensaver )
 endif (SCREENSAVER_PLUGIN)
 
 if (SHOWDESKTOP_PLUGIN)
-    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "ShowDesktop")
-    add_subdirectory(plugin-showdesktop)
+	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "ShowDesktop")
+	add_subdirectory(plugin-showdesktop)
 endif (SHOWDESKTOP_PLUGIN)
 
 if (HELLOWORLD_PLUGIN)
-    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "HelloWorld")
-    add_subdirectory(plugin-helloworld)
+	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "HelloWorld")
+	add_subdirectory(plugin-helloworld)
 endif (HELLOWORLD_PLUGIN)
+
+if (CPULOAD_PLUGIN)
+	FIND_LIBRARY(STATGRAB_LIB statgrab)
+
+	IF ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
+		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "CpuLoad")
+		add_subdirectory(plugin-cpuload)
+	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
+endif (CPULOAD_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
