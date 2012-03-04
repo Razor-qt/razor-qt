@@ -273,7 +273,8 @@ RazorTheme::RazorTheme():
     d_ptr(new RazorThemePrivate(this))
 {
     RazorSettings settings("razor");
-    d_ptr->mThemeName = settings.value("theme").toString();
+    // the "light" theme is the default one for razor
+    d_ptr->mThemeName = settings.value("theme", "light").toString();
 }
 
 RazorTheme::~RazorTheme()

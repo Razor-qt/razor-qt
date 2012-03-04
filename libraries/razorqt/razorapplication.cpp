@@ -43,13 +43,13 @@
 #include <cstdio>
 #include <cstdlib>
 #include <QDateTime>
-/*! \biref Log qDebug input to file
+/*! \brief Log qDebug input to file
 Used only in pure Debug builds.
 */
 void dbgMessageOutput(QtMsgType type, const char *msg)
  {
     FILE *f;
-    QDir dir(XdgDirs::dataHome().toUtf8() + "/razor");
+    QDir dir(XdgDirs::configHome().toUtf8() + "/razor");
     dir.mkpath(".");
 
     f = fopen (dir.absoluteFilePath("debug.log").toUtf8(), "a+");
