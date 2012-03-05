@@ -29,36 +29,64 @@
 #include "ui_settings_dialog.h"
 #include <QDebug>
 
-SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Settings), settings("razor-autosuspend") {
+SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Settings), m_Settings("razor-autosuspend"), m_RollbackPoint(m_Settings) {
     ui->setupUi(this);
     setAttribute(Qt::WA_QuitOnClose, false);
+
     lidClosedGroup.addButton(ui->lidClosedNothingButton, NOTHING);
     lidClosedGroup.addButton(ui->lidClosedSleepButton, SLEEP);
     lidClosedGroup.addButton(ui->lidClosedHibernateButton, HIBERNATE);
     powerLowGroup.addButton(ui->powerLowNothingButton, NOTHING);
     powerLowGroup.addButton(ui->powerLowSleepButton, SLEEP);
     powerLowGroup.addButton(ui->powerLowHibernateButton, HIBERNATE);
+
+    connect(&powerLowGroup, SIGNAL(buttonClicked(int)), this, SLOT(somethingChanged()));
+    connect(&lidClosedGroup, SIGNAL(buttonClicked(int)), this, SLOT(somethingChanged()));
+
+    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
+
+    m_RollbackPoint.loadFromSettings();
 }
 
 SettingsDialog::~SettingsDialog() {
     delete ui;
 }
 
-void SettingsDialog::accept() {
-    settings.setValue(LIDCLOSEDACTION_KEY , lidClosedGroup.checkedId());
-    settings.setValue(POWERLOWACTION_KEY, powerLowGroup.checkedId());
-    QDialog::accept();
+void SettingsDialog::dialogButtonsAction(QAbstractButton *btn)
+{
+    if (ui->buttonBox->buttonRole(btn) == QDialogButtonBox::ResetRole)
+    {
+        m_RollbackPoint.loadToSettings();
+        setButtons();
+    }
+    else
+    {
+        close();
+    }
 }
 
+
 void SettingsDialog::showEvent(QShowEvent *) {
+    setButtons();
+}
+
+void SettingsDialog::setButtons()
+{
     QAbstractButton *button;
-    button = lidClosedGroup.button(settings.value(LIDCLOSEDACTION_KEY).toInt());
+    button = lidClosedGroup.button(m_Settings.value(LIDCLOSEDACTION_KEY).toInt());
     if (button != 0) {
         button->setChecked(true);
     }
 
-    button = powerLowGroup.button(settings.value(POWERLOWACTION_KEY).toInt());
+    button = powerLowGroup.button(m_Settings.value(POWERLOWACTION_KEY).toInt());
     if (button != 0) {
         button->setChecked(true);
     }
+}
+
+
+void SettingsDialog::somethingChanged()
+{
+    m_Settings.setValue(LIDCLOSEDACTION_KEY , lidClosedGroup.checkedId());
+    m_Settings.setValue(POWERLOWACTION_KEY, powerLowGroup.checkedId());
 }

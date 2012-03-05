@@ -30,6 +30,9 @@
 
 #include <QDialog>
 #include <QButtonGroup>
+#include <QMap>
+#include <QString>
+#include <QVariant>
 #include "razorqt/razorsettings.h"
 
 namespace Ui
@@ -54,14 +57,17 @@ public:
     ~SettingsDialog();
 
 public slots:
-    virtual void accept();
+    void dialogButtonsAction(QAbstractButton *btn);
+    void somethingChanged();
     virtual void showEvent(QShowEvent *);
 
 private:
+    void setButtons();
     Ui::Settings *ui;
     QButtonGroup lidClosedGroup;
     QButtonGroup powerLowGroup;
-    RazorSettings settings;
+    RazorSettings m_Settings;
+    RazorSettingsCache m_RollbackPoint;
 };
 
 #endif // SETTINGS_H
