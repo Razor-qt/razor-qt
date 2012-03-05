@@ -131,13 +131,17 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     }
     s.endGroup();
 
-    waitCnt = 300;
+    waitCnt = 100;
     while (!QSystemTrayIcon::isSystemTrayAvailable())
     {
         qWarning() << "******************** Wait for tray" << waitCnt;
         waitCnt--;
+        if (!waitCnt)
+            break;
         usleep(100000);
     }
+    if (waitCnt == 0)
+        qWarning() << "******************** No systray implementation started in session. Continuing.";
 
     // XDG autostart
     foreach (XdgDesktopFile f, XdgAutoStart::desktopFileList())
