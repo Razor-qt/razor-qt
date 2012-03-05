@@ -1,3 +1,4 @@
 /usr/bin/razor-panel
 /usr/lib*/razor-panel/
 /usr/share/razor/razor-panel/
+/etc/xdg/razor/razor-panel/
