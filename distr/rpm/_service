@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<services>
+  <service name="tar_scm">
+    <param name="versionprefix">0.4.1</param>
+    <param name="url">git://github.com/Razor-qt/razor-qt.git</param>
+    <param name="scm">git</param>
+    <param name="revision">2c88204e594a15e3fd3becd9e5e9219f3fbd4dd6</param>
+  </service>
+  <service name="recompress">
+    <param name="file">*.tar</param>
+    <param name="compression">bz2</param>
+  </service>
+  <service name="set_version"/>
+</services>
