@@ -43,7 +43,6 @@ class QMenu;
 class RazorBar;
 class PowerManager;
 class ScreenSaver;
-class QxtGlobalShortcut;
 
 class RazorMainMenu : public RazorPanelPlugin
 {
@@ -60,7 +59,6 @@ private:
     QString mLogDir;
     QString mMenuFile;
     QMenu* mMenu;
-    QxtGlobalShortcut *mShortcut;
     MenuStyle mTopMenuStyle;
     MenuStyle mMenuStyle;
     PowerManager* mPowerManager;
