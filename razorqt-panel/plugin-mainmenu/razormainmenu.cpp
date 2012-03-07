@@ -38,7 +38,7 @@
 #include <QtGui/QMessageBox>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
-#include <razorqt/razorglobalshort/globalshortcutmanager.h>
+#include <razorqxt/qxtglobalshortcut.h>
 
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgdesktopfile.h>
@@ -71,6 +71,9 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     mPowerManager->setParentWidget(panel());
 
     mScreenSaver = new ScreenSaver(this);
+    
+    mShortcut = new QxtGlobalShortcut(this);
+    connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
 
     addWidget(&mButton);
     settigsChanged();
@@ -159,14 +162,8 @@ void RazorMainMenu::settigsChanged()
     mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
-
-    static QString shortcut;
-
-    if (!shortcut.isEmpty())
-        GlobalShortcutManager::disconnect(shortcut, this, SLOT(showHideMenu()));
-
-    shortcut = settings().value("shortcut", "ALT+F1").toString();
-    GlobalShortcutManager::connect(shortcut, this, SLOT(showHideMenu()));
+    
+    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
 }
 
 
