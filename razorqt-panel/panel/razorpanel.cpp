@@ -116,7 +116,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
     d->init();
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    setAttribute(Qt::WA_X11NetWmWindowTypeDock);
+    //setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
 
     setObjectName("RazorPanel");
