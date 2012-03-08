@@ -132,6 +132,8 @@
 static const unsigned int KeyTbl[] = {
 
     // misc keys
+    XK_comma,                   Qt::Key_Comma,
+    XK_period,                  Qt::Key_Period,
     XK_space,                   Qt::Key_Space,
     XK_Escape,                  Qt::Key_Escape,
     XK_Tab,                     Qt::Key_Tab,
@@ -202,9 +204,7 @@ static const unsigned int KeyTbl[] = {
     XK_KP_Equal,                Qt::Key_Equal,
     XK_KP_Multiply,             Qt::Key_Asterisk,
     XK_KP_Add,                  Qt::Key_Plus,
-    XK_KP_Separator,            Qt::Key_Comma,
     XK_KP_Subtract,             Qt::Key_Minus,
-    XK_KP_Decimal,              Qt::Key_Period,
     XK_KP_Divide,               Qt::Key_Slash,
 
     // International input method support keys
