@@ -1,12 +1,20 @@
 set(PROJECT razor-lightdm-greeter)
 project($PROJECT)
 
+# check for new version
 include(FindPkgConfig)
+message(STATUS "Checking for lightdm-qt...")
 pkg_check_modules(LIGHTDM_QT liblightdm-qt-2)
-
-if(NOT LIGHTDM_QT_INCLUDE_DIRS)
-  pkg_check_modules(LIGHTDM_QT liblightdm-qt-1)
-  add_definitions(-DUSING_LIGHTDM_QT_1)
+# or lightdm v1 if the version 2 is not found
+if (NOT LIGHTDM_QT_FOUND)
+    message(STATUS "lightdm2 for Qt is not found. Trying to find v1")
+    pkg_check_modules(LIGHTDM_QT liblightdm-qt-1)
+endif()
+# decision for version. It needs to be separated as the cmake can
+# be run more times. And the LIGHTDM_QT_FOUND is cached so it's
+# marked as v2 for every cmake run (except 1st one) in this case.
+if (LIGHTDM_QT_VERSION VERSION_LESS "2.0.0")
+    add_definitions(-DUSING_LIGHTDM_QT_1)
 endif()
 
 if(NOT LIGHTDM_QT_INCLUDE_DIRS)
