@@ -1,0 +1,12 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=qtconfig
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-system
+Name=Razor Configuration for basic Qt
+Comment=Configure Qt runtime
+GenericName=Razor Configuration
+
+#TRANSLATIONS_DIR=translations
