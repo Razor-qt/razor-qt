@@ -79,6 +79,8 @@ public:
 
     /// @reimp
     QSize sizeHint() const;
+
+    void fullInit();
 signals:
 
 protected:

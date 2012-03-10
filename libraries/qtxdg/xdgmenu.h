@@ -106,6 +106,9 @@ public:
 
     bool isOutDated() const;
 
+signals:
+    void changed();
+
 protected:
     void addWatchPath(const QString& path);
 

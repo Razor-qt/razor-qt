@@ -48,7 +48,7 @@
 #include <QtCore/QFileSystemWatcher>
 #include <QtCore/QTranslator>
 #include <QtCore/QCoreApplication>
-
+#include <QtCore/QCryptographicHash>
 
 void installTranslation(const QString &name)
 {
@@ -94,8 +94,15 @@ XdgMenuPrivate::XdgMenuPrivate(XdgMenu *parent):
     mOutDated(true),
     q_ptr(parent)
 {
-    this->connect(&mWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
-    this->connect(&mWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(fileChanged(QString)));
+    mRebuildDelayTimer.setSingleShot(true);
+    mRebuildDelayTimer.setInterval(REBUILD_DELAY);
+
+    connect(&mRebuildDelayTimer, SIGNAL(timeout()), this, SLOT(rebuild()));
+    connect(&mWatcher, SIGNAL(fileChanged(QString)), &mRebuildDelayTimer, SLOT(start()));
+    connect(&mWatcher, SIGNAL(directoryChanged(QString)), &mRebuildDelayTimer, SLOT(start()));
+
+
+    connect(this, SIGNAL(changed()), q_ptr, SIGNAL(changed()));
 }
 
 
@@ -223,6 +230,7 @@ bool XdgMenu::read(const QString& menuFileName)
 
 
     d->mOutDated = false;
+    d->mHash = QCryptographicHash::hash(d->mXml.toByteArray(), QCryptographicHash::Md5);
 
     return true;
 }
@@ -785,10 +793,17 @@ bool XdgMenu::isOutDated() const
 /************************************************
 
  ************************************************/
-void XdgMenuPrivate::fileChanged(const QString& path)
+void XdgMenuPrivate::rebuild()
 {
-    Q_UNUSED(path)
-    mOutDated = true;
+    Q_Q(XdgMenu);
+    QByteArray prevHash = mHash;
+    q->read(mMenuFileName);
+
+    if (prevHash != mHash)
+    {
+        mOutDated = true;
+        emit changed();
+    }
 }
 
 

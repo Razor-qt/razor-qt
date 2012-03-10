@@ -146,6 +146,23 @@ XdgMenuWidget::~XdgMenuWidget()
 /************************************************
 
  ************************************************/
+void XdgMenuWidget::fullInit()
+{
+    Q_D(XdgMenuWidget);
+    if (d->mNeedBuild)
+        d->buildMenu();
+
+    QList<XdgMenuWidget*> subMenus = findChildren<XdgMenuWidget *>();
+    foreach (XdgMenuWidget *i, subMenus)
+    {
+        i->fullInit();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
 XdgMenuWidget& XdgMenuWidget::operator=(const XdgMenuWidget& other)
 {
     Q_D(XdgMenuWidget);
@@ -228,6 +245,8 @@ void XdgMenuWidgetPrivate::buildMenu()
     DomElementIterator it(mXml, "");
     while(it.hasNext())
     {
+        QCoreApplication::processEvents();
+
         QDomElement xml = it.next();
 
         // Build submenu ........................
