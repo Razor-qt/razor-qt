@@ -2,8 +2,12 @@ set(PROJECT razor-lightdm-greeter)
 project($PROJECT)
 
 include(FindPkgConfig)
-pkg_check_modules(LIGHTDM_QT liblightdm-qt-1)
+pkg_check_modules(LIGHTDM_QT liblightdm-qt-2)
 
+if(NOT LIGHTDM_QT_INCLUDE_DIRS)
+  pkg_check_modules(LIGHTDM_QT liblightdm-qt-1)
+  add_definitions(-DUSING_LIGHTDM_QT_1)
+endif()
 
 if(NOT LIGHTDM_QT_INCLUDE_DIRS)
     message(STATUS "Qt bindings for liblightdm not found. Razor-lightdm-greeter won't be built")

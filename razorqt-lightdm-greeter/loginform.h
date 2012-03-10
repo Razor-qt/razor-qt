@@ -3,6 +3,13 @@
 
 #include <QWidget>
 #include <QLightDM/Greeter>
+#ifdef USING_LIGHTDM_QT_1
+  #include <QLightDM/User>
+  #include <QLightDM/Session>
+#else
+  #include <QLightDM/UsersModel>
+  #include <QLightDM/SessionsModel>
+#endif
 #include <QProcess>
 #include <QDialog>
 #include <QKeyEvent>
@@ -24,7 +31,12 @@ public slots:
     void doCancel();
     void doLeave();
     void razorPowerDone();
-    void onPrompt(QString prompt, QLightDM::PromptType promptType);
+
+#ifdef USING_LIGHTDM_QT_1
+    void onPrompt(QString prompt, QLightDM::PromptType prompType);
+#else
+    void onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType);
+#endif
     void authenticationDone();
 
 protected:
@@ -36,6 +48,9 @@ private:
     QLightDM::Greeter m_Greeter;
 
     QProcess m_razorPowerProcess;
+
+    QLightDM::UsersModel *m_UsersModel;
+    QLightDM::SessionsModel *m_SessionsModel;
 };
 
 #endif // LOGINFORM_H

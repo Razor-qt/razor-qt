@@ -1,9 +1,6 @@
 #include "loginform.h"
 #include "ui_loginform.h"
 #include <QDebug>
-#include <QLightDM/Session>
-#include <QLightDM/User>
-#include <QLightDM/System>
 #include <QCompleter>
 #include <QAbstractListModel>
 #include <QModelIndex>
@@ -17,6 +14,10 @@
 #include <QProcess>
 #include <razorqt/razorsettings.h>
 
+#ifdef USING_LIGHTDM_QT_1
+  #include <QLightDM/System>
+#endif
+
 LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
 {
     if (! m_Greeter.connectSync())
@@ -29,12 +30,12 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
     ui->hostnameLabel->setFocus();
 
     // Setup users
-    QLightDM::UsersModel *model = QLightDM::users();
+    m_UsersModel = new QLightDM::UsersModel();
     QStringList userIds;
-    for (int i = 0; i < model->rowCount(QModelIndex()); i++)
+    for (int i = 0; i < m_UsersModel->rowCount(QModelIndex()); i++)
     {
-        QModelIndex index = model->index(i);
-        QString userId =  model->data(index, Qt::UserRole).toString();
+        QModelIndex index = m_UsersModel->index(i);
+        QString userId =  m_UsersModel->data(index, Qt::UserRole).toString();
         userIds << userId;
     }
     QCompleter *completer = new QCompleter(userIds);
@@ -43,7 +44,8 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
 
 
     // Setup sessions
-    ui->sessionCombo->setModel(QLightDM::sessions());
+    m_SessionsModel = new QLightDM::SessionsModel();
+    ui->sessionCombo->setModel(m_SessionsModel);
     for (int row = 0; row < ui->sessionCombo->model()->rowCount(); row++)
     {
         QModelIndex index = ui->sessionCombo->model()->index(row, 0);
@@ -57,16 +59,23 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
     QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
     ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size()));
 
+
+#ifdef USING_LIGHTDM_QT_1
     ui->hostnameLabel->setText(QLightDM::hostname());
+    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::PromptType)),
+            this,       SLOT(onPrompt(QString,QLightDM::PromptType)));
+#else
+    ui->hostnameLabel->setText(m_Greeter.hostname());
+    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::Greeter::PromptType)),
+            this,       SLOT(onPrompt(QString,QLightDM::Greeter::PromptType)));
+#endif
 
     connect(ui->loginButton, SIGNAL(pressed()), this, SLOT(doLogin()));
     connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(doLogin()));
-    qDebug() << "Default: " << ui->loginButton->isDefault();
 
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(doCancel()));
-    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::PromptType)), this, SLOT(onPrompt(QString,QLightDM::PromptType)));
-    connect(&m_Greeter, SIGNAL(authenticationComplete()), this, SLOT(authenticationDone()));
 
+    connect(&m_Greeter, SIGNAL(authenticationComplete()), this, SLOT(authenticationDone()));
 
     connect(ui->leaveButton, SIGNAL(clicked()), SLOT(doLeave()));
     connect(&m_razorPowerProcess, SIGNAL(finished(int)), this, SLOT(razorPowerDone()));
@@ -82,15 +91,22 @@ LoginForm::~LoginForm()
 
 void LoginForm::doLogin()
 {
-    qDebug() << "In login";
     m_Greeter.authenticate(ui->userIdInput->text());
 }
 
-void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
-{
-    // We only handle password prompt
-    m_Greeter.respond(ui->passwordInput->text());
-}
+#ifdef USING_LIGHTDM_QT_1
+    void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
+    {
+        // We only handle password prompt
+        m_Greeter.respond(ui->passwordInput->text());
+    }
+#else
+    void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)
+    {
+        // We only handle password prompt
+        m_Greeter.respond(ui->passwordInput->text());
+    }
+#endif
 
 void LoginForm::authenticationDone()
 {
@@ -127,7 +143,6 @@ void LoginForm::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
     {
-        qDebug() << "Enter hit...";
         emit ui->loginButton->click();
     }
 }
