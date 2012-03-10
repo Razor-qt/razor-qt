@@ -146,3 +146,25 @@ QString XdgDirs::runtimeDir()
     fixBashShortcuts(result);
     return result;
 }
+
+
+/************************************************
+
+ ************************************************/
+QString XdgDirs::autostartHome(bool createDir)
+{
+    return xdgSingleDir("XDG_DATA_HOME", ".config/autostart", createDir);
+}
+
+
+/************************************************
+
+ ************************************************/
+QStringList XdgDirs::autostartDirs()
+{
+    QStringList dirs;
+    foreach(QString dir, configDirs())
+        dirs << QString("%1/autostart").arg(dir);
+
+    return dirs;
+}
