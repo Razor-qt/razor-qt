@@ -58,7 +58,6 @@ private:
     QToolButton mButton;
     QLabel mMainMenuButton;
     QString mLogDir;
-    QString mMenuFile;
     QMenu* mMenu;
     QxtGlobalShortcut *mShortcut;
     MenuStyle mTopMenuStyle;
@@ -66,11 +65,11 @@ private:
     PowerManager* mPowerManager;
     ScreenSaver* mScreenSaver;
     XdgMenu mXdgMenu;
-    void buildMenu();
 
 protected slots:
     virtual void showConfigureDialog();
     virtual void settigsChanged();
+    void buildMenu(bool lazyInit=false);
 
 private slots:
     void showMenu();

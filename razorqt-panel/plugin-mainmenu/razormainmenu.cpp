@@ -29,12 +29,12 @@
 #include "razormainmenu.h"
 #include "razormainmenuconfiguration.h"
 #include <QDebug>
-#include <QtGui/QMenu>
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xmlhelper.h>
 #include <QSettings>
 #include <QFileInfo>
 #include <QAction>
+#include <QtCore/QTimer>
 #include <QtGui/QMessageBox>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
@@ -105,8 +105,8 @@ void RazorMainMenu::showHideMenu()
  ************************************************/
 void RazorMainMenu::showMenu()
 {
-    if (mXdgMenu.isOutDated())
-        buildMenu();
+    if (!mMenu)
+        buildMenu(true);
 
     if (!mMenu)
         return;
@@ -159,28 +159,15 @@ void RazorMainMenu::settigsChanged()
 
     mLogDir = settings().value("log_dir", "").toString();
 
-    mMenuFile = settings().value("menu_file", "").toString();
+    QString mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
-    
-    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::buildMenu()
-{
-    mXdgMenu.setEnvironments("X-RAZOR");
-    mXdgMenu.setLogDir(mLogDir);
 
     bool res = mXdgMenu.read(mMenuFile);
+    connect(&mXdgMenu, SIGNAL(changed()), this, SLOT(buildMenu()));
     if (res)
     {
-        mMenu = new XdgMenuWidget(mXdgMenu, "", this);
-        mMenu->setObjectName("TopLevelMainMenu");
-        mMenu->setStyle(&mTopMenuStyle);
+        QTimer::singleShot(1000, this, SLOT(buildMenu()));
     }
     else
     {
@@ -188,14 +175,41 @@ void RazorMainMenu::buildMenu()
         return;
     }
 
-    mMenu->addSeparator();
 
-    QMenu* leaveMenu = mMenu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
-    leaveMenu->addActions(mPowerManager->availableActions());
-
-    mMenu->addActions(mScreenSaver->availableActions());
+    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
 }
 
+
+/************************************************
+
+ ************************************************/
+void RazorMainMenu::buildMenu(bool lazyInit)
+{
+    mXdgMenu.setEnvironments("X-RAZOR");
+    mXdgMenu.setLogDir(mLogDir);
+
+    XdgMenuWidget *menu = new XdgMenuWidget(mXdgMenu, "", this);
+    menu->setObjectName("TopLevelMainMenu");
+    menu->setStyle(&mTopMenuStyle);
+    if (!lazyInit)
+        menu->fullInit();
+
+    menu->addSeparator();
+
+    QMenu* leaveMenu = menu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
+    leaveMenu->addActions(mPowerManager->availableActions());
+
+    menu->addActions(mScreenSaver->availableActions());
+
+    QMenu *oldMenu = mMenu;
+    mMenu = menu;
+    delete oldMenu;
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorMainMenu::showConfigureDialog()
 {
     RazorMainMenuConfiguration *confWindow =
