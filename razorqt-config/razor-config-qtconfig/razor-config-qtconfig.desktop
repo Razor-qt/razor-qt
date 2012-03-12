@@ -5,8 +5,8 @@ Exec=qtconfig
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-system
-Name=Razor Configuration for basic Qt
-Comment=Configure Qt runtime
-GenericName=Razor Configuration
+Name=Qt Configuration
+Comment=Configure Qt
+GenericName=Qt configuration
 
 #TRANSLATIONS_DIR=translations
