@@ -1,4 +1,9 @@
+OPTION(ENABLE_POLICYKIT "Enable policykit integration" ON)
+
+if (ENABLE_POLICYKIT)
+
 find_package(PolkitQt-1)
+
 if (NOT POLKITQT-1_LIB_DIR AND NOT POLKITQT-1_INCLUDE_DIR)
     message(WARNING "Qt bindings for policykit are not found. Razor policykit integration won't be built")
     message(STATUS "Hint: package libpolkit-qt-1-devel on openSUSE")
@@ -55,3 +60,5 @@ else ()
     install(TARGETS razor-policykit-agent DESTINATION bin)
 
 endif()
+
+endif (ENABLE_POLICYKIT)
