@@ -13,7 +13,7 @@ endif()
 # decision for version. It needs to be separated as the cmake can
 # be run more times. And the LIGHTDM_QT_FOUND is cached so it's
 # marked as v2 for every cmake run (except 1st one) in this case.
-if (LIGHTDM_QT_VERSION VERSION_LESS "2.0.0")
+if (LIGHTDM_QT_VERSION VERSION_LESS "1.1.0")
     add_definitions(-DUSING_LIGHTDM_QT_1)
 endif()
 
