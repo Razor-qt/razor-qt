@@ -15,6 +15,7 @@ set(MOC_FILES
     commanditemmodel.h
     widgets.h
     configuredialog/configuredialog.h
+    providers.h
 )
 
 set(CPP_FILES

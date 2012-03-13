@@ -82,7 +82,8 @@ void CommandProviderItem::setComment(const QString &comment)
 
  ************************************************/
 CommandProvider::CommandProvider():
-        QList<CommandProviderItem*>()
+    QObject(),
+    QList<CommandProviderItem*>()
 {
 }
 
@@ -96,23 +97,49 @@ CommandProvider::~CommandProvider()
 }
 
 
-
-
 /************************************************
 
  ************************************************/
 AppLinkItem::AppLinkItem(const QDomElement &element):
         CommandProviderItem()
 {
-    setIcon(XdgIcon::fromTheme(element.attribute("icon")));
+    mIconName = element.attribute("icon");
     setTile(element.attribute("title"));
     setComment(element.attribute("genericName"));
     setToolTip(element.attribute("comment"));
-
-    QString command = QFileInfo(element.attribute("exec")).baseName().section(" ", 0, 0);
-    mSearchText = element.attribute("title") + " " + command;
+    mCommand = QFileInfo(element.attribute("exec")).baseName().section(" ", 0, 0);
+    mSearchText = element.attribute("title") + " " + mCommand;
     mDesktopFile = element.attribute("desktopFile");
+}
 
+
+/************************************************
+
+ ************************************************/
+void AppLinkItem::updateIcon()
+{
+    SProfiler::start(0);
+    if (icon().isNull())
+        setIcon(XdgIcon::fromTheme(mIconName));
+    SProfiler::stop(0);
+}
+
+
+/************************************************
+
+ ************************************************/
+void AppLinkItem::operator=(const AppLinkItem &other)
+{
+    setTile(other.tile());
+    setComment(other.comment());
+    setToolTip(other.toolTip());
+
+    mCommand = other.mCommand;
+    mSearchText = other.mSearchText;
+    mDesktopFile = other.mDesktopFile;
+
+    mIconName = other.mIconName;
+    setIcon(other.icon());
 }
 
 
@@ -151,6 +178,9 @@ AppLinkProvider::AppLinkProvider():
         mXdgMenu( new XdgMenu())
 {
     mXdgMenu->setEnvironments("X-RAZOR");
+    connect(mXdgMenu, SIGNAL(changed()), this, SLOT(update()));
+    mXdgMenu->read(XdgMenu::getMenuFileName());
+    update();
 }
 
 
@@ -166,29 +196,7 @@ AppLinkProvider::~AppLinkProvider()
 /************************************************
 
  ************************************************/
-bool AppLinkProvider::isOutDated() const
-{
-    return mXdgMenu->isOutDated();
-}
-
-
-/************************************************
-
- ************************************************/
-void AppLinkProvider::rebuild()
-{
-    mXdgMenu->read(XdgMenu::getMenuFileName());
-
-    qDeleteAll(*this);
-    clear();
-    rebuildMainMenu(mXdgMenu->xml().documentElement());
-}
-
-
-/************************************************
-
- ************************************************/
-void AppLinkProvider::rebuildMainMenu(const QDomElement &xml)
+void doUpdate(const QDomElement &xml, QHash<QString, AppLinkItem*> &items)
 {
     DomElementIterator it(xml, "");
     while (it.hasNext())
@@ -197,15 +205,56 @@ void AppLinkProvider::rebuildMainMenu(const QDomElement &xml)
 
         // Build submenu ........................
         if (e.tagName() == "Menu")
-            rebuildMainMenu(e);
+            doUpdate(e, items);
 
         //Build application link ................
         else if (e.tagName() == "AppLink")
         {
             AppLinkItem *item = new AppLinkItem(e);
-            append(item);
+            items.insert(item->command(), item);
         }
     }
+}
+
+
+/************************************************
+
+ ************************************************/
+void AppLinkProvider::update()
+{
+    emit aboutToBeChanged();
+    QHash<QString, AppLinkItem*> newItems;
+    doUpdate(mXdgMenu->xml().documentElement(), newItems);
+
+    {
+        QMutableListIterator<CommandProviderItem*> i(*this);
+        while (i.hasNext()) {
+            AppLinkItem *item = static_cast<AppLinkItem*>(i.next());
+            AppLinkItem *newItem = newItems.take(item->command());
+            if (newItem)
+            {
+                *(item) = *newItem;  // Copy by value, not pointer!
+                item->updateIcon();
+                delete newItem;
+            }
+            else
+            {
+                i.remove();
+                delete item;
+            }
+        }
+    }
+
+    {
+        QHashIterator<QString, AppLinkItem*> i(newItems);
+        while (i.hasNext()) {
+            AppLinkItem *item = i.next().value();
+            append(item);
+            item->updateIcon();
+        }
+    }
+
+    emit changed();
 }
 
 
@@ -313,7 +362,7 @@ bool VirtualBoxItem::compare(const QRegExp &regExp) const
 {
     QRegExp re(regExp);
     re.setCaseSensitivity(Qt::CaseInsensitive);
-    qDebug() << "Title: " << re.indexIn (tile ());
+    //qDebug() << "Title: " << re.indexIn (tile ());
     return (-1 != re.indexIn (tile ()));
 }
 

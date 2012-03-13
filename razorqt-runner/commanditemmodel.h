@@ -53,11 +53,9 @@ public:
 public slots:
     void rebuild();
 
-
 private:
     QList<CommandProvider*> mProviders;
     HistoryProvider *mHistoryProvider;
-    int mRowCount;
 };
 
 

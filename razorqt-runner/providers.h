@@ -65,14 +65,19 @@ private:
 
 
 
-class CommandProvider: public QList<CommandProviderItem*>
+class CommandProvider: public QObject, public QList<CommandProviderItem*>
 {
+    Q_OBJECT
 public:
     CommandProvider();
     virtual ~CommandProvider();
 
     virtual void rebuild() {}
     virtual bool isOutDated() const { return false; }
+
+signals:
+    void aboutToBeChanged();
+    void changed();
 };
 
 
@@ -87,27 +92,32 @@ public:
 
     bool run() const;
     bool compare(const QRegExp &regExp) const;
+    void updateIcon();
+    QString command() const { return mCommand; }
 
+    void operator=(const AppLinkItem &other);
 private:
+public:
     QString mSearchText;
     QString mDesktopFile;
+    QString mIconName;
+    QString mCommand;
 };
-
 
 
 class XdgMenu;
 class AppLinkProvider: public CommandProvider
 {
+    Q_OBJECT
 public:
     AppLinkProvider();
     virtual ~AppLinkProvider();
 
-    void rebuild();
-    bool isOutDated() const;
+private slots:
+    void update();
 
 private:
     XdgMenu *mXdgMenu;
-    void rebuildMainMenu(const QDomElement &xml);
 };
 
 

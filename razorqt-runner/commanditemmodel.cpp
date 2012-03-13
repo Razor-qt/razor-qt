@@ -178,6 +178,13 @@ CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
 #ifdef VBOX_ENABLED
     mProviders.append(new VirtualBoxProvider());
 #endif
+
+    foreach(CommandProvider* provider, mProviders)
+    {
+        connect(provider, SIGNAL(changed()), this, SIGNAL(layoutChanged()));
+        connect(provider, SIGNAL(aboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()));
+    }
+
     rebuild();
 }
 
@@ -197,7 +204,11 @@ CommandSourceItemModel::~CommandSourceItemModel()
  ************************************************/
 int CommandSourceItemModel::rowCount(const QModelIndex& /*parent*/) const
 {
-    return mRowCount;
+    int ret=0;
+    foreach(CommandProvider* provider, mProviders)
+        ret += provider->count();
+
+    return ret;
 }
 
 
@@ -209,7 +220,7 @@ QVariant CommandSourceItemModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() >= mRowCount)
+    if (index.row() >= rowCount())
         return QVariant();
 
     const CommandProviderItem *item = command(index);
@@ -254,17 +265,13 @@ bool CommandSourceItemModel::isOutDated() const
  ************************************************/
 void CommandSourceItemModel::rebuild()
 {
-    int cnt = 0;
     QListIterator<CommandProvider*> i(mProviders);
     while (i.hasNext())
     {
         CommandProvider *p = i.next();
         if (p->isOutDated())
             p->rebuild();
-
-        cnt += p->length();
     }
-    mRowCount = cnt;
     emit layoutChanged();
 }
 
