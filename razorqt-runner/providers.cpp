@@ -118,10 +118,8 @@ AppLinkItem::AppLinkItem(const QDomElement &element):
  ************************************************/
 void AppLinkItem::updateIcon()
 {
-    SProfiler::start(0);
     if (icon().isNull())
         setIcon(XdgIcon::fromTheme(mIconName));
-    SProfiler::stop(0);
 }
 
 
