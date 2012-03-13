@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
     libxdamage-dev,
     libudev-dev,
     libxcursor-dev,
-%ifnot lucid maverick
+%ifnot lucid maverick squeeze
     libpolkit-agent-1-dev,
     libpolkit-qt-1-dev,
 %endif
@@ -190,7 +190,7 @@ Description:RazorQt power management apps
  This package is part of the Razor-Qt.
 
 
-%ifnot lucid maverick
+%ifnot lucid maverick squeeze
 Package: razorqt-policykit-agent
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},
