@@ -1,6 +1,6 @@
-OPTION(LIGHTDM_GREETER "Build lightdm greeter" ON)
+OPTION(ENABLE_LIGHTDM_GREETER "Build lightdm greeter" ON)
 
-if (LIGHTDM_GREETER)
+if (ENABLE_LIGHTDM_GREETER)
 
 set(PROJECT razor-lightdm-greeter)
 project($PROJECT)
@@ -92,4 +92,4 @@ else()
     install(FILES   ${DESKTOP_FILES}   DESTINATION /usr/share/xgreeters)
 endif()
 
-endif (LIGHTDM_GREETER)
+endif (ENABLE_LIGHTDM_GREETER)
