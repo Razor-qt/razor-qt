@@ -90,7 +90,7 @@ Depends: ${shlibs:Depends},  ${misc:Depends},
   libqtxdg0 (= ${binary:Version}),
   librazorqt0 (= ${binary:Version})
 Replaces: razor-qt, razor-appswitcher
-Conflicts: razor-qt, razorqt-appswitcher
+Conflicts: razor-qt, razor-appswitcher
 Description:Razor-Qt window switcher
  Alt-Tab window switcher for Razor-Qt.
  .
