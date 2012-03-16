@@ -6,14 +6,25 @@ include_directories (
 
 set ( razor-desktopcfg_HDRS
     desktopconfigwindow.h
-	)
+    basicsettings.h
+    menuconfig.h
+    wmnativeconfig.h
+    )
 
 set ( razor-desktopcfg_SRCS
-	main.cpp
+    main.cpp
     desktopconfigwindow.cpp
-	)
+    basicsettings.cpp
+    menuconfig.cpp
+    wmnativeconfig.cpp
+    )
 
-QT4_WRAP_UI(razor-desktopcfg_UIS desktopconfigwindow.ui)
+QT4_WRAP_UI(razor-desktopcfg_UIS
+    basicsettings.ui
+    menuconfig.ui
+    wmnativeconfig.ui
+    )
+
 QT4_WRAP_CPP(razor-desktopcfg_MOCS ${razor-desktopcfg_HDRS})
 
 # Translations **********************************

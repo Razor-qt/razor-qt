@@ -25,26 +25,36 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef DESKTOPCONFIGWINDOW_H
-#define DESKTOPCONFIGWINDOW_H
+#ifndef BASICSETTINGS_H
+#define BASICSETTINGS_H
 
-#include <razorqt/razorconfigdialog.h>
+#include <razorqt/razorsettings.h>
+#include <QtGui/QWidget>
 
-class DesktopConfigWindow : public RazorConfigDialog
+namespace Ui {
+class BasicSettings;
+}
+
+class BasicSettings : public QWidget
 {
     Q_OBJECT
-
 public:
-    explicit DesktopConfigWindow(QWidget* parent = 0);
-    ~DesktopConfigWindow();
+    explicit BasicSettings(RazorSettings* settings, QWidget* parent = 0);
+    ~BasicSettings();
+
+signals:
+    void needRestart();
+
+public slots:
+    void restoreSettings();
 
 private slots:
-    void setRestart();
-    void restoreSettings();
-    void closeEvent(QCloseEvent *event);
+    void desktopTypeComboBox_currentIndexChanged(int ix);
+    void save();
 
 private:
-    bool mRestart;
+    Ui::BasicSettings* ui;
+    RazorSettings* mSettings;
 };
 
-#endif
+#endif // BASICSETTINGS_H

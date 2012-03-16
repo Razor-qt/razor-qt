@@ -25,26 +25,40 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef DESKTOPCONFIGWINDOW_H
-#define DESKTOPCONFIGWINDOW_H
+#include <QtGui/QFileDialog>
 
-#include <razorqt/razorconfigdialog.h>
+#include "menuconfig.h"
+#include "ui_menuconfig.h"
 
-class DesktopConfigWindow : public RazorConfigDialog
+MenuConfig::MenuConfig(RazorSettings* settings, QWidget *parent):
+    QWidget(parent),
+    ui(new Ui::MenuConfig),
+    mSettings(settings)
 {
-    Q_OBJECT
+    ui->setupUi(this);
+    restoreSettings();
+    connect(ui->chooseMenuFilePB, SIGNAL(clicked()), this, SLOT(chooseMenuFile()));
+}
 
-public:
-    explicit DesktopConfigWindow(QWidget* parent = 0);
-    ~DesktopConfigWindow();
+MenuConfig::~MenuConfig()
+{
+    delete ui;
+}
 
-private slots:
-    void setRestart();
-    void restoreSettings();
-    void closeEvent(QCloseEvent *event);
+void MenuConfig::restoreSettings()
+{
+    mSettings->beginGroup("razor");
+    ui->menuFilePathLE->setText(mSettings->value("menu_file").toString());
+    mSettings->endGroup();
+}
 
-private:
-    bool mRestart;
-};
-
-#endif
+void MenuConfig::chooseMenuFile()
+{
+    QString path = QFileDialog::getOpenFileName(this, tr("Choose menu file"), QDir::homePath(), tr("Menu files (*.menu)"));
+    if (!path.isEmpty())
+    {
+        ui->menuFilePathLE->setText(path);
+        mSettings->setValue("menu_file", ui->menuFilePathLE->text());
+        emit needRestart();
+    }
+}

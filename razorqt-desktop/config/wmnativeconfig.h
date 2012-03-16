@@ -25,26 +25,37 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef DESKTOPCONFIGWINDOW_H
-#define DESKTOPCONFIGWINDOW_H
+#ifndef WMNATIVECONFIG_H
+#define WMNATIVECONFIG_H
 
-#include <razorqt/razorconfigdialog.h>
+#include <razorqt/razorsettings.h>
+#include <QtGui/QWidget>
 
-class DesktopConfigWindow : public RazorConfigDialog
+namespace Ui {
+class WMNativeConfig;
+}
+
+class WMNativeConfig : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit DesktopConfigWindow(QWidget* parent = 0);
-    ~DesktopConfigWindow();
+    explicit WMNativeConfig(RazorSettings* settings, QWidget* parent = 0);
+    ~WMNativeConfig();
+
+signals:
+    void needRestart();
+
+public slots:
+    void restoreSettings();
 
 private slots:
-    void setRestart();
-    void restoreSettings();
-    void closeEvent(QCloseEvent *event);
+    void nativeWallpaperButton_clicked();
+    void save();
 
 private:
-    bool mRestart;
+    Ui::WMNativeConfig *ui;
+    RazorSettings* mSettings;
 };
 
-#endif
+#endif // WMNATIVECONFIG_H

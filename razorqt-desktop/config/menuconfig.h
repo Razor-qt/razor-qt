@@ -25,26 +25,37 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef DESKTOPCONFIGWINDOW_H
-#define DESKTOPCONFIGWINDOW_H
+#ifndef MENUCONFIG_H
+#define MENUCONFIG_H
 
-#include <razorqt/razorconfigdialog.h>
+#include <razorqt/razorsettings.h>
+#include <QtGui/QWidget>
 
-class DesktopConfigWindow : public RazorConfigDialog
+namespace Ui {
+class MenuConfig;
+}
+
+class MenuConfig : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit DesktopConfigWindow(QWidget* parent = 0);
-    ~DesktopConfigWindow();
+    explicit MenuConfig(RazorSettings* settings, QWidget* parent = 0);
+    ~MenuConfig();
+
+signals:
+    void needRestart();
+
+public slots:
+    void restoreSettings();
 
 private slots:
-    void setRestart();
-    void restoreSettings();
-    void closeEvent(QCloseEvent *event);
+    void chooseMenuFile();
 
 private:
-    bool mRestart;
+    Ui::MenuConfig* ui;
+    RazorSettings* mSettings;
+
 };
 
-#endif
+#endif // MENUCONFIG_H
