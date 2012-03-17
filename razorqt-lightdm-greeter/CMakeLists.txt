@@ -23,7 +23,7 @@ endif()
 
 if(NOT LIGHTDM_QT_INCLUDE_DIRS)
     message(STATUS "Qt bindings for liblightdm not found. Razor-lightdm-greeter won't be built")
-    message(STATUS "Hint: On debian or debian-derived distributions you could probably do: sudo apt-get liblightdm-qt-1-dev")
+    message(STATUS "Hint: On debian or debian-derived distributions you could probably do: sudo apt-get install liblightdm-qt-1-dev")
     message(STATUS "      On suse or opensuse distribution: lightdm-qt-devel")
 elseif(NOT LIGHTDM_QT_LIBRARIES)
     message(STATUS "lightdm-qt library not found. Razor-lightdm-greeter won't be built")
