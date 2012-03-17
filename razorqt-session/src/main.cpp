@@ -27,6 +27,7 @@
 
 #include <razorqt/razorapplication.h>
 #include <QtGui/QIcon>
+#include <unistd.h>
 
 #include "razormodman.h"
 #include "sessiondbusadaptor.h"
