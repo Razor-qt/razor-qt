@@ -84,7 +84,6 @@ RazorApplication::RazorApplication(int &argc, char** argv, const QString &styles
     qInstallMsgHandler(dbgMessageOutput);
 #endif
 
-    setStyle(new RazorQProxyStyle());
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
@@ -92,25 +91,9 @@ RazorApplication::RazorApplication(int &argc, char** argv, const QString &styles
     {
         setStyleSheet(razorTheme->qss(stylesheetKey));
     }
-}
 
-
-
-RazorQProxyStyle::RazorQProxyStyle(QStyle * style)
-    : QProxyStyle(style)
-{
     // TODO/FIXME: maybe move it into global config? RazorSettings::globalSettings()?
     RazorSettings s("desktop");
-    m_singleClick = s.value("icon-launch-mode", "singleclick").toString() == "singleclick";
-}
-
-int RazorQProxyStyle::styleHint(StyleHint hint,
-                                const QStyleOption *option,
-                                const QWidget *widget,
-                                QStyleHintReturn *returnData) const
-{
-    if (hint == QStyle::SH_ItemView_ActivateItemOnSingleClick)
-        return m_singleClick ? 1 : 0;
-
-    return QProxyStyle::styleHint(hint, option, widget, returnData);
+    bool singleClick = s.value("icon-launch-mode", "singleclick").toString() == "singleclick";
+    setStyleSheet(QString("QAbstractItemView {activate-on-singleclick : %1; }").arg(singleClick ? 1 : 0));
 }
