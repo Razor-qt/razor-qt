@@ -42,38 +42,48 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <unistd.h>
 #include <QDateTime>
 /*! \brief Log qDebug input to file
 Used only in pure Debug builds.
 */
 void dbgMessageOutput(QtMsgType type, const char *msg)
  {
-    FILE *f;
     QDir dir(XdgDirs::configHome().toUtf8() + "/razor");
     dir.mkpath(".");
 
-    f = fopen (dir.absoluteFilePath("debug.log").toUtf8(), "a+");
-    const char * dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
+    const char* typestr;
+    const char* color;
     switch (type) {
     case QtDebugMsg:
-        fprintf(f, "%s %s(%p) Debug: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s(%p) Debug: %s%s\n", COLOR_DEBUG, QAPP_NAME, qApp, msg, COLOR_RESET);
+        typestr = "Debug";
+        color = COLOR_DEBUG;
         break;
     case QtWarningMsg:
-        fprintf(f, "%s %s(%p) Warning: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s(%p) Warning: %s%s\n", COLOR_WARN, QAPP_NAME, qApp, msg, COLOR_RESET);
-        break;
-    case QtCriticalMsg:
-        fprintf(f, "%s %s(%p) Critical: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s(%p) Critical: %s%s\n", COLOR_CRITICAL, QAPP_NAME, qApp, msg, COLOR_RESET);
+        typestr = "Warning";
+        color = COLOR_WARN;
         break;
     case QtFatalMsg:
-        fprintf(f, "%s %s(%p) Fatal: %s\n", dt, QAPP_NAME, qApp, msg);
-        fprintf(stderr, "%s %s(%p) Fatal: %s%s\n", COLOR_FATAL, QAPP_NAME, qApp, msg, COLOR_RESET);
-        fclose(f);
-        abort();
+        typestr = "Fatal";
+        color = COLOR_FATAL;
+        break;
+    default: // QtCriticalMsg
+        typestr = "Critical";
+        color = COLOR_CRITICAL;
     }
+
+    QByteArray dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
+    if (isatty(STDERR_FILENO))
+        fprintf(stderr, "%s %s(%p) %s: %s%s\n", color, QAPP_NAME, qApp, typestr, msg, COLOR_RESET);
+    else
+        fprintf(stderr, "%s(%p) %s: %s\n", QAPP_NAME, qApp, typestr, msg);
+
+    FILE *f = fopen(dir.absoluteFilePath("debug.log").toUtf8().constData(), "a+");
+    fprintf(f, "%s %s(%p) %s: %s\n", dt.constData(), QAPP_NAME, qApp, typestr, msg);
     fclose(f);
+
+    if (type == QtFatalMsg)
+        abort();
 }
 #endif
 
