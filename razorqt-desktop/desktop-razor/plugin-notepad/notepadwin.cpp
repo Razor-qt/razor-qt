@@ -43,12 +43,16 @@ NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, SaveFunctionPoi
     pad = notepad;
     saveText = sv;
     this->rpnt = rpnt;
+    saveTimer = new QTimer(this);
+    saveTimer->setSingleShot(true);
+    saveTimer->setInterval(1000);
     layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
     edit = new QTextEdit();
     layout->addWidget(edit);
-    connect(edit, SIGNAL(textChanged()), this, SLOT(textChanged()));
+    connect(edit, SIGNAL(textChanged()), saveTimer, SLOT(start()));
+    connect(saveTimer, SIGNAL(timeout()), this, SLOT(save()));
     panel = new QWidget();
     panel->setFixedHeight(25);
     layout->addWidget(edit);
@@ -158,7 +162,7 @@ void NotepadWin::setText(QString &text)
 	edit->document()->setHtml(text);
 }
 
-void NotepadWin::textChanged()
+void NotepadWin::save()
 {
 	(pad->*saveText)();
 }
