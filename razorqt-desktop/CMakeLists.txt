@@ -33,7 +33,7 @@ add_executable ( razor-desktop ${razor-desktop_SRCS} ${UIS} ${RSCS} ${TRS} ${MOC
 add_dependencies( razor-desktop razorqt)
 target_link_libraries ( razor-desktop  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY}  ${X11_X11_LIB} razorqt qtxdg)
 INSTALL(TARGETS razor-desktop RUNTIME DESTINATION bin)
-install(DIRECTORY resources/ DESTINATION /etc/xdg/razor)
+install(DIRECTORY resources/ DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor)
 
 add_subdirectory(config)
 add_subdirectory( desktop-wm_native )

@@ -28,6 +28,7 @@ message(STATUS "")
 
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+include(RazorInstallConfigPath)
 include(RazorLibSuffix)
 include(RazorConfigRegister)
 
