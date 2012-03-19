@@ -57,21 +57,18 @@ public:
 	QString text();
 	void setText(QString &text);
 
-protected:
-	void paintEvent(QPaintEvent *event);
-
 private slots:
 	void textChanged();
 public slots:
-        void onSelectionChanged();
-        void setBold();
-        void setItalic();
-        void setUnderline();
-        void setStrike();
-        void setLeftSided();
-        void setCentered();
-        void setRightSided();
-        void setJustified();
+    void onSelectionChanged();
+    void setBold();
+    void setItalic();
+    void setUnderline();
+    void setStrike();
+    void setLeftSided();
+    void setCentered();
+    void setRightSided();
+    void setJustified();
 };
 
 #endif

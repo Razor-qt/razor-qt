@@ -362,9 +362,3 @@ void NotepadWin::onSelectionChanged()
     rightSided->setChecked(aRight ? true : false);
     justified->setChecked(aJustify ? true : false);
 }
-
-void NotepadWin::paintEvent(QPaintEvent *event)
-{
-	(pad->*saveText)();
-	QWidget::paintEvent(event);
-}
