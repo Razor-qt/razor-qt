@@ -51,20 +51,8 @@ add_dependencies( razor-session razorqt qtxdg)
 target_link_libraries ( razor-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} razorqt qtxdg)
 INSTALL(TARGETS razor-session RUNTIME DESTINATION bin)
 
-# Our patches were merged on 2012-03-02. If xdg-tools are older than that
-if(NOT DEFINED BUNDLE_XDG_TOOLS)
-    message(STATUS "*********************************************************************")
-    message(STATUS "Bundling our own xdg-tools.")
-    message(STATUS "If you have xdg-tools newer than 2012-03-02, you can set -DBUNDLE_XDG_TOOLS=No")
-    message(STATUS "*********************************************************************")
-    set(BUNDLE_XDG_TOOLS Yes)
-endif(NOT DEFINED BUNDLE_XDG_TOOLS)
-
-if(BUNDLE_XDG_TOOLS)
-    install(PROGRAMS resources/xdg-open resources/xdg-mime DESTINATION lib${LIB_SUFFIX}/razor-xdg-tools)
-    add_definitions ( -DPATH_PREPEND=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-xdg-tools\" )
-endif(BUNDLE_XDG_TOOLS)
-
+install(PROGRAMS resources/xdg-open resources/xdg-mime DESTINATION lib${LIB_SUFFIX}/razor-xdg-tools)
+add_definitions ( -DPATH_PREPEND=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-xdg-tools\" )
 install(PROGRAMS src/startrazor DESTINATION bin)
 
 add_subdirectory(config)

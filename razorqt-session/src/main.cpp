@@ -73,11 +73,8 @@ int main(int argc, char **argv)
         }
     }
     
-#ifdef PATH_PREPEND
     // PATH for out own bundled XDG tools
     razor_setenv_prepend("PATH", PATH_PREPEND);
-#endif // PATH_PREPEND
-
     // special variable for Razor environment menu
     razor_setenv("XDG_MENU_PREFIX", "razor-");
 
