@@ -51,8 +51,19 @@ add_dependencies( razor-session razorqt qtxdg)
 target_link_libraries ( razor-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} razorqt qtxdg)
 INSTALL(TARGETS razor-session RUNTIME DESTINATION bin)
 
-install(PROGRAMS resources/xdg-open resources/xdg-mime DESTINATION lib${LIB_SUFFIX}/razor-xdg-tools)
-add_definitions ( -DPATH_PREPEND=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-xdg-tools\" )
+if (NOT DEFINED BUNDLE_XDG_UTILS)
+    message(STATUS "*********************************************************************")
+    message(STATUS "Bundling our own xdg-utils.")
+    message(STATUS "If you have xdg-utils newer than 2012-03-02, you can set -DBUNDLE_XDG_UTILS=No")
+    message(STATUS "*********************************************************************")
+    set (BUNDLE_XDG_UTILS Yes)
+endif (NOT DEFINED BUNDLE_XDG_UTILS)
+
+if (BUNDLE_XDG_UTILS)
+    install(PROGRAMS resources/xdg-open resources/xdg-mime DESTINATION lib${LIB_SUFFIX}/razor-xdg-tools)
+    add_definitions ( -DPATH_PREPEND=\"${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-xdg-tools\" )
+endif (BUNDLE_XDG_UTILS)
+
 install(PROGRAMS src/startrazor DESTINATION bin)
 
 add_subdirectory(config)
