@@ -51,8 +51,7 @@ RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 		perror("Error. Failed to drop privileges");
 	}
 
-	getLoadCpu();
-
+	m_font.setPointSizeF(8);
 	startTimer(500);
 }
 
@@ -71,20 +70,26 @@ void RazorCpuLoad::resizeEvent(QResizeEvent *)
 		m_stuff.setMinimumHeight(m_stuff.width() * 2.0);
 		m_stuff.setMinimumWidth(0);
 	}
+
+	update();
 }
 
 
-void RazorCpuLoad::getLoadCpu()
+double RazorCpuLoad::getLoadCpu() const
 {
 	sg_cpu_percents* cur = sg_get_cpu_percents();
-	m_avg = (cur->user + cur->kernel + cur->nice);
+	return (cur->user + cur->kernel + cur->nice);
 }
 
 void RazorCpuLoad::timerEvent(QTimerEvent *event)
 {
-	getLoadCpu();
-	setToolTip(tr("Cpu load %1%").arg(m_avg));
-	update();
+	double avg = getLoadCpu();
+	if ( qAbs(m_avg-avg)>1 )
+	{
+		m_avg = avg;
+		setToolTip(tr("Cpu load %1%").arg(m_avg));
+		update();
+	}
 }
 
 void RazorCpuLoad::paintEvent ( QPaintEvent * )
@@ -95,15 +100,19 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 	p.setPen(pen);
 	p.setRenderHint(QPainter::Antialiasing, true);
 
-	QLinearGradient shade(0, 0, 0, height());
-	shade.setColorAt(0, Qt::red);
-	shade.setColorAt(1, Qt::green);
+	p.setFont(m_font);
 
-	float o = rect().height()*(1-m_avg*0.01);
+	QLinearGradient shade(0, 0, width(), 0);
+	shade.setSpread(QLinearGradient::ReflectSpread);
+	shade.setColorAt(0, QColor(0, 196, 0, 128));
+	shade.setColorAt(0.5, QColor(0, 128, 0, 255) );
+	shade.setColorAt(1, QColor(0, 196, 0 , 128));
+
 	QRectF r = rect();
-
+	float o = r.height()*(1-m_avg*0.01);
 	QRectF r1(r.left(), r.top()+o, r.width(), r.height()-o );
 	p.fillRect(r1, shade);
+
 	p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
 }
 

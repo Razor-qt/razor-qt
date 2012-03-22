@@ -45,11 +45,14 @@ protected:
 	void virtual resizeEvent(QResizeEvent *);
 
 private:
-	void getLoadCpu();
+	double getLoadCpu() const;
+
 	QWidget m_stuff;
 
 	//! average load
 	int m_avg;
+
+	QFont m_font;
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
