@@ -96,6 +96,21 @@ public:
      * access to it. Its Unix access mode MUST be 0700.
      */
      static QString runtimeDir();
+
+     /*! @brief Returns the path to the directory that corresponds to the $XDG_CONFIG_HOME/autostart
+      *
+      * If $XDG_CONFIG_HOME is not set, the Autostart Directory in the user's home directory is
+      * ~/.config/autostart/
+      */
+     static QString autostartHome(bool createDir=true);
+
+     /*! @brief Returns a list of all directories that correspond to $XDG_CONFIG_DIRS/autostart
+      * If $XDG_CONFIG_DIRS is not set, the system wide Autostart Directory is /etc/xdg/autostart
+      *
+      * Note: this does not include the user's autostart directory
+      * @sa autostartHome()
+      */
+     static QStringList autostartDirs();
 };
 
 #endif // QTXDG_XDGDIRS_H

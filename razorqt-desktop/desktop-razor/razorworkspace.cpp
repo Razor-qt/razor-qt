@@ -37,6 +37,7 @@
 #include <QGraphicsTextItem>
 #include <QMessageBox>
 #include <QUuid>
+#include <QtCore/QTimer>
 
 #include <QObjectList>
 
@@ -52,6 +53,7 @@
 #include <razorqt/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <qtxdg/xdgdirs.h>
+#include <qtxdg/xdgicon.h>
 
 RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, QWidget* parent)
     : QGraphicsView(parent),
@@ -62,7 +64,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
       m_mode(ModeNormal),
       m_menu(0)
 {
-    qDebug() << "RazorWorkSpace::RazorWorkSpace";
+    //qDebug() << "RazorWorkSpace::RazorWorkSpace";
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
     setFrameShape(QFrame::NoFrame);
@@ -76,7 +78,21 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     m_config->endGroup();
     if (m_menuFile.isEmpty())
         m_menuFile = XdgMenu::getMenuFileName();
-    qDebug() << "File Name:" << m_menuFile;
+
+    m_xdgMenu.setEnvironments("X-RAZOR");
+    bool res = m_xdgMenu.read(m_menuFile);
+    connect(&m_xdgMenu, SIGNAL(changed()), this, SLOT(buildMenu()));
+
+    if (res)
+    {
+        QTimer::singleShot(1000, this, SLOT(buildMenu()));
+    }
+    else
+    {
+        QMessageBox::warning(this, "Parse error", m_xdgMenu.errorString());
+        return;
+    }
+    //qDebug() << "File Name:" << m_menuFile;
 
     // this is mandatory for virtualized (virtualbox) installations. Dunno why.
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -101,6 +117,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     setCacheMode(QGraphicsView::CacheBackground);
     
     m_actArrangeWidgets = new QAction(tr("Edit Desktop..."), this);
+    m_actArrangeWidgets->setIcon(XdgIcon::fromTheme("preferences-desktop-display"));
     m_actArrangeWidgets->setCheckable(true);
     connect(m_actArrangeWidgets, SIGNAL(toggled(bool)),
             this, SLOT(arrangeWidgets(bool)));
@@ -118,10 +135,12 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
             this, SLOT(configurePlugin()));
             
     m_actSetbackground = new QAction(tr("Set Desktop Background..."), this);
+    m_actSetbackground->setIcon(XdgIcon::fromTheme("preferences-desktop-wallpaper"));
     connect(m_actSetbackground, SIGNAL(triggered()),
             this, SLOT(setDesktopBackground()));
             
     m_actAbout = new QAction(tr("About Razor..."), this);
+    m_actAbout->setIcon(XdgIcon::fromTheme("help-browser"));
     connect(m_actAbout, SIGNAL(triggered()), this, SLOT(about()));
 }
 
@@ -151,7 +170,7 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
     QStringList desktopDirs = pluginDesktopDirs();
     foreach (QString configId, bg.plugins)
     {
-        qDebug() << "RazorWorkSpace::setConfig() Plugin conf id" << configId << m_config;
+        //qDebug() << "RazorWorkSpace::setConfig() Plugin conf id" << configId << m_config;
         
         m_config->beginGroup(configId);
         QString libName(m_config->value("plugin", "").toString());
@@ -216,7 +235,7 @@ QGraphicsItem * RazorWorkSpace::loadPlugin(QLibrary * lib, const QString & confi
     DesktopWidgetInitFunction initFunc = (DesktopWidgetInitFunction) lib->resolve("init");
     if (!initFunc)
     {
-        qDebug() << lib->errorString();
+        qWarning() << lib->errorString();
         delete lib;
     }
     else
@@ -224,19 +243,19 @@ QGraphicsItem * RazorWorkSpace::loadPlugin(QLibrary * lib, const QString & confi
         DesktopWidgetPlugin * plugin = initFunc(m_scene, configId, m_config);
         Q_ASSERT(plugin);
 
-        qDebug() << "    * Plugin loaded.";
-        qDebug() << plugin->info();
+        //qDebug() << "    * Plugin loaded.";
+        //qDebug() << plugin->info();
 
         QGraphicsItem * item = dynamic_cast<QGraphicsItem*>(plugin);
         QWidget * w = dynamic_cast<QWidget*>(plugin);
         if (w)
         {
-            qDebug() << "adding widget";
+            //qDebug() << "adding widget";
             return m_scene->addWidget(w);
         }
         else if (item)
         {
-            qDebug() << "adding item";
+            //qDebug() << "adding item";
             m_scene->addItem(item);
             return item;
         }
@@ -257,6 +276,31 @@ void RazorWorkSpace::workspaceResized(int screen)
     m_scene->setSceneRect(0, 0, geometry.width(), geometry.height());
 }
 
+void RazorWorkSpace::buildMenu(bool lazyInit)
+{
+    XdgMenuWidget *menu = new XdgMenuWidget(m_xdgMenu, "", this);
+    if (!lazyInit)
+        menu->fullInit();
+
+    menu->setObjectName("TopLevelMainMenu");
+
+    menu->addSeparator();
+    menu->addAction(m_actArrangeWidgets);
+    menu->addAction(m_actSetbackground);
+    menu->addAction(m_actAbout);
+    menu->addSeparator();
+    menu->addActions(m_power->availableActions());
+    menu->addSeparator();
+    menu->addActions(m_screenSaver->availableActions());
+#ifdef DEBUG
+    menu->addAction("Exit (debug only)", this, SLOT(close()));
+#endif
+
+    QMenu *prevMenu = m_menu;
+    m_menu = menu;
+    delete prevMenu;
+}
+
 void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
 {
     DesktopWidgetPlugin * plug = getPluginFromItem(m_scene->itemAt(_ev->posF()));
@@ -266,35 +310,9 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         QGraphicsView::mouseReleaseEvent(_ev);
         return;
     }
-    
-    if (m_xdgMenu.isOutDated())
-    {
-        m_xdgMenu.setEnvironments("X-RAZOR");
 
-        bool res = m_xdgMenu.read(m_menuFile);
-        if (res)
-        {
-            m_menu = new XdgMenuWidget(m_xdgMenu, "", this);
-            m_menu->setObjectName("TopLevelMainMenu");
-        }
-        else
-        {
-            QMessageBox::warning(this, "Parse error", m_xdgMenu.errorString());
-            return;
-        }
-
-        m_menu->addSeparator();
-        m_menu->addAction(m_actArrangeWidgets);
-        m_menu->addAction(m_actSetbackground);
-        m_menu->addAction(m_actAbout);
-        m_menu->addSeparator();
-        m_menu->addActions(m_power->availableActions());
-        m_menu->addSeparator();
-        m_menu->addActions(m_screenSaver->availableActions());
-#ifdef DEBUG
-        m_menu->addAction("Exit (debug only)", this, SLOT(close()));
-#endif
-    }
+    if (!m_menu )
+        buildMenu(true);
 
     if (!m_menu)
         return;
@@ -524,7 +542,7 @@ void RazorWorkSpace::removePlugin()
 void RazorWorkSpace::configurePlugin()
 {
     ArrangeItem * item = dynamic_cast<ArrangeItem*>(m_scene->itemAt(m_actRemovePlugin->data().toPointF()));
-    qDebug() << "RazorWorkSpace::configurePlugin" << item;
+    //qDebug() << "RazorWorkSpace::configurePlugin" << item;
     if (!item)
     {
         qDebug() << "Mismatch in m_actConfigurePlugin data(). Expected ArrangeItem got" << m_actRemovePlugin->data();

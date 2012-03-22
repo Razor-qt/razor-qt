@@ -1,0 +1,19 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-appearance
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-theme
+Name=Razor Appearance Configuration
+Comment=Configure appearance of Razor desktop
+GenericName=Razor Appearance Configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[it]=Configura l'aspetto di Razor
+GenericName[it]=Impostazioni aspetto Razor
+Name[it]=Impostazioni aspetto Razor

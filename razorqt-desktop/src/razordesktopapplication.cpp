@@ -32,7 +32,7 @@
 
 
 RazorDesktopApplication::RazorDesktopApplication(int& argc, char** argv)
- : QApplication(argc, argv)
+ : RazorApplication(argc, argv, "desktop")
  , m_desktopPlugin(0L)
 {
 }

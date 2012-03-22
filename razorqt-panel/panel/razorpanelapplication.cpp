@@ -35,7 +35,7 @@
 
  ************************************************/
 RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
-    : QApplication(argc, argv),
+    : RazorApplication(argc, argv),
     mPanel(0)
 {
 }

@@ -23,6 +23,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QtCore/QFile>
+#include <qtxdg/xdgdirs.h>
 
 #include "autostartmodel.h"
 #include <QDebug>
@@ -32,7 +33,7 @@ AutoStartItemModel::AutoStartItemModel(QObject* parent) :
     mRazorIndex(QAbstractItemModel::createIndex(1, 0))
 {
 
-    mAllItems = XdgAutoStart::desktopFileList(false);
+    mAllItems = XdgAutoStart::desktopFileList(QStringList() << XdgDirs::autostartHome() << XdgDirs::autostartDirs(), false);
 
     XdgDesktopFileList::iterator i;
     for (i = mAllItems.begin(); i != mAllItems.end(); ++i)

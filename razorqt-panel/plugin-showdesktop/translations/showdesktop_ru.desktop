@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Show Desktop
+Comment=Minimize all windows and show the desktop
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[ru]=Сворачивает все окна и показывает рабочий стол
+Name[ru]=Показать рабочий стол

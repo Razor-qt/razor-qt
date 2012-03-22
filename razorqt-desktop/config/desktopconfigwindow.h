@@ -28,39 +28,23 @@
 #ifndef DESKTOPCONFIGWINDOW_H
 #define DESKTOPCONFIGWINDOW_H
 
-#include "ui_desktopconfigwindow.h"
+#include <razorqt/razorconfigdialog.h>
 
-class RazorSettings;
-class RazorSettingsCache;
-class QStringListModel;
-
-
-class DesktopConfigWindow : public QMainWindow, public Ui::DesktopConfigWindow
+class DesktopConfigWindow : public RazorConfigDialog
 {
     Q_OBJECT
-    
+
 public:
-    DesktopConfigWindow();
+    explicit DesktopConfigWindow(QWidget* parent = 0);
     ~DesktopConfigWindow();
-    
-private:
-    RazorSettings *m_settings;
-    RazorSettingsCache *m_cache;
-
-    // display restart warning
-    bool m_restart;
-
-    void closeEvent(QCloseEvent * event);
-    void restoreSettings();
 
 private slots:
     void setRestart();
+    void restoreSettings();
+    void closeEvent(QCloseEvent *event);
 
-    void desktopTypeComboBox_currentIndexChanged(int ix);
-    void chooseMenuFile();
-    void nativeWallpaperButton_clicked();
-
-    void dialogButtonsAction(QAbstractButton *btn);
+private:
+    bool mRestart;
 };
 
 #endif

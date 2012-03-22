@@ -42,14 +42,16 @@ then only the Hidden key in the most important .desktop file must be considered:
 If it is set to true all .desktop files with the same name in the other
 directories MUST be ignored as well.
  ************************************************/
-XdgDesktopFileList XdgAutoStart::desktopFileList(bool excludeHidden)
+XdgDesktopFileList XdgAutoStart::desktopFileList()
 {
     QStringList dirs;
-    dirs << QString("%1/autostart").arg(XdgDirs::configHome());
+    dirs << XdgDirs::autostartHome(false) << XdgDirs::autostartDirs();
 
-    foreach(QString dir, XdgDirs::configDirs())
-        dirs << QString("%1/autostart").arg(dir);
+    return desktopFileList(dirs);
+}
 
+XdgDesktopFileList XdgAutoStart::desktopFileList(QStringList dirs, bool excludeHidden)
+{
     dirs.removeDuplicates();
 
     QSet<QString> processed;
@@ -85,5 +87,5 @@ XdgDesktopFileList XdgAutoStart::desktopFileList(bool excludeHidden)
 QString XdgAutoStart::localPath(const XdgDesktopFile& file)
 {
     QFileInfo fi(file.fileName());
-    return QString("%1/autostart/%2").arg(XdgDirs::configHome(), fi.fileName());
+    return QString("%1/%2").arg(XdgDirs::autostartHome(), fi.fileName());
 }

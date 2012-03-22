@@ -29,12 +29,12 @@
 #ifndef RAZORDESKTOPAPPLICATION_H
 #define RAZORDESKTOPAPPLICATION_H
 
-#include <QApplication>
+#include <razorqt/razorapplication.h>
 
 class DesktopPlugin;
 class RazorDesktop;
 
-class RazorDesktopApplication : public QApplication
+class RazorDesktopApplication : public RazorApplication
 {
 public:
     explicit RazorDesktopApplication(int& argc, char** argv);

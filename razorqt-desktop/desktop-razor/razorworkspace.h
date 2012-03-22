@@ -113,6 +113,7 @@ private slots:
     void configurePlugin();
     void setDesktopBackground();
     void addPlugin(const RazorPluginInfo &pluginInfo);
+    void buildMenu(bool lazyInit=false);
 };
 
 #endif

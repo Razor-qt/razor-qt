@@ -1,4 +1,4 @@
-/usr/share/razor/razor.conf
+/etc/xdg/razor/razor.conf
 /usr/share/razor/graphics/
 /usr/share/razor/themes/
 /etc/xdg/menus/*

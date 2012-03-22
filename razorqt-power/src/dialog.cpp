@@ -39,7 +39,6 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
-    setStyleSheet(razorTheme->qss("razor-power/razor-power"));
 
     connect(ui->hibernateButton, SIGNAL(clicked()), this, SLOT(hibernate()));
     ui->hibernateButton->setVisible(mPower.canAction(RazorPower::PowerHibernate));

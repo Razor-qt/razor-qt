@@ -150,7 +150,6 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChangeds()));
     //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
 
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), q_ptr, SLOT(update()));
 }
 
@@ -457,7 +456,6 @@ void RazorPanelPrivate::realign()
             rect.moveRight(screen.right());
     }
     q->setGeometry(rect);
-    qDebug() << q->geometry();
 
     // Reserve our space on the screen ..........
     XfitMan xf = xfitMan();

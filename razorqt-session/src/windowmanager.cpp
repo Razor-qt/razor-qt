@@ -31,39 +31,49 @@
 #include <QtCore/QStringList>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
+#include <razorqt/razorsettings.h>
+#include <QDebug>
 
-
-QMap<QString,QString> availableWindowManagers()
-{
-    QMap<QString,QString> candidates;
-    candidates["openbox"] =     QObject::tr("Openbox - light-weight window manager");
-    candidates["kwin"] =        QObject::tr("KWin - window manager of the KDE Software Compilation");
-    candidates["metacity"] =    QObject::tr("Metacity - window manager of the GNOME desktop environment");
-    candidates["windowmaker"] = QObject::tr("Windowmaker - a classical lightweight window manager");
-    candidates["e16"] =         QObject::tr("Enlightenement 16");
-    candidates["fvwm2"] =       QObject::tr("Fvwm2 - a classical lightweight window manager");
-    candidates["xfwm4"] =       QObject::tr("Xfwm4 - a window manager for the Xfce desktop environment");
-    candidates["sawfish"] =     QObject::tr("Sawfish - a lightweight, flexible window manager");
-
-
-    foreach (QString s, candidates.keys())
-    {
-        if (!findProgram(s))
-            candidates.remove(s);
-    }
-    
-    return candidates;
-}
 
 bool findProgram(const QString &program)
 {
+    QFileInfo fi(program);
+    if (fi.isExecutable())
+        return true;
+
     QString path = qgetenv("PATH");
     foreach(QString dir, path.split(":"))
     {
-
         QFileInfo fi= QFileInfo(dir + QDir::separator() + program);
         if (fi.isExecutable() )
             return true;
     }
     return false;
+}
+
+WindowManagerList getWindowManagerList(bool onlyAvailable)
+{
+    RazorSettings cfg("windowmanagers");
+    cfg.beginGroup("KnownManagers");
+    QStringList names = cfg.childGroups();
+
+    WindowManagerList ret;
+
+    foreach (QString name,  names)
+    {
+        bool exists = findProgram(name);
+        if (!onlyAvailable || exists)
+        {
+            cfg.beginGroup(name);
+            WindowManager wm;
+            wm.command = name;
+            wm.name = cfg.localizedValue("Name", wm.command).toString();
+            wm.comment = cfg.localizedValue("Comment").toString();
+            wm.exists = exists;
+            ret << wm;
+            cfg.endGroup();
+        }
+    }
+
+    return ret;
 }

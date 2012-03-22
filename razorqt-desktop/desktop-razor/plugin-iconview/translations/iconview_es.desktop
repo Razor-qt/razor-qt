@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Icon View
+Comment=Display content (as icons) of the specified directory
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[es]=Muestra el contenido del directorio especificado como íconos
+Name[es]=Vista de Íconos

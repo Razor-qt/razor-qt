@@ -32,12 +32,19 @@ set ( razor-autosuspend_MOCS
         )
 QT4_WRAP_CPP(MOCS ${razor-autosuspend_MOCS})
 
-add_executable ( razor-autosuspend ${razor-autosuspend_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+file(GLOB DESKTOP_FILES_IN
+    resources/*.desktop.in
+)
+
+# Translations **********************************
+include(RazorTranslate)
+razor_translate(QM_FILES)
+razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
+#************************************************
+
+add_executable ( razor-autosuspend ${razor-autosuspend_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} ${DESKTOP_FILES})
 target_link_libraries ( razor-autosuspend  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} )
 
-file(GLOB DESKTOP_FILES
-    resources/*.desktop
-)
 file(GLOB ICON_FILES
     icons/*.svg)
 

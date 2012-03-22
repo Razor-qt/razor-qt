@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=qxkb
+TryExec=qxkb
+Exec=qxkb
+OnlyShowIn=Razor;
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations

@@ -117,6 +117,9 @@ public:
         overwritten. Otherwise, it overwrites the the un-localized version. */
     void setLocalizedValue(const QString &key, const QVariant &value);
 
+    //! Removes the entry with the specified key, if it exists.
+    void removeEntry(const QString& key);
+
     //! Returns true if there exists a setting called key; returns false otherwise.
     bool contains(const QString& key) const;
 

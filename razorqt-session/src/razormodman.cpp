@@ -28,6 +28,7 @@
 #include "razormodman.h"
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgautostart.h>
+#include <unistd.h>
 
 #include <QtDebug>
 #include <QDBusInterface>
@@ -36,6 +37,7 @@
 #include <QtGui/QSystemTrayIcon>
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>
+#include "windowmanager.h"
 
 #define MAX_CRASHES_PER_APP 5
 
@@ -130,13 +132,17 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     }
     s.endGroup();
 
-    waitCnt = 300;
+    waitCnt = 100;
     while (!QSystemTrayIcon::isSystemTrayAvailable())
     {
         qWarning() << "******************** Wait for tray" << waitCnt;
         waitCnt--;
+        if (!waitCnt)
+            break;
         usleep(100000);
     }
+    if (waitCnt == 0)
+        qWarning() << "******************** No systray implementation started in session. Continuing.";
 
     // XDG autostart
     foreach (XdgDesktopFile f, XdgAutoStart::desktopFileList())
@@ -221,7 +227,11 @@ void RazorModuleManager::logout()
 
 QString RazorModuleManager::showWmSelectDialog()
 {
-    WmSelectDialog dlg;
+    WindowManagerList availableWM = getWindowManagerList(true);
+    if (availableWM.count() == 1)
+        return availableWM.at(0).command;
+
+    WmSelectDialog dlg(availableWM);
     dlg.exec();
     return dlg.windowManager();
 }

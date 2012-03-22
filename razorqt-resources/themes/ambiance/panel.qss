@@ -126,20 +126,15 @@ TrayIcon {
     border: 0;
 }
 
-#MainMenu > QPushButton {
+#MainMenu > QToolButton {
     margin-left: 4px;
     margin-right: 2px;
     border: 1px solid #E0875A;
     border-radius: 3px;
     background: qlineargradient(x1:1, y1:0, x2:0, y2:1, stop:0 #EB743D, stop:0.3 #E76C41, stop:1 #C94C21);
-    width: 24px;
-    height: 24px;
-    qproperty-iconSize: 19px;
     qproperty-icon: url(mainmenu.svg);
-}
+    color: rgba(0, 0, 0, 80%);
 
-#MainMenu > QPushButton::menu-indicator {
-    image: none;
 }
 
 #MainMenu  QMenu {

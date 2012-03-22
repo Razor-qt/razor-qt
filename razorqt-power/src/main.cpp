@@ -26,7 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include <QtGui/QApplication>
+#include <razorqt/razorapplication.h>
 #include "dialog.h"
 #include "razortranslate.h"
 #include <QTextStream>
@@ -56,7 +56,7 @@ void help()
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    RazorApplication app(argc, argv, "razor-power/razor-power");
     bool check=false;
     bool actionSet=false;
     RazorPower::Action action;

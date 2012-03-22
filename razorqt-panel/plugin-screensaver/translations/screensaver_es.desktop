@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Screensaver
+Comment=Activate a screensaver and/or lock the screen
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[es]=Activa el salvapantallas y/o bloquea la pantalla
+Name[es]=Salvapantallas

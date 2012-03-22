@@ -65,14 +65,19 @@ private:
 
 
 
-class CommandProvider: public QList<CommandProviderItem*>
+class CommandProvider: public QObject, public QList<CommandProviderItem*>
 {
+    Q_OBJECT
 public:
     CommandProvider();
     virtual ~CommandProvider();
 
     virtual void rebuild() {}
     virtual bool isOutDated() const { return false; }
+
+signals:
+    void aboutToBeChanged();
+    void changed();
 };
 
 
@@ -87,27 +92,32 @@ public:
 
     bool run() const;
     bool compare(const QRegExp &regExp) const;
+    void updateIcon();
+    QString command() const { return mCommand; }
 
+    void operator=(const AppLinkItem &other);
 private:
+public:
     QString mSearchText;
     QString mDesktopFile;
+    QString mIconName;
+    QString mCommand;
 };
-
 
 
 class XdgMenu;
 class AppLinkProvider: public CommandProvider
 {
+    Q_OBJECT
 public:
     AppLinkProvider();
     virtual ~AppLinkProvider();
 
-    void rebuild();
-    bool isOutDated() const;
+private slots:
+    void update();
 
 private:
     XdgMenu *mXdgMenu;
-    void rebuildMainMenu(const QDomElement &xml);
 };
 
 
@@ -166,5 +176,34 @@ public:
     MathProvider();
     //virtual ~MathProvider();
 };
+
+#ifdef VBOX_ENABLED
+#include <QtCore/QDateTime>
+#include <QtGui/QDesktopServices>
+#include <QtCore/QFileInfo>
+#include <QtCore/QMap>
+class VirtualBoxItem: public CommandProviderItem
+{
+public:
+  VirtualBoxItem(const QString & MachineName , const QIcon & Icon);
+  
+  bool run() const;
+  bool compare(const QRegExp &regExp) const;
+};
+
+class VirtualBoxProvider: public CommandProvider
+{
+public:
+  VirtualBoxProvider ();
+  void rebuild();
+  bool isOutDated() const;
+  
+private:
+  QFile fp;
+  QMap<QString,QString> osIcons;
+  QString virtualBoxConfig;
+  QDateTime timeStamp;
+};
+#endif
 
 #endif // PROVIDERS_H

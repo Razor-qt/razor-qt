@@ -44,7 +44,6 @@
 int main(int argc, char *argv[])
 {
     RazorPanelApplication a(argc, argv);
-    a.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
     TRANSLATE_APP;
 

@@ -28,7 +28,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <QApplication>
+#include <razorqt/razorapplication.h>
 #include "appswitcher.h"
 
 
@@ -37,7 +37,7 @@ namespace RazorAppSwitcher
 
 /*! \brief This inherits QApplication and therefore does our X11 event-handling
  */
-class Application : public QApplication
+class Application : public RazorApplication
 {
     Q_OBJECT
 

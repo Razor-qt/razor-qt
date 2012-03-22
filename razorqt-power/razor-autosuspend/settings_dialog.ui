@@ -26,7 +26,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+    <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
    </property>
   </widget>
   <widget class="QWidget" name="gridLayoutWidget">
@@ -152,10 +152,6 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <zorder>buttonBox</zorder>
-  <zorder>gridLayoutWidget</zorder>
-  <zorder>label_10</zorder>
-  <zorder>label_4</zorder>
  </widget>
  <resources/>
  <connections>

@@ -25,8 +25,9 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QApplication>
-#include <QIcon>
+#include <razorqt/razorapplication.h>
+#include <QtGui/QIcon>
+#include <unistd.h>
 
 #include "razormodman.h"
 #include "sessiondbusadaptor.h"
@@ -45,49 +46,13 @@ session-openbox.conf
 session-eggwm.conf
 */
 
-#ifdef DEBUG
-#include <cstdio>
-#include <cstdlib>
-#include <QDateTime>
-/*! \biref Log qDebug input to file
-Used only in pure Debug builds.
-*/
-void dbgMessageOutput(QtMsgType type, const char *msg)
- {
-    FILE *f;
-    f = fopen (".razor-session.log", "a+");
-    const char * dt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz").toUtf8();
-    switch (type) {
-    case QtDebugMsg:
-        fprintf(f, "%s Debug: %s\n", dt, msg);
-        break;
-    case QtWarningMsg:
-        fprintf(f, "%s Warning: %s\n", dt, msg);
-        break;
-    case QtCriticalMsg:
-        fprintf(f, "%s Critical: %s\n", dt, msg);
-        break;
-    case QtFatalMsg:
-        fprintf(f, "%s Fatal: %s\n", dt, msg);
-        fclose(f);
-        abort();
-    }
-    fclose(f);
-}
-#endif
-
 /**
 * @brief our main function doing the loading
 */
 int main(int argc, char **argv)
 {
-#ifdef DEBUG
-    qInstallMsgHandler(dbgMessageOutput);
-#endif
-    QApplication app(argc, argv);
+    RazorApplication app(argc, argv);
     //qDebug() << "Razor Session start";
-    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
-    app.setQuitOnLastWindowClosed(false);
 
     TRANSLATE_APP;
 
@@ -108,8 +73,11 @@ int main(int argc, char **argv)
         }
     }
     
+#ifdef PATH_PREPEND
     // PATH for out own bundled XDG tools
     razor_setenv_prepend("PATH", PATH_PREPEND);
+#endif // PATH_PREPEND
+
     // special variable for Razor environment menu
     razor_setenv("XDG_MENU_PREFIX", "razor-");
 

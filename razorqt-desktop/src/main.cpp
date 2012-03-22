@@ -40,12 +40,8 @@
 int main (int argc, char* argv[])
 {
     RazorDesktopApplication app(argc,argv);
-    XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
-    app.setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
     
     RazorSettings config("desktop");
-
-    app.setStyleSheet(razorTheme->qss("desktop"));
     
     QString configId(config.value("desktop", "razor").toString());
     QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "libdesktop-" + configId + ".so";

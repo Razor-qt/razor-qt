@@ -29,12 +29,12 @@
 #include "razormainmenu.h"
 #include "razormainmenuconfiguration.h"
 #include <QDebug>
-#include <QtGui/QMenu>
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xmlhelper.h>
 #include <QSettings>
 #include <QFileInfo>
 #include <QAction>
+#include <QtCore/QTimer>
 #include <QtGui/QMessageBox>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
@@ -62,6 +62,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
 
     layout()->setAlignment(Qt::AlignCenter);
     mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mButton.setObjectName("Button");
 
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
@@ -72,7 +73,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     mScreenSaver = new ScreenSaver(this);
     
     mShortcut = new QxtGlobalShortcut(this);
-    connect(mShortcut, SIGNAL(activated()), this, SLOT(showMenu()));
+    connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
 
     addWidget(&mButton);
     settigsChanged();
@@ -90,10 +91,22 @@ RazorMainMenu::~RazorMainMenu()
 /************************************************
 
  ************************************************/
+void RazorMainMenu::showHideMenu()
+{
+    if (mMenu && mMenu->isVisible())
+        mMenu->hide();
+    else
+        showMenu();
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorMainMenu::showMenu()
 {
-    if (mXdgMenu.isOutDated())
-        buildMenu();
+    if (!mMenu)
+        buildMenu(true);
 
     if (!mMenu)
         return;
@@ -134,39 +147,27 @@ void RazorMainMenu::showMenu()
  ************************************************/
 void RazorMainMenu::settigsChanged()
 {
-    if (settings().value("showText", false).toBool() == false)
+    if (settings().value("showText", false).toBool())
     {
-        mButton.setText(NULL);
+        mButton.setText(settings().value("text", "Start").toString());
+        mButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     }
     else
     {
-        mButton.setText(settings().value("text", "Start").toString());
+        mButton.setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
-    mLogDir = settings().value("log_dir", "").toString();
-    mTopMenuStyle.setIconSize(settings().value("top_icon_size", 16).toInt());
 
-    mMenuFile = settings().value("menu_file", "").toString();
+    mLogDir = settings().value("log_dir", "").toString();
+
+    QString mMenuFile = settings().value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
-    
-    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::buildMenu()
-{
-    mXdgMenu.setEnvironments("X-RAZOR");
-    mXdgMenu.setLogDir(mLogDir);
 
     bool res = mXdgMenu.read(mMenuFile);
+    connect(&mXdgMenu, SIGNAL(changed()), this, SLOT(buildMenu()));
     if (res)
     {
-        mMenu = new XdgMenuWidget(mXdgMenu, "", this);
-        mMenu->setObjectName("TopLevelMainMenu");
-        mMenu->setStyle(&mTopMenuStyle);
+        QTimer::singleShot(1000, this, SLOT(buildMenu()));
     }
     else
     {
@@ -174,14 +175,41 @@ void RazorMainMenu::buildMenu()
         return;
     }
 
-    mMenu->addSeparator();
 
-    QMenu* leaveMenu = mMenu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
-    leaveMenu->addActions(mPowerManager->availableActions());
-
-    mMenu->addActions(mScreenSaver->availableActions());
+    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
 }
 
+
+/************************************************
+
+ ************************************************/
+void RazorMainMenu::buildMenu(bool lazyInit)
+{
+    mXdgMenu.setEnvironments("X-RAZOR");
+    mXdgMenu.setLogDir(mLogDir);
+
+    XdgMenuWidget *menu = new XdgMenuWidget(mXdgMenu, "", this);
+    menu->setObjectName("TopLevelMainMenu");
+    menu->setStyle(&mTopMenuStyle);
+    if (!lazyInit)
+        menu->fullInit();
+
+    menu->addSeparator();
+
+    QMenu* leaveMenu = menu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
+    leaveMenu->addActions(mPowerManager->availableActions());
+
+    menu->addActions(mScreenSaver->availableActions());
+
+    QMenu *oldMenu = mMenu;
+    mMenu = menu;
+    delete oldMenu;
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorMainMenu::showConfigureDialog()
 {
     RazorMainMenuConfiguration *confWindow =
@@ -197,16 +225,3 @@ void RazorMainMenu::showConfigureDialog()
     confWindow->activateWindow();
 }
 
-void RazorMainMenu::realign()
-{
-    if (panel()->isHorizontal())
-    {
-        mButton.setMaximumSize(QSize(panel()->height(), panel()->height()));
-        this->setMaximumSize(QSize(panel()->height(), panel()->height()));
-    }
-    else
-    {
-        mButton.setMaximumSize(QSize(panel()->width(), panel()->width()));
-        this->setMaximumSize(QSize(panel()->width(), panel()->width()));
-    }
-}

@@ -38,6 +38,7 @@ set(LIBRARIES
 # Translations **********************************
 include(RazorTranslate)
 razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)
+razor_translate_desktop(DESKTOP_FILES ${PROJECT_NAME}.desktop.in)
 #************************************************
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
@@ -45,13 +46,13 @@ qt4_wrap_ui(UI_HEADERS ${UI_FILES})
 qt4_add_resources(QRC_SOURCES ${QRC_FILES})
 
 
-add_executable(${PROJECT_NAME} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES})
+add_executable(${PROJECT_NAME} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES} ${DESKTOP_FILES})
 add_dependencies(${PROJECT_NAME} razorqt qtxdg)
 target_link_libraries(${PROJECT_NAME}  ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
-install(FILES ${PROJECT_NAME}.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 
-razor_config_register(${PROJECT_NAME}.desktop)
+razor_config_register(${DESKTOP_FILES})
 
 

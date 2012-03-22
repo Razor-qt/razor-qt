@@ -102,4 +102,4 @@ add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
-install(FILES   ${CONFIG_FILES}    DESTINATION share/razor/razor-panel/)
+install(FILES   ${CONFIG_FILES}    DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor/razor-panel/)

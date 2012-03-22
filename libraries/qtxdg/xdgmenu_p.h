@@ -29,6 +29,9 @@
 #include "xdgmenu.h"
 #include <QtCore/QObject>
 #include <QtCore/QFileSystemWatcher>
+#include <QtCore/QTimer>
+
+#define REBUILD_DELAY 3000
 
 class QDomElement;
 class QStringList;
@@ -65,11 +68,18 @@ public:
     QString mMenuFileName;
     QString mLogDir;
     QDomDocument mXml;
+    QByteArray mHash;
+    QTimer mRebuildDelayTimer;
 
     QFileSystemWatcher mWatcher;
     bool mOutDated;
+
 public slots:
-   void fileChanged(const QString& path);
+    void rebuild();
+
+signals:
+    void changed();
+
 
 private:
     XdgMenu* const q_ptr;

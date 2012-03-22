@@ -28,23 +28,13 @@
 
 #include "razorsettings.h"
 #include <qtxdg/xdgicon.h>
-#include <QDebug>
+#include <qtxdg/xdgdirs.h>
+#include <QtCore/QDebug>
 #include <QtCore/QEvent>
 #include <QtCore/QDir>
 #include <QtCore/QStringList>
 #include <QtCore/QMutex>
 #include <QtCore/QFileSystemWatcher>
-
-
-QString razorConfigDir()
-{
-#ifdef RAZOR_CONFIG_DIR
-    return QDir::cleanPath(QDir::homePath() + "/" + RAZOR_CONFIG_DIR) + "/";
-#else
-    return QDir::cleanPath(QDir::homePath() + "/.razor") + "/";
-#endif
-}
-
 
 class RazorSettingsPrivate
 {
@@ -53,6 +43,8 @@ public:
         mParent(parent)
     {
     }
+
+    QString localizedKey(const QString& key) const;
 
 private:
     RazorSettings* mParent;
@@ -75,43 +67,15 @@ public:
 };
 
 
-/************************************************
- Create parent directories, if necessary
- ************************************************/
-void createDir(const QString& file)
-{
-    QDir dir(QFileInfo(file).absoluteDir());
-
-    if (!dir.exists())
-        dir.mkpath(".");
-
-
-}
-
 
 /************************************************
   This looks in all the usual paths for file
  ************************************************/
-QString findFile(const QString& fileName, bool onlyGlobal = false)
+QString findFile(const QString& fileName)
 {
     QStringList paths;
-
-    if (!onlyGlobal)
-        paths << razorConfigDir();
-
-#ifdef SHARE_DIR
-    // test for non-standard install dirs - useful for development for example
-    paths << SHARE_DIR;
-
-#else
-    #warning SHARE_DIR is not defined. Config will not be searched in the CMAKE_INSTALL_PREFIX
-    // this is ugly and it should be used only in a very special cases
-    // standard cmake build contains the SHARE_DIR defined in the top level CMakeLists.txt
-    //
-    // /usr/local/ goes first as it's usually before the /usr in the PATH etc.
-    paths << "/usr/local/share/razor/";
-    paths << "/usr/share/razor/";
-#endif
+    paths << XdgDirs::dataHome(false);
+    paths << XdgDirs::dataDirs();
 
     foreach(QString path, paths)
     {
@@ -125,47 +89,12 @@ QString findFile(const QString& fileName, bool onlyGlobal = false)
 
 
 /************************************************
- Copy the system configuration, if necessary.
- ************************************************/
-void copySysConfig(const QString& module, const QString& homeFile)
-{
-    QFile hf(homeFile);
-    if (hf.exists())
-        return;
-
-    QString sysFile(findFile(QString("%1.conf").arg(module), true));
-    if (sysFile.isEmpty())
-        return;
-
-    QFile sf(sysFile);
-    if (!sf.copy(homeFile))
-    {
-        qWarning() << "Cannot copy file from:" << sysFile << "to:" << homeFile;
-        Q_ASSERT(0);
-    }
-}
-
-
-/************************************************
-
- ************************************************/
-QString getFileName(const QString& module)
-{
-    QString homeFile(razorConfigDir() + module + ".conf");
-    createDir(homeFile);
-    copySysConfig(module, homeFile);
-    return homeFile;
-}
-
-
-/************************************************
 
  ************************************************/
 RazorSettings::RazorSettings(const QString& module, QObject* parent) :
-    QSettings(getFileName(module), QSettings::IniFormat, parent),
+    QSettings("razor", module, parent),
     d_ptr(new RazorSettingsPrivate(this))
 {
-    sync();
 }
 
 
@@ -190,6 +119,10 @@ RazorSettings::RazorSettings(const QSettings& parentSettings, const QString& sub
     beginGroup(subGroup);
 }
 
+
+/************************************************
+
+ ************************************************/
 RazorSettings::~RazorSettings()
 {
     // because in the RazorSettings::RazorSettings(const QString& module, QObject* parent)
@@ -237,6 +170,102 @@ const RazorSettings *RazorSettings::globalSettings()
 
 
 /************************************************
+ LC_MESSAGES value	Possible keys in order of matching
+ lang_COUNTRY@MODIFIER	lang_COUNTRY@MODIFIER, lang_COUNTRY, lang@MODIFIER, lang,
+                        default value
+ lang_COUNTRY	        lang_COUNTRY, lang, default value
+ lang@MODIFIER	        lang@MODIFIER, lang, default value
+ lang	                lang, default value
+ ************************************************/
+QString RazorSettingsPrivate::localizedKey(const QString& key) const
+{
+
+    QString lang = getenv("LC_MESSAGES");
+
+    if (lang.isEmpty())
+        lang = getenv("LC_ALL");
+
+    if (lang.isEmpty())
+         lang = getenv("LANG");
+
+
+    QString modifier = lang.section('@', 1);
+    if (!modifier.isEmpty())
+        lang.truncate(lang.length() - modifier.length() - 1);
+
+    QString encoding = lang.section('.', 1);
+    if (!encoding.isEmpty())
+        lang.truncate(lang.length() - encoding.length() - 1);
+
+
+    QString country = lang.section('_', 1);
+    if (!country.isEmpty())
+        lang.truncate(lang.length() - country.length() - 1);
+
+
+
+    //qDebug() << "LC_MESSAGES: " << getenv("LC_MESSAGES");
+    //qDebug() << "Lang:" << lang;
+    //qDebug() << "Country:" << country;
+    //qDebug() << "Encoding:" << encoding;
+    //qDebug() << "Modifier:" << modifier;
+
+    if (!modifier.isEmpty() && !country.isEmpty())
+    {
+        QString k = QString("%1[%2_%3@%4]").arg(key, lang, country, modifier);
+        //qDebug() << "\t try " << k << mParent->contains(k);
+        if (mParent->contains(k))
+            return k;
+    }
+
+    if (!country.isEmpty())
+    {
+        QString k = QString("%1[%2_%3]").arg(key, lang, country);
+        //qDebug() << "\t try " << k  << mParent->contains(k);
+        if (mParent->contains(k))
+            return k;
+    }
+
+    if (!modifier.isEmpty())
+    {
+        QString k = QString("%1[%2@%3]").arg(key, lang, modifier);
+        //qDebug() << "\t try " << k  << mParent->contains(k);
+        if (mParent->contains(k))
+            return k;
+    }
+
+    QString k = QString("%1[%2]").arg(key, lang);
+    //qDebug() << "\t try " << k  << mParent->contains(k);
+    if (mParent->contains(k))
+        return k;
+
+
+    //qDebug() << "\t try " << key  << mParent->contains(key);
+    return key;
+}
+
+
+/************************************************
+
+ ************************************************/
+QVariant RazorSettings::localizedValue(const QString& key, const QVariant& defaultValue) const
+{
+    Q_D(const RazorSettings);
+    return value(d->localizedKey(key), defaultValue);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorSettings::setLocalizedValue(const QString &key, const QVariant &value)
+{
+    Q_D(const RazorSettings);
+    setValue(d->localizedKey(key), value);
+}
+
+
+/************************************************
 
  ************************************************/
 RazorTheme::RazorTheme():
@@ -244,7 +273,8 @@ RazorTheme::RazorTheme():
     d_ptr(new RazorThemePrivate(this))
 {
     RazorSettings settings("razor");
-    d_ptr->mThemeName = settings.value("theme").toString();
+    // the "light" theme is the default one for razor
+    d_ptr->mThemeName = settings.value("theme", "light").toString();
 }
 
 RazorTheme::~RazorTheme()
@@ -281,8 +311,7 @@ QString RazorTheme::qss(const QString& module) const
 {
     Q_D(const RazorTheme);
 
-
-    QString path(findFile(QString("themes/%1/%2.qss").arg(d->mThemeName, module)));
+    QString path(findFile(QString("razor/themes/%1/%2.qss").arg(d->mThemeName, module)));
     if (!path.isEmpty())
         return d->loadQss(path);
 
@@ -323,7 +352,7 @@ QString RazorThemePrivate::loadQss(const QString& qssFile) const
 QString RazorTheme::desktopBackground(int screen) const
 {
     Q_D(const RazorTheme);
-    QString wallpapperCfgFileName = findFile(QString("themes/%1/wallpapper.cfg").arg(d->mThemeName));
+    QString wallpapperCfgFileName = findFile(QString("razor/themes/%1/wallpapper.cfg").arg(d->mThemeName));
 
     if (wallpapperCfgFileName.isEmpty())
         return QString();

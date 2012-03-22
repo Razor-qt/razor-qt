@@ -23,14 +23,18 @@ QT4_WRAP_UI(razor-sessioncfg_UIS
     autostartedit.ui
         )
 QT4_WRAP_CPP(razor-sessioncfg_MOCS ${razor-sessioncfg_HDRS})
+# Translations **********************************
+include(RazorTranslate)
+razor_translate_desktop(DESKTOP_FILES razor-config-session.desktop.in)
+#************************************************
 
-add_executable ( razor-config-session ${razor-sessioncfg_SRCS} ${razor-sessioncfg_UIS} ${razor-sessioncfg_MOCS} )
+add_executable ( razor-config-session ${razor-sessioncfg_SRCS} ${razor-sessioncfg_UIS} ${razor-sessioncfg_MOCS} ${DESKTOP_FILES})
 add_dependencies( razor-config-session razorqt qtxdg)
 target_link_libraries ( razor-config-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} razorqt qtxdg)
 
 INSTALL(TARGETS razor-config-session RUNTIME DESTINATION bin)
-install(FILES razor-config-session.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 
 #razor_config_register(${CMAKE_INSTALL_PREFIX}/share/applications/razor-config-session.desktop)
-razor_config_register(razor-config-session.desktop)
+razor_config_register(${DESKTOP_FILES})
 

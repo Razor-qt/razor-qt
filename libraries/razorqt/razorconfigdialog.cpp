@@ -29,9 +29,9 @@
 
 RazorConfigDialog::RazorConfigDialog(const QString& title, RazorSettings* settings, QWidget* parent) :
     QDialog(parent),
-    ui(new Ui::RazorConfigDialog),
     mSettings(settings),
-    mCache(new RazorSettingsCache(settings))
+    mCache(new RazorSettingsCache(settings)),
+    ui(new Ui::RazorConfigDialog)
 {
     ui->setupUi(this);
     setWindowTitle(title);
@@ -60,8 +60,8 @@ void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QStrin
 
 void RazorConfigDialog::closeEvent(QCloseEvent* event)
 {
-    mSettings->sync();
     emit save();
+    mSettings->sync();
 }
 
 void RazorConfigDialog::dialogButtonsAction(QAbstractButton* button)
