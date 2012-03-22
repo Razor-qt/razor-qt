@@ -26,6 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razorcpuload.h"
+#include "razorcpuloadconfiguration.h"
 #include <QtCore>
 #include <QPainter>
 #include <QLinearGradient>
@@ -38,7 +39,8 @@ extern "C" {
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorCpuLoad)
 
 RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-	RazorPanelPlugin(startInfo, parent)
+	RazorPanelPlugin(startInfo, parent),
+	m_showText(false)
 {
 	setObjectName("CpuLoad");
 	addWidget(&m_stuff);
@@ -53,6 +55,8 @@ RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 
 	m_font.setPointSizeF(8);
 	startTimer(500);
+
+	settigsChanged();
 }
 
 RazorCpuLoad::~RazorCpuLoad()
@@ -113,6 +117,28 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 	QRectF r1(r.left(), r.top()+o, r.width(), r.height()-o );
 	p.fillRect(r1, shade);
 
-	p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
+	if( m_showText )
+		p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
+}
+
+void RazorCpuLoad::showConfigureDialog()
+{
+	RazorCpuLoadConfiguration *confWindow =
+			this->findChild<RazorCpuLoadConfiguration*>("RazorCpuLoadConfigurationWindow");
+
+	if (!confWindow)
+	{
+		confWindow = new RazorCpuLoadConfiguration(settings(), this);
+	}
+
+	confWindow->show();
+	confWindow->raise();
+	confWindow->activateWindow();
+}
+
+void RazorCpuLoad::settigsChanged()
+{
+	m_showText = settings().value("showText", false).toBool();
+	update();
 }
 
