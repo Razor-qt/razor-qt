@@ -7,6 +7,9 @@
 class Notification ;
 class NotificationTimeout ;
 
+/**
+ * @brief A Notification view interface that declares operations done on notifications
+ **/
 class INotificationView : public QObject
 {
     Q_OBJECT
@@ -19,17 +22,16 @@ public:
      * @brief adds notification to View
      * @param pN notification. INotificationView will not free memory
      */
-    void addNotification( Notification* pN ) ;
+    void addNotification(Notification* pN);
 
     /**
      * @brief removes notification from view
      * @param id
      */
-    void remove(int id ) ;
+    void remove(int id);
 
 
     // virtual methods to override
-
 
 
     /**

@@ -39,7 +39,7 @@ NotificationHandler::~NotificationHandler()
 void NotificationHandler::addNotification(Notification *pN)
 {
     CONTEXT_PUSH("NotificationHandler");
-//     qDebug() << "Notification is about to be added." << *pN;
+    qDebug() << "Notification is about to be added." << *pN;
     d_func()->m_notifications.append(NotificationShPtr(pN));
     d_func()->m_pView->addNotification(pN);
     CONTEXT_POP;

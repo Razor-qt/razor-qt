@@ -2,10 +2,13 @@
 #define NOTIFICATIONSERVERSETTINGS_H
 
 #include <QObject>
-#include <QSettings>
+#include <QVariantList>
 
 class NotificationServerSettingsPrivate;
 
+/**
+ * @brief Settings class used in razorqt-notify module
+ **/
 class NotificationServerSettings : public QObject
 {
     Q_OBJECT
@@ -47,8 +50,6 @@ private:
     static NotificationServerSettings* m_pSelf ;
 private:
     explicit NotificationServerSettings(QObject *parent = 0);
-
-
 };
 
 #endif // NOTIFICATIONSERVERSETTINGS_H

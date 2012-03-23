@@ -8,10 +8,12 @@ class QApplication;
 class NotificationHandler;
 class QtnDbusConnectorPrivate;
 
+/**
+ * @brief D-bus connector, to connect with org.freedesktop.Notifications
+ **/
 class QtnDbusConnector : public QDBusAbstractAdaptor
 {
     Q_DECLARE_PRIVATE(QtnDbusConnector)
-
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.freedesktop.Notifications")
 public:

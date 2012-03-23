@@ -36,15 +36,6 @@
 
 int main(int argc, char *argv[])
 {
-#ifdef LOG
-    log4cplus::helpers::LogLog::getLogLog()->setInternalDebugging(false);
-    log4cplus::SharedAppenderPtr rolling( new log4cplus::ConsoleAppender());
-    rolling->setName("rollingFileAppender");
-    rolling->setLayout(std::auto_ptr<log4cplus::Layout> ( new log4cplus::PatternLayout("%d{%y-%m-%d %H:%M:%S,%q} [%t] %-5p %c <%x> - %m%n")));
-
-    log4cplus::Logger::getRoot().addAppender(rolling);
-    log4cplus::Logger::getRoot().setLogLevel(log4cplus::ALL_LOG_LEVEL);
-#endif //LOG
 
     INFO("Starting test qnot2 argc=" << argc << " argv[0]=" << argv[0]);
 

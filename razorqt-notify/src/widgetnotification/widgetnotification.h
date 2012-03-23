@@ -9,6 +9,9 @@ class QStackedWidget ;
 class Notification ;
 class WidgetNotificationPrivate;
 
+/**
+ * @brief A notification that uses plain C++ widget creation as oposed to use qml
+ **/
 class WidgetNotification : public INotificationView
 {
     Q_OBJECT

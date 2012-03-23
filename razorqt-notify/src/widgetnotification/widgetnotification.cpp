@@ -47,33 +47,47 @@ public:
 
     bool eventFilter(QObject *pO, QEvent *event)
     {
-        if ( event->type() == QEvent::Paint) {
-            QWidget* pW = qobject_cast<QWidget*>(pO);
-            QColor backColor = NotificationServerSettings::instance()->value("notification_backgroundColor").value<QColor>();
-            float fOpacity = NotificationServerSettings::instance()->value("notification_opacity").value<float>();
-            QPainter painter ( pW );
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        if ( event->type() == QEvent::Paint)
+        {
+//            QWidget* pW = qobject_cast<QWidget*>(pO);
 
-            // corners
-            const int kShadowCornerSize = scShadowSize + scRadiusSize;
-            painter.drawPixmap(0, 0, shadowsCorners.at(0));
-            painter.drawPixmap(pW->width() - kShadowCornerSize, 0, shadowsCorners.at(1));
-            painter.drawPixmap(pW->width() - kShadowCornerSize, pW->height() - kShadowCornerSize, shadowsCorners.at(2));
-            painter.drawPixmap(0, pW->height() - kShadowCornerSize, shadowsCorners.at(3));
+//            QColor backColor = NotificationServerSettings::instance()->value("notification_backgroundColor").value<QColor>();
+//            float fOpacity = NotificationServerSettings::instance()->value("notification_opacity").value<float>();
+//            QPainter painter ( pW );
 
-            //edges
-            painter.drawTiledPixmap(kShadowCornerSize, 0,pW->width() - kShadowCornerSize*2, scShadowSize,shadowsEdges.at(0));
-            painter.drawTiledPixmap(pW->width() - scShadowSize, kShadowCornerSize,scShadowSize, pW->height() - kShadowCornerSize*2,shadowsEdges.at(1));
-            painter.drawTiledPixmap(kShadowCornerSize, pW->height() - scShadowSize,pW->width() - kShadowCornerSize*2, scShadowSize,shadowsEdges.at(2));
-            painter.drawTiledPixmap(0, kShadowCornerSize,scShadowSize, pW->height() - kShadowCornerSize*2,shadowsEdges.at(3));
+//            painter.setRenderHint(QPainter::Antialiasing);
+//            painter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+//            QRect rect = pW->geometry();
+//            painter.setBrush(Qt::black);
+//            painter.setPen(Qt::black);
+
+//            painter.drawRect(rect);
+
+//            // corners
+//            const int kShadowCornerSize = scShadowSize + scRadiusSize;
+//            painter.drawPixmap(0, 0, shadowsCorners.at(0));
+//            painter.drawPixmap(pW->width() - kShadowCornerSize, 0, shadowsCorners.at(1));
+//            painter.drawPixmap(pW->width() - kShadowCornerSize, pW->height() - kShadowCornerSize, shadowsCorners.at(2));
+//            painter.drawPixmap(0, pW->height() - kShadowCornerSize, shadowsCorners.at(3));
+
+//            //edges
+//            painter.drawTiledPixmap(kShadowCornerSize, 0,pW->width() - kShadowCornerSize*2, scShadowSize,shadowsEdges.at(0));
+//            painter.drawTiledPixmap(pW->width() - scShadowSize, kShadowCornerSize,scShadowSize, pW->height() - kShadowCornerSize*2,shadowsEdges.at(1));
+//            painter.drawTiledPixmap(kShadowCornerSize, pW->height() - scShadowSize,pW->width() - kShadowCornerSize*2, scShadowSize,shadowsEdges.at(2));
+//            painter.drawTiledPixmap(0, kShadowCornerSize,scShadowSize, pW->height() - kShadowCornerSize*2,shadowsEdges.at(3));
 
 
-            // rounded pixmap
-            painter.setBrush(backColor);
-            painter.setPen(backColor);
-            painter.setOpacity(fOpacity);
-            painter.drawRoundedRect(scShadowSize,scShadowSize,pW->width()-2*scShadowSize, pW->height()-2*scShadowSize,scRadiusSize,scRadiusSize);
+//            // rounded pixmap
+//            painter.setBrush(backColor);
+//            painter.setPen(backColor);
+//            painter.setOpacity(fOpacity);
+//            painter.drawRoundedRect(scShadowSize,scShadowSize,pW->width()-2*scShadowSize, pW->height()-2*scShadowSize,scRadiusSize,scRadiusSize);
+            return true ; 
+        }
+        else
+        {
+            return QObject::eventFilter(pO,event);
         }
     }
 
@@ -129,9 +143,9 @@ void WidgetNotification::addToView(Notification *pN)
         d_func()->m_pNotificationUi = new Ui::NotificationUi ;
 
         // set widget
-        Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::X11BypassWindowManagerHint;
+//        Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::X11BypassWindowManagerHint;
 
-        d_func()->m_pNotificationWidget->setWindowFlags(flags);
+//        d_func()->m_pNotificationWidget->setWindowFlags(flags);
 
         QRect geometry = d_func()->geom() ;
         d_func()->m_pNotificationWidget->setGeometry(geometry);
@@ -149,11 +163,12 @@ void WidgetNotification::addToView(Notification *pN)
     }
 
     QPixmap p = pN->icon();
-    d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(64,64,Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(scIconSize-10,scIconSize-10,Qt::KeepAspectRatio, Qt::SmoothTransformation));
     QString summ = pN->summary();
     d_func()->m_pNotificationUi->applicationSummaryLabel->setText(summ);
     d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN->body());
-
+    if ( !d_func()->m_pNotificationWidget->isVisible())
+        d_func()->m_pNotificationWidget->show();
 }
 
 void WidgetNotification::remove(Notification *pN)

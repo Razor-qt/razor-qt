@@ -51,7 +51,10 @@ void INotificationView::requireRemove(int id)
     emit notificationRemoved(id);
 
     int c = viewCount();
-    if ( c == 0 ){
+    qDebug() << "Total notification count" << c ;
+    if ( c == 0 )
+    {
+        qDebug() << " Hide notification window";
         hide();
     }
     emit viewHidden();

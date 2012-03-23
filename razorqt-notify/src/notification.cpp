@@ -67,14 +67,13 @@ QPixmap Notification::icon() const
             }
         }
 
-
         if ( !bFoundInPath ){
             WARN("Icon was not found in path, assigning default one");
             path = qApp->applicationDirPath();
             path = path + "/NotificationUI/icon.png";
             pPixmap->load(path);
             if ( pPixmap->isNull() ){
-                qFatal("Unable to get any pixmap, even default one");
+                qWarning() << "Unable to get any pixmap, even default one";
             }
             else{
                 TRACE( "Found default icon=" << path.toStdString() << " and it's sized " << pPixmap->width() << " x " << pPixmap->height());

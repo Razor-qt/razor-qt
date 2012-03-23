@@ -21,8 +21,8 @@ namespace {
 
 NotificationView::NotificationView(QObject* parent) :
     INotificationView(parent),
-    m_pMainWidget( new QWidget),
-    m_pQmlView( new QDeclarativeView())
+    m_pQmlView( new QDeclarativeView()),
+    m_pMainWidget( new QWidget)
 {
     m_pMainWidget->setWindowFlags(Qt::ToolTip);
     m_pMainWidget->setAttribute(Qt::WA_TranslucentBackground);
