@@ -20,7 +20,5 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 qt4_wrap_ui( widgetnotification_ui_srcs ${widgetnotification_ui} )
 qt4_wrap_cpp(widgetnotification_moc_src ${widgetnotification_moc})
 qt4_add_resources(widgetnotification_rsc_src ${widgetnotification_rsc})
-
 add_library( widgetnotification SHARED ${widgetnotification_src} ${widgetnotification_moc_src} ${widgetnotification_ui_srcs} ${widgetnotification_rsc_src})
 
-# file(COPY NotificationUI DESTINATION ${CMAKE_BINARY_DIR})

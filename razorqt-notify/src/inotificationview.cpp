@@ -43,7 +43,8 @@ void INotificationView::notificationTimeout()
 void INotificationView::requireRemove(int id)
 {
     m_notif.remove(id);
-    if ( m_notifTimeouts.contains(id)){
+    if ( m_notifTimeouts.contains(id))
+    {
         m_notifTimeouts[id]->stop();
         delete m_notifTimeouts[id];
         m_notifTimeouts.remove(id);
@@ -62,7 +63,8 @@ void INotificationView::requireRemove(int id)
 
 void INotificationView::remove(int id)
 {
-    if ( m_notif.contains(id)){
+    if ( m_notif.contains(id))
+    {
         remove( m_notif[id]);
         requireRemove(id);
     }

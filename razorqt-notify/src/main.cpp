@@ -65,19 +65,32 @@ void QNotificationService::start()
 
 int main(int argc, char *argv[])
 {
-#ifdef LOG
-    log4cplus::helpers::LogLog::getLogLog()->setInternalDebugging(false);
-    log4cplus::SharedAppenderPtr rolling( new log4cplus::ConsoleAppender());
-    rolling->setName("rollingFileAppender");
-    rolling->setLayout(std::auto_ptr<log4cplus::Layout> ( new log4cplus::PatternLayout("%d{%y-%m-%d %H:%M:%S,%q} [%t] %-5p %c <%x> - %m%n")));
-    log4cplus::Logger::getRoot().setLogLevel(log4cplus::ALL_LOG_LEVEL);
-    log4cplus::Logger::getRoot().addAppender(rolling);
-#endif //LOG
 
     INFO("Starting qtnot2 argc=" << argc << " argv[0]=" << argv[0]);
 
-    QNotificationService srv(argc,argv) ;
-    return srv.exec();
+    if ( argc == 2)
+    {
+        INFO(argv[1]);
+        std::string arg(argv[1]);
+        if ( arg.compare("--no-daemon")==0)
+        {
+
+            QApplication app( argc,argv );
+            Q_INIT_RESOURCE(images);
+            INFO("Daemon started!");
+
+            QtnDbusConnector* pDbus = new QtnDbusConnector(&app);
+
+            pDbus->connectToDbus();
+            return app.exec();
+
+        }
+    }
+    else{
+
+        QNotificationService srv(argc,argv) ;
+        return srv.exec();
+    }
 }
 ///////////////////////////////////////////////////////////////
 
