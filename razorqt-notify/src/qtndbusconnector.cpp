@@ -8,10 +8,10 @@
 #include "notification.h"
 #include "notificationhandler.h"
 
-#include <stdio.h>
-
-namespace {
+namespace
+{
     static const int scDefaultTimeout = 3000 ;
+    const QString g_scFreedesktopNotificationName = "org.freedesktop.Notifications";
 }
 
 class QtnDbusConnectorPrivate{
@@ -49,10 +49,10 @@ void QtnDbusConnector::connectToDbus()
 {
     static bool scbForceDisconnect = true ;
 
-    QDBusConnection connection = QDBusConnection::connectToBus(QDBusConnection::SessionBus, "org.freedesktop.Notifications");
+    QDBusConnection connection = QDBusConnection::connectToBus(QDBusConnection::SessionBus, g_scFreedesktopNotificationName);
     if ( scbForceDisconnect ){
 
-        if (connection.unregisterService("org.freedesktop.Notifications")){
+        if (connection.unregisterService(g_scFreedesktopNotificationName)){
             INFO("Unregistered previous service");
         }
         else
@@ -61,7 +61,7 @@ void QtnDbusConnector::connectToDbus()
 
 //    if ( connection.isConnected() )
     INFO("We're connected? isConnected()=" << connection.isConnected() );
-    if (!connection.registerService("org.freedesktop.Notifications"))
+    if (!connection.registerService(g_scFreedesktopNotificationName))
     {
         WARN("Cant register service= " << QDBusError::errorString(connection.lastError().type()).toStdString());
     }
@@ -96,7 +96,8 @@ unsigned QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, Q
         timeout = scDefaultTimeout;
 
     Notification* pN = d_func()->m_pHandler->findNotification( localid );
-    if ( NULL == pN ){
+    if ( NULL == pN )
+    {
         Notification* pN = new Notification(app_name, localid, icon, summary, body, actions, hints, timeout);
         d_func()->m_pHandler->addNotification(pN);
     }

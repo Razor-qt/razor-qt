@@ -64,3 +64,5 @@ add_executable( razorqt-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_moc
 target_link_libraries( razorqt-notificationd ${libraries} )
 
 # file(COPY NotificationUI DESTINATION ${CMAKE_BINARY_DIR})
+
+add_subdirectory(clientlibrary)
