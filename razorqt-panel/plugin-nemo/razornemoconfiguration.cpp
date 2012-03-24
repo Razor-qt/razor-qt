@@ -26,51 +26,40 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include "razorcpuloadconfiguration.h"
-#include "ui_razorcpuloadconfiguration.h"
+#include "razornemoconfiguration.h"
+#include "ui_razornemoconfiguration.h"
 
-RazorCpuLoadConfiguration::RazorCpuLoadConfiguration(QSettings &settings, QWidget *parent) :
+RazorNemoConfiguration::RazorNemoConfiguration(QSettings &settings, QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::RazorCpuLoadConfiguration),
+	ui(new Ui::RazorNemoConfiguration),
 	mSettings(settings),
 	mOldSettings(settings)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setObjectName("CpuLoadConfigurationWindow");
+	setObjectName("NemoConfigurationWindow");
 	ui->setupUi(this);
 
 	connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
 	loadSettings();
 
-	connect(ui->showTextCB, SIGNAL(toggled(bool)), this, SLOT(showTextChanged(bool)));
+//	connect(ui->showTextCB, SIGNAL(toggled(bool)), this, SLOT(showTextChanged(bool)));
 }
 
-RazorCpuLoadConfiguration::~RazorCpuLoadConfiguration()
+RazorNemoConfiguration::~RazorNemoConfiguration()
 {
 	delete ui;
 }
 
-void RazorCpuLoadConfiguration::loadSettings()
+void RazorNemoConfiguration::loadSettings()
 {
-	ui->showTextCB->setChecked(mSettings.value("showText", false).toBool());
+	ui->iconCB->setCurrentIndex( mSettings.value("icon", 0).toInt() );
 
-//	QString menuFile = mSettings.value("menu_file", "").toString();
-//	if (menuFile.isEmpty())
-//	{
-//		menuFile = XdgMenu::getMenuFileName();
-//	}
-//	ui->menuFilePathLE->setText(menuFile);
-//	ui->shortcutEd->setKeySequence(mSettings.value("shortcut", "Alt+F1").toString());
+	// TODO: use iface from libstatgrab
+	ui->interfaceLE->setText(mSettings.value("interface1", "ppp0").toString());
 }
 
-void RazorCpuLoadConfiguration::showTextChanged(bool value)
-{
-	mSettings.setValue("showText", value);
-}
-
-
-void RazorCpuLoadConfiguration::dialogButtonsAction(QAbstractButton *btn)
+void RazorNemoConfiguration::dialogButtonsAction(QAbstractButton *btn)
 {
 	if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
 	{
@@ -79,6 +68,9 @@ void RazorCpuLoadConfiguration::dialogButtonsAction(QAbstractButton *btn)
 	}
 	else
 	{
+		mSettings.setValue("icon", ui->iconCB->currentIndex());
+		mSettings.setValue("interface1", ui->interfaceLE->text());
+
 		close();
 	}
 }

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Nemo
+Comment=Network Monitor
+
+Name[ru]=Nemo
+Comment[ru]=Монитор сети
+
