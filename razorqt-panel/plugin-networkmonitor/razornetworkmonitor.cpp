@@ -123,7 +123,7 @@ void RazorNetworkMonitor::timerEvent(QTimerEvent *event)
 	}
 
 	if( !matched)
-		m_pic.load( iconName(0) );
+		m_pic.load( iconName("error") );
 
 	update();
 }
@@ -161,7 +161,5 @@ void RazorNetworkMonitor::settigsChanged()
 	m_interface = settings().value("interface", "eth0").toString();
 
 	m_pic.load( iconName("error") );
-
-	update();
 }
 
