@@ -26,8 +26,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORNEMOCONFIGURATION_H
-#define RAZORNEMOCONFIGURATION_H
+#ifndef RAZORNETWORKMONITORCONFIGURATION_H
+#define RAZORNETWORKMONITORCONFIGURATION_H
 
 #include <razorqt/razorsettings.h>
 
@@ -37,19 +37,19 @@ class QSettings;
 class QAbstractButton;
 
 namespace Ui {
-	class RazorNemoConfiguration;
+	class RazorNetworkMonitorConfiguration;
 }
 
-class RazorNemoConfiguration : public QDialog
+class RazorNetworkMonitorConfiguration : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit RazorNemoConfiguration(QSettings &settings, QWidget *parent = 0);
-	~RazorNemoConfiguration();
+	explicit RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent = 0);
+	~RazorNetworkMonitorConfiguration();
 
 private:
-	Ui::RazorNemoConfiguration *ui;
+	Ui::RazorNetworkMonitorConfiguration *ui;
 	QSettings &mSettings;
 	RazorSettingsCache mOldSettings;
 
@@ -61,4 +61,4 @@ private slots:
 	void dialogButtonsAction(QAbstractButton *btn);
 };
 
-#endif // RAZORNEMOCONFIGURATION_H
+#endif // RAZORNETWORKMONITORCONFIGURATION_H

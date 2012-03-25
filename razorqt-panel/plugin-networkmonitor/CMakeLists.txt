@@ -1,25 +1,25 @@
 cmake_minimum_required(VERSION 2.6)
 
-set(PLUGIN "nemo")
+set(PLUGIN "networkmonitor")
 
 
 set(HEADERS
-	razornemo.h
-	razornemoconfiguration.h
+	razornetworkmonitor.h
+	razornetworkmonitorconfiguration.h
 )
 
 set(SOURCES
-	razornemo.cpp
-	razornemoconfiguration.cpp
+	razornetworkmonitor.cpp
+	razornetworkmonitorconfiguration.cpp
 )
 
 set(MOCS
-	razornemo.h
-	razornemoconfiguration.h
+	razornetworkmonitor.h
+	razornetworkmonitorconfiguration.h
 )
 
 set(UIS
-	razornemoconfiguration.ui
+	razornetworkmonitorconfiguration.ui
 )
 
 set(RESOURCES

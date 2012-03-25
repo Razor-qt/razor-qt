@@ -30,7 +30,7 @@ setByDefault(SHOWDESKTOP_PLUGIN Yes)
 setByDefault(MOUNT_PLUGIN Yes)
 setByDefault(HELLOWORLD_PLUGIN No)
 setByDefault(CPULOAD_PLUGIN Yes)
-setByDefault(NEMO_PLUGIN Yes)
+setByDefault(NETWORKMONITOR_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -126,18 +126,18 @@ if (CPULOAD_PLUGIN)
 	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
 endif (CPULOAD_PLUGIN)
 
-if (NEMO_PLUGIN)
+if (NETWORKMONITOR_PLUGIN)
 	FIND_LIBRARY(STATGRAB_LIB statgrab)
 
 	if ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
-		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Nemo")
-		add_subdirectory(plugin-nemo)
+		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "NetworkMonitor")
+		add_subdirectory(plugin-networkmonitor)
 	else ()
 		message(STATUS "")
 		message(STATUS "Network monitor plugin requires libstatgrab")
 		message(STATUS "")
 	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
-endif (NEMO_PLUGIN)
+endif (NETWORKMONITOR_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})

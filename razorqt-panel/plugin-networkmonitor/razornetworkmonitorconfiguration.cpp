@@ -26,17 +26,17 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include "razornemoconfiguration.h"
-#include "ui_razornemoconfiguration.h"
+#include "razornetworkmonitorconfiguration.h"
+#include "ui_razornetworkmonitorconfiguration.h"
 
-RazorNemoConfiguration::RazorNemoConfiguration(QSettings &settings, QWidget *parent) :
+RazorNetworkMonitorConfiguration::RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::RazorNemoConfiguration),
+	ui(new Ui::RazorNetworkMonitorConfiguration),
 	mSettings(settings),
 	mOldSettings(settings)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setObjectName("NemoConfigurationWindow");
+	setObjectName("NetworkMonitorConfigurationWindow");
 	ui->setupUi(this);
 
 	connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
@@ -44,12 +44,12 @@ RazorNemoConfiguration::RazorNemoConfiguration(QSettings &settings, QWidget *par
 	loadSettings();
 }
 
-RazorNemoConfiguration::~RazorNemoConfiguration()
+RazorNetworkMonitorConfiguration::~RazorNetworkMonitorConfiguration()
 {
 	delete ui;
 }
 
-void RazorNemoConfiguration::loadSettings()
+void RazorNetworkMonitorConfiguration::loadSettings()
 {
 	ui->iconCB->setCurrentIndex( mSettings.value("icon", 1).toInt() );
 
@@ -57,7 +57,7 @@ void RazorNemoConfiguration::loadSettings()
 	ui->interfaceLE->setText(mSettings.value("interface", "eth0").toString());
 }
 
-void RazorNemoConfiguration::dialogButtonsAction(QAbstractButton *btn)
+void RazorNetworkMonitorConfiguration::dialogButtonsAction(QAbstractButton *btn)
 {
 	if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
 	{

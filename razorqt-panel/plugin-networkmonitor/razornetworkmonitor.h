@@ -25,20 +25,20 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORNEMO_H
-#define RAZORNEMO_H
+#ifndef RAZORNETWORKMONITOR_H
+#define RAZORNETWORKMONITOR_H
 #include "../panel/razorpanelplugin.h"
 #include <QLabel>
 
 /*!
   TODO: How to define cable is not connected?
   */
-class RazorNemo: public RazorPanelPlugin
+class RazorNetworkMonitor: public RazorPanelPlugin
 {
 	Q_OBJECT
 public:
-	RazorNemo(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-	~RazorNemo();
+	RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+	~RazorNetworkMonitor();
 
 	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
 
@@ -71,6 +71,6 @@ private:
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
 
-#endif // RAZORNEMO_H
+#endif // RAZORNETWORKMONITOR_H
 
 

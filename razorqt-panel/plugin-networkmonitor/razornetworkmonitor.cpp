@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razornemo.h"
-#include "razornemoconfiguration.h"
+#include "razornetworkmonitor.h"
+#include "razornetworkmonitorconfiguration.h"
 #include <QtCore>
 #include <QPainter>
 #include <QPixmap>
@@ -36,9 +36,9 @@ extern "C" {
 #include <statgrab.h>
 }
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorNemo)
+EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorNetworkMonitor)
 
-RazorNemo::RazorNemo(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
+RazorNetworkMonitor::RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
 	RazorPanelPlugin(startInfo, parent)
 {
 	setObjectName("Nemo");
@@ -55,16 +55,16 @@ RazorNemo::RazorNemo(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
 	m_iconList << "modem" << "monitor"
 			   << "network" << "wireless";
 
-	startTimer(500);
+	startTimer(800);
 
 	settigsChanged();
 }
 
-RazorNemo::~RazorNemo()
+RazorNetworkMonitor::~RazorNetworkMonitor()
 {
 }
 
-void RazorNemo::resizeEvent(QResizeEvent *)
+void RazorNetworkMonitor::resizeEvent(QResizeEvent *)
 {
 	m_stuff.setMinimumWidth(m_pic.width()+2);
 	m_stuff.setMinimumHeight(m_pic.height()+2);
@@ -73,7 +73,7 @@ void RazorNemo::resizeEvent(QResizeEvent *)
 }
 
 
-void RazorNemo::timerEvent(QTimerEvent *event)
+void RazorNetworkMonitor::timerEvent(QTimerEvent *event)
 {
 	bool matched = false;
 
@@ -128,7 +128,7 @@ void RazorNemo::timerEvent(QTimerEvent *event)
 	update();
 }
 
-void RazorNemo::paintEvent ( QPaintEvent * )
+void RazorNetworkMonitor::paintEvent ( QPaintEvent * )
 {
 	QPainter p(this);
 
@@ -140,14 +140,14 @@ void RazorNemo::paintEvent ( QPaintEvent * )
 	p.drawPixmap(leftOffset, topOffset, m_pic);
 }
 
-void RazorNemo::showConfigureDialog()
+void RazorNetworkMonitor::showConfigureDialog()
 {
-	RazorNemoConfiguration *confWindow =
-			this->findChild<RazorNemoConfiguration*>("RazorNemoConfigurationWindow");
+	RazorNetworkMonitorConfiguration *confWindow =
+			this->findChild<RazorNetworkMonitorConfiguration*>("RazorNetworkMonitorConfigurationWindow");
 
 	if (!confWindow)
 	{
-		confWindow = new RazorNemoConfiguration(settings(), this);
+		confWindow = new RazorNetworkMonitorConfiguration(settings(), this);
 	}
 
 	confWindow->show();
@@ -155,7 +155,7 @@ void RazorNemo::showConfigureDialog()
 	confWindow->activateWindow();
 }
 
-void RazorNemo::settigsChanged()
+void RazorNetworkMonitor::settigsChanged()
 {
 	m_iconIndex = settings().value("icon", 1).toInt();
 	m_interface = settings().value("interface", "eth0").toString();
