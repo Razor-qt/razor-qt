@@ -42,8 +42,6 @@ RazorNemoConfiguration::RazorNemoConfiguration(QSettings &settings, QWidget *par
 	connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
 	loadSettings();
-
-//	connect(ui->showTextCB, SIGNAL(toggled(bool)), this, SLOT(showTextChanged(bool)));
 }
 
 RazorNemoConfiguration::~RazorNemoConfiguration()
@@ -53,10 +51,10 @@ RazorNemoConfiguration::~RazorNemoConfiguration()
 
 void RazorNemoConfiguration::loadSettings()
 {
-	ui->iconCB->setCurrentIndex( mSettings.value("icon", 0).toInt() );
+	ui->iconCB->setCurrentIndex( mSettings.value("icon", 1).toInt() );
 
-	// TODO: use iface from libstatgrab
-	ui->interfaceLE->setText(mSettings.value("interface1", "ppp0").toString());
+	// TODO: use iface list from libstatgrab with editable combobox
+	ui->interfaceLE->setText(mSettings.value("interface", "eth0").toString());
 }
 
 void RazorNemoConfiguration::dialogButtonsAction(QAbstractButton *btn)
@@ -69,7 +67,7 @@ void RazorNemoConfiguration::dialogButtonsAction(QAbstractButton *btn)
 	else
 	{
 		mSettings.setValue("icon", ui->iconCB->currentIndex());
-		mSettings.setValue("interface1", ui->interfaceLE->text());
+		mSettings.setValue("interface", ui->interfaceLE->text());
 
 		close();
 	}

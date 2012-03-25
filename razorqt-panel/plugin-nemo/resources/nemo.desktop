@@ -2,9 +2,9 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Nemo
+Name=Network Monitor
 Comment=Network Monitor
 
-Name[ru]=Nemo
+Name[ru]=Монитор сети
 Comment[ru]=Монитор сети
 

@@ -30,6 +30,9 @@
 #include "../panel/razorpanelplugin.h"
 #include <QLabel>
 
+/*!
+  TODO: How to define cable is not connected?
+  */
 class RazorNemo: public RazorPanelPlugin
 {
 	Q_OBJECT
@@ -49,16 +52,15 @@ protected slots:
 	virtual void settigsChanged();
 
 private:
-	QString iconName(int index) const
+	QString iconName(const QString& state) const
 	{
 		return QString(":/images/knemo-%1-%2.png")
-				.arg(m_iconList[m_iconIndex], m_stateList[index] );
+				.arg(m_iconList[m_iconIndex], state );
 	}
 
 	QWidget m_stuff;
 
 	QStringList m_iconList;
-	QStringList m_stateList;
 
 	int m_iconIndex;
 

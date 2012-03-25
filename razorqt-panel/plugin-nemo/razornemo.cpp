@@ -52,17 +52,10 @@ RazorNemo::RazorNemo(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
 		perror("Error. Failed to drop privileges");
 	}
 
-
 	m_iconList << "modem" << "monitor"
 			   << "network" << "wireless";
 
-	m_stateList << "error" << "offline"
-				<< "transmit" << "idle"
-				<< "receive" << "transmit-receive";
-
 	startTimer(500);
-
-	setToolTip( "hello" );
 
 	settigsChanged();
 }
@@ -92,26 +85,40 @@ void RazorNemo::timerEvent(QTimerEvent *event)
 	{
 		if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
 		{
-			setToolTip(QString("matched %1 %2").arg(network_stats->tx).arg(network_stats->rx) );
 			if ( network_stats->rx != 0 && network_stats->tx != 0 )
 			{
-				m_pic.load( iconName(5) );
+				m_pic.load( iconName("transmit-receive") );
 			} else if ( network_stats->rx != 0 && network_stats->tx == 0 )
 			{
-				m_pic.load( iconName(4) );
+				m_pic.load( iconName("receive") );
 			} else if ( network_stats->rx == 0 && network_stats->tx != 0 )
 			{
-				m_pic.load( iconName(2) );
+				m_pic.load( iconName("transmit") );
 			} else
 			{
-				m_pic.load( iconName(3) );
+				m_pic.load( iconName("idle") );
 			}
 
 			matched = true;
+
+			break;
 		}
 
-		/* Move the pointer onto the next interface. Since this returns a static buffer, we dont need
-		 * to keep track of the orginal pointer to free later */
+		network_stats++;
+	}
+
+	// TODO: show iface statistic
+	network_stats = sg_get_network_io_stats(&num_network_stats);
+	for(int x = 0; x < num_network_stats; x++)
+	{
+		if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
+		{
+			setToolTip(tr("Network interface <b>%1</b><br>Transmit %2 MiB<br>Recieve %3 MiB")
+					   .arg(m_interface)
+					   .arg(network_stats->tx / (1024.00*1024.00), 0, 'f', 2)
+					   .arg(network_stats->rx / (1024.00*1024.00), 0, 'f', 2)
+					   );
+		}
 		network_stats++;
 	}
 
@@ -150,11 +157,10 @@ void RazorNemo::showConfigureDialog()
 
 void RazorNemo::settigsChanged()
 {
-	m_iconIndex = settings().value("icon", 0).toInt();
-	m_interface = settings().value("interface1", "").toString();
+	m_iconIndex = settings().value("icon", 1).toInt();
+	m_interface = settings().value("interface", "eth0").toString();
 
-	m_pic.load( QString(":/images/knemo-%1-%2.png")
-				.arg(m_iconList[m_iconIndex], m_stateList[3] ) );
+	m_pic.load( iconName("error") );
 
 	update();
 }
