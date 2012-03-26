@@ -65,15 +65,9 @@ RazorCpuLoad::~RazorCpuLoad()
 
 void RazorCpuLoad::resizeEvent(QResizeEvent *)
 {
-	if( panel()->isHorizontal() )
-	{
-		m_stuff.setMinimumWidth(m_stuff.height() * 0.5);
-		m_stuff.setMinimumHeight(0);
-	} else
-	{
-		m_stuff.setMinimumHeight(m_stuff.width() * 2.0);
-		m_stuff.setMinimumWidth(0);
-	}
+	m_stuff.setMinimumWidth(18);
+	m_stuff.setMaximumWidth(18);
+	m_stuff.setMinimumHeight(24);
 
 	update();
 }
@@ -103,18 +97,22 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 	pen.setWidth(2);
 	p.setPen(pen);
 	p.setRenderHint(QPainter::Antialiasing, true);
+	const double w = 20;
 
 	p.setFont(m_font);
+	QRectF r = rect();
 
-	QLinearGradient shade(0, 0, width(), 0);
+	float vo = r.height()*(1-m_avg*0.01);
+	float ho = (r.width() - w )/2.0;
+	QRectF r1(r.left()+ho, r.top()+vo, r.width()-2*ho, r.height()-vo );
+
+	QLinearGradient shade(0, 0, r1.width(), 0);
 	shade.setSpread(QLinearGradient::ReflectSpread);
 	shade.setColorAt(0, QColor(0, 196, 0, 128));
 	shade.setColorAt(0.5, QColor(0, 128, 0, 255) );
 	shade.setColorAt(1, QColor(0, 196, 0 , 128));
 
-	QRectF r = rect();
-	float o = r.height()*(1-m_avg*0.01);
-	QRectF r1(r.left(), r.top()+o, r.width(), r.height()-o );
+
 	p.fillRect(r1, shade);
 
 	if( m_showText )
