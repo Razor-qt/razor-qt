@@ -60,10 +60,6 @@ set(razorqtnotify_mocs ${razorqtnotify_mocs} src/qtndbusconnector.h )
 set( libraries ${libraries}  )
 
 qt4_wrap_cpp(razorqtnotify_mocs ${razorqtnotify_mocs})
-#qt4_add_resources(razorqtnotify_rsc_src ${widgetnotification_rsc})
 add_executable( razorqt-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_mocs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs})
 target_link_libraries( razorqt-notificationd ${libraries} )
 
-# file(COPY NotificationUI DESTINATION ${CMAKE_BINARY_DIR})
-
-add_subdirectory(clientlibrary)
