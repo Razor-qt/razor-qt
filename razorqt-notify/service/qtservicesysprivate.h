@@ -4,6 +4,7 @@
 #include <QObject>
 #include "qtunixserversocket.h"
 #include "QtServiceBase"
+#include <QMap>
 
 class QtServiceSysPrivate : public QtUnixServerSocket
 {

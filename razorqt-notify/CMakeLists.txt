@@ -1,5 +1,6 @@
 set(PROJECT razor-notificationd)
 project( ${PROJECT} )
+include_directories(../libraries)
 
 set( QT_USE_QTDECLARATIVE 1 )
 set( QT_USE_QTDBUS 1 )
