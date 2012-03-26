@@ -19,6 +19,13 @@ public:
     }
 
     QDBusConnection m_bus ;
+    void notify( const QString& appName,quint32 replace_id,const QString& appIcon, const QString& summary, const QString& body,
+                 const QVariantMap& hints, qint32 expire_timeout)
+    {
+        QDBusMessage m = QDBusMessage::createSignal("/",g_scFreedesktopNotificationName,g_scSignalName);
+        m << appName << replace_id << appIcon << summary << body << hints << expire_timeout ;
+        m_bus.send(m);
+    }
 };
 
 RazorNotification::RazorNotification():
@@ -26,15 +33,8 @@ RazorNotification::RazorNotification():
 {
 }
 
-void RazorNotification::Notify(const QString &appName, quint32 replace_id, const QString &appIcon, const QString &summary, const QString &body, const QVariantMap &hints, qint32 expire_timeout)
-{
-    QDBusMessage m = QDBusMessage::createSignal("/",g_scFreedesktopNotificationName,g_scSignalName);
-    m << appName << replace_id << appIcon << summary << body << hints << expire_timeout ;
-    d_func()->m_bus.send(m);
-}
-
-void RazorNotification::NotifyS(const QString &appName, quint32 replace_id, const QString &appIcon, const QString &summary, const QString &body, const QVariantMap &hints, qint32 expire_timeout)
+void RazorNotification::notify(const QString &appName, quint32 replace_id, const QString &appIcon, const QString &summary, const QString &body, const QVariantMap &hints, qint32 expire_timeout)
 {
     RazorNotification n ;
-    n.Notify(appName, replace_id, appIcon, summary, body, hints, expire_timeout);
+    n.d_func()->notify(appName, replace_id, appIcon, summary, body, hints,expire_timeout);
 }
