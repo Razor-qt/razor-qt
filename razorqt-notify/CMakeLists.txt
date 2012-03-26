@@ -55,11 +55,11 @@ set(libraries
 )
 
 
-set( razorqtnotify_srcs ${razorqtnotify_srcs} )
+set(razorqtnotify_srcs ${razorqtnotify_srcs} )
 set(razorqtnotify_mocs ${razorqtnotify_mocs} src/qtndbusconnector.h )
-set( libraries ${libraries}  )
+set(libraries ${libraries}  )
 
 qt4_wrap_cpp(razorqtnotify_mocs ${razorqtnotify_mocs})
-add_executable( razorqt-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_mocs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs})
-target_link_libraries( razorqt-notificationd ${libraries} )
+add_executable( razor-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_mocs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs})
+target_link_libraries( razor-notificationd ${libraries} )
 
