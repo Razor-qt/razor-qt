@@ -30,7 +30,7 @@
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorconfigdialog.h>
-#include "mainwindow.h"
+#include "iconthemeconfig.h"
 #include "razortranslate.h"
 
 int main (int argc, char **argv)
