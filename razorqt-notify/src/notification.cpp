@@ -40,6 +40,8 @@ Notification &Notification::operator =(const Notification &rhs)
     m_actions = rhs.m_actions;
     m_hints = rhs.m_hints;
     m_timeout = rhs.m_timeout;
+
+    return *this ;
 }
 
 QPixmap Notification::icon() const

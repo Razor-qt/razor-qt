@@ -19,12 +19,9 @@ public:
 
 private slots:
     void showNotification();
-
-    void positionXChanged();
-    void positionYChanged();
-
-    void sizeXChanged();
-    void sizeYChanged();
+    void positionChanged();
+    void sizeChanged();
+    void opacityChanged(int value);
     
 private:
     Ui::MainWindow *ui;

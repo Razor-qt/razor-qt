@@ -8,8 +8,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPainter>
-
-#include <QPropertyAnimation>
+#include <QFileSystemWatcher>
 
 namespace
 {
@@ -41,9 +40,7 @@ public:
     {
         QPoint p = m_settings.value("notification_position").toPoint();
         QPoint size = m_settings.value("notification_size").toPoint();
-        int startX = p.x() ;
-        int startY = p.y() ;
-        return QRect(startX,startY,size.x(),size.y());
+        return QRect(p.x(),p.y(),size.x(),size.y());
     }
 
     bool eventFilter(QObject *pO, QEvent *event)
@@ -93,6 +90,7 @@ public:
     Ui::NotificationUi* m_pNotificationUi;
     bool m_bShowing ;
     RazorSettings m_settings ;
+    QFileSystemWatcher m_watcher ;
 };
 
 WidgetNotification::WidgetNotification(QObject *parent):
@@ -116,7 +114,13 @@ WidgetNotification::WidgetNotification(QObject *parent):
     setAttribute(Qt::WA_TranslucentBackground, true);
 
     // connect to settings changed
-    connect ( &(d_func()->m_settings), SIGNAL(settigsChanged()), this, SLOT(settingsChanged()));
+    qDebug() << " Connecting to settings";
+
+    const QString& fileName = d_func()->m_settings.fileName();
+
+    d_func()->m_watcher.addPath(fileName);
+
+    connect( &(d_func()->m_watcher), SIGNAL(fileChanged(QString)), SLOT(settingsChanged()));
 }
 
 void WidgetNotification::addNotification(const Notification&  pN)
@@ -165,9 +169,18 @@ void WidgetNotification::addToView(const Notification&  pN)
 
 void WidgetNotification::settingsChanged()
 {
+
     if ( isVisible() )
     {
+        d_func()->m_settings.sync();
+
         // need to change currently visible
+
+        // get new size
+        QRect geometry = d_func()->geom() ;
+        qDebug() << " settings changed new geom = " <<geometry ;
+        setGeometry(geometry);
+        update();
     }
 }
 
