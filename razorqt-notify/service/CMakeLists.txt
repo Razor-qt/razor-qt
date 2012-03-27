@@ -42,5 +42,5 @@ set(libraries
 
 qt4_wrap_cpp(qtservice_moc_src ${qtservice_moc})
 
-add_library( qtservice SHARED ${qtservice_srcs} ${qtservice_moc_src} )
+add_library( qtservice STATIC ${qtservice_srcs} ${qtservice_moc_src} )
 target_link_libraries( qtservice ${libraries}  )
