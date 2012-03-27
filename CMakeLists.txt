@@ -34,6 +34,7 @@ include(RazorConfigRegister)
 
 
 add_definitions ( -Wall )
+set( QT_USE_QTDBUS 1 )
 find_package ( Qt4 4.6.0 REQUIRED )
 include ( ${QT_USE_FILE} )
 include_directories (

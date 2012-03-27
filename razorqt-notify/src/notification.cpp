@@ -1,15 +1,13 @@
 #include "notification.h"
-#include "notificationserversettings.h"
 #include "qtnlog.h"
 #include <QPixmap>
 #include <QIcon>
 #include <QFile>
-#ifndef TEST_BUILD
 #include <QDBusArgument>
-#endif
-
 #include <QApplication>
 #include <QDir>
+
+#include "razorsettings.h"
 
 
 namespace
@@ -72,7 +70,10 @@ QPixmap Notification::icon() const
         QString path ;
         pixmap = QPixmap() ;
 
-        path = NotificationServerSettings::instance()->value("notification_icons").toString();
+        // FIXME: don't create settings every time
+        RazorSettings s ("razorqt-notify");
+
+        path = s.value("notification_icons").toString();
         TRACE("Looking for icon= " <<icon.toStdString() << "in path "<< path.toStdString() );
         bool bFoundInPath = false ;
 
@@ -87,7 +88,8 @@ QPixmap Notification::icon() const
             }
         }
 
-        if ( !bFoundInPath ){
+        if ( !bFoundInPath )
+        {
             WARN("Icon was not found in path, assigning default one");
             path = qApp->applicationDirPath();
             path = path + "/NotificationUI/icon.png";
@@ -101,7 +103,6 @@ QPixmap Notification::icon() const
             }
         }
     }
-
     return pixmap;
 }
 
@@ -109,7 +110,6 @@ QPixmap Notification::icon() const
 QPixmap Notification::getPixmapFromHint(const QVariant &argument) const
 {
     QPixmap p;
-#ifndef TEST_BUILD
     int width, height, rowstride, bitsPerSample, channels;
     bool hasAlpha;
     QByteArray data;
@@ -127,6 +127,5 @@ QPixmap Notification::getPixmapFromHint(const QVariant &argument) const
     QImage img = QImage((uchar*)data.constData(), width, height, QImage::Format_ARGB32).rgbSwapped();
 
     p.convertFromImage(img);
-#endif
     return p;
 }

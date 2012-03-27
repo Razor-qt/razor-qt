@@ -27,12 +27,6 @@ set(razor_config_notificationd_ui
 set(razor_config_notificationd_qrc
 )
 
-set(LIBRARIES
-    razorqt
-    widgetnotification
-)
-
-
 # Translations **********************************
 include(RazorTranslate)
 razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)

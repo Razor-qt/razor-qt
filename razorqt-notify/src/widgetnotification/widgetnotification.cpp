@@ -1,10 +1,9 @@
 #include "widgetnotification.h"
 #include "notification.h"
 #include "qtnlog.h"
-#include "notificationserversettings.h"
 
 #include "ui_notification.h"
-
+#include "razorsettings.h"
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -25,7 +24,8 @@ class WidgetNotificationPrivate : public QObject
 public:
     WidgetNotificationPrivate( WidgetNotification* pParent ):
         m_pNotificationUi(NULL),
-        m_bShowing(true)
+        m_bShowing(true),
+        m_settings("razorqt-notify")
     {
         QImage shadow_edge(":osd_shadow_edge.png");
         QImage shadow_corner(":osd_shadow_corner.png");
@@ -39,8 +39,8 @@ public:
 
     QRect geom() const
     {
-        QPoint p = NotificationServerSettings::instance()->value("notification_position").toPoint();
-        QPoint size = NotificationServerSettings::instance()->value("notification_size").toPoint();
+        QPoint p = m_settings.value("notification_position").toPoint();
+        QPoint size = m_settings.value("notification_size").toPoint();
         int startX = p.x() ;
         int startY = p.y() ;
         return QRect(startX,startY,size.x(),size.y());
@@ -52,8 +52,8 @@ public:
         {
             QWidget* pW = qobject_cast<QWidget*>(pO);
 
-            QColor backColor = NotificationServerSettings::instance()->value("notification_backgroundColor").value<QColor>();
-            float fOpacity = NotificationServerSettings::instance()->value("notification_opacity").value<float>();
+            QColor backColor = m_settings.value("notification_backgroundColor").value<QColor>();
+            float fOpacity = m_settings.value("notification_opacity").value<float>();
             QPainter painter ( pW );
 
             painter.setRenderHint(QPainter::Antialiasing);
@@ -89,12 +89,10 @@ public:
 
     // members
     QVector<QPixmap> shadowsEdges ;
-    QVector<QPixmap> shadowsCorners ;
-
+    QVector<QPixmap> shadowsCorners;
     Ui::NotificationUi* m_pNotificationUi;
-
     bool m_bShowing ;
-
+    RazorSettings m_settings ;
 };
 
 WidgetNotification::WidgetNotification(QObject *parent):
@@ -115,8 +113,10 @@ WidgetNotification::WidgetNotification(QObject *parent):
 
     //set ui
     d_func()->m_pNotificationUi->setupUi(this);
-
     setAttribute(Qt::WA_TranslucentBackground, true);
+
+    // connect to settings changed
+    connect ( &(d_func()->m_settings), SIGNAL(settigsChanged()), this, SLOT(settingsChanged()));
 }
 
 void WidgetNotification::addNotification(const Notification&  pN)
@@ -161,5 +161,13 @@ void WidgetNotification::addToView(const Notification&  pN)
     showNotification();
 
     d_func()->m_bShowing = true ;
+}
+
+void WidgetNotification::settingsChanged()
+{
+    if ( isVisible() )
+    {
+        // need to change currently visible
+    }
 }
 

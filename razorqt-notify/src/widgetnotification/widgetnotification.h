@@ -26,6 +26,8 @@ public:
     virtual int viewCount() const  ;
 private:
     virtual void addToView( const Notification&  pN )  ;
+private slots:
+    void settingsChanged();
 private:
     Q_DECLARE_PRIVATE(WidgetNotification)
     WidgetNotificationPrivate* const d_ptr ;

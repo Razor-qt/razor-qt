@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "razorsettings.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -17,9 +19,16 @@ public:
 
 private slots:
     void showNotification();
+
+    void positionXChanged();
+    void positionYChanged();
+
+    void sizeXChanged();
+    void sizeYChanged();
     
 private:
     Ui::MainWindow *ui;
+    RazorSettings m_settings ;
 };
 
 #endif // MAINWINDOW_H

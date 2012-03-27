@@ -2,11 +2,11 @@
 
 #include "notificationhandler.h"
 #include "inotificationview.h"
+#include "razorsettings.h"
 
 #include "qmlnotification/notificationview.h"
 #include "widgetnotification/widgetnotification.h"
 #include "qtnlog.h"
-#include "notificationserversettings.h"
 #include "notificationtimeout.h"
 
 
@@ -21,18 +21,20 @@ public:
         QSharedPointer<NotificationTimeout> _pTimeout ;
     };
 
-    NotificationHandlerPrivate()
+    NotificationHandlerPrivate():
+        m_settings("razorqt-notify")
     {}
 
     QScopedPointer<INotificationView> m_pView ;
     QList<NotificationInfo> m_notifications ;
+    RazorSettings m_settings ;
 };
 
 NotificationHandler::NotificationHandler(QObject *parent) :
     QObject(parent),
     d_ptr(new NotificationHandlerPrivate)
 {
-    QString val = NotificationServerSettings::instance()->value("notification_type").toString();
+    QString val = d_func()->m_settings.value("notification_type").toString();
     //TODO: add qml widget
 //    if ( val == "qml" )
 //        d_func()->m_pView = new NotificationView(this);
@@ -50,15 +52,26 @@ void NotificationHandler::addNotification(const Notification &pN)
     qDebug() << "Notification is about to be added." << pN;
     NotificationHandlerPrivate::NotificationInfo n ;
     n._notification = pN ;
-    n._pTimeout = QSharedPointer<NotificationTimeout>(new NotificationTimeout);
-    n._pTimeout->setNotification(n._notification);
-    connect ( n._pTimeout.data(), SIGNAL(timeout()), this, SLOT(removeNotificationSlot()));
+    if ( pN.timeout() == -1 )
+    {
+        qDebug() << " Persistent application!";
+        // persistant notification, no timeout!
+    }
+    else
+    {
+        n._pTimeout = QSharedPointer<NotificationTimeout>(new NotificationTimeout);
+        n._pTimeout->setNotification(n._notification);
+        connect ( n._pTimeout.data(), SIGNAL(timeout()), this, SLOT(removeNotificationSlot()));
+
+        //FIXME: don't start timer here, as
+        // handler don't know if notification is shown
+        n._pTimeout->start();
+    }
+
     d_func()->m_notifications.append(n);
     d_func()->m_pView->addNotification(pN);
 
-    //FIXME: don't start timer here, as
-    // handler don't know if notification is shown
-    n._pTimeout->start();
+
 }
 
 Notification * NotificationHandler::findNotification(int id) const

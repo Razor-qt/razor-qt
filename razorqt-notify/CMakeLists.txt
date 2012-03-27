@@ -17,7 +17,6 @@ set( razorqtnotify_srcs
     src/notification.cpp
     src/notificationhandler.cpp
     src/notificationtimeout.cpp
-    src/notificationserversettings.cpp
     src/debug_helpers.cpp
     src/main.cpp
     src/qtndbusconnector.cpp
@@ -26,8 +25,6 @@ set( razorqtnotify_srcs
 set( razorqtnotify_mocs
     src/notificationhandler.h
     src/notificationtimeout.h
-
-    src/notificationserversettings.h
 )
 
 set( razorqtnotify_hdrs
@@ -40,7 +37,7 @@ set( widgetnotification_rsc
     images.qrc
 )
 
-include_directories(src/)
+include_directories(src/ ../libraries/razorqt)
 
 #add_subdirectory(src/qmlnotification)
 add_subdirectory(src/widgetnotification)

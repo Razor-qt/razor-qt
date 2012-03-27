@@ -20,7 +20,7 @@ public:
     QtnDbusConnectorPrivate(){}
     NotificationHandler* m_pHandler;
     QApplication* m_pApp ;
-    int recalculateId(int id) const
+    quint32 recalculateId(int id) const
     {
         static int currId = 1 ;
 
@@ -94,13 +94,13 @@ QString QtnDbusConnector::GetServerInformation(QString &vendor, QString &version
     return "";
 }
 
-unsigned QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, QString summary, QString body, QStringList actions, QVariantMap hints, int timeout)
+quint32 QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, QString summary, QString body, QStringList actions, QVariantMap hints, int timeout)
 {
     TRACE("QtnDbusConnector::Notify app_name=" << app_name.toStdString() << " id =" << id << " summary=" << summary.toStdString() );
     int localid = id ;
     localid = d_func()->recalculateId(id);
 
-    if ( timeout <= 0 )
+    if ( timeout == 0 )
         timeout = scDefaultTimeout;
 
     Notification* pN = d_func()->m_pHandler->findNotification( localid );
@@ -113,6 +113,7 @@ unsigned QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, Q
     {
         //FIXME
     }
+    return localid;
 }
 
 void QtnDbusConnector::show()

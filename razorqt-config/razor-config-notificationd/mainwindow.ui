@@ -24,10 +24,10 @@
       </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QSpinBox" name="spinBox"/>
+      <widget class="QSpinBox" name="sizeXspinBox"/>
      </item>
      <item row="0" column="3">
-      <widget class="QSpinBox" name="spinBox_2"/>
+      <widget class="QSpinBox" name="sizeYspinBox"/>
      </item>
      <item row="1" column="1">
       <widget class="QLabel" name="label_2">
@@ -37,10 +37,10 @@
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QSpinBox" name="spinBox_3"/>
+      <widget class="QSpinBox" name="PositionXBox"/>
      </item>
      <item row="1" column="3">
-      <widget class="QSpinBox" name="spinBox_4"/>
+      <widget class="QSpinBox" name="PositionYBox"/>
      </item>
     </layout>
    </item>
