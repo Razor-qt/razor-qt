@@ -30,6 +30,7 @@ setByDefault(SHOWDESKTOP_PLUGIN Yes)
 setByDefault(MOUNT_PLUGIN Yes)
 setByDefault(HELLOWORLD_PLUGIN No)
 setByDefault(CPULOAD_PLUGIN Yes)
+setByDefault(NETWORKMONITOR_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -115,7 +116,7 @@ endif (HELLOWORLD_PLUGIN)
 if (CPULOAD_PLUGIN)
 	FIND_LIBRARY(STATGRAB_LIB statgrab)
 
-	IF ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
+	if ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
 		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "CpuLoad")
 		add_subdirectory(plugin-cpuload)
 	else ()
@@ -124,6 +125,19 @@ if (CPULOAD_PLUGIN)
 		message(STATUS "")
 	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
 endif (CPULOAD_PLUGIN)
+
+if (NETWORKMONITOR_PLUGIN)
+	FIND_LIBRARY(STATGRAB_LIB statgrab)
+
+	if ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
+		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "NetworkMonitor")
+		add_subdirectory(plugin-networkmonitor)
+	else ()
+		message(STATUS "")
+		message(STATUS "Network monitor plugin requires libstatgrab")
+		message(STATUS "")
+	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
+endif (NETWORKMONITOR_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})

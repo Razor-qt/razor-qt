@@ -26,6 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razorcpuload.h"
+#include "razorcpuloadconfiguration.h"
 #include <QtCore>
 #include <QPainter>
 #include <QLinearGradient>
@@ -38,7 +39,8 @@ extern "C" {
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorCpuLoad)
 
 RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-	RazorPanelPlugin(startInfo, parent)
+	RazorPanelPlugin(startInfo, parent),
+	m_showText(false)
 {
 	setObjectName("CpuLoad");
 	addWidget(&m_stuff);
@@ -51,9 +53,10 @@ RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 		perror("Error. Failed to drop privileges");
 	}
 
-	getLoadCpu();
-
+	m_font.setPointSizeF(8);
 	startTimer(500);
+
+	settigsChanged();
 }
 
 RazorCpuLoad::~RazorCpuLoad()
@@ -62,29 +65,29 @@ RazorCpuLoad::~RazorCpuLoad()
 
 void RazorCpuLoad::resizeEvent(QResizeEvent *)
 {
-	if( panel()->isHorizontal() )
-	{
-		m_stuff.setMinimumWidth(m_stuff.height() * 0.5);
-		m_stuff.setMinimumHeight(0);
-	} else
-	{
-		m_stuff.setMinimumHeight(m_stuff.width() * 2.0);
-		m_stuff.setMinimumWidth(0);
-	}
+	m_stuff.setMinimumWidth(18);
+	m_stuff.setMaximumWidth(18);
+	m_stuff.setMinimumHeight(24);
+
+	update();
 }
 
 
-void RazorCpuLoad::getLoadCpu()
+double RazorCpuLoad::getLoadCpu() const
 {
 	sg_cpu_percents* cur = sg_get_cpu_percents();
-	m_avg = (cur->user + cur->kernel + cur->nice);
+	return (cur->user + cur->kernel + cur->nice);
 }
 
 void RazorCpuLoad::timerEvent(QTimerEvent *event)
 {
-	getLoadCpu();
-	setToolTip(tr("Cpu load %1%").arg(m_avg));
-	update();
+	double avg = getLoadCpu();
+	if ( qAbs(m_avg-avg)>1 )
+	{
+		m_avg = avg;
+		setToolTip(tr("Cpu load %1%").arg(m_avg));
+		update();
+	}
 }
 
 void RazorCpuLoad::paintEvent ( QPaintEvent * )
@@ -94,16 +97,46 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 	pen.setWidth(2);
 	p.setPen(pen);
 	p.setRenderHint(QPainter::Antialiasing, true);
+	const double w = 20;
 
-	QLinearGradient shade(0, 0, 0, height());
-	shade.setColorAt(0, Qt::red);
-	shade.setColorAt(1, Qt::green);
-
-	float o = rect().height()*(1-m_avg*0.01);
+	p.setFont(m_font);
 	QRectF r = rect();
 
-	QRectF r1(r.left(), r.top()+o, r.width(), r.height()-o );
+	float vo = r.height()*(1-m_avg*0.01);
+	float ho = (r.width() - w )/2.0;
+	QRectF r1(r.left()+ho, r.top()+vo, r.width()-2*ho, r.height()-vo );
+
+	QLinearGradient shade(0, 0, r1.width(), 0);
+	shade.setSpread(QLinearGradient::ReflectSpread);
+	shade.setColorAt(0, QColor(0, 196, 0, 128));
+	shade.setColorAt(0.5, QColor(0, 128, 0, 255) );
+	shade.setColorAt(1, QColor(0, 196, 0 , 128));
+
+
 	p.fillRect(r1, shade);
-	p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
+
+	if( m_showText )
+		p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
+}
+
+void RazorCpuLoad::showConfigureDialog()
+{
+	RazorCpuLoadConfiguration *confWindow =
+			this->findChild<RazorCpuLoadConfiguration*>("RazorCpuLoadConfigurationWindow");
+
+	if (!confWindow)
+	{
+		confWindow = new RazorCpuLoadConfiguration(settings(), this);
+	}
+
+	confWindow->show();
+	confWindow->raise();
+	confWindow->activateWindow();
+}
+
+void RazorCpuLoad::settigsChanged()
+{
+	m_showText = settings().value("showText", false).toBool();
+	update();
 }
 

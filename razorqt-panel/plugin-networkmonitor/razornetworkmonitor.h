@@ -25,17 +25,20 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORCPULOAD_H
-#define RAZORCPULOAD_H
+#ifndef RAZORNETWORKMONITOR_H
+#define RAZORNETWORKMONITOR_H
 #include "../panel/razorpanelplugin.h"
 #include <QLabel>
 
-class RazorCpuLoad: public RazorPanelPlugin
+/*!
+  TODO: How to define cable is not connected?
+  */
+class RazorNetworkMonitor: public RazorPanelPlugin
 {
 	Q_OBJECT
 public:
-	RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-	~RazorCpuLoad();
+	RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+	~RazorNetworkMonitor();
 
 	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
 
@@ -49,20 +52,25 @@ protected slots:
 	virtual void settigsChanged();
 
 private:
-	double getLoadCpu() const;
+	QString iconName(const QString& state) const
+	{
+		return QString(":/images/knemo-%1-%2.png")
+				.arg(m_iconList[m_iconIndex], state );
+	}
 
 	QWidget m_stuff;
 
-	//! average load
-	int m_avg;
+	QStringList m_iconList;
 
-	bool m_showText;
+	int m_iconIndex;
 
-	QFont m_font;
+	QString m_interface;
+	QPixmap m_pic;
+
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
 
-#endif // RAZORCPULOAD_H
+#endif // RAZORNETWORKMONITOR_H
 
 
