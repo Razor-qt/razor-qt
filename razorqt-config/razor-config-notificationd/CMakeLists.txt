@@ -29,8 +29,7 @@ set(razor_config_notificationd_qrc
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)
-razor_translate_desktop(DESKTOP_FILES ${PROJECT_NAME}.desktop.in)
+razor_translate_desktop(DESKTOP_FILES razor-config-notificationd.desktop.in)
 #************************************************
 
 qt4_wrap_cpp(razor_config_notificationd_mocs_srcs ${razor_config_notificationd_mocs})
@@ -42,6 +41,7 @@ set(razor_config_notificationd_srcs
     ${razor_config_notificationd_mocs_srcs}
     ${razor_config_notificationd_ui_hdrs}
     ${razor_config_notificationd_qrc_srcs}
+    ${DESKTOP_FILES}
 )
     
 
@@ -51,3 +51,5 @@ target_link_libraries(${PROJECT_NAME}  ${QT_LIBRARIES} razorqt)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+
+razor_config_register(${DESKTOP_FILES})
