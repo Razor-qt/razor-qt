@@ -33,13 +33,13 @@ public:
       * @param id id of notifications
       * @return pointer to found notification, NULL if not found
       */
-    Notification* findNotification( int id ) const;
+    Notification* findNotification( quint32 id ) const;
 
     /**
      * @brief removes notification.
      * @param id
      */
-    void removeNotification( int id ) ;
+    void removeNotification( quint32 id ) ;
 
     /**
      * @brief show notification window

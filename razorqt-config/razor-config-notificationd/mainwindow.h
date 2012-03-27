@@ -26,6 +26,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     RazorSettings m_settings ;
+    quint32 m_notificationId ;
 };
 
 #endif // MAINWINDOW_H

@@ -74,7 +74,7 @@ void NotificationHandler::addNotification(const Notification &pN)
 
 }
 
-Notification * NotificationHandler::findNotification(int id) const
+Notification * NotificationHandler::findNotification(quint32 id) const
 {
     Notification* pN = NULL;
 //    Q_FOREACH(NotificationShPtr shP, d_func()->m_notifications)
@@ -88,17 +88,22 @@ Notification * NotificationHandler::findNotification(int id) const
     return pN ;
 }
 
-void NotificationHandler::removeNotification(int id)
+void NotificationHandler::removeNotification(quint32 id)
 {
     INFO("About to remove notification with id=" << id );
+    bool bFound=false;
     Q_FOREACH( NotificationHandlerPrivate::NotificationInfo info, d_func()->m_notifications )
     {
         if ( info._notification.id() == id )
         {
             d_func()->m_pView->removeNotification(info._notification);
+            bFound=true;
             break ;
         }
     }
+
+    if (!bFound)
+        qWarning() << " Unable to find proper notification with id=" << id ;
 }
 
 void NotificationHandler::showWindow()

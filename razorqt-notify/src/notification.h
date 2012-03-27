@@ -19,7 +19,7 @@ public:
 
     QPixmap icon() const ;
 
-    int id() const { return m_id ; }
+    quint32 id() const { return m_id ; }
     const QString& appName() const { return m_appName ; }
     const QString& summary() const { return m_summary ; }
     const QString& body() const { return m_body ; }
@@ -28,7 +28,7 @@ public:
 private:
 
     QString m_appName ;
-    int m_id ;
+    quint32 m_id ;
     QString m_icon ;
     QString m_summary ;
     QString m_body ;

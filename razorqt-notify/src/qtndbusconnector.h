@@ -28,7 +28,7 @@ public slots: /* Dbus invokable */
     Q_INVOKABLE QStringList GetCapabilities();
     Q_INVOKABLE QString GetServerInformation(QString& vendor, QString& version, QString& spec_version);
     Q_INVOKABLE quint32 Notify(QString app_name, unsigned id, QString icon, QString summary, QString body, QStringList actions, QVariantMap hints, int timeout);
-    Q_INVOKABLE void CloseNotification(unsigned id);
+    Q_INVOKABLE void CloseNotification(quint32 id);
 
     Q_INVOKABLE void show() ;
     Q_INVOKABLE void hide() ;

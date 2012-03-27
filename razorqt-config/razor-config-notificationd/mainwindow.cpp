@@ -12,7 +12,8 @@ namespace
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow),
-    m_settings( g_scRazorSettingsName )
+    m_settings( g_scRazorSettingsName ),
+    m_notificationId(0)
 {
     ui->setupUi(this);
     connect(ui->showNotificationButton, SIGNAL(pressed()), this, SLOT(showNotification()));
@@ -51,18 +52,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect ( ui->opacitySlider, SIGNAL(valueChanged(int)) , this , SLOT(opacityChanged(int)) );
 
-
-
 }
 
 MainWindow::~MainWindow()
 {
+    RazorNotification::closeNotification(m_notificationId);
     delete ui;
 }
 
 void MainWindow::showNotification()
 {
-    RazorNotification::notify("test app",0,"none","some summary","body",QVariantMap(),-1);
+    m_notificationId = RazorNotification::notify("test app",0,"none","some summary","body",QVariantMap(),-1);
 }
 
 void MainWindow::positionChanged()

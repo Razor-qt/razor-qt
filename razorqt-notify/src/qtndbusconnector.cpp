@@ -20,11 +20,12 @@ public:
     QtnDbusConnectorPrivate(){}
     NotificationHandler* m_pHandler;
     QApplication* m_pApp ;
-    quint32 recalculateId(int id) const
-    {
-        static int currId = 1 ;
 
-        int newId = -1;
+    quint32 recalculateId(quint32 id) const
+    {
+        static quint32 currId = 1 ;
+
+        quint32 newId = -1;
         if ( id == 0 )
         {
             newId = currId++ ;
@@ -97,7 +98,7 @@ QString QtnDbusConnector::GetServerInformation(QString &vendor, QString &version
 quint32 QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, QString summary, QString body, QStringList actions, QVariantMap hints, int timeout)
 {
     TRACE("QtnDbusConnector::Notify app_name=" << app_name.toStdString() << " id =" << id << " summary=" << summary.toStdString() );
-    int localid = id ;
+    quint32 localid = id ;
     localid = d_func()->recalculateId(id);
 
     if ( timeout == 0 )
@@ -126,9 +127,10 @@ void QtnDbusConnector::hide()
     d_func()->m_pHandler->hideWindow();
 }
 
-void QtnDbusConnector::CloseNotification(unsigned id)
+void QtnDbusConnector::CloseNotification(quint32 id)
 {
-    INFO("QtnDbusConnector::CloseNotification(unsigned id)")
+    INFO("QtnDbusConnector::CloseNotification(unsigned id="<<id<<")");
+    d_func()->m_pHandler->removeNotification(id);
 }
 
 
