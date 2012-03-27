@@ -27,10 +27,10 @@
 
 #include "razornetworkmonitor.h"
 #include "razornetworkmonitorconfiguration.h"
-#include <QtCore>
-#include <QPainter>
-#include <QPixmap>
-#include <QLinearGradient>
+#include <QtCore/QEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QLinearGradient>
 
 extern "C" {
 #include <statgrab.h>
@@ -41,16 +41,11 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorNetworkMonitor)
 RazorNetworkMonitor::RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
 	RazorPanelPlugin(startInfo, parent)
 {
-	setObjectName("Nemo");
+	setObjectName("NetworkMonitor");
 	addWidget(&m_stuff);
 
 	/* Initialise statgrab */
 	sg_init();
-
-	/* Drop setuid/setgid privileges. */
-	if (sg_drop_privileges() != 0) {
-		perror("Error. Failed to drop privileges");
-	}
 
 	m_iconList << "modem" << "monitor"
 			   << "network" << "wireless";
@@ -107,21 +102,6 @@ void RazorNetworkMonitor::timerEvent(QTimerEvent *event)
 		network_stats++;
 	}
 
-	// TODO: show iface statistic
-	network_stats = sg_get_network_io_stats(&num_network_stats);
-	for(int x = 0; x < num_network_stats; x++)
-	{
-		if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
-		{
-			setToolTip(tr("Network interface <b>%1</b><br>Transmit %2 MiB<br>Recieve %3 MiB")
-					   .arg(m_interface)
-					   .arg(network_stats->tx / (1024.00*1024.00), 0, 'f', 2)
-					   .arg(network_stats->rx / (1024.00*1024.00), 0, 'f', 2)
-					   );
-		}
-		network_stats++;
-	}
-
 	if( !matched)
 		m_pic.load( iconName("error") );
 
@@ -138,6 +118,27 @@ void RazorNetworkMonitor::paintEvent ( QPaintEvent * )
 	int topOffset = (r.height() - m_pic.height() + 2) / 2;
 
 	p.drawPixmap(leftOffset, topOffset, m_pic);
+}
+
+bool RazorNetworkMonitor::event(QEvent *event)
+{
+	if(event->type() == QEvent::ToolTip)
+	{
+		int num_network_stats;
+		sg_network_io_stats *network_stats = sg_get_network_io_stats(&num_network_stats);
+		for(int x = 0; x < num_network_stats; x++)
+		{
+			if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
+			{
+				setToolTip(tr("Network interface <b>%1</b>").arg(m_interface) + "<br>"
+						+ tr("Transmitted %1 MiB").arg(network_stats->tx / (1024.00*1024.00), 0, 'f', 2) + "<br>"
+						+ tr("Received %1 MiB").arg(network_stats->rx / (1024.00*1024.00), 0, 'f', 2)
+						);
+			}
+			network_stats++;
+		}
+	}
+	return RazorPanelPlugin::event(event);
 }
 
 void RazorNetworkMonitor::showConfigureDialog()
