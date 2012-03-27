@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012 Razor team
+ * Copyright: 2011 Razor team
  * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ *   Maciej Płaza <plaza.maciej@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,44 +25,40 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORCPULOAD_H
-#define RAZORCPULOAD_H
-#include "../panel/razorpanelplugin.h"
-#include <QLabel>
 
-class RazorCpuLoad: public RazorPanelPlugin
+#ifndef RAZORNETWORKMONITORCONFIGURATION_H
+#define RAZORNETWORKMONITORCONFIGURATION_H
+
+#include <razorqt/razorsettings.h>
+
+#include <QtGui/QDialog>
+
+class QSettings;
+class QAbstractButton;
+
+namespace Ui {
+	class RazorNetworkMonitorConfiguration;
+}
+
+class RazorNetworkMonitorConfiguration : public QDialog
 {
 	Q_OBJECT
+
 public:
-	RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-	~RazorCpuLoad();
-
-	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
-
-protected:
-	void virtual timerEvent(QTimerEvent *event);
-	void virtual paintEvent ( QPaintEvent * event );
-	void virtual resizeEvent(QResizeEvent *);
-
-protected slots:
-	virtual void showConfigureDialog();
-	virtual void settigsChanged();
+	explicit RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent = 0);
+	~RazorNetworkMonitorConfiguration();
 
 private:
-	double getLoadCpu() const;
+	Ui::RazorNetworkMonitorConfiguration *ui;
+	QSettings &mSettings;
+	RazorSettingsCache mOldSettings;
 
-	QWidget m_stuff;
-
-	//! average load
-	int m_avg;
-
-	bool m_showText;
-
-	QFont m_font;
+private slots:
+	/*
+	  Saves settings in conf file.
+	*/
+	void loadSettings();
+	void dialogButtonsAction(QAbstractButton *btn);
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
-
-#endif // RAZORCPULOAD_H
-
-
+#endif // RAZORNETWORKMONITORCONFIGURATION_H
