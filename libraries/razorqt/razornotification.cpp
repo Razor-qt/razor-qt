@@ -3,6 +3,7 @@
 #include <QDBusMessage>
 #include <QDBusConnection>
 #include <QVariantMap>
+#include <QDebug>
 
 namespace
 {
@@ -22,9 +23,9 @@ public:
     void notify( const QString& appName,quint32 replace_id,const QString& appIcon, const QString& summary, const QString& body,
                  const QVariantMap& hints, qint32 expire_timeout)
     {
-        QDBusMessage m = QDBusMessage::createSignal("/",g_scFreedesktopNotificationName,g_scSignalName);
+        QDBusMessage m = QDBusMessage::createMethodCall(g_scFreedesktopNotificationName, "/org/freedesktop/Notifications", g_scFreedesktopNotificationName, "Notify");
         m << appName << replace_id << appIcon << summary << body << hints << expire_timeout ;
-        m_bus.send(m);
+        QDBusMessage recive=QDBusConnection::sessionBus().call(m);
     }
 };
 
