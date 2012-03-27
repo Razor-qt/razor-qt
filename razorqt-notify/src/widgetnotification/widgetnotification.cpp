@@ -24,7 +24,6 @@ class WidgetNotificationPrivate : public QObject
 {
 public:
     WidgetNotificationPrivate( WidgetNotification* pParent ):
-        m_pNotificationWidget(NULL),
         m_pNotificationUi(NULL),
         m_bShowing(true)
     {
@@ -92,7 +91,6 @@ public:
     QVector<QPixmap> shadowsEdges ;
     QVector<QPixmap> shadowsCorners ;
 
-    QWidget* m_pNotificationWidget ;
     Ui::NotificationUi* m_pNotificationUi;
 
     bool m_bShowing ;
@@ -100,9 +98,36 @@ public:
 };
 
 WidgetNotification::WidgetNotification(QObject *parent):
-    INotificationView(parent),
+    INotificationView(),
     d_ptr( new WidgetNotificationPrivate(this))
 {
+    installEventFilter(d_func());
+    d_func()->m_pNotificationUi = new Ui::NotificationUi ;
+
+    Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::X11BypassWindowManagerHint;
+
+    setWindowFlags(flags);
+
+    QRect geometry = d_func()->geom() ;
+    setGeometry(geometry);
+    setMinimumSize(geometry.width(),geometry.height());
+    setMaximumSize(geometry.width(),geometry.height());
+
+    //set ui
+    d_func()->m_pNotificationUi->setupUi(this);
+
+    setAttribute(Qt::WA_TranslucentBackground, true);
+}
+
+void WidgetNotification::addNotification(const Notification&  pN)
+{
+    addToView(pN);
+}
+
+void WidgetNotification::removeNotification(const Notification&  pN)
+{
+    Q_UNUSED(pN);
+    hideNotification();
 }
 
 WidgetNotification::~WidgetNotification()
@@ -116,65 +141,25 @@ int WidgetNotification::viewCount() const
     return d_func()->m_bShowing == true ? 1 : 0 ;
 }
 
-void WidgetNotification::show()
+void WidgetNotification::showNotification()
 {
-
-    if ( d_func()->m_pNotificationWidget != NULL )
-    {
-        d_func()->m_pNotificationWidget->show();
-    }
+    QWidget::show();
 }
 
-void WidgetNotification::hide()
+void WidgetNotification::hideNotification()
 {
-
-    if ( d_func()->m_pNotificationWidget != NULL )
-        d_func()->m_pNotificationWidget->hide();
+    QWidget::hide();
 }
 
-void WidgetNotification::addToView(Notification *pN)
+void WidgetNotification::addToView(const Notification&  pN)
 {
-
-    if ( NULL == d_func()->m_pNotificationWidget && NULL == d_func()->m_pNotificationUi )
-    {
-        d_func()->m_pNotificationWidget = new QWidget ;
-        d_func()->m_pNotificationWidget->installEventFilter(d_func());
-        d_func()->m_pNotificationUi = new Ui::NotificationUi ;
-
-        // set widget
-        Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::X11BypassWindowManagerHint;
-
-        d_func()->m_pNotificationWidget->setWindowFlags(flags);
-
-        QRect geometry = d_func()->geom() ;
-        d_func()->m_pNotificationWidget->setGeometry(geometry);
-        d_func()->m_pNotificationWidget->setMinimumSize(geometry.width(),geometry.height());
-        d_func()->m_pNotificationWidget->setMaximumSize(geometry.width(),geometry.height());
-
-        //set ui
-        d_func()->m_pNotificationUi->setupUi(d_func()->m_pNotificationWidget);
-
-        d_func()->m_pNotificationWidget->setAttribute(Qt::WA_TranslucentBackground, true);
-
-
-        //d_func()->m_pNotificationWidget->show();
-        show();
-    }
-
-    QPixmap p = pN->icon();
+    QPixmap p = pN.icon();
     d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(scIconSize-10,scIconSize-10,Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    QString summ = pN->summary();
+    QString summ = pN.summary();
     d_func()->m_pNotificationUi->applicationSummaryLabel->setText(summ);
-    d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN->body());
-    if ( !d_func()->m_pNotificationWidget->isVisible())
-//        d_func()->m_pNotificationWidget->show();
-        show();
+    d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.body());
+    showNotification();
 
     d_func()->m_bShowing = true ;
 }
 
-void WidgetNotification::remove(Notification *pN)
-{
-    d_func()->m_bShowing = false ;
-    requireRemove(pN->id());
-}

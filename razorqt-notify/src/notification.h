@@ -11,7 +11,12 @@ class Notification
 {
 
 public:
+    Notification();
     Notification(const QString& appName, int id, const QString& icon, const QString& summary, const QString& body, const QStringList& actions, const QVariantMap& hints, int timeout);
+    Notification( const Notification& rhs );
+    Notification& operator=(const Notification& rhs);
+
+
     QPixmap icon() const ;
 
     int id() const { return m_id ; }
@@ -30,9 +35,8 @@ private:
     QStringList m_actions ;
     QVariantMap m_hints ;
     int m_timeout ;
-    mutable QCache<QString, QPixmap> m_pixmapCache ;
 
-    QPixmap getPixmapFromHint(QVariant argument) const ;
+    QPixmap getPixmapFromHint(const QVariant &argument) const ;
 
     friend QDebug operator<< ( QDebug dbg, const Notification& str);
 

@@ -3,7 +3,7 @@
 
 #include "inotificationview.h"
 
-#include <QRect>
+#include <QWidget>
 
 class QStackedWidget ;
 class Notification ;
@@ -12,23 +12,20 @@ class WidgetNotificationPrivate;
 /**
  * @brief A notification that uses plain C++ widget creation as oposed to use qml
  **/
-class WidgetNotification : public INotificationView
+class WidgetNotification : public QWidget, public INotificationView
 {
     Q_OBJECT
 
 public:
     explicit WidgetNotification(QObject* parent);
     ~WidgetNotification();
-signals:
-    
-public slots:
-private:
+    virtual void addNotification(const Notification& pN) ;
+    virtual void removeNotification( const Notification&  pN ) ;
+    virtual void showNotification() ;
+    virtual void hideNotification()  ;
     virtual int viewCount() const  ;
-    virtual void show() ;
-    virtual void hide()  ;
-
-    virtual void addToView( Notification* pN )  ;
-    virtual void remove(Notification* pN) ;
+private:
+    virtual void addToView( const Notification&  pN )  ;
 private:
     Q_DECLARE_PRIVATE(WidgetNotification)
     WidgetNotificationPrivate* const d_ptr ;

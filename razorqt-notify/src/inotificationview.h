@@ -10,26 +10,19 @@ class NotificationTimeout ;
 /**
  * @brief A Notification view interface that declares operations done on notifications
  **/
-class INotificationView : public QObject
+class INotificationView
 {
-    Q_OBJECT
 public:
-    INotificationView(QObject* parent=NULL);
-    virtual ~INotificationView();
+    virtual ~INotificationView(){}
 
 
     /**
      * @brief adds notification to View
      * @param pN notification. INotificationView will not free memory
      */
-    void addNotification(Notification* pN);
+    virtual void addNotification(const Notification& pN) = 0 ;
 
-    /**
-     * @brief removes notification from view
-     * @param id
-     */
-    void remove(int id);
-
+    virtual void removeNotification( const Notification&  pN ) = 0 ;
 
     // virtual methods to override
 
@@ -43,42 +36,14 @@ public:
      * @brief show notification window
      *
      */
-    virtual void show() = 0 ;
+    virtual void showNotification() = 0 ;
 
     /**
      * @brief hides notification window
      *
      */
-    virtual void hide() = 0 ;
+    virtual void hideNotification() = 0 ;
 
-
-private:
-    QMap<int,Notification*> m_notif ; //! map of notification, with id as key
-    QMap<int,NotificationTimeout*> m_notifTimeouts ; //! map of timers for notifications
-protected:
-
-    //! this can be called from derived classes, when structures holding Notification* needs to be cleaned
-    void requireRemove( int id );
-
-    /**
-     * @brief add notification to actual view implementation. Must be reimplemented
-     * @param pN notification to add
-     */
-    virtual void addToView( Notification* pN ) = 0 ;
-
-    /**
-     * @brief removes notification to actual view implementation. Must be reimplemented
-     * @param pN
-     */
-    virtual void remove(Notification* pN) = 0 ;
-private slots:
-    void notificationTimeout() ;
-signals:
-    //! when notification is removed from view
-    void notificationRemoved(int id);
-
-    //! if view is hidden
-    void viewHidden() ;
 };
 
 #endif // INOTIFICATIONVIEW_H

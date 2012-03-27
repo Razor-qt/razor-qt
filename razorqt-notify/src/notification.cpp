@@ -17,40 +17,60 @@ namespace
     static const int scMaxIconSize = 32 ;
 }
 
+Notification::Notification()
+{}
+
 Notification::Notification(const QString &appName, int id, const QString &icon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int timeout):
     m_appName(appName), m_id ( id), m_icon( icon ), m_summary( summary ), m_body( body ), m_actions( actions ), m_hints( hints ), m_timeout( timeout)
 {
 }
 
+Notification::Notification(const Notification &rhs)
+{
+    *this = rhs ;
+}
+
+Notification &Notification::operator =(const Notification &rhs)
+{
+    if ( this == &rhs)
+        return *this ;
+    m_appName = rhs.m_appName;
+    m_id = rhs.m_id;
+    m_icon = rhs.m_icon;
+    m_summary = rhs.m_summary;
+    m_body = rhs.m_body;
+    m_actions = rhs.m_actions;
+    m_hints = rhs.m_hints;
+    m_timeout = rhs.m_timeout;
+}
+
 QPixmap Notification::icon() const
 {
-    if ( m_pixmapCache.contains(m_icon) )
-        return *(m_pixmapCache[m_icon]);
 
     QString icon = m_icon ;
-    QPixmap *pPixmap=NULL ;
+    QPixmap pixmap;
     int maxIconSize = scMaxIconSize ;
     if(!QPixmap(icon).isNull()) //Check if icon file is available, then check if it standart icon.
     {
-        pPixmap = new QPixmap(QIcon(icon).pixmap(maxIconSize));
+        pixmap = QPixmap(QIcon(icon).pixmap(maxIconSize));
     }
     else if(!m_hints["icon_data"].isNull())
     {
-        pPixmap = new QPixmap(getPixmapFromHint(m_hints["icon_data"]));
+        pixmap = QPixmap(getPixmapFromHint(m_hints["icon_data"]));
     }
     else if(!m_hints["image_data"].isNull())
     {
-        pPixmap = new QPixmap(getPixmapFromHint(m_hints["image_data"]));
+        pixmap = QPixmap(getPixmapFromHint(m_hints["image_data"]));
     }
     else if(!QIcon::fromTheme(icon).pixmap(maxIconSize).isNull())
     {
-        pPixmap = new QPixmap(QIcon::fromTheme(icon).pixmap(maxIconSize));
+        pixmap = QPixmap(QIcon::fromTheme(icon).pixmap(maxIconSize));
     }
     else
     {
         // 1 check for notifications_icon path
         QString path ;
-        pPixmap = new QPixmap ;
+        pixmap = QPixmap() ;
 
         path = NotificationServerSettings::instance()->value("notification_icons").toString();
         TRACE("Looking for icon= " <<icon.toStdString() << "in path "<< path.toStdString() );
@@ -59,8 +79,8 @@ QPixmap Notification::icon() const
         if ( QDir().exists(path)){
             QString pathToIcon = path + "/" + icon + ".svg";
             if ( QFile::exists(pathToIcon) ) {
-                pPixmap->load(pathToIcon);
-                if ( !pPixmap->isNull() ){
+                pixmap.load(pathToIcon);
+                if ( !pixmap.isNull() ){
                     TRACE("Icon " << pathToIcon.toStdString() << " does exists using this one");
                     bFoundInPath = true ;
                 }
@@ -71,23 +91,22 @@ QPixmap Notification::icon() const
             WARN("Icon was not found in path, assigning default one");
             path = qApp->applicationDirPath();
             path = path + "/NotificationUI/icon.png";
-            pPixmap->load(path);
-            if ( pPixmap->isNull() ){
+            pixmap.load(path);
+            if ( pixmap.isNull() ){
                 qWarning() << "Unable to get any pixmap, even default one";
             }
             else{
-                TRACE( "Found default icon=" << path.toStdString() << " and it's sized " << pPixmap->width() << " x " << pPixmap->height());
+                TRACE( "Found default icon=" << path.toStdString() << " and it's sized " << pixmap.width() << " x " << pixmap.height());
 
             }
         }
     }
 
-    m_pixmapCache.insert(icon, pPixmap );
-    return *pPixmap ;
+    return pixmap;
 }
 
 
-QPixmap Notification::getPixmapFromHint(QVariant argument) const
+QPixmap Notification::getPixmapFromHint(const QVariant &argument) const
 {
     QPixmap p;
 #ifndef TEST_BUILD

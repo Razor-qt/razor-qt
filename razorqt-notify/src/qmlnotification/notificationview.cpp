@@ -20,7 +20,7 @@ namespace {
 }
 
 NotificationView::NotificationView(QObject* parent) :
-    INotificationView(parent),
+    INotificationView(),
     m_pQmlView( new QDeclarativeView()),
     m_pMainWidget( new QWidget)
 {

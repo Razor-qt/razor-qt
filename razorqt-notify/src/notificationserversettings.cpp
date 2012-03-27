@@ -17,18 +17,20 @@ class NotificationServerSettingsPrivate
 {
 public:
     NotificationServerSettingsPrivate(NotificationServerSettings *pSettings):
-        m_settings("razorqt-notify") {
+        m_settings("razorqt-notify")
+    {
         QString path = QDir::homePath() + "/.config/qtnotificationd";
         QDir d;
-        if(!d.exists(path)) {
+        if(!d.exists(path))
+        {
             if(!d.mkpath(path))
                 INFO("Making path=" << path.toStdString() << " failed");
         }
 
         m_settingsPath = QDir::homePath() + "/.config/qtnotificationd/config";
 
-
-        if(!QFile::exists(m_settingsPath)) {
+        if(!QFile::exists(m_settingsPath))
+        {
             INFO("Settings file does not yet exists.");
             INFO("We will create default, and store it now");
             m_settingsPath = path + "/config";
@@ -39,11 +41,13 @@ public:
         }
     }
 
-    void changeValue(const QString &key, const QVariant &v) {
+    void changeValue(const QString &key, const QVariant &v)
+    {
         m_settings.setValue(key, v);
     }
 
-    void createDefaultSettings() {
+    void createDefaultSettings()
+    {
         m_settings.setValue("notification_position", QPoint(100, 100));
         m_settings.setValue("notification_size", QPoint(400, 80));
         m_settings.setValue("notification_backgroundColor", QVariant::fromValue<QColor> (QColor(3, 121, 255, 220)));

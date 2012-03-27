@@ -26,7 +26,7 @@ public:
       * @param pointer to Notification class
       * @note if notification with the same id exists, pN is free'd
       */
-    void addNotification(Notification* pN);
+    void addNotification(const Notification &pN);
 
     /**
       * finds notification by id
@@ -60,6 +60,9 @@ signals:
 protected:
     Q_DECLARE_PRIVATE(NotificationHandler)
     NotificationHandlerPrivate* const d_ptr ;
+
+private slots:
+    void removeNotificationSlot();
 };
 
 #endif // NOTIFICATIONHANDLER_H

@@ -5,35 +5,37 @@
 class NotificationTimeoutPrivate
 {
 public:
-    NotificationTimeoutPrivate():
-        m_pNotification(NULL),
-        m_pTimer( new QTimer)
+    NotificationTimeoutPrivate()
     {
     }
 
-    Notification* m_pNotification ;
-    QTimer* m_pTimer ;
+    Notification m_notification ;
+    QTimer m_timer ;
 };
 
-NotificationTimeout::NotificationTimeout(Notification* pN) :
+NotificationTimeout::NotificationTimeout() :
     d_ptr( new NotificationTimeoutPrivate)
 {
-    d_func()->m_pNotification = pN ;
-    d_func()->m_pTimer->setSingleShot(true);
-    connect ( d_func()->m_pTimer, SIGNAL(timeout()), this, SIGNAL(timeout()));
 }
 
-Notification *NotificationTimeout::notification() const
+const Notification &NotificationTimeout::notification() const
 {
-    return d_func()->m_pNotification ;
+    return d_func()->m_notification ;
+}
+
+void NotificationTimeout::setNotification(const Notification &n)
+{
+    d_func()->m_notification = n ;
+    d_func()->m_timer.setSingleShot(true);
+    connect ( &(d_func()->m_timer), SIGNAL(timeout()), this, SIGNAL(timeout()));
 }
 
 void NotificationTimeout::start()
 {
-    d_func()->m_pTimer->start(d_func()->m_pNotification->timeout());
+    d_func()->m_timer.start(d_func()->m_notification.timeout());
 }
 
 void NotificationTimeout::stop()
 {
-    d_func()->m_pTimer->stop();
+    d_func()->m_timer.stop();
 }

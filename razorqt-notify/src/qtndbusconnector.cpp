@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QDBusError>
+#include <stdexcept>
 
 #include "qtnlog.h"
 #include "notification.h"
@@ -50,24 +51,31 @@ void QtnDbusConnector::connectToDbus()
     static bool scbForceDisconnect = true ;
 
     QDBusConnection connection = QDBusConnection::connectToBus(QDBusConnection::SessionBus, g_scFreedesktopNotificationName);
-    if ( scbForceDisconnect ){
-
-        if (connection.unregisterService(g_scFreedesktopNotificationName)){
+    if ( scbForceDisconnect )
+    {
+        if (connection.unregisterService(g_scFreedesktopNotificationName))
+        {
             INFO("Unregistered previous service");
         }
         else
-            INFO("Unable to unregister previous service");
+        {
+            INFO("Unable to unregistered previous service");
+            // this is ok, we can still register
+        }
     }
 
-//    if ( connection.isConnected() )
     INFO("We're connected? isConnected()=" << connection.isConnected() );
     if (!connection.registerService(g_scFreedesktopNotificationName))
     {
-        WARN("Cant register service= " << QDBusError::errorString(connection.lastError().type()).toStdString());
+        WARN("Cant register service " << g_scFreedesktopNotificationName << " error="
+             << QDBusError::errorString(connection.lastError().type()).toStdString());
+        throw std::logic_error("Cant register new service");
     }
+
     if (!connection.registerObject("/org/freedesktop/Notifications", d_func()->m_pApp, QDBusConnection::ExportAdaptors))
     {
         WARN("Cant register object = " << QDBusError::errorString(connection.lastError().type()).toStdString());
+        throw std::logic_error("Cant register object");
     }
 }
 
@@ -98,11 +106,13 @@ unsigned QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, Q
     Notification* pN = d_func()->m_pHandler->findNotification( localid );
     if ( NULL == pN )
     {
-        Notification* pN = new Notification(app_name, localid, icon, summary, body, actions, hints, timeout);
-        d_func()->m_pHandler->addNotification(pN);
+        Notification notification = Notification(app_name, localid, icon, summary, body, actions, hints, timeout);
+        d_func()->m_pHandler->addNotification(notification);
     }
     else
-    {}
+    {
+        //FIXME
+    }
 }
 
 void QtnDbusConnector::show()
@@ -114,7 +124,6 @@ void QtnDbusConnector::hide()
 {
     d_func()->m_pHandler->hideWindow();
 }
-
 
 void QtnDbusConnector::CloseNotification(unsigned id)
 {

@@ -31,8 +31,6 @@
 #include <log4cplus/consoleappender.h>
 #endif
 
-void catchSighup(int);
-
 class QNotificationService : public QtService<QApplication>
 {
 public:
@@ -57,10 +55,18 @@ void QNotificationService::start()
     QApplication* pCoreApp = application();
     INFO("Daemon started!");
 
-    m_pConnector = new QtnDbusConnector(pCoreApp);
-    TRACE("m_pConnector=" << m_pConnector);
+    try
+    {
+        m_pConnector = new QtnDbusConnector(pCoreApp);
+        TRACE("m_pConnector=" << m_pConnector);
 
-    m_pConnector->connectToDbus();
+        m_pConnector->connectToDbus();
+    }
+    catch ( const std::exception& ex)
+    {
+        WARN("Exception caught ex.what()" << ex.what());
+        stop();
+    }
 }
 
 int main(int argc, char *argv[])
@@ -78,24 +84,26 @@ int main(int argc, char *argv[])
             QApplication app( argc,argv );
             Q_INIT_RESOURCE(images);
             INFO("Daemon started!");
+            int iRet = 0 ;
+            try
+            {
+                QtnDbusConnector* pDbus = new QtnDbusConnector(&app);
 
-            QtnDbusConnector* pDbus = new QtnDbusConnector(&app);
+                pDbus->connectToDbus();
+                iRet= app.exec();
+            }
+            catch( const std::exception& ex)
+            {
+                FATAL(" Caught exception. ex.what()=" << ex.what());
+            }
 
-            pDbus->connectToDbus();
-            return app.exec();
+            return iRet ;
 
         }
     }
-    else{
-
+    else
+    {
         QNotificationService srv(argc,argv) ;
         return srv.exec();
     }
 }
-///////////////////////////////////////////////////////////////
-
-void catchSighup(int param)
-{
-//    area->ReReadConfig();
-}
-
