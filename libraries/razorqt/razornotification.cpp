@@ -87,5 +87,4 @@ void RazorNotification::closeNotification(quint32 id)
 {
     RazorNotification n ;
     n.d_func()->closeNotification(id);
-
 }

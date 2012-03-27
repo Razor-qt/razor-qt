@@ -9,6 +9,21 @@
 #include "qtnlog.h"
 #include "notificationtimeout.h"
 
+namespace
+{
+    const QString g_scNotificationPositionSetting = "notification_position";
+    const QPoint g_scDefaultNotificationPosition = QPoint(100,100);
+
+    const QString g_scNotificationSizeSetting = "notification_size";
+    const QPoint g_scDefaultNotificationSize = QPoint(400,80);
+
+    const QString g_scNotificationOpacitySetting = "notification_opacity";
+    const qreal g_scDefaultNotificationOpacity= 0.7;
+
+    const QString g_scNotificationBckColorSetting = "notification_backgroundColor";
+    const QColor g_scDefaultNotificationBckColor=QColor(Qt::gray);
+}
+
 
 class NotificationHandlerPrivate
 {
@@ -25,6 +40,43 @@ public:
         m_settings("razorqt-notify")
     {}
 
+    void createDefaultSettings()
+    {
+        // create default values if necessary
+
+        // position
+        QPoint position = m_settings.value(g_scNotificationPositionSetting).toPoint();
+        if ( position.isNull() )
+        {
+            m_settings.setValue(g_scNotificationPositionSetting, g_scDefaultNotificationPosition);
+        }
+
+        // size
+        QPoint settings = m_settings.value(g_scNotificationSizeSetting).toPoint();
+        if ( settings.isNull() )
+        {
+            m_settings.setValue(g_scNotificationSizeSetting, g_scDefaultNotificationSize);
+        }
+
+        // opacity
+        bool bOk=false;
+        m_settings.value(g_scNotificationOpacitySetting).toReal(&bOk);
+        if ( !bOk )
+        {
+            m_settings.setValue(g_scNotificationOpacitySetting, g_scDefaultNotificationOpacity);
+        }
+
+        // color
+
+        QColor bckColor = m_settings.value(g_scNotificationBckColorSetting).value<QColor>();
+        if ( !bckColor.isValid() )
+        {
+            m_settings.setValue(g_scNotificationBckColorSetting, g_scDefaultNotificationBckColor);
+        }
+
+        m_settings.sync();
+    }
+
     QScopedPointer<INotificationView> m_pView ;
     QList<NotificationInfo> m_notifications ;
     RazorSettings m_settings ;
@@ -39,6 +91,9 @@ NotificationHandler::NotificationHandler(QObject *parent) :
 //    if ( val == "qml" )
 //        d_func()->m_pView = new NotificationView(this);
 //    else if( val == "qwidget")
+
+    d_func()->createDefaultSettings();
+
     d_func()->m_pView.reset( new WidgetNotification(this) );
 }
 

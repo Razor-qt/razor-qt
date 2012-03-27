@@ -22,6 +22,8 @@ private slots:
     void positionChanged();
     void sizeChanged();
     void opacityChanged(int value);
+
+    void colorPickerClicked();
     
 private:
     Ui::MainWindow *ui;
