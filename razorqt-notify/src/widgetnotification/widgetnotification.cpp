@@ -24,7 +24,8 @@ public:
     WidgetNotificationPrivate( WidgetNotification* pParent ):
         m_pNotificationUi(NULL),
         m_bShowing(true),
-        m_settings("razorqt-notify")
+        m_settings("razorqt-notify"),
+        m_currentNotification(0)
     {
         QImage shadow_edge(":osd_shadow_edge.png");
         QImage shadow_corner(":osd_shadow_corner.png");
@@ -91,6 +92,7 @@ public:
     bool m_bShowing ;
     RazorSettings m_settings ;
     QFileSystemWatcher m_watcher ;
+    quint32 m_currentNotification ;
 };
 
 WidgetNotification::WidgetNotification(QObject *parent):
@@ -121,6 +123,8 @@ WidgetNotification::WidgetNotification(QObject *parent):
     d_func()->m_watcher.addPath(fileName);
 
     connect( &(d_func()->m_watcher), SIGNAL(fileChanged(QString)), SLOT(settingsChanged()));
+
+    connect ( d_func()->m_pNotificationUi->dismissButton, SIGNAL(pressed()),this,SLOT(dismissNotification()));
 }
 
 void WidgetNotification::addNotification(const Notification&  pN)
@@ -130,8 +134,10 @@ void WidgetNotification::addNotification(const Notification&  pN)
 
 void WidgetNotification::removeNotification(const Notification&  pN)
 {
-    Q_UNUSED(pN);
-    hideNotification();
+    if ( pN.id() == d_func()->m_currentNotification )
+    {
+        hideNotification();
+    }
 }
 
 WidgetNotification::~WidgetNotification()
@@ -153,18 +159,26 @@ void WidgetNotification::showNotification()
 void WidgetNotification::hideNotification()
 {
     QWidget::hide();
+    d_func()->m_pNotificationUi->dismissButton->setDown(false);
 }
 
 void WidgetNotification::addToView(const Notification&  pN)
 {
     QPixmap p = pN.icon();
-    d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(scIconSize-10,scIconSize-10,Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    QString summ = pN.summary();
-    d_func()->m_pNotificationUi->applicationSummaryLabel->setText(summ);
-    d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.body());
+    d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(scIconSize,scIconSize,Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    d_func()->m_pNotificationUi->applicationNameLabel->setText(pN.appName());
+    if( !pN.summary().isEmpty())
+    {
+        d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.summary());
+    }
+    else if(!pN.body().isEmpty())
+    {
+        d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.body());
+    }
     showNotification();
 
     d_func()->m_bShowing = true ;
+    d_func()->m_currentNotification = pN.id();
 }
 
 void WidgetNotification::settingsChanged()
@@ -184,3 +198,7 @@ void WidgetNotification::settingsChanged()
     }
 }
 
+void WidgetNotification::dismissNotification()
+{
+    hideNotification();
+}

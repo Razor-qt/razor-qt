@@ -27,7 +27,7 @@ public:
      * @param summary
      * @param body
      * @param hints see http://www.galago-project.org/specs/notification/0.9/x344.html
-     * @param expire_timeout
+     * @param expire_timeout if -1 default timeout is assigned. If 0, persistent notification would be displayed
      * @return id of notification
      */
     static quint32 notify(const QString& appName,quint32 replace_id,const QString& appIcon, const QString& summary, const QString& body,

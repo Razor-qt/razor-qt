@@ -33,8 +33,8 @@ set( razorqtnotify_hdrs
     src/inotificationview.h
 )
 
-set( widgetnotification_rsc
-    images.qrc
+set( razorqtnotify_rsc
+    images/images.qrc
 )
 
 include_directories(src/ ../libraries/razorqt)
@@ -57,7 +57,8 @@ set(razorqtnotify_mocs ${razorqtnotify_mocs} src/qtndbusconnector.h )
 set(libraries ${libraries}  )
 
 qt4_wrap_cpp(razorqtnotify_mocs ${razorqtnotify_mocs})
-add_executable( razor-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_mocs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs})
+qt4_add_resources(razorqtnotify_rsc_src ${razorqtnotify_rsc})
+add_executable( razor-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_mocs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs} ${razorqtnotify_rsc_src})
 target_link_libraries( razor-notificationd ${libraries} )
 
 INSTALL(TARGETS razor-notificationd RUNTIME DESTINATION bin)

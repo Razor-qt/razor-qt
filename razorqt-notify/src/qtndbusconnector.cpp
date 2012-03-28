@@ -101,9 +101,6 @@ quint32 QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, QS
     quint32 localid = id ;
     localid = d_func()->recalculateId(id);
 
-    if ( timeout == 0 )
-        timeout = scDefaultTimeout;
-
     Notification* pN = d_func()->m_pHandler->findNotification( localid );
     if ( NULL == pN )
     {
@@ -132,8 +129,3 @@ void QtnDbusConnector::CloseNotification(quint32 id)
     INFO("QtnDbusConnector::CloseNotification(unsigned id="<<id<<")");
     d_func()->m_pHandler->removeNotification(id);
 }
-
-
-
-
-

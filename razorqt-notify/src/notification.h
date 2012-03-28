@@ -21,9 +21,10 @@ public:
 
     quint32 id() const { return m_id ; }
     const QString& appName() const { return m_appName ; }
-    const QString& summary() const { return m_summary ; }
+    const QString& summary() const ;
     const QString& body() const { return m_body ; }
-    int timeout() const { return m_timeout ; }
+    qint32 timeout() const { return m_timeout ; }
+    void setTimeout( qint32 timeout) { m_timeout = timeout ; }
 
 private:
 
@@ -34,7 +35,7 @@ private:
     QString m_body ;
     QStringList m_actions ;
     QVariantMap m_hints ;
-    int m_timeout ;
+    qint32 m_timeout ;
 
     QPixmap getPixmapFromHint(const QVariant &argument) const ;
 

@@ -15,13 +15,15 @@ namespace
     const QPoint g_scDefaultNotificationPosition = QPoint(100,100);
 
     const QString g_scNotificationSizeSetting = "notification_size";
-    const QPoint g_scDefaultNotificationSize = QPoint(400,80);
+    const QPoint g_scDefaultNotificationSize = QPoint(400,120);
 
     const QString g_scNotificationOpacitySetting = "notification_opacity";
     const qreal g_scDefaultNotificationOpacity= 0.7;
 
     const QString g_scNotificationBckColorSetting = "notification_backgroundColor";
     const QColor g_scDefaultNotificationBckColor=QColor(Qt::gray);
+
+    const quint16 g_scDefaultTimeout = 3000 ;
 }
 
 
@@ -95,6 +97,8 @@ NotificationHandler::NotificationHandler(QObject *parent) :
     d_func()->createDefaultSettings();
 
     d_func()->m_pView.reset( new WidgetNotification(this) );
+
+    qDebug() << " Path to settings=" << d_func()->m_settings.fileName();
 }
 
 NotificationHandler::~NotificationHandler()
@@ -107,13 +111,19 @@ void NotificationHandler::addNotification(const Notification &pN)
     qDebug() << "Notification is about to be added." << pN;
     NotificationHandlerPrivate::NotificationInfo n ;
     n._notification = pN ;
-    if ( pN.timeout() == -1 )
+    if ( pN.timeout() == 0 )
     {
         qDebug() << " Persistent application!";
         // persistant notification, no timeout!
     }
     else
     {
+        if( pN.timeout() == -1 )
+        {
+            qDebug() << " Default timeout " << g_scDefaultTimeout ;
+            n._notification.setTimeout(g_scDefaultTimeout);
+        }
+
         n._pTimeout = QSharedPointer<NotificationTimeout>(new NotificationTimeout);
         n._pTimeout->setNotification(n._notification);
         connect ( n._pTimeout.data(), SIGNAL(timeout()), this, SLOT(removeNotificationSlot()));
@@ -122,11 +132,8 @@ void NotificationHandler::addNotification(const Notification &pN)
         // handler don't know if notification is shown
         n._pTimeout->start();
     }
-
     d_func()->m_notifications.append(n);
     d_func()->m_pView->addNotification(pN);
-
-
 }
 
 Notification * NotificationHandler::findNotification(quint32 id) const

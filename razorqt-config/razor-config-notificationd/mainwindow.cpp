@@ -29,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->sizeXspinBox->setMaximum(1000);
     ui->sizeXspinBox->setMinimum(0);
-    ui->sizeYspinBox->setMaximum(1000);
-    ui->sizeYspinBox->setMinimum(0);
+    ui->sizeYspinBox->setMaximum(1000);// maximum
+    ui->sizeYspinBox->setMinimum(100); //minimum height value
 
     ui->PositionXBox->setMaximum(1000);
     ui->PositionXBox->setMinimum(0);
@@ -68,7 +68,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::showNotification()
 {
-    m_notificationId = RazorNotification::notify("test app",0,"none","some summary","body",QVariantMap(),-1);
+    QVariantMap m ;
+//    QPixmap p;
+//    m.insert("icon_data",p);
+
+    m_notificationId = RazorNotification::notify("test app",0,"none","some aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasummary","bodaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay",m,0);
 }
 
 void MainWindow::positionChanged()
