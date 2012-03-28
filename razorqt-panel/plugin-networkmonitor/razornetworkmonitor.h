@@ -28,7 +28,7 @@
 #ifndef RAZORNETWORKMONITOR_H
 #define RAZORNETWORKMONITOR_H
 #include "../panel/razorpanelplugin.h"
-#include <QLabel>
+#include <QtGui/QWidget>
 
 /*!
   TODO: How to define cable is not connected?
@@ -46,6 +46,7 @@ protected:
 	void virtual timerEvent(QTimerEvent *event);
 	void virtual paintEvent ( QPaintEvent * event );
 	void virtual resizeEvent(QResizeEvent *);
+	bool virtual event(QEvent *event);
 
 protected slots:
 	virtual void showConfigureDialog();

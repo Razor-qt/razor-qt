@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
  
-#include "mainwindow.h"
+#include "iconthemeconfig.h"
 
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
