@@ -55,23 +55,4 @@ public:
 
 };
 
-
-/*! \brief Modify currently used Qt QStyle to follow user preferences.
- *
- * For example: it allows to handle item view/item widget itemActivated signals
- * for single or double click as it's specified in razor's configuration
- */
-class RazorQProxyStyle : public QProxyStyle
-{
-public:
-    RazorQProxyStyle(QStyle * style = 0);
-
-    int styleHint(StyleHint hint, const QStyleOption *option = 0,
-                  const QWidget *widget = 0, QStyleHintReturn *returnData = 0) const;
-
-private:
-    bool m_singleClick;
-};
-
-
 #endif

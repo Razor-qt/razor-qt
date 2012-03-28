@@ -9,5 +9,5 @@ razor_translate_desktop(CONF_TR_FILES ${CONF_FILES_IN} )
 add_custom_target(resources_conf_files ALL DEPENDS ${CONF_TR_FILES})
 #************************************************
 
-install(FILES ${CONF_FILES}    DESTINATION /etc/xdg/razor)
-install(FILES ${CONF_TR_FILES} DESTINATION /etc/xdg/razor)
+install(FILES ${CONF_FILES}    DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor)
+install(FILES ${CONF_TR_FILES} DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor)

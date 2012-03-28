@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Network Monitor
+Comment=Network Monitor
+
+Name[ru]=Монитор сети
+Comment[ru]=Монитор сети
+

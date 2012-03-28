@@ -28,6 +28,7 @@
 #include "razormodman.h"
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgautostart.h>
+#include <unistd.h>
 
 #include <QtDebug>
 #include <QDBusInterface>

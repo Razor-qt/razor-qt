@@ -12,12 +12,12 @@ set(H_FILES
    )
 
 set(MOC_FILES
-    mainwindow.h
+    iconthemeconfig.h
 )
 
 set(CPP_FILES
-    mainwindow.cpp
     main.cpp
+    iconthemeconfig.cpp
     iconthemeinfo.cpp
    )
 

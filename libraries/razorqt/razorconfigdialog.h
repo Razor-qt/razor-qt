@@ -65,12 +65,14 @@ signals:
      */
     void save();
 
-private:
-    Ui::RazorConfigDialog* ui;
+protected:
     RazorSettings* mSettings;
+
+private:
     RazorSettingsCache* mCache;
     QList<QStringList> mIcons;
     QSize maxSize;
+    Ui::RazorConfigDialog* ui;
     void closeEvent(QCloseEvent* event);
 
 private slots:

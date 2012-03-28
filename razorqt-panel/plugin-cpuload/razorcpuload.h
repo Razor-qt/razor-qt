@@ -37,23 +37,32 @@ public:
 	RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
 	~RazorCpuLoad();
 
-	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment; }
+	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
 
 protected:
 	void virtual timerEvent(QTimerEvent *event);
 	void virtual paintEvent ( QPaintEvent * event );
 	void virtual resizeEvent(QResizeEvent *);
 
+protected slots:
+	virtual void showConfigureDialog();
+	virtual void settigsChanged();
+
 private:
-	void getLoadCpu();
+	double getLoadCpu() const;
+
 	QWidget m_stuff;
 
 	//! average load
 	int m_avg;
+
+	bool m_showText;
+
+	QFont m_font;
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
 
-#endif // RAZORHELLOWORLD_H
+#endif // RAZORCPULOAD_H
 
 
