@@ -64,7 +64,7 @@ Dialog::Dialog(QWidget *parent) :
 
     connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(hide()));
 
-    connect(mSettings, SIGNAL(settigsChanged()), this, SLOT(applySettings()));
+    connect(mSettings, SIGNAL(settingsChanged()), this, SLOT(applySettings()));
 
 
     ui->commandEd->installEventFilter(this);

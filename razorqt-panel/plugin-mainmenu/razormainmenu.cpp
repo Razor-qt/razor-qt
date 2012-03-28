@@ -76,7 +76,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
 
     addWidget(&mButton);
-    settigsChanged();
+    settingsChanged();
 }
 
 
@@ -145,7 +145,7 @@ void RazorMainMenu::showMenu()
 /************************************************
 
  ************************************************/
-void RazorMainMenu::settigsChanged()
+void RazorMainMenu::settingsChanged()
 {
     if (settings().value("showText", false).toBool())
     {

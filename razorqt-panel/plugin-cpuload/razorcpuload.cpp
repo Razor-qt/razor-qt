@@ -56,7 +56,7 @@ RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 	m_font.setPointSizeF(8);
 	startTimer(500);
 
-	settigsChanged();
+	settingsChanged();
 }
 
 RazorCpuLoad::~RazorCpuLoad()
@@ -134,7 +134,7 @@ void RazorCpuLoad::showConfigureDialog()
 	confWindow->activateWindow();
 }
 
-void RazorCpuLoad::settigsChanged()
+void RazorCpuLoad::settingsChanged()
 {
 	m_showText = settings().value("showText", false).toBool();
 	update();

@@ -52,7 +52,7 @@ RazorNetworkMonitor::RazorNetworkMonitor(const RazorPanelPluginStartInfo* startI
 
 	startTimer(800);
 
-	settigsChanged();
+	settingsChanged();
 }
 
 RazorNetworkMonitor::~RazorNetworkMonitor()
@@ -156,7 +156,7 @@ void RazorNetworkMonitor::showConfigureDialog()
 	confWindow->activateWindow();
 }
 
-void RazorNetworkMonitor::settigsChanged()
+void RazorNetworkMonitor::settingsChanged()
 {
 	m_iconIndex = settings().value("icon", 1).toInt();
 	m_interface = settings().value("interface", "eth0").toString();

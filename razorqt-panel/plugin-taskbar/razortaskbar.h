@@ -56,7 +56,7 @@ protected:
     void updateSizePolicy();
 
 protected slots:
-    virtual void settigsChanged();
+    virtual void settingsChanged();
     virtual void showConfigureDialog();
     virtual void realign();
 

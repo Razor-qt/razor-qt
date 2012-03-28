@@ -141,7 +141,7 @@ bool RazorSettings::event(QEvent *event)
 {
     if (event->type() == QEvent::UpdateRequest)
     {
-            emit settigsChanged();
+            emit settingsChanged();
     }
 
     return QSettings::event(event);
@@ -506,5 +506,5 @@ void GlobalRazorSettings::fileChanged()
         emit razorThemeChanged();
     }
 
-    emit settigsChanged();
+    emit settingsChanged();
 }

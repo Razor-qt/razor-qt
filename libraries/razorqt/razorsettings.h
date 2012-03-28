@@ -75,7 +75,7 @@ public:
     void setLocalizedValue(const QString &key, const QVariant &value);
 
 signals:
-    void settigsChanged();
+    void settingsChanged();
 
 protected:
     virtual bool event(QEvent *event);

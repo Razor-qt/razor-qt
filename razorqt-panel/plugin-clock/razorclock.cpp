@@ -73,7 +73,7 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     addWidget(gui);
 
     connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
-    settigsChanged();
+    settingsChanged();
 
     clocktimer = new QTimer(this);
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
@@ -96,7 +96,7 @@ RazorClock::~RazorClock()
 {
 }
 
-void RazorClock::settigsChanged()
+void RazorClock::settingsChanged()
 {
     if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
     {

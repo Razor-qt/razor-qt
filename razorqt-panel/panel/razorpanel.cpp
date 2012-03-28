@@ -150,7 +150,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChangeds()));
     //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
 
-    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), q_ptr, SLOT(update()));
+    connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), q_ptr, SLOT(update()));
 }
 
 

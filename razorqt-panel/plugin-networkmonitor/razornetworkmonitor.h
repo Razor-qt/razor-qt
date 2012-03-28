@@ -50,7 +50,7 @@ protected:
 
 protected slots:
 	virtual void showConfigureDialog();
-	virtual void settigsChanged();
+	virtual void settingsChanged();
 
 private:
 	QString iconName(const QString& state) const

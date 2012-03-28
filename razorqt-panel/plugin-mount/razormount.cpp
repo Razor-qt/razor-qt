@@ -44,7 +44,7 @@ RazorMount::RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     setObjectName("RazorMount");
     m_button = new MountButton(parent, panel());
     addWidget(m_button);
-    settigsChanged();
+    settingsChanged();
 }
 
 RazorMount::~RazorMount()
@@ -67,7 +67,7 @@ void RazorMount::showConfigureDialog()
 }
 
 
-void RazorMount::settigsChanged()
+void RazorMount::settingsChanged()
 {
     QString s = settings().value("newDeviceAction", MountButton::DevActionInfo).toString();
 

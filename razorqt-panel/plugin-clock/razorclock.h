@@ -60,7 +60,7 @@ protected:
     //virtual QSize sizeHint() const;
 
 protected slots:
-    virtual void settigsChanged();
+    virtual void settingsChanged();
     virtual void showConfigureDialog();
 
 private:

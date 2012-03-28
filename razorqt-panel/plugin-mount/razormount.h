@@ -49,7 +49,7 @@ public:
 
 protected slots:
     virtual void showConfigureDialog();
-    virtual void settigsChanged();
+    virtual void settingsChanged();
 
 private:
     MountButton *m_button;
