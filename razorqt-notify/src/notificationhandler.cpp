@@ -18,7 +18,7 @@ namespace
     const QPoint g_scDefaultNotificationSize = QPoint(400,120);
 
     const QString g_scNotificationOpacitySetting = "notification_opacity";
-    const qreal g_scDefaultNotificationOpacity= 0.7;
+    const qreal g_scDefaultNotificationOpacity= 0.9;
 
     const QString g_scNotificationBckColorSetting = "notification_backgroundColor";
     const QColor g_scDefaultNotificationBckColor=QColor(Qt::gray);
