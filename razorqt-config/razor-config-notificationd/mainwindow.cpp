@@ -4,6 +4,7 @@
 #include "razornotification.h"
 #include <QDebug>
 #include <QColorDialog>
+#include <QDesktopWidget>
 
 namespace
 {
@@ -27,14 +28,25 @@ MainWindow::MainWindow(QWidget *parent) :
     QPoint size = m_settings.value(g_scNotificationSize).toPoint();
     QPoint pos = m_settings.value(g_scNotificationPosition).toPoint();
 
-    ui->sizeXspinBox->setMaximum(1000);
-    ui->sizeXspinBox->setMinimum(0);
-    ui->sizeYspinBox->setMaximum(1000);// maximum
+    QDesktopWidget* pDesktop = QApplication::desktop();
+
+    qint32 maxX = 0 , maxY = 0 ;
+    for ( int i=0;i< pDesktop->screenCount();++i)
+    {
+        maxX += pDesktop->screenGeometry(i).width();
+        maxY = qMax(maxY, pDesktop->screenGeometry(i).height());
+    }
+    qDebug() << maxX ;
+    qDebug() << maxY ;
+
+    ui->sizeXspinBox->setMaximum(400);
+    ui->sizeXspinBox->setMinimum(200);
+    ui->sizeYspinBox->setMaximum(300);// maximum
     ui->sizeYspinBox->setMinimum(100); //minimum height value
 
-    ui->PositionXBox->setMaximum(1000);
+    ui->PositionXBox->setMaximum(maxX);
     ui->PositionXBox->setMinimum(0);
-    ui->PositionYBox->setMaximum(1000);
+    ui->PositionYBox->setMaximum(maxY);
     ui->PositionYBox->setMinimum(0);
 
     ui->sizeXspinBox->setValue(size.x());

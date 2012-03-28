@@ -26,7 +26,6 @@ namespace
     const quint16 g_scDefaultTimeout = 3000 ;
 }
 
-
 class NotificationHandlerPrivate
 {
 public:
