@@ -71,9 +71,8 @@ void QNotificationService::start()
 
 int main(int argc, char *argv[])
 {
-
     INFO("Starting qtnot2 argc=" << argc << " argv[0]=" << argv[0]);
-
+    Q_INIT_RESOURCE(images);
     if ( argc == 2)
     {
         INFO(argv[1]);

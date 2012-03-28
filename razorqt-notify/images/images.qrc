@@ -142,5 +142,6 @@
         <file>notification-power-disconnected.svg</file>
         <file>notification-printer.svg</file>
         <file>notification-printer-error.svg</file>
+        <file alias="defaultIcon.png">crazy-cat-icon.png</file>
     </qresource>
 </RCC>

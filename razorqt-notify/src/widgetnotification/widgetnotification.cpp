@@ -187,9 +187,7 @@ void WidgetNotification::settingsChanged()
     if ( isVisible() )
     {
         d_func()->m_settings.sync();
-
         // need to change currently visible
-
         // get new size
         QRect geometry = d_func()->geom() ;
         qDebug() << " settings changed new geom = " <<geometry ;

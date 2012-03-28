@@ -89,16 +89,17 @@ QPixmap Notification::icon() const
                 }
             }
         }
-        if ( pixmap.isNull())
+        if ( pixmap.isNull() && !icon.isEmpty())
         {
-
-            QString iconEmbedded = ":";
+            QString iconEmbedded = ":/";
             iconEmbedded.append(icon);
             iconEmbedded.append(".svg");
             qDebug() << " Searching embedded icon=" << iconEmbedded;
             pixmap = QPixmap(iconEmbedded);
             if ( !pixmap.isNull())
+            {
                 bFoundInPath = true ;
+            }
         }
         // FIXME: for now, icons are embedded in this executable
 
@@ -106,12 +107,12 @@ QPixmap Notification::icon() const
         {
             WARN("Icon was not found in path, assigning default one");
             pixmap = QPixmap (":/defaultIcon.png");
-            if ( pixmap.isNull() ){
+            if ( pixmap.isNull() )
+            {
                 qWarning() << "Unable to get any pixmap, even default one";
             }
             else{
                 TRACE( "Found default icon=" << path.toStdString() << " and it's sized " << pixmap.width() << " x " << pixmap.height());
-
             }
         }
     }
