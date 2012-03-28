@@ -9,6 +9,10 @@ if (NOT DEFINED RAZOR_ETC_XDG_DIRECTORY)
     message(STATUS "RAZOR_ETC_XDG_DIRECTORY will be autodetected now")
     message(STATUS "You can set it manually with -DRAZOR_ETC_XDG_DIRECTORY=<value>")
 
+    if (NOT QT_QMAKE_EXECUTABLE)
+        message(FATAL_ERROR "RAZOR_ETC_XDG_DIRECTORY: qmake not found or wrongly detected (inlude before qt configured?)")
+    endif (NOT QT_QMAKE_EXECUTABLE)
+
     execute_process(COMMAND ${QT_QMAKE_EXECUTABLE} -query QT_INSTALL_CONFIGURATION
 	                    OUTPUT_VARIABLE RAZOR_ETC_XDG_DIRECTORY
 			    OUTPUT_STRIP_TRAILING_WHITESPACE)

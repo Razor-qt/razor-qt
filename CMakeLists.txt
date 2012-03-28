@@ -26,13 +26,6 @@ message(STATUS "")
 message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
 message(STATUS "")
 
-# additional cmake files
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
-include(RazorInstallConfigPath)
-include(RazorLibSuffix)
-include(RazorConfigRegister)
-
-
 add_definitions ( -Wall )
 find_package ( Qt4 4.6.0 REQUIRED )
 include ( ${QT_USE_FILE} )
@@ -42,7 +35,13 @@ include_directories (
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
 	)
 
-#find_package (UDev REQUIRED)
+# additional cmake files
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+include(RazorInstallConfigPath)
+include(RazorLibSuffix)
+# Qt *must* be detected before this one
+include(RazorConfigRegister)
+
 
 
 # This allows to install and read the configs from non-standard locations
