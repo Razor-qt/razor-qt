@@ -81,9 +81,6 @@ MainWindow::~MainWindow()
 void MainWindow::showNotification()
 {
     QVariantMap m ;
-//    QPixmap p;
-//    m.insert("icon_data",p);
-
     m_notificationId = RazorNotification::notify("test app",0,"none","some aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasummary","bodaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay",m,0);
 }
 

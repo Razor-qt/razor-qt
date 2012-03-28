@@ -167,14 +167,26 @@ void WidgetNotification::addToView(const Notification&  pN)
     QPixmap p = pN.icon();
     d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(scIconSize,scIconSize,Qt::KeepAspectRatio, Qt::SmoothTransformation));
     d_func()->m_pNotificationUi->applicationNameLabel->setText(pN.appName());
+    QString summary;
     if( !pN.summary().isEmpty())
     {
+        summary = "<b>%1</b>";
+        summary = summary.arg(pN.summary());
         d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.summary());
     }
-    else if(!pN.body().isEmpty())
+
+    if(!pN.body().isEmpty())
     {
-        d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.body());
+        if ( !summary.isEmpty())
+        {
+            summary.append("<br>");
+        }
+        summary.append(pN.body());
     }
+
+    qDebug() << summary ;
+    d_func()->m_pNotificationUi->applicationBodyLabel->setText(summary);
+
     showNotification();
 
     d_func()->m_bShowing = true ;
