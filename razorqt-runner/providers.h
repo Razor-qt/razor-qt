@@ -35,28 +35,44 @@
 #include <QtCore/QString>
 #include <QtGui/QIcon>
 
+#define MAX_RANK 0xFFFF
+
+/*! The CommandProviderItem class provides an item for use with CommandProvider.
+    Items usually contain title, comment, toolTip and icon.
+ */
 class CommandProviderItem
 {
 public:
-    CommandProviderItem();
-    virtual ~CommandProviderItem();
+    CommandProviderItem() {}
+    virtual ~CommandProviderItem() {}
 
     virtual bool run() const = 0;
     virtual bool compare(const QRegExp &regExp) const = 0;
 
+    /// Returns the item's icon.
     QIcon icon() const { return mIcon; }
-    QString tile() const { return mTitle; }
+
+    /// Returns the item's title.
+    QString title() const { return mTitle; }
+
+    /// Returns the item's comment.
     QString comment() const { return mComment; }
+
+    /// Returns the item's tooltip.
     QString toolTip() const { return mToolTip; }
 
+    /*! The result of this function is used when searching for a apropriate item.
+        The item with the highest rank will be highlighted.
+            0 - not suitable.
+            MAX_RANK - an exact match.
+        In the most cases you can yse something like:
+          return stringRank(mTitle, pattern);
+     */
+    virtual unsigned int rank(const QString &pattern) const  = 0;
+
 protected:
-    void setIcon(const QIcon &icon) { mIcon = icon; }
-    void setTile(const QString &title);
-    void setComment(const QString &comment);
-    void setToolTip(const QString &toolTip) { mToolTip = toolTip; }
-
-
-private:
+    /// Helper function for the CommandProviderItem::rank
+    unsigned int stringRank(const QString str, const QString pattern) const;
     QIcon   mIcon;
     QString mTitle;
     QString mComment;
@@ -64,7 +80,8 @@ private:
 };
 
 
-
+/*! The CommandProvider class provides task for the razor-runner.
+ */
 class CommandProvider: public QObject, public QList<CommandProviderItem*>
 {
     Q_OBJECT
@@ -96,9 +113,9 @@ public:
     QString command() const { return mCommand; }
 
     void operator=(const AppLinkItem &other);
+
+    virtual unsigned int rank(const QString &pattern) const;
 private:
-public:
-    QString mSearchText;
     QString mDesktopFile;
     QString mIconName;
     QString mCommand;
@@ -134,6 +151,7 @@ public:
     bool compare(const QRegExp &regExp) const;
 
     QString command() const { return mCommand; }
+    virtual unsigned int rank(const QString &pattern) const;
 
 private:
     QString mCommand;
@@ -157,6 +175,43 @@ private:
 
 
 /************************************************
+ * Custom command
+ ************************************************/
+
+class CustomCommandItem: public CommandProviderItem
+{
+public:
+    CustomCommandItem();
+
+    bool run() const;
+    bool compare(const QRegExp &regExp) const;
+
+    QString command() const { return mCommand; }
+    void setCommand(const QString &command);
+
+    virtual unsigned int rank(const QString &pattern) const;
+private:
+    QString mCommand;
+};
+
+
+
+class QSettings;
+class CustomCommandProvider: public CommandProvider
+{
+public:
+    CustomCommandProvider();
+
+    QString command() const { return mItem->command(); }
+    void setCommand(const QString &command) { mItem->setCommand(command); }
+
+private:
+    CustomCommandItem *mItem;
+};
+
+
+
+/************************************************
  * Mathematics
  ************************************************/
 class MathItem: public CommandProviderItem
@@ -166,6 +221,7 @@ public:
 
     bool run() const;
     bool compare(const QRegExp &regExp) const;
+    virtual unsigned int rank(const QString &pattern) const;
 };
 
 
@@ -189,6 +245,7 @@ public:
   
   bool run() const;
   bool compare(const QRegExp &regExp) const;
+  virtual unsigned int rank(const QString &pattern) const;
 };
 
 class VirtualBoxProvider: public CommandProvider

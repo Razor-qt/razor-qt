@@ -50,12 +50,18 @@ public:
 
     void addHistoryCommand(const QString &command);
 
+    QString command() const { return mCustomCommandProvider->command(); }
+    void setCommand(const QString &command) { mCustomCommandProvider->setCommand(command); }
+
+    QPersistentModelIndex customCommandIndex() const { return mCustomCommandIndex; }
 public slots:
     void rebuild();
 
 private:
     QList<CommandProvider*> mProviders;
     HistoryProvider *mHistoryProvider;
+    CustomCommandProvider *mCustomCommandProvider;
+    QPersistentModelIndex mCustomCommandIndex;
 };
 
 
@@ -75,6 +81,9 @@ public:
 
     bool isShowOnlyHistory() const { return mOnlyHistory; }
     void showOnlyHistory(bool onlyHistory) { mOnlyHistory = onlyHistory; }
+
+    QString command() const { return mSourceModel->command(); }
+    void setCommand(const QString &command) { mSourceModel->setCommand(command); }
 
 public slots:
     void rebuild();
