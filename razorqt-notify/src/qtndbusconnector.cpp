@@ -101,16 +101,9 @@ quint32 QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, QS
     quint32 localid = id ;
     localid = d_func()->recalculateId(id);
 
-    Notification* pN = d_func()->m_pHandler->findNotification( localid );
-    if ( NULL == pN )
-    {
-        Notification notification = Notification(app_name, localid, icon, summary, body, actions, hints, timeout);
-        d_func()->m_pHandler->addNotification(notification);
-    }
-    else
-    {
-        //FIXME
-    }
+    Notification notification = Notification(app_name, localid, icon, summary, body, actions, hints, timeout);
+    d_func()->m_pHandler->addNotification(notification);
+
     return localid;
 }
 

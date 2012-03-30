@@ -15,17 +15,14 @@ QDebug operator <<(QDebug dbg, const Notification &rhs)
        <<" Application body= " << rhs.body().toStdString()
        <<" timeout= " << rhs.timeout()
        <<" icon= " << rhs.m_icon.toStdString()
-       <<" hints= ";
+      <<" hints [[ ";
     QVariantMap::const_iterator it = rhs.m_hints.begin();
     QVariantMap::const_iterator itEnd = rhs.m_hints.end();
     for ( ; it != itEnd;++it)
     {
-        dbg << "Name="<<it.key().toStdString() <<  " [ "<< it.value().typeName() << " ]" ;
+        dbg << "Name="<<it.key().toStdString() <<  "["<< it.value().typeName() << "]" ;
     }
-    Q_FOREACH(QVariant v,rhs.m_hints )
-    {
-        dbg << "[ "<< v.typeName() << " ]" ;
-    }
+    dbg << " ]] ";
     return dbg ;
 }
 

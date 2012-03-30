@@ -53,7 +53,6 @@ public:
      */
     void hideWindow();
 
-
 signals:
     //! emmited when notification is added
     void notificationAdded() ;

@@ -9,6 +9,8 @@ set( widgetnotification_moc
 
 set( widgetnotification_ui
     ui/notification.ui
+    ui/normalNotification.ui
+    ui/notificationWithProgress.ui
 )
 
 set( widgetnotification_rsc

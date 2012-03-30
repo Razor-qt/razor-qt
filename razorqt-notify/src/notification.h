@@ -18,6 +18,7 @@ public:
 
 
     QPixmap icon() const ;
+    const QString& iconName() const { return m_icon;}
 
     quint32 id() const { return m_id ; }
     const QString& appName() const { return m_appName ; }
@@ -25,6 +26,7 @@ public:
     const QString& body() const { return m_body ; }
     qint32 timeout() const { return m_timeout ; }
     void setTimeout( qint32 timeout) { m_timeout = timeout ; }
+    const QVariantMap& hints() const { return m_hints;}
 
 private:
 

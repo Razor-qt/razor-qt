@@ -46,7 +46,6 @@ Notification &Notification::operator =(const Notification &rhs)
 
 QPixmap Notification::icon() const
 {
-
     QString icon = m_icon ;
     QPixmap pixmap;
     int maxIconSize = scMaxIconSize ;

@@ -77,6 +77,24 @@ public:
 
         m_settings.sync();
     }
+    Notification parseNotification( const Notification& pN)
+    {
+        Notification ret = pN ;
+
+        // check for urgency level
+        QVariantMap hints = ret.hints();
+        if ( hints.contains("urgency") )
+        {
+            QChar urgLevel = hints["urgency"].toChar();
+            if ( urgLevel == 2 )
+            {
+                // this has to be persistent notification
+                ret.setTimeout(0);
+            }
+        }
+
+        return ret ;
+    }
 
     QScopedPointer<INotificationView> m_pView ;
     QList<NotificationInfo> m_notifications ;
@@ -94,10 +112,7 @@ NotificationHandler::NotificationHandler(QObject *parent) :
 //    else if( val == "qwidget")
 
     d_func()->createDefaultSettings();
-
     d_func()->m_pView.reset( new WidgetNotification(this) );
-
-    qDebug() << " Path to settings=" << d_func()->m_settings.fileName();
 }
 
 NotificationHandler::~NotificationHandler()
@@ -109,7 +124,7 @@ void NotificationHandler::addNotification(const Notification &pN)
 {
     qDebug() << "Notification is about to be added." << pN;
     NotificationHandlerPrivate::NotificationInfo n ;
-    n._notification = pN ;
+    n._notification = d_func()->parseNotification(pN);
     if ( pN.timeout() == 0 )
     {
         qDebug() << " Persistent application!";
