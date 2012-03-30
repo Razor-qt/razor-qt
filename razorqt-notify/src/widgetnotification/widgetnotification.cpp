@@ -3,12 +3,15 @@
 #include "qtnlog.h"
 
 #include "ui_notification.h"
+#include "ui_normalNotification.h"
+#include "ui_notificationWithProgress.h"
 #include "razorsettings.h"
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPainter>
 #include <QFileSystemWatcher>
+#include <QDebug>
 
 namespace
 {
@@ -21,11 +24,21 @@ namespace
 class WidgetNotificationPrivate : public QObject
 {
 public:
+
+    enum NotificationType
+    {
+        eNormalNotification=0,
+        eProgressBarNotification,
+        eIconOnlyNotification
+    };
+
     WidgetNotificationPrivate( WidgetNotification* pParent ):
-        m_pNotificationUi(NULL),
+        m_pNot( NULL ),
         m_bShowing(true),
         m_settings("razorqt-notify"),
-        m_currentNotification(0)
+        m_currentNotification(0),
+
+        m_bEnableCompositing(true)
     {
         QImage shadow_edge(":osd_shadow_edge.png");
         QImage shadow_corner(":osd_shadow_corner.png");
@@ -84,24 +97,76 @@ public:
         }
     }
 
+    QWidget* notificationWidget(const Notification& pN)
+    {
+        NotificationType t = eNormalNotification;
+
+        if ( pN.iconName().contains(QRegExp("notification-audio-volume-*")))
+        {
+            t = eProgressBarNotification ;
+        }
+
+        if ( pN.hints().contains("x-canonical-private-icon-only"))
+        {
+            t = eIconOnlyNotification ;
+        }
+
+        QWidget * pRet = new QWidget;
+        QString summary;
+        QPixmap p = pN.icon();
+        switch(t)
+        {
+        case eIconOnlyNotification:
+        case eNormalNotification:
+            m_normal.setupUi(pRet);
+
+            m_normal.iconLabel->setPixmap(p.scaled(scIconSize,scIconSize,Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+            if( !pN.summary().isEmpty())
+            {
+                summary = "<b>%1</b>";
+                summary = summary.arg(pN.summary());
+            }
+
+            if(!pN.body().isEmpty())
+            {
+                if ( !summary.isEmpty())
+                {
+                    summary.append("<br>");
+                }
+                summary.append(pN.body());
+            }
+            m_normal.summaryLabel->setText(summary);
+            break;
+        case eProgressBarNotification:
+            m_progressNotification.setupUi(pRet);
+            m_progressNotification.iconLabel->setPixmap(p.scaled(scIconSize,scIconSize,Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+            m_progressNotification.progressBar->setValue(pN.hints()["value"].toInt());
+            break ;
+        }
+        return pRet ;
+    }
 
     // members
     QVector<QPixmap> shadowsEdges ;
     QVector<QPixmap> shadowsCorners;
-    Ui::NotificationUi* m_pNotificationUi;
+    Ui::NotificationUi m_pNotificationUi;
+    Ui::NormalNotification m_normal ;
+    Ui::NotificationWithProgress m_progressNotification ;
+    QWidget* m_pNot ;
     bool m_bShowing ;
     RazorSettings m_settings ;
     QFileSystemWatcher m_watcher ;
     quint32 m_currentNotification ;
+
+    bool m_bEnableCompositing ;
 };
 
 WidgetNotification::WidgetNotification(QObject *parent):
     INotificationView(),
     d_ptr( new WidgetNotificationPrivate(this))
 {
-    installEventFilter(d_func());
-    d_func()->m_pNotificationUi = new Ui::NotificationUi ;
-
     Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::X11BypassWindowManagerHint;
 
     setWindowFlags(flags);
@@ -112,11 +177,16 @@ WidgetNotification::WidgetNotification(QObject *parent):
     setMaximumSize(geometry.width(),geometry.height());
 
     //set ui
-    d_func()->m_pNotificationUi->setupUi(this);
-    setAttribute(Qt::WA_TranslucentBackground, true);
-
-    // connect to settings changed
-    qDebug() << " Connecting to settings";
+    d_func()->m_pNotificationUi.setupUi(this);
+    if ( d_func()->m_bEnableCompositing)
+    {
+        setAttribute(Qt::WA_TranslucentBackground, true);
+        installEventFilter(d_func());
+    }
+    else
+    {
+        setStyleSheet(RazorTheme::instance()->qss("notifications"));
+    }
 
     const QString& fileName = d_func()->m_settings.fileName();
 
@@ -124,7 +194,7 @@ WidgetNotification::WidgetNotification(QObject *parent):
 
     connect( &(d_func()->m_watcher), SIGNAL(fileChanged(QString)), SLOT(settingsChanged()));
 
-    connect ( d_func()->m_pNotificationUi->dismissButton, SIGNAL(pressed()),this,SLOT(dismissNotification()));
+    connect ( d_func()->m_pNotificationUi.dismissButton, SIGNAL(pressed()),this,SLOT(dismissNotification()));
 }
 
 void WidgetNotification::addNotification(const Notification&  pN)
@@ -159,33 +229,22 @@ void WidgetNotification::showNotification()
 void WidgetNotification::hideNotification()
 {
     QWidget::hide();
-    d_func()->m_pNotificationUi->dismissButton->setDown(false);
+    d_func()->m_pNotificationUi.dismissButton->setDown(false);
 }
 
 void WidgetNotification::addToView(const Notification&  pN)
 {
-    QPixmap p = pN.icon();
-    d_func()->m_pNotificationUi->iconLabel->setPixmap(p.scaled(scIconSize,scIconSize,Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    d_func()->m_pNotificationUi->applicationNameLabel->setText(pN.appName());
-    QString summary;
-    if( !pN.summary().isEmpty())
-    {
-        summary = "<b>%1</b>";
-        summary = summary.arg(pN.summary());
-        d_func()->m_pNotificationUi->applicationBodyLabel->setText(pN.summary());
-    }
 
-    if(!pN.body().isEmpty())
-    {
-        if ( !summary.isEmpty())
-        {
-            summary.append("<br>");
-        }
-        summary.append(pN.body());
-    }
+    d_func()->m_pNotificationUi.applicationNameLabel->setText(pN.appName());
+    qDebug() << d_func()->m_pNotificationUi.applicationNameLabel->text();
 
-    qDebug() << summary ;
-    d_func()->m_pNotificationUi->applicationBodyLabel->setText(summary);
+    if ( d_func()->m_pNot != NULL )
+        d_func()->m_pNotificationUi.verticalLayout_2->removeWidget(d_func()->m_pNot);
+    delete d_func()->m_pNot ;
+    d_func()->m_pNot=0;
+
+    d_func()->m_pNot = d_func()->notificationWidget(pN);
+    d_func()->m_pNotificationUi.verticalLayout_2->addWidget(d_func()->m_pNot);
 
     showNotification();
 
@@ -195,7 +254,6 @@ void WidgetNotification::addToView(const Notification&  pN)
 
 void WidgetNotification::settingsChanged()
 {
-
     if ( isVisible() )
     {
         d_func()->m_settings.sync();

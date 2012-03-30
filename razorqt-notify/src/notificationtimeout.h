@@ -14,6 +14,7 @@ class NotificationTimeout : public QObject
     Q_DECLARE_PRIVATE(NotificationTimeout)
 public:
     explicit NotificationTimeout() ;
+    ~NotificationTimeout();
     const Notification& notification() const ;
 
     void setNotification( const Notification& n);

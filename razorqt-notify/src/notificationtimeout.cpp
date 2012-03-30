@@ -17,6 +17,11 @@ NotificationTimeout::NotificationTimeout() :
     d_ptr( new NotificationTimeoutPrivate)
 {
 }
+NotificationTimeout::~NotificationTimeout()
+{
+    stop();
+    delete d_ptr ;
+}
 
 const Notification &NotificationTimeout::notification() const
 {
