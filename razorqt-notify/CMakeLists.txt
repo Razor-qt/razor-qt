@@ -37,15 +37,15 @@ set( razorqtnotify_rsc
     images/images.qrc
 )
 
-include_directories(src/ ../libraries/razorqt)
+include_directories(src/ ../libraries/razorqt ../libraries/qtxdg)
 
-#add_subdirectory(src/qmlnotification)
+add_subdirectory(src/qmlnotification)
 add_subdirectory(src/widgetnotification)
 
 
 set(libraries
     ${QT_LIBRARIES}
-    #qmlnotifications
+    qmlnotifications
     widgetnotification
     razorqt
     qtservice

@@ -8,7 +8,6 @@
 
 #include "notification.h"
 
-class NotificationView ;
 class NotificationHandlerPrivate ;
 
 class NotificationHandler : public QObject
@@ -57,6 +56,8 @@ protected:
 
 private slots:
     void removeNotificationSlot();
+
+    void notificationShown( quint32 id);
 };
 
 #endif // NOTIFICATIONHANDLER_H

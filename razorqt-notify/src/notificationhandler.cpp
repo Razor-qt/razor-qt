@@ -137,14 +137,17 @@ NotificationHandler::NotificationHandler(QObject *parent) :
     QObject(parent),
     d_ptr(new NotificationHandlerPrivate)
 {
+    d_func()->createDefaultSettings();
+
+
     QString val = d_func()->m_settings.value("notification_type").toString();
     //TODO: add qml widget
-//    if ( val == "qml" )
-//        d_func()->m_pView = new NotificationView(this);
-//    else if( val == "qwidget")
+    if ( val == "qml" )
+        d_func()->m_pView.reset( new QmlNotificationView(this) );
+    else if( val == "qwidget")
+        d_func()->m_pView.reset( new WidgetNotification(this) );
 
-    d_func()->createDefaultSettings();
-    d_func()->m_pView.reset( new WidgetNotification(this) );
+    connect ( d_func()->m_pView->notifier(), SIGNAL(notificationShowned(quint32)), this, SLOT(notificationShown(quint32)));
 }
 
 NotificationHandler::~NotificationHandler()
@@ -185,10 +188,6 @@ void NotificationHandler::addNotification(const Notification &pN)
             n._pTimeout = QSharedPointer<NotificationTimeout>(new NotificationTimeout);
             n._pTimeout->setNotification(n._notification);
             connect ( n._pTimeout.data(), SIGNAL(timeout()), this, SLOT(removeNotificationSlot()));
-
-            //FIXME: don't start timer here, as
-            // handler don't know if notification is shown
-            n._pTimeout->start();
         }
         d_func()->m_notifications.append(n);
         d_func()->m_pView->addNotification(n._notification);
@@ -231,4 +230,12 @@ void NotificationHandler::removeNotificationSlot()
     NotificationTimeout* pT = qobject_cast<NotificationTimeout*> ( sender() );
     qDebug() << " Notification timeout id=" <<pT->notification().id();
     d_func()->m_pView->removeNotification(pT->notification());
+}
+
+void NotificationHandler::notificationShown(quint32 id)
+{
+    if ( d_func()->containsNotification(id) )
+    {
+        d_func()->findNotification(id)._pTimeout->start();
+    }
 }

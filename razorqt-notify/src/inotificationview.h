@@ -15,7 +15,6 @@ class INotificationView
 public:
     virtual ~INotificationView(){}
 
-
     /**
      * @brief adds notification to View
      * @param pN notification. INotificationView will not free memory
@@ -24,8 +23,7 @@ public:
 
     virtual void removeNotification( const Notification&  pN ) = 0 ;
 
-    // virtual methods to override
-
+    virtual QObject* notifier() = 0 ;
 
     /**
      * @brief return number of currently displayed notifications

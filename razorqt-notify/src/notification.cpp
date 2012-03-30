@@ -8,6 +8,8 @@
 #include <QDir>
 
 #include "razorsettings.h"
+#include "xdgicon.h"
+
 
 
 namespace
@@ -104,7 +106,7 @@ QPixmap Notification::icon() const
         if ( !bFoundInPath )
         {
             qDebug() << "Icon was not found in path, assigning default one";
-            pixmap = QPixmap (":/defaultIcon.png");
+            pixmap = QPixmap (XdgIcon::defaultApplicationIcon().pixmap(QSize(64,64)));
             if ( pixmap.isNull() )
             {
                 qWarning() << "Unable to get any pixmap, even default one";

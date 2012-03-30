@@ -1,7 +1,6 @@
 
 set( qmlnotification_src
     notificationview.cpp
-    ../debug_helpers.cpp
 )
 
 set( qmlnotification_moc
