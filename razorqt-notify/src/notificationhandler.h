@@ -5,6 +5,7 @@
 #include <QPointer>
 #include <QSharedPointer>
 
+
 #include "notification.h"
 
 class NotificationView ;
@@ -28,12 +29,6 @@ public:
       */
     void addNotification(const Notification &pN);
 
-    /**
-      * finds notification by id
-      * @param id id of notifications
-      * @return pointer to found notification, NULL if not found
-      */
-    Notification* findNotification( quint32 id ) const;
 
     /**
      * @brief removes notification.

@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QFileSystemWatcher>
+#include <QDebug>
 
 namespace
 {
@@ -110,7 +111,7 @@ public:
             t = eIconOnlyNotification ;
         }
 
-        QWidget * pRet = new QWidget();
+        QWidget * pRet = new QWidget;
         QString summary;
         QPixmap p = pN.icon();
         switch(t)
@@ -125,7 +126,6 @@ public:
             {
                 summary = "<b>%1</b>";
                 summary = summary.arg(pN.summary());
-                m_normal.summaryLabel->setText(pN.summary());
             }
 
             if(!pN.body().isEmpty())
@@ -136,10 +136,12 @@ public:
                 }
                 summary.append(pN.body());
             }
+            m_normal.summaryLabel->setText(summary);
             break;
         case eProgressBarNotification:
             m_progressNotification.setupUi(pRet);
             m_progressNotification.iconLabel->setPixmap(p.scaled(scIconSize,scIconSize,Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
             m_progressNotification.progressBar->setValue(pN.hints()["value"].toInt());
             break ;
         }
@@ -185,9 +187,6 @@ WidgetNotification::WidgetNotification(QObject *parent):
     {
         setStyleSheet(RazorTheme::instance()->qss("notifications"));
     }
-
-    // connect to settings changed
-    qDebug() << " Connecting to settings";
 
     const QString& fileName = d_func()->m_settings.fileName();
 
@@ -246,7 +245,6 @@ void WidgetNotification::addToView(const Notification&  pN)
 
     d_func()->m_pNot = d_func()->notificationWidget(pN);
     d_func()->m_pNotificationUi.verticalLayout_2->addWidget(d_func()->m_pNot);
-
 
     showNotification();
 

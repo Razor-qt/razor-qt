@@ -1,5 +1,6 @@
 #include "qtnlog.h"
 #include "notification.h"
+#include <QDebug>
 
 QDebug operator<< ( QDebug dbg, const std::string& str)
 {

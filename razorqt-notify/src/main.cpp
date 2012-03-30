@@ -53,36 +53,34 @@ QNotificationService::QNotificationService(int argc, char *argv[]):
 void QNotificationService::start()
 {
     QApplication* pCoreApp = application();
-    INFO("Daemon started!");
+    qDebug() << "Daemon started!";
 
     try
     {
         m_pConnector = new QtnDbusConnector(pCoreApp);
-        TRACE("m_pConnector=" << m_pConnector);
+        qDebug() << "m_pConnector=" << m_pConnector;
 
         m_pConnector->connectToDbus();
     }
     catch ( const std::exception& ex)
     {
-        WARN("Exception caught ex.what()" << ex.what());
+        qWarning() << "Exception caught ex.what()" << ex.what();
         stop();
     }
 }
 
 int main(int argc, char *argv[])
 {
-    INFO("Starting qtnot2 argc=" << argc << " argv[0]=" << argv[0]);
+    qDebug() << "Starting qtnot2 argc=" << argc << " argv[0]=" << argv[0];
     Q_INIT_RESOURCE(images);
     if ( argc == 2)
     {
-        INFO(argv[1]);
         std::string arg(argv[1]);
         if ( arg.compare("--no-daemon")==0)
         {
 
             QApplication app( argc,argv );
             Q_INIT_RESOURCE(images);
-            INFO("Daemon started!");
             int iRet = 0 ;
             try
             {
@@ -93,7 +91,7 @@ int main(int argc, char *argv[])
             }
             catch( const std::exception& ex)
             {
-                FATAL(" Caught exception. ex.what()=" << ex.what());
+                qWarning() << "Caught exception. ex.what()=" << ex.what();
             }
 
             return iRet ;

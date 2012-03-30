@@ -54,28 +54,23 @@ void QtnDbusConnector::connectToDbus()
     QDBusConnection connection = QDBusConnection::connectToBus(QDBusConnection::SessionBus, g_scFreedesktopNotificationName);
     if ( scbForceDisconnect )
     {
-        if (connection.unregisterService(g_scFreedesktopNotificationName))
+        if (!connection.unregisterService(g_scFreedesktopNotificationName))
         {
-            INFO("Unregistered previous service");
-        }
-        else
-        {
-            INFO("Unable to unregistered previous service");
+            qDebug() << "Unable to unregistered previous service";
             // this is ok, we can still register
         }
     }
 
-    INFO("We're connected? isConnected()=" << connection.isConnected() );
     if (!connection.registerService(g_scFreedesktopNotificationName))
     {
-        WARN("Cant register service " << g_scFreedesktopNotificationName << " error="
-             << QDBusError::errorString(connection.lastError().type()).toStdString());
+        qWarning() << "Cant register service " << g_scFreedesktopNotificationName << " error="
+             << QDBusError::errorString(connection.lastError().type()).toStdString();
         throw std::logic_error("Cant register new service");
     }
 
     if (!connection.registerObject("/org/freedesktop/Notifications", d_func()->m_pApp, QDBusConnection::ExportAdaptors))
     {
-        WARN("Cant register object = " << QDBusError::errorString(connection.lastError().type()).toStdString());
+        qWarning() << "Cant register object = " << QDBusError::errorString(connection.lastError().type()).toStdString();
         throw std::logic_error("Cant register object");
     }
 }
@@ -83,23 +78,27 @@ void QtnDbusConnector::connectToDbus()
 QStringList QtnDbusConnector::GetCapabilities()
 {
     QStringList lst;
-    lst << "body" << "body-markup" << "body-hyperlinks" << "body-images" << "actions" << "icon-static" << "image/svg+xml" << "private-synchronous" << "append"  << "x-canonical-private-synchronous";
+    lst << "body" << "body-markup" << "body-hyperlinks" << "body-images"
+        << "actions" << "icon-static" << "image/svg+xml" << "private-synchronous"
+        << "append"  << "x-canonical-private-synchronous" << "x-canonical-private-icon-only";
     return lst;
 }
 
 QString QtnDbusConnector::GetServerInformation(QString &vendor, QString &version, QString &spec_version)
 {
-    vendor = "Qt notification daemon 2";
-    version = "0.1";
-    spec_version = "0.1";
+    vendor = "Razor-qt notification system";
+    version = "0.2";
+    spec_version = "0.2";
     return "";
 }
 
 quint32 QtnDbusConnector::Notify(QString app_name, unsigned id, QString icon, QString summary, QString body, QStringList actions, QVariantMap hints, int timeout)
 {
-    TRACE("QtnDbusConnector::Notify app_name=" << app_name.toStdString() << " id =" << id << " summary=" << summary.toStdString() );
     quint32 localid = id ;
-    localid = d_func()->recalculateId(id);
+
+    // if replace id is 0, then add some id
+    if ( id == 0 )
+        localid = d_func()->recalculateId(id);
 
     Notification notification = Notification(app_name, localid, icon, summary, body, actions, hints, timeout);
     d_func()->m_pHandler->addNotification(notification);
@@ -119,6 +118,5 @@ void QtnDbusConnector::hide()
 
 void QtnDbusConnector::CloseNotification(quint32 id)
 {
-    INFO("QtnDbusConnector::CloseNotification(unsigned id="<<id<<")");
     d_func()->m_pHandler->removeNotification(id);
 }

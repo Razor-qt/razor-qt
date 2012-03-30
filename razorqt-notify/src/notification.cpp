@@ -75,7 +75,6 @@ QPixmap Notification::icon() const
         RazorSettings s ("razorqt-notify");
 
         path = s.value("notification_icons").toString();
-        TRACE("Looking for icon= " <<icon.toStdString() << "in path "<< path.toStdString() );
         bool bFoundInPath = false ;
 
         if ( QDir().exists(path)){
@@ -83,7 +82,6 @@ QPixmap Notification::icon() const
             if ( QFile::exists(pathToIcon) ) {
                 pixmap.load(pathToIcon);
                 if ( !pixmap.isNull() ){
-                    TRACE("Icon " << pathToIcon.toStdString() << " does exists using this one");
                     bFoundInPath = true ;
                 }
             }
@@ -100,18 +98,20 @@ QPixmap Notification::icon() const
                 bFoundInPath = true ;
             }
         }
+        // TODO: if icons not found, try to search for application icon ??
         // FIXME: for now, icons are embedded in this executable
 
         if ( !bFoundInPath )
         {
-            WARN("Icon was not found in path, assigning default one");
+            qDebug() << "Icon was not found in path, assigning default one";
             pixmap = QPixmap (":/defaultIcon.png");
             if ( pixmap.isNull() )
             {
                 qWarning() << "Unable to get any pixmap, even default one";
             }
-            else{
-                TRACE( "Found default icon=" << path.toStdString() << " and it's sized " << pixmap.width() << " x " << pixmap.height());
+            else
+            {
+                qDebug() <<  "Found default icon=" << path.toStdString() << " and it's sized " << pixmap.width() << " x " << pixmap.height();
             }
         }
     }
