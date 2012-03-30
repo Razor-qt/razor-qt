@@ -56,6 +56,7 @@ public:
     QPersistentModelIndex customCommandIndex() const { return mCustomCommandIndex; }
 public slots:
     void rebuild();
+    void clearHistory();
 
 private:
     QList<CommandProvider*> mProviders;
@@ -87,6 +88,7 @@ public:
 
 public slots:
     void rebuild();
+    void clearHistory();
 
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
