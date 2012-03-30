@@ -189,7 +189,7 @@ protected slots:
       This slot is called when values are changed in the plugin settings.
       Reimplement this function to your plugin corresponded the new settings.
     **/
-    virtual void settigsChanged() {}
+    virtual void settingsChanged() {}
 
     /**
       This slot is called when main panel is resized or moved.

@@ -73,7 +73,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
 
     q->setMinimumSize(1, 1);
 
-    connect(mSettings, SIGNAL(settigsChanged()), q, SLOT(settigsChanged()));
+    connect(mSettings, SIGNAL(settingsChanged()), q, SLOT(settingsChanged()));
 
     q->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(q, SIGNAL(customContextMenuRequested(const QPoint&)), q, SLOT(showContextMenu(QPoint)));
@@ -84,7 +84,7 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
     layout->setMargin(0);
     layout->setContentsMargins(0, 0, 0, 0);
     q->setLayout(layout);
-    q->settigsChanged();
+    q->settingsChanged();
 }
 
 

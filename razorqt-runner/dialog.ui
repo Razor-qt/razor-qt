@@ -79,11 +79,7 @@
        </widget>
       </item>
       <item>
-       <widget class="CommandComboBox" name="commandEd">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="commandEd"/>
       </item>
       <item>
        <widget class="QToolButton" name="closeButton">
@@ -145,11 +141,6 @@
    <extends>QWidget</extends>
    <header>widgets.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>CommandComboBox</class>
-   <extends>QComboBox</extends>
-   <header>widgets.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

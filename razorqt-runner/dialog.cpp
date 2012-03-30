@@ -60,19 +60,18 @@ Dialog::Dialog(QWidget *parent) :
     mGlobalShortcut(new QxtGlobalShortcut(this))
 {
     ui->setupUi(this);
+    setWindowTitle("Razor Runner");
+
     connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(update()));
 
     connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(hide()));
 
-    connect(mSettings, SIGNAL(settigsChanged()), this, SLOT(applySettings()));
-
+    connect(mSettings, SIGNAL(settingsChanged()), this, SLOT(applySettings()));
 
     ui->commandEd->installEventFilter(this);
-    ui->commandEd->setInsertPolicy(QComboBox::NoInsert);
-    ui->commandEd->setCompleter(0);
 
     connect(ui->commandEd, SIGNAL(textChanged(QString)), this, SLOT(setFilter(QString)));
-    connect(ui->commandEd->lineEdit(), SIGNAL(returnPressed()), this, SLOT(runCommand()));
+    connect(ui->commandEd, SIGNAL(returnPressed()), this, SLOT(runCommand()));
 
 
     mCommandItemModel = new CommandItemModel(this);
@@ -166,7 +165,7 @@ bool Dialog::editKeyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_Up:
     case Qt::Key_PageUp:
-        if (ui->commandEd->currentText().isEmpty() &&
+        if (ui->commandEd->text().isEmpty() &&
             ui->commandList->isVisible() &&
             ui->commandList->currentIndex().row() == 0
            )
@@ -179,7 +178,7 @@ bool Dialog::editKeyPressEvent(QKeyEvent *event)
 
     case Qt::Key_Down:
     case Qt::Key_PageDown:
-        if (ui->commandEd->currentText().isEmpty() &&
+        if (ui->commandEd->text().isEmpty() &&
             ui->commandList->isHidden()
            )
         {
@@ -311,6 +310,7 @@ void Dialog::setFilter(const QString &text, bool onlyHistory)
     if (mCommandItemModel->isOutDated())
         mCommandItemModel->rebuild();
 
+    mCommandItemModel->setCommand(text);
     mCommandItemModel->showOnlyHistory(onlyHistory);
     mCommandItemModel->setFilterWildcard(text);
 
@@ -344,7 +344,7 @@ void Dialog::runCommand()
     }
     else
     {
-        QString command = ui->commandEd->currentText();
+        QString command = ui->commandEd->text();
         res = QProcess::startDetached(command);
         if (res)
         {
@@ -355,7 +355,7 @@ void Dialog::runCommand()
     if (res)
     {
         hide();
-        ui->commandEd->clearEditText();
+        ui->commandEd->clear();
     }
 
 }

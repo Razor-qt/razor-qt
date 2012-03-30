@@ -97,13 +97,15 @@ RazorApplication::RazorApplication(int &argc, char** argv, const QString &styles
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
 
+    QString styleSheet;
     if (!stylesheetKey.isEmpty())
     {
-        setStyleSheet(razorTheme->qss(stylesheetKey));
+        styleSheet = razorTheme->qss(stylesheetKey);
     }
 
     // TODO/FIXME: maybe move it into global config? RazorSettings::globalSettings()?
     RazorSettings s("desktop");
     bool singleClick = s.value("icon-launch-mode", "singleclick").toString() == "singleclick";
-    setStyleSheet(QString("QAbstractItemView {activate-on-singleclick : %1; }").arg(singleClick ? 1 : 0));
+    styleSheet += QString("QAbstractItemView {activate-on-singleclick : %1; }").arg(singleClick ? 1 : 0);
+    setStyleSheet(styleSheet);
 }

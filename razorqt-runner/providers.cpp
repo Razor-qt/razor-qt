@@ -37,7 +37,10 @@
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
+#include <QtCore/QDir>
+#include <QtGui/QApplication>
 #include <razorqt-runner/providers.h>
+#include <wordexp.h>
 
 #define MAX_HISORTY 100
 
@@ -45,37 +48,14 @@
 /************************************************
 
  ************************************************/
-CommandProviderItem::CommandProviderItem()
+unsigned int CommandProviderItem::stringRank(const QString str, const QString pattern) const
 {
+    int n = str.indexOf(pattern, 0, Qt::CaseInsensitive);
+    if (n<0)
+        return 0;
+
+    return MAX_RANK - ((str.length() - pattern.length()) + n * 5);
 }
-
-
-/************************************************
-
- ************************************************/
-CommandProviderItem::~CommandProviderItem()
-{
-}
-
-
-/************************************************
-
- ************************************************/
-void CommandProviderItem::setTile(const QString &title)
-{
-    mTitle = title;
-}
-
-
-/************************************************
-
- ************************************************/
-void CommandProviderItem::setComment(const QString &comment)
-{
-    mComment = comment;
-}
-
-
 
 
 /************************************************
@@ -104,11 +84,10 @@ AppLinkItem::AppLinkItem(const QDomElement &element):
         CommandProviderItem()
 {
     mIconName = element.attribute("icon");
-    setTile(element.attribute("title"));
-    setComment(element.attribute("genericName"));
-    setToolTip(element.attribute("comment"));
+    mTitle = element.attribute("title");
+    mComment = element.attribute("genericName");
+    mToolTip = element.attribute("comment");
     mCommand = QFileInfo(element.attribute("exec")).baseName().section(" ", 0, 0);
-    mSearchText = element.attribute("title") + " " + mCommand;
     mDesktopFile = element.attribute("desktopFile");
 }
 
@@ -118,8 +97,8 @@ AppLinkItem::AppLinkItem(const QDomElement &element):
  ************************************************/
 void AppLinkItem::updateIcon()
 {
-    if (icon().isNull())
-        setIcon(XdgIcon::fromTheme(mIconName));
+    if (mIcon.isNull())
+        mIcon = XdgIcon::fromTheme(mIconName);
 }
 
 
@@ -128,16 +107,26 @@ void AppLinkItem::updateIcon()
  ************************************************/
 void AppLinkItem::operator=(const AppLinkItem &other)
 {
-    setTile(other.tile());
-    setComment(other.comment());
-    setToolTip(other.toolTip());
+    mTitle = other.title();
+    mComment = other.comment();
+    mToolTip = other.toolTip();
 
     mCommand = other.mCommand;
-    mSearchText = other.mSearchText;
     mDesktopFile = other.mDesktopFile;
 
     mIconName = other.mIconName;
-    setIcon(other.icon());
+    mIcon = other.icon();
+}
+
+
+/************************************************
+
+ ************************************************/
+unsigned int AppLinkItem::rank(const QString &pattern) const
+{
+    return qMax(stringRank(mCommand, pattern),
+                stringRank(mTitle, pattern)
+               );
 }
 
 
@@ -162,7 +151,8 @@ bool AppLinkItem::compare(const QRegExp &regExp) const
     QRegExp re(regExp);
 
     re.setCaseSensitivity(Qt::CaseInsensitive);
-    return mSearchText.contains(re);
+    return mCommand.contains(re) ||
+           mTitle.contains(re) ;
 }
 
 
@@ -264,9 +254,9 @@ void AppLinkProvider::update()
 HistoryItem::HistoryItem(const QString &command):
         CommandProviderItem()
 {
-    setIcon(XdgIcon::defaultApplicationIcon());
-    setTile(command);
-    setComment(QObject::tr("History"));
+    mIcon = XdgIcon::defaultApplicationIcon();
+    mTitle = command;
+    mComment = QObject::tr("History");
     mCommand = command;
 }
 
@@ -292,7 +282,13 @@ bool HistoryItem::compare(const QRegExp &regExp) const
 }
 
 
+/************************************************
 
+ ************************************************/
+unsigned int HistoryItem::rank(const QString &pattern) const
+{
+    return stringRank(mCommand, pattern);
+}
 
 
 /************************************************
@@ -341,18 +337,142 @@ void HistoryProvider::AddCommand(const QString &command)
     }
 }
 
+
+
+/************************************************
+
+ ************************************************/
+CustomCommandItem::CustomCommandItem():
+    CommandProviderItem()
+{
+    mIcon = XdgIcon::fromTheme("utilities-terminal");
+}
+
+
+/************************************************
+
+ ************************************************/
+QString which(const QString &progName)
+{
+    if (progName.isEmpty())
+        return "";
+
+    if (progName.startsWith(QDir::separator()))
+    {
+        if (QFileInfo(progName).isExecutable())
+            QFileInfo(progName).absoluteFilePath();
+    }
+
+    QStringList dirs = QString(getenv("PATH")).split(":");
+
+    foreach (QString dir, dirs)
+    {
+        if (QFileInfo(QDir(dir), progName).isExecutable())
+            return QFileInfo(QDir(dir), progName).absoluteFilePath();
+    }
+
+    return "";
+}
+
+
+/************************************************
+
+ ************************************************/
+QString expandCommand(const QString &command, QStringList *arguments=0)
+{
+    QString program;
+    wordexp_t words;
+
+    if (wordexp(command.toLocal8Bit().data(), &words, 0) != 0)
+        return "";
+
+    char **w;
+    w = words.we_wordv;
+    program = QString::fromLocal8Bit(w[0]);
+
+    if (arguments)
+    {
+        for (size_t i = 1; i < words.we_wordc; i++)
+            *arguments << w[i];
+    }
+
+    wordfree(&words);
+    return program;
+}
+
+
+/************************************************
+
+ ************************************************/
+void CustomCommandItem::setCommand(const QString &command)
+{
+    mCommand = command;
+    mTitle = mCommand;
+
+    QString program  = which(expandCommand(command));
+
+    if (!program.isEmpty())
+        mComment = QString("%1 %2").arg(program, command.section(' ', 1));
+    else
+        mComment = "";
+
+}
+
+
+/************************************************
+
+ ************************************************/
+bool CustomCommandItem::run() const
+{
+    QStringList args;
+    QString program  = expandCommand(mCommand, &args);
+    if (program.isEmpty())
+        return false;
+
+    return QProcess::startDetached(program, args);
+}
+
+
+/************************************************
+
+ ************************************************/
+bool CustomCommandItem::compare(const QRegExp &regExp) const
+{
+    return !mComment.isEmpty();
+}
+
+
+/************************************************
+
+ ************************************************/
+unsigned int CustomCommandItem::rank(const QString &pattern) const
+{
+    return 0;
+}
+
+
+/************************************************
+
+ ************************************************/
+CustomCommandProvider::CustomCommandProvider():
+        CommandProvider()
+{
+    mItem = new CustomCommandItem();
+    append(mItem);
+}
+
 #ifdef VBOX_ENABLED
 VirtualBoxItem::VirtualBoxItem(const QString & MachineName , const QIcon & Icon):
         CommandProviderItem()
 {
-    setTile (MachineName);
-    setIcon (Icon);
+    mTitle = MachineName;
+    mIcon = Icon;
 }
 
 bool VirtualBoxItem::run() const
 {
     QStringList arguments;
-    arguments << "startvm" << tile();
+    arguments << "startvm" << title();
     return QProcess::startDetached ("VBoxManage" , arguments);
 }
 
@@ -360,8 +480,13 @@ bool VirtualBoxItem::compare(const QRegExp &regExp) const
 {
     QRegExp re(regExp);
     re.setCaseSensitivity(Qt::CaseInsensitive);
-    //qDebug() << "Title: " << re.indexIn (tile ());
-    return (-1 != re.indexIn (tile ()));
+    //qDebug() << "Title: " << re.indexIn (title ());
+    return (-1 != re.indexIn (title ()));
+}
+
+unsigned int VirtualBoxItem::rank(const QString &pattern) const
+{
+    return stringRank(mTitle, pattern);
 }
 
 ///////
@@ -508,8 +633,8 @@ bool VirtualBoxProvider::isOutDated() const
 MathItem::MathItem():
         CommandProviderItem()
 {
-    setToolTip(QObject::tr("Mathematics"));
-    setIcon(XdgIcon::fromTheme("accessories-calculator"));
+    mToolTip =QObject::tr("Mathematics");
+    mIcon = XdgIcon::fromTheme("accessories-calculator");
 }
 
 
@@ -537,7 +662,7 @@ bool MathItem::compare(const QRegExp &regExp) const
         if (res.isNumber())
         {
             MathItem *self=const_cast<MathItem*>(this);
-            self->setTile(s + " = " + res.toString());
+            self->mTitle = s + " = " + res.toString();
             return true;
         }
     }
@@ -545,6 +670,13 @@ bool MathItem::compare(const QRegExp &regExp) const
     return false;
 }
 
+/************************************************
+
+ ************************************************/
+unsigned int MathItem::rank(const QString &pattern) const
+{
+    return stringRank(mTitle, pattern);
+}
 
 
 /************************************************

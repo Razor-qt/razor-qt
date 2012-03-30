@@ -73,7 +73,7 @@ RazorTaskBar::RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 
     mRootWindow = QX11Info::appRootWindow();
 
-    settigsChanged();
+    settingsChanged();
 }
 
 
@@ -338,7 +338,7 @@ void RazorTaskBar::setButtonMaxWidth()
 /************************************************
 
  ************************************************/
-void RazorTaskBar::settigsChanged()
+void RazorTaskBar::settingsChanged()
 {
     buttonMaxWidth = settings().value("maxWidth", 400).toInt();
     QString s = settings().value("buttonStyle").toString().toUpper();

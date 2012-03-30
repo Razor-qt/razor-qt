@@ -37,7 +37,7 @@ RazorConfigDialog::RazorConfigDialog(const QString& title, RazorSettings* settin
     setWindowTitle(title);
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), SLOT(dialogButtonsAction(QAbstractButton*)));
     ui->moduleList->setVisible(false);
-    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), this, SLOT(updateIcons()));
+    connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(updateIcons()));
 }
 
 void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QString& iconName)

@@ -68,6 +68,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDesktop);
     setFrameShape(QFrame::NoFrame);
+    setWindowTitle("Razor Desktop");
     
     m_power = new PowerManager(this);
     m_screenSaver = new ScreenSaver(this);

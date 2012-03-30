@@ -45,7 +45,7 @@ IconThemeConfig::IconThemeConfig(RazorSettings* settings):
     connect(iconThemeList, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
             this, SLOT(iconThemeSelected(QTreeWidgetItem*,int)));
 
-    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()),
+    connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()),
             this, SLOT(update()));
 }
 

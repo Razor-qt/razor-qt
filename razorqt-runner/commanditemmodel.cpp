@@ -32,6 +32,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
 #include <QtCore/QDebug>
+#include <limits.h>
 
 
 /************************************************
@@ -110,6 +111,12 @@ bool CommandItemModel::filterAcceptsRow(int sourceRow, const QModelIndex &/*sour
  ************************************************/
 bool CommandItemModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+    if (left == mSourceModel->customCommandIndex())
+        return true;
+
+    if (right == mSourceModel->customCommandIndex())
+        return false;
+
     if (mOnlyHistory)
         return left.row() < right.row();
     else
@@ -123,25 +130,29 @@ bool CommandItemModel::lessThan(const QModelIndex &left, const QModelIndex &righ
 QModelIndex CommandItemModel::appropriateItem(const QString &pattern) const
 {
     QModelIndex res;
-    int delta = 0xFFFF;
+    unsigned int rank = 0;
 
     int cnt = rowCount();
+
     for (int i=0; i<cnt; ++i)
     {
         QModelIndex ind = index(i,0);
         QModelIndex srcIndex = mapToSource(ind);
+        if (srcIndex == mSourceModel->customCommandIndex())
+            continue;
+
         const CommandProviderItem *item = mSourceModel->command(srcIndex);
         if (!item)
             continue;
 
-        int d = item->tile().indexOf(pattern, 0, Qt::CaseInsensitive);
-        if (d<delta)
+        unsigned int r = item->rank(pattern);
+        if (r > rank)
         {
             res = ind;
-            delta = d;
+            rank = r;
         }
 
-        if (delta==0)
+        if (rank >= MAX_RANK)
             break;
     }
 
@@ -169,8 +180,14 @@ void CommandItemModel::rebuild()
 CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
     QAbstractListModel(parent)
 {
+    mCustomCommandProvider = new CustomCommandProvider;
+    mProviders.append(mCustomCommandProvider);
+    rebuild();
+    mCustomCommandIndex = index(0, 0);
+
     mHistoryProvider = new HistoryProvider();
     mProviders.append(mHistoryProvider);
+
     mProviders.append(new AppLinkProvider());
 #ifdef MATH_ENABLED
     mProviders.append(new MathProvider());
@@ -230,7 +247,7 @@ QVariant CommandSourceItemModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-        return QString("<b>%1</b><br>\n%2\n").arg(item->tile(), item->comment());
+        return QString("<b>%1</b><br>\n%2\n").arg(item->title(), item->comment());
 
     case Qt::DecorationRole:
         return item->icon();

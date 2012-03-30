@@ -67,7 +67,7 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     m_key = new QxtGlobalShortcut(this);
     m_localKey = new QShortcut(QKeySequence::fromString(DEFAULT_SHORTCUT), this, SLOT(selectNextItem()), SLOT(selectNextItem()));
 
-    connect(m_settings, SIGNAL(settigsChanged()), this, SLOT(applySettings()));
+    connect(m_settings, SIGNAL(settingsChanged()), this, SLOT(applySettings()));
     connect(m_key, SIGNAL(activated()), this, SLOT(handleApps()));
     
     applySettings();

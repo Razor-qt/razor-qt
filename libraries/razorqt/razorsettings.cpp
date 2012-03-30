@@ -102,7 +102,7 @@ RazorSettings::RazorSettings(const QString& module, QObject* parent) :
 
  ************************************************/
 RazorSettings::RazorSettings(const QSettings* parentSettings, const QString& subGroup, QObject* parent):
-    QSettings(parentSettings->fileName(), QSettings::IniFormat, parent),
+    QSettings(parentSettings->organizationName(), parentSettings->applicationName(), parent),
     d_ptr(new RazorSettingsPrivate(this))
 {
     beginGroup(subGroup);
@@ -113,7 +113,7 @@ RazorSettings::RazorSettings(const QSettings* parentSettings, const QString& sub
 
  ************************************************/
 RazorSettings::RazorSettings(const QSettings& parentSettings, const QString& subGroup, QObject* parent):
-    QSettings(parentSettings.fileName(), QSettings::IniFormat, parent),
+    QSettings(parentSettings.organizationName(), parentSettings.applicationName(), parent),
     d_ptr(new RazorSettingsPrivate(this))
 {
     beginGroup(subGroup);
@@ -141,7 +141,7 @@ bool RazorSettings::event(QEvent *event)
 {
     if (event->type() == QEvent::UpdateRequest)
     {
-            emit settigsChanged();
+            emit settingsChanged();
     }
 
     return QSettings::event(event);
@@ -506,5 +506,5 @@ void GlobalRazorSettings::fileChanged()
         emit razorThemeChanged();
     }
 
-    emit settigsChanged();
+    emit settingsChanged();
 }

@@ -118,6 +118,7 @@ RazorPanel::RazorPanel(QWidget *parent) :
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
+    setWindowTitle("Razor Panel");
 
     setObjectName("RazorPanel");
 }
@@ -150,7 +151,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChangeds()));
     //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
 
-    connect(RazorSettings::globalSettings(), SIGNAL(settigsChanged()), q_ptr, SLOT(update()));
+    connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), q_ptr, SLOT(update()));
 }
 
 
