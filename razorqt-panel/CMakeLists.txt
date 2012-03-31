@@ -31,6 +31,7 @@ setByDefault(MOUNT_PLUGIN Yes)
 setByDefault(HELLOWORLD_PLUGIN No)
 setByDefault(CPULOAD_PLUGIN Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
+setByDefault(SENSORS_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -119,7 +120,7 @@ if (CPULOAD_PLUGIN)
 	if ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
 		set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "CpuLoad")
 		add_subdirectory(plugin-cpuload)
-	else ()
+  else ()
 		message(STATUS "")
 		message(STATUS "panel's CPU load plugin requires libstatgrab")
 		message(STATUS "")
@@ -138,6 +139,20 @@ if (NETWORKMONITOR_PLUGIN)
 		message(STATUS "")
 	endif ( NOT(${STATGRAB_LIB} MATCHES "NOTFOUND" ))
 endif (NETWORKMONITOR_PLUGIN)
+
+if (SENSORS_PLUGIN)
+  FIND_LIBRARY(SENSORS_LIB sensors)
+
+  if ( NOT(${SENSORS_LIB} MATCHES "NOTFOUND" ))
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Sensors")
+    add_subdirectory(plugin-sensors)
+  else ()
+    message(STATUS "")
+    message(STATUS "Sensors plugin requires lm_sensors")
+    message(STATUS "")
+  endif ( NOT(${SENSORS_LIB} MATCHES "NOTFOUND" ))
+
+endif (SENSORS_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
