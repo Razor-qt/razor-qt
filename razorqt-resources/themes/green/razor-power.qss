@@ -32,28 +32,28 @@ QToolButton:hover {
 
 
 #cancelButton {
-	qproperty-icon: url(cancel.png);
+	qproperty-icon: url(razor-power/cancel.png);
     padding: 4px;
 }
 
 #hibernateButton {
-	qproperty-icon: url(hibernate.png);
+	qproperty-icon: url(razor-power/hibernate.png);
 }
 
 #logoutButton {
-	qproperty-icon: url(logout.png);
+	qproperty-icon: url(razor-power/logout.png);
 }
 
 #rebootButton {
-	qproperty-icon: url(reboot.png);
+	qproperty-icon: url(razor-power/reboot.png);
 }
 
 #shutdownButton {
-	qproperty-icon: url(shutdown.png);
+	qproperty-icon: url(razor-power/shutdown.png);
 }
 
 #suspendButton {
-	qproperty-icon: url(suspend.png);
+	qproperty-icon: url(razor-power/suspend.png);
 }
 
 
