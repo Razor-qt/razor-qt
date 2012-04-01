@@ -52,7 +52,3 @@ target_link_libraries(${PROJECT_NAME}  ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
-
-razor_config_register(${DESKTOP_FILES})
-
-

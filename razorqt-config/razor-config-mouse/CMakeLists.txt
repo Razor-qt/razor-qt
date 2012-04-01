@@ -55,8 +55,3 @@ target_link_libraries ( razor-config-mouse  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBR
 
 INSTALL(TARGETS razor-config-mouse RUNTIME DESTINATION bin)
 install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
-
-#razor_config_register(${CMAKE_INSTALL_PREFIX}/share/applications/razor-config-mouse.desktop)
-razor_config_register(${DESKTOP_FILES})
-
-
