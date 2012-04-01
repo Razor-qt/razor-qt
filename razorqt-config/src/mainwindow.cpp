@@ -87,6 +87,25 @@ public:
     void start() {};
 };
 
+class HeaderDelegate: public QStyledItemDelegate
+{
+    QListWidget* mView;
+
+public:
+    explicit HeaderDelegate(QListWidget *parent)
+        : QStyledItemDelegate(parent),
+          mView(parent)
+    {
+    }
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QSize size = QStyledItemDelegate::sizeHint(option, index);
+        size.setWidth(mView->viewport()->width());
+        size.setHeight(size.height()*3);
+        return size;
+    }
+};
+
 class ItemDelegate: public QStyledItemDelegate
 {
     QListWidget* mView;
@@ -99,9 +118,9 @@ public:
     }
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
     {
-        QSize size = QStyledItemDelegate::sizeHint(option, index);
-        size.setWidth(mView->viewport()->width());
-        size.setHeight(size.height()*3);
+        QSize size; // = QStyledItemDelegate::sizeHint(option, index);
+        size.setWidth(88);
+        size.setHeight(88);
         return size;
     }
 };
@@ -116,6 +135,7 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     QDirIterator it("/usr/share/applications", QStringList() << "*.desktop", QDir::NoFilter, QDirIterator::Subdirectories);
     QString name;
     QString categories;
+    QString onlyShowIn;
     
     QHash<QString,QList<XdgDesktopFile*> > map;
     // ensure that razor goes first
@@ -131,7 +151,25 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
             delete xdg;
             continue;
         }
+
+        onlyShowIn = xdg->value("OnlyShowIn").toString();
+        if (!onlyShowIn.isEmpty()
+            && !onlyShowIn.contains("X-RAZOR") && !onlyShowIn.contains("RAZOR")
+            //&& !onlyShowIn.contains("YaST")
+           )
+        {
+            qDebug() << "NOT SHOWN" << name << onlyShowIn;
+            delete xdg;
+            continue;
+        }
         
+        // do not show self
+        if (xdg->value("Exec").toString() == "razor-config")
+        {
+            delete xdg;
+            continue;
+        }
+
         categories = xdg->value("Categories").toString();
         if (!categories.contains("Settings"))
         {
@@ -156,10 +194,11 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     foreach (QString title, map.keys())
     {
         new TitleItem(title, listWidget);
-        listWidget->setItemDelegateForRow(listWidget->count()-1, new ItemDelegate(listWidget));
+        listWidget->setItemDelegateForRow(listWidget->count()-1, new HeaderDelegate(listWidget));
         foreach (XdgDesktopFile*i, map[title])
         {
             new ConfigItem(i, listWidget);
+            listWidget->setItemDelegateForRow(listWidget->count()-1, new ItemDelegate(listWidget));
         }
     }
     
