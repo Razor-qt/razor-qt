@@ -87,6 +87,7 @@ public slots:
 protected:
     virtual void dragEnterEvent(QDragEnterEvent *event);
     virtual void dragLeaveEvent(QDragLeaveEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
     void nextCheckState();
     void contextMenuEvent( QContextMenuEvent* event);
