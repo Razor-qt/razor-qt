@@ -8,11 +8,6 @@ set( QT_USE_QTDBUS 1 )
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
-
-
-add_subdirectory(service)
-include_directories(service/)
-
 set( razorqtnotify_srcs
     src/notification.cpp
     src/notificationhandler.cpp
@@ -37,11 +32,10 @@ set( razorqtnotify_rsc
     images/images.qrc
 )
 
-include_directories(src/ ../libraries/razorqt ../libraries/qtxdg)
+include_directories(src/ ../libraries/razorqt ../libraries/qtxdg ../libraries/qtservice)
 
 add_subdirectory(src/qmlnotification)
 add_subdirectory(src/widgetnotification)
-
 
 set(libraries
     ${QT_LIBRARIES}
