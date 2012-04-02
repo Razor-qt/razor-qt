@@ -1,10 +1,12 @@
 
 set( widgetnotification_src
     widgetnotification.cpp
+    widgetnotificationnotifier.cpp
 )
 
 set( widgetnotification_moc
     widgetnotification.h
+    widgetnotificationnotifier.h
 )
 
 set( widgetnotification_ui

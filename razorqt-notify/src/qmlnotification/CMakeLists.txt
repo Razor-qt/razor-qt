@@ -1,14 +1,17 @@
 
 set( qmlnotification_src
     notificationview.cpp
-    ../debug_helpers.cpp
 )
 
 set( qmlnotification_moc
     notificationview.h
 )
 
-qt4_wrap_cpp(qmlnotification_moc_src ${qmlnotification_moc})
-add_library ( qmlnotifications SHARED ${qmlnotification_src} ${qmlnotification_moc_src} )
+set( qmlnotification_rsc
+    resources/resources.qrc
+)
 
-file(COPY NotificationUI DESTINATION ${CMAKE_BINARY_DIR})
+qt4_wrap_cpp(qmlnotification_moc_src ${qmlnotification_moc})
+qt4_add_resources(qmlnotification_rsc_src ${qmlnotification_rsc})
+add_library ( qmlnotifications STATIC ${qmlnotification_src} ${qmlnotification_moc_src} ${qmlnotification_rsc_src})
+

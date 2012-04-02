@@ -24,12 +24,7 @@
 
 #include "qtnlog.h"
 #include "qtndbusconnector.h"
-
-#ifdef LOG
-#include <log4cplus/helpers/loglog.h>
-#include <log4cplus/fileappender.h>
-#include <log4cplus/consoleappender.h>
-#endif
+#include "qmlnotification/notificationview.h"
 
 class QNotificationService : public QtService<QApplication>
 {
@@ -78,7 +73,6 @@ int main(int argc, char *argv[])
         std::string arg(argv[1]);
         if ( arg.compare("--no-daemon")==0)
         {
-
             QApplication app( argc,argv );
             Q_INIT_RESOURCE(images);
             int iRet = 0 ;
@@ -96,6 +90,25 @@ int main(int argc, char *argv[])
 
             return iRet ;
 
+        }
+    }
+    else if( argc == 3)
+    {
+        std::string arg2(argv[1]);
+        std::string arg3(argv[2]);
+        qDebug() << arg2 << arg3;
+        if ( arg2.compare("--no-daemon") == 0 && arg3.compare("--qml") ==0)
+        {
+            Q_INIT_RESOURCE(resources);
+            qDebug() << " qml backend";
+            QApplication app( argc, argv );
+            QDeclarativeView view ;
+            view.setSource(QUrl("qrc:/notification.qml"));
+            view.show();
+//            QmlNotificationView w ;
+
+//            w.show();
+            app.exec();
         }
     }
     else

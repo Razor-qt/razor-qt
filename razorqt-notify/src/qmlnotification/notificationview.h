@@ -1,42 +1,42 @@
 #ifndef NOTIFICATIONVIEW_H
 #define NOTIFICATIONVIEW_H
 
-#include <QWidget>
-#include <QMap>
+#include <QtDeclarative/QDeclarativeView>
+#include <QtCore/QMap>
 
 #include "inotificationview.h"
 
-class QDeclarativeView ;
 class Notification ;
 
-class NotificationView : public INotificationView
+class QmlNotificationView : public QDeclarativeView, public INotificationView
 {
     Q_OBJECT
 public:
-    explicit NotificationView(QObject* parent);
-    ~NotificationView();
+    explicit QmlNotificationView(QWidget* parent = NULL);
 
-    virtual void show();
-    virtual void hide() ;
+    virtual void addNotification(const Notification& pN)  ;
 
-    virtual void addToView( Notification* pN );
-    virtual int viewCount() const ;
+    virtual void removeNotification( const Notification&  pN ) ;
 
-    virtual QWidget* widget() { return m_pMainWidget ; }
+    virtual QObject* notifier()  ;
 
+    /**
+     * @brief return number of currently displayed notifications
+     */
+    virtual int viewCount() const  ;
 
-private slots:
-    void removedFromQml( int index ) ;
+    /**
+     * @brief show notification window
+     *
+     */
+    virtual void showNotification()  ;
+
+    /**
+     * @brief hides notification window
+     *
+     */
+    virtual void hideNotification()  ;
 private:
-    QDeclarativeView* m_pQmlView ;
-    QWidget* m_pMainWidget ;
-
-private:
-    void qmlAdd();
-    void qmlRemove(Notification *pN);
-    int  qmlCount() const;
-
-    virtual void remove(Notification* pN) ;
 };
 
 #endif // NOTIFICATIONVIEW_H

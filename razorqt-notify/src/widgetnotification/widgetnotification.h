@@ -2,7 +2,6 @@
 #define WIDGETNOTIFICATION_H
 
 #include "inotificationview.h"
-
 #include <QWidget>
 
 class QStackedWidget ;
@@ -15,7 +14,6 @@ class WidgetNotificationPrivate;
 class WidgetNotification : public QWidget, public INotificationView
 {
     Q_OBJECT
-
 public:
     explicit WidgetNotification(QObject* parent);
     ~WidgetNotification();
@@ -23,6 +21,7 @@ public:
     virtual void removeNotification( const Notification&  pN ) ;
     virtual void showNotification() ;
     virtual void hideNotification()  ;
+    virtual QObject* notifier();
     virtual int viewCount() const  ;
 private:
     virtual void addToView( const Notification&  pN )  ;
@@ -32,7 +31,6 @@ private slots:
 private:
     Q_DECLARE_PRIVATE(WidgetNotification)
     WidgetNotificationPrivate* const d_ptr ;
-    
 };
 
 #endif // WIDGETNOTIFICATION_H

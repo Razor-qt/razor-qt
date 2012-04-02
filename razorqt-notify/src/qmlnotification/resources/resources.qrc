@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>notification.qml</file>
+        <file>close.png</file>
+    </qresource>
+</RCC>

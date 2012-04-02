@@ -6,6 +6,7 @@
 #include "ui_normalNotification.h"
 #include "ui_notificationWithProgress.h"
 #include "razorsettings.h"
+#include "widgetnotificationnotifier.h"
 #include <QStackedWidget>
 #include <QVBoxLayout>
 #include <QLabel>
@@ -37,8 +38,8 @@ public:
         m_bShowing(true),
         m_settings("razorqt-notify"),
         m_currentNotification(0),
-
-        m_bEnableCompositing(true)
+        m_bEnableCompositing(false),
+        m_widgetNotifier( new WidgetNotificationNotifier)
     {
         QImage shadow_edge(":osd_shadow_edge.png");
         QImage shadow_corner(":osd_shadow_corner.png");
@@ -159,8 +160,8 @@ public:
     RazorSettings m_settings ;
     QFileSystemWatcher m_watcher ;
     quint32 m_currentNotification ;
-
     bool m_bEnableCompositing ;
+    QScopedPointer<WidgetNotificationNotifier> m_widgetNotifier ;
 };
 
 WidgetNotification::WidgetNotification(QObject *parent):
@@ -168,7 +169,6 @@ WidgetNotification::WidgetNotification(QObject *parent):
     d_ptr( new WidgetNotificationPrivate(this))
 {
     Qt::WindowFlags flags = Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |Qt::X11BypassWindowManagerHint;
-
     setWindowFlags(flags);
 
     QRect geometry = d_func()->geom() ;
@@ -185,7 +185,7 @@ WidgetNotification::WidgetNotification(QObject *parent):
     }
     else
     {
-        setStyleSheet(RazorTheme::instance()->qss("notifications"));
+//        setStyleSheet(RazorTheme::instance()->qss("notifications"));
     }
 
     const QString& fileName = d_func()->m_settings.fileName();
@@ -232,6 +232,11 @@ void WidgetNotification::hideNotification()
     d_func()->m_pNotificationUi.dismissButton->setDown(false);
 }
 
+QObject *WidgetNotification::notifier()
+{
+    return d_func()->m_widgetNotifier.data();
+}
+
 void WidgetNotification::addToView(const Notification&  pN)
 {
 
@@ -250,6 +255,8 @@ void WidgetNotification::addToView(const Notification&  pN)
 
     d_func()->m_bShowing = true ;
     d_func()->m_currentNotification = pN.id();
+
+    d_func()->m_widgetNotifier->emitNotificationShowned( pN.id() );
 }
 
 void WidgetNotification::settingsChanged()
