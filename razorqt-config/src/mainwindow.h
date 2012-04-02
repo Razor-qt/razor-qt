@@ -32,10 +32,11 @@
 
 #include "ui_mainwindow.h"
 
-
+class QCategorizedSortFilterProxyModel;
 
 namespace RazorConfig {
 
+    class ConfigPaneModel;
 
 /*! \brief Main config window.
 Just read desktop files with Settings category from /usr/share/applications
@@ -48,8 +49,12 @@ class MainWindow : public QMainWindow, public Ui::MainWindow
 public:
     MainWindow();
 
+private:
+    QCategorizedSortFilterProxyModel *proxyModel;
+    ConfigPaneModel *model;
+
 private slots:
-    void listWidget_itemDoubleClicked(QListWidgetItem *item);
+    void activateItem(const QModelIndex &index);
 };
 
 }; // namespace

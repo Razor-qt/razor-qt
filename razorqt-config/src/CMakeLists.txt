@@ -1,8 +1,11 @@
+# build static helper class first
+add_subdirectory(qcategorizedview)
 
 include_directories (
         ${CMAKE_CURRENT_BINARY_DIR}
         ${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
         ${CMAKE_SOURCE_DIR}/libraries
+        ${CMAKE_CURRENT_SOURCE_DIR}/qcategorizedview
         )
 
 set ( razor-config_HDRS
@@ -30,6 +33,9 @@ add_dependencies( razor-config razorqt qtxdg)
 target_link_libraries ( razor-config
                 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY}
                 qtxdg razorqt)
+# helper static lib
+link_directories(./qcategorizedview)
+target_link_libraries( razor-config qcategorizedview)
 
 INSTALL(TARGETS razor-config RUNTIME DESTINATION bin)
 install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
