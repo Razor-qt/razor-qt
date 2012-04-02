@@ -143,7 +143,7 @@ NotificationHandler::NotificationHandler(QObject *parent) :
     QString val = d_func()->m_settings.value("notification_type").toString();
     //TODO: add qml widget
     if ( val == "qml" )
-        d_func()->m_pView.reset( new QmlNotificationView(this) );
+        d_func()->m_pView.reset( new QmlNotificationView() );
     else if( val == "qwidget")
         d_func()->m_pView.reset( new WidgetNotification(this) );
 

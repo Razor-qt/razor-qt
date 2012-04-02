@@ -31,7 +31,6 @@ private slots:
 private:
     Q_DECLARE_PRIVATE(WidgetNotification)
     WidgetNotificationPrivate* const d_ptr ;
-    
 };
 
 #endif // WIDGETNOTIFICATION_H

@@ -15,9 +15,9 @@
 #include "qtnlog.h"
 
 
-QmlNotificationView::QmlNotificationView(QObject* parent)
+QmlNotificationView::QmlNotificationView(QWidget* parent /*= NULL */)
 {
-    setSource(QUrl::fromLocalFile("myqmlfile.qml"));
+    setSource(QUrl("qrc:/notification.qml"));
 }
 
 void QmlNotificationView::addNotification(const Notification &pN)

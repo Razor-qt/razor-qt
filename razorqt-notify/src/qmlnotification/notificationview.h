@@ -12,7 +12,7 @@ class QmlNotificationView : public QDeclarativeView, public INotificationView
 {
     Q_OBJECT
 public:
-    explicit QmlNotificationView(QObject* parent);
+    explicit QmlNotificationView(QWidget* parent = NULL);
 
     virtual void addNotification(const Notification& pN)  ;
 
@@ -36,6 +36,7 @@ public:
      *
      */
     virtual void hideNotification()  ;
+private:
 };
 
 #endif // NOTIFICATIONVIEW_H
