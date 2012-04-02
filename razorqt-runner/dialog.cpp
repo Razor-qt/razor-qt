@@ -88,6 +88,10 @@ Dialog::Dialog(QWidget *parent) :
     QAction *a = new QAction(XdgIcon::fromTheme("configure"), tr("Configure razor-runner"), this);
     connect(a, SIGNAL(triggered()), this, SLOT(showConfigDialog()));
     addAction(a);
+    
+    a = new QAction(XdgIcon::fromTheme("edit-clear-history"), tr("Clear razor-runner History"), this);
+    connect(a, SIGNAL(triggered()), mCommandItemModel, SLOT(clearHistory()));
+    addAction(a);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
     // End of popup menu ........................

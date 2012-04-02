@@ -337,7 +337,11 @@ void HistoryProvider::AddCommand(const QString &command)
     }
 }
 
-
+void HistoryProvider::clearHistory()
+{
+    clear();
+    mHistoryFile->clear();
+}
 
 /************************************************
 

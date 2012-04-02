@@ -38,7 +38,7 @@ namespace RazorConfig {
 
 
 /*! \brief Main config window.
-Just read desktop files from RAZOR_CONFIG_MODULES_DIR (defined, usually /usr/share/razor/razor-config)
+Just read desktop files with Settings category from /usr/share/applications
 and list them in view. Then it can start those standalone apps.
 */
 class MainWindow : public QMainWindow, public Ui::MainWindow

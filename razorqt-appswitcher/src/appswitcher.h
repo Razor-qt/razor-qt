@@ -93,9 +93,6 @@ public:
 private:
     //! 3rd party class to handle global keyboard shortcut
     QxtGlobalShortcut * m_key;
-    /*! Ambiguous shortcut, similar to m_key to handle switches when is
-        user in the dialog - m_key is blocked in this case */
-    QShortcut * m_localKey;
 
     //! Hide the appswitcher after some time if there is no user action
     QTimer *m_timer;
@@ -128,12 +125,16 @@ private:
 
 
 private slots:
+    //! initial decision maker for m_key
+    void globalKeyActivated();
     //! Setup m_layout and m_list - called by m_key
     void handleApps();
     //! Just change focus in items layout - called by m_localKey or keyPressEvent()
     void selectNextItem();
     //! Activate X11 window and close appswitcher
     void activateXWindow();
+    //! move scroll area to ensure current item visible
+    void setScrollAreaVisibility();
 
     void applySettings();
 };

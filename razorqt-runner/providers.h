@@ -167,6 +167,7 @@ public:
     virtual ~HistoryProvider();
 
     void AddCommand(const QString &command);
+    void clearHistory();
 
 private:
     QSettings *mHistoryFile;

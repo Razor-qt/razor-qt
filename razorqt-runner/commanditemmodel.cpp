@@ -86,6 +86,10 @@ void CommandItemModel::addHistoryCommand(const QString &command)
     mSourceModel->addHistoryCommand(command);
 }
 
+void CommandItemModel::clearHistory()
+{
+    mSourceModel->clearHistory();
+}
 
 /************************************************
 
@@ -290,6 +294,12 @@ void CommandSourceItemModel::rebuild()
             p->rebuild();
     }
     emit layoutChanged();
+}
+
+void CommandSourceItemModel::clearHistory()
+{
+    mHistoryProvider->clearHistory();
+    reset();
 }
 
 

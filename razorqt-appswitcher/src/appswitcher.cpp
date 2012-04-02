@@ -65,10 +65,9 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     background->setLayout(m_layout);
 
     m_key = new QxtGlobalShortcut(this);
-    m_localKey = new QShortcut(QKeySequence::fromString(DEFAULT_SHORTCUT), this, SLOT(selectNextItem()), SLOT(selectNextItem()));
 
     connect(m_settings, SIGNAL(settingsChanged()), this, SLOT(applySettings()));
-    connect(m_key, SIGNAL(activated()), this, SLOT(handleApps()));
+    connect(m_key, SIGNAL(activated()), this, SLOT(globalKeyActivated()));
     
     applySettings();
 }
@@ -88,14 +87,21 @@ void RazorAppSwitcher::AppSwitcher::applySettings()
                                  tr("Global shorcut: '%1' cannot be registered").arg(shortcut.toString()));
         exit(1);
     }
-    m_localKey->setKey(shortcut);
     
     m_settings->sync();
 }
 
+void RazorAppSwitcher::AppSwitcher::globalKeyActivated()
+{
+    if (isVisible())
+        selectNextItem();
+    else
+        handleApps();
+}
+
 void RazorAppSwitcher::AppSwitcher::handleApps()
 {
-    qDebug() << "RazorAppSwitcher::AppSwitcher::handleApps()";
+//    qDebug() << "RazorAppSwitcher::AppSwitcher::handleApps()";
 
     if (m_layout->count())
     {
@@ -138,6 +144,8 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
         SwitcherItem * item = new SwitcherItem(w, xfitMan().getName(w), pm, this);
         connect(item, SIGNAL(infoChanged(const QString&)),
                 infoLabel, SLOT(setText(const QString&)));
+        connect(item, SIGNAL(infoChanged(const QString&)),
+                this, SLOT(setScrollAreaVisibility()));
         connect(item, SIGNAL(activateXWindow()), this, SLOT(activateXWindow()));
         m_list.append(item);
         m_layout->addWidget(item);
@@ -175,23 +183,32 @@ void RazorAppSwitcher::AppSwitcher::activateXWindow()
     close();
 }
 
+void RazorAppSwitcher::AppSwitcher::setScrollAreaVisibility()
+{
+    SwitcherItem *item = qobject_cast<SwitcherItem*>(sender());
+    if (!item)
+    {
+        qDebug() << "setScrollAreaVisibility: signal sender is not SwitcherItem. And it's strange";
+        return;
+    }
+    scrollArea->ensureWidgetVisible(item);
+}
+
 void RazorAppSwitcher::AppSwitcher::hideEvent(QHideEvent *e)
 {
-    m_key->blockSignals(false);
     m_timer->stop();
     QWidget::hideEvent(e);
 }
 
 void RazorAppSwitcher::AppSwitcher::showEvent(QShowEvent *e)
 {
-    m_key->blockSignals(true);
     m_timer->start();
     QWidget::showEvent(e);
 }
 
 void RazorAppSwitcher::AppSwitcher::keyPressEvent(QKeyEvent * e)
 {
-    qDebug() << "RazorAppSwitcher::AppSwitcher::keyPressEvent()" << e;
+//    qDebug() << "RazorAppSwitcher::AppSwitcher::keyPressEvent()" << e;
     switch (e->key())
     {
         case Qt::Key_Escape:
@@ -210,7 +227,7 @@ void RazorAppSwitcher::AppSwitcher::keyPressEvent(QKeyEvent * e)
 
 void RazorAppSwitcher::AppSwitcher::keyReleaseEvent(QKeyEvent * e)
 {
-    qDebug() << "AppSwitcher::keyReleaseEvent" << e << e->modifiers();
+//    qDebug() << "AppSwitcher::keyReleaseEvent" << e << e->modifiers();
     // close window if there is no modifier pressed.
     // Here I assume that the key shortcut is always with ctrl or alt
     if (e->modifiers() == 0)
@@ -223,7 +240,7 @@ void RazorAppSwitcher::AppSwitcher::keyReleaseEvent(QKeyEvent * e)
 
 bool RazorAppSwitcher::AppSwitcher::eventFilter(QObject * o, QEvent * e)
 {
-    //qDebug() << "AppSwitcher::eventFilter" << e;
+//    qDebug() << "AppSwitcher::eventFilter" << e;
     if (e->type() == QEvent::WindowDeactivate)
     {
         close();
@@ -255,10 +272,10 @@ bool RazorAppSwitcher::AppSwitcher::handleEvent(XEvent * e)
 
 void RazorAppSwitcher::AppSwitcher::selectNextItem()
 {
-    qDebug() << "RazorAppSwitcher::AppSwitcher::selectNextItem()";
+//    qDebug() << "RazorAppSwitcher::AppSwitcher::selectNextItem()";
     if (m_list.count() == 0)
     {
-        qDebug() << "AppSwitcher::selectItem m_list is empty. No action";
+//        qDebug() << "AppSwitcher::selectItem m_list is empty. No action";
         return;
     }
 
@@ -267,19 +284,19 @@ void RazorAppSwitcher::AppSwitcher::selectNextItem()
     {
         if (m_list.count() > 1)
         {
-            qDebug() << "AppSwitcher::selectItem implicit item (1) ";
-            qDebug() << m_list;
+//            qDebug() << "AppSwitcher::selectItem implicit item (1) ";
+//            qDebug() << m_list;
             item = m_list.at(1);
         }
         else
         {
-            qDebug() << "AppSwitcher::selectItem implicit item (0) ";
+//            qDebug() << "AppSwitcher::selectItem implicit item (0) ";
             item = m_list.at(0);
         }
     }
     else
     {
-        qDebug() << "AppSwitcher::selectItem selected" << item << item->text();
+//        qDebug() << "AppSwitcher::selectItem selected" << item << item->text();
         int index = m_list.indexOf(item);
         if (index == -1)
         {
@@ -327,7 +344,7 @@ RazorAppSwitcher::SwitcherItem::SwitcherItem(Window window, const QString & text
 
 void RazorAppSwitcher::SwitcherItem::focusInEvent(QFocusEvent * e)
 {
-    qDebug() << "SwitcherItem::focusInEvent" << e << objectName();
+//    qDebug() << "SwitcherItem::focusInEvent" << e << objectName();
     emit infoChanged(text());
     QToolButton::focusInEvent(e);
 }
