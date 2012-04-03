@@ -1,5 +1,5 @@
 /**
-  * (c)GPL2+
+  * (c)LGPL2+
   * This file is part of the KDE project
   * Copyright (C) 2007, 2009 Rafael Fernández López <ereslibre@kde.org>
   *
