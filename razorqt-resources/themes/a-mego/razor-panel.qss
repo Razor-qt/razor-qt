@@ -180,7 +180,6 @@ MountButton:pressed {
     width: 14px;
     height: 26px;
     border: 1px solid #4a4a4a;
-    qproperty-icon: url();
 }
 #ShowDesktop > QToolButton:hover {
     border: 1px solid #676767;

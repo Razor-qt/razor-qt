@@ -37,7 +37,6 @@
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
-class XdgDesktopFilePrivate;
 class XdgDesktopFileData;
 	
 /**

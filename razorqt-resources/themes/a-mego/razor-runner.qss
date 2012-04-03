@@ -6,7 +6,7 @@ Dialog {}
 }
 
 #closeButton {
-  qproperty-icon: url(close-48x48.png);
+  qproperty-icon: url(razor-runner/close-48x48.png);
 }
 
 #closeButton:hover {

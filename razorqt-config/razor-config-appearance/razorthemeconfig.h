@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Benoit Walter <b.walter@free.fr>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,29 +25,35 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#ifndef RAZORTHEMECONFIG_H
+#define RAZORTHEMECONFIG_H
 
-#include "razordesktopapplication.h"
-#include "desktopplugin.h"
-#include <X11/Xlib.h>
+#include <QWidget>
+#include <razorqt/razorsettings.h>
 
+class QTreeWidgetItem;
 
-RazorDesktopApplication::RazorDesktopApplication(int& argc, char** argv)
- : RazorApplication(argc, argv)
- , m_desktopPlugin(0L)
-{
+namespace Ui {
+    class RazorThemeConfig;
 }
 
-
-void RazorDesktopApplication::setDesktopPlugin(DesktopPlugin* plugin)
+class RazorThemeConfig : public QWidget
 {
-    m_desktopPlugin = plugin;
-}
+    Q_OBJECT
 
+public:
+    explicit RazorThemeConfig(RazorSettings *settings, QWidget *parent = 0);
+    ~RazorThemeConfig();
 
-bool RazorDesktopApplication::x11EventFilter(XEvent * event)
-{
-    if (m_desktopPlugin)
-        m_desktopPlugin->x11EventFilter(event);
+public slots:
+    void initControls();
 
-    return false;
-}
+private slots:
+    void razorThemeSelected(QTreeWidgetItem* item, int column);
+
+private:
+    Ui::RazorThemeConfig *ui;
+    RazorSettings *mSettings;
+};
+
+#endif // RAZORTHEMECONFIG_H

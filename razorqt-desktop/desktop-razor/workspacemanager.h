@@ -63,6 +63,7 @@ private:
     int m_desktopCount;
 
     RazorWorkSpaceManager::BackgroundType strToBackgroundType(const QString& str, BackgroundType defaultValue) const;
+private slots:
     void setup();
 };
 

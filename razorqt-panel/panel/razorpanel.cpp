@@ -152,6 +152,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
 
     connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), q_ptr, SLOT(update()));
+    connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
 }
 
 
@@ -187,7 +188,6 @@ void RazorPanelPrivate::init()
     q->setLayout(mLayout);
 
     loadPlugins();
-    reTheme();
     updatePluginsMinSize();
     realign();
 }
@@ -351,24 +351,13 @@ RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo& pluginInf
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::reTheme()
-{
-    qApp->setStyleSheet(razorTheme->qss("panel"));
-    realign();
-}
-
-
-
-/************************************************
-
- ************************************************/
 void RazorPanelPrivate::realign()
 {
     Q_Q(RazorPanel);
     /*
     qDebug() << "Realign: DesktopNum" << mScreenNum;
     qDebug() << "Realign: Position  " << positionToStr(mPosition);
-    qDebug() << "Realign: Theme     " << mTheme;
+    //qDebug() << "Realign: Theme     " << mTheme;
     qDebug() << "Realign: SizeHint  " << q->sizeHint();
     qDebug() << "Realign: Screen    " << QApplication::desktop()->screenGeometry(mScreenNum);
     */
@@ -691,7 +680,6 @@ void RazorPanelPrivate::updatePluginsMinSize()
         }
 
         mHeight = -1;
-        reTheme();
     }
     else
     {
@@ -710,6 +698,7 @@ void RazorPanelPrivate::updatePluginsMinSize()
         }
     }
 }
+
 
 /************************************************
 

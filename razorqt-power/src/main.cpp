@@ -56,7 +56,7 @@ void help()
 
 int main(int argc, char *argv[])
 {
-    RazorApplication app(argc, argv, "razor-power/razor-power");
+    RazorApplication app(argc, argv);
     bool check=false;
     bool actionSet=false;
     RazorPower::Action action;

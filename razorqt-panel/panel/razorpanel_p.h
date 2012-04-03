@@ -59,12 +59,11 @@ public:
 
     QMenu* popupMenu(QWidget *parent) const;
 
-    void realign();
-
     virtual void contextMenuEvent( QContextMenuEvent* event);
     void saveSettings();
 
 public slots:
+    void realign();
     void switchPosition();
     void pluginMoved(QWidget* pluginWidget);
     void screensChangeds();
