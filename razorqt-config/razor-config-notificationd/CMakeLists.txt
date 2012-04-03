@@ -51,5 +51,3 @@ target_link_libraries(${PROJECT_NAME}  ${QT_LIBRARIES} razorqt)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
-
-razor_config_register(${DESKTOP_FILES})
