@@ -35,6 +35,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMutex>
 #include <QtCore/QFileSystemWatcher>
+#include <QtCore/QSharedData>
 
 class RazorSettingsPrivate
 {
@@ -53,39 +54,35 @@ private:
 
 RazorTheme* RazorTheme::mInstance = 0;
 
-class RazorThemePrivate
-{
+class RazorThemeData: public QSharedData {
 public:
-    RazorThemePrivate(RazorTheme* parent):
-        mParent(parent)
-    {
-    }
-
+    RazorThemeData(): mValid(false) {}
     QString loadQss(const QString& qssFile) const;
-    QString mThemeName;
-    RazorTheme* mParent;
+    QString findTheme(const QString &themeName);
+
+    QString mName;
+    QString mPath;
+    QString mPreviewImg;
+    bool mValid;
+
 };
 
 
-
-/************************************************
-  This looks in all the usual paths for file
- ************************************************/
-QString findFile(const QString& fileName)
+class GlobalRazorSettingsPrivate
 {
-    QStringList paths;
-    paths << XdgDirs::dataHome(false);
-    paths << XdgDirs::dataDirs();
-
-    foreach(QString path, paths)
+public:
+    GlobalRazorSettingsPrivate(GlobalRazorSettings *parent):
+        mParent(parent)
     {
-        QString file = QString("%1/%2").arg(path, fileName);
-        if (QFile::exists(file))
-            return file;
+
     }
 
-    return QString();
-}
+    GlobalRazorSettings *mParent;
+    QFileSystemWatcher mWatcher;
+    QString mIconTheme;
+    QString mRazorTheme;
+
+};
 
 
 /************************************************
@@ -151,7 +148,7 @@ bool RazorSettings::event(QEvent *event)
 /************************************************
 
  ************************************************/
-const RazorSettings *RazorSettings::globalSettings()
+const GlobalRazorSettings *RazorSettings::globalSettings()
 {
     static QMutex mutex;
     static GlobalRazorSettings *instance = 0;
@@ -269,38 +266,121 @@ void RazorSettings::setLocalizedValue(const QString &key, const QVariant &value)
 
  ************************************************/
 RazorTheme::RazorTheme():
-    QObject(),
-    d_ptr(new RazorThemePrivate(this))
+    d(new RazorThemeData)
 {
-    RazorSettings settings("razor");
-    // the "light" theme is the default one for razor
-    d_ptr->mThemeName = settings.value("theme", "light").toString();
-}
-
-RazorTheme::~RazorTheme()
-{
-    delete d_ptr;
 }
 
 
 /************************************************
 
  ************************************************/
-RazorTheme* RazorTheme::instance()
+RazorTheme::RazorTheme(const QString &path):
+    d(new RazorThemeData)
 {
-    static QMutex mutex;
+    if (path.isEmpty())
+        return;
 
-    if (!mInstance)
+    QFileInfo fi(path);
+    if (fi.isAbsolute())
     {
-        mutex.lock();
-
-        if (!mInstance)
-            mInstance = new RazorTheme();
-
-        mutex.unlock();
+        d->mPath = path;
+        d->mName = fi.fileName();
+        d->mValid = fi.isDir();
+    }
+    else
+    {
+        d->mName = path;
+        d->mPath = d->findTheme(path);
+        d->mValid = !(d->mPath.isEmpty());
     }
 
-    return mInstance;
+    if (QDir(path).exists("preview.png"))
+        d->mPreviewImg = path + "/preview.png";
+}
+
+
+/************************************************
+
+ ************************************************/
+QString RazorThemeData::findTheme(const QString &themeName)
+{
+    if (themeName.isEmpty())
+        return "";
+
+    QStringList paths;
+    paths << XdgDirs::dataHome(false);
+    paths << XdgDirs::dataDirs();
+
+    foreach(QString path, paths)
+    {
+        QDir dir(QString("%1/razor/themes/%2").arg(path, themeName));
+        if (dir.isReadable())
+            return dir.absolutePath();
+    }
+
+    return QString();
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorTheme::RazorTheme(const RazorTheme &other):
+    d(other.d)
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorTheme::~RazorTheme()
+{
+}
+
+
+/************************************************
+
+ ************************************************/
+RazorTheme& RazorTheme::operator=(const RazorTheme &other)
+{
+    d = other.d;
+    return *this;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool RazorTheme::isValid() const
+{
+    return d->mValid;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString RazorTheme::name() const
+{
+    return d->mName;
+}
+
+/************************************************
+
+ ************************************************/
+QString RazorTheme::path() const
+{
+    return d->mPath;
+}
+
+
+/************************************************
+
+ ************************************************/
+QString RazorTheme::previewImage() const
+{
+    return d->mPreviewImg;
 }
 
 
@@ -309,21 +389,27 @@ RazorTheme* RazorTheme::instance()
  ************************************************/
 QString RazorTheme::qss(const QString& module) const
 {
-    Q_D(const RazorTheme);
+    QString path = QString("%1/%2.qss").arg(d->mPath, module);
 
-    QString path(findFile(QString("razor/themes/%1/%2.qss").arg(d->mThemeName, module)));
+    QString styleSheet;
     if (!path.isEmpty())
-        return d->loadQss(path);
+        styleSheet = d->loadQss(path);
+    else
+        qWarning() << QString("QSS file %1 cannot be found").arg(path);
 
-    qWarning() << "QSS file cannot be found in any location:" << QString("%1/%2.qss").arg(d->mThemeName, module);
-    return QString();
+    // Single/double click ...........................
+    RazorSettings s("desktop");
+    bool singleClick = s.value("icon-launch-mode", "singleclick").toString() == "singleclick";
+    styleSheet += QString("QAbstractItemView {activate-on-singleclick : %1; }").arg(singleClick ? 1 : 0);
+
+    return styleSheet;
 }
 
 
 /************************************************
 
  ************************************************/
-QString RazorThemePrivate::loadQss(const QString& qssFile) const
+QString RazorThemeData::loadQss(const QString& qssFile) const
 {
     QFile f(qssFile);
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -351,8 +437,7 @@ QString RazorThemePrivate::loadQss(const QString& qssFile) const
  ************************************************/
 QString RazorTheme::desktopBackground(int screen) const
 {
-    Q_D(const RazorTheme);
-    QString wallpapperCfgFileName = findFile(QString("razor/themes/%1/wallpapper.cfg").arg(d->mThemeName));
+    QString wallpapperCfgFileName = QString("%1/%2.qss").arg(d->mPath, "wallpapper.cfg");
 
     if (wallpapperCfgFileName.isEmpty())
         return QString();
@@ -372,6 +457,53 @@ QString RazorTheme::desktopBackground(int screen) const
         return QString("%1/%2").arg(themeDir, s.value("file").toString());
 
     return QString();
+}
+
+
+/************************************************
+
+ ************************************************/
+const RazorTheme &RazorTheme::currentTheme()
+{
+    static RazorTheme theme;
+    QString name = RazorSettings::globalSettings()->value("theme").toString();
+    if (theme.name() != name)
+    {
+        theme = RazorTheme(name);
+    }
+    return theme;
+}
+
+
+/************************************************
+
+ ************************************************/
+QList<RazorTheme> RazorTheme::allThemes()
+{
+    QList<RazorTheme> ret;
+    QSet<QString> processed;
+
+    QStringList paths;
+    paths << XdgDirs::dataHome(false);
+    paths << XdgDirs::dataDirs();
+
+    foreach(QString path, paths)
+    {
+        QDir dir(QString("%1/razor/themes").arg(path));
+        QFileInfoList dirs = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
+
+        foreach(QFileInfo dir, dirs)
+        {
+            if (!processed.contains(dir.fileName()))
+            {
+                processed << dir.fileName();
+                ret << RazorTheme(dir.absoluteFilePath());
+            }
+
+        }
+    }
+
+    return ret;
 }
 
 
@@ -422,26 +554,6 @@ void RazorSettingsCache::loadToSettings()
 
     mSettings.sync();
 }
-
-
-/************************************************
-
- ************************************************/
-class GlobalRazorSettingsPrivate
-{
-public:
-    GlobalRazorSettingsPrivate(GlobalRazorSettings *parent):
-        mParent(parent)
-    {
-
-    }
-
-    GlobalRazorSettings *mParent;
-    QFileSystemWatcher mWatcher;
-    QString mIconTheme;
-    QString mRazorTheme;
-
-};
 
 
 /************************************************
@@ -498,9 +610,8 @@ void GlobalRazorSettings::fileChanged()
         emit iconThemeChanged();
     }
 
-
-    QString rt = value("razor_theme").toString();
-    if (d->mIconTheme != rt)
+    QString rt = value("theme").toString();
+    if (d->mRazorTheme != rt)
     {
         d->mRazorTheme = rt;
         emit razorThemeChanged();
@@ -508,3 +619,4 @@ void GlobalRazorSettings::fileChanged()
 
     emit settingsChanged();
 }
+

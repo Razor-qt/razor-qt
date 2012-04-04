@@ -13,16 +13,19 @@ set(H_FILES
 
 set(MOC_FILES
     iconthemeconfig.h
+    razorthemeconfig.h
 )
 
 set(CPP_FILES
     main.cpp
     iconthemeconfig.cpp
     iconthemeinfo.cpp
+    razorthemeconfig.cpp
    )
 
 set(UI_FILES
     mainwindow.ui
+    razorthemeconfig.ui
 )
 
 set(QRC_FILES

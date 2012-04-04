@@ -32,6 +32,7 @@
 #include <razorqt/razorconfigdialog.h>
 #include "iconthemeconfig.h"
 #include "razortranslate.h"
+#include "razorthemeconfig.h"
 
 int main (int argc, char **argv)
 {
@@ -40,9 +41,15 @@ int main (int argc, char **argv)
 
     RazorSettings* settings = new RazorSettings("razor");
     RazorConfigDialog* dialog = new RazorConfigDialog(QObject::tr("Razor Appearance Configuration"), settings);
+
     IconThemeConfig* iconPage = new IconThemeConfig(settings);
     dialog->addPage(iconPage, QObject::tr("Icons Theme"), QStringList() << "preferences-desktop-icons" << "preferences-desktop");
     QObject::connect(dialog, SIGNAL(reset()), iconPage, SLOT(initControls()));
+
+    RazorThemeConfig* themePage = new RazorThemeConfig(settings);
+    dialog->addPage(themePage, QObject::tr("Razor Theme"), QStringList() << "preferences-desktop-color" << "preferences-desktop");
+    QObject::connect(dialog, SIGNAL(reset()), themePage, SLOT(initControls()));
+
     dialog->show();
 
     return app.exec();
