@@ -437,7 +437,7 @@ QString RazorThemeData::loadQss(const QString& qssFile) const
  ************************************************/
 QString RazorTheme::desktopBackground(int screen) const
 {
-    QString wallpapperCfgFileName = QString("%1/%2.qss").arg(d->mPath, "wallpapper.cfg");
+    QString wallpapperCfgFileName = QString("%1/wallpaper.cfg").arg(d->mPath);
 
     if (wallpapperCfgFileName.isEmpty())
         return QString();
