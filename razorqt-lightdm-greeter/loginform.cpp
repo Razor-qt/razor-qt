@@ -26,7 +26,7 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
     }
 
     ui->setupUi(this);
-    setStyleSheet(razorTheme->qss("razor-lightdm-greeter/razor-lightdm-greeter"));
+    setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
     ui->hostnameLabel->setFocus();
 
     // Setup users
