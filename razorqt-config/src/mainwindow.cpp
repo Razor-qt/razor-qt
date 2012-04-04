@@ -27,6 +27,8 @@
 
 #include <QtCore/QDirIterator>
 #include <QtGui/QStatusBar>
+#include <QtGui/QStyledItemDelegate>
+#include <QtGui/QPainter>
 
 #include "mainwindow.h"
 #include <QtDebug>
@@ -51,10 +53,75 @@ public:
         setText(xdg->name());
         setToolTip(xdg->comment().isEmpty() ? xdg->name() : xdg->comment());
     }
+    ConfigItem(QListWidget *parent)
+        : QListWidgetItem(parent),
+          m_xdg(0)
+    {
+    }
 
     void start()
     {
-        m_xdg->startDetached();
+        if (m_xdg)
+            m_xdg->startDetached();
+    }
+};
+
+class TitleItem : public ConfigItem
+{
+public:
+    TitleItem(const QString &title, QListWidget *parent)
+        : ConfigItem(parent)
+    {
+        setText(title);
+        setFlags(Qt::NoItemFlags); // disable the item completely
+        
+        QFont f(font());
+        f.setBold(true);
+        setFont(f);
+        
+        QBrush bg = background();
+        setBackground(foreground());
+        setForeground(background());
+    }
+    
+    void start() {};
+};
+
+class HeaderDelegate: public QStyledItemDelegate
+{
+    QListWidget* mView;
+
+public:
+    explicit HeaderDelegate(QListWidget *parent)
+        : QStyledItemDelegate(parent),
+          mView(parent)
+    {
+    }
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QSize size = QStyledItemDelegate::sizeHint(option, index);
+        size.setWidth(mView->viewport()->width());
+        size.setHeight(size.height()*3);
+        return size;
+    }
+};
+
+class ItemDelegate: public QStyledItemDelegate
+{
+    QListWidget* mView;
+
+public:
+    explicit ItemDelegate(QListWidget *parent)
+        : QStyledItemDelegate(parent),
+          mView(parent)
+    {
+    }
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        QSize size; // = QStyledItemDelegate::sizeHint(option, index);
+        size.setWidth(88);
+        size.setHeight(88);
+        return size;
     }
 };
 
@@ -64,12 +131,15 @@ public:
 RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
-        
-    qDebug() << "Reading desktop files from dir:" << RAZOR_CONFIG_MODULES_DIR;
     
-    QDirIterator it(RAZOR_CONFIG_MODULES_DIR, QStringList() << "*.desktop");
-    int ix = 0;
+    QDirIterator it("/usr/share/applications", QStringList() << "*.desktop", QDir::NoFilter, QDirIterator::Subdirectories);
     QString name;
+    QString categories;
+    QString onlyShowIn;
+    
+    QHash<QString,QList<XdgDesktopFile*> > map;
+    // ensure that razor goes first
+    map["Razor"] = QList<XdgDesktopFile*>();
 
     while (it.hasNext()) {
         name = it.next();
@@ -81,16 +151,58 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
             delete xdg;
             continue;
         }
-        
-        new ConfigItem(xdg, listWidget);
 
-        ++ix;
+        onlyShowIn = xdg->value("OnlyShowIn").toString();
+        if (!onlyShowIn.isEmpty()
+            && !onlyShowIn.contains("X-RAZOR") && !onlyShowIn.contains("RAZOR")
+            //&& !onlyShowIn.contains("YaST")
+           )
+        {
+            qDebug() << "NOT SHOWN" << name << onlyShowIn;
+            delete xdg;
+            continue;
+        }
+        
+        // do not show self
+        if (xdg->value("Exec").toString() == "razor-config")
+        {
+            delete xdg;
+            continue;
+        }
+
+        categories = xdg->value("Categories").toString();
+        if (!categories.contains("Settings"))
+        {
+            delete xdg;
+            continue;
+        }
+        
+        if (categories.contains("X-RAZOR") || categories.contains("RAZOR"))
+        {
+            map["Razor"].append(xdg);
+        }
+        else if (categories.contains("System"))
+        {
+            map[tr("System")].append(xdg);
+        }
+        else
+        {
+            map[tr("Other")].append(xdg);
+        }
+    }
+
+    foreach (QString title, map.keys())
+    {
+        new TitleItem(title, listWidget);
+        listWidget->setItemDelegateForRow(listWidget->count()-1, new HeaderDelegate(listWidget));
+        foreach (XdgDesktopFile*i, map[title])
+        {
+            new ConfigItem(i, listWidget);
+            listWidget->setItemDelegateForRow(listWidget->count()-1, new ItemDelegate(listWidget));
+        }
     }
     
-    if (listWidget->count() == 0)
-        statusBar()->showMessage(tr("No config modules found in: ") + RAZOR_CONFIG_MODULES_DIR);
-    
-    connect(listWidget, SIGNAL(itemActivated(QListWidgetItem*)),//SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+    connect(listWidget, SIGNAL(itemActivated(QListWidgetItem*)),
             this, SLOT(listWidget_itemDoubleClicked(QListWidgetItem *)));
 }
 

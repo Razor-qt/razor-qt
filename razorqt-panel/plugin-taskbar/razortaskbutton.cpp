@@ -69,7 +69,7 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     updateIcon();
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(btnClicked(bool)));
-    connect(this, SIGNAL(toggled(bool)), this, SLOT(checkedChanged(bool)));
+    connect(this, SIGNAL(toggled(bool)), this, SLOT(checkedChanged(bool)));    
 
     XSelectInput(QX11Info::display(), mWindow, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 
@@ -151,6 +151,29 @@ void RazorTaskButton::dragLeaveEvent(QDragLeaveEvent *event)
     mDraggableMimeData = NULL;
 }
 
+
+/************************************************
+
+ ************************************************/
+void RazorTaskButton::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::MiddleButton)
+    {
+        closeApplication();
+    }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        if (this->isChecked())
+        {
+            minimizeApplication();
+        }
+        else
+        {
+            raiseApplication();
+        }
+    }
+}
 
 /************************************************
 
