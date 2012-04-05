@@ -31,12 +31,12 @@
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorconfigdialog.h>
 #include "mainwindow.h"
-#include "razortranslate.h"
+//#include "razortranslate.h"
 
 int main (int argc, char **argv)
 {
     RazorApplication app(argc, argv);
-    TRANSLATE_APP;
+//    TRANSLATE_APP;
 
     MainWindow w ;
     w.show();
