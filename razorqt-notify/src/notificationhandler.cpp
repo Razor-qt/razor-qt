@@ -144,7 +144,7 @@ NotificationHandler::NotificationHandler(QObject *parent) :
     //TODO: add qml widget
     if ( val == "qml" )
         d_func()->m_pView.reset( new QmlNotificationView() );
-    else if( val == "qwidget")
+    else
         d_func()->m_pView.reset( new WidgetNotification(this) );
 
     connect ( d_func()->m_pView->notifier(), SIGNAL(notificationShowned(quint32)), this, SLOT(notificationShown(quint32)));
