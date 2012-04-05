@@ -87,7 +87,7 @@ void dbgMessageOutput(QtMsgType type, const char *msg)
 }
 #endif
 
-RazorApplication::RazorApplication(int &argc, char** argv, const QString &stylesheetKey)
+RazorApplication::RazorApplication(int &argc, char** argv)
     : QApplication(argc, argv)
 {
 #ifdef DEBUG
@@ -96,16 +96,14 @@ RazorApplication::RazorApplication(int &argc, char** argv, const QString &styles
 
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
     setWindowIcon(QIcon(QString(SHARE_DIR) + "/graphics/razor_logo.png"));
+    connect(RazorSettings::globalSettings(), SIGNAL(razorThemeChanged()), this, SLOT(updateTheme()));
+    updateTheme();
+}
 
-    QString styleSheet;
-    if (!stylesheetKey.isEmpty())
-    {
-        styleSheet = razorTheme->qss(stylesheetKey);
-    }
 
-    // TODO/FIXME: maybe move it into global config? RazorSettings::globalSettings()?
-    RazorSettings s("desktop");
-    bool singleClick = s.value("icon-launch-mode", "singleclick").toString() == "singleclick";
-    styleSheet += QString("QAbstractItemView {activate-on-singleclick : %1; }").arg(singleClick ? 1 : 0);
-    setStyleSheet(styleSheet);
+void RazorApplication::updateTheme()
+{
+    QString styleSheetKey = QFileInfo(applicationFilePath()).fileName();
+    setStyleSheet(razorTheme.qss(styleSheetKey));
+    emit themeChanged();
 }

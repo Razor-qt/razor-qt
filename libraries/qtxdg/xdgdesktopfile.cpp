@@ -348,7 +348,6 @@ XdgDesktopFile::Type XdgDesktopFileData::detectType(XdgDesktopFile *q) const
  ************************************************/
 bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const QStringList& urls) const
 {
-    //qDebug() << "XdgDesktopFilePrivate::startDetached: urls=" << urls;
     QStringList args = q->expandExecString(urls);
 
     if (args.isEmpty())
@@ -364,7 +363,6 @@ bool XdgDesktopFileData::startApplicationDetached(const XdgDesktopFile *q, const
         args.prepend(term);
     }
 
-    //qDebug() << "XdgDesktopFilePrivate.startDetached: run command:" << args;
     QString cmd = args.takeFirst();
     return QProcess::startDetached(cmd, args);
 }
@@ -379,7 +377,7 @@ bool XdgDesktopFileData::startLinkDetached(const XdgDesktopFile *q) const
 
     if (url.isEmpty())
     {
-        qWarning() << "XdgDesktopFilePrivate::startLinkDetached: url is empty.";
+        qWarning() << "XdgDesktopFileData::startLinkDetached: url is empty.";
         return false;
     }
 
@@ -1267,227 +1265,6 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
     else
         return 0;
 }
-
-
-
-
-
-
-
-//class XdgDesktopFilePrivate {
-//public:
-//    XdgDesktopFilePrivate(XdgDesktopFile* parent);
-
-//    QString prefix() const { return mPrefix; }
-//    void setPrefix(const QString& prefix);
-
-//    QString fileName() const { return mFileName; }
-//    void setFileName(const QString& fileName) { mFileName = fileName; }
-
-//    XdgDesktopFilePrivate& operator=(const XdgDesktopFilePrivate& other);
-//    bool read();
-
-//    bool isValid() const { return mIsValid; }
-
-//    QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
-//    QVariant localizedValue(const QString& key, const QVariant& defaultValue = QVariant()) const;
-
-//    bool contains(const QString& key) const;
-//    bool isShow(const QString& environment) const;
-
-
-
-//    QIcon const icon(const QIcon& fallback = QIcon()) const;
-
-//    XdgDesktopFile::Type mType;
-//protected:
-//    bool checkTryExec(const QString& progName) const;
-//    QStringList expandExecString(const QStringList& urls) const;
-//    QString expandEnvVariables(const QString str) const;
-//    QStringList expandEnvVariables(const QStringList strs) const;
-
-//private:
-
-//
-//    XdgDesktopFile* const q_ptr;
-//    Q_DECLARE_PUBLIC(XdgDesktopFile);
-//    QString mPrefix;
-//    QString mFileName;
-//    bool    mIsValid;
-//    QMap<QString, QVariant> mItems;
-//    mutable IsShow   mIsShow;
-
-//};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///************************************************
-
-// ************************************************/
-//void XdgDesktopFilePrivate::setPrefix(const QString& prefix)
-//{
-//    mPrefix = prefix;
-//    if (prefix.endsWith('/'))
-//        mPrefix.truncate(mPrefix.count() - 1);
-//}
-
-
-///************************************************
-
-// ************************************************/
-//XdgDesktopFilePrivate& XdgDesktopFilePrivate::operator=(const XdgDesktopFilePrivate& other)
-//{
-//    mFileName = other.mFileName;
-//    mPrefix = other.mPrefix;
-//    mIsValid = other.mIsValid;
-//    mItems = other.mItems; // This copy map values
-//    mIsShow = other.mIsShow;
-//    mType = other.mType;
-//    return *this;
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///************************************************
-
-// ************************************************/
-//QStringList XdgDesktopFilePrivate::expandExecString(const QStringList& urls) const
-//{
-//    QStringList result;
-//    QStringList tokens = parseCombinedArgString(value("Exec").toString());
-//    foreach (QString token, tokens)
-//    {
-//        // ----------------------------------------------------------
-//        // A single file name, even if multiple files are selected.
-//        if (token == "%f")
-//        {
-//            if (!urls.isEmpty())
-//                result << expandEnvVariables(urls.at(0));
-//            continue;
-//        }
-
-//        // ----------------------------------------------------------
-//        // A list of files. Use for apps that can open several local files at once.
-//        // Each file is passed as a separate argument to the executable program.
-//        if (token == "%F")
-//        {
-//            result << expandEnvVariables(urls);
-//            continue;
-//        }
-
-//        // ----------------------------------------------------------
-//        // A single URL. Local files may either be passed as file: URLs or as file path.
-//        if (token == "%u")
-//        {
-//            if (!urls.isEmpty())
-//            {
-//                QUrl url;
-//                url.setUrl(expandEnvVariables(urls.at(0)));
-//                result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
-//            }
-//            continue;
-//        }
-
-//        // ----------------------------------------------------------
-//        // A list of URLs. Each URL is passed as a separate argument to the executable
-//        // program. Local files may either be passed as file: URLs or as file path.
-//        if (token == "%U")
-//        {
-//            foreach (QString s, urls)
-//            {
-//                QUrl url(expandEnvVariables(s));
-//                result << ((!url.toLocalFile().isEmpty()) ? url.toLocalFile() : url.toEncoded());
-//            }
-//            continue;
-//        }
-
-//        // ----------------------------------------------------------
-//        // The Icon key of the desktop entry expanded as two arguments, first --icon
-//        // and then the value of the Icon key. Should not expand to any arguments if
-//        // the Icon key is empty or missing.
-//        if (token == "%i")
-//        {
-//            QString icon = value("Icon").toString();
-//            if (!icon.isEmpty())
-//                result << "-icon" << icon.replace('%', "%%");
-//            continue;
-//        }
-
-
-//        // ----------------------------------------------------------
-//        // The translated name of the application as listed in the appropriate Name key
-//        // in the desktop entry.
-//        if (token == "%c")
-//        {
-//            result << localizedValue("Name").toString().replace('%', "%%");
-//            continue;
-//        }
-
-//        // ----------------------------------------------------------
-//        // The location of the desktop file as either a URI (if for example gotten from
-//        // the vfolder system) or a local filename or empty if no location is known.
-//        if (token == "%k")
-//        {
-//            result << fileName().replace('%', "%%");
-//            break;
-//        }
-
-//        // ----------------------------------------------------------
-//        // Deprecated.
-//        // Deprecated field codes should be removed from the command line and ignored.
-//        if (token == "%d" || token == "%D" ||
-//            token == "%n" || token == "%N" ||
-//            token == "%v" || token == "%m"
-//            )
-//        {
-//            continue;
-//        }
-
-//        // ----------------------------------------------------------
-//        result << expandEnvVariables(token);
-//    }
-
-//    return result;
-//}
-
-
 
 
 

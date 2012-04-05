@@ -31,7 +31,6 @@
 #include <QtGui/QApplication>
 #include <QtGui/QProxyStyle>
 
-
 /*! \brief Razor-qt wrapper around QApplication.
  * It loads various Razor-qt related stuff by default (window icon, icon theme...)
  *
@@ -50,9 +49,19 @@ public:
      * \param argv standard argv as in QApplication
      * \param stylesheetKey optional QString. It can load QSS theme module as in \see RazorTheme::qss()
      */
-    RazorApplication(int &argc, char **argv, const QString &stylesheetKey = QString());
-    virtual ~RazorApplication() {};
+    RazorApplication(int &argc, char **argv);
+    virtual ~RazorApplication() {}
 
+private slots:
+    void updateTheme();
+
+signals:
+    void themeChanged();
 };
+
+#if defined(razorApp)
+#undef razorApp
+#endif
+#define razorApp (static_cast<RazorApplication *>(qApp))
 
 #endif

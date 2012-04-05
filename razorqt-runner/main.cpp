@@ -33,7 +33,7 @@
 
 int main(int argc, char *argv[])
 {
-    RazorApplication a(argc, argv, "razor-runner/razor-runner");
+    RazorApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);
 
     TRANSLATE_APP;

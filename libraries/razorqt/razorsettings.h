@@ -31,12 +31,12 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QSettings>
-
+#include <QtCore/QSharedDataPointer>
 
 class QEvent;
     
 class RazorSettingsPrivate;
-
+class GlobalRazorSettings;
 
 /*! \brief User settings handling */
 class RazorSettings : public QSettings
@@ -60,7 +60,7 @@ public:
     explicit RazorSettings(const QSettings& parentSettings, const QString& subGroup, QObject* parent=0);
     ~RazorSettings();
 
-    static const RazorSettings *globalSettings();
+    static const GlobalRazorSettings *globalSettings();
 
 
     /*! Returns the localized value for key. In the desktop file keys may be postfixed by [LOCALE]. If the
@@ -88,18 +88,40 @@ private:
 };
 
 
-class RazorThemePrivate;
-/*! \brief QSS theme handling */
-class RazorTheme : public QObject
-{
-    Q_OBJECT
-public:
-    /// \brief Returns a pointer to the RazorTheme instance.
-    static RazorTheme* instance();
+class RazorThemeData;
 
-    /*! \brief Return StyleSheet text (not file name, but real text) of the module called module.
-    Paths in url() C/QSS functions are parsed to be real values for the theme,
-    relative to full path */
+/*! \brief QSS theme handling */
+class RazorTheme
+{
+public:
+    /// Constructs a null theme.
+    RazorTheme();
+
+    /*! Constructs an theme from the dir with the given path. If path not absolute
+        (i.e. the theme name only) the relevant dir must be found relative to the
+        $XDG_DATA_HOME + $XDG_DATA_DIRS directories. */
+    RazorTheme(const QString &path);
+
+    /// Constructs a copy of other. This is very fast.
+    RazorTheme(const RazorTheme &other);
+
+    RazorTheme& operator=(const RazorTheme &other);
+    ~RazorTheme();
+
+    /// Returns the name of the theme.
+    QString name() const;
+
+    QString path() const;
+
+    QString previewImage() const;
+
+    /// Returns true if this theme is valid; otherwise returns false.
+    bool isValid() const;
+
+    /*! \brief Returns StyleSheet text (not file name, but real text) of the module called module.
+        Paths in url() C/QSS functions are parsed to be real values for the theme,
+        relative to full path
+    */
     QString qss(const QString& module) const;
 
     /*! \brief A full path to image used as a wallpaper
@@ -110,15 +132,15 @@ public:
     */
     QString desktopBackground(int screen=-1) const;
 
-private:
-    RazorTheme();
-    RazorTheme(const RazorTheme &);
-    RazorTheme& operator=(const RazorTheme &);
-    ~RazorTheme();
+    /// Returns the current razor theme.
+    static const RazorTheme &currentTheme();
 
+    /// Returns the all themes found in the system.
+    static QList<RazorTheme> allThemes();
+
+private:
     static RazorTheme* mInstance;
-    RazorThemePrivate* const d_ptr;
-    Q_DECLARE_PRIVATE(RazorTheme)
+    QSharedDataPointer<RazorThemeData> d;
 };
 
 /*!
@@ -126,7 +148,8 @@ A global pointer referring to the unique RazorTheme object.
 It is equivalent to the pointer returned by the RazorTheme::instance() function.
 Only one theme object can be created. !*/
 
-#define razorTheme RazorTheme::instance()
+#define razorTheme RazorTheme::currentTheme()
+
 
 class RazorSettingsCache
 {

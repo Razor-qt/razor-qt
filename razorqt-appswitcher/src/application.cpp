@@ -31,7 +31,7 @@
 
 
 RazorAppSwitcher::Application::Application(int & argc, char ** argv)
-    : RazorApplication(argc, argv, "appswitcher"),
+    : RazorApplication(argc, argv),
       m_as(0)
 {
     m_as = new RazorAppSwitcher::AppSwitcher();
