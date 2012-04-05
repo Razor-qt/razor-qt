@@ -43,7 +43,6 @@ set(razor_config_notificationd_srcs
     ${razor_config_notificationd_qrc_srcs}
     ${DESKTOP_FILES}
 )
-    
 
 add_executable(${PROJECT_NAME} ${razor_config_notificationd_srcs} )
 add_dependencies(${PROJECT_NAME} razorqt )

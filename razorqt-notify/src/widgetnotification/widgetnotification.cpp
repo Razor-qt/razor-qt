@@ -38,7 +38,7 @@ public:
         m_bShowing(true),
         m_settings("razorqt-notify"),
         m_currentNotification(0),
-        m_bEnableCompositing(false),
+        m_bEnableCompositing(true),
         m_widgetNotifier( new WidgetNotificationNotifier)
     {
         QImage shadow_edge(":osd_shadow_edge.png");
