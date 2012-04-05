@@ -25,6 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include <razorqt/razorapplication.h>
 #include <QtDebug>
 #include <QApplication>
 #include <QDesktopWidget>
@@ -42,6 +43,7 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
 {
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
     setup();
+    connect(razorApp, SIGNAL(themeChanged()), this, SLOT(setup()));
 }
     
 void RazorWorkSpaceManager::setup()
