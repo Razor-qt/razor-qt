@@ -1,0 +1,66 @@
+<!DOCTYPE Menu PUBLIC '-//freedesktop//DTD Menu 1.0//EN' 'http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd'>
+<Menu>
+    <Name>Settings</Name>
+    <Directory>razor-menu-applications.directory</Directory>
+    <!-- Read standard .directory and .desktop file locations -->
+    <DefaultAppDirs/>
+    <DefaultDirectoryDirs/>
+    <!-- Read in overrides and child menus from applications-merged/ -->
+    <DefaultMergeDirs/>
+    <Include>
+        <Category>Settings</Category>
+    </Include>
+
+
+    <Menu>
+        <Name>Razor settings</Name>
+        <Directory>razor-settings-razor.directory</Directory>
+        <Include>
+            <And>
+                <Category>Settings</Category>
+                <Or>
+                    <Category>X-RAZOR</Category>
+                    <Category>RAZOR</Category>
+                </Or>
+                <!--<Not>
+                    <Filename>razor-config.desktop</Filename>
+                </Not>-->
+            </And>
+        </Include>
+    </Menu>
+
+    <Menu>
+        <Name>System settings</Name>
+        <Directory>razor-settings-system.directory</Directory>
+        <Include>
+            <And>
+                <Category>Settings</Category>
+                <Category>System</Category>
+            </And>
+        </Include>
+    </Menu>
+
+    <Menu>
+        <Name>Other settings</Name>
+        <Directory>razor-settings-other.directory</Directory>
+        <Include>
+            <And>
+                <Category>Settings</Category>
+                <Not>
+                    <Or>
+                        <Category>X-RAZOR</Category>
+                        <Category>RAZOR</Category>
+                        <Category>System</Category>
+                    </Or>
+                </Not>
+            </And>
+         </Include>
+     </Menu>
+
+    <Layout>
+        <Menuname>Razor settings</Menuname>
+        <Menuname>System settings</Menuname>
+        <Merge type="menus"/>
+    </Layout>
+</Menu>
+

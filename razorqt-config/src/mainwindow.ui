@@ -23,6 +23,9 @@
       <property name="isWrapping" stdset="0">
        <bool>true</bool>
       </property>
+      <property name="resizeMode">
+       <enum>QListView::Adjust</enum>
+      </property>
       <property name="viewMode">
        <enum>QListView::IconMode</enum>
       </property>

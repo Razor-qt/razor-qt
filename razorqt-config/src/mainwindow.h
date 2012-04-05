@@ -31,7 +31,7 @@
 
 
 #include "ui_mainwindow.h"
-
+#include <QtXml/QDomElement>
 
 
 namespace RazorConfig {
@@ -50,6 +50,9 @@ public:
 
 private slots:
     void listWidget_itemDoubleClicked(QListWidgetItem *item);
+
+private:
+    void builGroup(const QDomElement& xml);
 };
 
 }; // namespace

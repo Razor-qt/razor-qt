@@ -29,6 +29,8 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QStyledItemDelegate>
 #include <QtGui/QPainter>
+#include <QtGui/QMessageBox>
+#include <qtxdg/xmlhelper.h>
 
 #include "mainwindow.h"
 #include <QtDebug>
@@ -36,33 +38,32 @@
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razoraboutdlg.h>
-
+#include <qtxdg/xdgmenu.h>
 
 namespace RazorConfig {
 
 class ConfigItem : public QListWidgetItem
 {
-    XdgDesktopFile *m_xdg;
+    XdgDesktopFile m_xdg;
 
 public:
-    ConfigItem(XdgDesktopFile *xdg, QListWidget *parent)
+    ConfigItem(XdgDesktopFile xdg, QListWidget *parent)
         : QListWidgetItem(parent),
           m_xdg(xdg)
     {
-        setIcon(xdg->icon(XdgIcon::defaultApplicationIcon()));
-        setText(xdg->name());
-        setToolTip(xdg->comment().isEmpty() ? xdg->name() : xdg->comment());
+        setIcon(xdg.icon(XdgIcon::defaultApplicationIcon()));
+        setText(xdg.name());
+        setToolTip(xdg.comment().isEmpty() ? xdg.name() : xdg.comment());
     }
     ConfigItem(QListWidget *parent)
-        : QListWidgetItem(parent),
-          m_xdg(0)
+        : QListWidgetItem(parent)
     {
     }
 
     void start()
     {
-        if (m_xdg)
-            m_xdg->startDetached();
+        if (m_xdg.isValid())
+            m_xdg.startDetached();
     }
 };
 
@@ -131,81 +132,50 @@ public:
 RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
-    
-    QDirIterator it("/usr/share/applications", QStringList() << "*.desktop", QDir::NoFilter, QDirIterator::Subdirectories);
-    QString name;
-    QString categories;
-    QString onlyShowIn;
-    
-    QHash<QString,QList<XdgDesktopFile*> > map;
-    // ensure that razor goes first
-    map["Razor"] = QList<XdgDesktopFile*>();
-
-    while (it.hasNext()) {
-        name = it.next();
-        XdgDesktopFile *xdg = new XdgDesktopFile();
-        xdg->load(name);
-        if (!xdg->isValid())
-        {
-            qDebug() << "INVALID DESKTOP FILE:" << name;
-            delete xdg;
-            continue;
-        }
-
-        onlyShowIn = xdg->value("OnlyShowIn").toString();
-        if (!onlyShowIn.isEmpty()
-            && !onlyShowIn.contains("X-RAZOR") && !onlyShowIn.contains("RAZOR")
-            //&& !onlyShowIn.contains("YaST")
-           )
-        {
-            qDebug() << "NOT SHOWN" << name << onlyShowIn;
-            delete xdg;
-            continue;
-        }
-        
-        // do not show self
-        if (xdg->value("Exec").toString() == "razor-config")
-        {
-            delete xdg;
-            continue;
-        }
-
-        categories = xdg->value("Categories").toString();
-        if (!categories.contains("Settings"))
-        {
-            delete xdg;
-            continue;
-        }
-        
-        if (categories.contains("X-RAZOR") || categories.contains("RAZOR"))
-        {
-            map["Razor"].append(xdg);
-        }
-        else if (categories.contains("System"))
-        {
-            map[tr("System")].append(xdg);
-        }
-        else
-        {
-            map[tr("Other")].append(xdg);
-        }
-    }
-
-    foreach (QString title, map.keys())
+    QString menuFile = XdgMenu::getMenuFileName("config.menu");
+    XdgMenu xdgMenu;
+    xdgMenu.setEnvironments("X-RAZOR");
+    bool res = xdgMenu.read(menuFile);
+    if (!res)
     {
-        new TitleItem(title, listWidget);
-        listWidget->setItemDelegateForRow(listWidget->count()-1, new HeaderDelegate(listWidget));
-        foreach (XdgDesktopFile*i, map[title])
-        {
-            new ConfigItem(i, listWidget);
-            listWidget->setItemDelegateForRow(listWidget->count()-1, new ItemDelegate(listWidget));
-        }
+        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+        return;
     }
-    
+
+    DomElementIterator it(xdgMenu.xml().documentElement() , "Menu");
+    while(it.hasNext())
+    {
+        this->builGroup(it.next());
+    }
+
     connect(listWidget, SIGNAL(itemActivated(QListWidgetItem*)),
             this, SLOT(listWidget_itemDoubleClicked(QListWidgetItem *)));
 }
 
+void RazorConfig::MainWindow::builGroup(const QDomElement& xml)
+{
+    QString title;
+    if (! xml.attribute("title").isEmpty())
+        title = xml.attribute("title");
+    else
+        title = xml.attribute("name");
+
+    TitleItem *titleItem = new TitleItem(title, listWidget);
+    listWidget->setItemDelegateForRow(listWidget->count()-1, new HeaderDelegate(listWidget));
+
+    DomElementIterator it(xml , "AppLink");
+    while(it.hasNext())
+    {
+        QDomElement x = it.next();
+
+        XdgDesktopFile df;
+        df.load(x.attribute("desktopFile"));
+
+        new ConfigItem(df, listWidget);
+        listWidget->setItemDelegateForRow(listWidget->count()-1, new ItemDelegate(listWidget));
+    }
+
+}
 
 void RazorConfig::MainWindow::listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
