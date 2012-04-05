@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg7854" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="48" width="48" version="1.0" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs id="defs7856">
+  <linearGradient id="linearGradient7577">
+   <stop id="stop7579" style="stop-opacity:.31373" offset="0"/>
+   <stop id="stop7581" style="stop-color:#fff" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient7386" y2="36.456" xlink:href="#linearGradient7577" gradientUnits="userSpaceOnUse" x2="23.676" y1="31.488" x1="23.418"/>
+  <linearGradient id="linearGradient7389" y2="25.138" xlink:href="#linearGradient7577" gradientUnits="userSpaceOnUse" x2="24.82" y1="13.177" x1="22.18"/>
+  <linearGradient id="linearGradient7391" y2="11.031" gradientUnits="userSpaceOnUse" x2="24.062" gradientTransform="translate(-1e-6,0.9375)" y1="24.906" x1="24.062">
+   <stop id="stop5580" style="stop-color:#dedfdd" offset="0"/>
+   <stop id="stop5582" style="stop-color:#92948f" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient7393" y2="46.418" gradientUnits="userSpaceOnUse" x2="27.488" y1="20.531" x1="21.422">
+   <stop id="stop5592" style="stop-color:#fff" offset="0"/>
+   <stop id="stop5594" style="stop-color:#fff;stop-opacity:0" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient7395" y2="10.116" gradientUnits="userSpaceOnUse" x2="48.207" y1="37.813" x1=".23498">
+   <stop id="stop7307" style="stop-color:#fff" offset="0"/>
+   <stop id="stop7313" style="stop-color:#fff;stop-opacity:0" offset=".20971"/>
+   <stop id="stop7329" style="stop-color:#fff;stop-opacity:.81065" offset=".34936"/>
+   <stop id="stop7321" style="stop-color:#fff;stop-opacity:0" offset=".42850"/>
+   <stop id="stop7323" style="stop-color:#fff" offset=".52134"/>
+   <stop id="stop7317" style="stop-color:#fff;stop-opacity:0" offset=".55747"/>
+   <stop id="stop7319" style="stop-color:#fff;stop-opacity:.56805" offset=".71002"/>
+   <stop id="stop7416" style="stop-color:#fff;stop-opacity:0" offset=".74395"/>
+   <stop id="stop7309" style="stop-color:#fff;stop-opacity:0" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata id="metadata7859">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Jakub Steiner</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:source>http://jimmac.musichall.cz</dc:source>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"/>
+    <dc:title>Eject</dc:title>
+    <dc:subject>
+     <rdf:Bag>
+      <rdf:li>media</rdf:li>
+      <rdf:li>eject</rdf:li>
+      <rdf:li>unmount</rdf:li>
+     </rdf:Bag>
+    </dc:subject>
+    <dc:contributor>
+     <cc:Agent>
+      <dc:title>Lapo Calamandrei</dc:title>
+     </cc:Agent>
+    </dc:contributor>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+    <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/Notice"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/ShareAlike"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/SourceCode"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1">
+  <g id="g7377">
+   <path id="path7342" style="opacity:.4;color:#000000;display:block;fill:url(#linearGradient7386)" d="m9.125 30.906c-1.1498 0-2.1562 0.994-2.1562 2.156v3.75c0 1.163 1.0064 2.157 2.1562 2.157h29.75c1.15 0 2.156-0.994 2.156-2.157v-3.75c0-1.162-1.006-2.156-2.156-2.156h-29.75z"/>
+   <rect id="rect4595" style="color:#000000;stroke:#555753;display:block;fill:#dedfdd" rx=".62258" ry=".63725" height="5" width="31" y="32.438" x="8.5"/>
+   <path id="path7339" style="opacity:.4;color:#000000;display:block;fill:url(#linearGradient7389)" d="m23.781 6.9062c-0.46 0.024-0.884 0.2535-1.156 0.625l-14.5 20.031c-0.3432 0.468-0.3928 1.089-0.1281 1.605 0.2646 0.517 0.7981 0.839 1.3781 0.833h29.375c0.574-0.006 1.097-0.333 1.354-0.846 0.257-0.514 0.205-1.128-0.135-1.592l-14.875-20.031c-0.305-0.4157-0.798-0.6506-1.313-0.6248z"/>
+   <path id="path5566" style="color:#000000;stroke:#555753;display:block;fill:url(#linearGradient7391)" d="m9.375 28.469h29.375l-14.875-20.032-14.5 20.032z"/>
+   <path id="path5586" style="stroke-width:.97513;color:#000000;stroke:url(#linearGradient7393);display:block;fill:none" d="m23.875 10.344l-12.313 17h24.969l-12.656-17z" xlink:href="#path5566" transform="matrix(1.0253 0 0 1.0257 -.60788 -.54745)"/>
+   <rect id="rect5598" style="color:#000000;stroke:#fff;display:block;fill:none" height="3" width="29" y="33.438" x="9.5"/>
+   <path id="path7326" style="opacity:.15;color:#000000;display:block;fill:url(#linearGradient7395)" d="m23.875 9.3438l-13.437 18.594h27.25l-13.813-18.594zm-14.75 23.625c-0.0602 0-0.0938 0.027-0.0938 0.093v3.75c0 0.067 0.0336 0.094 0.0938 0.094h29.75c0.06 0 0.094-0.027 0.094-0.094v-3.75c0-0.066-0.034-0.093-0.094-0.093h-29.75z"/>
+  </g>
+ </g>
+</svg>

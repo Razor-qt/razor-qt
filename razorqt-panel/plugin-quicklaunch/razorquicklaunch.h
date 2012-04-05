@@ -59,6 +59,8 @@ private:
     QuickLaunchLayout *m_layout;
     QHash<int,QuickLaunchButton*> m_buttons;
     int m_maxIndex;
+    uint m_currentRow ;
+    uint m_currentColumn ;
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);

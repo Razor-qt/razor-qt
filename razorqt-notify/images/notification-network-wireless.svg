@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="48" width="48" version="1.0" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs id="defs3">
+  <linearGradient id="linearGradient3374">
+   <stop id="stop3376" style="stop-color:#729fcf" offset="0"/>
+   <stop id="stop3378" style="stop-color:#729fcf;stop-opacity:0" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient3362">
+   <stop id="stop3364" style="stop-color:#3465a4" offset="0"/>
+   <stop id="stop3366" style="stop-color:#3465a4;stop-opacity:0" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient5998" gradientUnits="userSpaceOnUse" cy="19.5" cx="10.737" gradientTransform="matrix(1 0 0 .30257 0 13.6)" r="8.2626">
+   <stop id="stop3270" offset="0"/>
+   <stop id="stop3272" style="stop-opacity:0" offset="1"/>
+  </radialGradient>
+  <radialGradient id="radialGradient6000" xlink:href="#linearGradient3374" gradientUnits="userSpaceOnUse" cy="8.0709" cx="10.281" gradientTransform="matrix(1 0 0 .82735 0 1.1222)" r="4.525"/>
+  <radialGradient id="radialGradient6002" xlink:href="#linearGradient3362" gradientUnits="userSpaceOnUse" cy="9.8424" cx="10.281" gradientTransform="matrix(4.6808 0 0 1.2767 -37.844 -3.3008)" r="4.525"/>
+  <radialGradient id="radialGradient6004" xlink:href="#linearGradient3374" gradientUnits="userSpaceOnUse" cy="7.8249" cx="10.281" gradientTransform="matrix(.69845 0 0 .57786 3.1003 2.7439)" r="4.525"/>
+  <linearGradient id="linearGradient7121" y2="21.042" gradientUnits="userSpaceOnUse" x2="21.036" y1="44.528" x1="24.837">
+   <stop id="stop7103" style="stop-color:#babdb6" offset="0"/>
+   <stop id="stop7105" style="stop-color:#fff" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient7129" xlink:href="#linearGradient3362" gradientUnits="userSpaceOnUse" cy="10.018" cx="10.281" gradientTransform="matrix(4.6808 0 0 1.2767 -37.844 -3.3008)" r="4.525"/>
+  <radialGradient id="radialGradient7137" gradientUnits="userSpaceOnUse" cy="1.7287" cx="8.9057" gradientTransform="matrix(.73751 0 0 .72018 2.4345 .66174)" r="1.9952">
+   <stop id="stop7133" style="stop-color:#fff" offset="0"/>
+   <stop id="stop7135" style="stop-color:#d3d7cf" offset="1"/>
+  </radialGradient>
+  <radialGradient id="radialGradient7159" gradientUnits="userSpaceOnUse" cy="1.1256" cx="8.3047" gradientTransform="matrix(1.8598 0 0 1.8173 -7.1401 -.89424)" r="2.0508">
+   <stop id="stop7155" style="stop-color:#fff" offset="0"/>
+   <stop id="stop7157" style="stop-color:#fff;stop-opacity:0" offset="1"/>
+  </radialGradient>
+  <linearGradient id="linearGradient6969" y2="23.038" gradientUnits="userSpaceOnUse" x2="11.225" y1="43.135" x1="11.225">
+   <stop id="stop6965" offset="0"/>
+   <stop id="stop6967" style="stop-opacity:0" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient6985" y2="10.935" gradientUnits="userSpaceOnUse" x2="39.421" y1="28.5" x1="39.068">
+   <stop id="stop6981" style="stop-color:#888a85" offset="0"/>
+   <stop id="stop6983" style="stop-color:#555753" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata id="metadata6">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Lapo Calamandrei</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:title>Network Wireless</dc:title>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+    <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/Notice"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/ShareAlike"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/SourceCode"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1">
+  <path id="path3258" style="opacity:.1;fill:url(#radialGradient5998)" d="m19 19.5a8.2626 2.5 0 1 1 -16.525 0 8.2626 2.5 0 1 1 16.525 0z" transform="matrix(2.3051 0 0 2.3779 -1.1985 -5.8195)"/>
+  <path id="path7125" style="stroke-linejoin:round;opacity:.6;stroke:url(#radialGradient7129);stroke-linecap:round;stroke-width:.19967;fill:url(#radialGradient6000)" d="m14.562 6.5a4.2812 3.5 0 1 1 -8.562 0 4.2812 3.5 0 1 1 8.562 0z" transform="matrix(4.5547 0 0 5.507 -22.828 -20.795)"/>
+  <path id="path6961" style="opacity:.15299;fill:url(#linearGradient6969);fill-rule:evenodd" d="m23.875 12.562c-0.12 0.032-0.222 0.111-0.281 0.219l-16 31c-0.0723 0.141-0.0655 0.309 0.0176 0.443 0.0832 0.134 0.2305 0.215 0.3884 0.214h3.5c0.172 0.001 0.33-0.096 0.406-0.25l2.406-5 21.063 3.531 0.719 1.469c0.076 0.154 0.234 0.251 0.406 0.25h3.5c0.158 0.001 0.305-0.08 0.388-0.214s0.09-0.302 0.018-0.443l-16-31c-0.101-0.191-0.324-0.283-0.531-0.219zm0.125 6.438l3.188 6.625-5.657-1.469 2.469-5.156zm-3.75 7.844l5.719 1.468-8.375 4.094 2.656-5.562zm9.188 3.531l3.874 8.063-15.218-2.563 11.344-5.5z" transform="matrix(1 0 0 .40052 0 26.14)"/>
+  <path id="path3319" style="stroke-linejoin:round;opacity:.8;stroke:url(#radialGradient6002);stroke-linecap:round;stroke-width:.26853;fill:url(#radialGradient6000)" d="m14.562 6.5a4.2812 3.5 0 1 1 -8.562 0 4.2812 3.5 0 1 1 8.562 0z" transform="matrix(3.3869 0 0 4.0945 -10.821 -11.614)"/>
+  <g id="g7115" transform="translate(0 -.5)">
+   <path id="path7060" style="fill-rule:evenodd;stroke:url(#linearGradient6985);stroke-width:1px;fill:url(#linearGradient7121)" d="m24 13l-16 31h3.5l2.562-5.312 21.626 3.624 0.812 1.688h3.5l-16-31zm0 4.969l4 8.343-7.094-1.843 3.094-6.5zm-4 8.343l7.281 1.876-10.656 5.187 3.375-7.063zm9.656 3.469l4.438 9.219-17.438-2.906 13-6.313z"/>
+   <path id="path7092" style="stroke:#fff;stroke-linecap:round;stroke-width:1px;fill:none" d="m38.406 43.031l-14.406-27.906-14.406 27.906"/>
+   <path id="path7097" style="stroke:#fff;stroke-linecap:round;stroke-width:1px;fill:none" d="m15.781 34.906l13.031-6.344"/>
+   <path id="path7099" style="stroke:#fff;stroke-linecap:round;stroke-width:1px;fill:none" d="m15.094 36.844l19.656 3.281"/>
+  </g>
+  <path id="path3382" style="stroke-linejoin:round;stroke:url(#radialGradient6002);stroke-linecap:round;stroke-width:.40747;fill:url(#radialGradient6004)" d="m14.562 6.5a4.2812 3.5 0 1 1 -8.562 0 4.2812 3.5 0 1 1 8.562 0z" transform="matrix(2.219 0 0 2.7143 1.1861 -2.6429)"/>
+  <g id="g3232" transform="matrix(2.2398 0 0 2.2301 -19.677 9.3886)">
+   <path id="path3234" style="stroke-linejoin:round;stroke:#555753;stroke-linecap:round;stroke-width:.39671;fill:url(#radialGradient7137)" d="m11 2.25a1.7969 1.75 0 1 1 -3.5938 0 1.7969 1.75 0 1 1 3.5938 0z" transform="matrix(1.113 0 0 1.1429 9.2565 -.071429)"/>
+   <path id="path3236" style="fill:#fff" d="m20 1.5a0.5 0.5 0 1 1 -1 0 0.5 0.5 0 1 1 1 0z" transform="matrix(1.8125 0 0 1.8125 -16.465 -.92882)"/>
+  </g>
+  <path id="path7147" style="stroke-linejoin:round;stroke:url(#radialGradient7159);stroke-linecap:round;stroke-width:.50779;fill:none" d="m11 2.25a1.7969 1.75 0 1 1 -3.5938 0 1.7969 1.75 0 1 1 3.5938 0z" transform="matrix(1.9478 0 0 1.991 6.0739 10.484)"/>
+ </g>
+</svg>

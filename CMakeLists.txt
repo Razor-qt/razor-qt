@@ -27,6 +27,7 @@ message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
 message(STATUS "")
 
 add_definitions ( -Wall )
+set( QT_USE_QTDBUS 1 )
 find_package ( Qt4 4.6.0 REQUIRED )
 include ( ${QT_USE_FILE} )
 include_directories (
@@ -64,6 +65,7 @@ add_subdirectory( razorqt-config )
 add_subdirectory( razorqt-power )
 add_subdirectory( razorqt-policykit )
 add_subdirectory( razorqt-lightdm-greeter )
+add_subdirectory( razorqt-notify )
 
 ########### Add uninstall target ###############
 CONFIGURE_FILE(

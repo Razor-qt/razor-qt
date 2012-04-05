@@ -28,11 +28,11 @@
 #ifndef QUICKLAUNCHLAYOUT_H
 #define QUICKLAUNCHLAYOUT_H
 
-#include <QBoxLayout>
+#include <QGridLayout>
 
 class QuickLaunchButton;
 
-class QuickLaunchLayout : public QBoxLayout
+class QuickLaunchLayout : public QGridLayout
 {
     Q_OBJECT
 public:
