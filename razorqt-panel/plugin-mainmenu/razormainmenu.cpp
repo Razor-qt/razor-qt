@@ -71,7 +71,7 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     mPowerManager->setParentWidget(panel());
 
     mScreenSaver = new ScreenSaver(this);
-    
+
     mShortcut = new QxtGlobalShortcut(this);
     connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
 
@@ -197,9 +197,8 @@ void RazorMainMenu::buildMenu(bool lazyInit)
     menu->addSeparator();
 
     QMenu* leaveMenu = menu->addMenu(XdgIcon::fromTheme("system-shutdown"), tr("Leave"));
+    leaveMenu->addActions(mScreenSaver->availableActions());
     leaveMenu->addActions(mPowerManager->availableActions());
-
-    menu->addActions(mScreenSaver->availableActions());
 
     QMenu *oldMenu = mMenu;
     mMenu = menu;
