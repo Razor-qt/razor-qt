@@ -184,7 +184,7 @@ public:
             return m_list[index.row()].id();
         if (role == Qt::DecorationRole)
         {
-            return m_list[index.row()].xdg()->icon();
+            return m_list[index.row()].xdg()->icon(XdgIcon::defaultApplicationIcon());
         }
         return QVariant();
     }
