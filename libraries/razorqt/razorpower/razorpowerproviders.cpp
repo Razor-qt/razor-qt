@@ -31,6 +31,7 @@
 #include <QtDBus/QDBusInterface>
 #include <QtCore/QDebug>
 #include "razorqt/xfitman.h"
+#include "razorqt/razornotification.h"
 
 #define UPOWER_SERVICE          "org.freedesktop.UPower"
 #define UPOWER_PATH             "/org/freedesktop/UPower"
@@ -74,13 +75,23 @@ bool dbusCall(const QString &service,
     if (!dbus.isValid())
     {
         qWarning() << "dbusCall: QDBusInterface is invalid" << service << path << interface << method;
+        RazorNotification::notify(QObject::tr("Razor Power Manager"),
+                                  "razor-logo.png",
+                                  QObject::tr("Power Manager Error"),
+                                  QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method);
         return false;
     }
 
     QDBusMessage msg = dbus.call(method);
 
     if (!msg.errorName().isEmpty())
+    {
         printDBusMsg(msg);
+        RazorNotification::notify(QObject::tr("Razor Power Manager"),
+                                  "razor-logo.png",
+                                  QObject::tr("Power Manager Error (D-BUS call)"),
+                                  msg.errorName() + "<p>" + msg.errorMessage());
+    }
 
     // If the method no returns value, we believe that it was successful.
     return msg.arguments().isEmpty() ||
@@ -102,13 +113,24 @@ bool dbusGetProperty(const QString &service,
     if (!dbus.isValid())
     {
         qWarning() << "dbusGetProperty: QDBusInterface is invalid" << service << path << interface << property;
+        RazorNotification::notify(QObject::tr("Razor Power Manager"),
+                                  "razor-logo.png",
+                                  QObject::tr("Power Manager Error"),
+                                  QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + property);
+
         return false;
     }
 
     QDBusMessage msg = dbus.call("Get", dbus.interface(), property);
 
     if (!msg.errorName().isEmpty())
+    {
         printDBusMsg(msg);
+        RazorNotification::notify(QObject::tr("Razor Power Manager"),
+                                  "razor-logo.png",
+                                  QObject::tr("Power Manager Error (Get Property)"),
+                                  msg.errorName() + "<p>" + msg.errorMessage());
+    }
 
     return !msg.arguments().isEmpty() &&
             msg.arguments().first().value<QDBusVariant>().variant().toBool();
