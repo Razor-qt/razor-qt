@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg7854" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="48" width="48" version="1.0" xmlns:cc="http://web.resource.org/cc/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs id="defs7856">
+  <linearGradient id="linearGradient7865" y2="25.808" gradientUnits="userSpaceOnUse" x2="-172.83" y1="9.2039" x1="-177.28">
+   <stop id="stop7579" style="stop-opacity:.31373" offset="0"/>
+   <stop id="stop7581" style="stop-color:#fff" offset="1"/>
+  </linearGradient>
+  <radialGradient id="radialGradient7867" gradientUnits="userSpaceOnUse" cy="18.02" cx="36.126" gradientTransform="matrix(2.7392 0 0 2.2479 -274.86 -10.683)" r="13.552">
+   <stop id="stop7346" style="stop-color:#eeeeec" offset="0"/>
+   <stop id="stop7348" style="stop-color:#92948f" offset="1"/>
+  </radialGradient>
+  <linearGradient id="linearGradient7869" y2="37.942" gradientUnits="userSpaceOnUse" x2="48.026" y1="10.147" x1="-.11695">
+   <stop id="stop7307" style="stop-color:#fff" offset="0"/>
+   <stop id="stop7313" style="stop-color:#fff;stop-opacity:0" offset=".20971"/>
+   <stop id="stop7329" style="stop-color:#fff;stop-opacity:.81065" offset=".34936"/>
+   <stop id="stop7321" style="stop-color:#fff;stop-opacity:0" offset=".42850"/>
+   <stop id="stop7323" style="stop-color:#fff" offset=".52134"/>
+   <stop id="stop7317" style="stop-color:#fff;stop-opacity:0" offset=".55747"/>
+   <stop id="stop7319" style="stop-color:#fff;stop-opacity:.56805" offset=".71002"/>
+   <stop id="stop7416" style="stop-color:#fff;stop-opacity:0" offset=".74395"/>
+   <stop id="stop7309" style="stop-color:#fff;stop-opacity:0" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata id="metadata7859">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Lapo Calamandrei</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:source/>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/GPL/2.0/"/>
+    <dc:title>Play</dc:title>
+    <dc:subject>
+     <rdf:Bag>
+      <rdf:li>play</rdf:li>
+      <rdf:li>playback</rdf:li>
+      <rdf:li>start</rdf:li>
+      <rdf:li>begin</rdf:li>
+     </rdf:Bag>
+    </dc:subject>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/GPL/2.0/">
+    <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/Notice"/>
+    <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/ShareAlike"/>
+    <cc:requires rdf:resource="http://web.resource.org/cc/SourceCode"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1">
+  <g id="g7138" transform="translate(200)">
+   <path id="path7671" style="opacity:.4;fill:url(#linearGradient7865);fill-rule:evenodd" d="m-186.59 9c-0.79 0.0509-1.41 0.7074-1.41 1.5v27c0.01 0.532 0.3 1.02 0.76 1.283 0.46 0.264 1.03 0.263 1.49-0.002l23-13.5c0.45-0.273 0.72-0.758 0.72-1.281s-0.27-1.008-0.72-1.281l-23-13.5c-0.25-0.1549-0.55-0.231-0.84-0.219z"/>
+   <g id="g7515">
+    <path id="path7812" style="fill-rule:evenodd;stroke-dashoffset:0.7;stroke:#555753;stroke-linecap:square;fill:url(#radialGradient7867)" d="m-186.5 37.5v-27l23 13.512-23 13.488z"/>
+    <path id="path7828" style="stroke-dashoffset:0.7;stroke:#fff;stroke-linecap:square;fill:none" d="m-185.5 35.75v-23.5l20 11.761-20 11.739z"/>
+    <path id="path7354" style="opacity:.15;fill:url(#linearGradient7869);fill-rule:evenodd" d="m14 11.375v25.25c7.167-4.204 14.332-8.421 21.5-12.625-7.167-4.21-14.332-8.415-21.5-12.625z" transform="matrix(1,0,0,-1,-200,48)"/>
+   </g>
+  </g>
+ </g>
+</svg>

@@ -30,7 +30,7 @@
 
 
 QuickLaunchLayout::QuickLaunchLayout(QWidget * parent)
-    : QBoxLayout(QBoxLayout::LeftToRight, parent)
+    : QGridLayout(parent)
 {
     setSpacing(0);
     setContentsMargins(0, 0, 0, 0);
@@ -48,8 +48,8 @@ void QuickLaunchLayout::swapButtons(QuickLaunchButton * b1, QuickLaunchButton *b
     // takeAt order is important here. Bigger index *must* go first
     QWidgetItem *item2 = reinterpret_cast<QWidgetItem*>(takeAt(ix2));
     QWidgetItem *item1 = reinterpret_cast<QWidgetItem*>(takeAt(ix1));
-    insertItem(ix1, item2);
-    insertItem(ix2, item1);
+//    insertItem(ix1, item2);
+//    insertItem(ix2, item1);
 }
 
 QList<QuickLaunchButton*> QuickLaunchLayout::buttons()

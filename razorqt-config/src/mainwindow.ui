@@ -15,26 +15,10 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QListWidget" name="listWidget">
-      <property name="flow">
-       <enum>QListView::LeftToRight</enum>
-      </property>
-      <property name="isWrapping" stdset="0">
-       <bool>true</bool>
-      </property>
-      <property name="resizeMode">
-       <enum>QListView::Adjust</enum>
-      </property>
-      <property name="viewMode">
-       <enum>QListView::IconMode</enum>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
+    <item row="0" column="0" colspan="2">
+     <widget class="QCategorizedView" name="view"/>
     </item>
-    <item row="1" column="0">
+    <item row="1" column="0" colspan="2">
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
        <set>QDialogButtonBox::Close</set>
@@ -44,6 +28,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCategorizedView</class>
+   <extends>QListView</extends>
+   <header>qcategorizedview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

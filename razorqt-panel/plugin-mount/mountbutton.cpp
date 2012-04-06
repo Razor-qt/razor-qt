@@ -37,6 +37,8 @@
 #include <qtxdg/xdgicon.h>
 #include "mountbutton.h"
 #include <razormount/razormount.h>
+#include <razorqt/razornotification.h>
+
 
 Popup::Popup(RazorMountManager *manager, QWidget* parent):
     QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
@@ -175,7 +177,11 @@ MountButton::~MountButton()
 
 void MountButton::showMessage(const QString &text)
 {
-    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
+//    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
+    RazorNotification::notify(toolTip(),
+                              icon().name(),
+                              toolTip(),
+                              text);
 }
 
 

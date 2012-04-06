@@ -26,11 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QtCore/QDirIterator>
-#include <QtGui/QStatusBar>
-#include <QtGui/QStyledItemDelegate>
-#include <QtGui/QPainter>
-#include <QtGui/QMessageBox>
-#include <qtxdg/xmlhelper.h>
+#include <QtGui/QLineEdit>
 
 #include "mainwindow.h"
 #include <QtDebug>
@@ -38,147 +34,193 @@
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razoraboutdlg.h>
-#include <qtxdg/xdgmenu.h>
+
+#include "qcategorizedview.h"
+#include "qcategorydrawer.h"
+#include "qcategorizedsortfilterproxymodel.h"
 
 namespace RazorConfig {
 
-class ConfigItem : public QListWidgetItem
+struct ConfigPaneData: public QSharedData
 {
-    XdgDesktopFile m_xdg;
-
-public:
-    ConfigItem(XdgDesktopFile xdg, QListWidget *parent)
-        : QListWidgetItem(parent),
-          m_xdg(xdg)
-    {
-        setIcon(xdg.icon(XdgIcon::defaultApplicationIcon()));
-        setText(xdg.name());
-        setToolTip(xdg.comment().isEmpty() ? xdg.name() : xdg.comment());
-    }
-    ConfigItem(QListWidget *parent)
-        : QListWidgetItem(parent)
-    {
-    }
-
-    void start()
-    {
-        if (m_xdg.isValid())
-            m_xdg.startDetached();
-    }
+    QString id;
+    QString category;
+    XdgDesktopFile *xdg;
 };
 
-class TitleItem : public ConfigItem
+class ConfigPane
 {
 public:
-    TitleItem(const QString &title, QListWidget *parent)
-        : ConfigItem(parent)
+    ConfigPane(): d(new ConfigPaneData) { }
+    ConfigPane(const ConfigPane &other): d(other.d) { }
+
+    inline QString &id() const { return d->id; }
+    inline XdgDesktopFile* xdg() const { return d->xdg; }
+    inline void setXdg(XdgDesktopFile* xdg) { d->xdg = xdg; }
+    inline QString &category() const { return d->category; }
+
+    bool operator==(const ConfigPane &other)
     {
-        setText(title);
-        setFlags(Qt::NoItemFlags); // disable the item completely
+        return d->id == other.id();
+    }
+
+private:
+    QExplicitlySharedDataPointer<ConfigPaneData> d;
+};
+
+static QStringList preferredCategoryOrder;
+
+static bool categorySorter(const ConfigPane &a, const ConfigPane &b)
+{
+    int aIdx = preferredCategoryOrder.indexOf(a.category());
+    int bIdx = preferredCategoryOrder.indexOf(b.category());
+    if (aIdx < 0)
+        return false;
+    return aIdx < bIdx;
+}
+
+class ConfigPaneModel: public QAbstractListModel
+{
+public:
+    ConfigPaneModel(): QAbstractListModel()
+    {
+        if (preferredCategoryOrder.isEmpty()) {
+            preferredCategoryOrder << "Razor" << "System" << "Other";
+        }
         
-        QFont f(font());
-        f.setBold(true);
-        setFont(f);
+        QDirIterator it("/usr/share/applications", QStringList() << "*.desktop", QDir::NoFilter, QDirIterator::Subdirectories);
+        QString name;
+        QString categories;
+        QString category;
+        QString onlyShowIn;
+    
+        while (it.hasNext()) {
+            name = it.next();
+            XdgDesktopFile *xdg = new XdgDesktopFile();
+            xdg->load(name);
+            if (!xdg->isValid())
+            {
+                qDebug() << "INVALID DESKTOP FILE:" << name;
+                delete xdg;
+                continue;
+            }
+
+            onlyShowIn = xdg->value("OnlyShowIn").toString();
+            if (!onlyShowIn.isEmpty()
+                && !onlyShowIn.contains("X-RAZOR") && !onlyShowIn.contains("RAZOR")
+                //&& !onlyShowIn.contains("YaST")
+            )
+            {
+                qDebug() << "NOT SHOWN" << name << onlyShowIn;
+                delete xdg;
+                continue;
+            }
         
-        QBrush bg = background();
-        setBackground(foreground());
-        setForeground(background());
+            // do not show self
+            if (xdg->value("Exec").toString() == "razor-config")
+            {
+                delete xdg;
+                continue;
+            }
+
+            categories = xdg->value("Categories").toString();
+            if (!categories.contains("Settings"))
+            {
+                delete xdg;
+                continue;
+            }
+        
+            if (categories.contains("X-RAZOR") || categories.contains("RAZOR"))
+            {
+                category = "Razor";
+            }
+            else if (categories.contains("System"))
+            {
+                category = "System";
+            }
+            else
+            {
+                category = "Other";
+            }
+            
+            ConfigPane pane;
+            pane.id() = xdg->value("Icon").toString();
+            pane.category() = category;
+            pane.setXdg(xdg);
+            m_list.append(pane);
+        }
+
+        qSort(m_list.begin(), m_list.end(), categorySorter);
     }
     
-    void start() {};
+    void activateItem(const QModelIndex &index)
+    {
+        if (!index.isValid())
+            return;
+        m_list[index.row()].xdg()->startDetached();
+    }
+
+    ~ConfigPaneModel() { }
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        return m_list.count();
+    }
+
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole)
+    {
+        return false;
+    }
+
+    QVariant data(const QModelIndex &index, int role) const
+    {
+        if (role == Qt::DisplayRole)
+            return m_list[index.row()].xdg()->name();
+        if (role == QCategorizedSortFilterProxyModel::CategoryDisplayRole)
+            return m_list[index.row()].category();
+        if (role == QCategorizedSortFilterProxyModel::CategorySortRole)
+            return m_list[index.row()].category();
+        if (role == Qt::UserRole)
+            return m_list[index.row()].id();
+        if (role == Qt::DecorationRole)
+        {
+            return m_list[index.row()].xdg()->icon(XdgIcon::defaultApplicationIcon());
+        }
+        return QVariant();
+    }
+
+private:
+    QList<ConfigPane> m_list;
 };
-
-class HeaderDelegate: public QStyledItemDelegate
-{
-    QListWidget* mView;
-
-public:
-    explicit HeaderDelegate(QListWidget *parent)
-        : QStyledItemDelegate(parent),
-          mView(parent)
-    {
-    }
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        QSize size = QStyledItemDelegate::sizeHint(option, index);
-        size.setWidth(mView->viewport()->width());
-        size.setHeight(size.height()*3);
-        return size;
-    }
-};
-
-class ItemDelegate: public QStyledItemDelegate
-{
-    QListWidget* mView;
-
-public:
-    explicit ItemDelegate(QListWidget *parent)
-        : QStyledItemDelegate(parent),
-          mView(parent)
-    {
-    }
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
-    {
-        QSize size; // = QStyledItemDelegate::sizeHint(option, index);
-        size.setWidth(88);
-        size.setHeight(88);
-        return size;
-    }
-};
-
-} // namespace RazorConfig
+    
+}
 
 
 RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
-    QString menuFile = XdgMenu::getMenuFileName("config.menu");
-    XdgMenu xdgMenu;
-    xdgMenu.setEnvironments("X-RAZOR");
-    bool res = xdgMenu.read(menuFile);
-    if (!res)
-    {
-        QMessageBox::warning(this, "Parse error", xdgMenu.errorString());
+    
+    model = new ConfigPaneModel();
+
+    view->setViewMode(QListView::IconMode);
+    view->setIconSize(QSize(48, 48));
+    view->setGridSize(QSize(140, 74));
+    view->setCategoryDrawer(new QCategoryDrawerV3(view));
+
+    proxyModel = new QCategorizedSortFilterProxyModel();
+    proxyModel->setCategorizedModel(true);
+    proxyModel->setSourceModel(model);
+
+    view->setModel(proxyModel);
+    
+    connect(view, SIGNAL(activated(const QModelIndex&)),
+            this, SLOT(activateItem(const QModelIndex&)));
+}
+
+void RazorConfig::MainWindow::activateItem(const QModelIndex &index)
+{
+    if (!index.isValid())
         return;
-    }
-
-    DomElementIterator it(xdgMenu.xml().documentElement() , "Menu");
-    while(it.hasNext())
-    {
-        this->builGroup(it.next());
-    }
-
-    connect(listWidget, SIGNAL(itemActivated(QListWidgetItem*)),
-            this, SLOT(listWidget_itemDoubleClicked(QListWidgetItem *)));
-}
-
-void RazorConfig::MainWindow::builGroup(const QDomElement& xml)
-{
-    QString title;
-    if (! xml.attribute("title").isEmpty())
-        title = xml.attribute("title");
-    else
-        title = xml.attribute("name");
-
-    TitleItem *titleItem = new TitleItem(title, listWidget);
-    listWidget->setItemDelegateForRow(listWidget->count()-1, new HeaderDelegate(listWidget));
-
-    DomElementIterator it(xml , "AppLink");
-    while(it.hasNext())
-    {
-        QDomElement x = it.next();
-
-        XdgDesktopFile df;
-        df.load(x.attribute("desktopFile"));
-
-        new ConfigItem(df, listWidget);
-        listWidget->setItemDelegateForRow(listWidget->count()-1, new ItemDelegate(listWidget));
-    }
-
-}
-
-void RazorConfig::MainWindow::listWidget_itemDoubleClicked(QListWidgetItem *item)
-{
-    // we know it's ConfigItem only.
-    reinterpret_cast<ConfigItem*>(item)->start();
+    QModelIndex orig = proxyModel->mapToSource(index);
+    model->activateItem(orig);
 }
