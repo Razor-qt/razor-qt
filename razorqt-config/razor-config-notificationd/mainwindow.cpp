@@ -80,8 +80,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::showNotification()
 {
-    QVariantMap m ;
-    m_notificationId = RazorNotification::notify("test app",0,"none","some aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasummary","bodaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay",m,0);
+    m_notificationId = RazorNotification::notify(tr("A testing application"),
+                                                 "razor-logo.png",
+                                                 tr("Notification Summary"),
+                                                 tr("Notification Body") + "<p>Lorem ipsim dolor sir amet...");
 }
 
 void MainWindow::positionChanged()

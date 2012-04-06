@@ -22,8 +22,13 @@ public:
     }
 
     QDBusConnection m_bus ;
-    quint32 notify( const QString& appName,quint32 replace_id,const QString& appIcon, const QString& summary, const QString& body,
-                 const QVariantMap& hints, qint32 expire_timeout)
+    quint32 notify(const QString& appName,
+                   const QString& appIcon,
+                   const QString& summary,
+                   const QString& body,
+                   const QVariantMap& hints,
+                   quint32 replace_id,
+                   qint32 expire_timeout)
     {
         QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1("org.freedesktop.Notifications"),
                                                         QString::fromLatin1("/org/freedesktop/Notifications"),
@@ -77,10 +82,16 @@ RazorNotification::RazorNotification():
 {
 }
 
-quint32 RazorNotification::notify(const QString &appName, quint32 replace_id, const QString &appIcon, const QString &summary, const QString &body, const QVariantMap &hints, qint32 expire_timeout)
+quint32 RazorNotification::notify(const QString& appName,
+                                  const QString& appIcon,
+                                  const QString& summary,
+                                  const QString& body,
+                                  const QVariantMap& hints,
+                                  quint32 replace_id,
+                                  qint32 expire_timeout)
 {
     RazorNotification n ;
-    return n.d_func()->notify(appName, replace_id, appIcon, summary, body, hints,expire_timeout);
+    return n.d_func()->notify(appName, appIcon, summary, body, hints, replace_id, expire_timeout);
 }
 
 void RazorNotification::closeNotification(quint32 id)
