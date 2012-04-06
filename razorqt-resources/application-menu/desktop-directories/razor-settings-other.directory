@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Directory
+Name=Other settings
+Name[ru]=Прочие настройки
+Icon=razor-qt-system
+X-Ubuntu-Gettext-Domain=desktop_kdebase-runtime
