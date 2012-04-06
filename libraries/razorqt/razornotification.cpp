@@ -5,6 +5,7 @@
 #include <QVariantMap>
 #include <QDebug>
 #include <QStringList>
+#include <QMessageBox>
 
 
 namespace
@@ -59,6 +60,14 @@ public:
         else
         {
             ret = retArgs.at(0).toUInt();
+        }
+        
+        // failback if there is no daemon running
+        if (m_bus.lastError().isValid() || !m.errorName().isEmpty())
+        {
+            qWarning() << "Notification message cannot be delivered. Using failback QMessageBox";
+            qWarning() << "    " << m_bus.lastError() << m.errorName();
+            QMessageBox::information(0, QObject::tr("Razor Notification Failback"), summary + "<p>" + body);
         }
 
         return ret ;
