@@ -22,9 +22,9 @@
                     <Category>X-RAZOR</Category>
                     <Category>RAZOR</Category>
                 </Or>
-                <!--<Not>
+                <Not>
                     <Filename>razor-config.desktop</Filename>
-                </Not>-->
+                </Not>
             </And>
         </Include>
     </Menu>

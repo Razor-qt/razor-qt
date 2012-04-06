@@ -31,6 +31,7 @@
 
 
 #include "ui_mainwindow.h"
+#include <QtXml/QDomElement>
 
 class QCategorizedSortFilterProxyModel;
 
@@ -52,6 +53,9 @@ public:
 private:
     QCategorizedSortFilterProxyModel *proxyModel;
     ConfigPaneModel *model;
+
+private:
+    void builGroup(const QDomElement& xml);
 
 private slots:
     void activateItem(const QModelIndex &index);

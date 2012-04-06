@@ -30,9 +30,12 @@
 
 #include "mainwindow.h"
 #include <QtDebug>
+#include <QtGui/QMessageBox>
 
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
+#include <qtxdg/xdgmenu.h>
+#include <qtxdg/xmlhelper.h>
 #include <razorqt/razoraboutdlg.h>
 
 #include "qcategorizedview.h"
@@ -45,7 +48,7 @@ struct ConfigPaneData: public QSharedData
 {
     QString id;
     QString category;
-    XdgDesktopFile *xdg;
+    XdgDesktopFile xdg;
 };
 
 class ConfigPane
@@ -55,8 +58,8 @@ public:
     ConfigPane(const ConfigPane &other): d(other.d) { }
 
     inline QString &id() const { return d->id; }
-    inline XdgDesktopFile* xdg() const { return d->xdg; }
-    inline void setXdg(XdgDesktopFile* xdg) { d->xdg = xdg; }
+    inline XdgDesktopFile xdg() const { return d->xdg; }
+    inline void setXdg(XdgDesktopFile xdg) { d->xdg = xdg; }
     inline QString &category() const { return d->category; }
 
     bool operator==(const ConfigPane &other)
@@ -68,96 +71,59 @@ private:
     QExplicitlySharedDataPointer<ConfigPaneData> d;
 };
 
-static QStringList preferredCategoryOrder;
-
-static bool categorySorter(const ConfigPane &a, const ConfigPane &b)
-{
-    int aIdx = preferredCategoryOrder.indexOf(a.category());
-    int bIdx = preferredCategoryOrder.indexOf(b.category());
-    if (aIdx < 0)
-        return false;
-    return aIdx < bIdx;
-}
 
 class ConfigPaneModel: public QAbstractListModel
 {
 public:
     ConfigPaneModel(): QAbstractListModel()
     {
-        if (preferredCategoryOrder.isEmpty()) {
-            preferredCategoryOrder << "Razor" << "System" << "Other";
+        QString menuFile = XdgMenu::getMenuFileName("config.menu");
+        XdgMenu xdgMenu;
+        xdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "RAZOR");
+        bool res = xdgMenu.read(menuFile);
+        if (!res)
+        {
+            QMessageBox::warning(0, "Parse error", xdgMenu.errorString());
+            return;
         }
-        
-        QDirIterator it("/usr/share/applications", QStringList() << "*.desktop", QDir::NoFilter, QDirIterator::Subdirectories);
-        QString name;
-        QString categories;
+
+        DomElementIterator it(xdgMenu.xml().documentElement() , "Menu");
+        while(it.hasNext())
+        {
+            this->builGroup(it.next());
+        }
+
+    }
+
+    void builGroup(const QDomElement& xml)
+    {
         QString category;
-        QString onlyShowIn;
-    
-        while (it.hasNext()) {
-            name = it.next();
-            XdgDesktopFile *xdg = new XdgDesktopFile();
-            xdg->load(name);
-            if (!xdg->isValid())
-            {
-                qDebug() << "INVALID DESKTOP FILE:" << name;
-                delete xdg;
-                continue;
-            }
+        if (! xml.attribute("title").isEmpty())
+            category = xml.attribute("title");
+        else
+            category = xml.attribute("name");
 
-            onlyShowIn = xdg->value("OnlyShowIn").toString();
-            if (!onlyShowIn.isEmpty()
-                && !onlyShowIn.contains("X-RAZOR") && !onlyShowIn.contains("RAZOR")
-                //&& !onlyShowIn.contains("YaST")
-            )
-            {
-                qDebug() << "NOT SHOWN" << name << onlyShowIn;
-                delete xdg;
-                continue;
-            }
-        
-            // do not show self
-            if (xdg->value("Exec").toString() == "razor-config")
-            {
-                delete xdg;
-                continue;
-            }
+        DomElementIterator it(xml , "AppLink");
+        while(it.hasNext())
+        {
+            QDomElement x = it.next();
 
-            categories = xdg->value("Categories").toString();
-            if (!categories.contains("Settings"))
-            {
-                delete xdg;
-                continue;
-            }
-        
-            if (categories.contains("X-RAZOR") || categories.contains("RAZOR"))
-            {
-                category = "Razor";
-            }
-            else if (categories.contains("System"))
-            {
-                category = "System";
-            }
-            else
-            {
-                category = "Other";
-            }
-            
+            XdgDesktopFile xdg;
+            xdg.load(x.attribute("desktopFile"));
+
             ConfigPane pane;
-            pane.id() = xdg->value("Icon").toString();
+            pane.id() = xdg.value("Icon").toString();
             pane.category() = category;
             pane.setXdg(xdg);
             m_list.append(pane);
         }
-
-        qSort(m_list.begin(), m_list.end(), categorySorter);
     }
-    
+
     void activateItem(const QModelIndex &index)
     {
         if (!index.isValid())
             return;
-        m_list[index.row()].xdg()->startDetached();
+        m_list[index.row()].xdg().startDetached();
     }
 
     ~ConfigPaneModel() { }
@@ -175,7 +141,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const
     {
         if (role == Qt::DisplayRole)
-            return m_list[index.row()].xdg()->name();
+            return m_list[index.row()].xdg().name();
         if (role == QCategorizedSortFilterProxyModel::CategoryDisplayRole)
             return m_list[index.row()].category();
         if (role == QCategorizedSortFilterProxyModel::CategorySortRole)
@@ -184,7 +150,7 @@ public:
             return m_list[index.row()].id();
         if (role == Qt::DecorationRole)
         {
-            return m_list[index.row()].xdg()->icon(XdgIcon::defaultApplicationIcon());
+            return m_list[index.row()].xdg().icon(XdgIcon::defaultApplicationIcon());
         }
         return QVariant();
     }
@@ -192,14 +158,14 @@ public:
 private:
     QList<ConfigPane> m_list;
 };
-    
+
 }
 
 
 RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
-    
+
     model = new ConfigPaneModel();
 
     view->setViewMode(QListView::IconMode);
@@ -212,7 +178,7 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     proxyModel->setSourceModel(model);
 
     view->setModel(proxyModel);
-    
+
     connect(view, SIGNAL(activated(const QModelIndex&)),
             this, SLOT(activateItem(const QModelIndex&)));
 }
