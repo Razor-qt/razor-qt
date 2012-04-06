@@ -169,7 +169,7 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     model = new ConfigPaneModel();
 
     view->setViewMode(QListView::IconMode);
-    view->setIconSize(QSize(48, 48));
+    view->setIconSize(QSize(32, 32));
     view->setGridSize(QSize(140, 74));
     view->setCategoryDrawer(new QCategoryDrawerV3(view));
 
