@@ -38,6 +38,9 @@ class RazorSettings;
 class QxtGlobalShortcut;
 class CommandListView;
 class CommandItemModel;
+class PowerManager;
+class ScreenSaver;
+
 
 class Dialog : public QDialog
 {
@@ -63,6 +66,8 @@ private:
     CommandItemModel *mCommandItemModel;
     bool mShowOnTop;
     int mMonitor;
+    PowerManager *mPowerManager;
+    ScreenSaver *mScreenSaver;
 
     void realign();
     //! \brief handle various additional behaviours (math only for now)

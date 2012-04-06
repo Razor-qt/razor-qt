@@ -92,6 +92,22 @@
        </widget>
       </item>
       <item>
+       <widget class="QToolButton" name="actionButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="popupMode">
+         <enum>QToolButton::InstantPopup</enum>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="HorizSizeGrip" name="rightSizer" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">

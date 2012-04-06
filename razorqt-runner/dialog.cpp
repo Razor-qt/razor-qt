@@ -7,6 +7,7 @@
  * Copyright: 2010-2011 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -34,6 +35,8 @@
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/powermanager.h>
+#include <razorqt/screensaver.h>
 
 
 #include <QtCore/QDebug>
@@ -44,6 +47,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QMessageBox>
 #include <QtGui/QApplication>
+#include <QtGui/QMenu>
 
 #include <QScrollBar>
 // I hate a X11 heading files. As a result we have such nightmare.
@@ -93,7 +97,17 @@ Dialog::Dialog(QWidget *parent) :
     connect(a, SIGNAL(triggered()), mCommandItemModel, SLOT(clearHistory()));
     addAction(a);
 
+    mPowerManager = new PowerManager(this);
+    addActions(mPowerManager->availableActions());
+    mScreenSaver = new ScreenSaver(this);
+    addActions(mScreenSaver->availableActions());
+
     setContextMenuPolicy(Qt::ActionsContextMenu);
+    
+    QMenu *menu = new QMenu(this);
+    menu->addActions(actions());
+    ui->actionButton->setMenu(menu);
+    ui->actionButton->setIcon(XdgIcon::fromTheme("configure"));
     // End of popup menu ........................
 
     applySettings();
