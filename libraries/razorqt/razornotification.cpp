@@ -66,7 +66,7 @@ public:
         if (m_bus.lastError().isValid() || !m.errorName().isEmpty())
         {
             qWarning() << "Notification message cannot be delivered. Using failback QMessageBox";
-            qWarning() << "    " << m_bus.lastError() << m.errorName();
+            qWarning() << "    " << m_bus.lastError().message() << m.errorName();
             QMessageBox::information(0, QObject::tr("Razor Notification Failback"), summary + "<p>" + body);
         }
 
