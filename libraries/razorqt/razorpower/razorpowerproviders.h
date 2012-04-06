@@ -36,6 +36,12 @@ class RazorPowerProvider: public QObject
 {
     Q_OBJECT
 public:
+    
+    enum DbusErrorCheck {
+        CheckDBUS,
+        DontCheckDBUS
+    };
+    
     explicit RazorPowerProvider(QObject *parent = 0);
     virtual ~RazorPowerProvider();
 

@@ -68,17 +68,21 @@ bool dbusCall(const QString &service,
               const QString &path,
               const QString &interface,
               const QDBusConnection &connection,
-              const QString & method
+              const QString & method,
+              RazorPowerProvider::DbusErrorCheck errorCheck = RazorPowerProvider::CheckDBUS
               )
 {
     QDBusInterface dbus(service, path, interface, connection);
     if (!dbus.isValid())
     {
         qWarning() << "dbusCall: QDBusInterface is invalid" << service << path << interface << method;
-        RazorNotification::notify(QObject::tr("Razor Power Manager"),
-                                  "razor-logo.png",
-                                  QObject::tr("Power Manager Error"),
-                                  QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method);
+        if (errorCheck == RazorPowerProvider::CheckDBUS)
+        {
+            RazorNotification::notify(QObject::tr("Razor Power Manager"),
+                                    "razor-logo.png",
+                                    QObject::tr("Power Manager Error"),
+                                    QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method);
+        }
         return false;
     }
 
@@ -87,10 +91,13 @@ bool dbusCall(const QString &service,
     if (!msg.errorName().isEmpty())
     {
         printDBusMsg(msg);
-        RazorNotification::notify(QObject::tr("Razor Power Manager"),
-                                  "razor-logo.png",
-                                  QObject::tr("Power Manager Error (D-BUS call)"),
-                                  msg.errorName() + "<p>" + msg.errorMessage());
+        if (errorCheck == RazorPowerProvider::CheckDBUS)
+        {
+            RazorNotification::notify(QObject::tr("Razor Power Manager"),
+                                    "razor-logo.png",
+                                    QObject::tr("Power Manager Error (D-BUS call)"),
+                                    msg.errorName() + "<p>" + msg.errorMessage());
+        }
     }
 
     // If the method no returns value, we believe that it was successful.
@@ -113,10 +120,10 @@ bool dbusGetProperty(const QString &service,
     if (!dbus.isValid())
     {
         qWarning() << "dbusGetProperty: QDBusInterface is invalid" << service << path << interface << property;
-        RazorNotification::notify(QObject::tr("Razor Power Manager"),
-                                  "razor-logo.png",
-                                  QObject::tr("Power Manager Error"),
-                                  QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + property);
+//        RazorNotification::notify(QObject::tr("Razor Power Manager"),
+//                                  "razor-logo.png",
+//                                  QObject::tr("Power Manager Error"),
+//                                  QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + property);
 
         return false;
     }
@@ -126,10 +133,10 @@ bool dbusGetProperty(const QString &service,
     if (!msg.errorName().isEmpty())
     {
         printDBusMsg(msg);
-        RazorNotification::notify(QObject::tr("Razor Power Manager"),
-                                  "razor-logo.png",
-                                  QObject::tr("Power Manager Error (Get Property)"),
-                                  msg.errorName() + "<p>" + msg.errorMessage());
+//        RazorNotification::notify(QObject::tr("Razor Power Manager"),
+//                                  "razor-logo.png",
+//                                  QObject::tr("Power Manager Error (Get Property)"),
+//                                  msg.errorName() + "<p>" + msg.errorMessage());
     }
 
     return !msg.arguments().isEmpty() &&
@@ -324,7 +331,7 @@ bool RazorProvider::canAction(RazorPower::Action action) const
         case RazorPower::PowerLogout:
             // there can be case when razo-session does not run
             return dbusCall(RAZOR_SERVICE, RAZOR_PATH, RAZOR_SERVICE,
-                            QDBusConnection::sessionBus(), "canLogout");
+                            QDBusConnection::sessionBus(), "canLogout", RazorPowerProvider::DontCheckDBUS);
         default:
             return false;
     }
