@@ -109,6 +109,7 @@ void SessionConfigWindow::restoreSettings()
     modules["razor-appswitcher"] = appswitcherCheckBox;
     modules["razor-policykit-agent"] = policyKitCheckBox;
     modules["razor-notificationd"] = notificationdCheckBox;
+    modules["razor-globalaccel"] = globalaccelCheckBox;
     
     m_settings->beginGroup("modules");
     foreach(QString i, modules.keys())
@@ -171,6 +172,7 @@ void SessionConfigWindow::closeEvent(QCloseEvent * event)
 
     m_settings->beginGroup("modules");
     m_settings->setValue("razor-panel", panelCheckBox->isChecked());
+    m_settings->setValue("razor-globalaccel", globalaccelCheckBox->isChecked());
     m_settings->setValue("razor-desktop", desktopCheckBox->isChecked());
     m_settings->setValue("razor-runner", runnerCheckBox->isChecked());
     m_settings->setValue("razor-appswitcher", appswitcherCheckBox->isChecked());
