@@ -82,16 +82,6 @@
        <widget class="QLineEdit" name="commandEd"/>
       </item>
       <item>
-       <widget class="QToolButton" name="closeButton">
-        <property name="text">
-         <string notr="true">X</string>
-        </property>
-        <property name="autoRaise">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QToolButton" name="actionButton">
         <property name="text">
          <string/>
@@ -104,6 +94,16 @@
         </property>
         <property name="arrowType">
          <enum>Qt::NoArrow</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="closeButton">
+        <property name="text">
+         <string notr="true">X</string>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
