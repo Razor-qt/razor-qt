@@ -28,7 +28,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "ui_mainwindow.h"
+#include "ui_iconthemeconfig.h"
 #include "iconthemeinfo.h"
 
 class RazorSettings;
