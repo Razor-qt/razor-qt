@@ -36,9 +36,8 @@ RazorThemeConfig::RazorThemeConfig(RazorSettings *settings, QWidget *parent) :
     mSettings(settings)
 {
     ui->setupUi(this);
-    //ui->razorThemeList->setStyleSheet("QTreeView::item { height: 32px;}");
 
-    connect(ui->razorThemeList, SIGNAL(itemActivated(QTreeWidgetItem*,int)),
+    connect(ui->razorThemeList, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
             this, SLOT(razorThemeSelected(QTreeWidgetItem*,int)));
 
 

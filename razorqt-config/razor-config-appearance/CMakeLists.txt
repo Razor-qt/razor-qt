@@ -24,7 +24,7 @@ set(CPP_FILES
    )
 
 set(UI_FILES
-    mainwindow.ui
+    iconthemeconfig.ui
     razorthemeconfig.ui
 )
 
