@@ -100,8 +100,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>303</width>
-                  <height>159</height>
+                  <width>275</width>
+                  <height>227</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_4">
@@ -119,21 +119,21 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="0">
+                 <item row="3" column="0">
                   <widget class="QCheckBox" name="runnerCheckBox">
                    <property name="text">
                     <string>Runner</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
+                 <item row="4" column="0">
                   <widget class="QCheckBox" name="appswitcherCheckBox">
                    <property name="text">
                     <string>Application Switcher</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="6" column="0">
+                 <item row="7" column="0">
                   <spacer name="verticalSpacer">
                    <property name="orientation">
                     <enum>Qt::Vertical</enum>
@@ -146,17 +146,24 @@
                    </property>
                   </spacer>
                  </item>
-                 <item row="4" column="0">
+                 <item row="5" column="0">
                   <widget class="QCheckBox" name="policyKitCheckBox">
                    <property name="text">
                     <string>PolicyKit Handler</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="0">
+                 <item row="6" column="0">
                   <widget class="QCheckBox" name="notificationdCheckBox">
                    <property name="text">
                     <string>Notification Daemon</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QCheckBox" name="globalaccelCheckBox">
+                   <property name="text">
+                    <string>Global shortcut daemon</string>
                    </property>
                   </widget>
                  </item>
@@ -210,8 +217,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>348</width>
-               <height>84</height>
+               <width>312</width>
+               <height>62</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_9">
