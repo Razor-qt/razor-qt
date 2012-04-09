@@ -31,15 +31,12 @@
 #include <QCoreApplication>
 #include <QMenu>
 
-TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent),
-    powerInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", QDBusConnection::systemBus(), this),
-    settings("razor-autosuspend")
-
+TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent), settings("razor-autosuspend")
 {
     setIcon(QIcon(":icons/razor-autosuspend.svg"));
     makeContextMenu();
-
-    connect(&powerInterface, SIGNAL(Changed()), this, SLOT(upowerPropertyChanged()));
+    connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
+    connect(&battery, SIGNAL(levelChanged(double)), this, SLOT(chargeLevelChanged(double)));
 }
 
 TrayIcon::~TrayIcon()
@@ -69,30 +66,36 @@ void TrayIcon::exitAutoSuspender()
     QCoreApplication::exit(0);
 }
 
-void TrayIcon::upowerPropertyChanged()
+void TrayIcon::lidChanged(bool closed)
 {
-    if (powerInterface.lidIsClosed())
+    if (closed)
     {
         int lidClosedAction = settings.value(LIDCLOSEDACTION_KEY).toInt();
         switch (lidClosedAction)
         {
         case SLEEP:
-            powerInterface.Suspend();
+            razorPower.suspend();
             break;
         case HIBERNATE:
-            powerInterface.Hibernate();
+            razorPower.hibernate();
             break;
         }
     }
-    else if (powerInterface.onLowBattery())
+}
+
+void TrayIcon::chargeLevelChanged(double newPercentage)
+{
+    Q_UNUSED(newPercentage)
+
+    if (battery.powerLow())
     {
         int lowBatteryAction = settings.value(POWERLOWACTION_KEY).toInt();
         switch (lowBatteryAction) {
         case SLEEP:
-            powerInterface.Suspend();
+            razorPower.suspend();
             break;
         case HIBERNATE:
-            powerInterface.Hibernate();
+            razorPower.hibernate();
             break;
         }
     }

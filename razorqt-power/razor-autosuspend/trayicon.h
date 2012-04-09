@@ -30,8 +30,10 @@
 
 #include <QSystemTrayIcon>
 #include "settings_dialog.h"
-#include "org_freedesktop_UPower.h"
 #include "razorqt/razorsettings.h"
+#include "razorqt/razorpower.h"
+#include "lid.h"
+#include "battery.h"
 
 class TrayIcon : public QSystemTrayIcon
 {
@@ -43,12 +45,20 @@ public:
 
 public slots:
     void exitAutoSuspender();
-    void upowerPropertyChanged();
+
+private slots:
+    void lidChanged(bool closed);
+    void chargeLevelChanged(double newPercentage);
 
 private:
     void makeContextMenu();
-    OrgFreedesktopUPowerInterface powerInterface;
+    Lid lid;
+    Battery battery;
+    //    void powerStateChanged(UPowerProxy::PowerState newPowerState);
+//    void powerLevelChanged();
+
     SettingsDialog settingsDialog;
+    RazorPower razorPower;
     RazorSettings settings;
 };
 

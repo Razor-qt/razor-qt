@@ -12,7 +12,8 @@ set ( razor-autosuspend_SRCS
         main.cpp
         trayicon.cpp
         settings_dialog.cpp
-        org_freedesktop_UPower.cpp
+        lid.cpp
+        battery.cpp
         )
 
 set ( razor-autosuspend_UIS
@@ -28,7 +29,8 @@ QT4_ADD_RESOURCES(RSCS ${razor-autosuspend_RSCS})
 set ( razor-autosuspend_MOCS
         trayicon.h
         settings_dialog.h
-        org_freedesktop_UPower.h
+        lid.h
+        battery.h
         )
 QT4_WRAP_CPP(MOCS ${razor-autosuspend_MOCS})
 
