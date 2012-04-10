@@ -31,7 +31,7 @@
 #include <QSystemTrayIcon>
 #include "settings_dialog.h"
 #include "razorqt/razorsettings.h"
-#include "razorqt/razorpower.h"
+#include "razorqt/razorpower/razorpower.h"
 #include "lid.h"
 #include "battery.h"
 
