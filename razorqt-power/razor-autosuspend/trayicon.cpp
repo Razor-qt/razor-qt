@@ -56,7 +56,7 @@ void TrayIcon::makeContextMenu()
     }
 
     QAction* settingsAction = contextMenu()->addAction("Settings...");
-    connect(settingsAction, SIGNAL(triggered()), &settingsDialog, SLOT(exec()));
+    connect(settingsAction, SIGNAL(triggered()), this, SLOT(editSettings()));
     QAction* exitAction = contextMenu()->addAction("Exit");
     connect(exitAction, SIGNAL(triggered()), this, SLOT(exitAutoSuspender()));
 }
@@ -100,4 +100,9 @@ void TrayIcon::chargeLevelChanged(double newPercentage)
         }
     }
 
+}
+
+void TrayIcon::editSettings()
+{
+    SettingsDialog().exec();
 }

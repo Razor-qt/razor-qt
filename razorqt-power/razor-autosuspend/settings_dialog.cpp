@@ -33,15 +33,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Se
     ui->setupUi(this);
     setAttribute(Qt::WA_QuitOnClose, false);
 
-    lidClosedGroup.addButton(ui->lidClosedNothingButton, NOTHING);
-    lidClosedGroup.addButton(ui->lidClosedSleepButton, SLEEP);
-    lidClosedGroup.addButton(ui->lidClosedHibernateButton, HIBERNATE);
-    powerLowGroup.addButton(ui->powerLowNothingButton, NOTHING);
-    powerLowGroup.addButton(ui->powerLowSleepButton, SLEEP);
-    powerLowGroup.addButton(ui->powerLowHibernateButton, HIBERNATE);
+    loadSettings();
 
-    connect(&powerLowGroup, SIGNAL(buttonClicked(int)), this, SLOT(somethingChanged()));
-    connect(&lidClosedGroup, SIGNAL(buttonClicked(int)), this, SLOT(somethingChanged()));
+    connect(ui->lidClosedActionComboBox, SIGNAL(activated(int)), this, SLOT(saveSettings()));
+    connect(ui->powerLowActionComboBox, SIGNAL(activated(int)), this, SLOT(saveSettings()));
 
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
@@ -57,7 +52,7 @@ void SettingsDialog::dialogButtonsAction(QAbstractButton *btn)
     if (ui->buttonBox->buttonRole(btn) == QDialogButtonBox::ResetRole)
     {
         m_RollbackPoint.loadToSettings();
-        setButtons();
+        loadSettings();
     }
     else
     {
@@ -65,28 +60,30 @@ void SettingsDialog::dialogButtonsAction(QAbstractButton *btn)
     }
 }
 
-
-void SettingsDialog::showEvent(QShowEvent *) {
-    setButtons();
+void SettingsDialog::loadSettings()
+{
+    fillInActions(ui->lidClosedActionComboBox, m_Settings.value(LIDCLOSEDACTION_KEY).toInt());
+    fillInActions(ui->powerLowActionComboBox, m_Settings.value(POWERLOWACTION_KEY).toInt());
 }
 
-void SettingsDialog::setButtons()
+void SettingsDialog::fillInActions(QComboBox *comboBox, int selectedData)
 {
-    QAbstractButton *button;
-    button = lidClosedGroup.button(m_Settings.value(LIDCLOSEDACTION_KEY).toInt());
-    if (button != 0) {
-        button->setChecked(true);
-    }
-
-    button = powerLowGroup.button(m_Settings.value(POWERLOWACTION_KEY).toInt());
-    if (button != 0) {
-        button->setChecked(true);
+    comboBox->clear();
+    comboBox->addItem(tr("Nothing"), NOTHING);
+    comboBox->addItem(tr("Sleep"), SLEEP);
+    comboBox->addItem(tr("Hibernate"), HIBERNATE);
+    for (int index = 0; index < comboBox->count(); index++)
+    {
+        if (selectedData == comboBox->itemData(index).toInt())
+        {
+            comboBox->setCurrentIndex(index);
+            break;
+        }
     }
 }
 
-
-void SettingsDialog::somethingChanged()
+void SettingsDialog::saveSettings()
 {
-    m_Settings.setValue(LIDCLOSEDACTION_KEY , lidClosedGroup.checkedId());
-    m_Settings.setValue(POWERLOWACTION_KEY, powerLowGroup.checkedId());
+    m_Settings.setValue(LIDCLOSEDACTION_KEY, ui->lidClosedActionComboBox->itemData(ui->lidClosedActionComboBox->currentIndex()).toInt());
+    m_Settings.setValue(POWERLOWACTION_KEY, ui->powerLowActionComboBox->itemData(ui->powerLowActionComboBox->currentIndex()).toInt());
 }

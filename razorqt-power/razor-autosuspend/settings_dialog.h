@@ -33,6 +33,7 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
+#include <QComboBox>
 #include "razorqt/razorsettings.h"
 
 namespace Ui
@@ -56,16 +57,14 @@ public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
-public slots:
+private slots:
     void dialogButtonsAction(QAbstractButton *btn);
-    void somethingChanged();
-    virtual void showEvent(QShowEvent *);
+    void saveSettings();
 
 private:
-    void setButtons();
+    void loadSettings();
+    void fillInActions(QComboBox* comboBox, int selectedData);
     Ui::Settings *ui;
-    QButtonGroup lidClosedGroup;
-    QButtonGroup powerLowGroup;
     RazorSettings m_Settings;
     RazorSettingsCache m_RollbackPoint;
 };

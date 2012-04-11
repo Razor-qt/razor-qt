@@ -50,14 +50,13 @@ private slots:
     void lidChanged(bool closed);
     void chargeLevelChanged(double newPercentage);
 
+    void editSettings();
+
 private:
     void makeContextMenu();
     Lid lid;
     Battery battery;
-    //    void powerStateChanged(UPowerProxy::PowerState newPowerState);
-//    void powerLevelChanged();
 
-    SettingsDialog settingsDialog;
     RazorPower razorPower;
     RazorSettings settings;
 };
