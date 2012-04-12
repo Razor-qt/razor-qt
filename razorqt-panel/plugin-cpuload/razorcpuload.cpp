@@ -40,7 +40,8 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorCpuLoad)
 
 RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
 	RazorPanelPlugin(startInfo, parent),
-	m_showText(false)
+	m_showText(false),
+    m_timerID(-1)
 {
 	setObjectName("CpuLoad");
 	addWidget(&m_stuff);
@@ -54,7 +55,6 @@ RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* 
 	}
 
 	m_font.setPointSizeF(8);
-	startTimer(500);
 
 	settingsChanged();
 }
@@ -136,7 +136,13 @@ void RazorCpuLoad::showConfigureDialog()
 
 void RazorCpuLoad::settingsChanged()
 {
+    if (m_timerID != -1)
+        killTimer(m_timerID);
+
 	m_showText = settings().value("showText", false).toBool();
+    m_updateInterval = settings().value("updateInterval", 1000).toInt();
+
+	m_timerID = startTimer(m_updateInterval);
 	update();
 }
 

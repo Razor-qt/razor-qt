@@ -57,6 +57,8 @@ private:
 	int m_avg;
 
 	bool m_showText;
+    int m_updateInterval;
+    int m_timerID;
 
 	QFont m_font;
 };

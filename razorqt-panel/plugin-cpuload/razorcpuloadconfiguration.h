@@ -60,6 +60,8 @@ private slots:
 	void loadSettings();
 	void dialogButtonsAction(QAbstractButton *btn);
 	void showTextChanged(bool value);
+    void updateIntervalChanged(double value);
+
 };
 
 #endif // RAZORCPULOADCONFIGURATION_H

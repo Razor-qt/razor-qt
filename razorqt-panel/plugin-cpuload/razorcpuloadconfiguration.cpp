@@ -39,11 +39,15 @@ RazorCpuLoadConfiguration::RazorCpuLoadConfiguration(QSettings &settings, QWidge
 	setObjectName("CpuLoadConfigurationWindow");
 	ui->setupUi(this);
 
-	connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
+	connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)),
+            this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
 	loadSettings();
 
-	connect(ui->showTextCB, SIGNAL(toggled(bool)), this, SLOT(showTextChanged(bool)));
+	connect(ui->showTextCB, SIGNAL(toggled(bool)),
+            this, SLOT(showTextChanged(bool)));
+    connect(ui->updateIntervalSpinBox, SIGNAL(valueChanged(double)),
+            this, SLOT(updateIntervalChanged(double)));
 }
 
 RazorCpuLoadConfiguration::~RazorCpuLoadConfiguration()
@@ -54,6 +58,7 @@ RazorCpuLoadConfiguration::~RazorCpuLoadConfiguration()
 void RazorCpuLoadConfiguration::loadSettings()
 {
 	ui->showTextCB->setChecked(mSettings.value("showText", false).toBool());
+    ui->updateIntervalSpinBox->setValue(mSettings.value("updateInterval", 1000).toInt() / 1000.0);
 
 //	QString menuFile = mSettings.value("menu_file", "").toString();
 //	if (menuFile.isEmpty())
@@ -67,6 +72,12 @@ void RazorCpuLoadConfiguration::loadSettings()
 void RazorCpuLoadConfiguration::showTextChanged(bool value)
 {
 	mSettings.setValue("showText", value);
+}
+
+
+void RazorCpuLoadConfiguration::updateIntervalChanged(double value)
+{
+	mSettings.setValue("updateInterval", value*1000);
 }
 
 
