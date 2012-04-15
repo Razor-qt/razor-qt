@@ -43,6 +43,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QAction>
 #include <razorqt/powermanager.h>
+#include <razorqt/screensaver.h>
 #include "razorqt-runner/providers.h"
 #include <wordexp.h>
 
@@ -732,6 +733,12 @@ PowerProvider::PowerProvider()
 {
     m_power = new PowerManager(this);
     foreach (QAction *a, m_power->availableActions())
+    {
+        append(new PowerProviderItem(a));
+    }
+
+    m_screensaver = new ScreenSaver(this);
+    foreach (QAction *a, m_screensaver->availableActions())
     {
         append(new PowerProviderItem(a));
     }

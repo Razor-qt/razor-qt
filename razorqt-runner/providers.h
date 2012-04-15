@@ -282,6 +282,7 @@ private:
 };
 
 class PowerManager;
+class ScreenSaver;
 /*! Power management built in into runner
  */
 class PowerProvider: public CommandProvider
@@ -292,6 +293,7 @@ public:
 
 private:
     PowerManager *m_power;
+    ScreenSaver *m_screensaver;
 };
 
 #endif // PROVIDERS_H
