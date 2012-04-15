@@ -7,6 +7,7 @@
  * Copyright: 2010-2011 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -263,5 +264,34 @@ private:
   QDateTime timeStamp;
 };
 #endif
+
+
+class QAction;
+/*! Power management built in into runner
+ */
+class PowerProviderItem : public CommandProviderItem
+{
+public:
+    PowerProviderItem(QAction *action);
+
+    bool run() const;
+    bool compare(const QRegExp &regExp) const;
+    unsigned int rank(const QString &pattern) const;
+private:
+    QAction *m_action;
+};
+
+class PowerManager;
+/*! Power management built in into runner
+ */
+class PowerProvider: public CommandProvider
+{
+    Q_OBJECT
+public:
+    PowerProvider();
+
+private:
+    PowerManager *m_power;
+};
 
 #endif // PROVIDERS_H

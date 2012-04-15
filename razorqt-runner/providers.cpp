@@ -8,6 +8,7 @@
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *   Aaron Lewis <the.warl0ck.1989@gmail.com>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -40,7 +41,9 @@
 #include <QtCore/QSettings>
 #include <QtCore/QDir>
 #include <QtGui/QApplication>
-#include <razorqt-runner/providers.h>
+#include <QtGui/QAction>
+#include <razorqt/powermanager.h>
+#include "razorqt-runner/providers.h"
 #include <wordexp.h>
 
 #define MAX_HISORTY 100
@@ -689,6 +692,49 @@ unsigned int MathItem::rank(const QString &pattern) const
 MathProvider::MathProvider()
 {
     append(new MathItem());
+}
+
+
+PowerProviderItem::PowerProviderItem(QAction *action)
+    : CommandProviderItem(),
+      m_action(action)
+{
+    mIcon = action->icon();
+    mTitle = action->text();
+    mComment = QObject::tr("Razor Power Management");
+    mToolTip = mComment;
+}
+
+bool PowerProviderItem::run() const
+{
+    m_action->activate(QAction::Trigger);
+    return true;
+}
+
+bool PowerProviderItem::compare(const QRegExp &regExp) const
+{
+    if (regExp.isEmpty())
+        return false;
+
+    QRegExp re(regExp);
+
+    re.setCaseSensitivity(Qt::CaseInsensitive);
+    return mTitle.contains(re) ;
+}
+
+unsigned int PowerProviderItem::rank(const QString &pattern) const
+{
+    return stringRank(mTitle, pattern);
+}
+
+PowerProvider::PowerProvider()
+    : CommandProvider()
+{
+    m_power = new PowerManager(this);
+    foreach (QAction *a, m_power->availableActions())
+    {
+        append(new PowerProviderItem(a));
+    }
 }
 
 #endif
