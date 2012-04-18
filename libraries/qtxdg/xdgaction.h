@@ -74,6 +74,7 @@ public:
 
 private slots:
     void runConmmand() const;
+    void updateIcon();
 
 private:
     void load(const XdgDesktopFile& desktopFile);

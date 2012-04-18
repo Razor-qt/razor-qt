@@ -47,15 +47,13 @@ private:
 
 public:
     explicit XdgMenuWidgetPrivate(XdgMenuWidget* parent):
-        q_ptr(parent),
-        mNeedBuild(true)
+        q_ptr(parent)
     {}
 
     void init(const QDomElement& xml);
     void buildMenu();
 
     QDomElement mXml;
-    bool mNeedBuild;
 
     void mouseMoveEvent(QMouseEvent *event);
 
@@ -110,7 +108,6 @@ void XdgMenuWidgetPrivate::init(const QDomElement& xml)
     mXml = xml;
 
     q->clear();
-    mNeedBuild = true;
 
     QString title;
     if (! xml.attribute("title").isEmpty())
@@ -129,8 +126,7 @@ void XdgMenuWidgetPrivate::init(const QDomElement& xml)
 
     q->setIcon(XdgIcon::fromTheme(mXml.attribute("icon"), parentIcon));
 
-    if (!qobject_cast<XdgMenuWidget*>(q->parent()))
-        buildMenu();
+    buildMenu();
 }
 
 
@@ -140,23 +136,6 @@ void XdgMenuWidgetPrivate::init(const QDomElement& xml)
 XdgMenuWidget::~XdgMenuWidget()
 {
     delete d_ptr;
-}
-
-
-/************************************************
-
- ************************************************/
-void XdgMenuWidget::fullInit()
-{
-    Q_D(XdgMenuWidget);
-    if (d->mNeedBuild)
-        d->buildMenu();
-
-    QList<XdgMenuWidget*> subMenus = findChildren<XdgMenuWidget *>();
-    foreach (XdgMenuWidget *i, subMenus)
-    {
-        i->fullInit();
-    }
 }
 
 
@@ -179,13 +158,7 @@ bool XdgMenuWidget::event(QEvent* event)
 {
     Q_D(XdgMenuWidget);
 
-    if (event->type() == QEvent::Show)
-    {
-        if (d->mNeedBuild)
-            d->buildMenu();
-    }
-
-    else if (event->type() == QEvent::MouseButtonPress)
+    if (event->type() == QEvent::MouseButtonPress)
     {
         QMouseEvent *e = static_cast<QMouseEvent*>(event);
         if (e->button() == Qt::LeftButton)
@@ -245,8 +218,6 @@ void XdgMenuWidgetPrivate::buildMenu()
     DomElementIterator it(mXml, "");
     while(it.hasNext())
     {
-        QCoreApplication::processEvents();
-
         QDomElement xml = it.next();
 
         // Build submenu ........................
@@ -260,9 +231,8 @@ void XdgMenuWidgetPrivate::buildMenu()
         //Build separator .......................
         else if (xml.tagName() == "Separator")
             q->insertSeparator(first);
-    }
 
-    mNeedBuild = false;
+    }
 }
 
 
@@ -299,17 +269,3 @@ QString XdgMenuWidgetPrivate::escape(QString string)
     return string.replace("&", "&&");
 }
 
-
-/************************************************
-
- ************************************************/
-QSize XdgMenuWidget::sizeHint() const
-{
-    Q_D(const XdgMenuWidget);
-    if (d->mNeedBuild)
-    {
-        XdgMenuWidgetPrivate* p = const_cast<XdgMenuWidgetPrivate*>(d);
-        p->buildMenu();
-    }
-    return QMenu::sizeHint();
-}

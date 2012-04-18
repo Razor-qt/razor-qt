@@ -106,9 +106,6 @@ void RazorMainMenu::showHideMenu()
 void RazorMainMenu::showMenu()
 {
     if (!mMenu)
-        buildMenu(true);
-
-    if (!mMenu)
         return;
 
     int x, y;
@@ -163,6 +160,9 @@ void RazorMainMenu::settingsChanged()
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
 
+    mXdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "RAZOR");
+    mXdgMenu.setLogDir(mLogDir);
+
     bool res = mXdgMenu.read(mMenuFile);
     connect(&mXdgMenu, SIGNAL(changed()), this, SLOT(buildMenu()));
     if (res)
@@ -183,16 +183,11 @@ void RazorMainMenu::settingsChanged()
 /************************************************
 
  ************************************************/
-void RazorMainMenu::buildMenu(bool lazyInit)
+void RazorMainMenu::buildMenu()
 {
-    mXdgMenu.setEnvironments("X-RAZOR");
-    mXdgMenu.setLogDir(mLogDir);
-
     XdgMenuWidget *menu = new XdgMenuWidget(mXdgMenu, "", this);
     menu->setObjectName("TopLevelMainMenu");
     menu->setStyle(&mTopMenuStyle);
-    if (!lazyInit)
-        menu->fullInit();
 
     menu->addSeparator();
 
