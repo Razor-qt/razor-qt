@@ -52,7 +52,7 @@ set(libraries ${libraries}  )
 
 qt4_wrap_cpp(razorqtnotify_mocs ${razorqtnotify_mocs})
 qt4_add_resources(razorqtnotify_rsc_src ${razorqtnotify_rsc})
-add_executable( razor-notificationd ${razorqtnotify_srcs}  ${razorqtnotify_mocs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs} ${razorqtnotify_rsc_src})
+add_executable( razor-notificationd ${razorqtnotify_srcs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_hdrs} ${razorqtnotify_rsc_src})
 target_link_libraries( razor-notificationd ${libraries} )
 
 INSTALL(TARGETS razor-notificationd RUNTIME DESTINATION bin)
