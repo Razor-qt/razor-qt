@@ -80,7 +80,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     if (m_menuFile.isEmpty())
         m_menuFile = XdgMenu::getMenuFileName();
 
-    m_xdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "RAZOR");
+    m_xdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "Razor");
     bool res = m_xdgMenu.read(m_menuFile);
     connect(&m_xdgMenu, SIGNAL(changed()), this, SLOT(buildMenu()));
 

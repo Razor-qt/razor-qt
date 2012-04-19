@@ -160,7 +160,7 @@ void RazorMainMenu::settingsChanged()
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
 
-    mXdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "RAZOR");
+    mXdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "Razor");
     mXdgMenu.setLogDir(mLogDir);
 
     bool res = mXdgMenu.read(mMenuFile);

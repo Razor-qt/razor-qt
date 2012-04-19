@@ -79,7 +79,7 @@ public:
     {
         QString menuFile = XdgMenu::getMenuFileName("config.menu");
         XdgMenu xdgMenu;
-        xdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "RAZOR");
+        xdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "Razor");
         bool res = xdgMenu.read(menuFile);
         if (!res)
         {
