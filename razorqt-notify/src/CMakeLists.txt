@@ -5,7 +5,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/libraries/qtservice
 )
 
-set( razorqtnotify_srcs
+set(razorqtnotify_srcs
     notification.cpp
     notificationhandler.cpp
     notificationtimeout.cpp
@@ -14,18 +14,18 @@ set( razorqtnotify_srcs
     qtndbusconnector.cpp
 )
 
-set( razorqtnotify_mocs
+set(razorqtnotify_mocs
     notificationhandler.h
     notificationtimeout.h
 )
 
-set( razorqtnotify_hdrs
+set(razorqtnotify_hdrs
     qtnlog.h
     notification.h
     inotificationview.h
 )
 
-set( razorqtnotify_rsc
+set(razorqtnotify_rsc
     ../images/images.qrc
 )
 
@@ -40,13 +40,13 @@ set(libraries
     qtservice
 )
 
-set(razorqtnotify_srcs ${razorqtnotify_srcs} )
-set(razorqtnotify_mocs ${razorqtnotify_mocs} qtndbusconnector.h )
-set(libraries ${libraries}  )
+set(razorqtnotify_srcs ${razorqtnotify_srcs})
+set(razorqtnotify_mocs ${razorqtnotify_mocs} qtndbusconnector.h)
+set(libraries ${libraries})
 
 qt4_wrap_cpp(razorqtnotify_mocs ${razorqtnotify_mocs})
 qt4_add_resources(razorqtnotify_rsc_src ${razorqtnotify_rsc})
-add_executable( razor-notificationd ${razorqtnotify_srcs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_rsc_src})
-target_link_libraries( razor-notificationd ${libraries} )
+add_executable(razor-notificationd ${razorqtnotify_srcs} ${razorqtnotify_mocs} ${qtnotification_rcc} ${razorqtnotify_rsc_src})
+target_link_libraries(razor-notificationd ${libraries})
 
 INSTALL(TARGETS razor-notificationd RUNTIME DESTINATION bin)
