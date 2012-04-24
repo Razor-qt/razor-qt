@@ -1,3 +1,4 @@
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(widgetnotification_src
     widgetnotification.cpp
@@ -19,7 +20,6 @@ set(widgetnotification_rsc
     images.qrc
 )
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR} ../../../libraries/razorqt)
 
 qt4_wrap_ui(widgetnotification_ui_srcs ${widgetnotification_ui})
 qt4_wrap_cpp(widgetnotification_moc_src ${widgetnotification_moc})
