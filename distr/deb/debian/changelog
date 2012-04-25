@@ -1,5 +1,8 @@
-%NAME% (%VERSION%-1%DIST%) %DIST%; urgency=low
-
+%if DISTRIB Ubuntu
+%NAME% (%VERSION%-1%RELEASE%) %RELEASE%; urgency=low
+%else
+%NAME% (%VERSION%-1) %RELEASE%; urgency=low
+%endif
   * New program release
 
- -- Alexander Sokolov <sokoloff.a@gmail.com>  %DATE%
+ -- %DEBFULLNAME% <%DEBEMAIL%>  %DATE%
