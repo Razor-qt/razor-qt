@@ -80,7 +80,7 @@ RazorWorkSpace::RazorWorkSpace(RazorSettings * config, int screen, int desktop, 
     if (m_menuFile.isEmpty())
         m_menuFile = XdgMenu::getMenuFileName();
 
-    m_xdgMenu.setEnvironments("X-RAZOR");
+    m_xdgMenu.setEnvironments(QStringList() << "X-RAZOR" << "Razor");
     bool res = m_xdgMenu.read(m_menuFile);
     connect(&m_xdgMenu, SIGNAL(changed()), this, SLOT(buildMenu()));
 
@@ -277,11 +277,9 @@ void RazorWorkSpace::workspaceResized(int screen)
     m_scene->setSceneRect(0, 0, geometry.width(), geometry.height());
 }
 
-void RazorWorkSpace::buildMenu(bool lazyInit)
+void RazorWorkSpace::buildMenu()
 {
     XdgMenuWidget *menu = new XdgMenuWidget(m_xdgMenu, "", this);
-    if (!lazyInit)
-        menu->fullInit();
 
     menu->setObjectName("TopLevelMainMenu");
 
@@ -311,9 +309,6 @@ void RazorWorkSpace::mouseReleaseEvent(QMouseEvent* _ev)
         QGraphicsView::mouseReleaseEvent(_ev);
         return;
     }
-
-    if (!m_menu )
-        buildMenu(true);
 
     if (!m_menu)
         return;

@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 2.6 )
 
-install(CODE "file(GLOB CONF_FILES *.conf)")
+file(GLOB CONF_FILES *.conf)
 file(GLOB CONF_FILES_IN *.conf.in)
 
 # Translations **********************************

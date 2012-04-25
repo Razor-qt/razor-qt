@@ -200,6 +200,8 @@ CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
     mProviders.append(new VirtualBoxProvider());
 #endif
 
+    mProviders.append(new PowerProvider());
+
     foreach(CommandProvider* provider, mProviders)
     {
         connect(provider, SIGNAL(changed()), this, SIGNAL(layoutChanged()));

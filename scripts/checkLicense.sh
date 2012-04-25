@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #ALL=''
-#ONLY_ERRORS=0
+#ONLY_ERRORS=1
 COLOR='YES'
 
 DIR=$1
@@ -30,7 +30,7 @@ for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null
     license=`head -n 5 "$file"| grep '(c)' | sed -e 's/*//'`;# | sed -e 's/\([()]\)/\\1/g'`;
 
     case "$license" in
-        *LGPL2+*|*DWTFYW*|*BSD3*)
+        *LGPL2+*|*DWTFYW*|*BSD*)
             [ -z "$ALL" ] && continue
             color=$GREEN
             ;;

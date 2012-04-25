@@ -1,4 +1,5 @@
 /****************************************************************************
+ * (c)LGPL2+
  **
  ** Copyright (C) Qxt Foundation. Some rights reserved.
  **

@@ -26,6 +26,7 @@
 #include "ui_razorconfigdialog.h"
 
 #include <qtxdg/xdgicon.h>
+#include <QtGui/QPushButton>
 
 RazorConfigDialog::RazorConfigDialog(const QString& title, RazorSettings* settings, QWidget* parent) :
     QDialog(parent),
@@ -38,6 +39,8 @@ RazorConfigDialog::RazorConfigDialog(const QString& title, RazorSettings* settin
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), SLOT(dialogButtonsAction(QAbstractButton*)));
     ui->moduleList->setVisible(false);
     connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(updateIcons()));
+    foreach(QPushButton* button, ui->buttons->findChildren<QPushButton*>())
+        button->setAutoDefault(false);
 }
 
 void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QString& iconName)
@@ -51,7 +54,7 @@ void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QStrin
     new QListWidgetItem(XdgIcon::fromTheme(icons), name, ui->moduleList);
     mIcons.append(icons);
     ui->stackedWidget->addWidget(page);
-    ui->moduleList->setVisible(true /*ui->stackedWidget->count() > 1*/);
+    ui->moduleList->setVisible(ui->stackedWidget->count() > 1);
     ui->moduleList->setCurrentRow(0);
     maxSize = QSize(qMax(page->geometry().width() + ui->moduleList->geometry().width(), maxSize.width()),
                     qMax(page->geometry().height() + ui->buttons->geometry().height(), maxSize.height()));

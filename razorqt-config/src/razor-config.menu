@@ -20,7 +20,7 @@
                 <Category>Settings</Category>
                 <Or>
                     <Category>X-RAZOR</Category>
-                    <Category>RAZOR</Category>
+                    <Category>Razor</Category>
                 </Or>
                 <Not>
                     <Filename>razor-config.desktop</Filename>
@@ -49,7 +49,7 @@
                 <Not>
                     <Or>
                         <Category>X-RAZOR</Category>
-                        <Category>RAZOR</Category>
+                        <Category>Razor</Category>
                         <Category>System</Category>
                     </Or>
                 </Not>

@@ -77,12 +77,6 @@ public:
     /// Destroys the menu.
     virtual ~XdgMenuWidget();
 
-    /// @reimp
-    QSize sizeHint() const;
-
-    void fullInit();
-signals:
-
 protected:
     bool event(QEvent* event);
 

@@ -69,7 +69,7 @@ private:
 protected slots:
     virtual void showConfigureDialog();
     virtual void settingsChanged();
-    void buildMenu(bool lazyInit=false);
+    void buildMenu();
 
 private slots:
     void showMenu();

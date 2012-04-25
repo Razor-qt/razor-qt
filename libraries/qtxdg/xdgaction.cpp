@@ -29,6 +29,7 @@
 #include "xdgaction.h"
 #include "xdgicon.h"
 #include <QtCore/QDebug>
+#include <QtCore/QCoreApplication>
 
 
 /************************************************
@@ -120,11 +121,8 @@ void XdgAction::load(const XdgDesktopFile& desktopFile)
         setText(mDesktopFile.name());
         setToolTip(mDesktopFile.comment());
 
-        setIcon(desktopFile.icon());
-        if (icon().isNull())
-            setIcon(XdgIcon::fromTheme("application-x-executable"));
-
         connect(this, SIGNAL(triggered()), this, SLOT(runConmmand()));
+        QMetaObject::invokeMethod(this, "updateIcon", Qt::QueuedConnection);
     }
     else
     {
@@ -142,4 +140,16 @@ void XdgAction::runConmmand() const
 {
     if (mDesktopFile.isValid())
         mDesktopFile.startDetached();
+}
+
+
+/************************************************
+
+ ************************************************/
+void XdgAction::updateIcon()
+{
+    setIcon(mDesktopFile.icon());
+    if (icon().isNull())
+        setIcon(XdgIcon::fromTheme("application-x-executable"));
+    QCoreApplication::processEvents();
 }

@@ -9,7 +9,8 @@ Usage: makeDeb.sh [otions] <path-to-source>
 Options
   -h|--help             display this message
   -o|--outdirt=DIR      write result to DIR, home directory by default
-  -r|--release=RELEASE  release name (sid, maveric, natty etc.), autodetect if ommited
+  -r|--release=RELEASE  release name (sid, squeeze, testing, maveric, natty etc.), autodetect if ommited
+  -d|--distrib=DISTRIB  distib type (Debian or Ubuntu), autodetect if ommited
   --ver=VERSION         razor version
   -S|--sign             sign a result files
   -s|--source           build a source package, if ommited build a binary package
@@ -19,8 +20,13 @@ HELP_TEXT
 function checkIf
 {
   shift
+  local TYPE=$1
+  shift
+  if [ "$TYPE" = "DISTRIB" ]; then VAL=${DISTRIB}; fi
+  if [ "$TYPE" = "RELEASE" ]; then VAL=${RELEASE}; fi
+
   for i in $@ ; do
-    [ "$i" = "${DIST}" ] && return 0
+    [ "$i" = "${VAL}" ] && return 0
   done
 
   return 1
@@ -55,8 +61,11 @@ function prepareFile
 			echo "$line" | sed            \
 				-e"s/%NAME%/${NAME}/g"    \
 				-e"s/%VERSION%/${VER}/g"  \
-				-e"s/%DIST%/${DIST}/g" \
-				-e"s/%DATE%/${DATE}/g"
+				-e"s/%RELEASE%/${RELEASE}/g" \
+				-e"s/%DISTRIB%/${DISTRIB}/g" \
+				-e"s/%DATE%/${DATE}/g" \
+				-e"s/%DEBEMAIL%/${DEBEMAIL}/g" \
+				-e"s/%DEBFULLNAME%/${DEBFULLNAME}/g"
 		fi
         ;;
     esac
@@ -83,6 +92,11 @@ while [ $# -gt 0 ]; do
 
     -r|--release)
         RELEASE=$2
+        shift 2
+      ;;
+
+    -d|--distrib)
+        DISTRIB=$2
         shift 2
       ;;
 
@@ -125,11 +139,12 @@ SRC_DIR=`readlink -m ${SRC_DIR}`
 
 if [ ! -f ${SRC_DIR}/CMakeLists.txt ]; then
     echo "The source directory \"${SRC_DIR}\" does not appear to contain CMakeLists.txt."
+    echo "Please run this script from root source dir ... as last argument"
     exit 2
 fi
 
 if [ -z "${RELEASE}" ]; then
-    RELEASE=`awk -F"=" '/DISTRIB_CODENAME=/ {print($2)}' /etc/lsb-release`
+    RELEASE=`awk -F"=" '/DISTRIB_CODENAME=/ {print($2)}' /etc/lsb?release`
 fi
 
 if [ -z "${RELEASE}" ]; then
@@ -137,6 +152,18 @@ if [ -z "${RELEASE}" ]; then
     help
     exit 2
 fi
+
+
+if [ -z "${DISTRIB}" ]; then
+    DISTRIB=`awk -F"=" '/DISTRIB_ID=/ {print($2)}' /etc/lsb?release`
+fi
+
+if [ -z "${DISTRIB}" ]; then
+    echo "missing distrib option"
+    help
+    exit 2
+fi
+
 
 if [ -z "$VER" ]; then
     MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
@@ -149,12 +176,16 @@ if [ -z "$OUT_DIR" ]; then
     OUT_DIR="${HOME}/{$NAME}_${VER}_deb"
 fi
 
+if [ -z "$DEBMAIL" ]; then
+  DEBMAIL=${EMAIL}
+fi
 
 echo "*******************************"
 echo " Name: ${NAME}"
 echo " Ver:  ${VER}"
 [ "${TYPE}" = "-b" ] && echo " Type: binary"
 [ "${TYPE}" = "-S" ] && echo " Type: source"
+echo " Distrib: ${DISTRIB}"
 echo " Release: ${RELEASE}"
 echo " Src dir: ${SRC_DIR}"
 echo " Out dir: ${OUT_DIR}"
@@ -172,7 +203,7 @@ rm -rf ${DIR}/.git \
 
 cd ${DIR}/.. && tar cjf ${NAME}_${VER}.orig.tar.bz2 ${NAME}-${VER}
 
-for DIST in ${RELEASE}; do
+for RELEASE in ${RELEASE}; do
     # Debin directory .....................
     rm -r ${DIR}/debian 2>/dev/null
     mkdir -p ${DIR}/debian

@@ -1,6 +1,6 @@
 This package was debianized by:
 
-    Alexander Sokolov <sokoloff.a@gmail.com>
+    %DEBFULLNAME% <%DEBEMAIL%>
 
 It was downloaded from:
 
@@ -21,7 +21,7 @@ License: GPL-2 and LGPL-2.1+
 
 The Debian packaging is:
 
-    Copyright (C) 2010-2011 Alexander Sokolov <sokoloff.a@gmail.com>
+    Copyright (C) 2010-2012 %DEBFULLNAME% <%DEBEMAIL%>
 
 and is licensed under the GPL version 2, see above.
 
