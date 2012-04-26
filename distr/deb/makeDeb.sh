@@ -225,7 +225,7 @@ if [ "${TYPE}" = '-b' ]; then
     echo "Check files:"
     PKGS=`awk '/Package:/ {print $2}' ${DIR}/debian/control`
 
-    for file in `find ${DIR}/debian/tmp -type f 2>/dev/null`; do
+    for file in `find ${DIR}/debian/tmp \( -type f -o -type l \) 2>/dev/null`; do
         file=`echo $file | sed -e"s|${DIR}/debian/tmp||"`
         #echo $file
         pkgNames=''
