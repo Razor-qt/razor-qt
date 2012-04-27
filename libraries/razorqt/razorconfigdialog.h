@@ -71,7 +71,7 @@ protected:
 private:
     RazorSettingsCache* mCache;
     QList<QStringList> mIcons;
-    QSize maxSize;
+    QSize mMaxSize;
     Ui::RazorConfigDialog* ui;
     void closeEvent(QCloseEvent* event);
 

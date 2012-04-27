@@ -58,7 +58,7 @@ PageSelectWidgetItemDelegate::PageSelectWidgetItemDelegate(PageSelectWidget *par
 QSize PageSelectWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QSize size = QStyledItemDelegate::sizeHint(option, index);
-    size.setWidth(mView->viewport()->width());
+    size.setWidth(mView->viewport()->width() - 2*mView->spacing());
     return size;
 }
 
@@ -73,7 +73,7 @@ PageSelectWidget::PageSelectWidget(QWidget *parent) :
     setSelectionRectVisible(false);
     setViewMode(IconMode);
     setSpacing(2);
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
     setWordWrap(true);
     setDragEnabled(NoDragDrop);
     setEditTriggers(NoEditTriggers);
@@ -106,6 +106,6 @@ QSize PageSelectWidget::sizeHint() const
 
     if (horizontalScrollBar()->isVisible())
         w += horizontalScrollBar()->width();
-    size.setWidth(w + frameWidth() + 42);
+    size.setWidth(w + frameWidth() + spacing()*2 + 10);
     return size;
 }

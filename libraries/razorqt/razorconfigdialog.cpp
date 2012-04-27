@@ -54,11 +54,18 @@ void RazorConfigDialog::addPage(QWidget* page, const QString& name, const QStrin
     new QListWidgetItem(XdgIcon::fromTheme(icons), name, ui->moduleList);
     mIcons.append(icons);
     ui->stackedWidget->addWidget(page);
-    ui->moduleList->setVisible(ui->stackedWidget->count() > 1);
-    ui->moduleList->setCurrentRow(0);
-    maxSize = QSize(qMax(page->geometry().width() + ui->moduleList->geometry().width(), maxSize.width()),
-                    qMax(page->geometry().height() + ui->buttons->geometry().height(), maxSize.height()));
-    resize(maxSize);
+    if(ui->stackedWidget->count() > 1)
+    {
+        ui->moduleList->setVisible(true);
+        ui->moduleList->setCurrentRow(0);
+        mMaxSize = QSize(qMax(page->geometry().width() + ui->moduleList->geometry().width(), mMaxSize.width()),
+                         qMax(page->geometry().height() + ui->buttons->geometry().height(), mMaxSize.height()));
+    }
+    else
+    {
+        mMaxSize = page->geometry().size();
+    }
+    resize(mMaxSize);
 }
 
 void RazorConfigDialog::closeEvent(QCloseEvent* event)
