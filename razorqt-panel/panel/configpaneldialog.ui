@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>ConfigPanelDialog</class>
- <widget class="QDialog" name="ConfigPanelDialog">
+ <widget class="QWidget" name="ConfigPanelDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -57,7 +57,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Panel lenght &amp; position</string>
+      <string>Panel length &amp;&amp; position</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1" colspan="2">
@@ -118,13 +118,6 @@
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
-     </property>
     </widget>
    </item>
   </layout>

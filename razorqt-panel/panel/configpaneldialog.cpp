@@ -37,11 +37,11 @@
 
 
 ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *settings, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ConfigPanelDialog)
+    QWidget(parent),
+    ui(new Ui::ConfigPanelDialog),
+    mSettings(settings)
 {
     ui->setupUi(this);
-    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
     connect(ui->spinBox_size, SIGNAL(valueChanged(int)),this, SLOT(spinBoxHeightValueChanged(int)));
     connect(ui->comboBox_widthType, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxWidthTypeIndexChanged(int)));
     connect(ui->comboBox_alignment, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAlignmentIndexChanged(int)));
@@ -49,13 +49,11 @@ ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *sett
     connect(ui->checkBox_useTheme, SIGNAL(toggled(bool)), this, SLOT(checkBoxUseThemeSizeChanged(bool)));
     mSizeDefault=hDefault;
     mLengthMax=wMax;
-    mSettings = settings;
-    mCache = new RazorSettingsCache(mSettings);
 
-    initControls();
+    reset();
 }
 
-void ConfigPanelDialog::initControls()
+void ConfigPanelDialog::reset()
 {
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mSize = mSettings->value(CFG_KEY_HEIGHT, mSizeDefault).toInt();
@@ -77,25 +75,11 @@ void ConfigPanelDialog::initControls()
 ConfigPanelDialog::~ConfigPanelDialog()
 {
     delete ui;
-    delete mCache;
 }
 
-void ConfigPanelDialog::dialogButtonsAction(QAbstractButton *button)
+void ConfigPanelDialog::save()
 {
-    if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole)
-    {
-        mCache->loadToSettings();
-        initControls();
-    }
-    else
-    {
-        close();
-    }
-}
-
-void ConfigPanelDialog::closeEvent(QCloseEvent *event)
-{
-    Q_UNUSED(event);
+    // Save is separate here to reduce disk I/O while resizing
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mSettings->setValue(CFG_KEY_WIDTH, mLength);
     mSettings->setValue(CFG_KEY_PERCENT, mWidthInPercents);
@@ -103,7 +87,6 @@ void ConfigPanelDialog::closeEvent(QCloseEvent *event)
     mSettings->setValue(CFG_KEY_ALIGNMENT, mAlignment);
     mSettings->setValue(CFG_KEY_THEMESIZE, useThemeSize);
     mSettings->endGroup();
-    mSettings->sync();
 }
 
 void ConfigPanelDialog::spinBoxWidthValueChanged(int q)

@@ -31,14 +31,11 @@
 #include "razorpanel.h"
 #include <razorqt/razorsettings.h>
 
-#include <QtGui/QDialog>
-#include <QtGui/QAbstractButton>
-
 namespace Ui {
 class ConfigPanelDialog;
 }
 
-class ConfigPanelDialog : public QDialog
+class ConfigPanelDialog : public QWidget
 {
     Q_OBJECT
     
@@ -49,8 +46,11 @@ public:
 signals:
     void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool useThemeSize);
 
+public slots:
+    void reset();
+    void save();
+
 private slots:
-    void dialogButtonsAction(QAbstractButton *button);
     void spinBoxHeightValueChanged(int q);
     void spinBoxWidthValueChanged(int q);
     void comboBoxWidthTypeIndexChanged(int q);
@@ -61,7 +61,6 @@ private:
     Ui::ConfigPanelDialog *ui;
     QString mConfigFile;
     RazorSettings* mSettings;
-    RazorSettingsCache *mCache;
     int mSizeDefault;
     int mSize;
     int mLengthMax;
@@ -69,9 +68,6 @@ private:
     bool mWidthInPercents;
     bool useThemeSize;
     RazorPanel::Alignment mAlignment;
-
-    void initControls();
-    void closeEvent(QCloseEvent *event);
 };
 
 #endif // CONFIGPANELDIALOG_H

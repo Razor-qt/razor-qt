@@ -35,6 +35,7 @@
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorplugininfo.h>
+#include <razorqt/razorconfigdialog.h>
 
 #include <QtCore/QString>
 #include <QtCore/QDebug>
@@ -646,9 +647,14 @@ void RazorPanelPrivate::showConfigPanelDialog()
 {
     Q_Q(RazorPanel);
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
-    ConfigPanelDialog* dlg = new ConfigPanelDialog (mHeight, screen.width(), mSettings, q);
+    RazorConfigDialog* dlg = new RazorConfigDialog(tr("Configure panel"), mSettings, q);
+    ConfigPanelDialog* page = new ConfigPanelDialog (mHeight, screen.width(), mSettings, dlg);
+    dlg->addPage(page, tr("Configure panel"));
+
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    connect(dlg, SIGNAL(configChanged(int, int, bool, RazorPanel::Alignment, bool)),
+    connect(dlg, SIGNAL(reset()), page, SLOT(reset()));
+    connect(dlg, SIGNAL(save()), page, SLOT(save()));
+    connect(page, SIGNAL(configChanged(int, int, bool, RazorPanel::Alignment, bool)),
                       SLOT(updateSize(int, int, bool, RazorPanel::Alignment, bool)));
     dlg->show();
 }
