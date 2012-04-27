@@ -67,20 +67,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_length">
-        <property name="text">
-         <string>Length:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_alignment">
-        <property name="text">
-         <string>Alignment:</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1" colspan="3">
        <widget class="QComboBox" name="comboBox_alignment">
         <property name="currentIndex">
@@ -116,6 +102,30 @@
          </property>
         </item>
        </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_alignment">
+        <property name="text">
+         <string>Alignment:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_length">
+        <property name="text">
+         <string>Length:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_position">
+        <property name="text">
+         <string>Position:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="3">
+       <widget class="QComboBox" name="comboBox_position"/>
       </item>
      </layout>
     </widget>

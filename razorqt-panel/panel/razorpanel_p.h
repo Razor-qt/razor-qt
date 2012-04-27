@@ -33,8 +33,6 @@
 #include "razorpanel.h"
 #include "razorpanelplugin.h"
 #include <razorqt/razorplugininfo.h>
-#include <QtCore/QObject>
-#include <QtCore/QList>
 #include <QtGui/QAction>
 #include <QtCore/QVariantAnimation>
 
@@ -55,7 +53,9 @@ public:
     RazorPanel::Position position() const { return mPosition; }
 
     QList<RazorPanelPlugin*>& plugins() { return mPlugins; }
-    bool canPlacedOn(int screenNum, RazorPanel::Position position) const;
+    static bool canPlacedOn(int screenNum, RazorPanel::Position position);
+    static RazorPanel::Position strToPosition(const QString &str, RazorPanel::Position defaultValue);
+    static QString positionToStr(RazorPanel::Position position);
 
     QMenu* popupMenu(QWidget *parent) const;
 
@@ -64,7 +64,8 @@ public:
 
 public slots:
     void realign();
-    void switchPosition();
+    void reposition();
+    void switchPosition(int screenNum, RazorPanel::Position position);
     void pluginMoved(QWidget* pluginWidget);
     void screensChangeds();
     void showAddPluginDialog();
@@ -98,21 +99,6 @@ private:
     QLayoutItem* mSpacer;
     bool mUseThemeSize;
     void updatePluginsMinSize();
-};
-
-
-class PositionAction: public QAction
-{
-  Q_OBJECT
-public:
-    PositionAction(int displayNum, RazorPanel::Position position, QActionGroup* parent = 0);
-
-    RazorPanel::Position position() const { return mPosition; }
-    int displayNum() const { return mDisplayNum; }
-
-private:
-    RazorPanel::Position mPosition;
-    int mDisplayNum;
 };
 
 

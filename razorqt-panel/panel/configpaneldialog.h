@@ -31,6 +31,20 @@
 #include "razorpanel.h"
 #include <razorqt/razorsettings.h>
 
+#define CFG_PANEL_GROUP     "panel"
+
+#define CFG_KEY_SCREENNUM   "desktop"
+#define CFG_KEY_POSITION    "position"
+#define CFG_KEY_PLUGINS     "plugins"
+#define CFG_KEY_HEIGHT      "height"
+#define CFG_KEY_WIDTH       "width"
+#define CFG_KEY_PERCENT     "width-percent"
+#define CFG_KEY_ALIGNMENT   "alignment"
+#define CFG_KEY_THEMESIZE   "theme-size"
+
+#define CFG_FULLKEY_PLUGINS "panel/plugins"
+
+
 namespace Ui {
 class ConfigPanelDialog;
 }
@@ -44,7 +58,8 @@ public:
     ~ConfigPanelDialog();
 
 signals:
-    void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool useThemeSize);
+    void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool mUseThemeSize);
+    void positionChanged(int screen, RazorPanel::Position);
 
 public slots:
     void reset();
@@ -55,6 +70,7 @@ private slots:
     void spinBoxWidthValueChanged(int q);
     void comboBoxWidthTypeIndexChanged(int q);
     void comboBoxAlignmentIndexChanged(int q);
+    void comboBoxPositionIndexChanged(int q);
     void checkBoxUseThemeSizeChanged(bool state);
 
 private:
@@ -66,8 +82,12 @@ private:
     int mLengthMax;
     int mLength;
     bool mWidthInPercents;
-    bool useThemeSize;
+    bool mUseThemeSize;
+    int mScreenNum;
+    RazorPanel::Position mPosition;
     RazorPanel::Alignment mAlignment;
+
+    void addPosition(const QString& name, int screen, RazorPanel::Position position);
 };
 
 #endif // CONFIGPANELDIALOG_H
