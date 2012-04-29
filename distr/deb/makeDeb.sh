@@ -176,8 +176,8 @@ if [ -z "$OUT_DIR" ]; then
     OUT_DIR="${HOME}/{$NAME}_${VER}_deb"
 fi
 
-if [ -z "$DEBMAIL" ]; then
-  DEBMAIL=${EMAIL}
+if [ -z "$DEBEMAIL" ]; then
+  DEBEMAIL=${EMAIL}
 fi
 
 echo "*******************************"
