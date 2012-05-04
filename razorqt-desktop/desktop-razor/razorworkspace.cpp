@@ -200,7 +200,13 @@ void RazorWorkSpace::setConfig(const WorkspaceConfig & bg)
             continue;
         }
 
-        QGraphicsItem * item = loadPlugin(lib, configId);
+        QGraphicsItem * item = m_plugins[configId];
+        if (!item)
+        {
+            item = loadPlugin(lib, configId);
+            m_plugins.insert(configId, item);
+        }
+
         DesktopWidgetPlugin * plugin = getPluginFromItem(item);
         if (plugin)
             plugin->setSizeAndPosition(position, size);

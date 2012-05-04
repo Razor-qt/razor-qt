@@ -30,7 +30,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <razorqt/razorsettings.h>
-
+#include <QtCore/QFileSystemWatcher>
 #include "workspacemanager.h"
 
 EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
@@ -44,6 +44,9 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
     setup();
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(setup()));
+    QFileSystemWatcher *fw = new QFileSystemWatcher(this);
+    fw->addPath(config->fileName());
+    connect(fw, SIGNAL(fileChanged(QString)), this, SLOT(setup()));
 }
     
 void RazorWorkSpaceManager::setup()

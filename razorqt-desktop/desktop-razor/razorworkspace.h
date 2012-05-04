@@ -103,7 +103,7 @@ private:
     void saveConfig();
     QStringList pluginDesktopDirs();
     QLibrary* loadPluginLib(const RazorPluginInfo &pluginInfo);
-
+    QMap<QString, QGraphicsItem*> m_plugins;
 private slots:
     void about();
     void workspaceResized(int screen);
