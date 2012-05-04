@@ -30,11 +30,7 @@
 #define NOTEPAD_H
 
 #include <QGraphicsView>
-#include <QtDebug>
-#include <QGraphicsView>
-#include <QPropertyAnimation>
 #include <QVBoxLayout>
-#include <QPalette>
 
 #include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
@@ -43,7 +39,6 @@
 class Notepad : public DesktopWidgetPlugin, public QWidget {
 	NotepadWin *win;
 	QVBoxLayout *layout;
-	QPalette *palette;
 public:
 	Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *config);
 	~Notepad();
@@ -59,6 +54,5 @@ public:
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H
-
 
 #endif
