@@ -191,6 +191,7 @@ CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
 
     mHistoryProvider = new HistoryProvider();
     mProviders.append(mHistoryProvider);
+    mCustomCommandProvider->setHistoryProvider(mHistoryProvider);
 
     mProviders.append(new AppLinkProvider());
 #ifdef MATH_ENABLED

@@ -92,8 +92,10 @@ AppLinkItem::AppLinkItem(const QDomElement &element):
     mTitle = element.attribute("title");
     mComment = element.attribute("genericName");
     mToolTip = element.attribute("comment");
-    mCommand = QFileInfo(element.attribute("exec")).baseName().section(" ", 0, 0);
+    mCommand = element.attribute("exec");
+    mProgram = QFileInfo(element.attribute("exec")).baseName().section(" ", 0, 0);
     mDesktopFile = element.attribute("desktopFile");
+    QMetaObject::invokeMethod(this, "updateIcon", Qt::QueuedConnection);
 }
 
 
@@ -117,6 +119,7 @@ void AppLinkItem::operator=(const AppLinkItem &other)
     mToolTip = other.toolTip();
 
     mCommand = other.mCommand;
+    mProgram = other.mProgram;
     mDesktopFile = other.mDesktopFile;
 
     mIconName = other.mIconName;
@@ -129,7 +132,7 @@ void AppLinkItem::operator=(const AppLinkItem &other)
  ************************************************/
 unsigned int AppLinkItem::rank(const QString &pattern) const
 {
-    return qMax(stringRank(mCommand, pattern),
+    return qMax(stringRank(mProgram, pattern),
                 stringRank(mTitle, pattern)
                );
 }
@@ -156,7 +159,7 @@ bool AppLinkItem::compare(const QRegExp &regExp) const
     QRegExp re(regExp);
 
     re.setCaseSensitivity(Qt::CaseInsensitive);
-    return mCommand.contains(re) ||
+    return mProgram.contains(re) ||
            mTitle.contains(re) ;
 }
 
@@ -204,6 +207,7 @@ void doUpdate(const QDomElement &xml, QHash<QString, AppLinkItem*> &items)
         else if (e.tagName() == "AppLink")
         {
             AppLinkItem *item = new AppLinkItem(e);
+            delete items[item->command()]; // delete previous item;
             items.insert(item->command(), item);
         }
     }
@@ -218,7 +222,6 @@ void AppLinkProvider::update()
     emit aboutToBeChanged();
     QHash<QString, AppLinkItem*> newItems;
     doUpdate(mXdgMenu->xml().documentElement(), newItems);
-
     {
         QMutableListIterator<CommandProviderItem*> i(*this);
         while (i.hasNext()) {
@@ -227,7 +230,6 @@ void AppLinkProvider::update()
             if (newItem)
             {
                 *(item) = *newItem;  // Copy by value, not pointer!
-                item->updateIcon();
                 delete newItem;
             }
             else
@@ -240,10 +242,9 @@ void AppLinkProvider::update()
 
     {
         QHashIterator<QString, AppLinkItem*> i(newItems);
-        while (i.hasNext()) {
-            AppLinkItem *item = i.next().value();
-            append(item);
-            item->updateIcon();
+        while (i.hasNext())
+        {
+            append(i.next().value());
         }
     }
 
@@ -351,8 +352,9 @@ void HistoryProvider::clearHistory()
 /************************************************
 
  ************************************************/
-CustomCommandItem::CustomCommandItem():
-    CommandProviderItem()
+CustomCommandItem::CustomCommandItem(CustomCommandProvider *provider):
+    CommandProviderItem(),
+    mProvider(provider)
 {
     mIcon = XdgIcon::fromTheme("utilities-terminal");
 }
@@ -438,7 +440,11 @@ bool CustomCommandItem::run() const
     if (program.isEmpty())
         return false;
 
-    return QProcess::startDetached(program, args);
+    bool ret = QProcess::startDetached(program, args);
+    if (ret && mProvider->historyProvider())
+        mProvider->historyProvider()->AddCommand(mCommand);
+
+    return ret;
 }
 
 
@@ -464,9 +470,10 @@ unsigned int CustomCommandItem::rank(const QString &pattern) const
 
  ************************************************/
 CustomCommandProvider::CustomCommandProvider():
-        CommandProvider()
+    CommandProvider(),
+    mHistoryProvider(0)
 {
-    mItem = new CustomCommandItem();
+    mItem = new CustomCommandItem(this);
     append(mItem);
 }
 

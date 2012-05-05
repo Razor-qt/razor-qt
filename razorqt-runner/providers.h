@@ -41,10 +41,11 @@
 /*! The CommandProviderItem class provides an item for use with CommandProvider.
     Items usually contain title, comment, toolTip and icon.
  */
-class CommandProviderItem
+class CommandProviderItem: public QObject
 {
+    Q_OBJECT
 public:
-    CommandProviderItem() {}
+    CommandProviderItem(): QObject() {}
     virtual ~CommandProviderItem() {}
 
     virtual bool run() const = 0;
@@ -105,21 +106,24 @@ signals:
 
 class AppLinkItem: public CommandProviderItem
 {
+    Q_OBJECT
 public:
     AppLinkItem(const QDomElement &element);
 
     bool run() const;
     bool compare(const QRegExp &regExp) const;
-    void updateIcon();
     QString command() const { return mCommand; }
 
     void operator=(const AppLinkItem &other);
 
     virtual unsigned int rank(const QString &pattern) const;
+private slots:
+    void updateIcon();
 private:
     QString mDesktopFile;
     QString mIconName;
     QString mCommand;
+    QString mProgram;
 };
 
 
@@ -179,11 +183,12 @@ private:
 /************************************************
  * Custom command
  ************************************************/
+class CustomCommandProvider;
 
 class CustomCommandItem: public CommandProviderItem
 {
 public:
-    CustomCommandItem();
+    CustomCommandItem(CustomCommandProvider *provider);
 
     bool run() const;
     bool compare(const QRegExp &regExp) const;
@@ -194,6 +199,7 @@ public:
     virtual unsigned int rank(const QString &pattern) const;
 private:
     QString mCommand;
+    CustomCommandProvider *mProvider;
 };
 
 
@@ -207,8 +213,12 @@ public:
     QString command() const { return mItem->command(); }
     void setCommand(const QString &command) { mItem->setCommand(command); }
 
+    HistoryProvider* historyProvider() const { return mHistoryProvider; }
+    void setHistoryProvider(HistoryProvider *historyProvider) { mHistoryProvider = historyProvider; }
+
 private:
     CustomCommandItem *mItem;
+    HistoryProvider *mHistoryProvider;
 };
 
 

@@ -38,7 +38,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 
-
+#include <iostream>
 #include <QtCore/QDebug>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDesktopWidget>
@@ -308,7 +308,7 @@ void Dialog::applySettings()
     if (mGlobalShortcut->shortcut() != shortcut)
     {
         mGlobalShortcut->setShortcut(shortcut);
-        qDebug() << tr("Press \"%1\" to see dialog.").arg(shortcut.toString());
+        std::cout << tr("Press \"%1\" to see dialog.").arg(shortcut.toString()).toLocal8Bit().constData() << std::endl;
     }
 
     mShowOnTop = mSettings->value("dialog/show_on_top", true).toBool();
@@ -357,18 +357,7 @@ void Dialog::runCommand()
     const CommandProviderItem *command = mCommandItemModel->command(ui->commandList->currentIndex());
 
     if (command)
-    {
         res = command->run();
-    }
-    else
-    {
-        QString command = ui->commandEd->text();
-        res = QProcess::startDetached(command);
-        if (res)
-        {
-            mCommandItemModel->addHistoryCommand(command);
-        }
-    }
 
     if (res)
     {
