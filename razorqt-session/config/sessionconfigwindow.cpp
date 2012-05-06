@@ -132,7 +132,7 @@ void SessionConfigWindow::restoreSettings()
     knownTerms << "qterminal" << "xterm" << "konsole" << "uterm";
     handleCfgComboBox(terminalComboBox, knownTerms, terminal);
     QStringList knownBrowsers;
-    knownBrowsers << "firefox" << "arora" << "konqueror" << "opera";
+    knownBrowsers << "firefox" << "qupzilla" << "arora" << "konqueror" << "opera";
     handleCfgComboBox(browserComboBox, knownBrowsers, browser);
 
     // XDG autostart *****************************************************
