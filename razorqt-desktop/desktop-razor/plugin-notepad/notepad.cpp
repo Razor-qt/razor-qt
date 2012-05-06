@@ -25,7 +25,10 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
- 
+
+#include <QtDebug>
+#include <QPalette>
+#include <QPropertyAnimation>
 #include "notepad.h"
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(Notepad)
@@ -41,21 +44,22 @@ Notepad::Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *
 	int y = m_config->value("y", 0).toInt();
     int w = m_config->value("w", 0).toInt();
     int h = m_config->value("h", 0).toInt();
+	int pos = m_config->value("pos", 0).toInt();
     m_config->endGroup();
 
 	resize(w, h);
 	move(x, y);
-	palette = new QPalette();
-	palette->setColor(backgroundRole(), Qt::transparent);
-	setPalette(*palette);
+	QPalette palette;
+	palette.setColor(backgroundRole(), Qt::transparent);
+	setPalette(palette);
    
 	layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 	setLayout(layout);
 	
-    win = new NotepadWin(this, &Notepad::save, &Notepad::repaint);
+	win = new NotepadWin(this, &Notepad::save);
 	layout->addWidget(win);
-	win->setText(text);
+	win->setTextAndPos(text, pos);
 }
 
 Notepad::~Notepad()
@@ -98,6 +102,7 @@ void Notepad::save()
     m_config->setValue("w", size().width());
     m_config->setValue("h", size().height());
     m_config->setValue("text", win->text());
+	m_config->setValue("pos", win->pos());
     m_config->endGroup();
 }
 

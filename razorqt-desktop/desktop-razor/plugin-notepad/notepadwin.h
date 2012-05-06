@@ -39,27 +39,54 @@
 class Notepad;
 
 typedef void (Notepad::*SaveFunctionPointer)(void);
+typedef void (QTextCharFormat::*SetQTextCharFormat)(bool);
+typedef bool (QTextCharFormat::*GetQTextCharFormat)(void) const;
+
+
+struct NotepadFormat {
+	bool bold;
+	bool italic;
+	bool underline;
+	bool strike;
+	bool left;
+	bool center;
+	bool right;
+	bool justify;
+};
 
 class NotepadWin : public QWidget {
 Q_OBJECT
+
+public:
+	NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent = 0);
+
+	QString text();
+	int pos() const;
+    void setParentSize(const QSizeF &size);
+	void setTextAndPos(QString &text, int p);
+
+protected:
+	void showEvent(QShowEvent *event);
+
+private:
 	QSizeF m_parentSize;
 	QTextEdit *edit;
 	QVBoxLayout *layout;
 	QHBoxLayout *panelLayout;
-	SaveFunctionPointer saveText, rpnt;
+	SaveFunctionPointer saveText;
 	Notepad *pad;
 	QWidget *panel;
-    QToolButton *bold, *italic, *underline, *strikethrough, *leftSided, *centered, *rightSided, *justified;
-    QTimer* saveTimer;
-public:
-    NotepadWin(Notepad *notepad, SaveFunctionPointer sv, SaveFunctionPointer rpnt, QWidget *parent = 0);
+	QToolButton *bold, *italic, *underline, *strikethrough, *leftSided, *centered, *rightSided, *justified;
+	QTimer* saveTimer;
+	int scrollBarPosition;
 
-    void setParentSize(const QSizeF &size);
-	QString text();
-	void setText(QString &text);
+	void updateFormat(const QTextCursor &cursor, NotepadFormat &format);
+	void setFormat(bool bold = true, GetQTextCharFormat getter = NULL, SetQTextCharFormat setter = NULL);
+	void setAlignment(Qt::AlignmentFlag a);
 
 private slots:
     void save();
+
 public slots:
     void onSelectionChanged();
     void setBold();
