@@ -85,7 +85,7 @@ else()
 
     link_directories( ${LIGHTDM_QT_LIBRARY_DIRS} )
     add_executable ( razor-lightdm-greeter ${razor-lightdm-greeter_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
-    target_link_libraries ( razor-lightdm-greeter  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${LIGHTDM_QT_LIBRARIES} )
+    target_link_libraries ( razor-lightdm-greeter  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${LIGHTDM_QT_LIBRARIES} )
 
     file(GLOB DESKTOP_FILES resources/*.desktop)
 
