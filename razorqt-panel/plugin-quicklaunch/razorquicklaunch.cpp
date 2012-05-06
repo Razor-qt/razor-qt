@@ -164,9 +164,16 @@ void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
 void RazorQuickLaunch::dropEvent(QDropEvent *e)
 {
     const QMimeData *mime = e->mimeData();
+    // duplicates storage: [quicklaunch] issue dragging from qtfm, #252
+    QList<QUrl> duplicates;
     // urls from mainmenu
     foreach (QUrl url, mime->urls())
     {
+	if (duplicates.contains(url))
+            continue;
+	else
+	    duplicates << url;
+
         QString fileName(url.toLocalFile());
         XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(fileName);
         QFileInfo fi(fileName);
