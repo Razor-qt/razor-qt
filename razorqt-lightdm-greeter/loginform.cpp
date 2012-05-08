@@ -95,7 +95,6 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
             this,       SLOT(onPrompt(QString,QLightDM::Greeter::PromptType)));
 #endif
 
-    connect(ui->loginButton, SIGNAL(pressed()), this, SLOT(doLogin()));
     connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(doLogin()));
 
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(doCancel()));
@@ -162,12 +161,4 @@ void LoginForm::doLeave()
 
 void LoginForm::razorPowerDone() {
     setEnabled(true);
-}
-
-void LoginForm::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return)
-    {
-        emit ui->loginButton->click();
-    }
 }

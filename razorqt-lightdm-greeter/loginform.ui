@@ -75,7 +75,7 @@
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string>userid</string>
+    <string>user id</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="passwordInput">
@@ -226,5 +226,38 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>userIdInput</sender>
+   <signal>returnPressed()</signal>
+   <receiver>passwordInput</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>513</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>513</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>passwordInput</sender>
+   <signal>returnPressed()</signal>
+   <receiver>loginButton</receiver>
+   <slot>animateClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>419</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
