@@ -64,9 +64,6 @@ public slots:
 #endif
     void authenticationDone();
 
-protected:
-    virtual void keyPressEvent(QKeyEvent *event);
-
 private:
     Ui::LoginForm *ui;
 
