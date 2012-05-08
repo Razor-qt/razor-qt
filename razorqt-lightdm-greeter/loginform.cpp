@@ -82,7 +82,7 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
     }
 
     QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
-    ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size()));
+    ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
 
 #ifdef USING_LIGHTDM_QT_1
