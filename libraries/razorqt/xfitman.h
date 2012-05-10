@@ -129,7 +129,7 @@ public:
 #if 0
     void getAtoms() const;
 #endif
-    QList<Window> getClientList() const;
+    WindowList getClientList() const;
     bool getClientIcon(Window _wid, QPixmap& _pixreturn) const;
 #if 0
     void setEventRoute() const;

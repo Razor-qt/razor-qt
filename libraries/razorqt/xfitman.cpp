@@ -541,8 +541,16 @@ bool XfitMan::acceptWindow(Window window) const
                     << atom("_NET_WM_WINDOW_TYPE_SPLASH")
                     << atom("_NET_WM_WINDOW_TYPE_TOOLBAR")
                     << atom("_NET_WM_WINDOW_TYPE_MENU")
-                    << atom("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE");
-                    
+                    // for qlipper - using qpopup as a main window
+                    << atom("_NET_WM_WINDOW_TYPE_POPUP_MENU");
+        // issue #284: qmmp its not registered in window list panel
+        // qmmp has _KDE_NET_WM_WINDOW_TYPE_OVERRIDE in its
+        // _NET_WM_WINDOW_TYPE(ATOM) = _KDE_NET_WM_WINDOW_TYPE_OVERRIDE, _NET_WM_WINDOW_TYPE_NORMAL
+        // Let's expect that _KDE_NET_WM_WINDOW_TYPE_OVERRIDE can be set for
+        // regular windows too. If it should be hidden we should expect
+        // one of atoms listed above.
+//                    << atom("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE");
+
         foreach (Atom i, ignoreList)
         {
             if (types.contains(i))
@@ -571,7 +579,7 @@ bool XfitMan::acceptWindow(Window window) const
 /**
  * @brief gets a client list
  */
-QList<Window> XfitMan::getClientList() const
+WindowList XfitMan::getClientList() const
 {
     //initialize the parameters for the XGetWindowProperty call
     unsigned long length, *data;
