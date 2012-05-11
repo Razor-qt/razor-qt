@@ -29,6 +29,7 @@
 #define QUICKLAUNCHLAYOUT_H
 
 #include <QGridLayout>
+#include "razorpanel.h"
 
 class QuickLaunchButton;
 
@@ -36,11 +37,22 @@ class QuickLaunchLayout : public QGridLayout
 {
     Q_OBJECT
 public:
-    QuickLaunchLayout(QWidget *parent=0);
+    QuickLaunchLayout(QWidget *parent, RazorPanel *panel);
 
+    void addWidget(QuickLaunchButton *b);
+    void removeWidget(QuickLaunchButton *b);
     void swapButtons(QuickLaunchButton * b1, QuickLaunchButton *b2);
 
-    QList<QuickLaunchButton*> buttons();
+    QList<QuickLaunchButton*> buttons() { return m_buttons; };
+
+    Qt::Orientations expandingDirections() const;
+
+private:
+    RazorPanel *m_panel;
+    QList<QuickLaunchButton*> m_buttons;
+
+private slots:
+    void relayout();
 };
 
 #endif // QUICKLAUNCHLAYOUT_H

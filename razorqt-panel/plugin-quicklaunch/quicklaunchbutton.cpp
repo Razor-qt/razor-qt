@@ -50,6 +50,8 @@ QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * 
     m_act->setParent(this);
 //    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     setIconSize(QSize(22, 22));
+    setMaximumSize(QUICKLAUNCH_BUTTON_SIZE, QUICKLAUNCH_BUTTON_SIZE);
+    setMinimumSize(QUICKLAUNCH_BUTTON_SIZE, QUICKLAUNCH_BUTTON_SIZE);
 
     m_moveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("Move left"), this);
     connect(m_moveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));

@@ -33,6 +33,7 @@
 
 #include "quicklaunchaction.h"
 
+#define QUICKLAUNCH_BUTTON_SIZE 30
 
 class QuickLaunchButton : public QToolButton
 {

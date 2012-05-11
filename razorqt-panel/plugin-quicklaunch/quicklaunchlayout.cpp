@@ -29,11 +29,29 @@
 #include "quicklaunchbutton.h"
 
 
-QuickLaunchLayout::QuickLaunchLayout(QWidget * parent)
-    : QGridLayout(parent)
+QuickLaunchLayout::QuickLaunchLayout(QWidget * parent, RazorPanel *panel)
+    : QGridLayout(parent),
+      m_panel(panel)
 {
     setSpacing(0);
     setContentsMargins(0, 0, 0, 0);
+
+    connect(m_panel, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction direction)),
+            this, SLOT(relayout()));
+    connect(m_panel, SIGNAL(panelRealigned()),
+            this, SLOT(relayout()));
+}
+
+void QuickLaunchLayout::addWidget(QuickLaunchButton *b)
+{
+    m_buttons << b;
+    relayout();
+}
+
+void QuickLaunchLayout::removeWidget(QuickLaunchButton *b)
+{
+    m_buttons.removeAll(b);
+    relayout();
 }
 
 void QuickLaunchLayout::swapButtons(QuickLaunchButton * b1, QuickLaunchButton *b2)
@@ -44,21 +62,53 @@ void QuickLaunchLayout::swapButtons(QuickLaunchButton * b1, QuickLaunchButton *b
 
     ix1 = (tmp1<tmp2) ? tmp1 : tmp2;
     ix2 = (tmp1<tmp2) ? tmp2 : tmp1;
-
-    // takeAt order is important here. Bigger index *must* go first
-    QWidgetItem *item2 = reinterpret_cast<QWidgetItem*>(takeAt(ix2));
-    QWidgetItem *item1 = reinterpret_cast<QWidgetItem*>(takeAt(ix1));
-//    insertItem(ix1, item2);
-//    insertItem(ix2, item1);
+   
+    m_buttons.swap(ix1, ix2);
+    relayout();
 }
 
-QList<QuickLaunchButton*> QuickLaunchLayout::buttons()
+Qt::Orientations QuickLaunchLayout::expandingDirections() const
 {
-    QList<QuickLaunchButton*> ret;
-    for (int i = 0; i < count(); ++i)
-    {
-        ret.append(reinterpret_cast<QuickLaunchButton*>(itemAt(i)->widget()));
-    }
-    return ret;
+    return m_panel->isHorizontal() ? Qt::Horizontal : Qt::Vertical;
 }
 
+// I know it's ugly and too expensive (to use this brute-force method)
+// but now it all works (horizontal and vertical mode), moving of buttons,
+// removing etc. And mainly - it places buttons into matrix if there is
+// free space for it.
+void QuickLaunchLayout::relayout()
+{
+    int size = m_panel->isHorizontal() ? qobject_cast<QWidget*>(parent())->height() : qobject_cast<QWidget*>(parent())->width();
+    int div = size / QUICKLAUNCH_BUTTON_SIZE;
+    int col = 0;
+    int row = 0;
+    
+    QLayoutItem *child;
+    while ((child = takeAt(0)) != 0)
+    {
+        delete child;
+    }
+    
+    foreach (QuickLaunchButton *b, m_buttons)
+    {
+        QGridLayout::addWidget(b, row, col);
+        if (m_panel->isHorizontal())
+        {
+            ++row;
+            if (row == div)
+            {
+                row = 0;
+                ++col;
+            }
+        }
+        else
+        {
+            ++col;
+            if (col == div)
+            {
+                col = 0;
+                ++row;
+            }
+        }
+    }
+}
