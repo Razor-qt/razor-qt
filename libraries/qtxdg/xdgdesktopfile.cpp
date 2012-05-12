@@ -77,7 +77,6 @@ QString &doEscape(QString& str, const QHash<QChar,QChar> &repl)
 QString &escape(QString& str)
 {
     QHash<QChar,QChar> repl;
-    repl.insert(' ',   's');
     repl.insert('\n',  'n');
     repl.insert('\t',  't');
     repl.insert('\r',  'r');
