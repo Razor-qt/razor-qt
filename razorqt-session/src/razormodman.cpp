@@ -38,6 +38,7 @@
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>
 #include "windowmanager.h"
+#include <wordexp.h>
 
 #define MAX_CRASHES_PER_APP 5
 
@@ -243,8 +244,20 @@ void RazorModuleManager::resetCrashReport()
 
 void razor_setenv(const char *env, const QByteArray &value)
 {
-    qDebug() << "Environment variable" << env << "=" << value;
-    qputenv(env, value);
+    wordexp_t p;
+    wordexp(value, &p, 0);
+    if (p.we_wordc == 1)
+    {
+
+        qDebug() << "Environment variable" << env << "=" << p.we_wordv[0];
+        qputenv(env, p.we_wordv[0]);
+    }
+    else
+    {
+        qWarning() << "Error expanding environment variable" << env << "=" << value;
+        qputenv(env, value);
+    }
+     wordfree(&p);
 }
 
 void razor_setenv_prepend(const char *env, const QByteArray &value, const QByteArray &separator)
