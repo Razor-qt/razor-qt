@@ -2,7 +2,7 @@ razorqt for Debian
 ------------------
 
 The razorqt polkit authentication daemon must need a updated version of policykit
-as minimun 0.99 and policykit-qt minimum 0.99. Squeeze can built a complete razorqt 
+as minimun 0.99 and policykit-qt minimum 0.99. Squeeze can't built a complete razorqt
 desktop due this thing. You can use the gnome default or alternative lxpolkit.
 
 Razor authentication daemon use qwebkit, if you not have updated webkit, this can 
