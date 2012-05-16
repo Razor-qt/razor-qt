@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 {
     RazorApplication app(argc, argv);
     //qDebug() << "Razor Session start";
+    app.setQuitOnLastWindowClosed(false);
 
     TRANSLATE_APP;
 
