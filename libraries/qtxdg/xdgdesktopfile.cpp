@@ -471,6 +471,15 @@ XdgDesktopFile& XdgDesktopFile::operator=(const XdgDesktopFile& other)
 /************************************************
 
  ************************************************/
+bool XdgDesktopFile::operator==(const XdgDesktopFile &other) const
+{
+    return d->mItems == other.d->mItems;
+}
+
+
+/************************************************
+
+ ************************************************/
 bool XdgDesktopFile::load(const QString& fileName)
 {
     d->mFileName = fileName;

@@ -24,45 +24,27 @@
 
 #include <QtGui/QFileDialog>
 
-#include <qtxdg/xdgautostart.h>
-
 #include "autostartedit.h"
 #include "ui_autostartedit.h"
 
-AutoStartEdit::AutoStartEdit(QWidget *parent) :
+AutoStartEdit::AutoStartEdit(QString name, QString command, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AutoStartEdit)
 {
     ui->setupUi(this);
+    ui->nameEdit->setText(name);
+    ui->commandEdit->setText(command);
     connect(ui->browseButton, SIGNAL(clicked()), SLOT(browse()));
 }
 
-XdgDesktopFile* AutoStartEdit::createXdgFile()
+QString AutoStartEdit::name()
 {
-    XdgDesktopFile* file = NULL;
-    if (exec() == QDialog::Accepted)
-    {
-        file = new XdgDesktopFile(XdgDesktopFile::ApplicationType,
-                                                  ui->nameEdit->text(),
-                                                  ui->commandEdit->text());
-    }
-    return file;
+    return ui->nameEdit->text();
 }
 
-bool AutoStartEdit::editXdgFile(XdgDesktopFile* file)
+QString AutoStartEdit::command()
 {
-    QString command;
-    if (file->contains("Exec"))
-        command = file->value("Exec").toString();
-    ui->nameEdit->setText(file->name());
-    ui->commandEdit->setText(command);
-    if (exec() == QDialog::Accepted)
-    {
-        file->setLocalizedValue("Name", ui->nameEdit->text());
-        file->setValue("Exec", ui->commandEdit->text());
-        return true;
-    }
-    return false;
+    return ui->commandEdit->text();
 }
 
 void AutoStartEdit::browse()

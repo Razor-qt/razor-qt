@@ -35,6 +35,14 @@ class AutoStartItemModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
+    enum ActiveButton
+    {
+        AddButton = 1,
+        EditButton = 2,
+        DeleteButton = 4
+    };
+    Q_DECLARE_FLAGS(ActiveButtons, ActiveButton)
+
     explicit AutoStartItemModel(QObject* parent = 0);
     ~AutoStartItemModel();
     int columnCount(const QModelIndex& parent = QModelIndex()) const;
@@ -46,20 +54,31 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
     void updateData(const QModelIndex& index);
     bool removeRow(int row, const QModelIndex& parent = QModelIndex());
-    void addEntry(const QModelIndex& index, XdgDesktopFile* entry);
+    bool addEntry(const QModelIndex& index, XdgDesktopFile entry);
+    ActiveButtons activeButtons(const QModelIndex& selection);
+    XdgDesktopFile* desktopFile(const QModelIndex &index);
 
 public slots:
     bool writeChanges();
 
 private:
-    XdgDesktopFileList mAllItems;
+    struct AutoStartItem;
+    XdgDesktopFileList mFileList;
+    QMap<QString, AutoStartItem> mItemMap;
     QPersistentModelIndex mGlobalIndex;
     QPersistentModelIndex mRazorIndex;
-    QList<XdgDesktopFile*> mGlobalItems;
-    QList<XdgDesktopFile*> mRazorItems;
-    QSet<XdgDesktopFile*> mEditedItems;
-    QSet<XdgDesktopFile*> mDeletedItems;
-    bool showOnlyInRazor(const XdgDesktopFile& file) const;
+    QList<AutoStartItem*> mGlobalItems;
+    QList<AutoStartItem*> mRazorItems;
+    QSet<const XdgDesktopFile*> mEditedItems;
+    QSet<const XdgDesktopFile*> mDeletedItems;
+
+    XdgDesktopFile* localCopy(AutoStartItem* item);
+    void createItem(AutoStartItem* item, const XdgDesktopFile& file);
+    void deleteItem(AutoStartItem *item);
+
+    static bool showOnlyInRazor(const XdgDesktopFile* file);
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(AutoStartItemModel::ActiveButtons)
 
 #endif // AUTOSTARTMODEL_H

@@ -142,6 +142,10 @@ void SessionConfigWindow::restoreSettings()
     delete oldModel;
     xdgAutoStartView->setExpanded(mXdgAutoStartModel->index(0, 0), true);
     xdgAutoStartView->setExpanded(mXdgAutoStartModel->index(1, 0), true);
+    autoStart_updateButtons();
+    connect(mXdgAutoStartModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(autoStart_updateButtons()));
+    connect(xdgAutoStartView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            SLOT(autoStart_selectionChanged(QModelIndex)));
 
     // environment variables (advanced) **********************************
     m_settings->beginGroup("environment");
@@ -267,30 +271,51 @@ void SessionConfigWindow::browserButton_clicked()
 
 void SessionConfigWindow::autoStartAddButton_clicked()
 {
-    AutoStartEdit edit;
-    XdgDesktopFile* file = edit.createXdgFile();
-    if (file)
+    AutoStartEdit edit(QString(), QString(), this);
+    bool success = false;
+    while (!success && edit.exec() == QDialog::Accepted)
     {
         QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
-        mXdgAutoStartModel->addEntry(index, file);
+        XdgDesktopFile file(XdgDesktopFile::ApplicationType, edit.name(), edit.command());
+        if (mXdgAutoStartModel->addEntry(index, file))
+            success = true;
+        else
+            QMessageBox::critical(this, tr("Error"), tr("File '%1' already exists!").arg(file.fileName()));
     }
 }
 
 void SessionConfigWindow::autoStartEditButton_clicked()
 {
-    AutoStartEdit edit;
     QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
-    XdgDesktopFile* file = static_cast<XdgDesktopFile*>(index.internalPointer());
+    XdgDesktopFile* file = mXdgAutoStartModel->desktopFile(index);
     if (!file)
         return;
-    if (edit.editXdgFile(file))
-        mXdgAutoStartModel->setData(index, 0, Qt::UserRole);
+    AutoStartEdit edit(file->name(), file->value("Exec").toString());
+    if (edit.exec() == QDialog::Accepted)
+    {
+        file->setLocalizedValue("Name", edit.name());
+        file->setValue("Exec", edit.command());
+    }
+    mXdgAutoStartModel->setData(index, 0, Qt::UserRole);
 }
 
 void SessionConfigWindow::autoStartDeleteButton_clicked()
 {
     QModelIndex index = xdgAutoStartView->selectionModel()->currentIndex();
     mXdgAutoStartModel->removeRow(index.row(), index.parent());
+}
+
+void SessionConfigWindow::autoStart_selectionChanged(QModelIndex curr)
+{
+    AutoStartItemModel::ActiveButtons active = mXdgAutoStartModel->activeButtons(curr);
+    autoStartAddButton->setEnabled(active & AutoStartItemModel::AddButton);
+    autoStartEditButton->setEnabled(active & AutoStartItemModel::EditButton);
+    autoStartDeleteButton->setEnabled(active & AutoStartItemModel::DeleteButton);
+}
+
+void SessionConfigWindow::autoStart_updateButtons()
+{
+    autoStart_selectionChanged(xdgAutoStartView->selectionModel()->currentIndex());
 }
 
 void SessionConfigWindow::envAddButton_clicked()

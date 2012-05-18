@@ -179,7 +179,12 @@ void MountButton::showMessage(const QString &text)
 {
 //    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
     RazorNotification::notify(toolTip(),
+#if QT_VERSION >= 0x040700
                               icon().name(),
+#else
+                              // TODO/FIXME: any better solution for Qt<4.7?
+                              "application-x-executable",
+#endif
                               toolTip(),
                               text);
 }

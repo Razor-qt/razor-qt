@@ -87,6 +87,9 @@ public:
     //! Assigns other to this DesktopFile and returns a reference to this DesktopFile.
     XdgDesktopFile& operator=(const XdgDesktopFile& other);
 
+    //! Returns true if both files contain the identical key-value pairs
+    bool operator==(const XdgDesktopFile &other) const;
+
     //! Loads an DesktopFile from the file with the given fileName.
     virtual bool load(const QString& fileName);
 

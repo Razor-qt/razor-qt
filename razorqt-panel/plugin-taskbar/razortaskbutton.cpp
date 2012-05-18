@@ -157,7 +157,7 @@ void RazorTaskButton::dragLeaveEvent(QDragLeaveEvent *event)
  ************************************************/
 void RazorTaskButton::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::MiddleButton)
+    if (event->button() == Qt::MidButton)
     {
         closeApplication();
     }
