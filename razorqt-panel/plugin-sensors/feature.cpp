@@ -54,6 +54,10 @@ double Feature::getValue(sensors_subfeature_type subfeature_type) const
 {
     double result = 0;
 
+    qDebug() << "Feature::getValue";
+    qDebug() << "   Chip: " << mSensorsChipName->prefix;
+    qDebug() << "   Feature: " << mSensorsFeature->name;
+
     const sensors_subfeature *subfeature;
 
     // Find feature
