@@ -48,7 +48,7 @@ class SessionConfigWindow : public QMainWindow, public Ui::SessionConfigWindow
 public:
     SessionConfigWindow();
     ~SessionConfigWindow();
-    
+
 private:
     // RazorSettings are used as plain QSettings here because tha session cannot
     // reload cfg on the fly - it requires restart (ENV, autostart...)
@@ -79,6 +79,8 @@ private slots:
     void autoStartAddButton_clicked();
     void autoStartEditButton_clicked();
     void autoStartDeleteButton_clicked();
+    void autoStart_selectionChanged(QModelIndex curr);
+    void autoStart_updateButtons();
     //
     void envAddButton_clicked();
     void envDeleteButton_clicked();

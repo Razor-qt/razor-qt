@@ -100,8 +100,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>275</width>
-                  <height>227</height>
+                  <width>285</width>
+                  <height>189</height>
                  </rect>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_4">
@@ -217,8 +217,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>312</width>
-               <height>62</height>
+               <width>326</width>
+               <height>68</height>
               </rect>
              </property>
              <layout class="QGridLayout" name="gridLayout_9">
