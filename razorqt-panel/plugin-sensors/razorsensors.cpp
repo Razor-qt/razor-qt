@@ -83,7 +83,7 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
                              QColor(settings().value("color").toString()));
                 pg->setPalette(pal);
 
-                mDetectedChipsProgressBars.push_back(pg);
+                mTemperatureProgressBars.push_back(pg);
                 layout()->addWidget(pg);
 
                 settings().endGroup();
@@ -118,11 +118,15 @@ void RazorSensors::updateSensorReadings()
     double min_temp = 0;
     double cur_temp = 0;
 
-    for (unsigned int i = 0, index = 0; i < mDetectedChips.size(); ++i)
+    // Iterator for temperature progress bars
+    std::vector<QProgressBar*>::iterator temperatureProgressBarsIt =
+        mTemperatureProgressBars.begin();
+
+    for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
     {
         const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
 
-        for (unsigned int j = 0; j < features.size(); ++j, ++index)
+        for (unsigned int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
@@ -131,37 +135,40 @@ void RazorSensors::updateSensorReadings()
                 if (settings().value("useFahrenheitScale").toBool())
                 {
                     max_temp = celsiusToFahrenheit(
-                            features[index].getValue(SENSORS_SUBFEATURE_TEMP_MAX));
+                        features[j].getValue(SENSORS_SUBFEATURE_TEMP_MAX));
                     min_temp = celsiusToFahrenheit(
-                            features[index].getValue(SENSORS_SUBFEATURE_TEMP_MIN));
+                        features[j].getValue(SENSORS_SUBFEATURE_TEMP_MIN));
                     cur_temp = celsiusToFahrenheit(
-                        features[index].getValue(SENSORS_SUBFEATURE_TEMP_INPUT));
+                        features[j].getValue(SENSORS_SUBFEATURE_TEMP_INPUT));
 
                     tooltip += "F)";
                 }
                 else
                 {
-                    max_temp = features[index].getValue(SENSORS_SUBFEATURE_TEMP_MAX);
-                    min_temp = features[index].getValue(SENSORS_SUBFEATURE_TEMP_MIN);
-                    cur_temp = features[index].getValue(SENSORS_SUBFEATURE_TEMP_INPUT);
+                    max_temp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_MAX);
+                    min_temp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_MIN);
+                    cur_temp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_INPUT);
 
                     tooltip += "C)";
                 }
 
                 // Get maximum temperature
-                mDetectedChipsProgressBars[index]->setMaximum(max_temp);
+                (*temperatureProgressBarsIt)->setMaximum(max_temp);
                 // Get minimum temperature
-                mDetectedChipsProgressBars[index]->setMinimum(min_temp);
+                (*temperatureProgressBarsIt)->setMinimum(min_temp);
                 // Get current temperature
-                mDetectedChipsProgressBars[index]->setValue(cur_temp);
+                (*temperatureProgressBarsIt)->setValue(cur_temp);
 
                 tooltip += "<br><br>Max: ";
-                tooltip += QString::number(mDetectedChipsProgressBars[index]->maximum());
+                tooltip += QString::number((*temperatureProgressBarsIt)->maximum());
                 tooltip += "<br>Cur: ";
-                tooltip += QString::number(mDetectedChipsProgressBars[index]->value());
+                tooltip += QString::number((*temperatureProgressBarsIt)->value());
                 tooltip += "<br>Min: ";
-                tooltip += QString::number(mDetectedChipsProgressBars[index]->minimum());
-                mDetectedChipsProgressBars[index]->setToolTip(tooltip);
+                tooltip += QString::number((*temperatureProgressBarsIt)->minimum());
+                (*temperatureProgressBarsIt)->setToolTip(tooltip);
+
+                // Go to the next temperature progress bar
+                ++temperatureProgressBarsIt;
             }
         }
     }
@@ -188,26 +195,30 @@ void RazorSensors::settingsChanged()
 {
     mUpdateSensorReadingsTimer->setInterval(settings().value("updateInterval").toInt() * 1000);
 
-    for (unsigned int i = 0; i < mDetectedChipsProgressBars.size(); ++i)
+    for (unsigned int i = 0; i < mTemperatureProgressBars.size(); ++i)
     {
         if (panel()->isHorizontal())
         {
-            mDetectedChipsProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
         }
         else
         {
-            mDetectedChipsProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
         }
     }
 
+    // Iterator for temperature progress bars
+    std::vector<QProgressBar*>::iterator temperatureProgressBarsIt =
+        mTemperatureProgressBars.begin();
+
     settings().beginGroup("chips");
 
-    for (unsigned int i = 0, index = 0; i < mDetectedChips.size(); ++i)
+    for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
     {
         settings().beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
         const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
 
-        for (unsigned int j = 0; j < features.size(); ++j, ++index)
+        for (unsigned int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
@@ -215,19 +226,22 @@ void RazorSensors::settingsChanged()
 
                 if (settings().value("enabled").toBool())
                 {
-                    mDetectedChipsProgressBars[index]->show();
+                    (*temperatureProgressBarsIt)->show();
                 }
                 else
                 {
-                    mDetectedChipsProgressBars[index]->hide();
+                    (*temperatureProgressBarsIt)->hide();
                 }
 
-                QPalette pal = mDetectedChipsProgressBars[index]->palette();
+                QPalette pal = (*temperatureProgressBarsIt)->palette();
                 pal.setColor(QPalette::Active, QPalette::Highlight,
                              QColor(settings().value("color").toString()));
-                mDetectedChipsProgressBars[index]->setPalette(pal);
+                (*temperatureProgressBarsIt)->setPalette(pal);
 
                 settings().endGroup();
+
+                // Go to the next temperature progress bar
+                ++temperatureProgressBarsIt;
             }
         }
 
@@ -258,20 +272,20 @@ void RazorSensors::realign()
         break;
     }
 
-    for (unsigned int i = 0; i < mDetectedChipsProgressBars.size(); ++i)
+    for (unsigned int i = 0; i < mTemperatureProgressBars.size(); ++i)
     {
-        mDetectedChipsProgressBars[i]->setOrientation(cur_orient);
-        mDetectedChipsProgressBars[i]->setLayoutDirection(cur_layout_dir);
+        mTemperatureProgressBars[i]->setOrientation(cur_orient);
+        mTemperatureProgressBars[i]->setLayoutDirection(cur_layout_dir);
 
         if (panel()->isHorizontal())
         {
-            mDetectedChipsProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
-            mDetectedChipsProgressBars[i]->setFixedHeight(QWIDGETSIZE_MAX);
+            mTemperatureProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedHeight(QWIDGETSIZE_MAX);
         }
         else
         {
-            mDetectedChipsProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
-            mDetectedChipsProgressBars[i]->setFixedWidth(QWIDGETSIZE_MAX);
+            mTemperatureProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedWidth(QWIDGETSIZE_MAX);
         }
     }
 }

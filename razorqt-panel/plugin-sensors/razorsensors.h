@@ -55,7 +55,7 @@ private:
     QTimer *mUpdateSensorReadingsTimer;
     Sensors mSensors;
     std::vector<Chip> mDetectedChips;
-    std::vector<QProgressBar*> mDetectedChipsProgressBars;
+    std::vector<QProgressBar*> mTemperatureProgressBars;
     double celsiusToFahrenheit(double celsius);
     void initDefaultSettings();
 };

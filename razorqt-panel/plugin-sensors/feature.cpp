@@ -54,18 +54,6 @@ double Feature::getValue(sensors_subfeature_type subfeature_type) const
 {
     double result = 0;
 
-    if (mSensorsChipName == NULL)
-    {
-        qDebug() << "[CRITICAL] Feature::getValue: mSensorsChipName == NULL !";
-
-        // Max temp 110 for test.
-        return 110;
-    }
-
-    qDebug() << "Feature::getValue";
-    qDebug() << "   Chip: " << mSensorsChipName->prefix;
-    qDebug() << "   Feature: " << mSensorsFeature->name;
-
     const sensors_subfeature *subfeature;
 
     // Find feature
