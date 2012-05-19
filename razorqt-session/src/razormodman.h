@@ -28,15 +28,16 @@
 #ifndef RAZORMODMAN_H
 #define RAZORMODMAN_H
 
-#include <QProcess>
-#include <QMap>
-#include <QTimer>
+#include <QtCore/QProcess>
+#include <QtCore/QMap>
+#include <QtCore/QTimer>
+#include <qtxdg/xdgdesktopfile.h>
 
 class QDBusInterface;
 
-typedef QMap<QString,QProcess*> ModulesMap;
-typedef QMapIterator<QString,QProcess*> ModulesMapIterator;
-typedef QMap<QString,int> ModulesCrashReport;
+typedef QMap<QProcess*,XdgDesktopFile*> ModulesMap;
+typedef QMapIterator<QProcess*,XdgDesktopFile*> ModulesMapIterator;
+typedef QMap<QProcess*,int> ModulesCrashReport;
 
 /*! \brief RazorModuleManager manages the processes of the session
 and which modules of razor are about to load.
@@ -75,11 +76,14 @@ private:
     //! \brief Show Window Manager select dialog
     QString showWmSelectDialog();
 
+    //! \brief Start a process described in a desktop file
+    void startProcess(const XdgDesktopFile &file);
+
     //! \brief Session configuration.
     QString mConfig;
 
     //! \brief map with Razor main modules. Window manager, and Razor components.
-    ModulesMap procMap;
+    ModulesMap mProcMap;
 
     /*! \brief Keep creashes for given process to raise a message in the
         case of repeating crashes

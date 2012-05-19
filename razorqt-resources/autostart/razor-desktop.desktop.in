@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Desktop
+TryExec=razor-desktop
+Exec=razor-desktop
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations
