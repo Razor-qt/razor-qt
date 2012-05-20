@@ -208,7 +208,7 @@ void RazorSensorsConfiguration::detectedChipSelected(int index)
 
             ui->chipFeaturesT->insertRow(j);
 
-            enabledCheckbox = new QCheckBox();
+            enabledCheckbox = new QCheckBox(ui->chipFeaturesT);
             enabledCheckbox->setChecked(mSettings.value("enabled").toBool());
             // Connect here after the setChecked call because we don't want to send signal
             connect(enabledCheckbox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
@@ -218,7 +218,7 @@ void RazorSensorsConfiguration::detectedChipSelected(int index)
             chipFeatureLabel->setFlags(Qt::ItemIsEnabled);
             ui->chipFeaturesT->setItem(j, 1, chipFeatureLabel);
 
-            colorButton = new QPushButton();
+            colorButton = new QPushButton(ui->chipFeaturesT);
             connect(colorButton, SIGNAL(clicked()), this, SLOT(changeProgressBarColor()));
             QPalette pal = colorButton->palette();
             pal.setColor(QPalette::Normal, QPalette::Button,

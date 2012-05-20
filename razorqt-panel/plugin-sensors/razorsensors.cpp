@@ -67,7 +67,7 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
                 chipFeatureLabel = QString::fromStdString(features[j].getLabel());
                 settings().beginGroup(chipFeatureLabel);
 
-                pg = new QProgressBar();
+                pg = new QProgressBar(this);
 
                 // Hide progress bar if it is not enabled
                 if (!settings().value("enabled").toBool())
