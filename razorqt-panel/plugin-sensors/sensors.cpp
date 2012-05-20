@@ -26,6 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "sensors.h"
+#include <QtCore/QDebug>
 
 std::vector<Chip> Sensors::mDetectedChips = std::vector<Chip>();
 int Sensors::mInstanceCounter = 0;
@@ -47,6 +48,8 @@ Sensors::Sensors()
         {
             mDetectedChips.push_back(chipName);
         }
+
+        qDebug() << "lm_sensors library initialized";
     }
 }
 
@@ -55,11 +58,13 @@ Sensors::~Sensors()
     // Decrease instance counter
     --mInstanceCounter;
 
-    if (mInstanceCounter == 1 && mSensorsInitialized)
+    if (mInstanceCounter == 0 && mSensorsInitialized)
     {
         mDetectedChips.clear();
         mSensorsInitialized = false;
         sensors_cleanup();
+
+        qDebug() << "lm_sensors library cleanup";
     }
 }
 
