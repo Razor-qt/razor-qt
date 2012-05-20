@@ -75,9 +75,6 @@ RazorPanelPluginPrivate::RazorPanelPluginPrivate(const RazorPanelPluginStartInfo
 
     connect(mSettings, SIGNAL(settingsChanged()), q, SLOT(settingsChanged()));
 
-    q->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(q, SIGNAL(customContextMenuRequested(const QPoint&)), q, SLOT(showContextMenu(QPoint)));
-
     q->setWindowTitle(startInfo->pluginInfo.name());
     QBoxLayout* layout = new QBoxLayout(mPanel->isHorizontal() ? QBoxLayout::LeftToRight : QBoxLayout::TopToBottom, q);
     layout->setSpacing(0);
@@ -129,39 +126,27 @@ RazorPanel* RazorPanelPlugin::panel() const
  ************************************************/
 QMenu* RazorPanelPlugin::popupMenu() const
 {
-    Q_D(const RazorPanelPlugin);
-    return d->popupMenu();
-}
 
+    QMenu* menu = new QMenu(windowTitle());
+    //menu->setIcon(windowIcon());
 
-/************************************************
-
- ************************************************/
-QMenu* RazorPanelPluginPrivate::popupMenu() const
-{
-    Q_Q(const RazorPanelPlugin);
-
-    QMenu* menu = panel()->popupMenu(0);
-    QMenu* submenu = new QMenu(q->windowTitle(), menu);
-
-    if (q->flags().testFlag(RazorPanelPlugin::HaveConfigDialog))
+    if (flags().testFlag(RazorPanelPlugin::HaveConfigDialog))
     {
-        QAction* configAction = new QAction(tr("Configure"), submenu);
-        submenu->addAction(configAction);
-        connect(configAction, SIGNAL(triggered()), q, SLOT(showConfigureDialog()));
+        QAction* configAction = new QAction(tr("Configure"), menu);
+        menu->addAction(configAction);
+        connect(configAction, SIGNAL(triggered()), this, SLOT(showConfigureDialog()));
     }
 
-    QAction* moveAction = new QAction(XdgIcon::fromTheme("transform-move"), tr("Move"), submenu);
-    submenu->addAction(moveAction);
-    connect(moveAction, SIGNAL(triggered()), q, SLOT(requestMove()));
+    QAction* moveAction = new QAction(XdgIcon::fromTheme("transform-move"), tr("Move"), menu);
+    menu->addAction(moveAction);
+    connect(moveAction, SIGNAL(triggered()), this, SLOT(requestMove()));
 
-    submenu->addSeparator();
+    menu->addSeparator();
 
-    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Delete"), submenu);
-    submenu->addAction(removeAction);
-    connect(removeAction, SIGNAL(triggered()), q, SLOT(requestRemove()));
+    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Delete"), menu);
+    menu->addAction(removeAction);
+    connect(removeAction, SIGNAL(triggered()), this, SLOT(requestRemove()));
 
-    menu->addMenu(submenu);
     return menu;
 }
 
@@ -244,17 +229,6 @@ void RazorPanelPluginPrivate::updateStyleSheet()
     Q_Q(RazorPanelPlugin);
     q->style()->unpolish(q);
     q->style()->polish(q);
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelPlugin::showContextMenu(const QPoint & pos)
-{
-    QMenu* menu = popupMenu();
-    menu->exec(mapToGlobal(pos));
-    delete menu;
 }
 
 
@@ -448,6 +422,22 @@ QString RazorPanelPlugin::configId() const
 {
     Q_D(const RazorPanelPlugin);
     return d->configId();
+}
+
+bool RazorPanelPlugin::event(QEvent *e)
+{
+    Q_D(const RazorPanelPlugin);
+    switch (e->type())
+    {
+        case QEvent::ContextMenu:
+            d->mPanel->showPopupMenu(this);
+            return true;
+            break;
+
+        default:
+            break;
+    }
+    return QFrame::event(e);
 }
 
 

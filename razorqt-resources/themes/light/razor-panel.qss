@@ -35,7 +35,7 @@ RazorPanelPlugin {
 }
 
 
-QToolButton {
+RazorPanelPlugin > QToolButton {
     margin: 0;
     border: 2px solid transparent;
     border-radius: 3px;
@@ -43,7 +43,7 @@ QToolButton {
 }
 
 
-QToolButton:hover{
+RazorPanelPlugin > QToolButton:hover{
     margin: 1px;
     border: none;
 }

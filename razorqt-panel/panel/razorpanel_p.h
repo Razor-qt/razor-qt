@@ -35,6 +35,8 @@
 #include <razorqt/razorplugininfo.h>
 #include <QtGui/QAction>
 #include <QtCore/QVariantAnimation>
+#include <QtCore/QEvent>
+#include <QtGui/QMenu>
 
 class QActionGroup;
 class QLayoutItem;
@@ -57,9 +59,6 @@ public:
     static RazorPanel::Position strToPosition(const QString &str, RazorPanel::Position defaultValue);
     static QString positionToStr(RazorPanel::Position position);
 
-    QMenu* popupMenu(QWidget *parent) const;
-
-    virtual void contextMenuEvent( QContextMenuEvent* event);
     void saveSettings();
 
 public slots:
@@ -125,6 +124,36 @@ public:
     CursorAnimation(QObject *parent);
 
     void updateCurrentValue(const QVariant &value);
+};
+
+
+class PopupMenu: public QMenu
+{
+public:
+    explicit PopupMenu(QWidget *parent = 0): QMenu(parent) {}
+    explicit PopupMenu(const QString &title, QWidget *parent = 0): QMenu(title, parent) {}
+
+    QAction* addTitle(const QIcon &icon, const QString &text);
+    QAction* addTitle(const QString &text);
+
+    bool eventFilter(QObject *object, QEvent *event)
+    {
+        Q_UNUSED(object);
+
+        if (event->type() == QEvent::Paint ||
+            event->type() == QEvent::KeyPress ||
+            event->type() == QEvent::KeyRelease
+           )
+        {
+            return false;
+        }
+
+        event->accept();
+        return true;
+    }
+
+protected:
+    virtual void keyPressEvent(QKeyEvent* e);
 };
 
 #endif // RAZORPANEL_P_H

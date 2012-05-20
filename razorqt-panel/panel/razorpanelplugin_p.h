@@ -64,10 +64,6 @@ public:
 
     RazorPanel* panel() const { return mPanel; }
 
-    void contextMenuEvent(QContextMenuEvent* event);
-
-    QMenu* popupMenu() const;
-
 private:
     RazorPanelPlugin* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanelPlugin)

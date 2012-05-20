@@ -35,7 +35,7 @@
 
 class QMenu;
 class RazorPanelPrivate;
-
+class RazorPanelPlugin;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */
@@ -66,7 +66,7 @@ public:
     Position position() const ;
     bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
 
-    virtual QMenu* popupMenu(QWidget *parent) const;
+    void showPopupMenu(RazorPanelPlugin *plugin = 0);
     void x11EventFilter(XEvent* event);
 
 public slots:
