@@ -44,8 +44,12 @@
 #include <QtGui/QContextMenuEvent>
 
 #include <qtxdg/xdgicon.h>
+
 #include <razorqt/xfitman.h>
 #include <qtxdg/xdgdirs.h>
+#include <QtGui/QWidgetAction>
+#include <QtGui/QToolButton>
+
 
 
 /************************************************
@@ -603,6 +607,10 @@ void RazorPanelPrivate::updateSize(int height, int width, bool percent, RazorPan
     realign();
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorPanelPrivate::updatePluginsMinSize()
 {
     Q_Q(RazorPanel);
@@ -712,7 +720,7 @@ bool RazorPanel::event(QEvent* e)
     switch (e->type())
     {
         case QEvent::ContextMenu:
-            d->contextMenuEvent(static_cast<QContextMenuEvent*>(e));
+            showPopupMenu();
             break;
 
         case QEvent::Resize:
@@ -729,81 +737,64 @@ bool RazorPanel::event(QEvent* e)
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::contextMenuEvent(QContextMenuEvent* event)
+void RazorPanel::showPopupMenu(RazorPanelPlugin *plugin)
 {
-    QMenu* menu = popupMenu(0);
+    Q_D(RazorPanel);
 
-    //menu->addSeparator();
-    //QAction* a = menu->addAction(XdgIcon::fromTheme("application-exit"), "Exit");
-    //connect(a, SIGNAL(triggered()), qApp, SLOT(quit()));
+    QList<QMenu*> pluginsMenus;
+    PopupMenu menu(tr("Panel"));
 
-    menu->exec(event->globalPos());
-    delete menu;
-}
+    menu.setIcon(XdgIcon::fromTheme("configure-toolbars"));
 
-
-/************************************************
-
- ************************************************/
-QMenu* RazorPanel::popupMenu(QWidget *parent) const
-{
-    Q_D(const RazorPanel);
-    return d->popupMenu(parent);
-}
-
-
-/************************************************
-
- ************************************************/
-QMenu* RazorPanelPrivate::popupMenu(QWidget *parent) const
-{
-    QMenu* menu = new QMenu(tr("Panel"), parent);
-    menu->setIcon(XdgIcon::fromTheme("configure-toolbars"));
-    QAction* a;
-
-#ifdef DEBUG
-    Q_Q(const RazorPanel);
-    menu->addAction("Exit (debug only)", q, SLOT(close()));
-#endif
-
-    // Plugins menu .............................
-    QIcon plugIco = XdgIcon::fromTheme("preferences-plugin");
-    QMenu* pluginsMenu = menu->addMenu(plugIco, tr("Plugins"));
-
-    a = pluginsMenu->addAction(tr("Add plugins ..."));
-    connect(a, SIGNAL(triggered()), this, SLOT(showAddPluginDialog()));
-    pluginsMenu->addSeparator();
-
-
-    foreach (RazorPanelPlugin* plugin, mPlugins)
+    // Plugin Menu ..............................
+    if (plugin)
     {
-        QMenu* m = pluginsMenu->addMenu(plugin->windowTitle());
+        QMenu *m = plugin->popupMenu();
 
-        a = new PluginAction(plugin, XdgIcon::fromTheme("transform-move"), tr("Move plugin"), m);
-        connect(a, SIGNAL(triggered()), this, SLOT(onMovePlugin()));
-        m->addAction(a);
-
-        if (plugin->flags().testFlag(RazorPanelPlugin::HaveConfigDialog))
+        if (m)
         {
-            a = new PluginAction(plugin, tr("Configure plugin"), m);
-            connect(a, SIGNAL(triggered()), plugin, SLOT(showConfigureDialog()));
-            m->addAction(a);
+            menu.addTitle(plugin->windowTitle());
+
+            menu.addActions(m->actions());
+            pluginsMenus << m;
         }
-
-        m->addSeparator();
-
-        a = new PluginAction(plugin, tr("Delete plugin"), m);
-        connect(a, SIGNAL(triggered()), this, SLOT(onRemovePlugin()));
-        m->addAction(a);
     }
 
-    menu->addSeparator();
-    a = menu->addAction(tr("Configure panel"));
-    connect(a, SIGNAL(triggered()), this, SLOT(showConfigPanelDialog()));
-    menu->addAction(a);
+    // Panel menu ...............................
 
-    return menu;
+    menu.addTitle(QIcon(), tr("Panel"));
+
+    menu.addAction(tr("Configure panel..."),
+                   d, SLOT(showConfigPanelDialog())
+                  );
+
+    menu.addAction(XdgIcon::fromTheme("preferences-plugin"),
+                   tr("Add plugins ..."),
+                   d, SLOT(showAddPluginDialog())
+                  );
+
+
+    QMenu* pluginsMenu = menu.addMenu(tr("Plugins"));
+    foreach (RazorPanelPlugin* p, d->mPlugins)
+    {
+        QMenu *m = p->popupMenu();
+        if (m)
+        {
+            pluginsMenu->addMenu(m);
+            pluginsMenus.append(m);
+        }
+    }
+
+
+#ifdef DEBUG
+    menu.addSeparator();
+    menu.addAction("Exit (debug only)", this, SLOT(close()));
+#endif
+
+    menu.exec(QCursor::pos());
+    qDeleteAll(pluginsMenus);
 }
+
 
 /************************************************
 
@@ -942,3 +933,71 @@ void CursorAnimation::updateCurrentValue(const QVariant &value)
 }
 
 
+static const char POPUPMENU_TITLE[] = "POPUP_MENU_TITLE_OBJECT_NAME";
+
+/************************************************
+
+ ************************************************/
+QAction* PopupMenu::addTitle(const QIcon &icon, const QString &text)
+{
+    QAction *buttonAction = new QAction(this);
+    QFont font = buttonAction->font();
+    font.setBold(true);
+    buttonAction->setFont(font);
+    buttonAction->setText(text);
+    buttonAction->setIcon(icon);
+
+    QWidgetAction *action = new QWidgetAction(this);
+    action->setObjectName(POPUPMENU_TITLE);
+    QToolButton *titleButton = new QToolButton(this);
+    titleButton->installEventFilter(this); // prevent clicks on the title of the menu
+    titleButton->setDefaultAction(buttonAction);
+    titleButton->setDown(true); // prevent hover style changes in some styles
+    titleButton->setCheckable(true);
+    titleButton->setCheckable(true);
+    titleButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    action->setDefaultWidget(titleButton);
+
+    addAction(action);
+    return action;
+}
+
+
+/************************************************
+
+ ************************************************/
+QAction* PopupMenu::addTitle(const QString &text)
+{
+    return addTitle(QIcon(), text);
+}
+
+
+/************************************************
+
+ ************************************************/
+void PopupMenu::keyPressEvent(QKeyEvent* e)
+{
+    if (e->key() == Qt::Key_Up || e->key() == Qt::Key_Down)
+    {
+        QMenu::keyPressEvent(e);
+
+        QWidgetAction *action = qobject_cast<QWidgetAction*>(this->activeAction());
+        QWidgetAction *firstAction = action;
+
+        while (action && action->objectName() == POPUPMENU_TITLE)
+        {
+            this->keyPressEvent(e);
+            action = qobject_cast<QWidgetAction*>(this->activeAction());
+
+            if (firstAction == action) // we looped and only found titles
+            {
+                this->setActiveAction(0);
+                break;
+            }
+        }
+
+        return;
+    }
+
+    QMenu::keyPressEvent(e);
+}

@@ -178,12 +178,6 @@ public slots:
      **/
     virtual void showConfigureDialog() {}
 
-    /**
-      This function can be reimplemented in order to modify or replace the plugin's context menu.
-      The default menu is available through RazorPanelPlugin::popupMenu().
-     **/
-    virtual void showContextMenu(const QPoint &pos);
-
 protected slots:
     /**
       This slot is called when values are changed in the plugin settings.
@@ -198,6 +192,11 @@ protected slots:
     virtual void realign() {}
 
 protected:
+    /**
+      Reimplemented from QWidget::event().
+     **/
+    virtual bool event(QEvent* e);
+
     /**
       Reimplemented from QWidget::paintEvent().
      **/
