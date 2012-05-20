@@ -163,9 +163,14 @@ void RazorSensorsConfiguration::changeProgressBarColor()
     if (btn)
     {
         QPalette pal = btn->palette();
-        pal.setColor(QPalette::Normal, QPalette::Button, QColorDialog::getColor());
-        btn->setPalette(pal);
-        saveSettings();
+        QColor color = QColorDialog::getColor(pal.color(QPalette::Normal, QPalette::Button), this);
+
+        if (color.isValid())
+        {
+            pal.setColor(QPalette::Normal, QPalette::Button, color);
+            btn->setPalette(pal);
+            saveSettings();
+        }
     }
     else
     {

@@ -79,8 +79,9 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
                 pg->setTextVisible(false);
 
                 QPalette pal = pg->palette();
-                pal.setColor(QPalette::Active, QPalette::Highlight,
-                             QColor(settings().value("color").toString()));
+                QColor color(settings().value("color").toString());
+                pal.setColor(QPalette::Active, QPalette::Highlight, color);
+                pal.setColor(QPalette::Inactive, QPalette::Highlight, color);
                 pg->setPalette(pal);
 
                 mTemperatureProgressBars.push_back(pg);
@@ -234,8 +235,9 @@ void RazorSensors::settingsChanged()
                 }
 
                 QPalette pal = (*temperatureProgressBarsIt)->palette();
-                pal.setColor(QPalette::Active, QPalette::Highlight,
-                             QColor(settings().value("color").toString()));
+                QColor color(settings().value("color").toString());
+                pal.setColor(QPalette::Active, QPalette::Highlight, color);
+                pal.setColor(QPalette::Inactive, QPalette::Highlight, color);
                 (*temperatureProgressBarsIt)->setPalette(pal);
 
                 settings().endGroup();
