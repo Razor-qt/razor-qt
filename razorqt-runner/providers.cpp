@@ -47,7 +47,47 @@
 #include "razorqt-runner/providers.h"
 #include <wordexp.h>
 
-#define MAX_HISORTY 100
+#define MAX_HISTORY 100
+
+
+/************************************************
+
+ ************************************************/
+QString expandCommand(const QString &command, QStringList *arguments=0)
+{
+    QString program;
+    wordexp_t words;
+
+    if (wordexp(command.toLocal8Bit().data(), &words, 0) != 0)
+        return "";
+
+    char **w;
+    w = words.we_wordv;
+    program = QString::fromLocal8Bit(w[0]);
+
+    if (arguments)
+    {
+        for (size_t i = 1; i < words.we_wordc; i++)
+            *arguments << w[i];
+    }
+
+    wordfree(&words);
+    return program;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool startProcess(QString command)
+{
+    QStringList args;
+    QString program  = expandCommand(command, &args);
+    if (program.isEmpty())
+        return false;
+
+    return QProcess::startDetached(program, args);
+}
 
 
 /************************************************
@@ -272,7 +312,7 @@ HistoryItem::HistoryItem(const QString &command):
  ************************************************/
 bool HistoryItem::run() const
 {
-    return QProcess::startDetached(mCommand);
+    return startProcess(mCommand);
 }
 
 
@@ -306,7 +346,7 @@ HistoryProvider::HistoryProvider():
     QString fileName = (XdgDirs::cacheHome() + "/razor-runner.history");
     mHistoryFile = new QSettings(fileName, QSettings::IniFormat);
     mHistoryFile->beginGroup("commands");
-    for (uint i=0; i<MAX_HISORTY; ++i)
+    for (uint i=0; i<MAX_HISTORY; ++i)
     {
         QString key = QString("%1").arg(i, 3, 10, QChar('0'));
         if (mHistoryFile->contains(key))
@@ -336,7 +376,7 @@ void HistoryProvider::AddCommand(const QString &command)
     insert(0, item);
 
     mHistoryFile->clear();
-    for (int i=0; i<qMin(length(), MAX_HISORTY); ++i)
+    for (int i=0; i<qMin(length(), MAX_HISTORY); ++i)
     {
         QString key = QString("%1").arg(i, 3, 10, QChar('0'));
         mHistoryFile->setValue(key, static_cast<HistoryItem*>(at(i))->command());
@@ -389,32 +429,6 @@ QString which(const QString &progName)
 /************************************************
 
  ************************************************/
-QString expandCommand(const QString &command, QStringList *arguments=0)
-{
-    QString program;
-    wordexp_t words;
-
-    if (wordexp(command.toLocal8Bit().data(), &words, 0) != 0)
-        return "";
-
-    char **w;
-    w = words.we_wordv;
-    program = QString::fromLocal8Bit(w[0]);
-
-    if (arguments)
-    {
-        for (size_t i = 1; i < words.we_wordc; i++)
-            *arguments << w[i];
-    }
-
-    wordfree(&words);
-    return program;
-}
-
-
-/************************************************
-
- ************************************************/
 void CustomCommandItem::setCommand(const QString &command)
 {
     mCommand = command;
@@ -435,12 +449,7 @@ void CustomCommandItem::setCommand(const QString &command)
  ************************************************/
 bool CustomCommandItem::run() const
 {
-    QStringList args;
-    QString program  = expandCommand(mCommand, &args);
-    if (program.isEmpty())
-        return false;
-
-    bool ret = QProcess::startDetached(program, args);
+    bool ret = startProcess(mCommand);
     if (ret && mProvider->historyProvider())
         mProvider->historyProvider()->AddCommand(mCommand);
 
