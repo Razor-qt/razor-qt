@@ -55,5 +55,10 @@ qt4_wrap_cpp(qtservice_moc_src ${qtservice_moc})
 add_library( qtservice SHARED ${qtservice_srcs} ${qtservice_moc_src} ${qtservice_pub_headers})
 target_link_libraries( qtservice ${libraries}  )
 
+set_target_properties(qtservice PROPERTIES
+  VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
+  SOVERSION ${MAJOR_VERSION}
+)
+
 install(TARGETS qtservice DESTINATION lib${LIB_SUFFIX})
 install(FILES ${qtservice_pub_headers} DESTINATION include/qtxdg)
