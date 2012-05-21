@@ -53,6 +53,46 @@
 /************************************************
 
  ************************************************/
+QString expandCommand(const QString &command, QStringList *arguments=0)
+{
+    QString program;
+    wordexp_t words;
+
+    if (wordexp(command.toLocal8Bit().data(), &words, 0) != 0)
+        return "";
+
+    char **w;
+    w = words.we_wordv;
+    program = QString::fromLocal8Bit(w[0]);
+
+    if (arguments)
+    {
+        for (size_t i = 1; i < words.we_wordc; i++)
+            *arguments << w[i];
+    }
+
+    wordfree(&words);
+    return program;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool startProcess(QString command)
+{
+    QStringList args;
+    QString program  = expandCommand(command, &args);
+    if (program.isEmpty())
+        return false;
+
+    return QProcess::startDetached(program, args);
+}
+
+
+/************************************************
+
+ ************************************************/
 unsigned int CommandProviderItem::stringRank(const QString str, const QString pattern) const
 {
     int n = str.indexOf(pattern, 0, Qt::CaseInsensitive);
@@ -272,7 +312,7 @@ HistoryItem::HistoryItem(const QString &command):
  ************************************************/
 bool HistoryItem::run() const
 {
-    return QProcess::startDetached(mCommand);
+    return startProcess(mCommand);
 }
 
 
@@ -389,32 +429,6 @@ QString which(const QString &progName)
 /************************************************
 
  ************************************************/
-QString expandCommand(const QString &command, QStringList *arguments=0)
-{
-    QString program;
-    wordexp_t words;
-
-    if (wordexp(command.toLocal8Bit().data(), &words, 0) != 0)
-        return "";
-
-    char **w;
-    w = words.we_wordv;
-    program = QString::fromLocal8Bit(w[0]);
-
-    if (arguments)
-    {
-        for (size_t i = 1; i < words.we_wordc; i++)
-            *arguments << w[i];
-    }
-
-    wordfree(&words);
-    return program;
-}
-
-
-/************************************************
-
- ************************************************/
 void CustomCommandItem::setCommand(const QString &command)
 {
     mCommand = command;
@@ -435,12 +449,7 @@ void CustomCommandItem::setCommand(const QString &command)
  ************************************************/
 bool CustomCommandItem::run() const
 {
-    QStringList args;
-    QString program  = expandCommand(mCommand, &args);
-    if (program.isEmpty())
-        return false;
-
-    bool ret = QProcess::startDetached(program, args);
+    bool ret = startProcess(mCommand);
     if (ret && mProvider->historyProvider())
         mProvider->historyProvider()->AddCommand(mCommand);
 
