@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>296</width>
-    <height>103</height>
+    <height>118</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="3">
+   <item row="3" column="0" colspan="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -51,11 +51,19 @@
    <item row="1" column="1">
     <widget class="QLineEdit" name="commandEdit"/>
    </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QCheckBox" name="trayCheckBox">
+     <property name="text">
+      <string>Wait for system tray</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>nameEdit</tabstop>
   <tabstop>commandEdit</tabstop>
+  <tabstop>trayCheckBox</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>browseButton</tabstop>
  </tabstops>

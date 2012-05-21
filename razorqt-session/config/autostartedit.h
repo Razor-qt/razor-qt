@@ -36,10 +36,11 @@ class AutoStartEdit : public QDialog
     Q_OBJECT
 
 public:
-    explicit AutoStartEdit(QString name, QString command, QWidget* parent = 0);
+    explicit AutoStartEdit(QString name, QString command, bool needTray, QWidget* parent = 0);
     ~AutoStartEdit();
     QString name();
     QString command();
+    bool needTray();
 
 private slots:
     void browse();

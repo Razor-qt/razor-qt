@@ -27,13 +27,15 @@
 #include "autostartedit.h"
 #include "ui_autostartedit.h"
 
-AutoStartEdit::AutoStartEdit(QString name, QString command, QWidget *parent) :
+AutoStartEdit::AutoStartEdit(QString name, QString command, bool needTray, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AutoStartEdit)
 {
     ui->setupUi(this);
+    ui->nameEdit->setFocus();
     ui->nameEdit->setText(name);
     ui->commandEdit->setText(command);
+    ui->trayCheckBox->setChecked(needTray);
     connect(ui->browseButton, SIGNAL(clicked()), SLOT(browse()));
 }
 
@@ -45,6 +47,11 @@ QString AutoStartEdit::name()
 QString AutoStartEdit::command()
 {
     return ui->commandEdit->text();
+}
+
+bool AutoStartEdit::needTray()
+{
+    return ui->trayCheckBox->isChecked();
 }
 
 void AutoStartEdit::browse()
