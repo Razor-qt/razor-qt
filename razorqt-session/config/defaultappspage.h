@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *
@@ -25,39 +25,37 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SESSIONCONFIGWINDOW_H
-#define SESSIONCONFIGWINDOW_H
+#ifndef DEFAULTAPPS_H
+#define DEFAULTAPPS_H
 
-#include <QtGui/QComboBox>
-#include <razorqt/razorconfigdialog.h>
+#include <QtGui/QWidget>
 
+namespace Ui {
+class DefaultAppsPage;
+}
 
-class SessionConfigWindow : public RazorConfigDialog
+class DefaultApps : public QWidget
 {
     Q_OBJECT
-    
+
 public:
-    SessionConfigWindow();
-    ~SessionConfigWindow();
+    explicit DefaultApps(QWidget *parent = 0);
+    ~DefaultApps();
 
-    static void handleCfgComboBox(QComboBox * cb,
-                           const QStringList &availableValues,
-                           const QString &value
-                          );
-
-    static void updateCfgComboBox(QComboBox * cb, const QString &prompt);
-
-    void closeEvent(QCloseEvent * event);
+signals:
+    void defaultAppChanged(const QString&, const QString&);
 
 public slots:
-    void setRestart();
+    void updateEnvVar(const QString &var, const QString &val);
 
 private:
-    // display restart warning
-    bool m_restart;
+    Ui::DefaultAppsPage *ui;
 
 private slots:
-    void clearRestart();
+    void browserButton_clicked();
+    void terminalButton_clicked();
+    void browserChanged(const QString &val);
+    void terminalChanged(const QString &val);
 };
 
-#endif
+#endif // DEFAULTAPPS_H

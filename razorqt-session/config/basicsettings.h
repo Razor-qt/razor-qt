@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *
@@ -25,39 +25,38 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SESSIONCONFIGWINDOW_H
-#define SESSIONCONFIGWINDOW_H
+#ifndef BASICSETTINGS_H
+#define BASICSETTINGS_H
 
-#include <QtGui/QComboBox>
-#include <razorqt/razorconfigdialog.h>
+#include <QtGui/QWidget>
+#include <razorqt/razorsettings.h>
 
+namespace Ui {
+class BasicSettings;
+}
 
-class SessionConfigWindow : public RazorConfigDialog
+class BasicSettings : public QWidget
 {
     Q_OBJECT
-    
+
 public:
-    SessionConfigWindow();
-    ~SessionConfigWindow();
+    explicit BasicSettings(RazorSettings *settings, QWidget *parent = 0);
+    ~BasicSettings();
 
-    static void handleCfgComboBox(QComboBox * cb,
-                           const QStringList &availableValues,
-                           const QString &value
-                          );
-
-    static void updateCfgComboBox(QComboBox * cb, const QString &prompt);
-
-    void closeEvent(QCloseEvent * event);
+signals:
+    void needRestart();
 
 public slots:
-    void setRestart();
+    void restoreSettings();
+    void save();
 
 private:
-    // display restart warning
-    bool m_restart;
+    RazorSettings* m_settings;
+    Ui::BasicSettings* ui;
 
 private slots:
-    void clearRestart();
+    void findWmButton_clicked();
+
 };
 
-#endif
+#endif // BASICSETTINGS_H

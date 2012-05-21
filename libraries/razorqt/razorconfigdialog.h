@@ -67,13 +67,13 @@ signals:
 
 protected:
     RazorSettings* mSettings;
+    virtual void closeEvent(QCloseEvent* event);
 
 private:
     RazorSettingsCache* mCache;
     QList<QStringList> mIcons;
     QSize mMaxSize;
     Ui::RazorConfigDialog* ui;
-    void closeEvent(QCloseEvent* event);
 
 private slots:
     void dialogButtonsAction(QAbstractButton* button);

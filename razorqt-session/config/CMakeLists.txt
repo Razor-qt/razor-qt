@@ -6,22 +6,34 @@ include_directories (
 
 set ( razor-sessioncfg_HDRS
     sessionconfigwindow.h
+    basicsettings.h
+    autostartpage.h
     autostartmodel.h
     autostartedit.h
+    defaultappspage.h
+    environmentpage.h
 	)
 
 set ( razor-sessioncfg_SRCS
     main.cpp
     sessionconfigwindow.cpp
+    basicsettings.cpp
+    autostartpage.cpp
     autostartmodel.cpp
     autostartedit.cpp
+    defaultappspage.cpp
+    environmentpage.cpp
     ../src/windowmanager.cpp
 	)
 
 QT4_WRAP_UI(razor-sessioncfg_UIS
-    sessionconfigwindow.ui
+    basicsettings.ui
+    autostartpage.ui
     autostartedit.ui
+    defaultappspage.ui
+    environmentpage.ui
         )
+
 QT4_WRAP_CPP(razor-sessioncfg_MOCS ${razor-sessioncfg_HDRS})
 # Translations **********************************
 include(RazorTranslate)

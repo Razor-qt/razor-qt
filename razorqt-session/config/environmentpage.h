@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *
@@ -25,39 +25,41 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SESSIONCONFIGWINDOW_H
-#define SESSIONCONFIGWINDOW_H
+#ifndef ENVIRONMENTPAGE_H
+#define ENVIRONMENTPAGE_H
 
-#include <QtGui/QComboBox>
-#include <razorqt/razorconfigdialog.h>
+#include <QtGui/QTreeWidgetItem>
+#include <razorqt/razorsettings.h>
 
+namespace Ui {
+class EnvironmentPage;
+}
 
-class SessionConfigWindow : public RazorConfigDialog
+class EnvironmentPage : public QWidget
 {
     Q_OBJECT
-    
+
 public:
-    SessionConfigWindow();
-    ~SessionConfigWindow();
+    explicit EnvironmentPage(RazorSettings *settings, QWidget *parent = 0);
+    ~EnvironmentPage();
 
-    static void handleCfgComboBox(QComboBox * cb,
-                           const QStringList &availableValues,
-                           const QString &value
-                          );
-
-    static void updateCfgComboBox(QComboBox * cb, const QString &prompt);
-
-    void closeEvent(QCloseEvent * event);
+signals:
+    void needRestart();
+    void envVarChanged(const QString&, const QString&);
 
 public slots:
-    void setRestart();
+    void restoreSettings();
+    void save();
+    void updateItem(const QString &var, const QString &val);
 
 private:
-    // display restart warning
-    bool m_restart;
+    RazorSettings *m_settings;
+    Ui::EnvironmentPage *ui;
 
 private slots:
-    void clearRestart();
+    void addButton_clicked();
+    void deleteButton_clicked();
+    void itemChanged(QTreeWidgetItem *item, int column);
 };
 
-#endif
+#endif // ENVIRONMENTPAGE_H
