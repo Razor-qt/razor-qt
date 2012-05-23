@@ -4,42 +4,42 @@
     <message>
         <location filename="../dialog.ui" line="20"/>
         <source>Leave</source>
-        <translation type="unfinished"/>
+        <translation>Opuść</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="26"/>
         <source>What do you want the computer to do?</source>
-        <translation type="unfinished"/>
+        <translation>Co komputer ma zrobić?</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="38"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>Wyloguj</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="54"/>
         <source>Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Uruchom ponownie</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="70"/>
         <source>Shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Wyłącz</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="80"/>
         <source>Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Wstrzymaj</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="90"/>
         <source>Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Zahibernuj</translation>
     </message>
     <message>
         <location filename="../dialog.ui" line="115"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anuluj</translation>
     </message>
 </context>
 </TS>

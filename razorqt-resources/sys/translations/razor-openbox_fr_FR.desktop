@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor-session -w openbox
+TryExec=openbox
+Name=Razor Desktop (openbox)
+Comment=Qt4 Desktop Environment
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[fr_FR]=Environnement de bureau Qt4
+Name[fr_FR]=Bureau Razor (openbox)

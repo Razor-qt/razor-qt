@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Exec=razor-session -w metacity
+TryExec=metacity
+Name=Razor Desktop (metacity)
+Comment=Qt4 Desktop Environment
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[zh_TW]=輕量級Qt4桌面環境
+Name[zh_TW]=Razor桌面(metacity)

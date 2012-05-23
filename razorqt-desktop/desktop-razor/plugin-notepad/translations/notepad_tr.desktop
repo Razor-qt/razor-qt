@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Notepad
+Comment=Screen notepad
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[tr]=Ekran not defteri
+Name[tr]=Not Defteri

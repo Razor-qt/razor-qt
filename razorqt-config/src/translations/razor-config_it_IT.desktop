@@ -1,0 +1,19 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-system
+Name=Razor Configuration Center
+Comment=Configure Razor-Qt modules
+GenericName=Razor Configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[it_IT]=Configura i moduli di Razor-Qt
+GenericName[it_IT]=Configurazione di Razor
+Name[it_IT]=Centro di configurazione di Razor
+Icon[it_IT]=preferences-system

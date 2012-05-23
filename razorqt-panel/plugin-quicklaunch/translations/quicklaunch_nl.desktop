@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Quicklaunch
+Comment=Launch your favorite Applications
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[nl]=Uw favoriete programma's starten
+Name[nl]=Snelstarter

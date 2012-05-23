@@ -1,0 +1,19 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-desktop
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop
+Name=Razor Desktop Configurator
+Comment=Configure Razor-Qt desktop module
+GenericName=Razor Desktop Configurator
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[zh_TW]=Razor-qt桌面模組設定
+GenericName[zh_TW]=Razor桌面設定
+Name[zh_TW]=Razor桌面設定
+Icon[zh_TW]=桌面偏好設定

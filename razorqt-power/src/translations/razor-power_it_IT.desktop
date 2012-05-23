@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-power
+Icon=system-shutdown
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Qt;System;X-RAZOR;
+Name=Leave
+GenericName=Leave the system
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+GenericName[it_IT]=Esci dal sistema
+Name[it_IT]=Esci
+Icon[it_IT]=system-shutdown

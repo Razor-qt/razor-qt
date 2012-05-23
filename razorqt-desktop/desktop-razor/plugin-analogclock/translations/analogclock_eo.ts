@@ -4,12 +4,12 @@
     <message>
         <location filename="../configuredialog.ui" line="14"/>
         <source>Analog clock settings</source>
-        <translation type="unfinished"/>
+        <translation>Agordoj pri analoga horloĝo</translation>
     </message>
     <message>
         <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
-        <translation type="unfinished"/>
+        <translation>Montri sekundan naglon</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../clock.cpp" line="91"/>
         <source>Clock</source>
-        <translation type="unfinished"/>
+        <translation>Horloĝo</translation>
     </message>
 </context>
 </TS>

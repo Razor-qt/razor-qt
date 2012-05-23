@@ -9,7 +9,7 @@
     <message>
         <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
-        <translation>Pokazuj &amp;sekundy</translation>
+        <translation>Wyświetlanie &amp;sekundnika</translation>
     </message>
 </context>
 <context>

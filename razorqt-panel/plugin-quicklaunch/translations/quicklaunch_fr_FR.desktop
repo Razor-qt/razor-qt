@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Quicklaunch
+Comment=Launch your favorite Applications
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[fr_FR]=Lancer votre application favorite
+Name[fr_FR]=Lancement rapide

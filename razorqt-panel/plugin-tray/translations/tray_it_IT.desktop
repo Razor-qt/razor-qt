@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=System tray
+Comment=Access hidden applications minimized in the system tray
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[it_IT]=Accedi alle applicazioni nascoste minimizzate nel vassoio di sistema
+Name[it_IT]=Vassoio di sistema

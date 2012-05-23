@@ -1,0 +1,20 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-mouse
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-mouse
+Name=Razor Mouse Configurator
+Comment=Configure X11 mouse
+GenericName=Razor Mouse Configurator
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[nl]=Configureer X11 muis
+GenericName[nl]=Razor Muis Configurator
+Name[nl]=Razor Muis Configurator
+Icon[nl]=instellingen-desktop-muis

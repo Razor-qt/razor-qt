@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Application menu
+Comment=Menu based application launcher
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[fr_FR]=Lanceur d'application sous forme de menu
+Name[fr_FR]=Menu d'application

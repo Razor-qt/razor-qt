@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Qlipper
+TryExec=qlipper
+Exec=qlipper
+OnlyShowIn=Razor;
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[zh_TW]=剪貼簿
