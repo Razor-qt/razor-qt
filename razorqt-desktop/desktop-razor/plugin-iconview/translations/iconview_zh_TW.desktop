@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Icon View
+Comment=Display content (as icons) of the specified directory
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[zh_TW]=在特定的目錄下(以圖示)顯示內容
+Name[zh_TW]=圖形檢視

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Hell World
+Comment=A "hello world" plugin.
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[id_ID]=Sebuah Plugin "hello world".
+Name[id_ID]=Hell World

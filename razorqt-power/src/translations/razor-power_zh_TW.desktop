@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-power
+Icon=system-shutdown
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Qt;System;X-RAZOR;
+Name=Leave
+GenericName=Leave the system
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+GenericName[zh_TW]=離開系統
+Name[zh_TW]=離開
+Icon[zh_TW]=關閉系統

@@ -1,0 +1,19 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-session
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-system-session-services
+Name=Razor Session Configurator
+Comment=Configure Razor-Qt session module
+GenericName=Razor Session Configurator
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[zh_TW]=Razor-qt會話模組設定
+GenericName[zh_TW]=Razor會話設定
+Name[zh_TW]=Razor會話設定
+Icon[zh_TW]=系統會話服務偏好設定

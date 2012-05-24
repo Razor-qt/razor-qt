@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Desktopswitch
+Comment=Allow to switch virtual desktops
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[it_IT]=Permette di passare ad altri desktop virtuali
+Name[it_IT]=Cambia desktop

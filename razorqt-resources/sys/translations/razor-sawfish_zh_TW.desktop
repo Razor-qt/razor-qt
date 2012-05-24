@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=XSession
+Exec=razor-session -w sawfish
+TryExec=sawfish
+Name=Razor Desktop (sawfish)
+Comment=Qt4 Desktop Environment
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[zh_TW]=Razor桌面(sawfish)
+Comment[zh_TW]=輕量級Qt4桌面環境

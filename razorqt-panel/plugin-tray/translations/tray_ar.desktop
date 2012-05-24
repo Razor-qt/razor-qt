@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=System tray
+Comment=Access hidden applications minimized in the system tray
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[ar]=الوصول إلى التطبيقات المخفيَّة المصغَّرة في دفَّة النّظام
+Name[ar]=دفَّة النِّظام

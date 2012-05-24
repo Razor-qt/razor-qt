@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Screensaver
+Comment=Activate a screensaver and/or lock the screen
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[fr_FR]=Activer un économiseur d'écran et/ou verrouiller l'écran
+Name[fr_FR]=Économiseur d'écran
