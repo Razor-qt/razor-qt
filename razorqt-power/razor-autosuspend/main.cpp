@@ -28,6 +28,7 @@
 #include <razorqt/razorapplication.h>
 #include "trayicon.h"
 #include <QMessageBox>
+#include <QSystemTrayIcon>
 
 int main(int argc, char *argv[])
 {
@@ -35,6 +36,11 @@ int main(int argc, char *argv[])
     RazorApplication a(argc, argv);
 
     TrayIcon w;
+
+    while (! QSystemTrayIcon::isSystemTrayAvailable()) {
+        sleep(1);
+    }
+
     w.show();
 
     return a.exec();
