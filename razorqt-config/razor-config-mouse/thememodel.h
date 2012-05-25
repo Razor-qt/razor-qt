@@ -22,8 +22,8 @@
 #ifndef THEMEMODEL_H
 #define THEMEMODEL_H
 
-#include <QAbstractTableModel>
-#include <QStringList>
+#include <QtCore/QAbstractTableModel>
+#include <QtCore/QStringList>
 
 class QDir;
 class XCursorThemeData;
