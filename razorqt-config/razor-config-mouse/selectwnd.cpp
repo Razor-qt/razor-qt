@@ -7,15 +7,15 @@
  * To Public License, Version 2, as published by Sam Hocevar. See
  * http://sam.zoy.org/wtfpl/COPYING for more details.
  */
-#include <QDebug>
+#include <QtCore/QDebug>
 
 #include "selectwnd.h"
 
-#include <QKeyEvent>
-#include <QMessageBox>
-#include <QTimer>
-#include <QWidget>
-#include <QPushButton>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QMessageBox>
+#include <QtCore/QTimer>
+#include <QtGui/QWidget>
+#include <QtGui/QPushButton>
 
 #include "cfgfile.h"
 #include "crtheme.h"
