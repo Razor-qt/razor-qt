@@ -22,26 +22,27 @@
 #ifndef ITEMDELEGATE_H
 #define ITEMDELEGATE_H
 
-#include <QAbstractItemDelegate>
+#include <QtGui/QAbstractItemDelegate>
 
 class QPainter;
 
 
-class ItemDelegate : public QAbstractItemDelegate {
+class ItemDelegate : public QAbstractItemDelegate
+{
     Q_OBJECT
-public:
-  ItemDelegate (QObject *parent = 0);
-  ~ItemDelegate ();
+    
+    public:
+    ItemDelegate(QObject *parent = 0);
+    ~ItemDelegate();
 
-  QSize sizeHint (const QStyleOptionViewItem &option, const QModelIndex &index) const;
-  void paint (QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-private:
-  QString firstLine (const QModelIndex &index) const;
-  QString secondLine (const QModelIndex &index) const;
-  QPixmap decoration (const QModelIndex &index) const;
-  QPalette::ColorRole foregroundRole (const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    private:
+    QString firstLine(const QModelIndex &index) const;
+    QString secondLine(const QModelIndex &index) const;
+    QPixmap decoration(const QModelIndex &index) const;
+    QPalette::ColorRole foregroundRole(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
-
 
 #endif
