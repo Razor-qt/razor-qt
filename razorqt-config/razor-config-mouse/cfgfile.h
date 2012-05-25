@@ -10,13 +10,11 @@
 #ifndef CFGFILE_H
 #define CFGFILE_H
 
-#include <QMultiMap>
-#include <QString>
+#include <QtCore/QMultiMap>
+#include <QtCore/QString>
 
-
-QMultiMap<QString, QString> loadCfgFile (const QString &fname, bool forceLoCase=false);
-void fixXDefaults (const QString &themeName);
-const QString findDefaultTheme ();
-
+QMultiMap<QString, QString> loadCfgFile(const QString &fname, bool forceLoCase=false);
+void fixXDefaults(const QString &themeName);
+const QString findDefaultTheme();
 
 #endif
