@@ -2,17 +2,17 @@
 host = https://www.transifex.net
 type = QT
 
-[razor-qt.razor-config-appearance]
+[razor-qt.razor-session]
 type = QT
-source_file = razorqt-config/razor-config-appearance/translations/razor-config-appearance.ts.src
+source_file = razorqt-session/translations/razor-session.ts.src
 source_lang = en
-file_filter = razorqt-config/razor-config-appearance/translations/razor-config-appearance_<lang>.ts
+file_filter = razorqt-session/translations/razor-session_<lang>.ts
 
-[razor-qt.razor-power]
+[razor-qt.analogclock]
 type = QT
-source_file = razorqt-power/src/translations/razor-power.ts.src
+source_file = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock.ts.src
 source_lang = en
-file_filter = razorqt-power/src/translations/razor-power_<lang>.ts
+file_filter = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock_<lang>.ts
 
 [razor-qt.qtxdg]
 type = QT
@@ -26,41 +26,23 @@ source_file = libraries/razorqt/translations/librazorqt.ts.src
 source_lang = en
 file_filter = libraries/razorqt/translations/librazorqt_<lang>.ts
 
-[razor-qt.quicklaunch]
+[razor-qt.razor-config-appearance]
 type = QT
-source_file = razorqt-panel/plugin-quicklaunch/translations/quicklaunch.ts.src
+source_file = razorqt-config/razor-config-appearance/translations/razor-config-appearance.ts.src
 source_lang = en
-file_filter = razorqt-panel/plugin-quicklaunch/translations/quicklaunch_<lang>.ts
+file_filter = razorqt-config/razor-config-appearance/translations/razor-config-appearance_<lang>.ts
+
+[razor-qt.razor-runner]
+type = QT
+source_file = razorqt-runner/translations/razor-runner.ts.src
+source_lang = en
+file_filter = razorqt-runner/translations/razor-runner_<lang>.ts
 
 [razor-qt.screensaver]
 type = QT
 source_file = razorqt-panel/plugin-screensaver/translations/screensaver.ts.src
 source_lang = en
 file_filter = razorqt-panel/plugin-screensaver/translations/screensaver_<lang>.ts
-
-[razor-qt.mainmenu]
-type = QT
-source_file = razorqt-panel/plugin-mainmenu/translations/mainmenu.ts.src
-source_lang = en
-file_filter = razorqt-panel/plugin-mainmenu/translations/mainmenu_<lang>.ts
-
-[razor-qt.showdesktop]
-type = QT
-source_file = razorqt-panel/plugin-showdesktop/translations/showdesktop.ts.src
-source_lang = en
-file_filter = razorqt-panel/plugin-showdesktop/translations/showdesktop_<lang>.ts
-
-[razor-qt.clock]
-type = QT
-source_file = razorqt-panel/plugin-clock/translations/clock.ts.src
-source_lang = en
-file_filter = razorqt-panel/plugin-clock/translations/clock_<lang>.ts
-
-[razor-qt.mount]
-type = QT
-source_file = razorqt-panel/plugin-mount/translations/mount.ts.src
-source_lang = en
-file_filter = razorqt-panel/plugin-mount/translations/mount_<lang>.ts
 
 [razor-qt.taskbar]
 type = QT
@@ -74,59 +56,47 @@ source_file = razorqt-panel/panel/translations/razor-panel.ts.src
 source_lang = en
 file_filter = razorqt-panel/panel/translations/razor-panel_<lang>.ts
 
+[razor-qt.quicklaunch]
+type = QT
+source_file = razorqt-panel/plugin-quicklaunch/translations/quicklaunch.ts.src
+source_lang = en
+file_filter = razorqt-panel/plugin-quicklaunch/translations/quicklaunch_<lang>.ts
+
+[razor-qt.mainmenu]
+type = QT
+source_file = razorqt-panel/plugin-mainmenu/translations/mainmenu.ts.src
+source_lang = en
+file_filter = razorqt-panel/plugin-mainmenu/translations/mainmenu_<lang>.ts
+
+[razor-qt.clock]
+type = QT
+source_file = razorqt-panel/plugin-clock/translations/clock.ts.src
+source_lang = en
+file_filter = razorqt-panel/plugin-clock/translations/clock_<lang>.ts
+
+[razor-qt.showdesktop]
+type = QT
+source_file = razorqt-panel/plugin-showdesktop/translations/showdesktop.ts.src
+source_lang = en
+file_filter = razorqt-panel/plugin-showdesktop/translations/showdesktop_<lang>.ts
+
 [razor-qt.desktopswitch]
 type = QT
 source_file = razorqt-panel/plugin-desktopswitch/translations/desktopswitch.ts.src
 source_lang = en
 file_filter = razorqt-panel/plugin-desktopswitch/translations/desktopswitch_<lang>.ts
 
-[razor-qt.razor-runner]
+[razor-qt.mount]
 type = QT
-source_file = razorqt-runner/translations/razor-runner.ts.src
+source_file = razorqt-panel/plugin-mount/translations/mount.ts.src
 source_lang = en
-file_filter = razorqt-runner/translations/razor-runner_<lang>.ts
+file_filter = razorqt-panel/plugin-mount/translations/mount_<lang>.ts
 
-[razor-qt.razor-session]
+[razor-qt.razor-power]
 type = QT
-source_file = razorqt-session/translations/razor-session.ts.src
+source_file = razorqt-power/src/translations/razor-power.ts.src
 source_lang = en
-file_filter = razorqt-session/translations/razor-session_<lang>.ts
-
-[razor-qt.analogclock]
-type = QT
-source_file = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock.ts.src
-source_lang = en
-file_filter = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock_<lang>.ts
-
-[razor-qt.razor-config_desktop]
-type = DESKTOP
-source_file = razorqt-config/src/razor-config.desktop.in
-source_lang = en
-file_filter = razorqt-config/src/translations/razor-config_<lang>.desktop
-
-[razor-qt.razor-config-appearance_desktop]
-type = DESKTOP
-source_file = razorqt-config/razor-config-appearance/razor-config-appearance.desktop.in
-source_lang = en
-file_filter = razorqt-config/razor-config-appearance/translations/razor-config-appearance_<lang>.desktop
-
-[razor-qt.razor-config-mouse_desktop]
-type = DESKTOP
-source_file = razorqt-config/razor-config-mouse/razor-config-mouse.desktop.in
-source_lang = en
-file_filter = razorqt-config/razor-config-mouse/translations/razor-config-mouse_<lang>.desktop
-
-[razor-qt.razor-power_desktop]
-type = DESKTOP
-source_file = razorqt-power/src/resources/razor-power.desktop.in
-source_lang = en
-file_filter = razorqt-power/src/translations/razor-power_<lang>.desktop
-
-[razor-qt.razor-autosuspend_desktop]
-type = DESKTOP
-source_file = razorqt-power/razor-autosuspend/resources/razor-autosuspend.desktop.in
-source_lang = en
-file_filter = razorqt-power/razor-autosuspend/translations/razor-autosuspend_<lang>.desktop
+file_filter = razorqt-power/src/translations/razor-power_<lang>.ts
 
 [razor-qt.razor-qstardict-autostart_desktop]
 type = DESKTOP
@@ -134,17 +104,29 @@ source_file = razorqt-resources/autostart/razor-qstardict-autostart.desktop.in
 source_lang = en
 file_filter = razorqt-resources/autostart/translations/razor-qstardict-autostart_<lang>.desktop
 
-[razor-qt.razor-ptbatterysystemtray-autostart_desktop]
+[razor-qt.razor-policykit-agent_desktop]
 type = DESKTOP
-source_file = razorqt-resources/autostart/razor-ptbatterysystemtray-autostart.desktop.in
+source_file = razorqt-resources/autostart/razor-policykit-agent.desktop.in
 source_lang = en
-file_filter = razorqt-resources/autostart/translations/razor-ptbatterysystemtray-autostart_<lang>.desktop
+file_filter = razorqt-resources/autostart/translations/razor-policykit-agent_<lang>.desktop
 
-[razor-qt.razor-xscreensaver-autostart_desktop]
+[razor-qt.razor-autosuspend_desktop]
 type = DESKTOP
-source_file = razorqt-resources/autostart/razor-xscreensaver-autostart.desktop.in
+source_file = razorqt-resources/autostart/razor-autosuspend.desktop.in
 source_lang = en
-file_filter = razorqt-resources/autostart/translations/razor-xscreensaver-autostart_<lang>.desktop
+file_filter = razorqt-resources/autostart/translations/razor-autosuspend_<lang>.desktop
+
+[razor-qt.razor-notifications_desktop]
+type = DESKTOP
+source_file = razorqt-resources/autostart/razor-notifications.desktop.in
+source_lang = en
+file_filter = razorqt-resources/autostart/translations/razor-notifications_<lang>.desktop
+
+[razor-qt.razor-panel_desktop]
+type = DESKTOP
+source_file = razorqt-resources/autostart/razor-panel.desktop.in
+source_lang = en
+file_filter = razorqt-resources/autostart/translations/razor-panel_<lang>.desktop
 
 [razor-qt.razor-qlipper-autostart_desktop]
 type = DESKTOP
@@ -152,17 +134,41 @@ source_file = razorqt-resources/autostart/razor-qlipper-autostart.desktop.in
 source_lang = en
 file_filter = razorqt-resources/autostart/translations/razor-qlipper-autostart_<lang>.desktop
 
+[razor-qt.razor-appswitcher_desktop]
+type = DESKTOP
+source_file = razorqt-resources/autostart/razor-appswitcher.desktop.in
+source_lang = en
+file_filter = razorqt-resources/autostart/translations/razor-appswitcher_<lang>.desktop
+
+[razor-qt.razor-desktop_desktop]
+type = DESKTOP
+source_file = razorqt-resources/autostart/razor-desktop.desktop.in
+source_lang = en
+file_filter = razorqt-resources/autostart/translations/razor-desktop_<lang>.desktop
+
+[razor-qt.razor-runner_desktop]
+type = DESKTOP
+source_file = razorqt-resources/autostart/razor-runner.desktop.in
+source_lang = en
+file_filter = razorqt-resources/autostart/translations/razor-runner_<lang>.desktop
+
+[razor-qt.razor-xscreensaver-autostart_desktop]
+type = DESKTOP
+source_file = razorqt-resources/autostart/razor-xscreensaver-autostart.desktop.in
+source_lang = en
+file_filter = razorqt-resources/autostart/translations/razor-xscreensaver-autostart_<lang>.desktop
+
 [razor-qt.razor-qxkb-autostart_desktop]
 type = DESKTOP
 source_file = razorqt-resources/autostart/razor-qxkb-autostart.desktop.in
 source_lang = en
 file_filter = razorqt-resources/autostart/translations/razor-qxkb-autostart_<lang>.desktop
 
-[razor-qt.razor-openbox_desktop]
+[razor-qt.razor-ptbatterysystemtray-autostart_desktop]
 type = DESKTOP
-source_file = razorqt-resources/sys/razor-openbox.desktop.in
+source_file = razorqt-resources/autostart/razor-ptbatterysystemtray-autostart.desktop.in
 source_lang = en
-file_filter = razorqt-resources/sys/translations/razor-openbox_<lang>.desktop
+file_filter = razorqt-resources/autostart/translations/razor-ptbatterysystemtray-autostart_<lang>.desktop
 
 [razor-qt.razor_desktop]
 type = DESKTOP
@@ -170,95 +176,23 @@ source_file = razorqt-resources/sys/razor.desktop.in
 source_lang = en
 file_filter = razorqt-resources/sys/translations/razor_<lang>.desktop
 
-[razor-qt.razor-eggwm_desktop]
-type = DESKTOP
-source_file = razorqt-resources/sys/razor-eggwm.desktop.in
-source_lang = en
-file_filter = razorqt-resources/sys/translations/razor-eggwm_<lang>.desktop
-
-[razor-qt.razor-sawfish_desktop]
-type = DESKTOP
-source_file = razorqt-resources/sys/razor-sawfish.desktop.in
-source_lang = en
-file_filter = razorqt-resources/sys/translations/razor-sawfish_<lang>.desktop
-
-[razor-qt.razor-metacity_desktop]
-type = DESKTOP
-source_file = razorqt-resources/sys/razor-metacity.desktop.in
-source_lang = en
-file_filter = razorqt-resources/sys/translations/razor-metacity_<lang>.desktop
-
-[razor-qt.razor-kwin_desktop]
-type = DESKTOP
-source_file = razorqt-resources/sys/razor-kwin.desktop.in
-source_lang = en
-file_filter = razorqt-resources/sys/translations/razor-kwin_<lang>.desktop
-
-[razor-qt.quicklaunch_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-quicklaunch/resources/quicklaunch.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-quicklaunch/translations/quicklaunch_<lang>.desktop
-
-[razor-qt.screensaver_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-screensaver/resources/screensaver.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-screensaver/translations/screensaver_<lang>.desktop
-
-[razor-qt.mainmenu_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-mainmenu/resources/mainmenu.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-mainmenu/translations/mainmenu_<lang>.desktop
-
-[razor-qt.panelhelloworld_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-helloworld/resources/panelhelloworld.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-helloworld/translations/panelhelloworld_<lang>.desktop
-
-[razor-qt.showdesktop_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-showdesktop/resources/showdesktop.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-showdesktop/translations/showdesktop_<lang>.desktop
-
-[razor-qt.clock_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-clock/resources/clock.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-clock/translations/clock_<lang>.desktop
-
-[razor-qt.mount_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-mount/resources/mount.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-mount/translations/mount_<lang>.desktop
-
-[razor-qt.taskbar_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-taskbar/resources/taskbar.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-taskbar/translations/taskbar_<lang>.desktop
-
-[razor-qt.tray_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-tray/resources/tray.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-tray/translations/tray_<lang>.desktop
-
-[razor-qt.desktopswitch_desktop]
-type = DESKTOP
-source_file = razorqt-panel/plugin-desktopswitch/resources/desktopswitch.desktop.in
-source_lang = en
-file_filter = razorqt-panel/plugin-desktopswitch/translations/desktopswitch_<lang>.desktop
-
 [razor-qt.razor-config-session_desktop]
 type = DESKTOP
 source_file = razorqt-session/config/razor-config-session.desktop.in
 source_lang = en
 file_filter = razorqt-session/config/translations/razor-config-session_<lang>.desktop
+
+[razor-qt.notepad_desktop]
+type = DESKTOP
+source_file = razorqt-desktop/desktop-razor/plugin-notepad/resources/notepad.desktop.in
+source_lang = en
+file_filter = razorqt-desktop/desktop-razor/plugin-notepad/translations/notepad_<lang>.desktop
+
+[razor-qt.analogclock_desktop]
+type = DESKTOP
+source_file = razorqt-desktop/desktop-razor/plugin-analogclock/resources/analogclock.desktop.in
+source_lang = en
+file_filter = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock_<lang>.desktop
 
 [razor-qt.iconview_desktop]
 type = DESKTOP
@@ -272,21 +206,123 @@ source_file = razorqt-desktop/desktop-razor/plugin-helloworld/resources/hellowor
 source_lang = en
 file_filter = razorqt-desktop/desktop-razor/plugin-helloworld/translations/helloworld_<lang>.desktop
 
-[razor-qt.analogclock_desktop]
-type = DESKTOP
-source_file = razorqt-desktop/desktop-razor/plugin-analogclock/resources/analogclock.desktop.in
-source_lang = en
-file_filter = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock_<lang>.desktop
-
-[razor-qt.notepad_desktop]
-type = DESKTOP
-source_file = razorqt-desktop/desktop-razor/plugin-notepad/resources/notepad.desktop.in
-source_lang = en
-file_filter = razorqt-desktop/desktop-razor/plugin-notepad/translations/notepad_<lang>.desktop
-
 [razor-qt.razor-config-desktop_desktop]
 type = DESKTOP
 source_file = razorqt-desktop/config/razor-config-desktop.desktop.in
 source_lang = en
 file_filter = razorqt-desktop/config/translations/razor-config-desktop_<lang>.desktop
+
+[razor-qt.razor-config_desktop]
+type = DESKTOP
+source_file = razorqt-config/src/razor-config.desktop.in
+source_lang = en
+file_filter = razorqt-config/src/translations/razor-config_<lang>.desktop
+
+[razor-qt.razor-config-notificationd_desktop]
+type = DESKTOP
+source_file = razorqt-config/razor-config-notificationd/razor-config-notificationd.desktop.in
+source_lang = en
+file_filter = razorqt-config/razor-config-notificationd/translations/razor-config-notificationd_<lang>.desktop
+
+[razor-qt.razor-config-mouse_desktop]
+type = DESKTOP
+source_file = razorqt-config/razor-config-mouse/razor-config-mouse.desktop.in
+source_lang = en
+file_filter = razorqt-config/razor-config-mouse/translations/razor-config-mouse_<lang>.desktop
+
+[razor-qt.razor-config-appearance_desktop]
+type = DESKTOP
+source_file = razorqt-config/razor-config-appearance/razor-config-appearance.desktop.in
+source_lang = en
+file_filter = razorqt-config/razor-config-appearance/translations/razor-config-appearance_<lang>.desktop
+
+[razor-qt.cpuload_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-cpuload/resources/cpuload.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-cpuload/resources/cpuload_<lang>.desktop
+
+[razor-qt.tray_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-tray/resources/tray.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-tray/translations/tray_<lang>.desktop
+
+[razor-qt.screensaver_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-screensaver/resources/screensaver.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-screensaver/translations/screensaver_<lang>.desktop
+
+[razor-qt.taskbar_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-taskbar/resources/taskbar.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-taskbar/translations/taskbar_<lang>.desktop
+
+[razor-qt.quicklaunch_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-quicklaunch/resources/quicklaunch.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-quicklaunch/translations/quicklaunch_<lang>.desktop
+
+[razor-qt.networkmonitor_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-networkmonitor/resources/networkmonitor.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-networkmonitor/resources/networkmonitor_<lang>.desktop
+
+[razor-qt.mainmenu_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-mainmenu/resources/mainmenu.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-mainmenu/translations/mainmenu_<lang>.desktop
+
+[razor-qt.sensors_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-sensors/resources/sensors.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-sensors/resources/sensors_<lang>.desktop
+
+[razor-qt.clock_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-clock/resources/clock.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-clock/translations/clock_<lang>.desktop
+
+[razor-qt.showdesktop_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-showdesktop/resources/showdesktop.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-showdesktop/translations/showdesktop_<lang>.desktop
+
+[razor-qt.panelhelloworld_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-helloworld/resources/panelhelloworld.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-helloworld/translations/panelhelloworld_<lang>.desktop
+
+[razor-qt.desktopswitch_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-desktopswitch/resources/desktopswitch.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-desktopswitch/translations/desktopswitch_<lang>.desktop
+
+[razor-qt.mount_desktop]
+type = DESKTOP
+source_file = razorqt-panel/plugin-mount/resources/mount.desktop.in
+source_lang = en
+file_filter = razorqt-panel/plugin-mount/translations/mount_<lang>.desktop
+
+[razor-qt.razor-power_desktop]
+type = DESKTOP
+source_file = razorqt-power/src/resources/razor-power.desktop.in
+source_lang = en
+file_filter = razorqt-power/src/translations/razor-power_<lang>.desktop
+
+[razor-qt.razor-autosuspend_desktop]
+type = DESKTOP
+source_file = razorqt-power/razor-autosuspend/resources/razor-autosuspend.desktop.in
+source_lang = en
+file_filter = razorqt-power/razor-autosuspend/translations/razor-autosuspend_<lang>.desktop
 
