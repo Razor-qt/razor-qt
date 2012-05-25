@@ -17,22 +17,22 @@
 <context>
     <name>MountButton</name>
     <message>
-        <location filename="../mountbutton.cpp" line="149"/>
+        <location filename="../mountbutton.cpp" line="151"/>
         <source>Removable media/devices manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="188"/>
+        <location filename="../mountbutton.cpp" line="199"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="207"/>
+        <location filename="../mountbutton.cpp" line="218"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="235"/>
+        <location filename="../mountbutton.cpp" line="246"/>
         <source>No devices Available.</source>
         <translation type="unfinished"></translation>
     </message>

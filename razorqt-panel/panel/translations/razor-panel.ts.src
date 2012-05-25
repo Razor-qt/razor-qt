@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../configpaneldialog.ui" line="33"/>
-        <location filename="../configpaneldialog.ui" line="115"/>
+        <location filename="../configpaneldialog.ui" line="101"/>
         <source>px</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,98 +30,124 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="60"/>
-        <source>Panel lenght &amp; position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="73"/>
+        <location filename="../configpaneldialog.ui" line="116"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="80"/>
+        <location filename="../configpaneldialog.ui" line="109"/>
         <source>Alignment:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="91"/>
+        <location filename="../configpaneldialog.ui" line="60"/>
+        <source>Panel length &amp;&amp; position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configpaneldialog.ui" line="77"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="96"/>
+        <location filename="../configpaneldialog.ui" line="82"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="101"/>
+        <location filename="../configpaneldialog.ui" line="87"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="110"/>
+        <location filename="../configpaneldialog.ui" line="96"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="583"/>
+        <location filename="../configpaneldialog.ui" line="123"/>
+        <source>Position:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configpaneldialog.cpp" line="83"/>
         <source>Top of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="584"/>
-        <source>Bottom of desktop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="585"/>
+        <location filename="../configpaneldialog.cpp" line="84"/>
         <source>Left of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="586"/>
+        <location filename="../configpaneldialog.cpp" line="85"/>
         <source>Right of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="593"/>
+        <location filename="../configpaneldialog.cpp" line="86"/>
+        <source>Bottom of desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configpaneldialog.cpp" line="92"/>
         <source>Top of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="594"/>
-        <source>Bottom of desktop %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="595"/>
+        <location filename="../configpaneldialog.cpp" line="93"/>
         <source>Left of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="596"/>
+        <location filename="../configpaneldialog.cpp" line="94"/>
         <source>Right of desktop %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configpaneldialog.cpp" line="95"/>
+        <source>Bottom of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>RazorPanelPluginPrivate</name>
+    <name>RazorPanel</name>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="149"/>
+        <location filename="../razorpanel.cpp" line="745"/>
+        <location filename="../razorpanel.cpp" line="765"/>
+        <source>Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpanel.cpp" line="767"/>
+        <source>Configure panel...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpanel.cpp" line="772"/>
+        <source>Add plugins ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpanel.cpp" line="777"/>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RazorPanelPlugin</name>
+    <message>
+        <location filename="../razorpanelplugin.cpp" line="135"/>
         <source>Configure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="154"/>
+        <location filename="../razorpanelplugin.cpp" line="140"/>
         <source>Move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="160"/>
+        <location filename="../razorpanelplugin.cpp" line="146"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -129,42 +155,8 @@
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="838"/>
-        <source>Panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="849"/>
-        <source>Plugins</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="851"/>
-        <source>Add plugins ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="860"/>
-        <source>Move plugin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="866"/>
-        <source>Configure plugin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="873"/>
-        <source>Delete plugin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="880"/>
-        <source>Show this panel at</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="923"/>
+        <location filename="../razorpanel.cpp" line="581"/>
+        <location filename="../razorpanel.cpp" line="583"/>
         <source>Configure panel</source>
         <translation type="unfinished"></translation>
     </message>

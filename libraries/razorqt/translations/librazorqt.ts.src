@@ -119,6 +119,35 @@
     </message>
 </context>
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../razornotification.cpp" line="70"/>
+        <source>Razor Notification Failback</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpower/razorpowerproviders.cpp" line="81"/>
+        <location filename="../razorpower/razorpowerproviders.cpp" line="96"/>
+        <source>Razor Power Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpower/razorpowerproviders.cpp" line="83"/>
+        <source>Power Manager Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpower/razorpowerproviders.cpp" line="84"/>
+        <source>QDBusInterface is invalid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorpower/razorpowerproviders.cpp" line="98"/>
+        <source>Power Manager Error (D-BUS call)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RazorConfigDialog</name>
     <message>
         <location filename="../razorconfigdialog.ui" line="6"/>

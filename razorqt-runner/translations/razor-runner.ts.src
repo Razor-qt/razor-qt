@@ -57,12 +57,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="91"/>
+        <location filename="../dialog.cpp" line="92"/>
         <source>Configure razor-runner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="296"/>
+        <location filename="../dialog.cpp" line="96"/>
+        <source>Clear razor-runner History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialog.cpp" line="311"/>
         <source>Press &quot;%1&quot; to see dialog.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -70,13 +75,18 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../providers.cpp" line="221"/>
+        <location filename="../providers.cpp" line="305"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="307"/>
+        <location filename="../providers.cpp" line="660"/>
         <source>Mathematics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../providers.cpp" line="721"/>
+        <source>Razor Power Management</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

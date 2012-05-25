@@ -4,7 +4,7 @@
 <context>
     <name>RazorMainMenu</name>
     <message>
-        <location filename="../razormainmenu.cpp" line="179"/>
+        <location filename="../razormainmenu.cpp" line="194"/>
         <source>Leave</source>
         <translation type="unfinished"></translation>
     </message>
