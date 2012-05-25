@@ -21,37 +21,35 @@
 #ifndef PREVIEWWIDGET_H
 #define PREVIEWWIDGET_H
 
-#include <QWidget>
-
+#include <QtGui/QWidget>
 
 class XCursorThemeData;
 class PreviewCursor;
 
-
-class PreviewWidget : public QWidget {
+class PreviewWidget : public QWidget
+{
     Q_OBJECT
-public:
-  PreviewWidget (QWidget *parent=0);
-  ~PreviewWidget ();
+    
+    public:
+    PreviewWidget (QWidget *parent=0);
+    ~PreviewWidget ();
 
-  void setTheme (const XCursorThemeData &theme);
-  void clearTheme ();
+    void setTheme (const XCursorThemeData &theme);
+    void clearTheme ();
 
-  QSize sizeHint () const;
+    QSize sizeHint () const;
 
-protected:
-  void paintEvent (QPaintEvent *e);
-  void mouseMoveEvent(QMouseEvent *e);
-  void resizeEvent (QResizeEvent *e);
+    protected:
+    void paintEvent (QPaintEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void resizeEvent (QResizeEvent *e);
 
-private:
-  void layoutItems ();
+    private:
+    void layoutItems ();
 
-  QList<PreviewCursor *> mList;
-  const PreviewCursor *mCurrent;
-  bool mNeedLayout;
+    QList<PreviewCursor *> mList;
+    const PreviewCursor *mCurrent;
+    bool mNeedLayout;
 };
 
-
 #endif
-
