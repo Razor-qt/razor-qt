@@ -10,8 +10,8 @@
 #ifndef SELECTWND_H
 #define SELECTWND_H
 
-#include <QObject>
-#include <QWidget>
+#include <QtCore/QObject>
+#include <QtGui/QWidget>
 
 class XCursorThemeModel;
 
