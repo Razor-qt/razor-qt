@@ -26,7 +26,7 @@
 #ifndef LOGINFORM_H
 #define LOGINFORM_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 #include <QLightDM/Greeter>
 #ifdef USING_LIGHTDM_QT_1
   #include <QLightDM/User>
@@ -35,9 +35,9 @@
   #include <QLightDM/UsersModel>
   #include <QLightDM/SessionsModel>
 #endif
-#include <QProcess>
-#include <QDialog>
-#include <QKeyEvent>
+#include <QtCore/QProcess>
+#include <QtGui/QDialog>
+#include <QtGui/QKeyEvent>
 
 namespace Ui {
 class LoginForm;

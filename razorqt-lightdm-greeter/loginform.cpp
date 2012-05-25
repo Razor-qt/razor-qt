@@ -25,18 +25,17 @@
 
 #include "loginform.h"
 #include "ui_loginform.h"
-#include <QDebug>
-#include <QCompleter>
-#include <QAbstractListModel>
-#include <QModelIndex>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
-#include <QPixmap>
-#include <QMessageBox>
-#include <QModelIndex>
-#include <QMenu>
-#include <QProcess>
+#include <QtCore/QDebug>
+#include <QtGui/QCompleter>
+#include <QtCore/QAbstractListModel>
+#include <QtCore/QModelIndex>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtCore/QStringList>
+#include <QtGui/QPixmap>
+#include <QtGui/QMessageBox>
+#include <QtGui/QMenu>
+#include <QtCore/QProcess>
 #include <razorqt/razorsettings.h>
 
 #ifdef USING_LIGHTDM_QT_1
@@ -45,7 +44,7 @@
 
 LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
 {
-    if (! m_Greeter.connectSync())
+    if (!m_Greeter.connectSync())
     {
         close();
     }
