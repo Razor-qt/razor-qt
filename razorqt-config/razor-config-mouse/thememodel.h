@@ -62,7 +62,7 @@ class XCursorThemeModel : public QAbstractTableModel
 {
     Q_OBJECT
 
-    public:
+public:
     XCursorThemeModel (QObject *parent = 0);
     ~XCursorThemeModel ();
 
@@ -89,14 +89,14 @@ class XCursorThemeModel : public QAbstractTableModel
     /// Returns the list of base dirs Xcursor looks for themes in.
     const QStringList searchPaths ();
 
-    private:
+private:
     bool handleDefault (const QDir &dir);
     void processThemeDir (const QDir &dir);
     void insertThemes ();
     bool hasTheme (const QString &theme) const;
     bool isCursorTheme (const QString &theme, const int depth = 0);
 
-    private:
+private:
     QList<XCursorThemeData *>mList;
     QStringList mBaseDirs;
     QString mDefaultName;
