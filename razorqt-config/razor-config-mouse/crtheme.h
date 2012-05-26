@@ -43,7 +43,7 @@ typedef _XcursorImages XcursorImages;
 ///////////////////////////////////////////////////////////////////////////////
 class XCursorThemeData
 {
-    public:
+public:
     enum ItemDataRole {
       // Note: use   printf "0x%08X\n" $(($RANDOM*$RANDOM))
       // to define additional roles.
@@ -87,7 +87,7 @@ class XCursorThemeData
 
     QString findAlternative(const QString &name) const;
 
-    protected:
+protected:
     void parseIndexFile();
 
     /// Creates the icon returned by @ref icon().
@@ -96,7 +96,7 @@ class XCursorThemeData
     /// Convenience function for cropping an image.
     QImage autoCropImage(const QImage &image) const;
 
-    protected:
+protected:
     QString mName;
     QString mTitle;
     QString mDescription;
