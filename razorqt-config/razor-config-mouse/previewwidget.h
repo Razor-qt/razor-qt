@@ -30,7 +30,7 @@ class PreviewWidget : public QWidget
 {
     Q_OBJECT
     
-    public:
+public:
     PreviewWidget (QWidget *parent=0);
     ~PreviewWidget ();
 
@@ -39,12 +39,12 @@ class PreviewWidget : public QWidget
 
     QSize sizeHint () const;
 
-    protected:
+protected:
     void paintEvent (QPaintEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void resizeEvent (QResizeEvent *e);
 
-    private:
+private:
     void layoutItems ();
 
     QList<PreviewCursor *> mList;
