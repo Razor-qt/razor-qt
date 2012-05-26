@@ -22,15 +22,14 @@
 #ifndef CRTHEME_H
 #define CRTHEME_H
 
-#include <QApplication>
-#include <QCursor>
-#include <QDir>
-#include <QFile>
-#include <QIcon>
-#include <QImage>
-#include <QString>
-#include <QStringList>
-
+#include <QtGui/QApplication>
+#include <QtGui/QCursor>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtGui/QIcon>
+#include <QtGui/QImage>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 ///////////////////////////////////////////////////////////////////////////////
 // X11 is SHIT!
@@ -42,76 +41,76 @@ typedef _XcursorImages XcursorImages;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-class XCursorThemeData {
+class XCursorThemeData
+{
 public:
-  enum ItemDataRole {
-    // Note: use   printf "0x%08X\n" $(($RANDOM*$RANDOM))
-    // to define additional roles.
-    DisplayDetailRole = 0x24A3DAF8
-  };
+    enum ItemDataRole {
+      // Note: use   printf "0x%08X\n" $(($RANDOM*$RANDOM))
+      // to define additional roles.
+      DisplayDetailRole = 0x24A3DAF8
+    };
 
-  XCursorThemeData (const QDir &aDir);
+    XCursorThemeData(const QDir &aDir);
 
-  const QString &name () const { return mName; }
-  const QString &title () const { return mTitle; }
-  const QString &description () const { return mDescription; }
-  const QString &sample () const { return mSample; }
-  const QString &path () const { return mPath; }
-  bool isHidden () const { return mHidden; }
-  QPixmap icon () const;
-  const QStringList &inherits () const { return mInherits; }
+    const QString &name() const { return mName; }
+    const QString &title() const { return mTitle; }
+    const QString &description() const { return mDescription; }
+    const QString &sample() const { return mSample; }
+    const QString &path() const { return mPath; }
+    bool isHidden() const { return mHidden; }
+    QPixmap icon() const;
+    const QStringList &inherits() const { return mInherits; }
 
-  inline void setName (const QString &name) {
-    mName = name;
-    mHash = qHash(name);
-  }
+    inline void setName(const QString &name)
+    {
+        mName = name;
+        mHash = qHash(name);
+    }
 
-  bool isWritable () const;
+    bool isWritable() const;
 
-  /// Hash value for the internal name
-  uint hash () const { return mHash; }
+    /// Hash value for the internal name
+    uint hash() const { return mHash; }
 
-  /// Loads the cursor @p name, with the nominal size @p size.
-  /// If the theme doesn't have the cursor @p name, it should return
-  /// the default cursor from the active theme instead.
-  QCursor loadCursor (const QString &name, int size=-1) const;
+    /// Loads the cursor @p name, with the nominal size @p size.
+    /// If the theme doesn't have the cursor @p name, it should return
+    /// the default cursor from the active theme instead.
+    QCursor loadCursor(const QString &name, int size=-1) const;
 
-  /// Loads the cursor image @p name, with the nominal size @p size.
-  /// The image should be autocropped to the smallest possible size.
-  /// If the theme doesn't have the cursor @p name, it should return a null image.
-  QImage loadImage (const QString &name, int size=-1) const;
+    /// Loads the cursor image @p name, with the nominal size @p size.
+    /// The image should be autocropped to the smallest possible size.
+    /// If the theme doesn't have the cursor @p name, it should return a null image.
+    QImage loadImage(const QString &name, int size=-1) const;
 
-  XcursorImage *xcLoadImage (const QString &image, int size=-1) const;
-  XcursorImages *xcLoadImages (const QString &image, int size=-1) const;
+    XcursorImage *xcLoadImage(const QString &image, int size=-1) const;
+    XcursorImages *xcLoadImages(const QString &image, int size=-1) const;
 
-  QString findAlternative (const QString &name) const;
-
-protected:
-  void parseIndexFile ();
-
-  /// Creates the icon returned by @ref icon().
-  QPixmap createIcon () const;
-
-  /// Convenience function for cropping an image.
-  QImage autoCropImage (const QImage &image) const;
+    QString findAlternative(const QString &name) const;
 
 protected:
-  QString mName;
-  QString mTitle;
-  QString mDescription;
-  QString mPath;
-  QString mSample;
-  mutable QPixmap mIcon;
-  bool mHidden;
-  uint mHash;
-  QStringList mInherits;
+    void parseIndexFile();
+
+    /// Creates the icon returned by @ref icon().
+    QPixmap createIcon() const;
+
+    /// Convenience function for cropping an image.
+    QImage autoCropImage(const QImage &image) const;
+
+protected:
+    QString mName;
+    QString mTitle;
+    QString mDescription;
+    QString mPath;
+    QString mSample;
+    mutable QPixmap mIcon;
+    bool mHidden;
+    uint mHash;
+    QStringList mInherits;
 };
 
+bool haveXfixes();
+bool applyTheme(const XCursorThemeData &theme);
 
-bool haveXfixes ();
-bool applyTheme (const XCursorThemeData &theme);
-
-QString getCurrentTheme ();
-
+QString getCurrentTheme();
 
 #endif

@@ -3,7 +3,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
- * License version 2 or at your option version 3 as published 
+ * License version 2 or at your option version 3 as published
  * by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,8 +22,8 @@
 #ifndef THEMEMODEL_H
 #define THEMEMODEL_H
 
-#include <QAbstractTableModel>
-#include <QStringList>
+#include <QtCore/QAbstractTableModel>
+#include <QtCore/QStringList>
 
 class QDir;
 class XCursorThemeData;
@@ -58,58 +58,59 @@ enum Columns { NameColumn = 0, DescColumn };
  * Calling defaultIndex() will return the index of the theme Xcursor
  * will use if the user hasn't explicitly configured a cursor theme.
  */
-class XCursorThemeModel : public QAbstractTableModel {
-  Q_OBJECT
+class XCursorThemeModel : public QAbstractTableModel
+{
+    Q_OBJECT
 
 public:
-  XCursorThemeModel (QObject *parent = 0);
-  ~XCursorThemeModel ();
+    XCursorThemeModel (QObject *parent = 0);
+    ~XCursorThemeModel ();
 
-  inline int columnCount (const QModelIndex &parent = QModelIndex()) const;
-  inline int rowCount (const QModelIndex &parent = QModelIndex()) const;
-  QVariant headerData (int section, Qt::Orientation orientation, int role) const;
-  QVariant data (const QModelIndex &index, int role) const;
-  void sort (int column, Qt::SortOrder order = Qt::AscendingOrder);
+    inline int columnCount (const QModelIndex &parent = QModelIndex()) const;
+    inline int rowCount (const QModelIndex &parent = QModelIndex()) const;
+    QVariant headerData (int section, Qt::Orientation orientation, int role) const;
+    QVariant data (const QModelIndex &index, int role) const;
+    void sort (int column, Qt::SortOrder order = Qt::AscendingOrder);
 
-  /// Returns the CursorTheme at @p index.
-  const XCursorThemeData *theme (const QModelIndex &index);
+    /// Returns the CursorTheme at @p index.
+    const XCursorThemeData *theme (const QModelIndex &index);
 
-  /// Returns the index for the CursorTheme with the internal name @p name,
-  /// or an invalid index if no matching theme can be found.
-  QModelIndex findIndex (const QString &name);
+    /// Returns the index for the CursorTheme with the internal name @p name,
+    /// or an invalid index if no matching theme can be found.
+    QModelIndex findIndex (const QString &name);
 
-  /// Returns the index for the default theme.
-  QModelIndex defaultIndex ();
+    /// Returns the index for the default theme.
+    QModelIndex defaultIndex ();
 
-  /// Adds the theme in @p dir, and returns @a true if successful or @a false otherwise.
-  bool addTheme (const QDir &dir);
-  void removeTheme (const QModelIndex &index);
+    /// Adds the theme in @p dir, and returns @a true if successful or @a false otherwise.
+    bool addTheme (const QDir &dir);
+    void removeTheme (const QModelIndex &index);
 
-  /// Returns the list of base dirs Xcursor looks for themes in.
-  const QStringList searchPaths ();
-
-private:
-  bool handleDefault (const QDir &dir);
-  void processThemeDir (const QDir &dir);
-  void insertThemes ();
-  bool hasTheme (const QString &theme) const;
-  bool isCursorTheme (const QString &theme, const int depth = 0);
+    /// Returns the list of base dirs Xcursor looks for themes in.
+    const QStringList searchPaths ();
 
 private:
-  QList<XCursorThemeData *>mList;
-  QStringList mBaseDirs;
-  QString mDefaultName;
+    bool handleDefault (const QDir &dir);
+    void processThemeDir (const QDir &dir);
+    void insertThemes ();
+    bool hasTheme (const QString &theme) const;
+    bool isCursorTheme (const QString &theme, const int depth = 0);
+
+private:
+    QList<XCursorThemeData *>mList;
+    QStringList mBaseDirs;
+    QString mDefaultName;
 };
 
-
-int XCursorThemeModel::rowCount (const QModelIndex &) const {
+int XCursorThemeModel::rowCount (const QModelIndex &) const
+{
   return mList.count();
 }
 
 
-int XCursorThemeModel::columnCount (const QModelIndex &) const {
+int XCursorThemeModel::columnCount (const QModelIndex &) const
+{
   return 2;
 }
-
 
 #endif

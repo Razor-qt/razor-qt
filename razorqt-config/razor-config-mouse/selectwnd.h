@@ -10,41 +10,40 @@
 #ifndef SELECTWND_H
 #define SELECTWND_H
 
-#include <QObject>
-#include <QWidget>
+#include <QtCore/QObject>
+#include <QtGui/QWidget>
 
 class XCursorThemeModel;
 
-
 #include "ui_selectwnd.h"
-class SelectWnd : public QWidget, private Ui_SelectWnd {
-  Q_OBJECT
+class SelectWnd : public QWidget, private Ui_SelectWnd
+{
+    Q_OBJECT
 
 public:
-  SelectWnd (QWidget *parent=0);
-  ~SelectWnd ();
+    SelectWnd (QWidget *parent=0);
+    ~SelectWnd ();
 
 public slots:
-  void setCurrent ();
+    void setCurrent ();
 
 protected:
-  void keyPressEvent (QKeyEvent *e);
+    void keyPressEvent (QKeyEvent *e);
 
 private:
-  bool iconsIsWritable () const;
-  void selectRow (int) const;
-  void selectRow (const QModelIndex &index) const { selectRow(index.row()); }
+    bool iconsIsWritable () const;
+    void selectRow (int) const;
+    void selectRow (const QModelIndex &index) const { selectRow(index.row()); }
 
 private slots:
-  void currentChanged (const QModelIndex &current, const QModelIndex &previous);
-  void on_btInstall_clicked ();
-  void on_btRemove_clicked ();
-  void on_btSet_clicked ();
+    void currentChanged (const QModelIndex &current, const QModelIndex &previous);
+    void on_btInstall_clicked ();
+    void on_btRemove_clicked ();
+    void on_btSet_clicked ();
 
 private:
-  XCursorThemeModel *mModel;
-  QPersistentModelIndex mAppliedIndex;
+    XCursorThemeModel *mModel;
+    QPersistentModelIndex mAppliedIndex;
 };
-
 
 #endif

@@ -2,9 +2,9 @@
 #include "ui_mainwindow.h"
 
 #include "razornotification.h"
-#include <QDebug>
-#include <QColorDialog>
-#include <QDesktopWidget>
+#include <QtCore/QDebug>
+#include <QtGui/QColorDialog>
+#include <QtGui/QDesktopWidget>
 
 namespace
 {
