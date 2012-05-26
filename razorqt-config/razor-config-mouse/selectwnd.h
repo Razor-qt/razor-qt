@@ -20,28 +20,28 @@ class SelectWnd : public QWidget, private Ui_SelectWnd
 {
     Q_OBJECT
 
-    public:
+public:
     SelectWnd (QWidget *parent=0);
     ~SelectWnd ();
 
-    public slots:
+public slots:
     void setCurrent ();
 
-    protected:
+protected:
     void keyPressEvent (QKeyEvent *e);
 
-    private:
+private:
     bool iconsIsWritable () const;
     void selectRow (int) const;
     void selectRow (const QModelIndex &index) const { selectRow(index.row()); }
 
-    private slots:
+private slots:
     void currentChanged (const QModelIndex &current, const QModelIndex &previous);
     void on_btInstall_clicked ();
     void on_btRemove_clicked ();
     void on_btSet_clicked ();
 
-    private:
+private:
     XCursorThemeModel *mModel;
     QPersistentModelIndex mAppliedIndex;
 };
