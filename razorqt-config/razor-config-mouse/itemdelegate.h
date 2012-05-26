@@ -31,14 +31,14 @@ class ItemDelegate : public QAbstractItemDelegate
 {
     Q_OBJECT
     
-    public:
+public:
     ItemDelegate(QObject *parent = 0);
     ~ItemDelegate();
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    private:
+private:
     QString firstLine(const QModelIndex &index) const;
     QString secondLine(const QModelIndex &index) const;
     QPixmap decoration(const QModelIndex &index) const;
