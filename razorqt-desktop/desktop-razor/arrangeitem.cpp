@@ -25,15 +25,14 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QPainter>
-#include <QGraphicsSceneMouseEvent>
-#include <QCursor>
-#include <QTimer>
-#include <QGraphicsScene>
-#include <QtDebug>
+#include <QtGui/QPainter>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QCursor>
+#include <QtCore/QTimer>
+#include <QtGui/QGraphicsScene>
+#include <QtCore/QtDebug>
 
 #include "arrangeitem.h"
-
 
 ArrangeItem::ArrangeItem(QGraphicsItem * related, DesktopWidgetPlugin * plugin, const QString & text, const QRectF & rect, bool editable, QGraphicsItem * parent)
     : QGraphicsObject(parent),

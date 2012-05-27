@@ -29,11 +29,11 @@
 #ifndef NOTEPADWIN_H
 #define NOTEPADWIN_H
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QTextEdit>
-#include <QToolButton>
+#include <QtGui/QWidget>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QTextEdit>
+#include <QtGui/QToolButton>
 #include <QtCore/QTimer>
 
 class Notepad;
@@ -42,47 +42,47 @@ typedef void (Notepad::*SaveFunctionPointer)(void);
 typedef void (QTextCharFormat::*SetQTextCharFormat)(bool);
 typedef bool (QTextCharFormat::*GetQTextCharFormat)(void) const;
 
-
 struct NotepadFormat {
-	bool bold;
-	bool italic;
-	bool underline;
-	bool strike;
-	bool left;
-	bool center;
-	bool right;
-	bool justify;
+    bool bold;
+    bool italic;
+    bool underline;
+    bool strike;
+    bool left;
+    bool center;
+    bool right;
+    bool justify;
 };
 
-class NotepadWin : public QWidget {
-Q_OBJECT
+class NotepadWin : public QWidget
+{
+    Q_OBJECT
 
 public:
-	NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent = 0);
+    NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent = 0);
 
-	QString text();
-	int pos() const;
+    QString text();
+    int pos() const;
     void setParentSize(const QSizeF &size);
-	void setTextAndPos(QString &text, int p);
+    void setTextAndPos(QString &text, int p);
 
 protected:
-	void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent *event);
 
 private:
-	QSizeF m_parentSize;
-	QTextEdit *edit;
-	QVBoxLayout *layout;
-	QHBoxLayout *panelLayout;
-	SaveFunctionPointer saveText;
-	Notepad *pad;
-	QWidget *panel;
-	QToolButton *bold, *italic, *underline, *strikethrough, *leftSided, *centered, *rightSided, *justified;
-	QTimer* saveTimer;
-	int scrollBarPosition;
+    QSizeF m_parentSize;
+    QTextEdit *edit;
+    QVBoxLayout *layout;
+    QHBoxLayout *panelLayout;
+    SaveFunctionPointer saveText;
+    Notepad *pad;
+    QWidget *panel;
+    QToolButton *bold, *italic, *underline, *strikethrough, *leftSided, *centered, *rightSided, *justified;
+    QTimer* saveTimer;
+    int scrollBarPosition;
 
-	void updateFormat(const QTextCursor &cursor, NotepadFormat &format);
-	void setFormat(bool bold = true, GetQTextCharFormat getter = NULL, SetQTextCharFormat setter = NULL);
-	void setAlignment(Qt::AlignmentFlag a);
+    void updateFormat(const QTextCursor &cursor, NotepadFormat &format);
+    void setFormat(bool bold = true, GetQTextCharFormat getter = NULL, SetQTextCharFormat setter = NULL);
+    void setAlignment(Qt::AlignmentFlag a);
 
 private slots:
     void save();

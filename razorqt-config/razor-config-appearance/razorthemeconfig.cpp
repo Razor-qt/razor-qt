@@ -28,7 +28,7 @@
 #include "razorthemeconfig.h"
 #include "ui_razorthemeconfig.h"
 #include <QtGui/QTreeWidget>
-#include <QDebug>
+#include <QtCore/QDebug>
 
 RazorThemeConfig::RazorThemeConfig(RazorSettings *settings, QWidget *parent) :
     QWidget(parent),

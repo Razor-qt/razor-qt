@@ -28,7 +28,7 @@
 #ifndef RAZORTHEMECONFIG_H
 #define RAZORTHEMECONFIG_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 #include <razorqt/razorsettings.h>
 
 class QTreeWidgetItem;

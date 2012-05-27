@@ -30,10 +30,10 @@
 #include <qtxdg/xdgautostart.h>
 #include <unistd.h>
 
-#include <QtDebug>
-#include <QDBusInterface>
-#include <QCoreApplication>
-#include <QMessageBox>
+#include <QtCore/QtDebug>
+#include <QtDBus/QDBusInterface>
+#include <QtCore/QCoreApplication>
+#include <QtGui/QMessageBox>
 #include <QtGui/QSystemTrayIcon>
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>

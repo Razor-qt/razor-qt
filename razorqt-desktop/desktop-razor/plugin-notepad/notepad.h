@@ -29,26 +29,27 @@
 #ifndef NOTEPAD_H
 #define NOTEPAD_H
 
-#include <QGraphicsView>
-#include <QVBoxLayout>
+#include <QtGui/QGraphicsView>
+#include <QtGui/QVBoxLayout>
 
 #include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 #include "notepadwin.h"
 
-class Notepad : public DesktopWidgetPlugin, public QWidget {
-	NotepadWin *win;
-	QVBoxLayout *layout;
+class Notepad : public DesktopWidgetPlugin, public QWidget
+{
+    NotepadWin *win;
+    QVBoxLayout *layout;
 public:
-	Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *config);
-	~Notepad();
+    Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *config);
+    ~Notepad();
 
-	QString info();
-	QString instanceInfo();
+    QString info();
+    QString instanceInfo();
 
-	void setSizeAndPosition(const QPointF &position, const QSizeF &size);
-	void save();
-	void configure();
+    void setSizeAndPosition(const QPointF &position, const QSizeF &size);
+    void save();
+    void configure();
 
     bool blockGlobalMenu() { return true; }
 };

@@ -27,15 +27,13 @@
 
 #include "iconview.h"
 #include "iconscene.h"
-#include <QtDebug>
-#include <QDesktopServices>
-#include <QGraphicsView>
-#include <QPropertyAnimation>
-#include <QFileDialog>
-
+#include <QtCore/QtDebug>
+#include <QtGui/QDesktopServices>
+#include <QtGui/QGraphicsView>
+#include <QtCore/QPropertyAnimation>
+#include <QtGui/QFileDialog>
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(IconView)
-
 
 IconView::IconView(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)

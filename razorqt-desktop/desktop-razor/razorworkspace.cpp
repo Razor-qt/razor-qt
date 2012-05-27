@@ -28,15 +28,15 @@
 // WARNINGS: order of the includes is important here
 #include "desktopbackgrounddialog.h"
 
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QLibrary>
-#include <QMenu>
-#include <QGraphicsProxyWidget>
-#include <QtDebug>
-#include <QGraphicsTextItem>
-#include <QMessageBox>
-#include <QUuid>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#include <QtCore/QLibrary>
+#include <QtGui/QMenu>
+#include <QtGui/QGraphicsProxyWidget>
+#include <QtCore/QtDebug>
+#include <QtGui/QGraphicsTextItem>
+#include <QtGui/QMessageBox>
+#include <QtCore/QUuid>
 #include <QtCore/QTimer>
 
 #include <QObjectList>

@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2011 Drogolov Roman Olegovich <drull@drull.org.ru>
  *
@@ -17,16 +16,14 @@
  *
  */
 
-#include <QApplication>
-#include <QPoint>
+#include <QtGui/QApplication>
+#include <QtCore/QPoint>
 
 #include "qtnlog.h"
 
 #include "testerapp.h"
 #include "notificationserversettings.h"
 #include <QtUiTools/QUiLoader>
-
-
 
 #ifdef LOG
 #include <log4cplus/helpers/loglog.h>
@@ -36,14 +33,13 @@
 
 int main(int argc, char *argv[])
 {
-
     INFO("Starting test qnot2 argc=" << argc << " argv[0]=" << argv[0]);
 
     QApplication app(argc,argv);
-    NotificationServerSettings::instance(&app)  ;
+    NotificationServerSettings::instance(&app);
     // from where, one has to take icons
 
-    TesterApp tester ;
+    TesterApp tester;
     tester.show();
 
     return app.exec();

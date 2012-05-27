@@ -29,9 +29,9 @@
 #include <razorqt/razorapplication.h>
 #include "dialog.h"
 #include "razortranslate.h"
-#include <QTextStream>
+#include <QtCore/QTextStream>
 #include <razorqt/razorpower/razorpower.h>
-#include <QDebug>
+#include <QtCore/QDebug>
 
 void help()
 {

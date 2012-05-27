@@ -28,7 +28,7 @@
 #ifndef WORKSPACEMANAGER_H
 #define WORKSPACEMANAGER_H
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include "desktopplugin.h"
 #include "razorworkspace.h"

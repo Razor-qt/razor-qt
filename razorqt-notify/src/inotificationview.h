@@ -1,8 +1,8 @@
 #ifndef INOTIFICATIONVIEW_H
 #define INOTIFICATIONVIEW_H
 
-#include <QObject>
-#include <QMap>
+#include <QtCore/QObject>
+#include <QtCore/QMap>
 
 class Notification ;
 class NotificationTimeout ;

@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QApplication>
+#include <QtGui/QApplication>
 #include "application.h"
 
 

@@ -26,17 +26,17 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "desktopicon.h"
-#include <QPainter>
-#include <QPalette>
-#include <QApplication>
-#include <QIcon>
-#include <QFileInfo>
-#include <QFileIconProvider>
-#include <QDesktopServices>
-#include <QUrl>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsDropShadowEffect>
-#include <QtDebug>
+#include <QtGui/QPainter>
+#include <QtGui/QPalette>
+#include <QtGui/QApplication>
+#include <QtGui/QIcon>
+#include <QtCore/QFileInfo>
+#include <QtGui/QFileIconProvider>
+#include <QtGui/QDesktopServices>
+#include <QtCore/QUrl>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QGraphicsDropShadowEffect>
+#include <QtCore/QtDebug>
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgmime.h>
 

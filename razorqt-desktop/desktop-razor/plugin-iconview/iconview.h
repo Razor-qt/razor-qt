@@ -28,13 +28,12 @@
 #ifndef ICONVIEW_H
 #define ICONVIEW_H
 
-#include <QGraphicsView>
+#include <QtGui/QGraphicsView>
 
 #include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 
 class IconScene;
-
 
 class IconView : public DesktopWidgetPlugin, public QGraphicsView
 {

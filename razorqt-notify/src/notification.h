@@ -1,15 +1,14 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
-#include <QObject>
+#include <QtCore/QObject>
 #include <QVariantMap>
-#include <QStringList>
-#include <QCache>
-#include <QPixmap>
+#include <QtCore/QStringList>
+#include <QtCore/QCache>
+#include <QtGui/QPixmap>
 
 class Notification
 {
-
 public:
     Notification();
     Notification(const QString& appName, int id, const QString& icon, const QString& summary, const QString& body, const QStringList& actions, const QVariantMap& hints, int timeout);

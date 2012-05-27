@@ -28,10 +28,10 @@
 #ifndef RAZORWORKSPACE_H
 #define RAZORWORKSPACE_H
 
-#include <QTextStream>
-#include <QGraphicsView>
-#include <QMouseEvent>
-#include <QAction>
+#include <QtCore/QTextStream>
+#include <QtGui/QGraphicsView>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QAction>
 
 #include <razorqt/xfitman.h>
 #include <razorqt/razorplugininfo.h>

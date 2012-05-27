@@ -25,10 +25,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QColorDialog>
-#include <QFileDialog>
-#include <QDirIterator>
-#include <QDesktopWidget>
+#include <QtGui/QColorDialog>
+#include <QtGui/QFileDialog>
+#include <QtCore/QDirIterator>
+#include <QtGui/QDesktopWidget>
 #include "desktopbackgrounddialog.h"
 #include <razorqt/razorsettings.h>
 

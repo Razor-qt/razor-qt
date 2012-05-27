@@ -1,16 +1,14 @@
 #include "notification.h"
 #include "qtnlog.h"
-#include <QPixmap>
-#include <QIcon>
-#include <QFile>
-#include <QDBusArgument>
-#include <QApplication>
-#include <QDir>
+#include <QtGui/QPixmap>
+#include <QtGui/QIcon>
+#include <QtCore/QFile>
+#include <QtDBus/QDBusArgument>
+#include <QtGui/QApplication>
+#include <QtCore/QDir>
 
 #include "razorsettings.h"
 #include "xdgicon.h"
-
-
 
 namespace
 {

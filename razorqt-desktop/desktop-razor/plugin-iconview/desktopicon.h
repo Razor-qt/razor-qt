@@ -28,8 +28,8 @@
 #ifndef DESKTOPICON_H
 #define DESKTOPICON_H
 
-#include <QGraphicsLayoutItem>
-#include <QGraphicsTextItem>
+#include <QtGui/QGraphicsLayoutItem>
+#include <QtGui/QGraphicsTextItem>
 #include <qtxdg/xdgdesktopfile.h>
 #include "desktopplugin.h"
 

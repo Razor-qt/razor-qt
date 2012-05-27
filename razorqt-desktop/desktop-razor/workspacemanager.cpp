@@ -26,15 +26,14 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <razorqt/razorapplication.h>
-#include <QtDebug>
-#include <QApplication>
-#include <QDesktopWidget>
+#include <QtCore/QtDebug>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
 #include <razorqt/razorsettings.h>
 #include <QtCore/QFileSystemWatcher>
 #include "workspacemanager.h"
 
 EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
-
 
 RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSettings * config)
     : DesktopPlugin(configId, config)

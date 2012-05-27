@@ -26,16 +26,15 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QtDebug>
-#include <QPalette>
-#include <QPropertyAnimation>
+#include <QtCore/QtDebug>
+#include <QtGui/QPalette>
+#include <QtCore/QPropertyAnimation>
 #include "notepad.h"
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(Notepad)
 
-
 Notepad::Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *config)
-    : DesktopWidgetPlugin(scene, configId, config)
+  : DesktopWidgetPlugin(scene, configId, config)
 {
     setObjectName("Notepad");
     m_config->beginGroup(configId);

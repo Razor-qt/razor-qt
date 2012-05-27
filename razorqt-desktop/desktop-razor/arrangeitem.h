@@ -28,9 +28,8 @@
 #ifndef ARRANGEITEM_H
 #define ARRANGEITEM_H
 
-#include <QGraphicsObject>
+#include <QtGui/QGraphicsObject>
 #include "desktopwidgetplugin.h"
-
 
 class ArrangeItem : public QGraphicsObject
 {
