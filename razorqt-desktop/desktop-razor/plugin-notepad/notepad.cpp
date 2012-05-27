@@ -38,36 +38,35 @@ Notepad::Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *
 {
     setObjectName("Notepad");
     m_config->beginGroup(configId);
-	QString text = m_config->value("text", "").toString();
-	int x = m_config->value("x", 0).toInt();
-	int y = m_config->value("y", 0).toInt();
+    QString text = m_config->value("text", "").toString();
+    int x = m_config->value("x", 0).toInt();
+    int y = m_config->value("y", 0).toInt();
     int w = m_config->value("w", 0).toInt();
     int h = m_config->value("h", 0).toInt();
-	int pos = m_config->value("pos", 0).toInt();
+    int pos = m_config->value("pos", 0).toInt();
     m_config->endGroup();
 
-	resize(w, h);
-	move(x, y);
-	QPalette palette;
-	palette.setColor(backgroundRole(), Qt::transparent);
-	setPalette(palette);
-   
-	layout = new QVBoxLayout(this);
-	layout->setContentsMargins(0, 0, 0, 0);
-	setLayout(layout);
-	
-	win = new NotepadWin(this, &Notepad::save);
-	layout->addWidget(win);
-	win->setTextAndPos(text, pos);
+    resize(w, h);
+    move(x, y);
+    QPalette palette;
+    palette.setColor(backgroundRole(), Qt::transparent);
+    setPalette(palette);
+
+    layout = new QVBoxLayout;
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    win = new NotepadWin(this, &Notepad::save);
+    layout->addWidget(win);
+    win->setTextAndPos(text, pos);
+    setLayout(layout);
 }
 
 Notepad::~Notepad()
 {
     delete win;
-	delete layout;
+    delete layout;
 }
 
-    
 QString Notepad::info()
 {
     return QObject::tr("Display a notepad");
@@ -101,7 +100,7 @@ void Notepad::save()
     m_config->setValue("w", size().width());
     m_config->setValue("h", size().height());
     m_config->setValue("text", win->text());
-	m_config->setValue("pos", win->pos());
+    m_config->setValue("pos", win->pos());
     m_config->endGroup();
 }
 
