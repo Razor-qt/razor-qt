@@ -28,16 +28,16 @@
 
 #include "notepadwin.h"
 
-#include <QtDebug>
-#include <QScrollBar>
-#include <QTextCharFormat>
+#include <QtCore/QtDebug>
+#include <QtGui/QScrollBar>
+#include <QtGui/QTextCharFormat>
 #include <qtxdg/xdgicon.h>
 
 NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent) :
-	QWidget(parent),
-	saveText(sv),
-	pad(notepad),
-	scrollBarPosition(0)
+    QWidget(parent),
+    saveText(sv),
+    pad(notepad),
+    scrollBarPosition(0)
 {
     saveTimer = new QTimer(this);
     saveTimer->setSingleShot(true);
@@ -114,20 +114,20 @@ NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent
     centered->setObjectName(QString("centered"));
     rightSided->setObjectName(QString("rightSided"));
     justified->setObjectName(QString("justified"));
-	setObjectName(QString("notepadWin"));
-    
+    setObjectName(QString("notepadWin"));
+
     panelLayout->addWidget(bold);
     panelLayout->addWidget(italic);
     panelLayout->addWidget(underline);
     panelLayout->addWidget(strikethrough);
-    
+
     panelLayout->setSpacing(0);
     panelLayout->addWidget(leftSided);
     panelLayout->addWidget(centered);
     panelLayout->addWidget(rightSided);
     panelLayout->addWidget(justified);
     layout->setAlignment(panelLayout, Qt::AlignLeft);
-	
+
     connect(bold, SIGNAL(clicked()), this, SLOT(setBold()));
     connect(italic, SIGNAL(clicked()), this, SLOT(setItalic()));
     connect(underline, SIGNAL(clicked()), this, SLOT(setUnderline()));
@@ -141,19 +141,19 @@ NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent
     connect(edit, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
     connect(edit, SIGNAL(cursorPositionChanged()), this, SLOT(onSelectionChanged()));
 
-	connect(edit, SIGNAL(textChanged()), saveTimer, SLOT(start()));
-	connect(edit->verticalScrollBar(), SIGNAL(valueChanged(int)), saveTimer, SLOT(start()));
-	connect(saveTimer, SIGNAL(timeout()), this, SLOT(save()));
+    connect(edit, SIGNAL(textChanged()), saveTimer, SLOT(start()));
+    connect(edit->verticalScrollBar(), SIGNAL(valueChanged(int)), saveTimer, SLOT(start()));
+    connect(saveTimer, SIGNAL(timeout()), this, SLOT(save()));
 }
 
 QString NotepadWin::text()
 {
-	return edit->toHtml();
+    return edit->toHtml();
 }
 
 int NotepadWin::pos() const
 {
-	return edit->verticalScrollBar()->value();
+    return edit->verticalScrollBar()->value();
 }
 
 void NotepadWin::setParentSize(const QSizeF &size)
@@ -164,146 +164,153 @@ void NotepadWin::setParentSize(const QSizeF &size)
 
 void NotepadWin::setTextAndPos(QString &text, int p)
 {
-	edit->document()->setHtml(text);
-	scrollBarPosition = p;
+    edit->document()->setHtml(text);
+    scrollBarPosition = p;
 }
 
 void NotepadWin::showEvent(QShowEvent *event)
 {
-	QWidget::showEvent(event);
-	edit->verticalScrollBar()->setValue(scrollBarPosition);
+    QWidget::showEvent(event);
+    edit->verticalScrollBar()->setValue(scrollBarPosition);
 }
 
 void NotepadWin::updateFormat(const QTextCursor &cursor, NotepadFormat &format)
 {
-	format.bold = cursor.charFormat().fontWeight() == QFont::Bold ? true : false;
-	format.italic = cursor.charFormat().fontItalic();
-	format.underline = cursor.charFormat().fontUnderline();
-	format.strike = cursor.charFormat().fontStrikeOut();
-	format.left = format.right = format.center = format.justify = false;
-	if(edit->alignment() == Qt::AlignLeft)
-		format.left = true;
-	else if(edit->alignment() == Qt::AlignCenter)
-		format.center = true;
-	else if(edit->alignment() == Qt::AlignRight)
-		format.right = true;
-	else if(edit->alignment() == Qt::AlignJustify)
-		format.justify = true;
+    format.bold = cursor.charFormat().fontWeight() == QFont::Bold ? true : false;
+    format.italic = cursor.charFormat().fontItalic();
+    format.underline = cursor.charFormat().fontUnderline();
+    format.strike = cursor.charFormat().fontStrikeOut();
+    format.left = format.right = format.center = format.justify = false;
+    if(edit->alignment() == Qt::AlignLeft)
+        format.left = true;
+    else if(edit->alignment() == Qt::AlignCenter)
+        format.center = true;
+    else if(edit->alignment() == Qt::AlignRight)
+        format.right = true;
+    else if(edit->alignment() == Qt::AlignJustify)
+        format.justify = true;
 }
 
 void NotepadWin::setFormat(bool bold, GetQTextCharFormat getter, SetQTextCharFormat setter)
 {
-	QTextCharFormat fmt;
-	QTextCursor cursor = edit->textCursor();
-	if(cursor.hasSelection()) {
-		int selStart = cursor.selectionStart();
-		int selEnd = cursor.selectionEnd();
-		int pos = cursor.position();
-		bool flag = false;
-		int i = 0;
-		for(i = selStart; i <= selEnd; i++) {
-			cursor.setPosition(i);
-			if(bold) {
-				if(cursor.charFormat().fontWeight() == QFont::Bold) {
-					flag = true;
-					break;
-				}
-			}
-			else if((cursor.charFormat().*getter)()) {
-				flag = true;
-				break;
-			}
-		}
-		cursor.setPosition(pos);
-		if(bold)
-			fmt.setFontWeight(flag ? QFont::Normal : QFont::Bold);
-		else
-			(fmt.*setter)(!flag);
-		cursor.mergeCharFormat(fmt);
-		edit->mergeCurrentCharFormat(fmt);
-	}
+    QTextCharFormat fmt;
+    QTextCursor cursor = edit->textCursor();
+    if(cursor.hasSelection())
+    {
+        int selStart = cursor.selectionStart();
+        int selEnd = cursor.selectionEnd();
+        int pos = cursor.position();
+        bool flag = false;
+        int i = 0;
+        for(i = selStart; i <= selEnd; i++)
+        {
+            cursor.setPosition(i);
+            if(bold)
+            {
+                if(cursor.charFormat().fontWeight() == QFont::Bold)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            else if((cursor.charFormat().*getter)())
+            {
+                flag = true;
+                break;
+            }
+        }
+        cursor.setPosition(pos);
+        if(bold)
+            fmt.setFontWeight(flag ? QFont::Normal : QFont::Bold);
+        else
+            (fmt.*setter)(!flag);
+        cursor.mergeCharFormat(fmt);
+        edit->mergeCurrentCharFormat(fmt);
+    }
 }
 
 void NotepadWin::setAlignment(Qt::AlignmentFlag a)
 {
-	edit->setAlignment(a);
-	leftSided->setChecked(Qt::AlignLeft == a ? true : false);
-	centered->setChecked(Qt::AlignCenter == a ? true : false);
-	rightSided->setChecked(Qt::AlignRight == a ? true : false);
-	justified->setChecked(Qt::AlignJustify == a ? true : false);
+    edit->setAlignment(a);
+    leftSided->setChecked(Qt::AlignLeft == a ? true : false);
+    centered->setChecked(Qt::AlignCenter == a ? true : false);
+    rightSided->setChecked(Qt::AlignRight == a ? true : false);
+    justified->setChecked(Qt::AlignJustify == a ? true : false);
 }
 
 void NotepadWin::save()
 {
-	(pad->*saveText)();
+    (pad->*saveText)();
 }
 
 void NotepadWin::setBold()
 {
-	setFormat();
+    setFormat();
 }
 
 void NotepadWin::setItalic()
 {
-	setFormat(false, &QTextCharFormat::fontItalic, &QTextCharFormat::setFontItalic);
+    setFormat(false, &QTextCharFormat::fontItalic, &QTextCharFormat::setFontItalic);
 }
 
 void NotepadWin::setUnderline()
 {
-	setFormat(false, &QTextCharFormat::fontUnderline, &QTextCharFormat::setFontUnderline);
+    setFormat(false, &QTextCharFormat::fontUnderline, &QTextCharFormat::setFontUnderline);
 }
 
 void NotepadWin::setStrike()
 {
-	setFormat(false, &QTextCharFormat::fontStrikeOut, &QTextCharFormat::setFontStrikeOut);
+    setFormat(false, &QTextCharFormat::fontStrikeOut, &QTextCharFormat::setFontStrikeOut);
 }
 
 void NotepadWin::setLeftSided()
 {
-	setAlignment(Qt::AlignLeft);
+    setAlignment(Qt::AlignLeft);
 }
 
 void NotepadWin::setCentered()
 {
-	setAlignment(Qt::AlignCenter);
+    setAlignment(Qt::AlignCenter);
 }
 
 void NotepadWin::setRightSided()
 {
-	setAlignment(Qt::AlignRight);
+    setAlignment(Qt::AlignRight);
 }
 
 void NotepadWin::setJustified()
 {
-	setAlignment(Qt::AlignJustify);
+    setAlignment(Qt::AlignJustify);
 }
 
 void NotepadWin::onSelectionChanged()
 {
     QTextCursor cursor = edit->textCursor();
-	NotepadFormat format;
+    NotepadFormat format;
 
-    if(cursor.hasSelection()) {
+    if(cursor.hasSelection())
+    {
         int selStart = cursor.selectionStart();
         int selEnd = cursor.selectionEnd();
         int pos = cursor.position();
         int i = 0;
 
-        for(i = selStart; i <= selEnd; i++) {
+        for(i = selStart; i <= selEnd; i++)
+        {
             cursor.setPosition(i);
-			updateFormat(cursor, format);
+            updateFormat(cursor, format);
         }
         cursor.setPosition(pos);
 
     }
-	else
-		updateFormat(cursor, format);
-	bold->setChecked(format.bold);
-	italic->setChecked(format.italic);
-	underline->setChecked(format.underline);
-	strikethrough->setChecked(format.strike);
-	leftSided->setChecked(format.left);
-	centered->setChecked(format.center);
-	rightSided->setChecked(format.right);
-	justified->setChecked(format.justify);
+    else
+        updateFormat(cursor, format);
+    bold->setChecked(format.bold);
+    italic->setChecked(format.italic);
+    underline->setChecked(format.underline);
+    strikethrough->setChecked(format.strike);
+    leftSided->setChecked(format.left);
+    centered->setChecked(format.center);
+    rightSided->setChecked(format.right);
+    justified->setChecked(format.justify);
 }
