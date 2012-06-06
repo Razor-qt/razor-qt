@@ -78,12 +78,10 @@ bool dbusCall(const QString &service,
         qWarning() << "dbusCall: QDBusInterface is invalid" << service << path << interface << method;
         if (errorCheck == RazorPowerProvider::CheckDBUS)
         {
-			/*
-            RazorNotification::notify(QObject::tr("Razor Power Manager"),
-                                    "razor-logo.png",
+            RazorNotification().notify(//QObject::tr("Razor Power Manager"),
                                     QObject::tr("Power Manager Error"),
-                                    QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method);
-			*/
+                                    QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method,
+                                    "razor-logo.png");
         }
         return false;
     }
@@ -95,12 +93,10 @@ bool dbusCall(const QString &service,
         printDBusMsg(msg);
         if (errorCheck == RazorPowerProvider::CheckDBUS)
         {
-			/*
-            RazorNotification::notify(QObject::tr("Razor Power Manager"),
-                                    "razor-logo.png",
+            RazorNotification().notify(//QObject::tr("Razor Power Manager"),
                                     QObject::tr("Power Manager Error (D-BUS call)"),
-                                    msg.errorName() + "<p>" + msg.errorMessage());
-			*/
+                                    msg.errorName() + "<p>" + msg.errorMessage(),
+                                    "razor-logo.png");
         }
     }
 
