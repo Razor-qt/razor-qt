@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "razornotification.h"
+//#include "razornotification.h"
 #include <QtCore/QDebug>
 #include <QtGui/QColorDialog>
 #include <QtGui/QDesktopWidget>
@@ -74,16 +74,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	/*
     RazorNotification::closeNotification(m_notificationId);
+	*/
     delete ui;
 }
 
 void MainWindow::showNotification()
 {
+	/*
     m_notificationId = RazorNotification::notify(tr("A testing application"),
                                                  "razor-logo.png",
                                                  tr("Notification Summary"),
                                                  tr("Notification Body") + "<p>Lorem ipsim dolor sir amet...");
+	*/
 }
 
 void MainWindow::positionChanged()
