@@ -32,18 +32,27 @@ class RazorNotificationPrivate : public QObject
 {
     Q_OBJECT
 public:
-    RazorNotificationPrivate(RazorNotification* parent);
+    RazorNotificationPrivate(const QString& summary, RazorNotification* parent);
     ~RazorNotificationPrivate();
 
-    void notify(const QString& summary, const QString& body, const QString& iconName);
+    void update();
     void close();
+    void setActions(QStringList actions, int defaultAction);
 
 public slots:
+    void handleAction(uint id, QString key);
     void notificationClosed(uint, uint);
 
 private:
     OrgFreedesktopNotificationsInterface* mInterface;
     uint mId;
+
+    QString mSummary;
+    QString mBody;
+    QString mIconName;
+    QStringList mActions;
+    int mDefaultAction;
+    int mTimeout;
 
     RazorNotification* const q_ptr;
     Q_DECLARE_PUBLIC(RazorNotification)

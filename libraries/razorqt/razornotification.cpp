@@ -27,16 +27,22 @@
 #include <QtGui/QMessageBox>
 #include <QDebug>
 
+RazorNotification::RazorNotification(const QString& summary, QObject* parent) :
+    QObject(parent),
+    d_ptr(new RazorNotificationPrivate(summary, this))
+{
+}
+
 RazorNotification::~RazorNotification()
 {
     Q_D(RazorNotification);
     delete d;
 }
 
-void RazorNotification::notify(const QString &summary, const QString &body, const QString &iconName)
+void RazorNotification::update()
 {
     Q_D(RazorNotification);
-    d->notify(summary, body, iconName);
+    d->update();
 }
 
 void RazorNotification::close()
@@ -45,28 +51,103 @@ void RazorNotification::close()
     d->close();
 }
 
-RazorNotificationPrivate::RazorNotificationPrivate(RazorNotification *parent) :
+void RazorNotification::setSummary(const QString& summary)
+{
+    Q_D(RazorNotification);
+    d->mSummary = summary;
+}
+
+void RazorNotification::setBody(const QString& body)
+{
+    Q_D(RazorNotification);
+    d->mBody = body;
+}
+
+void RazorNotification::setIcon(const QString& iconName)
+{
+    Q_D(RazorNotification);
+    d->mIconName = iconName;
+}
+
+void RazorNotification::setActions(const QStringList& actions, int defaultAction)
+{
+    Q_D(RazorNotification);
+    d->setActions(actions, defaultAction);
+}
+
+void RazorNotification::setTimeout(int timeout)
+{
+    Q_D(RazorNotification);
+    d->mTimeout = timeout;
+}
+
+void RazorNotification::notify(const QString& summary, const QString& body, const QString& iconName)
+{
+    RazorNotification notification(summary);
+    notification.setBody(body);
+    notification.setIcon(iconName);
+    notification.update();
+}
+
+RazorNotificationPrivate::RazorNotificationPrivate(const QString& summary, RazorNotification* parent) :
+    mId(0),
+    mSummary(summary),
+    mTimeout(-1),
     q_ptr(parent)
 {
     mInterface = new OrgFreedesktopNotificationsInterface("org.freedesktop.Notifications",
                                                           "/org/freedesktop/Notifications",
                                                           QDBusConnection::sessionBus(), 0);
     connect(mInterface, SIGNAL(NotificationClosed(uint, uint)), this, SLOT(notificationClosed(uint,uint)));
+    connect(mInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(handleAction(uint,QString)));
 }
 
 RazorNotificationPrivate::~RazorNotificationPrivate()
 {
 }
 
-void RazorNotificationPrivate::notify(const QString& summary, const QString& body, const QString& iconName)
+void RazorNotificationPrivate::update()
 {
-    QDBusPendingReply<uint> reply = mInterface->Notify(qAppName(), mId, iconName, summary, body, QStringList(), QVariantMap(), -1);
+    QDBusPendingReply<uint> reply = mInterface->Notify(qAppName(), mId, mIconName, mSummary, mBody, mActions, QVariantMap(), mTimeout);
     reply.waitForFinished();
     if (reply.isError())
     {
-        QMessageBox::information(0, tr("Notifications Fallback"), summary + " \n\n " + body);
+        QMessageBox::information(0, tr("Notifications Fallback"), mSummary + " \n\n " + mBody);
     }
     mId = reply.value();
+}
+
+
+void RazorNotificationPrivate::setActions(QStringList actions, int defaultAction)
+{
+    mActions.clear();
+    mDefaultAction = defaultAction;
+    for (int ix = 0; ix < actions.size(); ix++)
+    {
+        if (ix == defaultAction)
+            mActions.append("default");
+        else
+            mActions.append(QString::number(ix));
+        mActions.append(actions[ix]);
+    }
+}
+
+void RazorNotificationPrivate::handleAction(uint id, QString key)
+{
+    if (id != mId)
+        return;
+
+    Q_Q(RazorNotification);
+    qDebug() << "action invoked:" << key;
+    bool ok = true;
+    int keyId;
+    if (key == "default")
+        keyId = mDefaultAction;
+    else
+        keyId = key.toInt(&ok);
+
+    if (ok && key >= 0)
+        emit q->actionActivated(keyId);
 }
 
 void RazorNotificationPrivate::close()
@@ -83,10 +164,4 @@ void RazorNotificationPrivate::notificationClosed(uint id, uint reason)
         mId = 0;
     }
     emit q->notificationClosed(RazorNotification::CloseReason(reason));
-}
-
-RazorNotification::RazorNotification(QObject* parent) :
-    QObject(parent),
-    d_ptr(new RazorNotificationPrivate(this))
-{
 }

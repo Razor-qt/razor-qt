@@ -30,8 +30,8 @@
 #include "razorpowerproviders.h"
 #include <QtDBus/QDBusInterface>
 #include <QtCore/QDebug>
-#include "razorqt/xfitman.h"
 #include "razorqt/razornotification.h"
+#include "razorqt/xfitman.h"
 
 #define UPOWER_SERVICE          "org.freedesktop.UPower"
 #define UPOWER_PATH             "/org/freedesktop/UPower"
@@ -78,7 +78,7 @@ bool dbusCall(const QString &service,
         qWarning() << "dbusCall: QDBusInterface is invalid" << service << path << interface << method;
         if (errorCheck == RazorPowerProvider::CheckDBUS)
         {
-            RazorNotification().notify(//QObject::tr("Razor Power Manager"),
+            RazorNotification::notify(
                                     QObject::tr("Power Manager Error"),
                                     QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method,
                                     "razor-logo.png");
@@ -93,7 +93,7 @@ bool dbusCall(const QString &service,
         printDBusMsg(msg);
         if (errorCheck == RazorPowerProvider::CheckDBUS)
         {
-            RazorNotification().notify(//QObject::tr("Razor Power Manager"),
+            RazorNotification::notify(
                                     QObject::tr("Power Manager Error (D-BUS call)"),
                                     msg.errorName() + "<p>" + msg.errorMessage(),
                                     "razor-logo.png");

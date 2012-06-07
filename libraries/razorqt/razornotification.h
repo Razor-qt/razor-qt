@@ -25,30 +25,97 @@
 #ifndef RAZORNOTIFICATION_H
 #define RAZORNOTIFICATION_H
 
-#include <QtCore/QObject>
+#include <QtCore/QStringList>
 
 class RazorNotificationPrivate;
 
+/**
+ * \brief Galago/Libnotify-style desktop notifications
+ *
+ * http://www.galago-project.org/specs/notification/
+ */
 class RazorNotification : public QObject
 {
     Q_OBJECT
 public:
-    RazorNotification(QObject* parent = 0);
+    RazorNotification(const QString& summary, QObject* parent = 0);
     ~RazorNotification();
 
-    void notify(const QString& summary, const QString& body=QString(), const QString& iconName=QString());
-    void close();
+    /*!
+     * \brief Set the summary text briefly describing the notification
+     */
+    void setSummary(const QString& summary);
+
+    /*!
+     * \brief Set the detailed body text
+     */
+    void setBody(const QString& body);
+
+    /*!
+     * \brief setIcon   Set an icon to display
+     * \param iconName  Name of the icon
+     */
+    void setIcon(const QString& iconName);
+
+    /*!
+     * \brief Set actions for the notification
+     * \param actions       List of action button titles
+     * \param defaultAction Index of the default action which gets activated
+     *                      when the notification body is clicked
+     */
+    void setActions(const QStringList& actions, int defaultAction = -1);
+
+    /*!
+     * \brief Set the timeout for the notification
+     * \param timeout Seconds for timeout, or zero to never time out.
+     */
+    void setTimeout(int timeout);
+
+    /*!
+     * \brief Convenience function to create and display a notification
+     */
+    static void notify(const QString& summary,
+                const QString& body = QString(),
+                const QString& iconName = QString()
+            );
 
     enum CloseReason
     {
-        Expired     = 1, // The notification expired.
-        Dismissed   = 2, // The notification was dismissed by the user.
-        ForceClosed = 3, // The notification was closed by a call to CloseNotification.
-        Unknown     = 4  // Undefined/reserved reasons.
+        //! The notification expired.
+        Expired     = 1,
+        //! The notification was dismissed by the user.
+        Dismissed   = 2,
+        //! The notification was closed by a call to CloseNotification.
+        ForceClosed = 3,
+        //! Undefined/reserved reasons.
+        Unknown     = 4
     };
 
+public slots:
+    /*!
+     * \brief Display the notification or update it if it's already visible
+     */
+    void update();
+
+    /*!
+     * \brief Causes a notification to be forcefully closed and removed from the user's view.
+     * It can be used, for example, in the event that what the notification pertains to
+     * is no longer relevant, or to cancel a notification with no expiration time.
+     */
+    void close();
+
 signals:
+    /*!
+     * \brief Emitted when the notification is closed
+     * \param reason How notification was closed
+     */
     void notificationClosed(CloseReason reason);
+
+    /*!
+     * \brief Emitted when an action button is activated.
+     * \param actionNumber Index of the actions array for the activated button.
+     */
+    void actionActivated(uint actionNumber);
 
 private:
     Q_DECLARE_PRIVATE(RazorNotification)
