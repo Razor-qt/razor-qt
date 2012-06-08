@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="osd_shadow_corner.png">images/osd_shadow_corner.png</file>
-        <file alias="osd_shadow_edge.png">images/osd_shadow_edge.png</file>
-    </qresource>
-</RCC>

@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012-2013 Razor team
+ * Copyright: 2010-2011 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *
@@ -25,42 +25,30 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORAPPLICATION_H
-#define RAZORAPPLICATION_H
+#ifndef BASICSETTINGS_H
+#define BASICSETTINGS_H
 
-#include <QtGui/QApplication>
-#include <QtGui/QProxyStyle>
+#include <razorqt/razorsettings.h>
+#include <QtGui/QWidget>
+#include "ui_basicsettings.h"
 
-/*! \brief Razor-qt wrapper around QApplication.
- * It loads various Razor-qt related stuff by default (window icon, icon theme...)
- *
- * \note This wrapper is intended to be used only inside Razor-qt project. Using it
- *       in external application will automatically require linking to various
- *       Razor-qt libraries.
- *
- */
-class RazorApplication : public QApplication
+
+class BasicSettings : public QWidget, public Ui::BasicSettings
 {
     Q_OBJECT
-
 public:
-    /*! Construct a Razor-qt application object.
-     * \param argc standard argc as in QApplication
-     * \param argv standard argv as in QApplication
-     */
-    RazorApplication(int &argc, char **argv);
-    virtual ~RazorApplication() {}
+    explicit BasicSettings(RazorSettings* settings, QWidget* parent = 0);
+    ~BasicSettings();
+
+public slots:
+    void restoreSettings();
 
 private slots:
-    void updateTheme();
+    void save();
+    void testNotification();
 
-signals:
-    void themeChanged();
+private:
+    RazorSettings* mSettings;
 };
 
-#if defined(razorApp)
-#undef razorApp
-#endif
-#define razorApp (static_cast<RazorApplication *>(qApp))
-
-#endif
+#endif // BASICSETTINGS_H

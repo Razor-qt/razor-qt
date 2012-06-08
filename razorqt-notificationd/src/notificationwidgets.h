@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012-2013 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *
@@ -25,42 +25,29 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORAPPLICATION_H
-#define RAZORAPPLICATION_H
+#ifndef NOTIFICATIONWIDGETS_H
+#define NOTIFICATIONWIDGETS_H
 
-#include <QtGui/QApplication>
-#include <QtGui/QProxyStyle>
+#include <QtGui/QWidget>
 
-/*! \brief Razor-qt wrapper around QApplication.
- * It loads various Razor-qt related stuff by default (window icon, icon theme...)
- *
- * \note This wrapper is intended to be used only inside Razor-qt project. Using it
- *       in external application will automatically require linking to various
- *       Razor-qt libraries.
- *
- */
-class RazorApplication : public QApplication
+class QComboBox;
+
+
+class NotificationActionsWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    /*! Construct a Razor-qt application object.
-     * \param argc standard argc as in QApplication
-     * \param argv standard argv as in QApplication
-     */
-    RazorApplication(int &argc, char **argv);
-    virtual ~RazorApplication() {}
-
-private slots:
-    void updateTheme();
+    NotificationActionsWidget(const QStringList& actions, QWidget *parent);
 
 signals:
-    void themeChanged();
-};
+    void actionTriggered(const QString &actionText);
 
-#if defined(razorApp)
-#undef razorApp
-#endif
-#define razorApp (static_cast<RazorApplication *>(qApp))
+private:
+    QComboBox *m_comboBox;
+
+private slots:
+    void actionComboBoxActivated();
+};
 
 #endif

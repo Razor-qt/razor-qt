@@ -65,7 +65,7 @@ add_subdirectory( razorqt-config )
 add_subdirectory( razorqt-power )
 add_subdirectory( razorqt-policykit )
 add_subdirectory( razorqt-lightdm-greeter )
-add_subdirectory( razorqt-notify )
+add_subdirectory( razorqt-notificationd )
 
 ########### Add uninstall target ###############
 CONFIGURE_FILE(
