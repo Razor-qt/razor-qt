@@ -41,11 +41,10 @@ Notifyd::Notifyd(QObject* parent)
     : QObject(parent),
       mId(0)
 {
-    qDebug() << "Notifyd created";
     m_area = new NotificationArea();
 
-    connect(this, SIGNAL(notificationAdded(uint,QString,QString,QString,QString,int)),
-            m_area->layout(), SLOT(addNotification(uint,QString,QString,QString,QString,int)));
+    connect(this, SIGNAL(notificationAdded(uint,QString,QString,QString,QString,int,QStringList,QVariantMap)),
+            m_area->layout(), SLOT(addNotification(uint,QString,QString,QString,QString,int,QStringList,QVariantMap)));
     connect(this, SIGNAL(notificationClosed(uint, uint)),
             m_area->layout(), SLOT(removeNotification(uint, uint)));
     // feedback for original caller
@@ -56,13 +55,11 @@ Notifyd::Notifyd(QObject* parent)
 
 Notifyd::~Notifyd()
 {
-    qDebug() << "Notifyd deleted";
     m_area->deleteLater();
 }
 
 void Notifyd::CloseNotification(uint id)
 {
-    qDebug() << QString("CloseNotification(%1);").arg(id);
     emit notificationClosed(id, 3);
 }
 
@@ -71,38 +68,36 @@ QStringList Notifyd::GetCapabilities()
     QStringList caps;
     caps << "actions"
          << "body"
-      // << "body-hyperlinks"
-      // << "body-images"
-      // << "body-markup"
+         << "body-hyperlinks"
+         << "body-images"
+         << "body-markup"
       // << "icon-multi"
       // << "icon-static"
       // << "sound"
       ;
-    qDebug() << QString("GetCapabilities(); =>") << caps;
     return caps;
 }
 
-QString Notifyd::GetServerInformation(QString& vendor, QString& version, QString& spec_version)
+QString Notifyd::GetServerInformation(QString& vendor,
+                                      QString& version,
+                                      QString& spec_version)
 {
-    //qDebug() << QString("GetServerInformation(%1, %2, %3);").arg(vendor, version, spec_version);
-    qDebug() << QString("GetServerInformation(...);");
-    spec_version = QString("0.9");
-    version = QString("0.1");
-    vendor = QString("Alec");
-    return QString("notifyd");
+    spec_version = QString("1.2");
+    version = QString(RAZOR_VERSION);
+    vendor = QString("razor-qt.org");
+    return QString("razor-notificationd");
 }
 
 uint Notifyd::Notify(const QString& app_name,
-                               uint replaces_id,
+                     uint replaces_id,
                      const QString& app_icon,
                      const QString& summary,
                      const QString& body,
-                 const QStringList& actions,
-                 const QVariantMap& hints,
-                                int expire_timeout
+                     const QStringList& actions,
+                     const QVariantMap& hints,
+                     int expire_timeout
                      )
 {
-//    qDebug() << "IDs" << mId << replaces_id;
     uint ret;
     if (replaces_id == 0)
     {
@@ -123,7 +118,7 @@ uint Notifyd::Notify(const QString& app_name,
                      << "  hints =" << hints << endl
              << QString("  expire_timeout = %1\n) => %2").arg(QString::number(expire_timeout), QString::number(mId));
 #endif
-    emit notificationAdded(ret, app_name, summary, body, app_icon, expire_timeout);
+    emit notificationAdded(ret, app_name, summary, body, app_icon, expire_timeout, actions, hints);
 
     return ret;
 }

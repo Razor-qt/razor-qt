@@ -25,14 +25,26 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include <QtGui/QPainter>
+#include <QtCore/QUrl>
+#include <QtCore/QFile>
+#include <QtDBus/QDBusArgument>
+
+#include <qtxdg/xdgicon.h>
+
 #include "notification.h"
 #include "notificationarea.h"
-#include <QtGui/QPainter>
+
+#include <QtDebug>
+
+
+#define ICONSIZE QSize(64, 64)
 
 
 Notification::Notification(const QString &application,
                            const QString &summary, const QString &body,
                            const QString &icon, int timeout,
+                           const QStringList& actions, const QVariantMap& hints,
                            QWidget *parent)
     : QWidget(parent),
       m_timer(0)
@@ -43,46 +55,60 @@ Notification::Notification(const QString &application,
     setMinimumWidth(NOTIFICATION_WIDTH);
     setMinimumHeight(100);
 
-    setIcon(icon);
-    setApplication(application);
-    setSummary(summary);
-    setBody(body);
-    setTimeout(timeout);
+    setValues(application, summary, body, icon, timeout, actions, hints);
 
     connect(closeButton, SIGNAL(clicked()), this, SLOT(closeButton_clicked()));
 }
 
-void Notification::setIcon(const QString &value)
+void Notification::setValues(const QString &application,
+                             const QString &summary, const QString &body,
+                             const QString &icon, int timeout,
+                             const QStringList& actions, const QVariantMap& hints)
 {
-    m_icon = QIcon::fromTheme(value);
-    if (m_icon.isNull())
+    // Notifications spec set real order here:
+    // An implementation which only displays one image or icon must
+    // choose which one to display using the following order:
+    //  - "image-data"
+    //  - "image-path"
+    //  - app_icon parameter
+    //  - for compatibility reason, "icon_data"
+    if (!hints["image_data"].isNull())
     {
-        m_icon = QIcon(value); // Absolute path
+        m_pixmap = getPixmapFromHint(hints["image_data"]);
+        //qDebug() << application << "from image_data" << m_pixmap.isNull();
+    }
+    else if (!hints["image_path"].isNull())
+    {
+        m_pixmap = getPixmapFromString(hints["image_path"].toString());
+        //qDebug() << application << "from image_path" << m_pixmap.isNull();
+    }
+    else if (!icon.isEmpty())
+    {
+        m_pixmap = getPixmapFromString(icon);
+        //qDebug() << application << "from icon" << icon << m_pixmap.isNull();
+    }
+    else if (!hints["icon_data"].isNull())
+    {
+       m_pixmap = getPixmapFromHint(hints["icon_data"]);
+       //qDebug() << application << "from icon_data" << m_pixmap.isNull();
+    }
+    // failback
+    if (m_pixmap.isNull())
+    {
+        qDebug() << "An icon for name:" << icon << "or hints" << hints << "not found. Using failback.";
+        //m_pixmap = XdgIcon::defaultApplicationIcon().pixmap(ICONSIZE);
     }
 
-    iconLabel->setPixmap(m_icon.pixmap(64, 64));
-}
+    // application
+    appLabel->setText(application);
 
-void Notification::setApplication(const QString &value)
-{
-    m_application = value;
-    appLabel->setText(value);
-}
+    // summary
+    summaryLabel->setText(summary);
 
-void Notification::setSummary(const QString &value)
-{
-    m_summary = value;
-    summaryLabel->setText(value);
-}
+    // body
+    bodyLabel->setText(body);
 
-void Notification::setBody(const QString &value)
-{
-    m_body = value;
-    bodyLabel->setText(value);
-}
-
-void Notification::setTimeout(int value)
-{
+    // Timeout
     // Special values:
     //  < 0: server decides timeout
     //    0: infifite
@@ -92,17 +118,17 @@ void Notification::setTimeout(int value)
         m_timer->deleteLater();
     }
 
-    if (value != 0)
+    if (timeout != 0)
     {
         m_timer = new QTimer(this);
         connect(m_timer, SIGNAL(timeout()), this, SIGNAL(timeout()));
 
-        if (value < 0)
+        if (timeout < 0)
         {
-            value = 10000; // Default 10 secs. TODO: Get this from config file
+            timeout = 10000; // Default 10 secs. TODO: Get this from config file
         }
 
-        m_timer->start(value);
+        m_timer->start(timeout);
     }
 }
 
@@ -119,4 +145,43 @@ void Notification::paintEvent(QPaintEvent *)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+QPixmap Notification::getPixmapFromHint(const QVariant &argument) const
+{
+    QPixmap p;
+    int width, height, rowstride, bitsPerSample, channels;
+    bool hasAlpha;
+    QByteArray data;
+
+    const QDBusArgument arg = argument.value<QDBusArgument>();
+    arg.beginStructure();
+    arg >> width;
+    arg >> height;
+    arg >> rowstride;
+    arg >> hasAlpha;
+    arg >> bitsPerSample;
+    arg >> channels;
+    arg >> data;
+    arg.endStructure();
+    QImage img = QImage((uchar*)data.constData(), width, height, QImage::Format_ARGB32).rgbSwapped();
+
+    p.convertFromImage(img);
+    return p;
+}
+
+QPixmap Notification::getPixmapFromString(const QString &str) const
+{
+    QUrl url(str);
+    if (url.isValid() && QFile::exists(url.toLocalFile()))
+    {
+        //qDebug() << "    getPixmapFromString by URL" << url;
+        return QPixmap(url.toLocalFile());
+    }
+    else
+    {
+        //qDebug() << "    getPixmapFromString by XdgIcon theme" << str << ICONSIZE << XdgIcon::themeName();
+        //qDebug() << "       " << XdgIcon::fromTheme(str);
+        return XdgIcon::fromTheme(str).pixmap(ICONSIZE);
+    }
 }

@@ -1,8 +1,7 @@
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/libraries/razorqt
-    ${CMAKE_SOURCE_DIR}/libraries/qtxdg
+    ${CMAKE_SOURCE_DIR}/libraries/
 )
 
 set(NOTIFICATIONS_SRC

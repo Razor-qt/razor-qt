@@ -51,22 +51,19 @@ NotificationLayout::NotificationLayout(QWidget *parent) :
 
 void NotificationLayout::addNotification(uint id, const QString &application,
                                         const QString &summary, const QString &body,
-                                        const QString &icon, int timeout)
+                                        const QString &icon, int timeout,
+                                        const QStringList& actions, const QVariantMap& hints)
 {
 //    qDebug() << "NotificationLayout::addNotification" << id << application << summary << body << icon << timeout;
     if (m_notifications.contains(id))
     {
         // TODO/FIXME: it can be deleted by timer in this block. Locking?
         Notification *n = m_notifications[id];
-        n->setApplication(application);
-        n->setSummary(summary);
-        n->setBody(body);
-        n->setIcon(icon);
-        n->setTimeout(timeout);
+        n->setValues(application, summary, body, icon, timeout, actions, hints);
     }
     else
     {
-        Notification *n = new Notification(application, summary, body, icon, timeout, this);
+        Notification *n = new Notification(application, summary, body, icon, timeout, actions, hints, this);
         connect(n, SIGNAL(timeout()), this, SLOT(removeNotificationTimeout()));
         connect(n, SIGNAL(userCanceled()), this, SLOT(removeNotificationUser()));
         m_notifications[id] = n;

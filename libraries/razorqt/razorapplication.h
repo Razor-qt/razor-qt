@@ -47,7 +47,6 @@ public:
     /*! Construct a Razor-qt application object.
      * \param argc standard argc as in QApplication
      * \param argv standard argv as in QApplication
-     * \param stylesheetKey optional QString. It can load QSS theme module as in \see RazorTheme::qss()
      */
     RazorApplication(int &argc, char **argv);
     virtual ~RazorApplication() {}

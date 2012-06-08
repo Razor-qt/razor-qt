@@ -42,21 +42,13 @@ public:
     explicit Notification(const QString &application,
                           const QString &summary, const QString &body,
                           const QString &icon, int timeout,
+                          const QStringList& actions, const QVariantMap& hints,
                           QWidget *parent = 0);
 
-    QString application() { return m_application; }
-    void setApplication(const QString &value);
-
-    QString summary() { return m_summary; }
-    void setSummary(const QString &value);
-
-    QString body() { return m_body; }
-    void setBody(const QString &value);
-
-    QIcon icon() { return m_icon; }
-    void setIcon(const QString &value);
-
-    void setTimeout(int value);
+    void setValues(const QString &application,
+                   const QString &summary, const QString &body,
+                   const QString &icon, int timeout,
+                   const QStringList& actions, const QVariantMap& hints);
 
 signals:
     void timeout();
@@ -70,10 +62,14 @@ private:
     QString m_application;
     QString m_summary;
     QString m_body;
-    QIcon m_icon;
+    QPixmap m_pixmap;
+    QStringList m_actions;
+    QVariantMap m_hints;
 
     // mandatory for stulesheets
     void paintEvent(QPaintEvent *);
+    QPixmap getPixmapFromHint(const QVariant &argument) const;
+    QPixmap getPixmapFromString(const QString &str) const;
 
 private slots:
     void closeButton_clicked();

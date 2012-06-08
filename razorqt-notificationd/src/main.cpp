@@ -28,33 +28,31 @@
 #include <QtGui/QApplication>
 #include <QtDBus/QDBusConnection>
 
+#include "razorqt/razorapplication.h"
+
 #include "notifyadaptor.h"
 #include "notifyd.h"
 
 
 int main(int argc, char** argv)
 {
-    QApplication a(argc, argv);
+    RazorApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);
 
-    a.setStyleSheet(
+    // Ensure the helper widgets are hidden
+    a.setStyleSheet(a.styleSheet() +
                 "NotificationArea {background: transparent;}"
                 "NotificationLayout {background: transparent;}"
-                "Notification { border: 1px solid #00f000; background-color: #f0f0f0; margin: 0px;}"
                    );
     
-    Notifyd* demo = new Notifyd();
-    new NotifyAdaptor(demo);
+    Notifyd* daemon = new Notifyd();
+    new NotifyAdaptor(daemon);
 
     QDBusConnection connection = QDBusConnection::sessionBus();
-    bool ret = connection.registerService("org.freedesktop.Notifications");
-    if (!ret)
-        qDebug() << "registerService failed :(";
-    ret = connection.registerObject("/org/freedesktop/Notifications", demo);
-    if (!ret)
-        qDebug() << "registerObject failed :(";
-
-    qDebug() << "exec!";
+    if (!connection.registerService("org.freedesktop.Notifications"))
+        qDebug() << "registerService failed: another service with 'org.freedesktop.Notifications' runs already";
+    if (!connection.registerObject("/org/freedesktop/Notifications", daemon))
+        qDebug() << "registerObject failed: another object with '/org/freedesktop/Notifications' runs already";
 
 
     return a.exec();

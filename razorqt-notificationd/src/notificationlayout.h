@@ -46,7 +46,8 @@ signals:
 public slots:
     void addNotification(uint id, const QString &application,
                          const QString &summary, const QString &body,
-                         const QString &icon, int timeout);
+                         const QString &icon, int timeout,
+                         const QStringList& actions, const QVariantMap& hints);
     // reason:
     //1 - The notification expired.
     //2 - The notification was dismissed by the user.

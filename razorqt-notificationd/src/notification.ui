@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>Notification</class>
  <widget class="QWidget" name="Notification">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>188</width>
+    <height>132</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
     <horstretch>0</horstretch>
@@ -35,6 +43,9 @@
            <width>64</width>
            <height>64</height>
           </size>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -93,6 +104,9 @@
           <string>TextLabel</string>
          </property>
          <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
           <bool>true</bool>
          </property>
         </widget>

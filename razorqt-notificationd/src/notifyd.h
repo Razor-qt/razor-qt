@@ -68,7 +68,7 @@ signals:
     void notificationClosed(uint id, uint reason);
     void notificationAdded(uint id, const QString &application, const QString &title,
                            const QString &description, const QString &icon,
-                           int timeout);
+                           int timeout, const QStringList& actions, const QVariantMap& hints);
 
 private:
     uint mId;
