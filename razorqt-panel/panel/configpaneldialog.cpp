@@ -104,7 +104,9 @@ void ConfigPanelDialog::reset()
             ui->comboBox_position->setCurrentIndex(ix);
     }
 
-    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseThemeSize);
+    // checkBoxUseThemeSizeChanged emits the configChanged signal
+    // if mUseThemeSize is true it disables the size spinbox
+    checkBoxUseThemeSizeChanged(mUseThemeSize);
     emit positionChanged(mScreenNum, mPosition);
 }
 
