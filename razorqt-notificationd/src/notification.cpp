@@ -121,16 +121,11 @@ void Notification::setValues(const QString &application,
         m_timer->deleteLater();
     }
 
-    if (timeout != 0)
+    // -1 for server decides is handled in notifyd to save QSettings instance
+    if (timeout > 0)
     {
         m_timer = new QTimer(this);
         connect(m_timer, SIGNAL(timeout()), this, SIGNAL(timeout()));
-
-        if (timeout < 0)
-        {
-            timeout = 10000; // Default 10 secs. TODO: Get this from config file
-        }
-
         m_timer->start(timeout);
     }
 

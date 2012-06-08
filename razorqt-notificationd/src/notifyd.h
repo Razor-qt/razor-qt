@@ -36,6 +36,8 @@
 
 #include "notificationarea.h"
 
+class RazorSettings;
+
 /*
  * Class for interface org.freedesktop.Notifications
  */
@@ -73,6 +75,7 @@ signals:
 private:
     uint mId;
     NotificationArea *m_area;
+    RazorSettings *m_settings;
 };
 
 #endif // NOTIFYD_H

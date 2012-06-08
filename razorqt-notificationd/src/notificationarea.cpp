@@ -25,12 +25,14 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "notificationarea.h"
 #include <QtGui/QDesktopWidget>
-
+#include <razorqt/razorsettings.h>
+#include "notificationarea.h"
+#include <QtDebug>
 
 NotificationArea::NotificationArea(QWidget *parent)
-    : QScrollArea(parent)
+    : QScrollArea(parent),
+      m_settings(new RazorSettings("notifications", this))
 {
     setObjectName("NotificationArea");
 
@@ -64,16 +66,56 @@ NotificationArea::NotificationArea(QWidget *parent)
     connect(m_layout, SIGNAL(allNotificationsClosed()), this, SLOT(close()));
     connect(m_layout, SIGNAL(notificationAvailable()), this, SLOT(show()));
     connect(m_layout, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
+
+    connect(m_settings, SIGNAL(settingsChanged()),
+            this, SLOT(changeSettings()));
 }
 
-void NotificationArea::setHeight(int height)
+void NotificationArea::setHeight(int contentHeight)
 {
     // TODO/FXIME: take care about top-left positioning
     QDesktopWidget dw;
     int h = dw.availableGeometry(this).height();
-    int safeHeigt = height > h ? h : height;
+    int w = dw.availableGeometry(this).width();
+    int safeHeight = contentHeight > h ? h : contentHeight;
+    int x, y;
 
-    resize(width(), safeHeigt);
+    QString placement = m_settings->value("placement", "bottom-right").toString().toLower();
+    qDebug() << placement;
+    if (placement == "bottom-right")
+    {
+        x = w - width();
+        y = h - safeHeight;
+    }
+    if (placement == "bottom-left")
+    {
+        x = dw.availableGeometry(this).x();
+        y = h - safeHeight;
+    }
+    if (placement == "top-right")
+    {
+        x = w - width();
+        y = dw.availableGeometry(this).y();
+    }
+    if (placement == "top-left")
+    {
+        x = dw.availableGeometry(this).x();
+        y = dw.availableGeometry(this).y();
+    }
+    else
+    {
+        x = w - width();
+        y = h - safeHeight;
+    }
+
+    move(x, y);
+    resize(width(), safeHeight);
     // always show the latest notification
-    ensureVisible(0, height, 0, 0);
+    ensureVisible(0, contentHeight, 0, 0);
+}
+
+void NotificationArea::changeSettings()
+{
+    qDebug() << "changeSettings";
+    setHeight(widget()->height());
 }

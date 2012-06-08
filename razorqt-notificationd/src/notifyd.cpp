@@ -26,11 +26,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include <razorqt/razorsettings.h>
 #include "notifyd.h"
 
 #include <QtCore/QDebug>
-
-#include <QtGui/QMessageBox>
 
 
 /*
@@ -39,7 +38,8 @@
 
 Notifyd::Notifyd(QObject* parent)
     : QObject(parent),
-      mId(0)
+      mId(0),
+      m_settings(new RazorSettings("notifications", this))
 {
     m_area = new NotificationArea();
 
@@ -123,6 +123,11 @@ uint Notifyd::Notify(const QString& app_name,
                      << "  hints =" << hints << endl
              << QString("  expire_timeout = %1\n) => %2").arg(QString::number(expire_timeout), QString::number(mId));
 #endif
+
+    // handling the "server decides" timeout
+    if (expire_timeout == -1)
+        expire_timeout = m_settings->value("server_decides", 10).toInt();
+
     emit notificationAdded(ret, app_name, summary, body, app_icon, expire_timeout, actions, hints);
 
     return ret;

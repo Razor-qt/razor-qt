@@ -35,6 +35,8 @@
 #define NOTIFICATION_SPACING 6
 #define NOTIFICATION_WIDTH 300
 
+class RazorSettings;
+
 
 class NotificationArea : public QScrollArea
 {
@@ -47,9 +49,11 @@ public:
 
 private:
     NotificationLayout *m_layout;
+    RazorSettings *m_settings;
 
 private slots:
-    void setHeight(int);
+    void setHeight(int contentHeight);
+    void changeSettings();
 
 };
 
