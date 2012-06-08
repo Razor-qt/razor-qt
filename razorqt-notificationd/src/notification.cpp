@@ -33,7 +33,6 @@
 #include <qtxdg/xdgicon.h>
 
 #include "notification.h"
-#include "notificationarea.h"
 #include "notificationwidgets.h"
 
 #include <QtDebug>
@@ -52,8 +51,9 @@ Notification::Notification(const QString &application,
 {
     setupUi(this);
     setObjectName("Notification");
-    setMaximumWidth(NOTIFICATION_WIDTH);
-    setMinimumWidth(NOTIFICATION_WIDTH);
+    
+    setMaximumWidth(parent->width());
+    setMinimumWidth(parent->width());
     setMinimumHeight(100);
 
     setValues(application, summary, body, icon, timeout, actions, hints);

@@ -138,7 +138,7 @@ bool RazorSettings::event(QEvent *event)
 {
     if (event->type() == QEvent::UpdateRequest)
     {
-            emit settingsChanged();
+        emit settingsChanged();
     }
 
     return QSettings::event(event);

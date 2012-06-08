@@ -26,8 +26,14 @@ set(NOTIFICATIONS_CONF_UI
 
 
 # Translations **********************************
-include(RazorTranslate)
-razor_translate_desktop(DESKTOP_FILES razor-config-notificationd.desktop.in)
+# TODO/FIXME: why it does not work?
+#include(RazorTranslate)
+#
+#razor_translate_desktop(DESKTOP_FILES razor-config-notificationd.desktop.in)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/razor-config-notificationd.desktop
+		   COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/razor-config-notificationd.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/razor-config-notificationd.desktop
+					            COMMENT "Generating ${_FILE_NAME}${_FILE_EXT}"
+						    )
 #************************************************
 
 qt4_wrap_cpp(NOTIFICATIONS_CONF_MOC_CPP ${NOTIFICATIONS_CONF_MOC})

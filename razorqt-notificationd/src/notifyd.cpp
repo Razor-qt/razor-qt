@@ -52,6 +52,7 @@ Notifyd::Notifyd(QObject* parent)
             this, SIGNAL(NotificationClosed(uint,uint)));
     connect(m_area->layout(), SIGNAL(actionInvoked(uint, QString)),
             this, SIGNAL(ActionInvoked(uint,QString)));
+    connect(m_settings, SIGNAL(settingsChanged()), m_area, SLOT(applySettings()));
 
 }
 
@@ -125,8 +126,10 @@ uint Notifyd::Notify(const QString& app_name,
 #endif
 
     // handling the "server decides" timeout
-    if (expire_timeout == -1)
+    if (expire_timeout == -1) {
         expire_timeout = m_settings->value("server_decides", 10).toInt();
+        expire_timeout *= 1000;
+    }
 
     emit notificationAdded(ret, app_name, summary, body, app_icon, expire_timeout, actions, hints);
 

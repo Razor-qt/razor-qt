@@ -26,13 +26,12 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "notificationlayout.h"
-#include "notificationarea.h"
 #include <QtDebug>
 #include <QtGui/QBrush>
 
 
-NotificationLayout::NotificationLayout(QWidget *parent) :
-    QWidget(parent)
+NotificationLayout::NotificationLayout(QWidget *parent)
+    : QWidget(parent)
 {
     setObjectName("NotificationLayout");
 
@@ -44,9 +43,15 @@ NotificationLayout::NotificationLayout(QWidget *parent) :
     setAttribute(Qt::WA_TranslucentBackground);
 
     m_layout = new QVBoxLayout(this);
-    m_layout->setSpacing(NOTIFICATION_SPACING);
     m_layout->setMargin(0);
     setLayout(m_layout);
+}
+
+void NotificationLayout::setSizes(int space, int width)
+{
+    m_layout->setSpacing(space);
+    setMaximumWidth(width);
+    setMinimumWidth(width);
 }
 
 void NotificationLayout::addNotification(uint id, const QString &application,
@@ -146,11 +151,11 @@ void NotificationLayout::checkHeight()
     while (it.hasNext())
     {
         it.next();
-        h +=it.value()->height() + NOTIFICATION_SPACING;
+        h +=it.value()->height() + m_layout->spacing();
     }
 
-    setMinimumSize(NOTIFICATION_WIDTH, h);
-    setMaximumSize(NOTIFICATION_WIDTH, h);
+    setMinimumSize(width(), h);
+    setMaximumSize(width(), h);
     emit heightChanged(h);
 }
 

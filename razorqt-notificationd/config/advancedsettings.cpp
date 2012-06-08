@@ -36,8 +36,10 @@ AdvancedSettings::AdvancedSettings(RazorSettings* settings, QWidget *parent):
 {
     setupUi(this);
     restoreSettings();
-    connect(serverDecidesBox, SIGNAL(valueChanged(int)),
-            this, SLOT(save()));
+
+    connect(serverDecidesBox, SIGNAL(valueChanged(int)), this, SLOT(save()));
+    connect(spacingBox, SIGNAL(valueChanged(int)), this, SLOT(save()));
+    connect(widthBox, SIGNAL(valueChanged(int)), this, SLOT(save()));
 }
 
 AdvancedSettings::~AdvancedSettings()
@@ -50,10 +52,17 @@ void AdvancedSettings::restoreSettings()
     if (serverDecides <= 0)
         serverDecides = 10;
     serverDecidesBox->setValue(serverDecides);
+
+    spacingBox->setValue(mSettings->value("spacing", 6).toInt());
+    widthBox->setValue(mSettings->value("width", 300).toInt());
 }
 
 void AdvancedSettings::save()
 {
     mSettings->setValue("server_decides", serverDecidesBox->value());
+    mSettings->setValue("spacing", spacingBox->value());
+    mSettings->setValue("width", widthBox->value());
+
+    mSettings->sync();
 }
 

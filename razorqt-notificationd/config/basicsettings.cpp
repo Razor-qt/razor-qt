@@ -64,7 +64,7 @@ void BasicSettings::restoreSettings()
     else
         bottomRightButton->setChecked(true);
 }
-
+#include <QtDebug>
 void BasicSettings::save()
 {
     if (bottomRightButton->isChecked())
@@ -75,6 +75,9 @@ void BasicSettings::save()
         mSettings->setValue("placement", "top-right");
     else if (topLeftButton->isChecked())
         mSettings->setValue("placement", "top-left");
+
+    mSettings->sync();
+    qDebug() << "CFG" << mSettings->fileName() << mSettings;
 }
 
 void BasicSettings::testNotification()

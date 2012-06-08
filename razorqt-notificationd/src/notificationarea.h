@@ -32,9 +32,6 @@
 #include "notificationlayout.h"
 
 
-#define NOTIFICATION_SPACING 6
-#define NOTIFICATION_WIDTH 300
-
 class RazorSettings;
 
 
@@ -47,14 +44,18 @@ public:
 
     NotificationLayout* layout() { return m_layout; }
 
+public slots:
+    void applySettings();
+
 private:
     NotificationLayout *m_layout;
     RazorSettings *m_settings;
 
+    QString m_placement;
+    int m_spacing;
+
 private slots:
     void setHeight(int contentHeight);
-    void changeSettings();
-
 };
 
 #endif // NOTIFICATIONAREA_H

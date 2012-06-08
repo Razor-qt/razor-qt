@@ -35,6 +35,7 @@ NotificationArea::NotificationArea(QWidget *parent)
       m_settings(new RazorSettings("notifications", this))
 {
     setObjectName("NotificationArea");
+    qDebug() << "AREA" << m_settings->fileName() << m_settings;
 
     setWindowFlags(Qt::X11BypassWindowManagerHint
                    | Qt::FramelessWindowHint
@@ -48,12 +49,8 @@ NotificationArea::NotificationArea(QWidget *parent)
     // no border at all finally
     setFrameShape(QFrame::NoFrame);
 
-
-    m_layout = new NotificationLayout();
+    m_layout = new NotificationLayout(this);
     setWidget(m_layout);
-
-    setMaximumWidth(NOTIFICATION_WIDTH);
-    setMinimumWidth(NOTIFICATION_WIDTH);
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -67,8 +64,10 @@ NotificationArea::NotificationArea(QWidget *parent)
     connect(m_layout, SIGNAL(notificationAvailable()), this, SLOT(show()));
     connect(m_layout, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
 
+    // TODO/FIXME: WTF?! Why it does not synchronize?
     connect(m_settings, SIGNAL(settingsChanged()),
-            this, SLOT(changeSettings()));
+            this, SLOT(applySettings()));
+    applySettings();
 }
 
 void NotificationArea::setHeight(int contentHeight)
@@ -80,31 +79,30 @@ void NotificationArea::setHeight(int contentHeight)
     int safeHeight = contentHeight > h ? h : contentHeight;
     int x, y;
 
-    QString placement = m_settings->value("placement", "bottom-right").toString().toLower();
-    qDebug() << placement;
-    if (placement == "bottom-right")
+    if (m_placement == "bottom-right")
     {
-        x = w - width();
+        x = w - width() - m_spacing;
         y = h - safeHeight;
     }
-    if (placement == "bottom-left")
+    else if (m_placement == "bottom-left")
     {
-        x = dw.availableGeometry(this).x();
+        x = dw.availableGeometry(this).x() + m_spacing;
         y = h - safeHeight;
     }
-    if (placement == "top-right")
+    else if (m_placement == "top-right")
     {
-        x = w - width();
+        x = w - width() - m_spacing;
         y = dw.availableGeometry(this).y();
     }
-    if (placement == "top-left")
+    else if (m_placement == "top-left")
     {
-        x = dw.availableGeometry(this).x();
-        y = dw.availableGeometry(this).y();
+        
+        x = dw.availableGeometry(this).x() - m_spacing;
+        y = dw.availableGeometry(this).y() - m_spacing;
     }
     else
     {
-        x = w - width();
+        x = w - width() - m_spacing;
         y = h - safeHeight;
     }
 
@@ -114,8 +112,17 @@ void NotificationArea::setHeight(int contentHeight)
     ensureVisible(0, contentHeight, 0, 0);
 }
 
-void NotificationArea::changeSettings()
+void NotificationArea::applySettings()
 {
-    qDebug() << "changeSettings";
-    setHeight(widget()->height());
+    qDebug() << "applySettings";
+    m_placement = m_settings->value("placement", "bottom-right").toString().toLower();
+    // width settings has to go before layout->setSpacing()
+    int w = m_settings->value("width", 300).toInt();
+    setMaximumWidth(w);
+    setMinimumWidth(w);
+
+    m_spacing = m_settings->value("spacing", 6).toInt();
+    m_layout->setSizes(m_spacing, w);
+        
+    this->setHeight(widget()->height());
 }

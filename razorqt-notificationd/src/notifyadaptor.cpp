@@ -74,4 +74,3 @@ uint NotifyAdaptor::Notify(const QString &app_name, uint replaces_id, const QStr
     // handle method call org.freedesktop.Notifications.Notify
     return parent()->Notify(app_name, replaces_id, app_icon, summary, body, actions, hints, expire_timeout);
 }
-

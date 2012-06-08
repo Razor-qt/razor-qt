@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>188</width>
-    <height>132</height>
+    <width>283</width>
+    <height>92</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -69,7 +69,7 @@
        <item>
         <widget class="QLabel" name="appLabel">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -84,6 +84,12 @@
        </item>
        <item>
         <widget class="QLabel" name="summaryLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>TextLabel</string>
          </property>

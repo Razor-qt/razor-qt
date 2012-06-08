@@ -35,7 +35,9 @@ class NotificationLayout : public QWidget
 {
     Q_OBJECT
 public:
-    explicit NotificationLayout(QWidget *parent=0);
+    explicit NotificationLayout(QWidget *parent);
+
+    void setSizes(int space, int width);
 
 signals:
     void allNotificationsClosed();
