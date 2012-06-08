@@ -29,18 +29,17 @@
 
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
-#include <razorqt/razorconfigdialog.h>
+
 #include "mainwindow.h"
-//#include "razortranslate.h"
 
-int main (int argc, char **argv)
+
+int main(int argc, char** argv)
 {
-    RazorApplication app(argc, argv);
-//    TRANSLATE_APP;
+    // TODO/FIXME: maybe singleapp?
+    RazorApplication a(argc, argv);
 
-    MainWindow w ;
+    MainWindow w;
     w.show();
 
-    return app.exec();
+    return a.exec();
 }
-
