@@ -65,7 +65,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="actionsLayout">
        <item>
         <widget class="QLabel" name="appLabel">
          <property name="sizePolicy">

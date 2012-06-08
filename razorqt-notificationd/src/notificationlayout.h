@@ -42,6 +42,7 @@ signals:
     void notificationAvailable();
     void heightChanged(int);
     void notificationClosed(uint id, uint reason);
+    void actionInvoked(uint id, const QString &actionText);
 
 public slots:
     void addNotification(uint id, const QString &application,
@@ -64,6 +65,7 @@ private:
 private slots:
     void removeNotificationTimeout();
     void removeNotificationUser();
+    void notificationActionCalled(const QString &actionText);
 };
 
 #endif // NotificationLayout_H

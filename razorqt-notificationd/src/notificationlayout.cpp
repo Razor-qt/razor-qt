@@ -66,6 +66,8 @@ void NotificationLayout::addNotification(uint id, const QString &application,
         Notification *n = new Notification(application, summary, body, icon, timeout, actions, hints, this);
         connect(n, SIGNAL(timeout()), this, SLOT(removeNotificationTimeout()));
         connect(n, SIGNAL(userCanceled()), this, SLOT(removeNotificationUser()));
+        connect(n, SIGNAL(actionTriggered(QString)),
+                this, SLOT(notificationActionCalled(QString)));
         m_notifications[id] = n;
         m_layout->addWidget(n);
         n->show();
@@ -123,6 +125,18 @@ void NotificationLayout::removeNotification(uint key, uint reason)
         emit allNotificationsClosed();
 
     checkHeight();
+}
+
+void NotificationLayout::notificationActionCalled(const QString &actionText)
+{
+    Notification *n = qobject_cast<Notification*>(sender());
+    if (!n)
+    {
+        qDebug() << "Oooook! USERACTION Expecting instance of notification, got:" << sender();
+        return;
+    }
+
+    emit actionInvoked(m_notifications.key(n), actionText);
 }
 
 void NotificationLayout::checkHeight()

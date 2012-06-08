@@ -9,6 +9,7 @@ set(NOTIFICATIONS_SRC
     notificationarea.cpp
     notification.cpp
     notificationlayout.cpp
+    notificationwidgets.cpp
     notifyadaptor.cpp
     notifyd.cpp
 )
@@ -17,6 +18,7 @@ set(NOTIFICATIONS_MOC
     notificationarea.h
     notification.h
     notificationlayout.h
+    notificationwidgets.h
     notifyadaptor.h
     notifyd.h
 )

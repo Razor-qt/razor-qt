@@ -34,6 +34,7 @@
 
 #include "notification.h"
 #include "notificationarea.h"
+#include "notificationwidgets.h"
 
 #include <QtDebug>
 
@@ -65,6 +66,8 @@ void Notification::setValues(const QString &application,
                              const QString &icon, int timeout,
                              const QStringList& actions, const QVariantMap& hints)
 {
+    // Basic properties *********************
+
     // Notifications spec set real order here:
     // An implementation which only displays one image or icon must
     // choose which one to display using the following order:
@@ -129,6 +132,34 @@ void Notification::setValues(const QString &application,
         }
 
         m_timer->start(timeout);
+    }
+
+    // Categories *********************
+    // TODO/FIXME: Categories - how to handle it?
+    if (!hints["category"].isNull())
+    {
+        qDebug() << "Notification" << application << "category" << hints["category"];
+    }
+
+    // Urgency Levels *********************
+    // Type    Description
+    // 0   Low
+    // 1   Normal
+    // 2   Critical
+    // TODO/FIXME: Urgencies - how to handle it?
+    if (!hints["urgency"].isNull())
+    {
+        qDebug() << "Notification" << application << "urgency" << hints["urgency"];
+    }
+
+    // Actions
+    if (actions.count())
+    {
+        NotificationActionsWidget *w = new NotificationActionsWidget(actions, this);
+        connect(w, SIGNAL(actionTriggered(const QString &actionText)),
+                this, SLOT(actionTriggered(const QString &actionText)));
+        actionsLayout->addWidget(w);
+        w->show();
     }
 }
 

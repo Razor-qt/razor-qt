@@ -53,6 +53,7 @@ public:
 signals:
     void timeout();
     void userCanceled();
+    void actionTriggered(const QString &actionText);
 
 public slots:
 

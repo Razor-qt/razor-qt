@@ -50,6 +50,8 @@ Notifyd::Notifyd(QObject* parent)
     // feedback for original caller
     connect(m_area->layout(), SIGNAL(notificationClosed(uint,uint)),
             this, SIGNAL(NotificationClosed(uint,uint)));
+    connect(m_area->layout(), SIGNAL(actionInvoked(uint, QString)),
+            this, SIGNAL(ActionInvoked(uint,QString)));
 
 }
 
@@ -66,13 +68,16 @@ void Notifyd::CloseNotification(uint id)
 QStringList Notifyd::GetCapabilities()
 {
     QStringList caps;
-    caps << "actions"
+    caps
+      // << "actions"
+      // << "action-icons"
          << "body"
          << "body-hyperlinks"
          << "body-images"
          << "body-markup"
       // << "icon-multi"
       // << "icon-static"
+         << "persistence"
       // << "sound"
       ;
     return caps;
