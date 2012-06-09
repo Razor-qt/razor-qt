@@ -29,6 +29,7 @@
 #define NOTIFICATIONWIDGETS_H
 
 #include <QtGui/QWidget>
+#include <QtGui/QAbstractButton>
 
 class QComboBox;
 
@@ -48,6 +49,7 @@ private:
 
 private slots:
     void actionComboBoxActivated();
+    void actionButtonActivated(QAbstractButton* button);
 };
 
 #endif

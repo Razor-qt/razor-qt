@@ -80,8 +80,8 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
             l->addWidget(b);
             group->addButton(b, it.key());
         }
-        connect(group, SIGNAL(buttonClicked(int)),
-                this, SIGNAL(actionTriggered(uint)));
+        connect(group, SIGNAL(buttonClicked(QAbstractButton*)),
+                this, SIGNAL(actionTriggered(QAbstractButton*)));
     }
     else
     {
@@ -107,4 +107,9 @@ void NotificationActionsWidget::actionComboBoxActivated()
     if (ix == -1)
         return;
     emit actionTriggered(m_comboBox->itemText(ix));
+}
+
+void NotificationActionsWidget::actionButtonActivated(QAbstractButton* button)
+{
+    emit actionTriggered(button->text());
 }
