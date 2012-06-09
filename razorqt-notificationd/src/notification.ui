@@ -126,6 +126,9 @@
          <property name="text">
           <string>x</string>
          </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
