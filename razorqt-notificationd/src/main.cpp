@@ -30,7 +30,7 @@
 
 #include "razorqt/razorapplication.h"
 
-#include "notifyadaptor.h"
+#include "notificationsadaptor.h"
 #include "notifyd.h"
 
 
@@ -46,7 +46,7 @@ int main(int argc, char** argv)
                    );
     
     Notifyd* daemon = new Notifyd();
-    new NotifyAdaptor(daemon);
+    new NotificationsAdaptor(daemon);
 
     QDBusConnection connection = QDBusConnection::sessionBus();
     if (!connection.registerService("org.freedesktop.Notifications"))

@@ -10,7 +10,6 @@ set(NOTIFICATIONS_SRC
     notification.cpp
     notificationlayout.cpp
     notificationwidgets.cpp
-    notifyadaptor.cpp
     notifyd.cpp
 )
 
@@ -19,7 +18,6 @@ set(NOTIFICATIONS_MOC
     notification.h
     notificationlayout.h
     notificationwidgets.h
-    notifyadaptor.h
     notifyd.h
 )
 
@@ -29,6 +27,11 @@ set(NOTIFICATIONS_UI
 
 qt4_wrap_cpp(NOTIFICATIONS_MOC_CPP ${NOTIFICATIONS_MOC})
 qt4_wrap_ui(NOTIFICATIONS_UI_CPP ${NOTIFICATIONS_UI})
+qt4_add_dbus_adaptor(NOTIFICATIONS_SRC
+    ../../razorqt-resources/dbus/org.freedesktop.Notifications.xml
+    notifyd.h Notifyd
+)
+
 
 add_executable(razor-notificationd
     ${NOTIFICATIONS_SRC}
