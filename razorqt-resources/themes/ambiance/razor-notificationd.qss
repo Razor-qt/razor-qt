@@ -1,2 +1,24 @@
-Notification { border: 1px solid #00f000; background-color: #f0f0f0; margin: 0px;}
+Notification { 
+  color: #DDDDDD;
+  border: 1px solid rgb(40, 40, 40);
+  background: rgba(20, 20, 20, 80%);
+  margin: 0px;
+  border-radius: 5px;
+}
 
+QLabel
+{
+    color: #FFFFFF;
+}
+
+#closeButton
+{
+  border: none;
+  qproperty-icon: url(razor-notificationd/cancel.png);
+}
+
+
+#appLabel
+{
+  font-weight: bold;
+}
