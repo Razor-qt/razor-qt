@@ -81,7 +81,7 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
             group->addButton(b, it.key());
         }
         connect(group, SIGNAL(buttonClicked(QAbstractButton*)),
-                this, SIGNAL(actionTriggered(QAbstractButton*)));
+                this, SIGNAL(actionButtonActivated(QAbstractButton*)));
     }
     else
     {
