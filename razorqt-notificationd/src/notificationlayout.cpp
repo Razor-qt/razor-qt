@@ -78,8 +78,9 @@ void NotificationLayout::addNotification(uint id, const QString &application,
         n->show();
     }
 
-    checkHeight();
     emit notificationAvailable();
+    checkHeight();
+
 }
 
 void NotificationLayout::removeNotificationTimeout()
