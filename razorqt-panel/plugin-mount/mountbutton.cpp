@@ -178,9 +178,9 @@ MountButton::~MountButton()
 void MountButton::showMessage(const QString &text)
 {
 //    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
-    RazorNotification::notify(toolTip(), text,
+    RazorNotification::notify(toolTip(), text
 #if QT_VERSION >= 0x040700
-                              icon().name()
+                              , icon().name()
 #endif
                               );
 }
