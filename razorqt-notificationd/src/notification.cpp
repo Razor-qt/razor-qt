@@ -151,8 +151,8 @@ void Notification::setValues(const QString &application,
     if (actions.count())
     {
         NotificationActionsWidget *w = new NotificationActionsWidget(actions, this);
-        connect(w, SIGNAL(actionTriggered(const QString &actionText)),
-                this, SLOT(actionTriggered(const QString &actionText)));
+        connect(w, SIGNAL(actionTriggered(const QString &)),
+                this, SIGNAL(actionTriggered(const QString &)));
         actionsLayout->addWidget(w);
         w->show();
     }
