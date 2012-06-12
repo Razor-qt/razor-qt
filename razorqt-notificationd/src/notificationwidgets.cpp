@@ -40,36 +40,29 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
     : QWidget(parent),
       m_comboBox(0)
 {
-    QHash<uint,QString> actionMap;
-
-    bool ok;
     for (int i = 0; i < actions.count(); ++i)
     {
-        uint id = actions.at(i).toInt(&ok);
-        if (!ok)
-        {
-            qDebug() << "NotificationActionsWidget id has to be number, got:" << actions.at(i) << "Actions:" << actions;
-        }
-        else if (i == actions.count()-1)
+        if (i == actions.count()-1)
         {
             qDebug() << "NotificationActionsWidget actions has contains pairs (id, value, id, value...) got odd count:" << actions.count() << "Actions:" << actions;
+            m_actionMap[actions.at(i)] = actions.at(i);
         }
         else
         {
-            actionMap[id] = actions.at(i+1);
+            m_actionMap[actions.at(i)] = actions.at(i+1);
         }
         ++i; // move to the next ID
     }
 
-    qDebug() << "NotificationActionsWidget processed actions:" << actionMap;
+    qDebug() << "NotificationActionsWidget processed actions:" << m_actionMap;
 
     // Let's be a little bit tricky here. Let's allow only few
     // buttons in the layout. We will use a combobox if there
     // are more actions. I think it's more user friendly.
-    QHashIterator<uint,QString> it(actionMap);
+    QHashIterator<QString,QString> it(m_actionMap);
     QHBoxLayout *l = new QHBoxLayout();
     setLayout(l);
-    if (actionMap.count() < 4)
+    if (m_actionMap.count() < 4)
     {
         QButtonGroup *group = new QButtonGroup(this);
 
@@ -78,7 +71,9 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
             it.next();
             QPushButton *b = new QPushButton(it.value(), this);
             l->addWidget(b);
-            group->addButton(b, it.key());
+            group->addButton(b);
+            if (it.key() == "default")
+                b->setFocus(Qt::OtherFocusReason);
         }
         connect(group, SIGNAL(buttonClicked(QAbstractButton*)),
                 this, SLOT(actionButtonActivated(QAbstractButton*)));
@@ -87,13 +82,21 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
     {
         l->addWidget(new QLabel(tr("Actions:"), this));
         m_comboBox = new QComboBox(this);
+        int currentIndex = -1;
         while (it.hasNext())
         {
             it.next();
             m_comboBox->addItem(it.value(), it.key());
+            if (it.key() == "default")
+                currentIndex = m_comboBox->count()-1;
         }
         l->addWidget(m_comboBox);
+
+        if (currentIndex != -1)
+            m_comboBox->setCurrentIndex(currentIndex);
+
         QPushButton *b = new QPushButton(tr("OK"), this);
+        l->addWidget(b);
         connect(b, SIGNAL(clicked()),
                 this, SLOT(actionComboBoxActivated()));
     }
@@ -106,10 +109,10 @@ void NotificationActionsWidget::actionComboBoxActivated()
     int ix = m_comboBox->currentIndex();
     if (ix == -1)
         return;
-    emit actionTriggered(m_comboBox->itemText(ix));
+    emit actionTriggered(m_actionMap.key(m_comboBox->itemText(ix)));
 }
 
 void NotificationActionsWidget::actionButtonActivated(QAbstractButton* button)
 {
-    emit actionTriggered(button->text());
+    emit actionTriggered(m_actionMap.key(button->text()));
 }

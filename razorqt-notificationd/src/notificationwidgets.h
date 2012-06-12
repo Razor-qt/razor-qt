@@ -28,6 +28,7 @@
 #ifndef NOTIFICATIONWIDGETS_H
 #define NOTIFICATIONWIDGETS_H
 
+#include <QtCore/QHash>
 #include <QtGui/QWidget>
 #include <QtGui/QAbstractButton>
 
@@ -46,6 +47,7 @@ signals:
 
 private:
     QComboBox *m_comboBox;
+    QHash<QString,QString> m_actionMap;
 
 private slots:
     void actionComboBoxActivated();

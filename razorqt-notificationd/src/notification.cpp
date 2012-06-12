@@ -47,7 +47,8 @@ Notification::Notification(const QString &application,
                            const QStringList& actions, const QVariantMap& hints,
                            QWidget *parent)
     : QWidget(parent),
-      m_timer(0)
+      m_timer(0),
+      m_actionWidget(0)
 {
     setupUi(this);
     setObjectName("Notification");
@@ -147,14 +148,13 @@ void Notification::setValues(const QString &application,
     }
 
     // Actions
-    if (actions.count())
+    if (actions.count() && m_actionWidget == 0)
     {
-        NotificationActionsWidget *w = new NotificationActionsWidget(actions, this);
-        connect(w, SIGNAL(actionTriggered(const QString &)),
+        m_actionWidget = new NotificationActionsWidget(actions, this);
+        connect(m_actionWidget, SIGNAL(actionTriggered(const QString &)),
                 this, SIGNAL(actionTriggered(const QString &)));
-        w->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-        actionsLayout->addWidget(w);
-        w->show();
+        actionsLayout->addWidget(m_actionWidget);
+        m_actionWidget->show();
     }
 
     adjustSize();
