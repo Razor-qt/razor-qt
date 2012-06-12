@@ -36,6 +36,7 @@ Lid::Lid()
     connect(uPower, SIGNAL(Changed()), this, SLOT(uPowerChange()));
     uPowerProperties = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.DBus.Properties",
                                           QDBusConnection::systemBus(), this);
+    closed = uPowerProperties->property("LidIsClosed").toBool();
 }
 
 void Lid::uPowerChange()
