@@ -92,13 +92,13 @@ void NotificationArea::setHeight(int contentHeight)
     else if (m_placement == "top-right")
     {
         x = w - width() - m_spacing;
-        y = dw.availableGeometry(this).y();
+        y = dw.availableGeometry(this).y() + m_spacing;
     }
     else if (m_placement == "top-left")
     {
         
-        x = dw.availableGeometry(this).x() - m_spacing;
-        y = dw.availableGeometry(this).y() - m_spacing;
+        x = dw.availableGeometry(this).x() + m_spacing;
+        y = dw.availableGeometry(this).y() + m_spacing;
     }
     else
     {

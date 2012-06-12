@@ -54,7 +54,6 @@ Notification::Notification(const QString &application,
     
     setMaximumWidth(parent->width());
     setMinimumWidth(parent->width());
-    setMinimumHeight(100);
 
     setValues(application, summary, body, icon, timeout, actions, hints);
 
@@ -153,9 +152,14 @@ void Notification::setValues(const QString &application,
         NotificationActionsWidget *w = new NotificationActionsWidget(actions, this);
         connect(w, SIGNAL(actionTriggered(const QString &)),
                 this, SIGNAL(actionTriggered(const QString &)));
+        w->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         actionsLayout->addWidget(w);
         w->show();
     }
+
+    adjustSize();
+    // ensure layout expansion
+    setMinimumHeight(qMax(rect().height(), childrenRect().height()));
 }
 
 void Notification::closeButton_clicked()
