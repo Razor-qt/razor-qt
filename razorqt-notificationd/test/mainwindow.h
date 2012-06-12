@@ -43,7 +43,7 @@ public:
 
 public slots:
     void createNotification();
-    void clickEvent(uint button);
+    void clickEvent(int button);
 
 private:
     Ui::MainWindow* ui;

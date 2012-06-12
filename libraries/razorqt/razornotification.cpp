@@ -81,6 +81,24 @@ void RazorNotification::setTimeout(int timeout)
     d->mTimeout = timeout;
 }
 
+void RazorNotification::setHint(QString hintName, QVariant value)
+{
+    Q_D(RazorNotification);
+    d->mHints.insert(hintName, value);
+}
+
+void RazorNotification::setUrgencyHint(Urgency urgency)
+{
+    Q_D(RazorNotification);
+    d->mHints.insert("urgency", qvariant_cast<uchar>(urgency));
+}
+
+void RazorNotification::clearHints()
+{
+    Q_D(RazorNotification);
+    d->mHints.clear();
+}
+
 void RazorNotification::notify(const QString& summary, const QString& body, const QString& iconName)
 {
     RazorNotification notification(summary);
@@ -108,7 +126,7 @@ RazorNotificationPrivate::~RazorNotificationPrivate()
 
 void RazorNotificationPrivate::update()
 {
-    QDBusPendingReply<uint> reply = mInterface->Notify(qAppName(), mId, mIconName, mSummary, mBody, mActions, QVariantMap(), mTimeout);
+    QDBusPendingReply<uint> reply = mInterface->Notify(qAppName(), mId, mIconName, mSummary, mBody, mActions, mHints, mTimeout);
     reply.waitForFinished();
     if (reply.isError())
     {

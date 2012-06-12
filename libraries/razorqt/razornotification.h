@@ -41,6 +41,25 @@ public:
     RazorNotification(const QString& summary, QObject* parent = 0);
     ~RazorNotification();
 
+    enum CloseReason
+    {
+        //! The notification expired.
+        Expired     = 1,
+        //! The notification was dismissed by the user.
+        Dismissed   = 2,
+        //! The notification was closed by a call to CloseNotification.
+        ForceClosed = 3,
+        //! Undefined/reserved reasons.
+        Unknown     = 4
+    };
+
+    enum Urgency
+    {
+        UrgencyLow      = 0,
+        UrgencyNormal   = 1,
+        UrgencyCritical = 2
+    };
+
     /*!
      * \brief Set the summary text briefly describing the notification
      */
@@ -67,9 +86,27 @@ public:
 
     /*!
      * \brief Set the timeout for the notification
-     * \param timeout Seconds for timeout, or zero to never time out.
+     * \param timeout Milliseconds for timeout, or zero to never time out.
      */
     void setTimeout(int timeout);
+
+    /*!
+     * \brief Set notification hint. See http://developer.gnome.org/notification-spec/#hints
+     * \param hintName
+     * \param hint
+     */
+    void setHint(QString hint, QVariant value);
+
+    /*!
+     * \brief Set the "urgency" hint
+     * \param urgency
+     */
+    void setUrgencyHint(Urgency urgency);
+
+    /*!
+     * \brief Remove all hints that were set
+     */
+    void clearHints();
 
     /*!
      * \brief Convenience function to create and display a notification
@@ -78,18 +115,6 @@ public:
                 const QString& body = QString(),
                 const QString& iconName = QString()
             );
-
-    enum CloseReason
-    {
-        //! The notification expired.
-        Expired     = 1,
-        //! The notification was dismissed by the user.
-        Dismissed   = 2,
-        //! The notification was closed by a call to CloseNotification.
-        ForceClosed = 3,
-        //! Undefined/reserved reasons.
-        Unknown     = 4
-    };
 
 public slots:
     /*!
@@ -115,7 +140,7 @@ signals:
      * \brief Emitted when an action button is activated.
      * \param actionNumber Index of the actions array for the activated button.
      */
-    void actionActivated(uint actionNumber);
+    void actionActivated(int actionNumber);
 
 private:
     Q_DECLARE_PRIVATE(RazorNotification)

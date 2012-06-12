@@ -51,6 +51,7 @@ private:
     QString mBody;
     QString mIconName;
     QStringList mActions;
+    QVariantMap mHints;
     int mDefaultAction;
     int mTimeout;
 
