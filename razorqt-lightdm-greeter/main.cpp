@@ -24,14 +24,18 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
+    for (int i = 0; i < QApplication::desktop()->screenCount(); ++i)
+    {
+        MainWindow *w = new MainWindow(i);
+        w->show();
+    }
 
     return a.exec();
 }

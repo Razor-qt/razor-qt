@@ -30,25 +30,30 @@
 #include "mainwindow.h"
 #include "loginform.h"
 
-MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
-    QRect screen = QApplication::desktop()->rect();
-    setGeometry(screen);
+MainWindow::MainWindow(int screen, QWidget *parent)
+    : QWidget(parent)
+{
+    QRect screenRect = QApplication::desktop()->screenGeometry(screen);
+    setGeometry(screenRect);
     QImage image(QString(SHARE_DIR) + "/themes/light/simple_blue_widescreen.png");
 
     QPalette palette;
-    palette.setBrush(this->backgroundRole(), QBrush(image.scaled(screen.width(), screen.right())));
+    palette.setBrush(this->backgroundRole(), QBrush(image.scaled(screenRect.width(), screenRect.right())));
     this->setPalette(palette);
 
-
-    LoginForm *loginForm = new LoginForm(this);
-    int offsetX = 2*screen.width()/5 - loginForm->width()/2;
-    if (offsetX < 40)
+    // display login dialog only in the main screen
+    if (screen == QApplication::desktop()->primaryScreen())
     {
-        offsetX = 40;
-    }
-    int offsetY = screen.height()/2 - loginForm->height()/2;
+        LoginForm *loginForm = new LoginForm(this);
+        int offsetX = 2*screenRect.width()/5 - loginForm->width()/2;
+        if (offsetX < 40)
+        {
+            offsetX = 40;
+        }
+        int offsetY = screenRect.height()/2 - loginForm->height()/2;
         loginForm->move(offsetX, offsetY);
-    loginForm->show();
+        loginForm->show();
+    }
 }
 
 MainWindow::~MainWindow()
