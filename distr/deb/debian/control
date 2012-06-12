@@ -17,7 +17,8 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
     libpolkit-qt-1-dev,
 %endif
     zlib1g-dev,
-    libstatgrab-dev
+    libstatgrab-dev,
+    libsensors4-dev
 Standards-Version: 3.9.1
 Homepage: http://razor-qt.org
 
