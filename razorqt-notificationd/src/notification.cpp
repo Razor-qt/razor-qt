@@ -175,7 +175,6 @@ void Notification::paintEvent(QPaintEvent *)
 
 QPixmap Notification::getPixmapFromHint(const QVariant &argument) const
 {
-    QPixmap p;
     int width, height, rowstride, bitsPerSample, channels;
     bool hasAlpha;
     QByteArray data;
@@ -192,8 +191,7 @@ QPixmap Notification::getPixmapFromHint(const QVariant &argument) const
     arg.endStructure();
     QImage img = QImage((uchar*)data.constData(), width, height, QImage::Format_ARGB32).rgbSwapped();
 
-    p.convertFromImage(img);
-    return p;
+    return QPixmap::fromImage(img);
 }
 
 QPixmap Notification::getPixmapFromString(const QString &str) const
