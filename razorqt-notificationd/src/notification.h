@@ -35,6 +35,9 @@
 #include "ui_notification.h"
 
 
+class NotificationActionsWidget;
+
+
 class Notification : public QWidget, public Ui::Notification
 {
     Q_OBJECT
@@ -60,12 +63,9 @@ public slots:
 private:
     QTimer *m_timer;
 
-    QString m_application;
-    QString m_summary;
-    QString m_body;
     QPixmap m_pixmap;
-    QStringList m_actions;
-    QVariantMap m_hints;
+
+    NotificationActionsWidget *m_actionWidget;
 
     // mandatory for stulesheets
     void paintEvent(QPaintEvent *);

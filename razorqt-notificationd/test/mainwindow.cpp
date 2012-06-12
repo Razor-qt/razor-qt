@@ -19,7 +19,7 @@ void MainWindow::createNotification()
     RazorNotification* n = new RazorNotification("Notification!");
     nlist.append(n);
     connect(n, SIGNAL(actionActivated(uint)), this, SLOT(clickEvent(uint)));
-    n->setActions(QStringList() << "Hi" << "Bye", 1);
+    n->setActions(QStringList() << "Hi" << "Bye" << "foo" << "bar" << "lorem" << "ipsum", 1);
     n->setIcon("preferences-desktop-launch-feedback");
     n->update();
 }

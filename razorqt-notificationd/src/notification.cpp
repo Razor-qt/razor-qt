@@ -47,14 +47,14 @@ Notification::Notification(const QString &application,
                            const QStringList& actions, const QVariantMap& hints,
                            QWidget *parent)
     : QWidget(parent),
-      m_timer(0)
+      m_timer(0),
+      m_actionWidget(0)
 {
     setupUi(this);
     setObjectName("Notification");
     
     setMaximumWidth(parent->width());
     setMinimumWidth(parent->width());
-    setMinimumHeight(100);
 
     setValues(application, summary, body, icon, timeout, actions, hints);
 
@@ -78,29 +78,30 @@ void Notification::setValues(const QString &application,
     if (!hints["image_data"].isNull())
     {
         m_pixmap = getPixmapFromHint(hints["image_data"]);
-        //qDebug() << application << "from image_data" << m_pixmap.isNull();
+//        qDebug() << application << "from image_data" << m_pixmap.isNull();
     }
     else if (!hints["image_path"].isNull())
     {
         m_pixmap = getPixmapFromString(hints["image_path"].toString());
-        //qDebug() << application << "from image_path" << m_pixmap.isNull();
+//        qDebug() << application << "from image_path" << m_pixmap.isNull();
     }
     else if (!icon.isEmpty())
     {
         m_pixmap = getPixmapFromString(icon);
-        //qDebug() << application << "from icon" << icon << m_pixmap.isNull();
+//        qDebug() << application << "from icon" << icon << m_pixmap.isNull();
     }
     else if (!hints["icon_data"].isNull())
     {
        m_pixmap = getPixmapFromHint(hints["icon_data"]);
-       //qDebug() << application << "from icon_data" << m_pixmap.isNull();
+//       qDebug() << application << "from icon_data" << m_pixmap.isNull();
     }
     // failback
     if (m_pixmap.isNull())
     {
-        qDebug() << "An icon for name:" << icon << "or hints" << hints << "not found. Using failback.";
-        //m_pixmap = XdgIcon::defaultApplicationIcon().pixmap(ICONSIZE);
+//        qDebug() << "An icon for name:" << icon << "or hints" << hints << "not found. Using failback.";
+        m_pixmap = XdgIcon::defaultApplicationIcon().pixmap(ICONSIZE);
     }
+    iconLabel->setPixmap(m_pixmap);
 
     // application
     appLabel->setText(application);
@@ -148,14 +149,18 @@ void Notification::setValues(const QString &application,
     }
 
     // Actions
-    if (actions.count())
+    if (actions.count() && m_actionWidget == 0)
     {
-        NotificationActionsWidget *w = new NotificationActionsWidget(actions, this);
-        connect(w, SIGNAL(actionTriggered(const QString &)),
+        m_actionWidget = new NotificationActionsWidget(actions, this);
+        connect(m_actionWidget, SIGNAL(actionTriggered(const QString &)),
                 this, SIGNAL(actionTriggered(const QString &)));
-        actionsLayout->addWidget(w);
-        w->show();
+        actionsLayout->addWidget(m_actionWidget);
+        m_actionWidget->show();
     }
+
+    adjustSize();
+    // ensure layout expansion
+    setMinimumHeight(qMax(rect().height(), childrenRect().height()));
 }
 
 void Notification::closeButton_clicked()
@@ -199,13 +204,13 @@ QPixmap Notification::getPixmapFromString(const QString &str) const
     QUrl url(str);
     if (url.isValid() && QFile::exists(url.toLocalFile()))
     {
-        //qDebug() << "    getPixmapFromString by URL" << url;
+//        qDebug() << "    getPixmapFromString by URL" << url;
         return QPixmap(url.toLocalFile());
     }
     else
     {
-        //qDebug() << "    getPixmapFromString by XdgIcon theme" << str << ICONSIZE << XdgIcon::themeName();
-        //qDebug() << "       " << XdgIcon::fromTheme(str);
-        return XdgIcon::fromTheme(str).pixmap(ICONSIZE);
+//        qDebug() << "    getPixmapFromString by XdgIcon theme" << str << ICONSIZE << XdgIcon::themeName();
+//        qDebug() << "       " << XdgIcon::fromTheme(str) << "isnull:" << XdgIcon::fromTheme(str).isNull();
+        return XdgIcon::fromTheme(str, XdgIcon::defaultApplicationIcon()).pixmap(ICONSIZE);
     }
 }
