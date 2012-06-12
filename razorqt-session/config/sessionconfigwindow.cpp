@@ -94,9 +94,6 @@ void SessionConfigWindow::handleCfgComboBox(QComboBox * cb,
                                             const QString &value
                                            )
 {
-    if (value.isEmpty() || value == cb->lineEdit()->text())
-        return;
-
     QStringList realValues;
     foreach (QString s, availableValues)
     {

@@ -54,7 +54,7 @@ void EnvironmentPage::restoreSettings()
     m_settings->beginGroup("environment");
     QString value;
     ui->treeWidget->clear();
-    foreach (QString i, m_settings->childKeys())
+    foreach (const QString& i, m_settings->childKeys())
     {
         value = m_settings->value(i).toString();
         QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget, QStringList() << i << value);
@@ -62,6 +62,12 @@ void EnvironmentPage::restoreSettings()
         ui->treeWidget->addTopLevelItem(item);
         emit envVarChanged(i, value);
     }
+
+    if (m_settings->value("BROWSER").isNull())
+        emit envVarChanged("BROWSER", "");
+    if (m_settings->value("TERM").isNull())
+        emit envVarChanged("TERM", "");
+
     m_settings->endGroup();
 }
 
@@ -88,7 +94,11 @@ void EnvironmentPage::addButton_clicked()
 
 void EnvironmentPage::deleteButton_clicked()
 {
-    qDeleteAll(ui->treeWidget->selectedItems());
+    foreach (QTreeWidgetItem* item, ui->treeWidget->selectedItems())
+    {
+        emit envVarChanged(item->text(0), "");
+        delete item;
+    }
     emit needRestart();
 }
 
@@ -101,7 +111,21 @@ void EnvironmentPage::itemChanged(QTreeWidgetItem *item, int column)
 
 void EnvironmentPage::updateItem(const QString& var, const QString& val)
 {
-    foreach(QTreeWidgetItem* item, ui->treeWidget->findItems(var, Qt::MatchExactly))
-        item->setText(1, val);
+    QList<QTreeWidgetItem*> itemList = ui->treeWidget->findItems(var, Qt::MatchExactly);
+    if (itemList.isEmpty())
+    {
+        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget, QStringList() << var << val);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        ui->treeWidget->addTopLevelItem(item);
+        return;
+    }
+
+    foreach (QTreeWidgetItem* item, itemList)
+    {
+        if (!val.isEmpty())
+            item->setText(1, val);
+        else
+            delete item;
+    }
     emit needRestart();
 }

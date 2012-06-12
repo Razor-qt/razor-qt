@@ -54,8 +54,8 @@ private:
 private slots:
     void browserButton_clicked();
     void terminalButton_clicked();
-    void browserChanged(const QString &val);
-    void terminalChanged(const QString &val);
+    void browserChanged();
+    void terminalChanged();
 };
 
 #endif // DEFAULTAPPS_H

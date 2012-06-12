@@ -25,6 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include <QtGui/QLineEdit>
+
 #include "defaultappspage.h"
 #include "ui_defaultappspage.h"
 
@@ -37,11 +39,11 @@ DefaultApps::DefaultApps(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->terminalButton, SIGNAL(clicked()), this, SLOT(terminalButton_clicked()));
-    connect(ui->terminalComboBox, SIGNAL(editTextChanged(QString)),
-            SLOT(terminalChanged(QString)));
+    connect(ui->terminalComboBox->lineEdit(), SIGNAL(editingFinished()),
+            SLOT(terminalChanged()));
     connect(ui->browserButton, SIGNAL(clicked()), this, SLOT(browserButton_clicked()));
-    connect(ui->browserComboBox, SIGNAL(editTextChanged(QString)),
-            SLOT(browserChanged(QString)));
+    connect(ui->browserComboBox->lineEdit(), SIGNAL(editingFinished()),
+            SLOT(browserChanged()));
 }
 
 DefaultApps::~DefaultApps()
@@ -75,12 +77,12 @@ void DefaultApps::browserButton_clicked()
     SessionConfigWindow::updateCfgComboBox(ui->browserComboBox, tr("Select a web browser"));
 }
 
-void DefaultApps::terminalChanged(const QString& val)
+void DefaultApps::terminalChanged()
 {
-    emit defaultAppChanged("TERM", val);
+    emit defaultAppChanged("TERM", ui->terminalComboBox->lineEdit()->text());
 }
 
-void DefaultApps::browserChanged(const QString& val)
+void DefaultApps::browserChanged()
 {
-    emit defaultAppChanged("BROWSER", val);
+    emit defaultAppChanged("BROWSER", ui->browserComboBox->lineEdit()->text());
 }
