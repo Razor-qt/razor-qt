@@ -55,11 +55,11 @@ void BasicSettings::restoreSettings()
     QString placement = mSettings->value("placement", "bottom-right").toString().toLower();
     if (placement == "bottom-right")
         bottomRightButton->setChecked(true);
-    if (placement == "bottom-left")
+    else if (placement == "bottom-left")
         bottomLeftButton->setChecked(true);
-    if (placement == "top-right")
+    else if (placement == "top-right")
         topRightButton->setChecked(true);
-    if (placement == "top-left")
+    else if (placement == "top-left")
         topLeftButton->setChecked(true);
     else
         bottomRightButton->setChecked(true);
