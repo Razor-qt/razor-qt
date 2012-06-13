@@ -773,18 +773,17 @@ void RazorPanel::showPopupMenu(RazorPanelPlugin *plugin)
                    d, SLOT(showAddPluginDialog())
                   );
 
-
-    QMenu* pluginsMenu = menu.addMenu(tr("Plugins"));
-    foreach (RazorPanelPlugin* p, d->mPlugins)
-    {
-        QMenu *m = p->popupMenu();
-        if (m)
-        {
-            pluginsMenu->addMenu(m);
-            pluginsMenus.append(m);
-        }
-    }
-
+    // Annoying sub-menu:
+//    QMenu* pluginsMenu = menu.addMenu(tr("Plugins"));
+//    foreach (RazorPanelPlugin* p, d->mPlugins)
+//    {
+//        QMenu *m = p->popupMenu();
+//        if (m)
+//        {
+//            pluginsMenu->addMenu(m);
+//            pluginsMenus.append(m);
+//        }
+//    }
 
 #ifdef DEBUG
     menu.addSeparator();
