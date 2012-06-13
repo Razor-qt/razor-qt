@@ -30,14 +30,18 @@
 class RazorNotificationPrivate;
 
 /**
- * \brief Galago/Libnotify-style desktop notifications
+ * \brief Libnotify-style desktop notifications
  *
- * http://www.galago-project.org/specs/notification/
+ * Spec: http://developer.gnome.org/notification-spec
  */
 class RazorNotification : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief RazorNotification is an object that represents a single notification.
+     * \param summary Summary text briefly describing the notification (required by the spec)
+     */
     RazorNotification(const QString& summary, QObject* parent = 0);
     ~RazorNotification();
 
@@ -47,7 +51,7 @@ public:
         Expired     = 1,
         //! The notification was dismissed by the user.
         Dismissed   = 2,
-        //! The notification was closed by a call to CloseNotification.
+        //! The notification was closed by a call to close().
         ForceClosed = 3,
         //! Undefined/reserved reasons.
         Unknown     = 4
@@ -71,16 +75,19 @@ public:
     void setBody(const QString& body);
 
     /*!
-     * \brief setIcon   Set an icon to display
+     * \brief Set an icon to display
      * \param iconName  Name of the icon
      */
     void setIcon(const QString& iconName);
 
     /*!
-     * \brief Set actions for the notification
+     * \brief Set action buttons for the notification. Whenever an action is
+     *        activated, the actionActivated() signal is emitted with the list
+     *        index of the activated action.
      * \param actions       List of action button titles
      * \param defaultAction Index of the default action which gets activated
      *                      when the notification body is clicked
+     * \sa actionActivated()
      */
     void setActions(const QStringList& actions, int defaultAction = -1);
 
@@ -91,9 +98,11 @@ public:
     void setTimeout(int timeout);
 
     /*!
-     * \brief Set notification hint. See http://developer.gnome.org/notification-spec/#hints
-     * \param hintName
-     * \param hint
+     * \brief Set notification hint.
+     * \note  For description of Hints, see http://developer.gnome.org/notification-spec/#hints
+     * \note  For D-Bus-to-Qt mappings, see https://qt-project.org/doc/qdbustypesystem.html
+     * \param hint  Hint name
+     * \param value The hint data
      */
     void setHint(QString hint, QVariant value);
 
@@ -105,11 +114,15 @@ public:
 
     /*!
      * \brief Remove all hints that were set
+     * \sa setHint()
      */
     void clearHints();
 
     /*!
-     * \brief Convenience function to create and display a notification
+     * \brief Convenience function to create and display a notification for the most common
+     *        cases. For anything more complex, create a RazorNotification object, set the
+     *        desired properties and call update(). (That's what this does internally.)
+     * \sa RazorNotification()
      */
     static void notify(const QString& summary,
                 const QString& body = QString(),
@@ -139,6 +152,7 @@ signals:
     /*!
      * \brief Emitted when an action button is activated.
      * \param actionNumber Index of the actions array for the activated button.
+     * \sa setActions()
      */
     void actionActivated(int actionNumber);
 
