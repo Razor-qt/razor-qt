@@ -31,11 +31,9 @@
 #include <QtDebug>
 
 NotificationArea::NotificationArea(QWidget *parent)
-    : QScrollArea(parent),
-      m_settings(new RazorSettings("notifications", this))
+    : QScrollArea(parent)
 {
     setObjectName("NotificationArea");
-    qDebug() << "AREA" << m_settings->fileName() << m_settings;
 
     setWindowFlags(Qt::X11BypassWindowManagerHint
                    | Qt::FramelessWindowHint
@@ -55,24 +53,13 @@ NotificationArea::NotificationArea(QWidget *parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    // TODO/FXIME: take care about top-left positioning
-    QDesktopWidget dw;
-    QRect position = dw.availableGeometry(this);
-    move(position.x(), position.y());
-
     connect(m_layout, SIGNAL(allNotificationsClosed()), this, SLOT(close()));
     connect(m_layout, SIGNAL(notificationAvailable()), this, SLOT(show()));
     connect(m_layout, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
-
-    // TODO/FIXME: WTF?! Why it does not synchronize?
-    connect(m_settings, SIGNAL(settingsChanged()),
-            this, SLOT(applySettings()));
-    applySettings();
 }
 
 void NotificationArea::setHeight(int contentHeight)
 {
-    // TODO/FXIME: take care about top-left positioning
     QDesktopWidget dw;
     int h = dw.availableGeometry(this).height();
     int w = dw.availableGeometry(this).width();
@@ -82,12 +69,12 @@ void NotificationArea::setHeight(int contentHeight)
     if (m_placement == "bottom-right")
     {
         x = w - width() - m_spacing;
-        y = h - safeHeight;
+        y = h - safeHeight  - m_spacing;
     }
     else if (m_placement == "bottom-left")
     {
         x = dw.availableGeometry(this).x() + m_spacing;
-        y = h - safeHeight;
+        y = h - safeHeight - m_spacing;
     }
     else if (m_placement == "top-right")
     {
@@ -112,17 +99,15 @@ void NotificationArea::setHeight(int contentHeight)
     ensureVisible(0, contentHeight, 0, 0);
 }
 
-void NotificationArea::applySettings()
+void NotificationArea::setSettings(const QString &placement, int width, int spacing)
 {
-    qDebug() << "applySettings";
-    m_placement = m_settings->value("placement", "bottom-right").toString().toLower();
-    // width settings has to go before layout->setSpacing()
-    int w = m_settings->value("width", 300).toInt();
-    setMaximumWidth(w);
-    setMinimumWidth(w);
+    m_placement = placement;
 
-    m_spacing = m_settings->value("spacing", 6).toInt();
-    m_layout->setSizes(m_spacing, w);
+    setMaximumWidth(width);
+    setMinimumWidth(width);
+
+    m_spacing = spacing;
+    m_layout->setSizes(m_spacing, width);
         
     this->setHeight(widget()->height());
 }

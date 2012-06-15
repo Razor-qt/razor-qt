@@ -32,9 +32,6 @@
 #include "notificationlayout.h"
 
 
-class RazorSettings;
-
-
 class NotificationArea : public QScrollArea
 {
     Q_OBJECT
@@ -44,12 +41,10 @@ public:
 
     NotificationLayout* layout() { return m_layout; }
 
-public slots:
-    void applySettings();
+    void setSettings(const QString &placement, int width, int spacing);
 
 private:
     NotificationLayout *m_layout;
-    RazorSettings *m_settings;
 
     QString m_placement;
     int m_spacing;

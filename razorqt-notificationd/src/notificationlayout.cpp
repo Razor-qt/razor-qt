@@ -52,6 +52,14 @@ void NotificationLayout::setSizes(int space, int width)
     m_layout->setSpacing(space);
     setMaximumWidth(width);
     setMinimumWidth(width);
+
+    QHashIterator<uint, Notification*> it(m_notifications);
+    while (it.hasNext())
+    {
+        it.next();
+        it.value()->setMinimumWidth(width);
+        it.value()->setMaximumWidth(width);
+    }
 }
 
 void NotificationLayout::addNotification(uint id, const QString &application,

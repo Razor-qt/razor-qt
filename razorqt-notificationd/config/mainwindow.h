@@ -30,6 +30,8 @@
 
 #include <razorqt/razorconfigdialog.h>
 
+void serverReloadSettings();
+
 class MainWindow : public RazorConfigDialog
 {
     Q_OBJECT

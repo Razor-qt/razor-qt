@@ -28,6 +28,7 @@
 #include <razorqt/razornotification.h>
 
 #include "basicsettings.h"
+#include "mainwindow.h"
 
 
 BasicSettings::BasicSettings(RazorSettings* settings, QWidget *parent) :
@@ -64,7 +65,7 @@ void BasicSettings::restoreSettings()
     else
         bottomRightButton->setChecked(true);
 }
-#include <QtDebug>
+
 void BasicSettings::save()
 {
     if (bottomRightButton->isChecked())
@@ -77,7 +78,8 @@ void BasicSettings::save()
         mSettings->setValue("placement", "top-left");
 
     mSettings->sync();
-    qDebug() << "CFG" << mSettings->fileName() << mSettings;
+
+    serverReloadSettings();
 }
 
 void BasicSettings::testNotification()

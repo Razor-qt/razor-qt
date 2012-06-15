@@ -36,7 +36,6 @@
 
 #include "notificationarea.h"
 
-class RazorSettings;
 
 /*
  * Class for interface org.freedesktop.Notifications
@@ -61,6 +60,8 @@ public slots:
                 const QStringList& actions,
                 const QVariantMap& hints,
                 int expire_timeout);
+
+    void ReloadSettings();
 signals:
     // signals for DBUS API specs
     void ActionInvoked(uint in0, const QString& in1);
@@ -75,7 +76,7 @@ signals:
 private:
     uint mId;
     NotificationArea *m_area;
-    RazorSettings *m_settings;
+    int m_serverTimeout;
 };
 
 #endif // NOTIFYD_H

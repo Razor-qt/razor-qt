@@ -28,6 +28,7 @@
 #include <QtGui/QFileDialog>
 
 #include "advancedsettings.h"
+#include "mainwindow.h"
 
 
 AdvancedSettings::AdvancedSettings(RazorSettings* settings, QWidget *parent):
@@ -64,5 +65,6 @@ void AdvancedSettings::save()
     mSettings->setValue("width", widthBox->value());
 
     mSettings->sync();
+    serverReloadSettings();
 }
 
