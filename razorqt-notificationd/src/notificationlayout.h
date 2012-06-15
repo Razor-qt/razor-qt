@@ -37,37 +37,68 @@ class NotificationLayout : public QWidget
 public:
     explicit NotificationLayout(QWidget *parent);
 
+    /*! Set various properties for self and child \c Notification instances.
+     * \param space a layout spacing
+     * \param width new width for notifications
+     */
     void setSizes(int space, int width);
 
 signals:
+    //! All \c Notification instances are closed
     void allNotificationsClosed();
+    //! At least one \c Notification instance is available and needs to be shown
     void notificationAvailable();
+    //! Height of this widget changed so parent's \c NotificationArea needs to change its size too.
     void heightChanged(int);
+
+    /*! Promote the internal change of notification closing into the \c Notifyd
+     * \param id an notification ID (obtained from \c Notify)
+     * \param reason a reason for closing code. See specification for more info.
+     */
     void notificationClosed(uint id, uint reason);
-    void actionInvoked(uint id, const QString &actionText);
+
+    /*! Inform the external application that user chose one of provided action via the \c Notifyd
+     * \param in0 a notification ID (obtained from \c Notify)
+     * \param in1 a selected action key from the (key - display value) pair
+     */
+    void actionInvoked(uint id, const QString &actionKey);
 
 public slots:
+    /*! Add new notification
+     * See \c Notifyd::Notify() for params meanings.
+     */
     void addNotification(uint id, const QString &application,
                          const QString &summary, const QString &body,
                          const QString &icon, int timeout,
                          const QStringList& actions, const QVariantMap& hints);
-    // reason:
-    //1 - The notification expired.
-    //2 - The notification was dismissed by the user.
-    //3 - The notification was closed by a call to CloseNotification.
-    //4 - Undefined/reserved reasons.
+
+    /*! Notification id should be removed because of reason
+     */
     void removeNotification(uint id, uint reason);
 
 private:
     QHash<uint, Notification*> m_notifications;
     QVBoxLayout *m_layout;
 
+    /*! Calculate required height based on height of each \c Notification
+     * in the m_notifications map.
+     * Also heightChanged() is emitted here.
+     */
     void checkHeight();
 
 private slots:
+    /*! \c Notification's timer timeouted, so closing the notifiaction
+     */
     void removeNotificationTimeout();
+
+    /*! \c User cancelled the notifiation manually
+     */
     void removeNotificationUser();
-    void notificationActionCalled(const QString &actionText);
+
+    /*! User clicked on one of actions (if provioded).
+     * \param actionKey an action's key (not the display value)
+     */
+    void notificationActionCalled(const QString &actionKey);
 };
 
 #endif // NotificationLayout_H

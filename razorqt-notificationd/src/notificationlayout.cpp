@@ -141,7 +141,7 @@ void NotificationLayout::removeNotification(uint key, uint reason)
     checkHeight();
 }
 
-void NotificationLayout::notificationActionCalled(const QString &actionText)
+void NotificationLayout::notificationActionCalled(const QString &actionKey)
 {
     Notification *n = qobject_cast<Notification*>(sender());
     if (!n)
@@ -150,7 +150,7 @@ void NotificationLayout::notificationActionCalled(const QString &actionText)
         return;
     }
 
-    emit actionInvoked(m_notifications.key(n), actionText);
+    emit actionInvoked(m_notifications.key(n), actionKey);
 }
 
 void NotificationLayout::checkHeight()

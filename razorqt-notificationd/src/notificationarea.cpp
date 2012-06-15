@@ -28,7 +28,7 @@
 #include <QtGui/QDesktopWidget>
 #include <razorqt/razorsettings.h>
 #include "notificationarea.h"
-#include <QtDebug>
+
 
 NotificationArea::NotificationArea(QWidget *parent)
     : QScrollArea(parent)

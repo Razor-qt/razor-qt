@@ -35,15 +35,27 @@
 class QComboBox;
 
 
+/*! A helper widgets for actions handling.
+ * See specification for information what actions are.
+ *
+ * If there are only few actions the layout with buttons is used.
+ * If there are more actions the combo box with confirm button is created.
+ */
 class NotificationActionsWidget : public QWidget
 {
     Q_OBJECT
 
 public:
+    /*! Create new widget.
+     * \param actions a list of actions in form: (key1, display1, key2, display2, ..., keyN, displayN)
+     */
     NotificationActionsWidget(const QStringList& actions, QWidget *parent);
 
 signals:
-    void actionTriggered(const QString &actionText);
+    /*! User clicks/chose an action
+     * \param actionKey a key of selected action
+     */
+    void actionTriggered(const QString &actionKey);
 
 private:
     QComboBox *m_comboBox;

@@ -34,6 +34,35 @@
 #include "notifyd.h"
 
 
+/*! \mainpage Razor-qt notification daemon
+ *
+ * Running in user session; implementing standard as described in:
+ *    docs/nodification-spec-latest.html
+ *
+ * <b>Implementation notes:</b>
+ *
+ * Class \c Notifyd implements the main "server" part, a DBUS
+ * interface. Displaying of notifications is handled by these
+ * classes:
+ *
+ *  - \c NotificationArea: a QScrollArea object with transparency.
+ *       It ensures tha no action is unreachable (user can scroll
+ *       over notifications)
+ *  - \c NotificationLayout: a \c NotificationArea's main widget,
+ *       (QWidget instance) holding instances of \c Notification.
+ *       Layouting (in real QLayout) is done here.
+ *  - \c Notification: a QWidget with one notification. Icon, texts,
+ *       user interaction, etc. is handled in it.
+ *
+ * \c Notification can be extended with widgets located in files
+ * notificationwidgets.*. Currently there is only one extension:
+ *
+ *  - \c NotificationActionsWidget holding user interface for
+ *       interactive actions (buttons or combobox).
+ *
+ * Other extensions for e.g. "x-cannonical-*" can be implemented too.
+ *
+ */
 int main(int argc, char** argv)
 {
     RazorApplication a(argc, argv);

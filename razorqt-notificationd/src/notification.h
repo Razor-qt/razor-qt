@@ -38,25 +38,39 @@
 class NotificationActionsWidget;
 
 
+/*! Implementation of one notification.
+ *
+ */
 class Notification : public QWidget, public Ui::Notification
 {
     Q_OBJECT
 public:
+    /*! Construct a notification.
+     * Parameters are described in \c Notifyd::Notify()
+     */
     explicit Notification(const QString &application,
                           const QString &summary, const QString &body,
                           const QString &icon, int timeout,
                           const QStringList& actions, const QVariantMap& hints,
                           QWidget *parent = 0);
 
+    /*! Set new values (update) for existing notification.
+     * Parameters are described in \c Notifyd::Notify()
+     */
     void setValues(const QString &application,
                    const QString &summary, const QString &body,
                    const QString &icon, int timeout,
                    const QStringList& actions, const QVariantMap& hints);
 
 signals:
+    //! the server set timeout passed. Notification should close itself.
     void timeout();
+    //! User clicked the "close" button
     void userCanceled();
-    void actionTriggered(const QString &actionText);
+    /*! User selected some of actions provided
+     * \param actionKey an action key
+     */
+    void actionTriggered(const QString &actionKey);
 
 public slots:
 
@@ -67,7 +81,7 @@ private:
 
     NotificationActionsWidget *m_actionWidget;
 
-    // mandatory for stulesheets
+    // mandatory for stylesheets
     void paintEvent(QPaintEvent *);
     QPixmap getPixmapFromHint(const QVariant &argument) const;
     QPixmap getPixmapFromString(const QString &str) const;

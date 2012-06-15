@@ -32,6 +32,9 @@
 #include "notificationlayout.h"
 
 
+/*! Top level widget. Scroll area is used to ensure access
+ * of all \c Notification instances (scrollable with mouse).
+ */
 class NotificationArea : public QScrollArea
 {
     Q_OBJECT
@@ -39,8 +42,16 @@ public:
 
     explicit NotificationArea(QWidget *parent = 0);
 
+    /*! An access to \c NotificationLayout to connect signals and slots in \c Notifyd
+     */
     NotificationLayout* layout() { return m_layout; }
 
+    /*! Set new settings value from \c Notifyd. There are only one settings
+     * used - in \c Notifyd.
+     * \param placement a string name for notification location "top-level" etc.
+     * \param width set with of notifications
+     * \param spacing a spacing in the \NotificationLayout
+     */
     void setSettings(const QString &placement, int width, int spacing);
 
 private:
@@ -50,6 +61,9 @@ private:
     int m_spacing;
 
 private slots:
+    /*! Recalculate widget size and visibility. Slot is called from \c Notificationlayout
+     * on demand (notification appear or is closed).
+     */
     void setHeight(int contentHeight);
 };
 
