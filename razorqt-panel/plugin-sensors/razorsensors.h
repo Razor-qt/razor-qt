@@ -33,6 +33,7 @@
 #include <QtCore/QTimer>
 #include <QtGui/QProgressBar>
 #include <sensors/sensors.h>
+#include <set>
 
 class RazorSensors : public RazorPanelPlugin
 {
@@ -45,6 +46,7 @@ public:
 
 public slots:
     void updateSensorReadings();
+    void warningAboutHighTemperature();
 
 private slots:
     virtual void showConfigureDialog();
@@ -52,10 +54,15 @@ private slots:
     virtual void realign();
 
 private:
-    QTimer *mUpdateSensorReadingsTimer;
+    QTimer mUpdateSensorReadingsTimer;
+    QTimer mWarningAboutHighTemperatureTimer;
+    // How often warning time should fire in ms
+    int mWarningAboutHighTemperatureTimerFreq;
     Sensors mSensors;
     std::vector<Chip> mDetectedChips;
     std::vector<QProgressBar*> mTemperatureProgressBars;
+    // With set we can handle updates in very easy way :)
+    std::set<QProgressBar*> mHighTemperatureProgressBars;
     double celsiusToFahrenheit(double celsius);
     void initDefaultSettings();
 };

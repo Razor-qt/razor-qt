@@ -35,7 +35,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorSensors)
 
 RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
         RazorPanelPlugin(startInfo, parent),
-        mUpdateSensorReadingsTimer(NULL)
+        mWarningAboutHighTemperatureTimerFreq(500)
 {
     setObjectName("Sensors");
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
@@ -101,10 +101,19 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
     // Updated sensors readings to display actual values at start
     updateSensorReadings();
 
-    // Run timer that will be updating
-    mUpdateSensorReadingsTimer = new QTimer(this);
-    connect(mUpdateSensorReadingsTimer, SIGNAL(timeout()), this, SLOT(updateSensorReadings()));
-    mUpdateSensorReadingsTimer->start(settings().value("updateInterval").toInt() * 1000);
+    // Run timer that will be updating sensor readings
+    mUpdateSensorReadingsTimer.setParent(this);
+    connect(&mUpdateSensorReadingsTimer, SIGNAL(timeout()), this, SLOT(updateSensorReadings()));
+    mUpdateSensorReadingsTimer.start(settings().value("updateInterval").toInt() * 1000);
+
+    // Run timer that will be showin warning
+    mWarningAboutHighTemperatureTimer.setParent(this);
+    connect(&mWarningAboutHighTemperatureTimer, SIGNAL(timeout()), this,
+            SLOT(warningAboutHighTemperature()));
+    if (settings().value("warningAboutHighTemperature").toBool())
+    {
+        mWarningAboutHighTemperatureTimer.start(mWarningAboutHighTemperatureTimerFreq);
+    }
 }
 
 RazorSensors::~RazorSensors()
@@ -115,9 +124,11 @@ void RazorSensors::updateSensorReadings()
 {
     QString tooltip;
 
-    double max_temp = 0;
-    double min_temp = 0;
-    double cur_temp = 0;
+    double critTemp = 0;
+    double maxTemp = 0;
+    double minTemp = 0;
+    double curTemp = 0;
+    bool highTemperature = false;
 
     // Iterator for temperature progress bars
     std::vector<QProgressBar*>::iterator temperatureProgressBarsIt =
@@ -135,35 +146,71 @@ void RazorSensors::updateSensorReadings()
 
                 if (settings().value("useFahrenheitScale").toBool())
                 {
-                    max_temp = celsiusToFahrenheit(
+                    critTemp = celsiusToFahrenheit(
+                        features[j].getValue(SENSORS_SUBFEATURE_TEMP_CRIT));
+                    maxTemp = celsiusToFahrenheit(
                         features[j].getValue(SENSORS_SUBFEATURE_TEMP_MAX));
-                    min_temp = celsiusToFahrenheit(
+                    minTemp = celsiusToFahrenheit(
                         features[j].getValue(SENSORS_SUBFEATURE_TEMP_MIN));
-                    cur_temp = celsiusToFahrenheit(
+                    curTemp = celsiusToFahrenheit(
                         features[j].getValue(SENSORS_SUBFEATURE_TEMP_INPUT));
 
                     tooltip += "F)";
                 }
                 else
                 {
-                    max_temp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_MAX);
-                    min_temp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_MIN);
-                    cur_temp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_INPUT);
+                    critTemp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_CRIT);
+                    maxTemp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_MAX);
+                    minTemp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_MIN);
+                    curTemp = features[j].getValue(SENSORS_SUBFEATURE_TEMP_INPUT);
 
                     tooltip += "C)";
                 }
 
-                // Get maximum temperature
-                (*temperatureProgressBarsIt)->setMaximum(max_temp);
-                // Get minimum temperature
-                (*temperatureProgressBarsIt)->setMinimum(min_temp);
-                // Get current temperature
-                (*temperatureProgressBarsIt)->setValue(cur_temp);
 
-                tooltip += "<br><br>Max: ";
+                // Check if temperature is too high
+                if (curTemp >= maxTemp)
+                {
+                    if (settings().value("warningAboutHighTemperature").toBool())
+                    {
+                        // Add current progress bar to the "warning container"
+                        mHighTemperatureProgressBars.insert(*temperatureProgressBarsIt);
+                    }
+
+                    highTemperature = true;
+                }
+                else
+                {
+                    mHighTemperatureProgressBars.erase(*temperatureProgressBarsIt);
+
+                    highTemperature = false;
+                }
+
+                // Set maximum temperature
+                (*temperatureProgressBarsIt)->setMaximum(critTemp);
+                // Set minimum temperature
+                (*temperatureProgressBarsIt)->setMinimum(minTemp);
+                // Set current temperature
+                (*temperatureProgressBarsIt)->setValue(curTemp);
+
+                tooltip += "<br><br>Crit: ";
                 tooltip += QString::number((*temperatureProgressBarsIt)->maximum());
+                tooltip += "<br>Max: ";
+                tooltip += QString::number(int(maxTemp));
                 tooltip += "<br>Cur: ";
-                tooltip += QString::number((*temperatureProgressBarsIt)->value());
+
+                // Mark high temperature in the tooltip
+                if (highTemperature)
+                {
+                    tooltip += "<span style=\"font-size:8pt; font-weight:600; color:#FF0000;\">";
+                    tooltip += QString::number((*temperatureProgressBarsIt)->value());
+                    tooltip += " !</span>";
+                }
+                else
+                {
+                    tooltip += QString::number((*temperatureProgressBarsIt)->value());
+                }
+
                 tooltip += "<br>Min: ";
                 tooltip += QString::number((*temperatureProgressBarsIt)->minimum());
                 (*temperatureProgressBarsIt)->setToolTip(tooltip);
@@ -174,6 +221,34 @@ void RazorSensors::updateSensorReadings()
         }
     }
 
+    update();
+}
+
+void RazorSensors::warningAboutHighTemperature()
+{
+    // Iterator for temperature progress bars
+    std::set<QProgressBar*>::iterator temperatureProgressBarsIt =
+        mHighTemperatureProgressBars.begin();
+
+    int curValue;
+    int maxValue;
+
+    for (; temperatureProgressBarsIt != mHighTemperatureProgressBars.end();
+         ++temperatureProgressBarsIt)
+    {
+        curValue = (*temperatureProgressBarsIt)->value();
+        maxValue = (*temperatureProgressBarsIt)->maximum();
+
+        if (maxValue > curValue)
+        {
+            (*temperatureProgressBarsIt)->setValue(maxValue);
+        }
+        else
+        {
+            (*temperatureProgressBarsIt)->setValue((*temperatureProgressBarsIt)->minimum());
+        }
+
+    }
     update();
 }
 
@@ -194,7 +269,7 @@ void RazorSensors::showConfigureDialog()
 
 void RazorSensors::settingsChanged()
 {
-    mUpdateSensorReadingsTimer->setInterval(settings().value("updateInterval").toInt() * 1000);
+    mUpdateSensorReadingsTimer.setInterval(settings().value("updateInterval").toInt() * 1000);
 
     for (unsigned int i = 0; i < mTemperatureProgressBars.size(); ++i)
     {
@@ -251,6 +326,22 @@ void RazorSensors::settingsChanged()
     }
 
     settings().endGroup();
+
+
+    if (settings().value("warningAboutHighTemperature").toBool())
+    {
+        // Update sensors readings to get the list of high temperature progress bars
+        updateSensorReadings();
+
+        mWarningAboutHighTemperatureTimer.start(mWarningAboutHighTemperatureTimerFreq);
+    }
+    else if (mWarningAboutHighTemperatureTimer.isActive())
+    {
+        mWarningAboutHighTemperatureTimer.stop();
+
+        // Update sensors readings to set progress bar values to "normal" height
+        updateSensorReadings();
+    }
 
     update();
 }
@@ -345,4 +436,9 @@ void RazorSensors::initDefaultSettings()
     }
 
     settings().endGroup();
+
+    if (!settings().contains("warningAboutHighTemperature"))
+    {
+        settings().setValue("warningAboutHighTemperature", true);
+    }
 }
