@@ -30,10 +30,12 @@
 #include <QList>
 #include <QDBusObjectPath>
 #include <QDebug>
+#include "razorqt/razornotification.h"
 
 Battery::Battery()
 {
     uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
+    uPowerBatteryDevice = 0;
     QDBusReply<QList<QDBusObjectPath> > reply = uPower->call("EnumerateDevices");
     foreach (QDBusObjectPath objectPath, reply.value())
     {
@@ -42,7 +44,9 @@ Battery::Battery()
                                                     "org.freedesktop.UPower.Device",
                                                     QDBusConnection::systemBus());
 
-        if (device->property("Type").toUInt() == 2 && device->property("PowerSupply").toBool())
+        if (device->property("Type").toUInt() == 2 &&
+            ( device->property("PowerSupply").toBool() ||                          // UPower < 0.9.16.3 wrongly reports this false for some laptop batteries
+              device->property("NativePath").toString().contains("power_supply"))) // - hence this line
         {
             uPowerBatteryDevice = device;
             connect(uPowerBatteryDevice, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
@@ -52,6 +56,12 @@ Battery::Battery()
         {
             delete device;
         }
+    }
+    if (uPowerBatteryDevice == 0)
+    {
+        RazorNotification::notify("No battery!",
+                                  "Razor autosuspend could not find data about any battery - actions on power low will not work",
+                                  "razor-autosuspend");
     }
 }
 
@@ -72,5 +82,3 @@ bool Battery::powerLow()
 {
     return m_powerLow;
 }
-
-
