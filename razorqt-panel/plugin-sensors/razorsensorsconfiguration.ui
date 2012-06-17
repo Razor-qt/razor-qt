@@ -85,6 +85,19 @@
          </property>
         </widget>
        </item>
+       <item row="5" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="3" column="0" colspan="2">
         <widget class="QGroupBox" name="tempScaleGB">
          <property name="title">
@@ -113,18 +126,24 @@
          <zorder>celsiusTempScaleRB</zorder>
         </widget>
        </item>
-       <item row="4" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="warningAboutHighTemperatureChB">
+         <property name="toolTip">
+          <string>Blink progress bars when the temperature is too high</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
          </property>
-        </spacer>
+         <property name="text">
+          <string>Warning about high temperature</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

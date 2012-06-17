@@ -54,6 +54,7 @@ RazorSensorsConfiguration::RazorSensorsConfiguration(QSettings &settings, QWidge
     connect(ui->celsiusTempScaleRB, SIGNAL(toggled(bool)), this, SLOT(saveSettings()));
     // We don't need signal from the other radio box as celsiusTempScaleRB will send one
     //connect(ui->fahrenheitTempScaleRB, SIGNAL(toggled(bool)), this, SLOT(saveSettings()));
+    connect(ui->warningAboutHighTemperatureChB, SIGNAL(toggled(bool)), this, SLOT(saveSettings()));
 
     /**
      * Signals for enable/disable and bar color change are set in the loadSettings method because
@@ -93,6 +94,9 @@ void RazorSensorsConfiguration::loadSettings()
     {
         detectedChipSelected(0);
     }
+
+    ui->warningAboutHighTemperatureChB->setChecked(
+            mSettings.value("warningAboutHighTemperature").toBool());
 }
 
 void RazorSensorsConfiguration::saveSettings()
@@ -141,6 +145,9 @@ void RazorSensorsConfiguration::saveSettings()
 
     }
     mSettings.endGroup();
+
+    mSettings.setValue("warningAboutHighTemperature",
+                       ui->warningAboutHighTemperatureChB->isChecked());
 }
 
 void RazorSensorsConfiguration::dialogButtonsAction(QAbstractButton *btn)
