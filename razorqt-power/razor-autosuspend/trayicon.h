@@ -29,11 +29,13 @@
 #define MAINWINDOW_H
 
 #include <QSystemTrayIcon>
+#include <QTime>
 #include "settings_dialog.h"
 #include "razorqt/razorsettings.h"
 #include "razorqt/razorpower/razorpower.h"
 #include "lid.h"
 #include "battery.h"
+#include <razorqt/razornotification.h>
 
 class TrayIcon : public QSystemTrayIcon
 {
@@ -43,22 +45,31 @@ public:
     explicit TrayIcon(QWidget *parent = 0);
     ~TrayIcon();
 
+protected:
+    void timerEvent(QTimerEvent *event);
+
 public slots:
     void exitAutoSuspender();
 
 private slots:
     void lidChanged(bool closed);
     void chargeLevelChanged(double newPercentage);
-
     void editSettings();
 
 private:
+    void doAction(int action);
     void makeContextMenu();
     Lid lid;
     Battery battery;
 
     RazorPower razorPower;
     RazorSettings settings;
+
+    RazorNotification razorNotification;
+
+    int pendingAction;
+    QTime actionTime;
+    QString notificationMsg;
 };
 
 #endif // MAINWINDOW_H
