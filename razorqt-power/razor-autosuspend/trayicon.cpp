@@ -36,7 +36,12 @@
 #include "razorqt/razornotification.h"
 
 TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent),
-    razorPower(), settings("razor-autosuspend"), razorNotification("Power low", this), pendingAction(0), actionTime(), notificationMsg("")
+    razorPower(),
+    settings("razor-autosuspend"),
+    razorNotification(tr("Power low"), this),
+    pendingAction(0),
+    actionTime(),
+    notificationMsg("")
 {
     setIcon(QIcon(":icons/razor-autosuspend.svg"));
     makeContextMenu();
@@ -62,9 +67,9 @@ void TrayIcon::makeContextMenu()
         contextMenu()->clear();
     }
 
-    QAction* settingsAction = contextMenu()->addAction("Settings...");
+    QAction* settingsAction = contextMenu()->addAction(tr("Settings..."));
     connect(settingsAction, SIGNAL(triggered()), this, SLOT(editSettings()));
-    QAction* exitAction = contextMenu()->addAction("Exit");
+    QAction* exitAction = contextMenu()->addAction(tr("Exit"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(exitAutoSuspender()));
 }
 
@@ -98,11 +103,11 @@ void TrayIcon::chargeLevelChanged(double newPercentage)
             actionTime = QTime::currentTime().addMSecs(30000);
             if (pendingAction == SLEEP)
             {
-                notificationMsg = "Sleeping in %1 seconds";
+                notificationMsg = tr("Sleeping in %1 seconds");
             }
             else if (pendingAction == HIBERNATE)
             {
-                notificationMsg = "Hibernating in %1 seconds";
+                notificationMsg = tr("Hibernating in %1 seconds");
             }
             startTimer(100);
         }

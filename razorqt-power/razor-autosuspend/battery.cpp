@@ -59,8 +59,8 @@ Battery::Battery()
     }
     if (uPowerBatteryDevice == 0)
     {
-        RazorNotification::notify("No battery!",
-                                  "Razor autosuspend could not find data about any battery - actions on power low will not work",
+        RazorNotification::notify(tr("No battery!"),
+                                  tr("Razor autosuspend could not find data about any battery - actions on power low will not work"),
                                   "razor-autosuspend");
     }
 }

@@ -26,6 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <razorqt/razorapplication.h>
+#include "razortranslate.h"
 #include "trayicon.h"
 #include <QMessageBox>
 
@@ -33,6 +34,8 @@ int main(int argc, char *argv[])
 {
 
     RazorApplication a(argc, argv);
+
+    TRANSLATE_APP;
 
     TrayIcon w;
     w.show();
