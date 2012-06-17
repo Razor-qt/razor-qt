@@ -163,8 +163,16 @@ void NotificationLayout::checkHeight()
         h +=it.value()->height() + m_layout->spacing();
     }
 
-    setMinimumSize(width(), h);
-    setMaximumSize(width(), h);
+    /* When last notification is removed we arrive here with visible=false. In that case,
+       calling setMinimumSize and/or setMaximumSize makes something weird happen: With notifications
+       set to show at the top-left corner, the next notification does not show. Not calling setMinimumSize/
+       setMaximumSize in that case seems to fix the problem, allthough it is unclear why.
+    */
+    if (isVisible())
+    {
+        setMinimumSize(width(), h);
+        setMaximumSize(width(), h);
+    }
     emit heightChanged(h);
 }
 
