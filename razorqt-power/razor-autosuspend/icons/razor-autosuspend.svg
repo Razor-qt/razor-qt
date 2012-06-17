@@ -10,12 +10,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="724.69"
+   height="724.69"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
-   sodipodi:docname="icon.svg">
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="razor-autosuspend.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -32,7 +32,8 @@
     </linearGradient>
     <filter
        inkscape:collect="always"
-       id="filter4021">
+       id="filter4021"
+       color-interpolation-filters="sRGB">
       <feGaussianBlur
          inkscape:collect="always"
          stdDeviation="2.160718"
@@ -65,16 +66,20 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="375"
-     inkscape:cy="748.57143"
+     inkscape:cx="362.91149"
+     inkscape:cy="533.23622"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="864"
-     inkscape:window-height="616"
-     inkscape:window-x="145"
-     inkscape:window-y="71"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1440"
+     inkscape:window-height="849"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -90,7 +95,8 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-12.088506,-112.33699)">
     <path
        style="fill:none;stroke:#000000;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-mid:none;filter:url(#filter4021)"
        d="m 132.16988,554.78376 c 118.13078,-5.53571 118.18721,-2.89967 118.18721,-2.89967 l -114.63232,168.96963 120.70587,-0.32405 -7.49955,-5.09084"
