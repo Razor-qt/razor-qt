@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>293</width>
-    <height>289</height>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>240</y>
+     <y>270</y>
      <width>270</width>
      <height>32</height>
     </rect>
@@ -50,51 +50,106 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="lidClosedActionLabel">
+  <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>70</y>
-     <width>170</width>
-     <height>17</height>
+     <x>10</x>
+     <y>130</y>
+     <width>270</width>
+     <height>100</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Lid closed action:</string>
+   <property name="title">
+    <string>Power low</string>
    </property>
+   <widget class="QComboBox" name="powerLowActionComboBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>20</y>
+      <width>130</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>20</y>
+      <width>60</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Action:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>60</y>
+      <width>60</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Warning:</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="powerLowWarningSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>60</y>
+      <width>130</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="suffix">
+     <string> seconds</string>
+    </property>
+    <property name="maximum">
+     <number>500</number>
+    </property>
+   </widget>
   </widget>
-  <widget class="QLabel" name="powerLowActionLabel">
+  <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>150</y>
-     <width>171</width>
-     <height>17</height>
+     <x>10</x>
+     <y>40</y>
+     <width>270</width>
+     <height>80</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Power low action:</string>
+   <property name="title">
+    <string>Lid closed</string>
    </property>
-  </widget>
-  <widget class="QComboBox" name="lidClosedActionComboBox">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>100</y>
-     <width>130</width>
-     <height>29</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="powerLowActionComboBox">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>180</y>
-     <width>130</width>
-     <height>29</height>
-    </rect>
-   </property>
+   <widget class="QComboBox" name="lidClosedActionComboBox">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>20</y>
+      <width>130</width>
+      <height>30</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>20</y>
+      <width>60</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Action:</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

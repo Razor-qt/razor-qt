@@ -43,6 +43,7 @@ namespace Ui
 
 #define LIDCLOSEDACTION_KEY "lidClosedAction"
 #define POWERLOWACTION_KEY "powerLowAction"
+#define POWERLOWWARNING_KEY "powerLowWarning"
 enum
 {
     NOTHING,

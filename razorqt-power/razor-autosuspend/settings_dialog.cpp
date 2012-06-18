@@ -37,6 +37,7 @@ SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Se
 
     connect(ui->lidClosedActionComboBox, SIGNAL(activated(int)), this, SLOT(saveSettings()));
     connect(ui->powerLowActionComboBox, SIGNAL(activated(int)), this, SLOT(saveSettings()));
+    connect(ui->powerLowWarningSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
 
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
@@ -64,6 +65,7 @@ void SettingsDialog::loadSettings()
 {
     fillInActions(ui->lidClosedActionComboBox, m_Settings.value(LIDCLOSEDACTION_KEY).toInt());
     fillInActions(ui->powerLowActionComboBox, m_Settings.value(POWERLOWACTION_KEY).toInt());
+    ui->powerLowWarningSpinBox->setValue(m_Settings.value(POWERLOWWARNING_KEY, 30).toInt());
 }
 
 void SettingsDialog::fillInActions(QComboBox *comboBox, int selectedData)
@@ -86,4 +88,5 @@ void SettingsDialog::saveSettings()
 {
     m_Settings.setValue(LIDCLOSEDACTION_KEY, ui->lidClosedActionComboBox->itemData(ui->lidClosedActionComboBox->currentIndex()).toInt());
     m_Settings.setValue(POWERLOWACTION_KEY, ui->powerLowActionComboBox->itemData(ui->powerLowActionComboBox->currentIndex()).toInt());
+    m_Settings.setValue(POWERLOWWARNING_KEY, ui->powerLowWarningSpinBox->value());
 }

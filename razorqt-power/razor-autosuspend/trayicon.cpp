@@ -92,7 +92,8 @@ void TrayIcon::chargeLevelChanged(double newPercentage)
 
     if (battery.powerLow() && actionTime.isNull() && powerLowAction() > 0)
     {
-        actionTime = QTime::currentTime().addMSecs(30000);
+        int warningTimeMsecs = settings.value(POWERLOWWARNING_KEY, 30).toInt()*1000;
+        actionTime = QTime::currentTime().addMSecs(warningTimeMsecs);
         startTimer(100);
         // From here everything is handled by timerEvent below
     }
