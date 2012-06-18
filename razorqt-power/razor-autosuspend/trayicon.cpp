@@ -39,9 +39,7 @@ TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent),
     razorPower(),
     settings("razor-autosuspend"),
     razorNotification(tr("Power low"), this),
-    pendingAction(0),
-    actionTime(),
-    notificationMsg("")
+    actionTime()
 {
     setIcon(QIcon(":icons/razor-autosuspend.svg"));
     makeContextMenu();
@@ -90,50 +88,35 @@ void TrayIcon::chargeLevelChanged(double newPercentage)
 {
     Q_UNUSED(newPercentage)
 
-    qDebug() << "charge:" << newPercentage << "pendingAction:" << pendingAction << "powerlow:" << battery.powerLow();
+    qDebug() << "charge:" << newPercentage << "actionTime:" << actionTime << "powerlow:" << battery.powerLow();
 
-    if (pendingAction != 0 && ! battery.powerLow())
+    if (battery.powerLow() && actionTime.isNull() && powerLowAction() > 0)
     {
-        pendingAction = 0;
-    }
-    else if (battery.powerLow() && pendingAction == 0)
-    {
-        pendingAction = settings.value(POWERLOWACTION_KEY).toInt();
-        if (pendingAction > 0) {
-            actionTime = QTime::currentTime().addMSecs(30000);
-            if (pendingAction == SLEEP)
-            {
-                notificationMsg = tr("Sleeping in %1 seconds");
-            }
-            else if (pendingAction == HIBERNATE)
-            {
-                notificationMsg = tr("Hibernating in %1 seconds");
-            }
-            startTimer(100);
-        }
+        actionTime = QTime::currentTime().addMSecs(30000);
+        startTimer(100);
+        // From here everything is handled by timerEvent below
     }
 }
 
 
 void TrayIcon::timerEvent(QTimerEvent *event)
 {
-    if (pendingAction > 0)
+    if (actionTime.isNull() || powerLowAction() == 0 || ! battery.powerLow())
     {
-        int secondsToAction = QTime::currentTime().msecsTo(actionTime)/1000;
-        if (secondsToAction < 0)
-        {
-           doAction(pendingAction);
-            pendingAction = 0;
-        }
-        else
-        {
-            razorNotification.setBody(notificationMsg.arg(QString::number(secondsToAction)));
-            razorNotification.update();
-        }
+            killTimer(event->timerId());
+            actionTime = QTime();
     }
-    else {
+    else if (QTime::currentTime().msecsTo(actionTime) > 0)
+    {
+        QString notificationMsg = powerLowAction() == SLEEP ? tr("Sleeping in %1 seconds") : tr("Hibernating in %1 seconds");
+        razorNotification.setBody(notificationMsg.arg(QTime::currentTime().msecsTo(actionTime)/1000));
+        razorNotification.update();
+    }
+    else
+    {
+        doAction(powerLowAction());
+        actionTime = QTime();
         killTimer(event->timerId());
-        razorNotification.close();
     }
 }
 
@@ -156,4 +139,9 @@ void TrayIcon::doAction(int action)
 void TrayIcon::editSettings()
 {
     SettingsDialog().exec();
+}
+
+int TrayIcon::powerLowAction()
+{
+    return settings.value(POWERLOWACTION_KEY).toInt();
 }

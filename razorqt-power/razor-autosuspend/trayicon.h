@@ -59,6 +59,8 @@ private slots:
 private:
     void doAction(int action);
     void makeContextMenu();
+    int powerLowAction();
+
     Lid lid;
     Battery battery;
 
@@ -66,10 +68,7 @@ private:
     RazorSettings settings;
 
     RazorNotification razorNotification;
-
-    int pendingAction;
     QTime actionTime;
-    QString notificationMsg;
 };
 
 #endif // MAINWINDOW_H
