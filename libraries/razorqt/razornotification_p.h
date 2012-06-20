@@ -38,6 +38,7 @@ public:
     void update();
     void close();
     void setActions(QStringList actions, int defaultAction);
+    const RazorNotification::ServerInfo serverInfo();
 
 public slots:
     void handleAction(uint id, QString key);

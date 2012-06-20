@@ -81,7 +81,7 @@ void RazorNotification::setTimeout(int timeout)
     d->mTimeout = timeout;
 }
 
-void RazorNotification::setHint(QString hintName, QVariant value)
+void RazorNotification::setHint(const QString& hintName, const QVariant& value)
 {
     Q_D(RazorNotification);
     d->mHints.insert(hintName, value);
@@ -97,6 +97,18 @@ void RazorNotification::clearHints()
 {
     Q_D(RazorNotification);
     d->mHints.clear();
+}
+
+QStringList RazorNotification::getCapabilities()
+{
+    Q_D(RazorNotification);
+    return d->mInterface->GetCapabilities().value();
+}
+
+const RazorNotification::ServerInfo RazorNotification::serverInfo()
+{
+    Q_D(RazorNotification);
+    return d->serverInfo();
 }
 
 void RazorNotification::notify(const QString& summary, const QString& body, const QString& iconName)
@@ -115,7 +127,7 @@ RazorNotificationPrivate::RazorNotificationPrivate(const QString& summary, Razor
 {
     mInterface = new OrgFreedesktopNotificationsInterface("org.freedesktop.Notifications",
                                                           "/org/freedesktop/Notifications",
-                                                          QDBusConnection::sessionBus(), 0);
+                                                          QDBusConnection::sessionBus(), this);
     connect(mInterface, SIGNAL(NotificationClosed(uint, uint)), this, SLOT(notificationClosed(uint,uint)));
     connect(mInterface, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(handleAction(uint,QString)));
 }
@@ -148,6 +160,13 @@ void RazorNotificationPrivate::setActions(QStringList actions, int defaultAction
             mActions.append(QString::number(ix));
         mActions.append(actions[ix]);
     }
+}
+
+const RazorNotification::ServerInfo RazorNotificationPrivate::serverInfo()
+{
+    RazorNotification::ServerInfo info;
+    info.name = mInterface->GetServerInformation(info.vendor, info.version, info.specVersion);
+    return info;
 }
 
 void RazorNotificationPrivate::handleAction(uint id, QString key)

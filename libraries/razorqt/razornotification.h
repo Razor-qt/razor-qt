@@ -42,7 +42,7 @@ public:
      * \brief RazorNotification is an object that represents a single notification.
      * \param summary Summary text briefly describing the notification (required by the spec)
      */
-    RazorNotification(const QString& summary, QObject* parent = 0);
+    RazorNotification(const QString& summary = QString(), QObject* parent = 0);
     ~RazorNotification();
 
     enum CloseReason
@@ -62,6 +62,18 @@ public:
         UrgencyLow      = 0,
         UrgencyNormal   = 1,
         UrgencyCritical = 2
+    };
+
+    struct ServerInfo
+    {
+        //! The product name of the server.
+        QString name;
+        //! The vendor name. For example, "razor-qt.org"
+        QString vendor;
+        //! The server's version number.
+        QString version;
+        //! The specification version the server is compliant with.
+        QString specVersion;
     };
 
     /*!
@@ -104,7 +116,7 @@ public:
      * \param hint  Hint name
      * \param value The hint data
      */
-    void setHint(QString hint, QVariant value);
+    void setHint(const QString& hint, const QVariant& value);
 
     /*!
      * \brief Set the "urgency" hint
@@ -117,6 +129,17 @@ public:
      * \sa setHint()
      */
     void clearHints();
+
+    /*!
+     * \brief returns a list of optional capabilities supported by the server.
+     * For the list, see http://developer.gnome.org/notification-spec/#commands
+     */
+    QStringList getCapabilities();
+
+    /*!
+     * \brief Returns information about the notifications server
+     */
+    const ServerInfo serverInfo();
 
     /*!
      * \brief Convenience function to create and display a notification for the most common
