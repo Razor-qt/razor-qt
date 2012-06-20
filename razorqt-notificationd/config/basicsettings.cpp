@@ -45,6 +45,25 @@ BasicSettings::BasicSettings(RazorSettings* settings, QWidget *parent) :
     connect(bottomLeftButton, SIGNAL(clicked()), this, SLOT(save()));
 
     connect(testButton, SIGNAL(clicked()), this, SLOT(testNotification()));
+
+    RazorNotification serverTest;
+    QString serverName = serverTest.serverInfo().name;
+    if (serverName != "razor-notificationd")
+    {
+        if (serverName.isEmpty())
+        {
+            warningLabel->setText(tr(
+                "<b>Warning:</b> No notifications daemon is running.\n"
+                "A fallback will be used."));
+        }
+        else
+        {
+            warningLabel->setText(tr(
+                "<b>Warning:</b> A third-party notifications daemon (%1) is running.\n"
+                "These settings won't have an effect on it!"
+                ).arg(serverName));
+        }
+    }
 }
 
 BasicSettings::~BasicSettings()
