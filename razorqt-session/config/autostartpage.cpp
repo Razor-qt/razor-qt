@@ -68,7 +68,7 @@ void AutoStartPage::save()
 
 void AutoStartPage::addButton_clicked()
 {
-    AutoStartEdit edit(QString(), QString(), this);
+    AutoStartEdit edit(QString(), QString(), false);
     bool success = false;
     while (!success && edit.exec() == QDialog::Accepted)
     {
