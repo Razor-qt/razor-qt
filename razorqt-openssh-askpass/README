@@ -1,0 +1,13 @@
+This is a very small helper app for ssh-agent.
+
+Example setup:
+
+- run the razor-config-session.
+- add new item into the "Environment (Advanced)"
+   SSH_ASKPASS=razor-openssh-askpass
+-if you want to register your keys on session startup add new item to "Autostart" tab. For example:
+   name: ssh-add
+   command: ssh-add
+   wait for system tray: false
+- logout/login/enjoy
+

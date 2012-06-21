@@ -66,6 +66,7 @@ add_subdirectory( razorqt-power )
 add_subdirectory( razorqt-policykit )
 add_subdirectory( razorqt-lightdm-greeter )
 add_subdirectory( razorqt-notificationd )
+add_subdirectory( razorqt-openssh-askpass )
 
 ########### Add uninstall target ###############
 CONFIGURE_FILE(
