@@ -27,14 +27,26 @@
 #include <QtGui/QDesktopWidget>
 #include "mainwindow.h"
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    MainWindow *focusWindow = 0;
     for (int i = 0; i < QApplication::desktop()->screenCount(); ++i)
     {
         MainWindow *w = new MainWindow(i);
         w->show();
+        if (w->isMain())
+            focusWindow = w;
+    }
+
+    // Ensure we set the primary screen's widget as active when there
+    // are more screens
+    if (focusWindow)
+    {
+        focusWindow->setFocus(Qt::OtherFocusReason);
+        focusWindow->activateWindow();
     }
 
     return a.exec();

@@ -41,8 +41,10 @@ public:
     explicit MainWindow(int screen, QWidget *parent = 0);
     ~MainWindow();
 
+    bool isMain() { return m_main; };
 
-
+private:
+    bool m_main;
 };
 
 #endif // MAINWINDOW_H

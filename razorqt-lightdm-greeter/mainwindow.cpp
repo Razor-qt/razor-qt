@@ -33,6 +33,8 @@
 MainWindow::MainWindow(int screen, QWidget *parent)
     : QWidget(parent)
 {
+    setObjectName(QString("MainWindow_%1").arg(screen));
+
     QRect screenRect = QApplication::desktop()->screenGeometry(screen);
     setGeometry(screenRect);
     QImage image(QString(SHARE_DIR) + "/themes/light/simple_blue_widescreen.png");
@@ -42,7 +44,8 @@ MainWindow::MainWindow(int screen, QWidget *parent)
     this->setPalette(palette);
 
     // display login dialog only in the main screen
-    if (screen == QApplication::desktop()->primaryScreen())
+    m_main = screen == QApplication::desktop()->primaryScreen();
+    if (m_main)
     {
         LoginForm *loginForm = new LoginForm(this);
         int offsetX = 2*screenRect.width()/5 - loginForm->width()/2;
