@@ -38,12 +38,10 @@
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDialog>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QMouseEvent>
 #include <QtCore/QPoint>
 #include <QtCore/QSettings>
 #include <QtCore/QRect>
-#include <QtCore/QEvent>
-
-int mon, day, hour, min, sec;
 
 /**
  * @file razorclock.cpp
@@ -221,6 +219,9 @@ void RazorClock::updateMinWidth()
 
 void RazorClock::mouseReleaseEvent(QMouseEvent* event)
 {
+    if (event->button() != Qt::LeftButton)
+        return;
+
     if (!calendarDialog)
     {
         calendarDialog = new QDialog(this);
