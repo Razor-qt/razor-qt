@@ -3,7 +3,7 @@ Type=Application
 Exec=razor-autosuspend
 Icon=razor-autosuspend
 Terminal=false
-Categories=Application;Qt;Utility
+Categories=Qt;Utility;
 Name=Razor autosuspend
 GenericName=Power management
 
