@@ -38,7 +38,7 @@
 #include <QtDebug>
 
 
-#define ICONSIZE QSize(64, 64)
+#define ICONSIZE QSize(32, 32)
 
 
 Notification::Notification(const QString &application,
@@ -101,15 +101,24 @@ void Notification::setValues(const QString &application,
 //        qDebug() << "An icon for name:" << icon << "or hints" << hints << "not found. Using failback.";
         m_pixmap = XdgIcon::defaultApplicationIcon().pixmap(ICONSIZE);
     }
+
+    if (m_pixmap.size().width() > ICONSIZE.width()
+    	|| m_pixmap.size().height() > ICONSIZE.height())
+    {
+    	m_pixmap = m_pixmap.scaled(ICONSIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
     iconLabel->setPixmap(m_pixmap);
 
     // application
+	appLabel->setVisible(!application.isEmpty());
     appLabel->setText(application);
 
     // summary
+    summaryLabel->setVisible(!summary.isEmpty());
     summaryLabel->setText(summary);
 
     // body
+    bodyLabel->setVisible(!body.isEmpty());
     bodyLabel->setText(body);
 
     // Timeout
