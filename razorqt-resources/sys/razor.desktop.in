@@ -2,6 +2,7 @@
 Encoding=UTF-8
 Type=XSession
 Exec=razor-session
+TryExec=razor-session
 Name=Razor Desktop
 Comment=Qt4 Desktop
 
