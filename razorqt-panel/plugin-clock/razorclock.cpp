@@ -38,6 +38,7 @@
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDialog>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QPoint>
 #include <QtCore/QSettings>
@@ -60,17 +61,24 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     setObjectName("Clock");
     clockFormat = "hh:mm";
 
-    gui = new ClockLabel(this);
-    gui->setAlignment(Qt::AlignCenter);
-    this->layout()->setAlignment(Qt::AlignCenter);
-    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    gui->setSizePolicy(sizePolicy);
-    this->setSizePolicy(sizePolicy);
-    addWidget(gui);
+    gui1 = new ClockLabel(this);
+    gui2 = new ClockLabel(this);
+    QVBoxLayout *contentLayout = new QVBoxLayout(this);
+    contentLayout->addWidget(gui1);
+    contentLayout->addWidget(gui2);
+    static_cast<QBoxLayout*>(this->layout())->addLayout(contentLayout, 1);
 
-    connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
+    gui1->setAlignment(Qt::AlignCenter);
+    gui2->setAlignment(Qt::AlignCenter);
+    contentLayout->setAlignment(Qt::AlignCenter);
+    this->layout()->setAlignment(Qt::AlignCenter);
+
+    gui1->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    gui2->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    this->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+
+    connect(gui1, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
+    connect(gui2, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
     settingsChanged();
 
     clocktimer = new QTimer(this);
@@ -84,7 +92,15 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
  */
 void RazorClock::updateTime()
 {
-    gui->setText(QDateTime::currentDateTime().toString(clockFormat));
+    if (dateOnNewLine && showDate)
+    {
+        gui1->setText(QDateTime::currentDateTime().toString(timeFormat));
+        gui2->setText(QDateTime::currentDateTime().toString(dateFormat));
+    }
+    else
+    {
+        gui1->setText(QDateTime::currentDateTime().toString(clockFormat));
+    }
 }
 
 /**
@@ -112,19 +128,35 @@ void RazorClock::settingsChanged()
     showDate = settings().value("showDate", false).toBool();
     if (showDate)
     {
-        if (dateOnNewLine)
-        {
-            clockFormat.append("\n");
-        }
-        else
+        if (!dateOnNewLine)
         {
             clockFormat.append(" ");
+            clockFormat += dateFormat;
         }
 
-        clockFormat += dateFormat;
     }
 
+    {
+        QFont font(gui1->font());
+        gui1->setFont(QFont(
+            settings().value("timeFont/family", font.family()).toString(),
+            settings().value("timeFont/pointSize", font.pointSize()).toInt(),
+            settings().value("timeFont/weight", font.weight()).toInt(),
+            settings().value("timeFont/italic", font.italic()).toBool() ));
+    }
+
+    {
+        QFont font(gui2->font());
+        gui2->setFont(QFont(
+            settings().value("dateFont/family", font.family()).toString(),
+            settings().value("dateFont/pointSize", font.pointSize()).toInt(),
+            settings().value("dateFont/weight", font.weight()).toInt(),
+            settings().value("dateFont/italic", font.italic()).toBool() ));
+    }
+
+
     updateMinWidth();
+    gui2->setVisible(dateOnNewLine);
     updateTime();
 }
 
@@ -191,9 +223,10 @@ QTime getMaxTime(const QFontMetrics &metrics, const QString &format)
  ************************************************/
 void RazorClock::updateMinWidth()
 {
-    QFontMetrics metrics(gui->font());
-    QDate maxDate = getMaxDate(metrics, dateFormat);
-    QTime maxTime = getMaxTime(metrics, timeFormat);
+    QFontMetrics metrics1(gui1->font());
+    QFontMetrics metrics2(gui2->font());
+    QDate maxDate = getMaxDate((dateOnNewLine && showDate) ? metrics2 : metrics1, dateFormat);
+    QTime maxTime = getMaxTime(metrics1, timeFormat);
     QDateTime dt(maxDate, maxTime);
 
     //qDebug() << "T:" << metrics.boundingRect(dt.toString(timeFormat)).width();
@@ -202,18 +235,23 @@ void RazorClock::updateMinWidth()
 
     int width;
     if (dateOnNewLine && showDate)
-        width = qMax(metrics.boundingRect(dt.toString(timeFormat)).width(),
-                     metrics.boundingRect(dt.toString(dateFormat)).width()
-                     );
+    {
+        QRect rect1(metrics1.boundingRect(dt.toString(timeFormat)));
+        gui1->setMinimumSize(rect1.size());
+        QRect rect2(metrics2.boundingRect(dt.toString(dateFormat)));
+        gui2->setMinimumSize(rect2.size());
+        width = qMax(rect1.width(), rect2.width());
+    }
     else
-        width = metrics.boundingRect(dt.toString(clockFormat)).width();
+    {
+        QRect rect(metrics1.boundingRect(dt.toString(clockFormat)));
+        gui1->setMinimumSize(rect.size());
+        width = rect.width();
+    }
 
-    qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
-//    gui->setMinimumWidth(width + 5);
+    qDebug() << "RazorClock Recalc width " << width << " " << dt.toString(clockFormat);
+
     this->setMinimumWidth(width + 5);
-
-//    gui->setMaximumWidth(width + 5);
-//    this->setMaximumWidth(width + 5);
 }
 
 
