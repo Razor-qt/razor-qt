@@ -97,19 +97,21 @@ void Notification::setValues(const QString &application,
        m_pixmap = getPixmapFromHint(hints["icon_data"]);
 //       qDebug() << application << "from icon_data" << m_pixmap.isNull();
     }
-    // failback
+    // issue #325: Do not display icon if it's not found...
     if (m_pixmap.isNull())
     {
-//        qDebug() << "An icon for name:" << icon << "or hints" << hints << "not found. Using failback.";
-        m_pixmap = XdgIcon::defaultApplicationIcon().pixmap(ICONSIZE);
+        iconLabel->hide();
     }
-
-    if (m_pixmap.size().width() > ICONSIZE.width()
-    	|| m_pixmap.size().height() > ICONSIZE.height())
+    else
     {
-    	m_pixmap = m_pixmap.scaled(ICONSIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        if (m_pixmap.size().width() > ICONSIZE.width()
+            || m_pixmap.size().height() > ICONSIZE.height())
+        {
+            m_pixmap = m_pixmap.scaled(ICONSIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        }
+        iconLabel->setPixmap(m_pixmap);
+        iconLabel->show();
     }
-    iconLabel->setPixmap(m_pixmap);
 
     // application
 	appLabel->setVisible(!application.isEmpty());
@@ -222,7 +224,8 @@ QPixmap Notification::getPixmapFromString(const QString &str) const
     {
 //        qDebug() << "    getPixmapFromString by XdgIcon theme" << str << ICONSIZE << XdgIcon::themeName();
 //        qDebug() << "       " << XdgIcon::fromTheme(str) << "isnull:" << XdgIcon::fromTheme(str).isNull();
-        return XdgIcon::fromTheme(str, XdgIcon::defaultApplicationIcon()).pixmap(ICONSIZE);
+        // They say: do not display an icon if it;s not found - see #325
+        return XdgIcon::fromTheme(str/*, XdgIcon::defaultApplicationIcon()*/).pixmap(ICONSIZE);
     }
 }
 
