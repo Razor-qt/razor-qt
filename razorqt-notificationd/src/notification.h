@@ -36,6 +36,7 @@
 
 
 class NotificationActionsWidget;
+class NotificationTimer;
 
 
 /*! Implementation of one notification.
@@ -72,10 +73,12 @@ signals:
      */
     void actionTriggered(const QString &actionKey);
 
-public slots:
+protected:
+    void enterEvent(QEvent * event);
+    void leaveEvent(QEvent * event);
 
 private:
-    QTimer *m_timer;
+    NotificationTimer *m_timer;
 
     QPixmap m_pixmap;
 
@@ -88,6 +91,26 @@ private:
 
 private slots:
     void closeButton_clicked();
+};
+
+
+/*! A timer with pause/resume functionality
+ *
+ */
+class NotificationTimer : public QTimer
+{
+    Q_OBJECT
+public:
+    NotificationTimer(QObject *parent=0);
+
+public slots:
+    void start(int msec);
+    void pause();
+    void resume();
+
+private:
+    qint64 m_startMsec;
+    qint64 m_intervalMsec;
 };
 
 #endif // NOTIFICATION_H

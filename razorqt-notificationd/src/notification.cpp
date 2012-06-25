@@ -28,6 +28,7 @@
 #include <QtGui/QPainter>
 #include <QtCore/QUrl>
 #include <QtCore/QFile>
+#include <QtCore/QDateTime>
 #include <QtDBus/QDBusArgument>
 
 #include <qtxdg/xdgicon.h>
@@ -52,6 +53,7 @@ Notification::Notification(const QString &application,
 {
     setupUi(this);
     setObjectName("Notification");
+    setMouseTracking(true);
     
     setMaximumWidth(parent->width());
     setMinimumWidth(parent->width());
@@ -134,7 +136,7 @@ void Notification::setValues(const QString &application,
     // -1 for server decides is handled in notifyd to save QSettings instance
     if (timeout > 0)
     {
-        m_timer = new QTimer(this);
+        m_timer = new NotificationTimer(this);
         connect(m_timer, SIGNAL(timeout()), this, SIGNAL(timeout()));
         m_timer->start(timeout);
     }
@@ -222,4 +224,47 @@ QPixmap Notification::getPixmapFromString(const QString &str) const
 //        qDebug() << "       " << XdgIcon::fromTheme(str) << "isnull:" << XdgIcon::fromTheme(str).isNull();
         return XdgIcon::fromTheme(str, XdgIcon::defaultApplicationIcon()).pixmap(ICONSIZE);
     }
+}
+
+void Notification::enterEvent(QEvent * event)
+{
+    if (m_timer)
+        m_timer->pause();
+}
+
+void Notification::leaveEvent(QEvent * event)
+{
+    if (m_timer)
+        m_timer->resume();
+}
+
+
+
+NotificationTimer::NotificationTimer(QObject *parent)
+    : QTimer(parent)
+{
+}
+
+void NotificationTimer::start(int msec)
+{
+    m_startMsec = QDateTime::currentMSecsSinceEpoch();
+    m_intervalMsec = msec;
+    QTimer::start(msec);
+}
+
+void NotificationTimer::pause()
+{
+    if (!isActive())
+        return;
+
+    stop();
+    m_intervalMsec -= QDateTime::currentMSecsSinceEpoch() - m_startMsec;
+}
+
+void NotificationTimer::resume()
+{
+    if (isActive())
+        return;
+
+    start(m_intervalMsec);
 }
