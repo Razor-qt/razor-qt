@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-about
+Icon=help-about
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Qt;System;X-RAZOR;Settings;DesktopSettings;
+Name=About Razor DE
+GenericName=Information summary about Razor DE
+
+#TRANSLATIONS_DIR=../translations

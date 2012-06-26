@@ -40,6 +40,7 @@ include_directories (
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 # Qt *must* be detected before this one
 include(RazorInstallConfigPath)
+add_definitions(-DRAZOR_ETC_XDG_DIRECTORY=\"${RAZOR_ETC_XDG_DIRECTORY}\")
 include(RazorLibSuffix)
 
 
@@ -67,6 +68,7 @@ add_subdirectory( razorqt-policykit )
 add_subdirectory( razorqt-lightdm-greeter )
 add_subdirectory( razorqt-notificationd )
 add_subdirectory( razorqt-openssh-askpass )
+add_subdirectory( razorqt-about )
 
 ########### Add uninstall target ###############
 CONFIGURE_FILE(
