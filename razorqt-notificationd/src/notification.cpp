@@ -121,6 +121,9 @@ void Notification::setValues(const QString &application,
     summaryLabel->setVisible(!summary.isEmpty());
     summaryLabel->setText(summary);
 
+    if (application == summary)
+        summaryLabel->setVisible(false);
+
     // body
     bodyLabel->setVisible(!body.isEmpty());
     bodyLabel->setText(body);
