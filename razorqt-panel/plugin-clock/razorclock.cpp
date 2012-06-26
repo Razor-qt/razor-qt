@@ -48,6 +48,7 @@
  * @file razorclock.cpp
  * @brief implements Razorclock and Razorclockgui
  * @author Christopher "VdoP" Regali
+ * @author Kuzma Shapran
  */
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorClock)
 
@@ -56,6 +57,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorClock)
  */
 RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
         RazorPanelPlugin(startInfo, parent),
+        content(new QWidget(this)),
         calendarDialog(0)
 {
     setObjectName("Clock");
@@ -63,10 +65,17 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 
     gui1 = new ClockLabel(this);
     gui2 = new ClockLabel(this);
-    QVBoxLayout *contentLayout = new QVBoxLayout(this);
-    contentLayout->addWidget(gui1);
-    contentLayout->addWidget(gui2);
-    static_cast<QBoxLayout*>(this->layout())->addLayout(contentLayout, 1);
+    QVBoxLayout *contentLayout = new QVBoxLayout(content);
+    contentLayout->addWidget(gui1, 0, Qt::AlignCenter);
+    contentLayout->addWidget(gui2, 0, Qt::AlignCenter);
+    content->setLayout(contentLayout);
+    addWidget(content);
+
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    this->layout()->setContentsMargins(2, 0, 2, 0);
+
+    contentLayout->setSpacing(1);
+    this->layout()->setSpacing(0);
 
     gui1->setAlignment(Qt::AlignCenter);
     gui2->setAlignment(Qt::AlignCenter);
@@ -75,11 +84,12 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 
     gui1->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     gui2->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    content->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     this->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
+    settingsChanged();
     connect(gui1, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
     connect(gui2, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
-    settingsChanged();
 
     clocktimer = new QTimer(this);
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
@@ -120,12 +130,13 @@ void RazorClock::settingsChanged()
     {
         timeFormat = settings().value("timeFormat", "HH:mm").toString();
     }
-    clockFormat = timeFormat;
 
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
     dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
     showDate = settings().value("showDate", false).toBool();
+
+    clockFormat = timeFormat;
     if (showDate)
     {
         if (!dateOnNewLine)
@@ -143,6 +154,7 @@ void RazorClock::settingsChanged()
             settings().value("timeFont/pointSize", font.pointSize()).toInt(),
             settings().value("timeFont/weight", font.weight()).toInt(),
             settings().value("timeFont/italic", font.italic()).toBool() ));
+        font = gui1->font();
     }
 
     {
@@ -152,6 +164,7 @@ void RazorClock::settingsChanged()
             settings().value("dateFont/pointSize", font.pointSize()).toInt(),
             settings().value("dateFont/weight", font.weight()).toInt(),
             settings().value("dateFont/italic", font.italic()).toBool() ));
+        font = gui2->font();
     }
 
 
@@ -234,6 +247,7 @@ void RazorClock::updateMinWidth()
     //qDebug() << "D:" << metrics.boundingRect(dt.toString(dateFormat)).width();
 
     int width;
+    int height;
     if (dateOnNewLine && showDate)
     {
         QRect rect1(metrics1.boundingRect(dt.toString(timeFormat)));
@@ -241,17 +255,21 @@ void RazorClock::updateMinWidth()
         QRect rect2(metrics2.boundingRect(dt.toString(dateFormat)));
         gui2->setMinimumSize(rect2.size());
         width = qMax(rect1.width(), rect2.width());
+        height = rect1.height() + rect2.height();
+//        qDebug() << "RazorClock Recalc size" << width << height << dt.toString(timeFormat) << dt.toString(dateFormat);
     }
     else
     {
         QRect rect(metrics1.boundingRect(dt.toString(clockFormat)));
         gui1->setMinimumSize(rect.size());
+        gui2->setMinimumSize(0, 0);
         width = rect.width();
+        height = rect.height();
+//        qDebug() << "RazorClock Recalc size" << width << height << dt.toString(clockFormat);
     }
 
-    qDebug() << "RazorClock Recalc width " << width << " " << dt.toString(clockFormat);
 
-    this->setMinimumWidth(width + 5);
+    content->setMinimumSize(width, height);
 }
 
 
