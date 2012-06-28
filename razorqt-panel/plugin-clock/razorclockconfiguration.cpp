@@ -44,14 +44,15 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     createDateFormats();
 
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
-    connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateOnNewLineCB, SLOT(setEnabled(bool)));
-    connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateFormatCOB, SLOT(setEnabled(bool)));
-    connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateFormatL, SLOT(setEnabled(bool)));
-    connect(ui->showDateCB, SIGNAL(toggled(bool)), ui->dateFontB, SLOT(setEnabled(bool)));
 
     loadSettings();
     /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly
       change of state */
+
+    connect(ui->showDateCB, SIGNAL(toggled(bool)), this, SLOT(enableDateFont()));
+    connect(ui->dateOnNewLineCB, SIGNAL(toggled(bool)), this, SLOT(enableDateFont()));
+    connect(ui->useThemeFontCB, SIGNAL(toggled(bool)), this, SLOT(enableDateFont()));
+
     connect(ui->showSecondsCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->ampmClockCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->showDateCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
@@ -59,6 +60,7 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     connect(ui->dateFormatCOB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
     connect(ui->timeFontB, SIGNAL(clicked()), this, SLOT(changeTimeFont()));
     connect(ui->dateFontB, SIGNAL(clicked()), this, SLOT(changeDateFont()));
+    updateEnableDateFont();
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -161,6 +163,8 @@ void RazorClockConfiguration::loadSettings()
         mSettings.value("dateFont/weight", defaultFont.weight()).toInt(),
         mSettings.value("dateFont/italic", defaultFont.italic()).toBool() );
 
+    ui->useThemeFontCB->setChecked(mSettings.value("useThemeFonts", true).toBool());
+
     ui->timeFontB->setText(constructFontDescription(timeFont));
     ui->dateFontB->setText(constructFontDescription(dateFont));
 }
@@ -198,6 +202,8 @@ void RazorClockConfiguration::saveSettings()
     mSettings.setValue("dateFont/pointSize", dateFont.pointSize());
     mSettings.setValue("dateFont/weight", dateFont.weight());
     mSettings.setValue("dateFont/italic", dateFont.italic());
+
+    mSettings.setValue("useThemeFonts", ui->useThemeFontCB->isChecked());
 }
 
 void RazorClockConfiguration::changeTimeFont()
@@ -261,4 +267,18 @@ void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
     {
         close();
     }
+}
+
+void RazorClockConfiguration::updateEnableDateFont()
+{
+    bool enable = ui->showDateCB->isChecked() && ui->dateOnNewLineCB->isChecked() && !ui->useThemeFontCB->isChecked();
+    ui->dateFontB->setEnabled(enable);
+    ui->dateFontL->setEnabled(enable);
+}
+
+void RazorClockConfiguration::enableDateFont()
+{
+    updateEnableDateFont();
+
+    saveSettings();
 }

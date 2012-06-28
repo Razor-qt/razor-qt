@@ -73,12 +73,14 @@ private slots:
     void changeTimeFont();
     void changeDateFont();
     void dialogButtonsAction(QAbstractButton *btn);
+    void enableDateFont();
 
 private:
     QFont timeFont;
     QFont dateFont;
 
     QString constructFontDescription(const QFont &);
+    void updateEnableDateFont();
 };
 
 #endif // RAZORCLOCKCONFIGURATION_H
