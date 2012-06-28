@@ -66,8 +66,8 @@ protected slots:
 private:
     QTimer* clocktimer;
     QWidget* content;
-    ClockLabel* gui1;
-    ClockLabel* gui2;
+    ClockLabel* timeLabel;
+    ClockLabel* dateLabel;
     QString clockFormat;
     QString toolTipFormat;
     QDialog* calendarDialog;
