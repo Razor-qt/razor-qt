@@ -169,7 +169,7 @@ void RazorClock::settingsChanged()
 
 
     updateMinWidth();
-    dateLabel->setVisible(dateOnNewLine);
+    dateLabel->setVisible(showDate && dateOnNewLine);
     updateTime();
 }
 
