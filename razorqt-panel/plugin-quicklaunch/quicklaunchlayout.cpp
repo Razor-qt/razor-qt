@@ -36,8 +36,6 @@ QuickLaunchLayout::QuickLaunchLayout(QWidget * parent, RazorPanel *panel)
     setSpacing(0);
     setContentsMargins(0, 0, 0, 0);
 
-    connect(m_panel, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction direction)),
-            this, SLOT(relayout()));
     connect(m_panel, SIGNAL(panelRealigned()),
             this, SLOT(relayout()));
 }
