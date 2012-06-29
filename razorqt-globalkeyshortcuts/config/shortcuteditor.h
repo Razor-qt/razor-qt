@@ -131,6 +131,7 @@ public:
 
 private:
     QMenu *mMenu;
+    QString noneString;
 
     /// mapping between key sequence and the item holding it
     QMap<QString, QTreeWidgetItem *> mapping;

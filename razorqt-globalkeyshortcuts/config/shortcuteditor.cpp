@@ -42,8 +42,8 @@ CommandFinder::CommandFinder(QWidget *parent):
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(m_lineEdit);
     layout->addWidget(m_button);
-
-    //    setMinimumHeight(25);
+    // do not whring widgets inside
+    layout->setContentsMargins(0, 0, 0, 0);
 
     connect(m_button , SIGNAL(clicked()) , SLOT(setCommand()));
 }
@@ -139,6 +139,7 @@ ShortcutEditor::ShortcutEditor(QWidget *parent)
       mMenu(new QMenu(this))
 {
     setupUi(this);
+    noneString = tr("None");
 
     addNewButton->setIcon(XdgIcon::fromTheme("list-add"));
     removeSelectedButton->setIcon(XdgIcon::fromTheme("edit-delete"));
@@ -250,6 +251,8 @@ void ShortcutEditor::loadSettings()
     {
         mTreeWidget->expandAll();
     }
+    mTreeWidget->resizeColumnToContents(0);
+    mTreeWidget->resizeColumnToContents(1);
 
     delete mSettings;
 }
@@ -269,7 +272,7 @@ void ShortcutEditor::shortcutChanged(QTreeWidgetItem *item , int col)
 
     QString sc = item->text(1);
 
-    if (! sc.isEmpty() && sc != "None")
+    if (! sc.isEmpty() && sc != noneString)
     {
         if (mapping.contains(sc))
         {
@@ -283,13 +286,13 @@ void ShortcutEditor::shortcutChanged(QTreeWidgetItem *item , int col)
             /// conflict with existing , remove old one
             if (R_EXISTING(sc))
             {
-                mapping.value(sc)->setText(1 , "None");
+                mapping.value(sc)->setText(1 , noneString);
                 mapping.insert(sc , item);
             }
             /// cancel
             else
             {
-                item->setText(1 , "None");
+                item->setText(1 , noneString);
             }
         }
         else
@@ -309,14 +312,14 @@ void ShortcutEditor::resetChanges()
 
 void ShortcutEditor::addGroup()
 {
-    QTreeWidgetItem *groupItem = new QTreeWidgetItem(QStringList() << "New Group");
+    QTreeWidgetItem *groupItem = new QTreeWidgetItem(QStringList() << tr("New Group"));
     groupItem->setFlags(groupItem->flags() | Qt::ItemIsEditable);
     mTreeWidget->insertTopLevelItem(0 , groupItem);
 }
 
 void ShortcutEditor::addEmpty()
 {
-    QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << "" << "None" << "");
+    QTreeWidgetItem *item = new QTreeWidgetItem(QStringList() << "" << noneString << "");
     item->setFlags(item->flags() | Qt::ItemIsEditable);
     item->setCheckState(0 , Qt::Checked);
 
