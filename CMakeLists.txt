@@ -69,6 +69,7 @@ add_subdirectory( razorqt-lightdm-greeter )
 add_subdirectory( razorqt-notificationd )
 add_subdirectory( razorqt-openssh-askpass )
 add_subdirectory( razorqt-about )
+add_subdirectory( razorqt-globalkeyshortcuts )
 
 ########### Add uninstall target ###############
 CONFIGURE_FILE(
