@@ -29,7 +29,7 @@
 
 GlobalAccel::GlobalAccel()
 {
-    RazorSettings *m_shortcutSettings = new RazorSettings("globalaccel", this);
+    RazorSettings *m_shortcutSettings = new RazorSettings("globalkeyshortcuts", this);
     foreach(const QString & group , m_shortcutSettings->childGroups())
     {
         m_shortcutSettings->beginGroup(group);
