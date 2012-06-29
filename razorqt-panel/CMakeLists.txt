@@ -33,6 +33,7 @@ setByDefault(HELLOWORLD_PLUGIN No)
 setByDefault(CPULOAD_PLUGIN Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
 setByDefault(SENSORS_PLUGIN Yes)
+setByDefault(VOLUME_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -159,6 +160,20 @@ if (SENSORS_PLUGIN)
   endif ( NOT(${SENSORS_LIB} MATCHES "NOTFOUND" ))
 
 endif (SENSORS_PLUGIN)
+
+if (VOLUME_PLUGIN)
+  FIND_LIBRARY(VOLUME_LIB pulse)
+
+  if ( NOT(${VOLUME_LIB} MATCHES "NOTFOUND" ))
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Volume")
+    add_subdirectory(plugin-volume)
+  else ()
+    message(STATUS "")
+    message(STATUS "Volume plugin requires pulseaudio")
+    message(STATUS "")
+  endif ( NOT(${VOLUME_LIB} MATCHES "NOTFOUND" ))
+
+endif (VOLUME_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
