@@ -62,10 +62,14 @@ protected:
 protected slots:
     virtual void settingsChanged();
     virtual void showConfigureDialog();
+    void fontChanged();
 
 private:
     QTimer* clocktimer;
-    ClockLabel * gui;
+    QWidget* content;
+    QLabel* timeLabel;
+    QLabel* dateLabel;
+    ClockLabel* fakeThemedLabel;
     QString clockFormat;
     QString toolTipFormat;
     QDialog* calendarDialog;
@@ -79,12 +83,26 @@ private slots:
 };
 
 
+class ClockWidget: public QWidget
+{
+    Q_OBJECT
+public:
+    ClockWidget(QWidget* parent = 0):
+        QWidget(parent)
+    {
+    }
+
+protected:
+    bool event(QEvent *event);
+};
+
+
 class ClockLabel: public QLabel
 {
     Q_OBJECT
 public:
     ClockLabel(QWidget* parent = 0):
-       QLabel(parent)
+        QLabel(parent)
     {
     }
 

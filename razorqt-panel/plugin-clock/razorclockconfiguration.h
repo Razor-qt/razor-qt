@@ -32,6 +32,7 @@
 #include <QtGui/QDialog>
 #include <QtGui/QAbstractButton>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QFont>
 #include <QtCore/QLocale>
 #include <QtCore/QDateTime>
 
@@ -69,7 +70,17 @@ private slots:
       Saves settings in conf file.
     */
     void saveSettings();
+    void changeTimeFont();
+    void changeDateFont();
     void dialogButtonsAction(QAbstractButton *btn);
+    void enableDateFont();
+
+private:
+    QFont timeFont;
+    QFont dateFont;
+
+    QString constructFontDescription(const QFont &);
+    void updateEnableDateFont();
 };
 
 #endif // RAZORCLOCKCONFIGURATION_H

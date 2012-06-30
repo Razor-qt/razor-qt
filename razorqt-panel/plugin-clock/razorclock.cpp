@@ -38,6 +38,7 @@
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDialog>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QPoint>
 #include <QtCore/QSettings>
@@ -47,6 +48,7 @@
  * @file razorclock.cpp
  * @brief implements Razorclock and Razorclockgui
  * @author Christopher "VdoP" Regali
+ * @author Kuzma Shapran
  */
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorClock)
 
@@ -55,23 +57,41 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorClock)
  */
 RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
         RazorPanelPlugin(startInfo, parent),
+        content(new QWidget(this)),
         calendarDialog(0)
 {
     setObjectName("Clock");
     clockFormat = "hh:mm";
 
-    gui = new ClockLabel(this);
-    gui->setAlignment(Qt::AlignCenter);
-    this->layout()->setAlignment(Qt::AlignCenter);
-    QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    gui->setSizePolicy(sizePolicy);
-    this->setSizePolicy(sizePolicy);
-    addWidget(gui);
+    fakeThemedLabel = new ClockLabel(this);
+    fakeThemedLabel->setVisible(false);
 
-    connect(gui, SIGNAL(fontChanged()), this, SLOT(updateMinWidth()));
+    timeLabel = new QLabel(this);
+    dateLabel = new QLabel(this);
+    QVBoxLayout *contentLayout = new QVBoxLayout(content);
+    contentLayout->addWidget(timeLabel, 0, Qt::AlignCenter);
+    contentLayout->addWidget(dateLabel, 0, Qt::AlignCenter);
+    content->setLayout(contentLayout);
+    addWidget(content);
+
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    this->layout()->setContentsMargins(2, 0, 2, 0);
+
+    contentLayout->setSpacing(1);
+    this->layout()->setSpacing(0);
+
+    timeLabel->setAlignment(Qt::AlignCenter);
+    dateLabel->setAlignment(Qt::AlignCenter);
+    contentLayout->setAlignment(Qt::AlignCenter);
+    this->layout()->setAlignment(Qt::AlignCenter);
+
+    timeLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    dateLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    content->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    this->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+
     settingsChanged();
+    connect(fakeThemedLabel, SIGNAL(fontChanged()), this, SLOT(fontChanged()));
 
     clocktimer = new QTimer(this);
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
@@ -84,7 +104,15 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
  */
 void RazorClock::updateTime()
 {
-    gui->setText(QDateTime::currentDateTime().toString(clockFormat));
+    if (dateOnNewLine && showDate)
+    {
+        timeLabel->setText(QDateTime::currentDateTime().toString(timeFormat));
+        dateLabel->setText(QDateTime::currentDateTime().toString(dateFormat));
+    }
+    else
+    {
+        timeLabel->setText(QDateTime::currentDateTime().toString(clockFormat));
+    }
 }
 
 /**
@@ -104,32 +132,63 @@ void RazorClock::settingsChanged()
     {
         timeFormat = settings().value("timeFormat", "HH:mm").toString();
     }
-    clockFormat = timeFormat;
 
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
     dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
     showDate = settings().value("showDate", false).toBool();
+
+    clockFormat = timeFormat;
     if (showDate)
     {
-        if (dateOnNewLine)
-        {
-            clockFormat.append("\n");
-        }
-        else
+        if (!dateOnNewLine)
         {
             clockFormat.append(" ");
+            clockFormat += dateFormat;
         }
-
-        clockFormat += dateFormat;
     }
 
-    updateMinWidth();
+    fontChanged();
+
+    dateLabel->setVisible(showDate && dateOnNewLine);
     updateTime();
 }
 
+void RazorClock::fontChanged()
+{
+    if (settings().value("useThemeFonts", true).toBool())
+    {
+        timeLabel->setFont(fakeThemedLabel->font());
+        dateLabel->setFont(fakeThemedLabel->font());
+    }
+    else
+    {
+        {
+            QFont font(timeLabel->font());
+            timeLabel->setFont(QFont(
+                settings().value("timeFont/family", font.family()).toString(),
+                settings().value("timeFont/pointSize", font.pointSize()).toInt(),
+                settings().value("timeFont/weight", font.weight()).toInt(),
+                settings().value("timeFont/italic", font.italic()).toBool() ));
+            font = timeLabel->font();
+        }
 
-QDate getMaxDate(const QFontMetrics &metrics, const QString &format)
+        {
+            QFont font(dateLabel->font());
+            dateLabel->setFont(QFont(
+                settings().value("dateFont/family", font.family()).toString(),
+                settings().value("dateFont/pointSize", font.pointSize()).toInt(),
+                settings().value("dateFont/weight", font.weight()).toInt(),
+                settings().value("dateFont/italic", font.italic()).toBool() ));
+            font = dateLabel->font();
+        }
+    }
+
+    updateMinWidth();
+}
+
+
+static QDate getMaxDate(const QFontMetrics &metrics, const QString &format)
 {
     QDate d(QDate::currentDate().year(), 1, 1);
     QDateTime dt(d);
@@ -153,7 +212,7 @@ QDate getMaxDate(const QFontMetrics &metrics, const QString &format)
 }
 
 
-QTime getMaxTime(const QFontMetrics &metrics, const QString &format)
+static QTime getMaxTime(const QFontMetrics &metrics, const QString &format)
 {
     int maxMinSec = 0;
     for (int width=0, i=0; i<60; ++i)
@@ -191,9 +250,10 @@ QTime getMaxTime(const QFontMetrics &metrics, const QString &format)
  ************************************************/
 void RazorClock::updateMinWidth()
 {
-    QFontMetrics metrics(gui->font());
-    QDate maxDate = getMaxDate(metrics, dateFormat);
-    QTime maxTime = getMaxTime(metrics, timeFormat);
+    QFontMetrics timeLabelMetrics(timeLabel->font());
+    QFontMetrics dateLabelMetrics(dateLabel->font());
+    QDate maxDate = getMaxDate((dateOnNewLine && showDate) ? dateLabelMetrics : timeLabelMetrics, dateFormat);
+    QTime maxTime = getMaxTime(timeLabelMetrics, timeFormat);
     QDateTime dt(maxDate, maxTime);
 
     //qDebug() << "T:" << metrics.boundingRect(dt.toString(timeFormat)).width();
@@ -201,19 +261,29 @@ void RazorClock::updateMinWidth()
     //qDebug() << "D:" << metrics.boundingRect(dt.toString(dateFormat)).width();
 
     int width;
+    int height;
     if (dateOnNewLine && showDate)
-        width = qMax(metrics.boundingRect(dt.toString(timeFormat)).width(),
-                     metrics.boundingRect(dt.toString(dateFormat)).width()
-                     );
+    {
+        QRect rect1(timeLabelMetrics.boundingRect(dt.toString(timeFormat)));
+        timeLabel->setMinimumSize(rect1.size());
+        QRect rect2(dateLabelMetrics.boundingRect(dt.toString(dateFormat)));
+        dateLabel->setMinimumSize(rect2.size());
+        width = qMax(rect1.width(), rect2.width());
+        height = rect1.height() + rect2.height();
+//        qDebug() << "RazorClock Recalc size" << width << height << dt.toString(timeFormat) << dt.toString(dateFormat);
+    }
     else
-        width = metrics.boundingRect(dt.toString(clockFormat)).width();
+    {
+        QRect rect(timeLabelMetrics.boundingRect(dt.toString(clockFormat)));
+        timeLabel->setMinimumSize(rect.size());
+        dateLabel->setMinimumSize(0, 0);
+        width = rect.width();
+        height = rect.height();
+//        qDebug() << "RazorClock Recalc size" << width << height << dt.toString(clockFormat);
+    }
 
-    qDebug() << "RazorClock Recalc width " << width << dt.toString(clockFormat);
-//    gui->setMinimumWidth(width + 5);
-    this->setMinimumWidth(width + 5);
 
-//    gui->setMaximumWidth(width + 5);
-//    this->setMaximumWidth(width + 5);
+    content->setMinimumSize(width, height);
 }
 
 
@@ -289,16 +359,21 @@ void RazorClock::showConfigureDialog()
 
 
 
+bool ClockWidget::event(QEvent *event)
+{
+    if (event->type() == QEvent::ToolTip)
+    {
+        setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
+    }
+
+    return QWidget::event(event);
+}
+
 bool ClockLabel::event(QEvent *event)
 {
     if (event->type() == QEvent::FontChange)
     {
         emit fontChanged();
-    }
-
-    if (event->type() == QEvent::ToolTip)
-    {
-        setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
     }
 
     return QLabel::event(event);

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>283</width>
-    <height>270</height>
+    <width>362</width>
+    <height>362</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,18 +19,41 @@
      <property name="title">
       <string>Time</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,2">
+      <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="showSecondsCB">
         <property name="text">
-         <string>Show seconds</string>
+         <string>&amp;Show seconds</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="ampmClockCB">
         <property name="text">
-         <string>12 hour style</string>
+         <string>12 &amp;hour style</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="timeFontL">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>&amp;Font</string>
+        </property>
+        <property name="buddy">
+         <cstring>timeFontB</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="timeFontB">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Font</string>
         </property>
        </widget>
       </item>
@@ -42,28 +65,24 @@
      <property name="title">
       <string>Date</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,2">
       <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="showDateCB">
         <property name="text">
-         <string>Show date</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QCheckBox" name="dateOnNewLineCB">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Show date in new line</string>
+         <string>Show &amp;date</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="dateFormatL">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>Date format</string>
+         <string>D&amp;ate format</string>
+        </property>
+        <property name="buddy">
+         <cstring>dateFormatCOB</cstring>
         </property>
        </widget>
       </item>
@@ -74,7 +93,50 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="dateFontB">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Font</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="dateFontL">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Fon&amp;t</string>
+        </property>
+        <property name="buddy">
+         <cstring>dateFontB</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="dateOnNewLineCB">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Show date in &amp;new line</string>
+        </property>
+       </widget>
+      </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="useThemeFontCB">
+     <property name="text">
+      <string>Use t&amp;heme fonts</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
@@ -84,8 +146,8 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>1</width>
+       <height>1</height>
       </size>
      </property>
     </spacer>
@@ -111,8 +173,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>187</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -127,12 +189,92 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>187</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
+     <x>196</x>
      <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useThemeFontCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>timeFontB</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>144</x>
+     <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showDateCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dateOnNewLineCB</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>57</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>68</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showDateCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dateFormatCOB</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>169</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showDateCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dateFormatL</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>30</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>30</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useThemeFontCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>timeFontL</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>42</x>
+     <y>104</y>
     </hint>
    </hints>
   </connection>
