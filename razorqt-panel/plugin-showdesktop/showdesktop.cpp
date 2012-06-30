@@ -26,12 +26,12 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QtGui/QToolButton>
-#include <QtGui/QMessageBox>
 #include <QtGui/QAction>
 #include <QtGui/QX11Info>
 #include <razorqxt/qxtglobalshortcut.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
+#include <razorqt/razornotification.h>
 
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
@@ -46,16 +46,15 @@ ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("ShowDesktop");
-    
+
     m_key = new QxtGlobalShortcut(this);
 
     QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_D);
     if (! m_key->setShortcut(ks))
     {
-        QMessageBox::information(this, tr("Global keyboard shortcut"),
-                                 tr("Panel Show Desktop Global shorcut: '%1' cannot be registered").arg(ks.toString()));
+        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(ks.toString()));
     }
-    
+
     connect(m_key, SIGNAL(activated()), this, SLOT(showDesktop()));
     
     QAction * act = new QAction(XdgIcon::fromTheme("user-desktop"), tr("Show Desktop"), this);
@@ -73,16 +72,16 @@ void ShowDesktop::showDesktop()
     bool bDesktopShown=false;
     Atom actual_type;
     int actual_format, error;
-    Atom _NET_SHOWING_DESKTOP = xfitMan().atom("_NET_SHOWING_DESKTOP" ) ; 
-    unsigned char * data ; 
+    Atom _NET_SHOWING_DESKTOP = xfitMan().atom("_NET_SHOWING_DESKTOP" ) ;
+    unsigned char * data ;
     unsigned long nitems, after;
     error = XGetWindowProperty(QX11Info::display(), QX11Info::appRootWindow(), _NET_SHOWING_DESKTOP, 0, 1, false, XA_CARDINAL,
                                &actual_type, &actual_format, &nitems, &after, &data);
-    if ( error == Success && NULL != data) 
+    if ( error == Success && NULL != data)
     {
         bDesktopShown = static_cast<bool>(data[0]);
         XFree(data);
     }
-    
+
     xfitMan().clientMessage(QX11Info::appRootWindow(),xfitMan().atom("_NET_SHOWING_DESKTOP"),(unsigned long) !bDesktopShown, 0,0,0,0);
 }
