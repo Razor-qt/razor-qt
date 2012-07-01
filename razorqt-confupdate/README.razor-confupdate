@@ -1,0 +1,260 @@
+README razor-confupdate
+
+Version: 0.5
+Copyright: 2012 Razor team
+Author:
+   Alexander Sokoloff <sokoloff.a@gmail.com>
+Program based on kconf_update utility.
+   Copyright (c) 2001 Waldo Bastian <bastian@kde.org>, <bastian@suse.com>
+
+What it does
+============
+
+razor-confupdate is a tool designed to update config files. Over time 
+applications sometimes need to rearrange the way configuration options are 
+stored. Since such an update shouldn't influence the configuration options 
+that the user has selected, the application must take care that the options 
+stored in the old way will still be honored.
+
+What used to happen is that the application looks up both the old and the
+new configuration option and then decides which one to use. This method has 
+several drawbacks:
+* The application may need to read more configuration files than strictly
+needed, resulting in a slower startup.
+* The application becomes bigger with code that will only be used once.
+
+razor-confupdate addresses these problems by offering a framework to update 
+configuration files without adding code to the application itself.
+
+
+How it works
+============
+
+Applications can install so called "update files" under 
+$XDG_DATA_HOME/razor/razor-confupdate and 
+$XDG_DATA_DIRS/razor/razor-confupdate [1]. An update file has ".upd" as 
+extension and contains instructions for transferring/converting configuration 
+information from one place to another.
+
+Updating the configuration happens automatically, either when Razor-qt gets 
+started or when razor-session detects a new update file in the above mentioned
+location.
+
+Update files are separated into sections. Each section has an Id. When a 
+section describing a configuration change has been applied, the Id will be
+stored in the file "razor-confupdate.conf". This information is used to make 
+sure that a configuration update is only performed once.
+
+If you overwrite an existing update file with a new version that contains a 
+new section, only the update instructions from this extra section will be 
+performed.
+
+File format of the update file
+==============================
+
+Empty lines or lines that start with '#' are considered comments.
+Commas (,) are used to seperate fields and may not occur as part 
+of any field and all of the keywords are case-sensitive, i.e. you
+cannot say "key" instead of "Key" for example.
+
+For the rest the file is parsed and executed sequentially from top to bottom.
+Each line can contain one entry. The following entries are recognized:
+
+
+Id=<id>
+
+With <id> identifying the group of update entries that follows. Once a group
+of entries have been applied, their <id> is stored and this group of entries
+will not be applied again.
+
+
+File=<oldfile>,<newfile>
+File=<oldfile>
+
+A path can either be relative or absolute, or starts from "~" (tilde).
+A relative path defines a location that is relative to the $XDG_CONFIG_HOME
+directory. If $XDG_CONFIG_HOME is either not set or empty, a default equal
+to $HOME/.config should be used.
+
+Specifies that configuration information is read from <oldfile> and written
+to <newfile>. If you only specify <oldfile>, the information is read from
+as well as written to <oldfile>. Note that if the file does not exist
+at the time razor-confupdate first checks, no related update will be performed
+(script won't be run at all, etc.).
+
+
+Script=<script>[,<interpreter>]
+
+All entries from <oldfile> are piped into <script>. The output of script
+is used as new entries for <newfile>. Existing entries can be deleted by
+adding lines with "# DELETE [group]key" in the output of the script.
+To delete a whole group use "# DELETEGROUP [group]".
+
+<script> should be installed into same dir where .upd file is located,
+or razor-confupdate will not be able to find it. It's also possible to install
+applications in /usr/<local>/lib/razor-confupdate_bin, which opens the
+door to razor-confupdate applications that are written in C++ and use Qt's
+powerful string API instead.
+
+If Script was issued after a "Group" command the behavior is slightly
+different:
+All entries from <oldfile>/<oldgroup> are piped into <script>. The output
+of script is used as new entries for <newfile>/<newgroup>, unless a different
+group is specified with "[group]". Existing entries can be deleted from
+<oldgroup> by adding lines with "# DELETE key" in the output of the script. 
+To delete <oldgroup> use "# DELETEGROUP".
+
+<interpreter> can be something like "perl".
+
+It is also possible to have a Script without specifying <oldfile> or
+<newfile>. In that case the script is run but it will not be fed any input
+and its output will simply be discarded.
+
+ScriptArguments=<arguments>
+
+If specified, the arguments will be passed to <script>.
+IMPORTANT: It has to be specified before Script=.
+
+Group=<oldgroup>,<newgroup>
+Group=<oldgroup>
+
+Specifies that configuration information is read from the group <oldgroup>
+and written to <newgroup>. If you only specify <oldgroup>, the information
+is read from as well as written to <oldgroup>. You can use <default> to
+specify keys that are not under any group.
+A group may be written either as "group" or as "[group]". The latter syntax
+makes it possible to specify subgroups: "[group][subgroup]".
+
+RemoveGroup=<oldgroup>
+
+Specifies that <oldgroup> is removed entirely. This can be used
+to remove obsolete entries or to force a revert to default values.
+
+Options=<option1>, <option2>, ....
+
+With this entry you can specify options that apply to the next "Script",
+"Key" or "AllKeys" entry (only to the first!). Possible options are:
+
+- "copy" Copy the configuration item instead of moving it. This means that 
+         the configuration item will not be deleted from <oldfile>/<oldgroup>.
+
+- "overwrite" Normally, a configuration item is not moved if an item with the
+         new name already exists. When this option is specified the old 
+         configuration item will overwrite any existing item.
+
+
+Key=<oldkey>,<newkey>
+Key=<oldkey>
+
+Specifies that configuration information is read from the key <oldkey>
+and written to <newkey>. If you only specify <oldkey>, the information
+is read from as well as written to <oldkey>.
+
+
+AllKeys
+
+Specifies that all configuration information in the selected group should
+be moved (All keys).
+
+AllGroups
+
+Specifies that all configuration information from all keys in ALL 
+groups should be moved.
+
+
+RemoveKey=<oldkey>
+
+Specifies that <oldkey> is removed from the selected group. This can be used
+to remove obsolete entries or to force a revert to default values.
+
+
+Example update file
+===================
+
+# This is comment
+Id=Razor0.4.1
+File=kioslaverc,kio_httprc
+Group=Proxy Settings
+Key=NoProxyFor
+Key=UseProxy
+Key=httpProxy,Proxy
+Group=Cache Settings,Cache
+Key=MaxCacheSize
+Key=UseCache
+Group=UserAgent
+AllKeys
+RemoveGroup=KDE
+# End of file
+
+
+The above update file extracts config information from the file "kioslaverc" 
+and stores it into the file "kio_httprc". 
+
+It reads the keys "NoProxyFor", "UseProxy" and "httpProxy" from the group 
+"Proxy Settings" in the "kioslaverc" file. If any of these options are present
+they are written to the keys "NoProxyFor", "UseProxy" and "Proxy" (!) in
+the group "Proxy Settings" in the "kio_httprc" file.
+
+It also reads the keys "MaxCacheSize" and "UseCache" from the group 
+"Cache Settings" in the "kioslaverc" file and writes this information to the
+keys "MaxCacheSize" and "UseCache" in the group "Cache" (!) in the 
+"kio_httprc" file.
+
+Then it takes all keys in the "UserAgent" group of the file "kioslaverc" 
+and moves then to the "UserAgent" group in the "kio_httprc" file.
+
+Finally it removes the entire "KDE" group in the kioslaverc file.
+
+
+Debugging and testing
+=====================
+
+If you are developing a razor-confupdate script and want to test or debug it 
+you need to make sure razor-confupdate runs again after each of your changes. 
+There are a number of ways to achieve this.
+
+The easiest is to not install the razor-confupdate script in the first place, 
+but manually call it through a pipe. If you want to test the update script for
+your application KHello's config file khellorc, you can test by using
+
+    cat ~/.config/hello.conf | hello_confupdate.sh
+
+(assuming hello_confupdate.sh is the confupdate script). This is easier than 
+making install every time, but has the obvious downside that you need to 
+'parse' your script's output yourself instead of letting razor-confupdate do 
+it and check the resulting output file.
+
+After 'make install' the confupdate script is run, but it does so only once.
+This is of course the idea behind it, but while developing it can be a 
+problem. You can increase the revision number for each subsequent run of 
+'make install' to force a new razor-confupdate run, but there's a better 
+approach that doesn't skyrocket the version number for a mediocre debug 
+session.
+
+razor-sesion doesn't really ignore scripts that it has already run right away.
+Instead it checks the affected config file every time a .upd file is added
+or changed. The reason it still doesn't run again on your config file lies
+in the traces razor-confupdate leaves behind: it adds a special config group
+'[__Version__]' with a key 'update_info'. This key lists all confupdate
+scripts that have already been run on this config file. It also adds a group
+for the script to razor-confupdate.conf. Just remove your script entries from 
+both your config file and razor-confupdate.conf, 'make install',
+and razor-confupdate will happily run your script again, without you having to
+increase the version number.
+
+If you want to know what razor-confupdate has been up to lately, have a look
+at ~/.local/share/razor/razor-confupdate.log
+
+
+Common Problems
+===============
+
+* razor-confupdate refuses to update an entry
+If you change the value of an entry without changing the key or file,
+make sure to tell razor-confupdate that it should overwrite the old entry
+by adding "Options=overwrite". 
+
+
+Notes
+[1] - http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+
