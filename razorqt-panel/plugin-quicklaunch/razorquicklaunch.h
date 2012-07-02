@@ -4,9 +4,10 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -58,7 +59,6 @@ private:
     QHash<QString,XdgDesktopFile*> m_xdgFiles;
     QuickLaunchLayout *m_layout;
     QHash<int,QuickLaunchButton*> m_buttons;
-    int m_maxIndex;
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);

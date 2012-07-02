@@ -51,8 +51,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
 
 
 RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent),
-      m_maxIndex(0)
+    : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("QuickLaunch");
     setAcceptDrops(true);
@@ -122,16 +121,25 @@ int RazorQuickLaunch::countOfButtons() const
 
 void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 {
-    QuickLaunchButton* btn = new QuickLaunchButton(m_maxIndex, action, this);
+    // find first unused index
+    int newIndex = 0;
+    QList<int> keys = m_buttons.uniqueKeys();
+    qSort(keys);
+    foreach (int index, keys)
+    {
+        if (newIndex != index)
+            break;
+        ++newIndex;
+    }
+
+    QuickLaunchButton* btn = new QuickLaunchButton(newIndex, action, this);
     m_layout->addWidget(btn);
-    m_buttons[m_maxIndex] = btn;
+    m_buttons[newIndex] = btn;
 
     connect(btn, SIGNAL(switchButtons(int,int)), this, SLOT(switchButtons(int,int)));
     connect(btn, SIGNAL(buttonDeleted(int)), this, SLOT(buttonDeleted(int)));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
     connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
-
-    ++m_maxIndex;
 }
 
 void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
