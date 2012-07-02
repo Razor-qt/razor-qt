@@ -4,9 +4,10 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -124,7 +125,7 @@ void RazorQuickLaunch::addButton(QuickLaunchAction* action)
     QuickLaunchButton* btn = new QuickLaunchButton(m_maxIndex, action, this);
     m_layout->addWidget(btn);
     m_buttons[m_maxIndex] = btn;
-    
+
     connect(btn, SIGNAL(switchButtons(int,int)), this, SLOT(switchButtons(int,int)));
     connect(btn, SIGNAL(buttonDeleted(int)), this, SLOT(buttonDeleted(int)));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
@@ -156,10 +157,10 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
     // urls from mainmenu
     foreach (QUrl url, mime->urls())
     {
-	if (duplicates.contains(url))
+    if (duplicates.contains(url))
             continue;
-	else
-	    duplicates << url;
+    else
+        duplicates << url;
 
         QString fileName(url.toLocalFile());
         XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(fileName);
@@ -214,7 +215,8 @@ void RazorQuickLaunch::buttonMoveLeft()
     int index = indexOfButton(btn1);
     if (index > 0)
     {
-        switchButtons(index, index - 1);
+        m_layout->swapButtons(btn1, m_layout->buttonAt(index - 1));
+        saveSettings();
     }
 }
 
@@ -228,7 +230,8 @@ void RazorQuickLaunch::buttonMoveRight()
     int index = indexOfButton(btn1);
     if (index < countOfButtons() - 1)
     {
-        switchButtons(index, index + 1);
+        m_layout->swapButtons(btn1, m_layout->buttonAt(index + 1));
+        saveSettings();
     }
 }
 
@@ -249,7 +252,7 @@ void RazorQuickLaunch::saveSettings()
             it.next();
             settings().setValue(it.key(), it.value());
         }
-        
+
         ++i;
     }
 
