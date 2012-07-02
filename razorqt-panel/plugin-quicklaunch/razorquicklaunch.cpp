@@ -4,9 +4,10 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -50,8 +51,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
 
 
 RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent),
-      m_maxIndex(0)
+    : RazorPanelPlugin(startInfo, parent)
 {
     setObjectName("QuickLaunch");
     setAcceptDrops(true);
@@ -121,16 +121,25 @@ int RazorQuickLaunch::countOfButtons() const
 
 void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 {
-    QuickLaunchButton* btn = new QuickLaunchButton(m_maxIndex, action, this);
+    // find first unused index
+    int newIndex = 0;
+    QList<int> keys = m_buttons.uniqueKeys();
+    qSort(keys);
+    foreach (int index, keys)
+    {
+        if (newIndex != index)
+            break;
+        ++newIndex;
+    }
+
+    QuickLaunchButton* btn = new QuickLaunchButton(newIndex, action, this);
     m_layout->addWidget(btn);
-    m_buttons[m_maxIndex] = btn;
-    
+    m_buttons[newIndex] = btn;
+
     connect(btn, SIGNAL(switchButtons(int,int)), this, SLOT(switchButtons(int,int)));
     connect(btn, SIGNAL(buttonDeleted(int)), this, SLOT(buttonDeleted(int)));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
     connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
-
-    ++m_maxIndex;
 }
 
 void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
@@ -156,10 +165,10 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
     // urls from mainmenu
     foreach (QUrl url, mime->urls())
     {
-	if (duplicates.contains(url))
+    if (duplicates.contains(url))
             continue;
-	else
-	    duplicates << url;
+    else
+        duplicates << url;
 
         QString fileName(url.toLocalFile());
         XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(fileName);
@@ -214,7 +223,8 @@ void RazorQuickLaunch::buttonMoveLeft()
     int index = indexOfButton(btn1);
     if (index > 0)
     {
-        switchButtons(index, index - 1);
+        m_layout->swapButtons(btn1, m_layout->buttonAt(index - 1));
+        saveSettings();
     }
 }
 
@@ -228,7 +238,8 @@ void RazorQuickLaunch::buttonMoveRight()
     int index = indexOfButton(btn1);
     if (index < countOfButtons() - 1)
     {
-        switchButtons(index, index + 1);
+        m_layout->swapButtons(btn1, m_layout->buttonAt(index + 1));
+        saveSettings();
     }
 }
 
@@ -249,7 +260,7 @@ void RazorQuickLaunch::saveSettings()
             it.next();
             settings().setValue(it.key(), it.value());
         }
-        
+
         ++i;
     }
 

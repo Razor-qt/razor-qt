@@ -64,7 +64,7 @@ public:
     //! Returns true if the action is valid (contains all required properties).
     bool isValid() { return m_valid; }
     
-    QHash<QString,QString> settingsMap() { return m_settingsMap; };
+    QHash<QString, QString> settingsMap() { return m_settingsMap; }
 
 public slots:
     void execAction();
@@ -74,7 +74,7 @@ private:
     ActionType m_type;
     QString m_data;
     bool m_valid;
-    QHash<QString,QString> m_settingsMap;
+    QHash<QString, QString> m_settingsMap;
 };
 
 #endif

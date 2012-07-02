@@ -4,9 +4,10 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -54,15 +55,21 @@ void QuickLaunchLayout::removeWidget(QuickLaunchButton *b)
 
 void QuickLaunchLayout::swapButtons(QuickLaunchButton * b1, QuickLaunchButton *b2)
 {
-    int ix1, ix2;
     int tmp1 = indexOf(b1);
     int tmp2 = indexOf(b2);
 
-    ix1 = (tmp1<tmp2) ? tmp1 : tmp2;
-    ix2 = (tmp1<tmp2) ? tmp2 : tmp1;
-   
-    m_buttons.swap(ix1, ix2);
-    relayout();
+    if (tmp1 != tmp2)
+    {
+        m_buttons.swap(tmp1, tmp2);
+        relayout();
+    }
+}
+
+QuickLaunchButton* QuickLaunchLayout::buttonAt(int index)
+{
+    if ((index >= 0) && (index < m_buttons.size()))
+        return m_buttons[index];
+    return NULL;
 }
 
 Qt::Orientations QuickLaunchLayout::expandingDirections() const
