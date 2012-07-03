@@ -50,7 +50,6 @@ protected slots:
     virtual void showConfigureDialog();
     virtual void settingsChanged();
     void updateConfigurationSinkList();
-    void updateVolume(int value);
 
 private:
     PulseAudioEngine *m_paEngine;

@@ -27,6 +27,8 @@
 
 #include "volumepopup.h"
 
+#include "pulseaudiodevice.h"
+
 #include <qtxdg/xdgicon.h>
 
 #include <QtGui/QSlider>
@@ -54,7 +56,7 @@ VolumePopup::VolumePopup(QWidget* parent):
     setLayout(new QVBoxLayout(this));
 
     connect(m_mixerButton, SIGNAL(clicked()), this, SLOT(launchMixer()));
-    connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SIGNAL(volumeChanged(int)));
+    connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
 }
 
 VolumePopup::~VolumePopup()
@@ -76,6 +78,14 @@ void VolumePopup::launchMixer()
     qWarning("try to launch mixer.");
 }
 
+void VolumePopup::handleSliderValueChanged(int value)
+{
+    if (!m_device)
+        return;
+
+    m_device->setVolume(value);
+}
+
 void VolumePopup::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
@@ -84,7 +94,6 @@ void VolumePopup::resizeEvent(QResizeEvent *event)
 
 void VolumePopup::open(QPoint pos, Qt::Corner anchor)
 {
-    qWarning("position: %d", pos);
     m_pos = pos;
     m_anchor = anchor;
     realign();
@@ -94,6 +103,21 @@ void VolumePopup::open(QPoint pos, Qt::Corner anchor)
 void VolumePopup::handleWheelEvent(QWheelEvent *event)
 {
     m_volumeSlider->event(reinterpret_cast<QEvent*>(event));
+}
+
+void VolumePopup::setDevice(PulseAudioDevice *device)
+{
+    if (device == m_device)
+        return;
+
+    // disconnect old device
+    disconnect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
+    disconnect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+
+
+    m_device = device;
+    connect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
+    connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
 }
 
 void VolumePopup::realign()

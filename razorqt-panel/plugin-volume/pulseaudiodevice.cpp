@@ -41,18 +41,23 @@ PulseAudioDevice::~PulseAudioDevice()
 }
 
 // this is just for setting the internal volume
+void PulseAudioDevice::setVolumeNoCommit(int volume)
+{
+    if (m_volume == volume)
+        return;
+
+    m_volume = volume;
+    emit volumeChanged(m_volume);
+}
+
+// this performs a volume change on the device
 void PulseAudioDevice::setVolume(int volume)
 {
     if (m_volume == volume)
         return;
 
     m_volume = volume;
-    emit volumeChanged();
-}
 
-// this performs a volume change on the device
-void PulseAudioDevice::commitVolume()
-{
     if (m_engine)
         m_engine->commitDeviceVolume(this);
 }

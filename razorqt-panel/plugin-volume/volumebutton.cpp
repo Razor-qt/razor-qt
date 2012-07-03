@@ -46,7 +46,6 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
 
     connect(m_volumePopup, SIGNAL(mouseEnter()), this, SLOT(popupHideTimerStop()));
     connect(m_volumePopup, SIGNAL(mouseExit()), this, SLOT(popupHideTimerStart()));
-    connect(m_volumePopup, SIGNAL(volumeChanged(int)), this, SIGNAL(volumeChanged(int)));
 }
 
 VolumeButton::~VolumeButton()

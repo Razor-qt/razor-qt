@@ -44,30 +44,29 @@ public:
     ~PulseAudioEngine();
 
     void addSink(const pa_sink_info *info);
-    void addSource(const pa_source_info *info);
-
     const QList<PulseAudioDevice *> &sinks() const;
-    const QList<PulseAudioDevice *> &sources() const;
 
     pa_threaded_mainloop *mainloop() const;
 
+    void requestSinkInfoUpdate(PulseAudioDevice *device);
+
 public slots:
     void commitDeviceVolume(PulseAudioDevice *device);
+    void retrieveSinkInfo(PulseAudioDevice *device);
 
 signals:
     void sinkListChanged();
-    void sourceListChanged();
+    void sinkInfoChanged(PulseAudioDevice *device);
 
 private:
     void retrieveSinks();
-    void retrieveSources();
+    void setupSubscription();
 
     pa_mainloop_api *m_mainLoopApi;
     pa_threaded_mainloop *m_mainLoop;
     pa_context *m_context;
 
     QList<PulseAudioDevice*> m_sinks;
-    QList<PulseAudioDevice*> m_sources;
 };
 
 #endif // PULSEAUDIOENGINE_H
