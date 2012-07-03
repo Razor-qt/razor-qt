@@ -35,7 +35,9 @@
 VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
         QToolButton(parent),
         m_panel(panel),
-        m_popupHideTimerDuration(1000)
+        m_popupHideTimerDuration(1000),
+        m_showOnClick(false),
+        m_muteOnMiddleClick(true)
 {
     m_volumePopup = new VolumePopup();
 
@@ -57,9 +59,19 @@ VolumeButton::~VolumeButton()
         delete m_volumePopup;
 }
 
+void VolumeButton::setShowOnClicked(bool state)
+{
+    if (m_showOnClick == state)
+        return;
+
+    m_showOnClick = state;
+}
+
 void VolumeButton::enterEvent(QEvent *event)
 {
-    showVolumeSlider();
+    if (!m_showOnClick)
+        showVolumeSlider();
+
     popupHideTimerStop();
 }
 
@@ -75,10 +87,12 @@ void VolumeButton::wheelEvent(QWheelEvent *event)
 
 void VolumeButton::toggleVolumeSlider()
 {
-    if (m_volumePopup->isVisible())
-        hideVolumeSlider();
-    else
+    if (m_volumePopup->isVisible()) {
+        popupHideTimerStop();
+        handlePopupHideTimeout();
+    } else {
         showVolumeSlider();
+    }
 }
 
 void VolumeButton::showVolumeSlider()

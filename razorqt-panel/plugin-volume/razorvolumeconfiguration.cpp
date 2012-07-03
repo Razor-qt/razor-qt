@@ -43,6 +43,8 @@ RazorVolumeConfiguration::RazorVolumeConfiguration(QSettings &settings, QWidget 
     loadSettings();
     connect(ui->devAddedCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(sinkSelectionChanged(int)));
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
+    connect(ui->showOnClickCheckBox, SIGNAL(toggled(bool)), this, SLOT(showOnClickedChanged(bool)));
+    connect(ui->muteOnMiddleClickCheckbox, SIGNAL(toggled(bool)), this, SLOT(muteOnMiddleClickChanged(bool)));
 }
 
 RazorVolumeConfiguration::~RazorVolumeConfiguration()
@@ -64,8 +66,20 @@ void RazorVolumeConfiguration::sinkSelectionChanged(int index)
     settings().setValue("defaultSink", index);
 }
 
+void RazorVolumeConfiguration::showOnClickedChanged(bool state)
+{
+    settings().setValue("showOnClick", state);
+}
+
+void RazorVolumeConfiguration::muteOnMiddleClickChanged(bool state)
+{
+    settings().setValue("muteOnMiddleClick", state);
+}
+
 void RazorVolumeConfiguration::loadSettings()
 {
+    ui->showOnClickCheckBox->setChecked(settings().value("showOnClick", false).toBool());
+    ui->muteOnMiddleClickCheckbox->setChecked(settings().value("muteOnMiddleClick", true).toBool());
     setComboboxIndexByData(ui->devAddedCombo, settings().value("defaultSink", 0), 1);
 }
 

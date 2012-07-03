@@ -75,7 +75,7 @@ void RazorVolume::settingsChanged()
         m_volumeButton->m_volumePopup->setDevice(m_defaultSink);
     }
 
-    qWarning() << "settings changed" << m_defaultSinkIndex;
+    m_volumeButton->setShowOnClicked(settings().value("showOnClick", false).toBool());
 }
 
 void RazorVolume::updateConfigurationSinkList()
