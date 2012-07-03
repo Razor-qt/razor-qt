@@ -43,6 +43,8 @@ public:
 
     VolumePopup *m_volumePopup;
 
+    void setShowOnClicked(bool state);
+
 signals:
     void mouseEnter();
     void mouseExit();
@@ -65,6 +67,8 @@ private:
     RazorPanel *m_panel;
     QTimer m_popupHideTimer;
     int m_popupHideTimerDuration;
+    bool m_showOnClick;
+    bool m_muteOnMiddleClick;
 };
 
 #endif // VOLUMEBUTTON_H

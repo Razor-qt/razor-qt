@@ -49,6 +49,8 @@ public:
 public slots:
     void setSinkList(const QList<PulseAudioDevice*> sinks);
     void sinkSelectionChanged(int index);
+    void showOnClickedChanged(bool state);
+    void muteOnMiddleClickChanged(bool state);
 
 protected slots:
     virtual void loadSettings();
