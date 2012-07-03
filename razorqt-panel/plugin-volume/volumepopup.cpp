@@ -40,7 +40,8 @@
 VolumePopup::VolumePopup(QWidget* parent):
     QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
     m_pos(0,0),
-    m_anchor(Qt::TopLeftCorner)
+    m_anchor(Qt::TopLeftCorner),
+    m_device(0)
 {
     m_volumeSlider = new QSlider(Qt::Vertical, this);
     m_mixerButton = new QToolButton(this);
@@ -111,8 +112,10 @@ void VolumePopup::setDevice(PulseAudioDevice *device)
         return;
 
     // disconnect old device
-    disconnect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
-    disconnect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+    if (m_device) {
+        disconnect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
+        disconnect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+    }
 
     m_device = device;
     connect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
