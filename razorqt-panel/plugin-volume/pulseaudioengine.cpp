@@ -208,6 +208,8 @@ void PulseAudioEngine::addSink(const pa_sink_info *info)
     dev->cvolume = info->volume;
 
     pa_volume_t v = pa_cvolume_avg(&(info->volume));
+    double tmp = (double)v / PA_VOLUME_UI_MAX;
+    qWarning("volume: %d %d %f", v, PA_VOLUME_UI_MAX, tmp);
     dev->setVolumeNoCommit(pa_sw_volume_to_linear(v)*100.0);
 
     if (newSink) {
