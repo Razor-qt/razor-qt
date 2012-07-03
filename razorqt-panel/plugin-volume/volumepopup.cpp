@@ -36,6 +36,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
+#include <QtCore/QProcess>
 
 VolumePopup::VolumePopup(QWidget* parent):
     QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
@@ -76,7 +77,7 @@ void VolumePopup::leaveEvent(QEvent *event)
 
 void VolumePopup::launchMixer()
 {
-    qWarning("try to launch mixer.");
+    QProcess::startDetached("pavucontrol");
 }
 
 void VolumePopup::handleSliderValueChanged(int value)
