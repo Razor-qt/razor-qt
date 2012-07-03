@@ -32,6 +32,7 @@
 #include <qtxdg/xdgicon.h>
 
 #include "volumebutton.h"
+#include "volumepopup.h"
 #include "razorvolumeconfiguration.h"
 #include "pulseaudioengine.h"
 #include "pulseaudiodevice.h"
@@ -52,7 +53,6 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
 
     m_paEngine = new PulseAudioEngine(this);
     connect(m_paEngine, SIGNAL(sinkListChanged()), this, SLOT(updateConfigurationSinkList()));
-    connect(m_volumeButton, SIGNAL(volumeChanged(int)), this, SLOT(updateVolume(int)));
     updateConfigurationSinkList();
 }
 
@@ -70,8 +70,10 @@ void RazorVolume::showConfigureDialog()
 void RazorVolume::settingsChanged()
 {
     m_defaultSinkIndex = settings().value("defaultSink", 0).toInt();
-    if (m_paEngine->sinks().at(m_defaultSinkIndex))
+    if (m_paEngine->sinks().at(m_defaultSinkIndex)) {
         m_defaultSink = m_paEngine->sinks().at(m_defaultSinkIndex);
+        m_volumeButton->m_volumePopup->setDevice(m_defaultSink);
+    }
 
     qWarning() << "settings changed" << m_defaultSinkIndex;
 }
@@ -82,11 +84,3 @@ void RazorVolume::updateConfigurationSinkList()
     settingsChanged();
 }
 
-void RazorVolume::updateVolume(int value)
-{
-    if (!m_defaultSink)
-        return;
-
-    m_defaultSink->setVolume(value);
-    m_defaultSink->commitVolume();
-}

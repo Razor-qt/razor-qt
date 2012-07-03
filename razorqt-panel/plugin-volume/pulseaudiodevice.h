@@ -53,15 +53,15 @@ public:
 
 public slots:
     void setVolume(int volume);
-    void commitVolume();
+    void setVolumeNoCommit(int volume);
 
 signals:
-    void volumeChanged();
+    void volumeChanged(int volume);
 
 public:
     PulseAudioDeviceType type;
     QString name;
-    int index;
+    uint index;
     QString description;
     pa_cvolume cvolume;
 

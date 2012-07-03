@@ -53,28 +53,8 @@ static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int 
     pulseEngine->addSink(info);
 }
 
-static void sourceInfoCallback(pa_context *context, const pa_source_info *info, int isLast, void *userdata)
-{
-    Q_UNUSED(context)
-    PulseAudioEngine *pulseEngine = static_cast<PulseAudioEngine*>(userdata);
-
-    QMap<pa_source_state, QString> stateMap;
-    stateMap[PA_SOURCE_INVALID_STATE] = "n/a";
-    stateMap[PA_SOURCE_RUNNING] = "RUNNING";
-    stateMap[PA_SOURCE_IDLE] = "IDLE";
-    stateMap[PA_SOURCE_SUSPENDED] = "SUSPENDED";
-
-    if (isLast) {
-        pa_threaded_mainloop_signal(pulseEngine->mainloop(), 0);
-        return;
-    }
-
-    pulseEngine->addSource(info);
-}
-
 static void contextEventCallback(pa_context *context, const char *name, pa_proplist *p, void *userdata)
 {
-    qWarning("event received %s", name);
 }
 
 static void contextStateCallbackInit(pa_context *context, void *userdata)
@@ -88,8 +68,6 @@ static void contextStateCallback(pa_context *context, void *userdata)
 {
     Q_UNUSED(userdata);
     Q_UNUSED(context);
-
-    qWarning("state changed");
 }
 
 static void contextSuccessCallback(pa_context *context, int success, void *userdata)
@@ -101,6 +79,18 @@ static void contextSuccessCallback(pa_context *context, int success, void *userd
     PulseAudioEngine *pulseEngine = reinterpret_cast<PulseAudioEngine*>(userdata);
     pa_threaded_mainloop_signal(pulseEngine->mainloop(), 0);
 }
+
+static void contextSubscriptionCallback(pa_context *context, pa_subscription_event_type_t t, uint32_t idx, void *userdata)
+{
+    PulseAudioEngine *pulseEngine = reinterpret_cast<PulseAudioEngine*>(userdata);
+    foreach (PulseAudioDevice *dev, pulseEngine->sinks()) {
+        if (dev->index == idx) {
+            pulseEngine->requestSinkInfoUpdate(dev);
+            break;
+        }
+    }
+}
+
 
 PulseAudioEngine::PulseAudioEngine(QObject *parent) :
     QObject(parent)
@@ -186,7 +176,7 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
 
     if (ok) {
         retrieveSinks();
-        retrieveSources();
+        setupSubscription();
     }
 }
 
@@ -196,28 +186,34 @@ PulseAudioEngine::~PulseAudioEngine()
 
 void PulseAudioEngine::addSink(const pa_sink_info *info)
 {
-    PulseAudioDevice *dev = new PulseAudioDevice(this, this);
+    PulseAudioDevice *dev = 0;
+    bool newSink = false;
+
+    foreach (PulseAudioDevice *device, m_sinks) {
+        if (info->name == device->name) {
+            dev = device;
+            break;
+        }
+    }
+
+    if (!dev) {
+        dev = new PulseAudioDevice(this, this);
+        newSink = true;
+    }
+
     dev->type = Sink;
     dev->name = info->name;
     dev->index = info->index;
     dev->description = info->description;
     dev->cvolume = info->volume;
 
-    m_sinks.append(dev);
-    emit sinkListChanged();
-}
+    pa_volume_t v = pa_cvolume_avg(&(info->volume));
+    dev->setVolumeNoCommit(pa_sw_volume_to_linear(v)*100.0);
 
-void PulseAudioEngine::addSource(const pa_source_info *info)
-{
-    PulseAudioDevice *dev = new PulseAudioDevice(this, this);
-    dev->type = Source;
-    dev->name = info->name;
-    dev->index = info->index;
-    dev->description = info->description;
-    dev->cvolume = info->volume;
-
-    m_sources.append(dev);
-    emit sourceListChanged();
+    if (newSink) {
+        m_sinks.append(dev);
+        emit sinkListChanged();
+    }
 }
 
 const QList<PulseAudioDevice *> &PulseAudioEngine::sinks() const
@@ -225,20 +221,18 @@ const QList<PulseAudioDevice *> &PulseAudioEngine::sinks() const
     return m_sinks;
 }
 
-const QList<PulseAudioDevice *> &PulseAudioEngine::sources() const
-{
-    return m_sources;
-}
-
 pa_threaded_mainloop *PulseAudioEngine::mainloop() const
 {
     return m_mainLoop;
 }
 
+void PulseAudioEngine::requestSinkInfoUpdate(PulseAudioDevice *device)
+{
+    emit sinkInfoChanged(device);
+}
+
 void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
 {
-    pa_operation *operation;
-
     if (!device)
         return;
 
@@ -247,11 +241,14 @@ void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
 
     pa_threaded_mainloop_lock(m_mainLoop);
 
-    operation = pa_context_set_sink_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);
+    pa_operation *operation;
+    if (device->type == Sink)
+        operation = pa_context_set_sink_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);
+    else
+        operation = pa_context_set_source_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);
 
     while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
         pa_threaded_mainloop_wait(m_mainLoop);
-
     pa_operation_unref(operation);
 
     pa_threaded_mainloop_unlock(m_mainLoop);
@@ -259,33 +256,44 @@ void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
 
 void PulseAudioEngine::retrieveSinks()
 {
-    pa_operation *operation;
-
     pa_threaded_mainloop_lock(m_mainLoop);
 
+    pa_operation *operation;
     operation = pa_context_get_sink_info_list(m_context, sinkInfoCallback, this);
-
     while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
         pa_threaded_mainloop_wait(m_mainLoop);
-
     pa_operation_unref(operation);
 
     pa_threaded_mainloop_unlock(m_mainLoop);
 }
 
-void PulseAudioEngine::retrieveSources()
+void PulseAudioEngine::setupSubscription()
 {
-    pa_operation *operation;
+    connect(this, SIGNAL(sinkInfoChanged(PulseAudioDevice*)), this, SLOT(retrieveSinkInfo(PulseAudioDevice*)), Qt::QueuedConnection);
+    pa_context_set_subscribe_callback(m_context, contextSubscriptionCallback, this);
 
     pa_threaded_mainloop_lock(m_mainLoop);
 
-    operation = pa_context_get_source_info_list(m_context, sourceInfoCallback, this);
-
+    pa_operation *operation;
+    operation = pa_context_subscribe(m_context, PA_SUBSCRIPTION_MASK_SINK, contextSuccessCallback, this);
     while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
         pa_threaded_mainloop_wait(m_mainLoop);
-
     pa_operation_unref(operation);
 
     pa_threaded_mainloop_unlock(m_mainLoop);
 }
+
+void PulseAudioEngine::retrieveSinkInfo(PulseAudioDevice *device)
+{
+    pa_threaded_mainloop_lock(m_mainLoop);
+
+    pa_operation *operation;
+    operation = pa_context_get_sink_info_by_index(m_context, device->index, sinkInfoCallback, this);
+    while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
+        pa_threaded_mainloop_wait(m_mainLoop);
+    pa_operation_unref(operation);
+
+    pa_threaded_mainloop_unlock(m_mainLoop);
+}
+
 

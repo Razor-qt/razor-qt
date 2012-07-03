@@ -41,10 +41,11 @@ public:
     VolumeButton(RazorPanel *panel, QWidget* parent = 0);
     ~VolumeButton();
 
+    VolumePopup *m_volumePopup;
+
 signals:
     void mouseEnter();
     void mouseExit();
-    void volumeChanged(int value);
 
 protected:
     void enterEvent(QEvent *event);
@@ -61,7 +62,6 @@ private slots:
 
 private:
     RazorPanel *m_panel;
-    VolumePopup *m_volumePopup;
     QTimer m_popupHideTimer;
     int m_popupHideTimerDuration;
 };
