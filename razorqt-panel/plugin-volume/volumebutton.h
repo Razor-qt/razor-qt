@@ -59,6 +59,7 @@ private slots:
     void handlePopupHideTimeout();
     void popupHideTimerStart();
     void popupHideTimerStop();
+    void updateStockIcon();
 
 private:
     RazorPanel *m_panel;

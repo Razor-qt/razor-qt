@@ -28,6 +28,7 @@
 #include "volumebutton.h"
 #include "volumepopup.h"
 
+#include "QtGui/QSlider"
 #include <qtxdg/xdgicon.h>
 #include "../panel/razorpanel.h"
 
@@ -36,8 +37,6 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
         m_panel(panel),
         m_popupHideTimerDuration(1000)
 {
-    setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-high"));
-
     m_volumePopup = new VolumePopup();
 
     connect(this, SIGNAL(clicked()), this, SLOT(toggleVolumeSlider()));
@@ -46,6 +45,10 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
 
     connect(m_volumePopup, SIGNAL(mouseEnter()), this, SLOT(popupHideTimerStop()));
     connect(m_volumePopup, SIGNAL(mouseExit()), this, SLOT(popupHideTimerStart()));
+
+    connect(m_volumePopup->m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(updateStockIcon()));
+
+    updateStockIcon();
 }
 
 VolumeButton::~VolumeButton()
@@ -148,4 +151,16 @@ void VolumeButton::popupHideTimerStart()
 void VolumeButton::popupHideTimerStop()
 {
     m_popupHideTimer.stop();
+}
+
+void VolumeButton::updateStockIcon()
+{
+    if (m_volumePopup->m_volumeSlider->value() <= 0)
+        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-muted"));
+    else if (m_volumePopup->m_volumeSlider->value() <= 33)
+        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-low"));
+    else if (m_volumePopup->m_volumeSlider->value() <= 66)
+        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-medium"));
+    else
+        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-high"));
 }
