@@ -37,8 +37,7 @@
 
 
 NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions, QWidget *parent)
-    : QWidget(parent),
-      m_hasDefaultAction(false)
+    : QWidget(parent)
 {
     for (int i = 0; i < actions.count(); ++i)
     {
@@ -53,6 +52,10 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
         }
         ++i; // move to the next ID
     }
+
+    // if there is only one action let's take it as a default one
+    if (m_actionMap.count() == 1)
+        m_defaultAction = m_actionMap[m_actionMap.keys().at(0)];
 
     qDebug() << "NotificationActionsWidget processed actions:" << m_actionMap;
 }
@@ -76,7 +79,7 @@ NotificationActionsButtonsWidget::NotificationActionsButtonsWidget(const QString
         if (it.key() == "default")
         {
             b->setFocus(Qt::OtherFocusReason);
-            m_hasDefaultAction = true;
+            m_defaultAction = it.key();
         }
     }
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)),
@@ -106,7 +109,7 @@ NotificationActionsComboWidget::NotificationActionsComboWidget(const QStringList
         if (it.key() == "default")
         {
             currentIndex = m_comboBox->count()-1;
-            m_hasDefaultAction = true;
+            m_defaultAction = it.key();
         }
     }
     l->addWidget(m_comboBox);

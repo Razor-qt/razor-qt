@@ -52,7 +52,10 @@ class NotificationActionsWidget : public QWidget
 public:
     NotificationActionsWidget(const QStringList& actions, QWidget *parent);
 
-    bool hasDefaultAction() { return m_hasDefaultAction; }
+    //! Notification holds exactly one action or at least one action is marked as "default"
+    bool hasDefaultAction() { return !m_defaultAction.isEmpty(); }
+    //! The key for default action
+    QString defaultAction() { return m_defaultAction; }
 
 signals:
     /*! User clicks/chose an actio
@@ -61,7 +64,7 @@ signals:
     void actionTriggered(const QString &actionKey);
 
 protected:
-    bool m_hasDefaultAction;
+    QString m_defaultAction;
     QHash<QString,QString> m_actionMap;
 };
 
