@@ -38,7 +38,7 @@
 
 NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions, QWidget *parent)
     : QWidget(parent),
-      m_comboBox(0)
+      m_hasDefaultAction(false)
 {
     for (int i = 0; i < actions.count(); ++i)
     {
@@ -55,54 +55,72 @@ NotificationActionsWidget::NotificationActionsWidget(const QStringList& actions,
     }
 
     qDebug() << "NotificationActionsWidget processed actions:" << m_actionMap;
+}
 
-    // Let's be a little bit tricky here. Let's allow only few
-    // buttons in the layout. We will use a combobox if there
-    // are more actions. I think it's more user friendly.
+
+NotificationActionsButtonsWidget::NotificationActionsButtonsWidget(const QStringList& actions, QWidget *parent)
+    : NotificationActionsWidget(actions, parent)
+{
     QHashIterator<QString,QString> it(m_actionMap);
     QHBoxLayout *l = new QHBoxLayout();
     setLayout(l);
-    if (m_actionMap.count() < 4)
+
+    QButtonGroup *group = new QButtonGroup(this);
+
+    while (it.hasNext())
     {
-        QButtonGroup *group = new QButtonGroup(this);
-
-        while (it.hasNext())
-        {
-            it.next();
-            QPushButton *b = new QPushButton(it.value(), this);
-            l->addWidget(b);
-            group->addButton(b);
-            if (it.key() == "default")
-                b->setFocus(Qt::OtherFocusReason);
-        }
-        connect(group, SIGNAL(buttonClicked(QAbstractButton*)),
-                this, SLOT(actionButtonActivated(QAbstractButton*)));
-    }
-    else
-    {
-        l->addWidget(new QLabel(tr("Actions:"), this));
-        m_comboBox = new QComboBox(this);
-        int currentIndex = -1;
-        while (it.hasNext())
-        {
-            it.next();
-            m_comboBox->addItem(it.value(), it.key());
-            if (it.key() == "default")
-                currentIndex = m_comboBox->count()-1;
-        }
-        l->addWidget(m_comboBox);
-
-        if (currentIndex != -1)
-            m_comboBox->setCurrentIndex(currentIndex);
-
-        QPushButton *b = new QPushButton(tr("OK"), this);
+        it.next();
+        QPushButton *b = new QPushButton(it.value(), this);
         l->addWidget(b);
-        connect(b, SIGNAL(clicked()),
-                this, SLOT(actionComboBoxActivated()));
+        group->addButton(b);
+        if (it.key() == "default")
+        {
+            b->setFocus(Qt::OtherFocusReason);
+            m_hasDefaultAction = true;
+        }
     }
+    connect(group, SIGNAL(buttonClicked(QAbstractButton*)),
+            this, SLOT(actionButtonActivated(QAbstractButton*)));
 }
 
-void NotificationActionsWidget::actionComboBoxActivated()
+void NotificationActionsButtonsWidget::actionButtonActivated(QAbstractButton* button)
+{
+    emit actionTriggered(m_actionMap.key(button->text()));
+}
+
+
+NotificationActionsComboWidget::NotificationActionsComboWidget(const QStringList& actions, QWidget *parent)
+    : NotificationActionsWidget(actions, parent)
+{
+    QHashIterator<QString,QString> it(m_actionMap);
+    QHBoxLayout *l = new QHBoxLayout();
+    setLayout(l);
+
+    l->addWidget(new QLabel(tr("Actions:"), this));
+    m_comboBox = new QComboBox(this);
+    int currentIndex = -1;
+    while (it.hasNext())
+    {
+        it.next();
+        m_comboBox->addItem(it.value(), it.key());
+        if (it.key() == "default")
+        {
+            currentIndex = m_comboBox->count()-1;
+            m_hasDefaultAction = true;
+        }
+    }
+    l->addWidget(m_comboBox);
+
+    if (currentIndex != -1)
+        m_comboBox->setCurrentIndex(currentIndex);
+
+    QPushButton *b = new QPushButton(tr("OK"), this);
+    l->addWidget(b);
+    connect(b, SIGNAL(clicked()),
+            this, SLOT(actionComboBoxActivated()));
+}
+
+void NotificationActionsComboWidget::actionComboBoxActivated()
 {
     if (!m_comboBox)
         return;
@@ -110,9 +128,4 @@ void NotificationActionsWidget::actionComboBoxActivated()
     if (ix == -1)
         return;
     emit actionTriggered(m_actionMap.key(m_comboBox->itemText(ix)));
-}
-
-void NotificationActionsWidget::actionButtonActivated(QAbstractButton* button)
-{
-    emit actionTriggered(m_actionMap.key(button->text()));
 }

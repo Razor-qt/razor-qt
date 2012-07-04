@@ -37,6 +37,8 @@
 #include "notificationwidgets.h"
 
 #include <QtDebug>
+// this *must* go last due Qt's moc
+#include <razorqt/xfitman.h>
 
 
 #define ICONSIZE QSize(32, 32)
@@ -167,7 +169,10 @@ void Notification::setValues(const QString &application,
     // Actions
     if (actions.count() && m_actionWidget == 0)
     {
-        m_actionWidget = new NotificationActionsWidget(actions, this);
+        if (actions.count() < 4)
+            m_actionWidget = new NotificationActionsButtonsWidget(actions, this);
+        else
+            m_actionWidget = new NotificationActionsComboWidget(actions, this);
         connect(m_actionWidget, SIGNAL(actionTriggered(const QString &)),
                 this, SIGNAL(actionTriggered(const QString &)));
         actionsLayout->addWidget(m_actionWidget);
@@ -244,7 +249,35 @@ void Notification::leaveEvent(QEvent * event)
         m_timer->resume();
 }
 
-
+void Notification::mouseReleaseEvent(QMouseEvent * event)
+{
+    qDebug() << "CLICKED" << event;
+    QString appName;
+    QString windowTitle;
+    foreach (Window i, xfitMan().getClientList())
+    {
+        appName = xfitMan().getApplicationName(i);
+        windowTitle = xfitMan().getWindowTitle(i);
+        qDebug() << "    " << i << "APPNAME" << appName << "TITLE" << windowTitle;
+        if (m_actionWidget && m_actionWidget->hasDefaultAction())
+        {
+            emit actionTriggered("default");
+            return;
+        }
+        if (appName.isEmpty())
+        {
+            QWidget::mouseReleaseEvent(event);
+            return;
+        }
+        if (appName == appLabel->text() || windowTitle == appLabel->text())
+        {
+            qDebug() << "         FOUND!";
+            xfitMan().raiseWindow(i);
+            closeButton_clicked();
+            return;
+        }
+    }
+}
 
 NotificationTimer::NotificationTimer(QObject *parent)
     : QTimer(parent)

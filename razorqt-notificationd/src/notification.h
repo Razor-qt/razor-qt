@@ -76,6 +76,7 @@ signals:
 protected:
     void enterEvent(QEvent * event);
     void leaveEvent(QEvent * event);
+    void mouseReleaseEvent(QMouseEvent * event);
 
 private:
     NotificationTimer *m_timer;

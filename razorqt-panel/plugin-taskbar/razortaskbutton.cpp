@@ -96,7 +96,7 @@ RazorTaskButton::~RazorTaskButton()
  ************************************************/
 void RazorTaskButton::updateText()
 {
-    QString title = xfitMan().getName(mWindow);
+    QString title = xfitMan().getWindowTitle(mWindow);
     setText(title.replace("&", "&&"));
     setToolTip(title);
 }
