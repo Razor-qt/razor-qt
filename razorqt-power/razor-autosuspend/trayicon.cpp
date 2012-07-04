@@ -41,12 +41,13 @@ TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent),
     razorNotification(tr("Power low"), this),
     actionTime()
 {
-    setIcon(QIcon(":icons/razor-autosuspend.svg"));
     makeContextMenu();
+    setupBatteryStatusIcons();
     razorNotification.setIcon("razor-autosuspend");
     razorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
     connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
     connect(&battery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
+    connect(&globalSettings, SIGNAL(iconThemeChanged()), this, SLOT(setupBatteryStatusIcons()));
 }
 
 TrayIcon::~TrayIcon()
@@ -90,6 +91,8 @@ void TrayIcon::batteryChanged()
                  "chargeLevel:" << battery.chargeLevel() <<
                  "powerlow:"    << battery.powerLow() <<
                  "actionTime:"  << actionTime;
+
+    setStatusIcon();
 
     if (battery.powerLow() && actionTime.isNull() && powerLowAction() > 0)
     {
@@ -146,4 +149,55 @@ void TrayIcon::editSettings()
 int TrayIcon::powerLowAction()
 {
     return settings.value(POWERLOWACTION_KEY).toInt();
+}
+
+void TrayIcon::setupBatteryStatusIcons()
+{
+    // TODO: These are the iconnames in oxygen-theme. Gnome icons have other names (sigh).
+    QString dechargingIconNames[6] =
+        {"battery-low", "battery-caution", "battery-040", "battery-060", "battery-080", "battery-100"};
+    QString chargingIconNames[6] =
+        {"battery-charging-low", "battery-charging-caution", "battery-charging-040", "battery-charging-060", "battery-charging-080", "battery-charging"};
+
+    m_hasBatteryStatusIcons = true;
+    for (int i = 0; i < 6; i++)
+    {
+        qDebug() << dechargingIconNames[i] << chargingIconNames[i];
+
+        if (! (QIcon::hasThemeIcon(dechargingIconNames[i]) && QIcon::hasThemeIcon(chargingIconNames[i])))
+        {
+            m_hasBatteryStatusIcons = false;
+            break;
+        }
+        else
+        {
+            m_chargingBatteryStatusIcons[i] = QIcon::fromTheme(chargingIconNames[i]);
+            m_dechargingBatteryStatusIcons[i] = QIcon::fromTheme(dechargingIconNames[i]);
+        }
+    }
+    setStatusIcon();
+}
+
+void TrayIcon::setStatusIcon()
+{
+    if (m_hasBatteryStatusIcons)
+    {
+        int index = battery.chargeLevel() < 10 ? 0 :
+                    battery.chargeLevel() < 30 ? 1 :
+                    battery.chargeLevel() < 50 ? 2 :
+                    battery.chargeLevel() < 70 ? 3 :
+                    battery.chargeLevel() < 90 ? 4 :
+                                                 5 ;
+
+        QIcon icon = battery.onBattery() ? m_dechargingBatteryStatusIcons[index] : m_chargingBatteryStatusIcons[index];
+        setIcon(icon);
+        qDebug() << "chargeLevel: " <<  battery.chargeLevel() << " -> index: " << index << ", icon name:" << icon.name();
+    }
+    else
+    {
+        setIcon(QIcon(":icons/razor-autosuspend.svg"));
+    }
+
+    QString tooltip(battery.onBattery() ? "Decharging: %1%" : "Charging: %1%");
+    setToolTip(tooltip.arg(QString::number(battery.chargeLevel(), 'f', 1)));
 }

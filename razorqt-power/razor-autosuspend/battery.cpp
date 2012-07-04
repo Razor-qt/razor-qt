@@ -50,6 +50,7 @@ Battery::Battery()
         {
             uPowerBatteryDevice = device;
             connect(uPowerBatteryDevice, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
+            uPowerBatteryChanged();
             break;
         }
         else

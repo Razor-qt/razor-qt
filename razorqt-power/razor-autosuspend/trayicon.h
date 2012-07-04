@@ -30,12 +30,14 @@
 
 #include <QSystemTrayIcon>
 #include <QTime>
+#include <QIcon>
+#include <razorqt/razornotification.h>
 #include "settings_dialog.h"
 #include "razorqt/razorsettings.h"
 #include "razorqt/razorpower/razorpower.h"
 #include "lid.h"
 #include "battery.h"
-#include <razorqt/razornotification.h>
+
 
 class TrayIcon : public QSystemTrayIcon
 {
@@ -55,20 +57,29 @@ private slots:
     void lidChanged(bool closed);
     void batteryChanged();
     void editSettings();
+    void setupBatteryStatusIcons();
 
 private:
     void doAction(int action);
     void makeContextMenu();
     int powerLowAction();
 
+    void setStatusIcon();
+
     Lid lid;
     Battery battery;
 
     RazorPower razorPower;
     RazorSettings settings;
+    GlobalRazorSettings globalSettings;
 
     RazorNotification razorNotification;
     QTime actionTime;
+
+    bool m_hasBatteryStatusIcons;
+    QIcon m_chargingBatteryStatusIcons[6]; // low, caution, 40%, 60%, 80%, 100%
+    QIcon m_dechargingBatteryStatusIcons[6];
+
 };
 
 #endif // MAINWINDOW_H
