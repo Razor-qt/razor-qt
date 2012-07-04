@@ -251,19 +251,21 @@ void Notification::leaveEvent(QEvent * event)
 
 void Notification::mouseReleaseEvent(QMouseEvent * event)
 {
-    qDebug() << "CLICKED" << event;
+//    qDebug() << "CLICKED" << event;
     QString appName;
     QString windowTitle;
+
+    if (m_actionWidget && m_actionWidget->hasDefaultAction())
+    {
+        emit actionTriggered(m_actionWidget->defaultAction());
+        return;
+    }
+
     foreach (Window i, xfitMan().getClientList())
     {
         appName = xfitMan().getApplicationName(i);
         windowTitle = xfitMan().getWindowTitle(i);
-        qDebug() << "    " << i << "APPNAME" << appName << "TITLE" << windowTitle;
-        if (m_actionWidget && m_actionWidget->hasDefaultAction())
-        {
-            emit actionTriggered("default");
-            return;
-        }
+        //qDebug() << "    " << i << "APPNAME" << appName << "TITLE" << windowTitle;
         if (appName.isEmpty())
         {
             QWidget::mouseReleaseEvent(event);
@@ -271,7 +273,7 @@ void Notification::mouseReleaseEvent(QMouseEvent * event)
         }
         if (appName == appLabel->text() || windowTitle == appLabel->text())
         {
-            qDebug() << "         FOUND!";
+//            qDebug() << "         FOUND!";
             xfitMan().raiseWindow(i);
             closeButton_clicked();
             return;

@@ -41,6 +41,7 @@ class NotificationTimer;
 
 /*! Implementation of one notification.
  *
+ * Notification on-click behavior is defined in mouseReleaseEvent()
  */
 class Notification : public QWidget, public Ui::Notification
 {
@@ -76,6 +77,18 @@ signals:
 protected:
     void enterEvent(QEvent * event);
     void leaveEvent(QEvent * event);
+    /*! Define on-click behavior in the notification area.
+        Currently it implements:
+            - if there is one action or at least one default action, this
+               default action is triggered on click.
+               \see NotificationActionsWidget::hasDefaultAction()
+               \see NotificationActionsWidget::defaultAction() 
+            - it tries to find caller window by
+                a) application name. \see XfitMan::getApplicationName()
+                b) window title. \see XfitMan::getWindowTitle()
+              if it can be found the window is raised and the notification is closed
+            - leave notification as-is.
+    */
     void mouseReleaseEvent(QMouseEvent * event);
 
 private:
