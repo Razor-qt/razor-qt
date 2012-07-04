@@ -71,14 +71,26 @@ Battery::~Battery()
 
 void Battery::uPowerBatteryChanged()
 {
-    bool onBattery =  uPower->property("OnBattery").toBool();
-    m_percentage = uPowerBatteryDevice->property("Percentage").toDouble();
-    m_powerLow = m_percentage < POWER_LOW_LEVEL && onBattery;
+    m_onBattery =  uPower->property("OnBattery").toBool();
+    m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
+    m_powerLow = m_chargeLevel < POWER_LOW_LEVEL && m_onBattery;
 
-    emit levelChanged(m_percentage);
+    emit batteryChanged();
 }
+
+
+double Battery::chargeLevel()
+{
+    return m_chargeLevel;
+}
+
 
 bool Battery::powerLow()
 {
     return m_powerLow;
+}
+
+bool Battery::onBattery()
+{
+    return m_onBattery;
 }

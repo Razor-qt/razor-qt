@@ -53,7 +53,7 @@ public slots:
 
 private slots:
     void lidChanged(bool closed);
-    void chargeLevelChanged(double newPercentage);
+    void batteryChanged();
     void editSettings();
 
 private:

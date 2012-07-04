@@ -34,15 +34,16 @@ class Battery : public QObject
 {
     Q_OBJECT
 signals:
-    void levelChanged(double newPercentage);
+    void batteryChanged();
 
 public:
     Battery();
     ~Battery();
 
     static const int POWER_LOW_LEVEL=15;
-    double percentage();
-    bool powerLow();
+    double chargeLevel();
+    bool   powerLow();
+    bool   onBattery();
 
 private slots:
     void uPowerBatteryChanged();
@@ -50,7 +51,8 @@ private slots:
 private:
     QDBusInterface *uPower;
     QDBusInterface *uPowerBatteryDevice;
-    double m_percentage;
+    double m_chargeLevel;
     bool m_powerLow;
+    bool m_onBattery;
 };
 #endif

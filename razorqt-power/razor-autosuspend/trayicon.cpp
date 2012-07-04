@@ -46,7 +46,7 @@ TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent),
     razorNotification.setIcon("razor-autosuspend");
     razorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
     connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
-    connect(&battery, SIGNAL(levelChanged(double)), this, SLOT(chargeLevelChanged(double)));
+    connect(&battery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
 }
 
 TrayIcon::~TrayIcon()
@@ -84,11 +84,12 @@ void TrayIcon::lidChanged(bool closed)
     }
 }
 
-void TrayIcon::chargeLevelChanged(double newPercentage)
+void TrayIcon::batteryChanged()
 {
-    Q_UNUSED(newPercentage)
-
-    qDebug() << "charge:" << newPercentage << "actionTime:" << actionTime << "powerlow:" << battery.powerLow();
+    qDebug() <<  "onBattery: "  << battery.onBattery() <<
+                 "chargeLevel:" << battery.chargeLevel() <<
+                 "powerlow:"    << battery.powerLow() <<
+                 "actionTime:"  << actionTime;
 
     if (battery.powerLow() && actionTime.isNull() && powerLowAction() > 0)
     {
