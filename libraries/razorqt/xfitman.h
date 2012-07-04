@@ -185,7 +185,15 @@ public:
      */
     QString getDesktopName(int desktopNum, const QString &defaultName=QString()) const;
 
-    QString getName(Window _wid) const;
+    /*! Returns window title if available
+     *
+     */
+    QString getWindowTitle(Window _wid) const;
+
+    /*! Returns window title if available
+     *
+     */
+    QString getApplicationName(Window _wid) const;
 
     bool acceptWindow(Window _wid) const;
 

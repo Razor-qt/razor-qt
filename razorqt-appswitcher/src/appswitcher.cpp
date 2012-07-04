@@ -139,9 +139,9 @@ void RazorAppSwitcher::AppSwitcher::handleApps()
         }
         QPixmap pm;
         if (! xfitMan().getClientIcon(w, pm))
-            qDebug() << "No icon for:" << w << xfitMan().getName(w);
+            qDebug() << "No icon for:" << w << xfitMan().getWindowTitle(w);
 
-        SwitcherItem * item = new SwitcherItem(w, xfitMan().getName(w), pm, this);
+        SwitcherItem * item = new SwitcherItem(w, xfitMan().getWindowTitle(w), pm, this);
         connect(item, SIGNAL(infoChanged(const QString&)),
                 infoLabel, SLOT(setText(const QString&)));
         connect(item, SIGNAL(infoChanged(const QString&)),

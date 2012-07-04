@@ -285,7 +285,7 @@ XfitMan::~XfitMan()
  */
 
 //i got the idea for this from taskbar-plugin of LXPanel - so credits fly out :)
-QString XfitMan::getName(Window _wid) const
+QString XfitMan::getWindowTitle(Window _wid) const
 {
     QString name = "";
     //first try the modern net-wm ones
@@ -324,6 +324,26 @@ QString XfitMan::getName(Window _wid) const
     return name;
 }
 
+QString XfitMan::getApplicationName(Window _wid) const
+{
+    XClassHint hint;
+    QString ret;
+
+    if (XGetClassHint(QX11Info::display(), _wid, &hint))
+    {
+        if (hint.res_name)
+        {
+            ret = hint.res_name;
+            XFree(hint.res_name);
+        }
+        if (hint.res_class)
+        {
+            XFree(hint.res_class);
+        }
+    }
+
+    return ret;
+}
 
 #if 0
 /**
@@ -893,7 +913,7 @@ QString XfitMan::debugWindow(Window wnd)
     else
         typeStr ="ERROR";
 
-    return QString("[%1] %2 %3").arg(wnd,8, 16).arg(xfitMan().getName(wnd)).arg(typeStr);
+    return QString("[%1] %2 %3").arg(wnd,8, 16).arg(xfitMan().getWindowTitle(wnd)).arg(typeStr);
 }
 #endif
 

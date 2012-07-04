@@ -38,6 +38,10 @@ class QComboBox;
 /*! A helper widgets for actions handling.
  * See specification for information what actions are.
  *
+ * Let's be a little bit tricky here. Let's allow only few
+ * buttons in the layout. We will use a combobox if there
+ * are more actions. I think it's more user friendly.
+ *
  * If there are only few actions the layout with buttons is used.
  * If there are more actions the combo box with confirm button is created.
  */
@@ -46,24 +50,50 @@ class NotificationActionsWidget : public QWidget
     Q_OBJECT
 
 public:
-    /*! Create new widget.
-     * \param actions a list of actions in form: (key1, display1, key2, display2, ..., keyN, displayN)
-     */
     NotificationActionsWidget(const QStringList& actions, QWidget *parent);
 
+    bool hasDefaultAction() { return m_hasDefaultAction; }
+
 signals:
-    /*! User clicks/chose an action
+    /*! User clicks/chose an actio
      * \param actionKey a key of selected action
      */
     void actionTriggered(const QString &actionKey);
 
+protected:
+    bool m_hasDefaultAction;
+    QHash<QString,QString> m_actionMap;
+};
+
+class NotificationActionsButtonsWidget : public NotificationActionsWidget
+{
+    Q_OBJECT
+
+public:
+    /*! Create new widget.
+     * \param actions a list of actions in form: (key1, display1, key2, display2, ..., keyN, displayN)
+     */
+    NotificationActionsButtonsWidget(const QStringList& actions, QWidget *parent);
+private slots:
+    void actionButtonActivated(QAbstractButton* button);
+};
+
+class NotificationActionsComboWidget : public NotificationActionsWidget
+{
+    Q_OBJECT
+
+public:
+    /*! Create new widget.
+     * \param actions a list of actions in form: (key1, display1, key2, display2, ..., keyN, displayN)
+     */
+    NotificationActionsComboWidget(const QStringList& actions, QWidget *parent);
+
 private:
     QComboBox *m_comboBox;
-    QHash<QString,QString> m_actionMap;
 
 private slots:
     void actionComboBoxActivated();
-    void actionButtonActivated(QAbstractButton* button);
 };
+
 
 #endif
