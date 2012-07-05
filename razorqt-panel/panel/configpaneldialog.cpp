@@ -200,6 +200,10 @@ void ConfigPanelDialog::checkBoxUseThemeSizeChanged(bool state)
         ui->label_size->setEnabled(true);
         ui->spinBox_size->setEnabled(true);
         ui->label_px->setEnabled(true);
+
+        // If the useTheme checkbox is unchecked, the size spinbox value
+        // should be retrieved
+        mSize = ui->spinBox_size->value();
     }
 
     emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseThemeSize);
