@@ -52,6 +52,7 @@ signals:
     void mouseEnter();
     void mouseExit();
     void volumeChanged(int value);
+    void deviceChanged();
 
 protected:
     void resizeEvent(QResizeEvent *event);

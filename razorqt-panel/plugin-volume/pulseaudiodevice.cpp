@@ -32,7 +32,8 @@
 PulseAudioDevice::PulseAudioDevice(PulseAudioEngine *engine, QObject *parent) :
     QObject(parent),
     m_engine(engine),
-    m_volume(0)
+    m_volume(0),
+    m_mute(false)
 {
 }
 
@@ -48,6 +49,20 @@ void PulseAudioDevice::setVolumeNoCommit(int volume)
 
     m_volume = volume;
     emit volumeChanged(m_volume);
+}
+
+void PulseAudioDevice::toggleMute()
+{
+    m_engine->setMute(this, !m_mute);
+}
+
+void PulseAudioDevice::setMute(bool state)
+{
+    if (m_mute == state)
+        return;
+
+    m_mute = state;
+    emit muteChanged();
 }
 
 // this performs a volume change on the device

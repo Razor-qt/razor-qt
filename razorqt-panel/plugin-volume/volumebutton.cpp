@@ -26,9 +26,13 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "volumebutton.h"
-#include "volumepopup.h"
 
-#include "QtGui/QSlider"
+#include "volumepopup.h"
+#include "pulseaudiodevice.h"
+
+#include <QtGui/QSlider>
+#include <QtGui/QMouseEvent>
+
 #include <qtxdg/xdgicon.h>
 #include "../panel/razorpanel.h"
 
@@ -49,6 +53,7 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
     connect(m_volumePopup, SIGNAL(mouseExit()), this, SLOT(popupHideTimerStart()));
 
     connect(m_volumePopup->m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(updateStockIcon()));
+    connect(m_volumePopup, SIGNAL(deviceChanged()), this, SLOT(handleDeviceChanged()));
 
     updateStockIcon();
 }
@@ -83,6 +88,14 @@ void VolumeButton::leaveEvent(QEvent *event)
 void VolumeButton::wheelEvent(QWheelEvent *event)
 {
     m_volumePopup->handleWheelEvent(event);
+}
+
+void VolumeButton::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::MidButton && m_muteOnMiddleClick) {
+        if (m_volumePopup->device())
+            m_volumePopup->device()->toggleMute();
+    }
 }
 
 void VolumeButton::toggleVolumeSlider()
@@ -169,7 +182,7 @@ void VolumeButton::popupHideTimerStop()
 
 void VolumeButton::updateStockIcon()
 {
-    if (m_volumePopup->m_volumeSlider->value() <= 0)
+    if (m_volumePopup->m_volumeSlider->value() <= 0 || m_volumePopup->device()->mute())
         setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-muted"));
     else if (m_volumePopup->m_volumeSlider->value() <= 33)
         setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-low"));
@@ -177,4 +190,9 @@ void VolumeButton::updateStockIcon()
         setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-medium"));
     else
         setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-high"));
+}
+
+void VolumeButton::handleDeviceChanged()
+{
+    connect(m_volumePopup->device(), SIGNAL(muteChanged()), this, SLOT(updateStockIcon()));
 }
