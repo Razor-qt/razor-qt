@@ -53,6 +53,7 @@ protected:
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
     void toggleVolumeSlider();
@@ -62,6 +63,7 @@ private slots:
     void popupHideTimerStart();
     void popupHideTimerStop();
     void updateStockIcon();
+    void handleDeviceChanged();
 
 private:
     RazorPanel *m_panel;

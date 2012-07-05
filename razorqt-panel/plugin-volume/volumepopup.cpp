@@ -121,6 +121,8 @@ void VolumePopup::setDevice(PulseAudioDevice *device)
     m_device = device;
     connect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+
+    emit deviceChanged();
 }
 
 void VolumePopup::realign()

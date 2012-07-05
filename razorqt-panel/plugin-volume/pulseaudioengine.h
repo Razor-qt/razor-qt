@@ -53,6 +53,9 @@ public:
 public slots:
     void commitDeviceVolume(PulseAudioDevice *device);
     void retrieveSinkInfo(PulseAudioDevice *device);
+    void mute(PulseAudioDevice *device);
+    void unmute(PulseAudioDevice *device);
+    void setMute(PulseAudioDevice *device, bool state);
 
 signals:
     void sinkListChanged();

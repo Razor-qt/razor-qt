@@ -50,13 +50,17 @@ public:
     ~PulseAudioDevice();
 
     int volume() const { return m_volume; }
+    bool mute() const { return m_mute; }
 
 public slots:
     void setVolume(int volume);
     void setVolumeNoCommit(int volume);
+    void toggleMute();
+    void setMute(bool state);
 
 signals:
     void volumeChanged(int volume);
+    void muteChanged();
 
 public:
     PulseAudioDeviceType type;
@@ -68,6 +72,7 @@ public:
 private:
     PulseAudioEngine *m_engine;
     int m_volume;
+    bool m_mute;
 };
 
 #endif // PULSEAUDIODEVICE_H

@@ -206,6 +206,7 @@ void PulseAudioEngine::addSink(const pa_sink_info *info)
     dev->index = info->index;
     dev->description = info->description;
     dev->cvolume = info->volume;
+    dev->setMute(info->mute);
 
     pa_volume_t v = pa_cvolume_avg(&(info->volume));
     double tmp = (double)v / PA_VOLUME_UI_MAX;
@@ -297,5 +298,29 @@ void PulseAudioEngine::retrieveSinkInfo(PulseAudioDevice *device)
 
     pa_threaded_mainloop_unlock(m_mainLoop);
 }
+
+void PulseAudioEngine::mute(PulseAudioDevice *device)
+{
+    setMute(device, true);
+}
+
+void PulseAudioEngine::unmute(PulseAudioDevice *device)
+{
+    setMute(device, false);
+}
+
+void PulseAudioEngine::setMute(PulseAudioDevice *device, bool state)
+{
+    pa_threaded_mainloop_lock(m_mainLoop);
+
+    pa_operation *operation;
+    operation = pa_context_set_sink_mute_by_index(m_context, device->index, state, contextSuccessCallback, this);
+    while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
+        pa_threaded_mainloop_wait(m_mainLoop);
+    pa_operation_unref(operation);
+
+    pa_threaded_mainloop_unlock(m_mainLoop);
+}
+
 
 
