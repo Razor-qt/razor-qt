@@ -57,7 +57,7 @@ VolumePopup::VolumePopup(QWidget* parent):
 
     setLayout(new QVBoxLayout(this));
 
-    connect(m_mixerButton, SIGNAL(clicked()), this, SLOT(launchMixer()));
+    connect(m_mixerButton, SIGNAL(clicked()), this, SIGNAL(launchMixer()));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
 }
 
@@ -73,11 +73,6 @@ void VolumePopup::enterEvent(QEvent *event)
 void VolumePopup::leaveEvent(QEvent *event)
 {
     emit mouseExit();
-}
-
-void VolumePopup::launchMixer()
-{
-    QProcess::startDetached("pavucontrol");
 }
 
 void VolumePopup::handleSliderValueChanged(int value)

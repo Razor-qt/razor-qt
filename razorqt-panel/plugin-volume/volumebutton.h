@@ -44,6 +44,8 @@ public:
     VolumePopup *m_volumePopup;
 
     void setShowOnClicked(bool state);
+    void setMuteOnMiddleClick(bool state);
+    void setMixerCommand(const QString &command);
 
 signals:
     void mouseEnter();
@@ -64,6 +66,7 @@ private slots:
     void popupHideTimerStop();
     void updateStockIcon();
     void handleDeviceChanged();
+    void handleMixerLaunch();
 
 private:
     RazorPanel *m_panel;
@@ -71,6 +74,7 @@ private:
     int m_popupHideTimerDuration;
     bool m_showOnClick;
     bool m_muteOnMiddleClick;
+    QString m_mixerCommand;
 };
 
 #endif // VOLUMEBUTTON_H

@@ -53,6 +53,7 @@ signals:
     void mouseExit();
     void volumeChanged(int value);
     void deviceChanged();
+    void launchMixer();
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -60,7 +61,6 @@ protected:
     void leaveEvent(QEvent *event);
 
 private slots:
-    void launchMixer();
     void handleSliderValueChanged(int value);
 
 private:
