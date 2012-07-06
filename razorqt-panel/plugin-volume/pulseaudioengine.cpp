@@ -208,9 +208,7 @@ void PulseAudioEngine::addSink(const pa_sink_info *info)
     dev->setMute(info->mute);
 
     pa_volume_t v = pa_cvolume_avg(&(info->volume));
-    double tmp = (double)v / PA_VOLUME_UI_MAX;
-    qWarning("volume: %d %d %f", v, PA_VOLUME_UI_MAX, tmp);
-    dev->setVolumeNoCommit(pa_sw_volume_to_linear(v)*100.0);
+    dev->setVolumeNoCommit(((double)v*100.0) / PA_VOLUME_UI_MAX);
 
     if (newSink) {
         m_sinks.append(dev);
@@ -238,7 +236,7 @@ void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
     if (!device)
         return;
 
-    pa_volume_t v = pa_sw_volume_from_linear(device->volume()/100.0);
+    pa_volume_t v = (device->volume()/100.0) * PA_VOLUME_UI_MAX;
     pa_cvolume *volume = pa_cvolume_set(&(device->cvolume), device->cvolume.channels, v);
 
     pa_threaded_mainloop_lock(m_mainLoop);
