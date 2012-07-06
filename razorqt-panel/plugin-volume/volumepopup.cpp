@@ -48,6 +48,8 @@ VolumePopup::VolumePopup(QWidget* parent):
     m_mixerButton = new QToolButton(this);
     m_mixerButton->setIcon(XdgIcon::fromTheme(QStringList() << "kmix"));
 
+    m_volumeSlider->setSingleStep(m_volumeSlider->pageStep());
+
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setSpacing(0);
     l->setMargin(0);
