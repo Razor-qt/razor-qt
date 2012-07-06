@@ -29,11 +29,12 @@
 
 #include "pulseaudioengine.h"
 
-PulseAudioDevice::PulseAudioDevice(PulseAudioEngine *engine, QObject *parent) :
+PulseAudioDevice::PulseAudioDevice(PulseAudioDeviceType t, PulseAudioEngine *engine, QObject *parent) :
     QObject(parent),
     m_engine(engine),
     m_volume(0),
-    m_mute(false)
+    m_mute(false),
+    m_type(t)
 {
 }
 
