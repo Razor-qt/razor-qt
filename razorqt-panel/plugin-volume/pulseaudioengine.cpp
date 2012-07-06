@@ -197,11 +197,10 @@ void PulseAudioEngine::addSink(const pa_sink_info *info)
     }
 
     if (!dev) {
-        dev = new PulseAudioDevice(this, this);
+        dev = new PulseAudioDevice(Sink, this, this);
         newSink = true;
     }
 
-    dev->type = Sink;
     dev->name = info->name;
     dev->index = info->index;
     dev->description = info->description;
@@ -245,7 +244,7 @@ void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
     pa_threaded_mainloop_lock(m_mainLoop);
 
     pa_operation *operation;
-    if (device->type == Sink)
+    if (device->type() == Sink)
         operation = pa_context_set_sink_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);
     else
         operation = pa_context_set_source_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);

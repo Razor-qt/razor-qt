@@ -44,13 +44,15 @@ class PulseAudioDevice : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
+    Q_PROPERTY(PulseAudioDeviceType type READ type CONSTANT)
 
 public:
-    PulseAudioDevice(PulseAudioEngine *engine, QObject *parent = 0);
+    PulseAudioDevice(PulseAudioDeviceType t, PulseAudioEngine *engine, QObject *parent = 0);
     ~PulseAudioDevice();
 
     int volume() const { return m_volume; }
     bool mute() const { return m_mute; }
+    PulseAudioDeviceType type() const { return m_type; }
 
 public slots:
     void setVolume(int volume);
@@ -63,7 +65,6 @@ signals:
     void muteChanged();
 
 public:
-    PulseAudioDeviceType type;
     QString name;
     uint index;
     QString description;
@@ -73,6 +74,7 @@ private:
     PulseAudioEngine *m_engine;
     int m_volume;
     bool m_mute;
+    PulseAudioDeviceType m_type;
 };
 
 #endif // PULSEAUDIODEVICE_H
