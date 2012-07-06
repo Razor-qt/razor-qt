@@ -143,7 +143,7 @@ QMenu* RazorPanelPlugin::popupMenu() const
 
     menu->addSeparator();
 
-    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Delete"), menu);
+    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Remove"), menu);
     menu->addAction(removeAction);
     connect(removeAction, SIGNAL(triggered()), this, SLOT(requestRemove()));
 
