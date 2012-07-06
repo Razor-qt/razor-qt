@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Razor Removable media manager settings</string>
+   <string>Razor Volume Control Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
