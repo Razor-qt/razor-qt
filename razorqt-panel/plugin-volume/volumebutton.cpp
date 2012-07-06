@@ -32,6 +32,7 @@
 
 #include <QtGui/QSlider>
 #include <QtGui/QMouseEvent>
+#include <QtCore/QProcess>
 
 #include <qtxdg/xdgicon.h>
 #include "../panel/razorpanel.h"
@@ -54,6 +55,7 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
 
     connect(m_volumePopup->m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(updateStockIcon()));
     connect(m_volumePopup, SIGNAL(deviceChanged()), this, SLOT(handleDeviceChanged()));
+    connect(m_volumePopup, SIGNAL(launchMixer()), this, SLOT(handleMixerLaunch()));
 
     updateStockIcon();
 }
@@ -70,6 +72,16 @@ void VolumeButton::setShowOnClicked(bool state)
         return;
 
     m_showOnClick = state;
+}
+
+void VolumeButton::setMuteOnMiddleClick(bool state)
+{
+    m_muteOnMiddleClick = state;
+}
+
+void VolumeButton::setMixerCommand(const QString &command)
+{
+    m_mixerCommand = command;
 }
 
 void VolumeButton::enterEvent(QEvent *event)
@@ -93,9 +105,13 @@ void VolumeButton::wheelEvent(QWheelEvent *event)
 void VolumeButton::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::MidButton && m_muteOnMiddleClick) {
-        if (m_volumePopup->device())
+        if (m_volumePopup->device()) {
             m_volumePopup->device()->toggleMute();
+            return;
+        }
     }
+
+    QToolButton::mouseReleaseEvent(event);
 }
 
 void VolumeButton::toggleVolumeSlider()
@@ -195,4 +211,9 @@ void VolumeButton::updateStockIcon()
 void VolumeButton::handleDeviceChanged()
 {
     connect(m_volumePopup->device(), SIGNAL(muteChanged()), this, SLOT(updateStockIcon()));
+}
+
+void VolumeButton::handleMixerLaunch()
+{
+    QProcess::startDetached(m_mixerCommand);
 }

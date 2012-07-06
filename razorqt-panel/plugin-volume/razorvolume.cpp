@@ -76,6 +76,8 @@ void RazorVolume::settingsChanged()
     }
 
     m_volumeButton->setShowOnClicked(settings().value("showOnClick", false).toBool());
+    m_volumeButton->setMuteOnMiddleClick(settings().value("muteOnMiddleClick", true).toBool());
+    m_volumeButton->setMixerCommand(settings().value("mixerCommand", "pavucontrol").toString());
 }
 
 void RazorVolume::updateConfigurationSinkList()

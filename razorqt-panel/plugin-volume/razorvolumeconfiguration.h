@@ -51,6 +51,7 @@ public slots:
     void sinkSelectionChanged(int index);
     void showOnClickedChanged(bool state);
     void muteOnMiddleClickChanged(bool state);
+    void mixerLineEditChanged(const QString &command);
 
 protected slots:
     virtual void loadSettings();
