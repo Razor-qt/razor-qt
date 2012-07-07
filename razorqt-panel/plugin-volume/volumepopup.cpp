@@ -57,8 +57,6 @@ VolumePopup::VolumePopup(QWidget* parent):
     l->addWidget(m_volumeSlider, 0, Qt::AlignHCenter);
     l->addWidget(m_mixerButton);
 
-    setLayout(new QVBoxLayout(this));
-
     connect(m_mixerButton, SIGNAL(clicked()), this, SIGNAL(launchMixer()));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
 }
