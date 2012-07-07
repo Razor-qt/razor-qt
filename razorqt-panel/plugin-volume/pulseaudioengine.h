@@ -74,6 +74,7 @@ private:
     QList<PulseAudioDevice*> m_sinks;
 
     pa_context_state_t m_contextState;
+    bool m_ready;
 };
 
 #endif // PULSEAUDIOENGINE_H

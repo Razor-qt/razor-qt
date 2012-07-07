@@ -125,7 +125,8 @@ static void contextSubscriptionCallback(pa_context *context, pa_subscription_eve
 
 PulseAudioEngine::PulseAudioEngine(QObject *parent) :
     QObject(parent),
-    m_contextState(PA_CONTEXT_UNCONNECTED)
+    m_contextState(PA_CONTEXT_UNCONNECTED),
+    m_ready(false)
 {
     m_mainLoop = pa_threaded_mainloop_new();
     if (m_mainLoop == 0) {
@@ -256,7 +257,7 @@ void PulseAudioEngine::requestSinkInfoUpdate(PulseAudioDevice *device)
 
 void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
 {
-    if (!device)
+    if (!device || !m_ready)
         return;
 
     pa_volume_t v = (device->volume()/100.0) * PA_VOLUME_UI_MAX;
@@ -279,6 +280,9 @@ void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
 
 void PulseAudioEngine::retrieveSinks()
 {
+    if (!m_ready)
+        return;
+
     pa_threaded_mainloop_lock(m_mainLoop);
 
     pa_operation *operation;
@@ -292,6 +296,9 @@ void PulseAudioEngine::retrieveSinks()
 
 void PulseAudioEngine::setupSubscription()
 {
+    if (!m_ready)
+        return;
+
     connect(this, SIGNAL(sinkInfoChanged(PulseAudioDevice*)), this, SLOT(retrieveSinkInfo(PulseAudioDevice*)), Qt::QueuedConnection);
     pa_context_set_subscribe_callback(m_context, contextSubscriptionCallback, this);
 
@@ -308,6 +315,9 @@ void PulseAudioEngine::setupSubscription()
 
 void PulseAudioEngine::retrieveSinkInfo(PulseAudioDevice *device)
 {
+    if (!m_ready)
+        return;
+
     pa_threaded_mainloop_lock(m_mainLoop);
 
     pa_operation *operation;
@@ -331,6 +341,9 @@ void PulseAudioEngine::unmute(PulseAudioDevice *device)
 
 void PulseAudioEngine::setMute(PulseAudioDevice *device, bool state)
 {
+    if (!m_ready)
+        return;
+
     pa_threaded_mainloop_lock(m_mainLoop);
 
     pa_operation *operation;
@@ -349,6 +362,9 @@ void PulseAudioEngine::setContextState(pa_context_state_t state)
 
     m_contextState = state;
     emit contextStateChanged(m_contextState);
+
+    // just used internally
+    m_ready = (m_contextState == PA_CONTEXT_READY);
 }
 
 
