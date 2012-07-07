@@ -35,39 +35,39 @@
   */
 class RazorNetworkMonitor: public RazorPanelPlugin
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-	~RazorNetworkMonitor();
+    RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    ~RazorNetworkMonitor();
 
-	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
 
 protected:
-	void virtual timerEvent(QTimerEvent *event);
-	void virtual paintEvent ( QPaintEvent * event );
-	void virtual resizeEvent(QResizeEvent *);
-	bool virtual event(QEvent *event);
+    void virtual timerEvent(QTimerEvent *event);
+    void virtual paintEvent(QPaintEvent * event);
+    void virtual resizeEvent(QResizeEvent *);
+    bool virtual event(QEvent *event);
 
 protected slots:
-	virtual void showConfigureDialog();
-	virtual void settingsChanged();
+    virtual void showConfigureDialog();
+    virtual void settingsChanged();
 
 private:
     static QString convertUnits(double num);
-	QString iconName(const QString& state) const
-	{
-		return QString(":/images/knemo-%1-%2.png")
-				.arg(m_iconList[m_iconIndex], state );
-	}
+    QString iconName(const QString& state) const
+    {
+        return QString(":/images/knemo-%1-%2.png")
+               .arg(m_iconList[m_iconIndex], state);
+    }
 
-	QWidget m_stuff;
+    QWidget m_stuff;
 
-	QStringList m_iconList;
+    QStringList m_iconList;
 
-	int m_iconIndex;
+    int m_iconIndex;
 
-	QString m_interface;
-	QPixmap m_pic;
+    QString m_interface;
+    QPixmap m_pic;
 
 };
 

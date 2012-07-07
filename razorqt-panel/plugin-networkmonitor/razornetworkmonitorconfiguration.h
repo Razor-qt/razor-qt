@@ -36,29 +36,30 @@
 class QSettings;
 class QAbstractButton;
 
-namespace Ui {
-	class RazorNetworkMonitorConfiguration;
+namespace Ui
+{
+class RazorNetworkMonitorConfiguration;
 }
 
 class RazorNetworkMonitorConfiguration : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent = 0);
-	~RazorNetworkMonitorConfiguration();
+    explicit RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent = 0);
+    ~RazorNetworkMonitorConfiguration();
 
 private:
-	Ui::RazorNetworkMonitorConfiguration *ui;
-	QSettings &mSettings;
-	RazorSettingsCache mOldSettings;
+    Ui::RazorNetworkMonitorConfiguration *ui;
+    QSettings &mSettings;
+    RazorSettingsCache mOldSettings;
 
 private slots:
-	/*
-	  Saves settings in conf file.
-	*/
-	void loadSettings();
-	void dialogButtonsAction(QAbstractButton *btn);
+    /*
+      Saves settings in conf file.
+    */
+    void loadSettings();
+    void dialogButtonsAction(QAbstractButton *btn);
 };
 
 #endif // RAZORNETWORKMONITORCONFIGURATION_H

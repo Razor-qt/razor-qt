@@ -39,20 +39,20 @@ extern "C" {
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorNetworkMonitor)
 
 RazorNetworkMonitor::RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-	RazorPanelPlugin(startInfo, parent)
+    RazorPanelPlugin(startInfo, parent)
 {
-	setObjectName("NetworkMonitor");
-	addWidget(&m_stuff);
+    setObjectName("NetworkMonitor");
+    addWidget(&m_stuff);
 
-	/* Initialise statgrab */
-	sg_init();
+    /* Initialise statgrab */
+    sg_init();
 
-	m_iconList << "modem" << "monitor"
-			   << "network" << "wireless";
+    m_iconList << "modem" << "monitor"
+               << "network" << "wireless";
 
-	startTimer(800);
+    startTimer(800);
 
-	settingsChanged();
+    settingsChanged();
 }
 
 RazorNetworkMonitor::~RazorNetworkMonitor()
@@ -61,107 +61,112 @@ RazorNetworkMonitor::~RazorNetworkMonitor()
 
 void RazorNetworkMonitor::resizeEvent(QResizeEvent *)
 {
-	m_stuff.setMinimumWidth(m_pic.width()+2);
-	m_stuff.setMinimumHeight(m_pic.height()+2);
+    m_stuff.setMinimumWidth(m_pic.width() + 2);
+    m_stuff.setMinimumHeight(m_pic.height() + 2);
 
-	update();
+    update();
 }
 
 
 void RazorNetworkMonitor::timerEvent(QTimerEvent *event)
 {
-	bool matched = false;
+    bool matched = false;
 
-	int num_network_stats;
+    int num_network_stats;
 
-	sg_network_io_stats *network_stats = sg_get_network_io_stats_diff(&num_network_stats);
+    sg_network_io_stats *network_stats = sg_get_network_io_stats_diff(&num_network_stats);
 
-	for(int x = 0; x < num_network_stats; x++)
-	{
-		if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
-		{
-			if ( network_stats->rx != 0 && network_stats->tx != 0 )
-			{
-				m_pic.load( iconName("transmit-receive") );
-			} else if ( network_stats->rx != 0 && network_stats->tx == 0 )
-			{
-				m_pic.load( iconName("receive") );
-			} else if ( network_stats->rx == 0 && network_stats->tx != 0 )
-			{
-				m_pic.load( iconName("transmit") );
-			} else
-			{
-				m_pic.load( iconName("idle") );
-			}
+    for (int x = 0; x < num_network_stats; x++)
+    {
+        if (m_interface == QString::fromLocal8Bit(network_stats->interface_name))
+        {
+            if (network_stats->rx != 0 && network_stats->tx != 0)
+            {
+                m_pic.load(iconName("transmit-receive"));
+            }
+            else if (network_stats->rx != 0 && network_stats->tx == 0)
+            {
+                m_pic.load(iconName("receive"));
+            }
+            else if (network_stats->rx == 0 && network_stats->tx != 0)
+            {
+                m_pic.load(iconName("transmit"));
+            }
+            else
+            {
+                m_pic.load(iconName("idle"));
+            }
 
-			matched = true;
+            matched = true;
 
-			break;
-		}
+            break;
+        }
 
-		network_stats++;
-	}
+        network_stats++;
+    }
 
-	if( !matched)
-		m_pic.load( iconName("error") );
+    if (!matched)
+    {
+        m_pic.load(iconName("error"));
+    }
 
-	update();
+    update();
 }
 
-void RazorNetworkMonitor::paintEvent ( QPaintEvent * )
+void RazorNetworkMonitor::paintEvent(QPaintEvent *)
 {
-	QPainter p(this);
+    QPainter p(this);
 
-	QRectF r = rect();
+    QRectF r = rect();
 
-	int leftOffset = (r.width() - m_pic.width() + 2) / 2;
-	int topOffset = (r.height() - m_pic.height() + 2) / 2;
+    int leftOffset = (r.width() - m_pic.width() + 2) / 2;
+    int topOffset = (r.height() - m_pic.height() + 2) / 2;
 
-	p.drawPixmap(leftOffset, topOffset, m_pic);
+    p.drawPixmap(leftOffset, topOffset, m_pic);
 }
 
 bool RazorNetworkMonitor::event(QEvent *event)
 {
-	if(event->type() == QEvent::ToolTip)
-	{
-		int num_network_stats;
-		sg_network_io_stats *network_stats = sg_get_network_io_stats(&num_network_stats);
-		for(int x = 0; x < num_network_stats; x++)
-		{
-			if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
-			{
-				setToolTip(tr("Network interface <b>%1</b>").arg(m_interface) + "<br>"
-                        + tr("Transmitted %1").arg(convertUnits(network_stats->tx)) + "<br>"
-                        + tr("Received %1").arg(convertUnits(network_stats->rx))
-						);
-			}
-			network_stats++;
-		}
-	}
-	return RazorPanelPlugin::event(event);
+    if (event->type() == QEvent::ToolTip)
+    {
+        int num_network_stats;
+        sg_network_io_stats *network_stats = sg_get_network_io_stats(&num_network_stats);
+        for (int x = 0; x < num_network_stats; x++)
+        {
+            if (m_interface == QString::fromLocal8Bit(network_stats->interface_name))
+            {
+                setToolTip(tr("Network interface <b>%1</b>").arg(m_interface) + "<br>"
+                           + tr("Transmitted %1").arg(convertUnits(network_stats->tx)) + "<br>"
+                           + tr("Received %1").arg(convertUnits(network_stats->rx))
+                          );
+            }
+            network_stats++;
+        }
+    }
+    return RazorPanelPlugin::event(event);
 }
 
 void RazorNetworkMonitor::showConfigureDialog()
 {
-	RazorNetworkMonitorConfiguration *confWindow =
-			this->findChild<RazorNetworkMonitorConfiguration*>("RazorNetworkMonitorConfigurationWindow");
+    RazorNetworkMonitorConfiguration *confWindow =
+        this->findChild<RazorNetworkMonitorConfiguration*>("RazorNetworkMonitorConfigurationWindow");
 
-	if (!confWindow)
-	{
-		confWindow = new RazorNetworkMonitorConfiguration(settings(), this);
-	}
+    if (!confWindow)
+    {
+        confWindow = new RazorNetworkMonitorConfiguration(settings(), this);
+    }
 
-	confWindow->show();
-	confWindow->raise();
-	confWindow->activateWindow();
+    confWindow->show();
+    confWindow->raise();
+    confWindow->activateWindow();
 }
 
 void RazorNetworkMonitor::settingsChanged()
 {
-	m_iconIndex = settings().value("icon", 1).toInt();
-	m_interface = settings().value("interface", "eth0").toString();
+    m_iconIndex = settings().value("icon", 1).toInt();
+    m_interface = settings().value("interface", "eth0").toString();
 
-	m_pic.load( iconName("error") );
+    m_pic.load(iconName("error"));
 }
 
 QString RazorNetworkMonitor::convertUnits(double num)
