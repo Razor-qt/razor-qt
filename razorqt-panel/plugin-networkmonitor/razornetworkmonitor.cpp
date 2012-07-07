@@ -131,8 +131,8 @@ bool RazorNetworkMonitor::event(QEvent *event)
 			if ( m_interface == QString::fromLocal8Bit(network_stats->interface_name) )
 			{
 				setToolTip(tr("Network interface <b>%1</b>").arg(m_interface) + "<br>"
-						+ tr("Transmitted %1 MiB").arg(network_stats->tx / (1024.00*1024.00), 0, 'f', 2) + "<br>"
-						+ tr("Received %1 MiB").arg(network_stats->rx / (1024.00*1024.00), 0, 'f', 2)
+                        + tr("Transmitted %1").arg(convertUnits(network_stats->tx)) + "<br>"
+                        + tr("Received %1").arg(convertUnits(network_stats->rx))
 						);
 			}
 			network_stats++;
@@ -164,3 +164,14 @@ void RazorNetworkMonitor::settingsChanged()
 	m_pic.load( iconName("error") );
 }
 
+QString RazorNetworkMonitor::convertUnits(double num)
+{
+    QString unit = tr("B");
+    QStringList units = QStringList(tr("KiB")) << tr("MiB") << tr("GiB") << tr("TiB") << tr("PiB");
+    for (QStringListIterator iter(units); num >= 1024 && iter.hasNext();)
+    {
+        num /= 1024;
+        unit = iter.next();
+    }
+    return QString::number(num, 'f', 2) + " " + unit;
+}
