@@ -48,6 +48,7 @@ public:
 
     const QList<PulseAudioDevice *> &sinks() const;
     pa_context_state_t contextState() const { return m_contextState; }
+    bool ready() const { return m_ready; }
     pa_threaded_mainloop *mainloop() const;
 
 public slots:
@@ -62,6 +63,7 @@ signals:
     void sinkListChanged();
     void sinkInfoChanged(PulseAudioDevice *device);
     void contextStateChanged(pa_context_state_t state);
+    void readyChanged(bool ready);
 
 private:
     void retrieveSinks();

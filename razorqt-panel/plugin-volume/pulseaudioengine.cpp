@@ -363,8 +363,12 @@ void PulseAudioEngine::setContextState(pa_context_state_t state)
     m_contextState = state;
     emit contextStateChanged(m_contextState);
 
-    // just used internally
+    // update ready member as it depends on state
+    if (m_ready == (m_contextState == PA_CONTEXT_READY))
+        return;
+
     m_ready = (m_contextState == PA_CONTEXT_READY);
+    emit readyChanged(m_ready);
 }
 
 
