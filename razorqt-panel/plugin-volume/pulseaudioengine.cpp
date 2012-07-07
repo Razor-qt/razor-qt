@@ -31,6 +31,8 @@
 
 #include <QtDebug>
 
+//#define PULSEAUDIO_ENGINE_DEBUG
+
 static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int isLast, void *userdata)
 {
     PulseAudioEngine *pulseEngine = static_cast<PulseAudioEngine*>(userdata);
@@ -55,19 +57,48 @@ static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int 
 
 static void contextEventCallback(pa_context *context, const char *name, pa_proplist *p, void *userdata)
 {
-}
-
-static void contextStateCallbackInit(pa_context *context, void *userdata)
-{
-    Q_UNUSED(context);
-    PulseAudioEngine *pulseEngine = reinterpret_cast<PulseAudioEngine*>(userdata);
-    pa_threaded_mainloop_signal(pulseEngine->mainloop(), 0);
+#ifdef PULSEAUDIO_ENGINE_DEBUG
+    qWarning("event received %s", name);
+#endif
 }
 
 static void contextStateCallback(pa_context *context, void *userdata)
 {
-    Q_UNUSED(userdata);
-    Q_UNUSED(context);
+    PulseAudioEngine *pulseEngine = reinterpret_cast<PulseAudioEngine*>(userdata);
+
+    // update internal state
+    pa_context_state_t state = pa_context_get_state(context);
+    pulseEngine->setContextState(state);
+
+#ifdef PULSEAUDIO_ENGINE_DEBUG
+    switch (state) {
+        case PA_CONTEXT_UNCONNECTED:
+            qWarning("context unconnected");
+            break;
+        case PA_CONTEXT_CONNECTING:
+            qWarning("context connecting");
+            break;
+        case PA_CONTEXT_AUTHORIZING:
+            qWarning("context authorizing");
+            break;
+        case PA_CONTEXT_SETTING_NAME:
+            qWarning("context setting name");
+            break;
+        case PA_CONTEXT_READY:
+            qWarning("context ready");
+            break;
+        case PA_CONTEXT_FAILED:
+            qWarning("context failed");
+            break;
+        case PA_CONTEXT_TERMINATED:
+            qWarning("context terminated");
+            break;
+        default:
+            qWarning("we should never hit this state");
+    }
+#endif
+
+    pa_threaded_mainloop_signal(pulseEngine->mainloop(), 0);
 }
 
 static void contextSuccessCallback(pa_context *context, int success, void *userdata)
@@ -93,11 +124,9 @@ static void contextSubscriptionCallback(pa_context *context, pa_subscription_eve
 
 
 PulseAudioEngine::PulseAudioEngine(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_contextState(PA_CONTEXT_UNCONNECTED)
 {
-    bool keepGoing = true;
-    bool ok = true;
-
     m_mainLoop = pa_threaded_mainloop_new();
     if (m_mainLoop == 0) {
         qWarning("Unable to create pulseaudio mainloop");
@@ -115,7 +144,7 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
     pa_threaded_mainloop_lock(m_mainLoop);
 
     m_context = pa_context_new(m_mainLoopApi, "razor-volume");
-    pa_context_set_state_callback(m_context, contextStateCallbackInit, this);
+    pa_context_set_state_callback(m_context, contextStateCallback, this);
     pa_context_set_event_callback(m_context, contextEventCallback, this);
 
     if (!m_context) {
@@ -131,22 +160,21 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
         return;
     }
 
-    pa_threaded_mainloop_wait(m_mainLoop);
+    bool keepGoing = true;
+    bool ok = true;
 
     while (keepGoing) {
-        switch (pa_context_get_state(m_context)) {
+        switch (m_contextState) {
             case PA_CONTEXT_CONNECTING:
             case PA_CONTEXT_AUTHORIZING:
             case PA_CONTEXT_SETTING_NAME:
                 break;
 
             case PA_CONTEXT_READY:
-                qWarning("Connection established.");
                 keepGoing = false;
                 break;
 
             case PA_CONTEXT_TERMINATED:
-                qCritical("Context terminated.");
                 keepGoing = false;
                 ok = false;
                 break;
@@ -163,20 +191,14 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
         }
     }
 
-    if (ok) {
-        pa_context_set_state_callback(m_context, contextStateCallback, this);
-    } else {
-        if (m_context) {
-            pa_context_unref(m_context);
-            m_context = 0;
-        }
-    }
-
     pa_threaded_mainloop_unlock(m_mainLoop);
 
     if (ok) {
         retrieveSinks();
         setupSubscription();
+    } else {
+        pa_context_unref(m_context);
+        m_context = 0;
     }
 }
 
@@ -318,6 +340,15 @@ void PulseAudioEngine::setMute(PulseAudioDevice *device, bool state)
     pa_operation_unref(operation);
 
     pa_threaded_mainloop_unlock(m_mainLoop);
+}
+
+void PulseAudioEngine::setContextState(pa_context_state_t state)
+{
+    if (m_contextState == state)
+        return;
+
+    m_contextState = state;
+    emit contextStateChanged(m_contextState);
 }
 
 

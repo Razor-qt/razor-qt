@@ -43,12 +43,12 @@ public:
     PulseAudioEngine(QObject *parent = 0);
     ~PulseAudioEngine();
 
-    void addSink(const pa_sink_info *info);
-    const QList<PulseAudioDevice *> &sinks() const;
-
-    pa_threaded_mainloop *mainloop() const;
-
     void requestSinkInfoUpdate(PulseAudioDevice *device);
+    void addSink(const pa_sink_info *info);
+
+    const QList<PulseAudioDevice *> &sinks() const;
+    pa_context_state_t contextState() const { return m_contextState; }
+    pa_threaded_mainloop *mainloop() const;
 
 public slots:
     void commitDeviceVolume(PulseAudioDevice *device);
@@ -56,10 +56,12 @@ public slots:
     void mute(PulseAudioDevice *device);
     void unmute(PulseAudioDevice *device);
     void setMute(PulseAudioDevice *device, bool state);
+    void setContextState(pa_context_state_t state);
 
 signals:
     void sinkListChanged();
     void sinkInfoChanged(PulseAudioDevice *device);
+    void contextStateChanged(pa_context_state_t state);
 
 private:
     void retrieveSinks();
@@ -70,6 +72,8 @@ private:
     pa_context *m_context;
 
     QList<PulseAudioDevice*> m_sinks;
+
+    pa_context_state_t m_contextState;
 };
 
 #endif // PULSEAUDIOENGINE_H
