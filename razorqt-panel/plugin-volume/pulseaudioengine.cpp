@@ -182,6 +182,7 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
 
 PulseAudioEngine::~PulseAudioEngine()
 {
+    qDeleteAll(m_sinks);
 }
 
 void PulseAudioEngine::addSink(const pa_sink_info *info)
@@ -197,7 +198,7 @@ void PulseAudioEngine::addSink(const pa_sink_info *info)
     }
 
     if (!dev) {
-        dev = new PulseAudioDevice(Sink, this, this);
+        dev = new PulseAudioDevice(Sink, this);
         newSink = true;
     }
 
