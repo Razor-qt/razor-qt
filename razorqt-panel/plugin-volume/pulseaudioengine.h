@@ -44,7 +44,7 @@ public:
     ~PulseAudioEngine();
 
     void requestSinkInfoUpdate(PulseAudioDevice *device);
-    void addSink(const pa_sink_info *info);
+    void addOrUpdateSink(const pa_sink_info *info);
 
     const QList<PulseAudioDevice *> &sinks() const;
     pa_context_state_t contextState() const { return m_contextState; }
