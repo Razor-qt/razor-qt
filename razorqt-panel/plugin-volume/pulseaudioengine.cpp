@@ -52,7 +52,7 @@ static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int 
         return;
     }
 
-    pulseEngine->addSink(info);
+    pulseEngine->addOrUpdateSink(info);
 }
 
 static void contextEventCallback(pa_context *context, const char *name, pa_proplist *p, void *userdata)
@@ -208,7 +208,7 @@ PulseAudioEngine::~PulseAudioEngine()
     qDeleteAll(m_sinks);
 }
 
-void PulseAudioEngine::addSink(const pa_sink_info *info)
+void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
 {
     PulseAudioDevice *dev = 0;
     bool newSink = false;
