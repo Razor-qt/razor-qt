@@ -4,8 +4,8 @@ Exec=razor-about
 Icon=help-about
 Terminal=false
 OnlyShowIn=X-RAZOR;
-Categories=Qt;System;X-RAZOR;Settings;DesktopSettings;
-Name=About Razor DE
-GenericName=Information summary about Razor DE
+Categories=Qt;System;X-RAZOR;DesktopSettings;Settings;
+Name=About Razor-Qt
+GenericName=Learn more about Razor-Qt
 
 #TRANSLATIONS_DIR=../translations
