@@ -85,7 +85,7 @@ void RazorVolumeConfiguration::mixerLineEditChanged(const QString &command)
 void RazorVolumeConfiguration::loadSettings()
 {
     ui->mixerLineEdit->setText(settings().value("mixerCommand", "pavucontrol").toString());
-    ui->showOnClickCheckBox->setChecked(settings().value("showOnClick", false).toBool());
+    ui->showOnClickCheckBox->setChecked(settings().value("showOnClick", true).toBool());
     ui->muteOnMiddleClickCheckbox->setChecked(settings().value("muteOnMiddleClick", true).toBool());
     setComboboxIndexByData(ui->devAddedCombo, settings().value("defaultSink", 0), 1);
 }

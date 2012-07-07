@@ -41,7 +41,7 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
         QToolButton(parent),
         m_panel(panel),
         m_popupHideTimerDuration(1000),
-        m_showOnClick(false),
+        m_showOnClick(true),
         m_muteOnMiddleClick(true)
 {
     m_volumePopup = new VolumePopup();
