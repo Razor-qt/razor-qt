@@ -30,6 +30,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QList>
+#include <QtCore/QTimer>
 
 #include <pulse/pulseaudio.h>
 
@@ -46,10 +47,10 @@ public:
     void requestSinkInfoUpdate(PulseAudioDevice *device);
     void addOrUpdateSink(const pa_sink_info *info);
 
-    const QList<PulseAudioDevice *> &sinks() const;
+    const QList<PulseAudioDevice *> &sinks() const { return m_sinks; }
     pa_context_state_t contextState() const { return m_contextState; }
     bool ready() const { return m_ready; }
-    pa_threaded_mainloop *mainloop() const;
+    pa_threaded_mainloop *mainloop() const { return m_mainLoop; }
 
 public slots:
     void commitDeviceVolume(PulseAudioDevice *device);
@@ -65,6 +66,10 @@ signals:
     void contextStateChanged(pa_context_state_t state);
     void readyChanged(bool ready);
 
+private slots:
+    void handleContextStateChanged();
+    void connectContext();
+
 private:
     void retrieveSinks();
     void setupSubscription();
@@ -77,6 +82,7 @@ private:
 
     pa_context_state_t m_contextState;
     bool m_ready;
+    QTimer m_reconnectionTimer;
 };
 
 #endif // PULSEAUDIOENGINE_H

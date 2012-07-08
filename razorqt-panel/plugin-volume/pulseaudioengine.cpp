@@ -125,9 +125,16 @@ static void contextSubscriptionCallback(pa_context *context, pa_subscription_eve
 
 PulseAudioEngine::PulseAudioEngine(QObject *parent) :
     QObject(parent),
+    m_context(0),
     m_contextState(PA_CONTEXT_UNCONNECTED),
     m_ready(false)
 {
+    qRegisterMetaType<pa_context_state_t>("pa_context_state_t");
+
+    m_reconnectionTimer.setSingleShot(true);
+    m_reconnectionTimer.setInterval(100);
+    connect(&m_reconnectionTimer, SIGNAL(timeout()), this, SLOT(connectContext()));
+
     m_mainLoop = pa_threaded_mainloop_new();
     if (m_mainLoop == 0) {
         qWarning("Unable to create pulseaudio mainloop");
@@ -142,70 +149,25 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
 
     m_mainLoopApi = pa_threaded_mainloop_get_api(m_mainLoop);
 
-    pa_threaded_mainloop_lock(m_mainLoop);
+    connect(this, SIGNAL(contextStateChanged(pa_context_state_t)), this, SLOT(handleContextStateChanged()));
 
-    m_context = pa_context_new(m_mainLoopApi, "razor-volume");
-    pa_context_set_state_callback(m_context, contextStateCallback, this);
-    pa_context_set_event_callback(m_context, contextEventCallback, this);
-
-    if (!m_context) {
-        qWarning("Unable to create new pulseaudio context");
-        pa_threaded_mainloop_free(m_mainLoop);
-        return;
-    }
-
-    if (pa_context_connect(m_context, NULL, (pa_context_flags_t)0, NULL) < 0) {
-        qWarning("Unable to create a connection to the pulseaudio context");
-        pa_context_unref(m_context);
-        pa_threaded_mainloop_free(m_mainLoop);
-        return;
-    }
-
-    bool keepGoing = true;
-    bool ok = true;
-
-    while (keepGoing) {
-        switch (m_contextState) {
-            case PA_CONTEXT_CONNECTING:
-            case PA_CONTEXT_AUTHORIZING:
-            case PA_CONTEXT_SETTING_NAME:
-                break;
-
-            case PA_CONTEXT_READY:
-                keepGoing = false;
-                break;
-
-            case PA_CONTEXT_TERMINATED:
-                keepGoing = false;
-                ok = false;
-                break;
-
-            case PA_CONTEXT_FAILED:
-            default:
-                qCritical() << QString("Connection failure: %1").arg(pa_strerror(pa_context_errno(m_context)));
-                keepGoing = false;
-                ok = false;
-        }
-
-        if (keepGoing) {
-            pa_threaded_mainloop_wait(m_mainLoop);
-        }
-    }
-
-    pa_threaded_mainloop_unlock(m_mainLoop);
-
-    if (ok) {
-        retrieveSinks();
-        setupSubscription();
-    } else {
-        pa_context_unref(m_context);
-        m_context = 0;
-    }
+    connectContext();
 }
 
 PulseAudioEngine::~PulseAudioEngine()
 {
     qDeleteAll(m_sinks);
+    m_sinks.clear();
+
+    if (m_context) {
+        pa_context_unref(m_context);
+        m_context = 0;
+    }
+
+    if (m_mainLoop) {
+        pa_threaded_mainloop_free(m_mainLoop);
+        m_mainLoop = 0;
+    }
 }
 
 void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
@@ -238,16 +200,6 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
         m_sinks.append(dev);
         emit sinkListChanged();
     }
-}
-
-const QList<PulseAudioDevice *> &PulseAudioEngine::sinks() const
-{
-    return m_sinks;
-}
-
-pa_threaded_mainloop *PulseAudioEngine::mainloop() const
-{
-    return m_mainLoop;
 }
 
 void PulseAudioEngine::requestSinkInfoUpdate(PulseAudioDevice *device)
@@ -313,6 +265,80 @@ void PulseAudioEngine::setupSubscription()
     pa_threaded_mainloop_unlock(m_mainLoop);
 }
 
+void PulseAudioEngine::handleContextStateChanged()
+{
+    if (m_contextState == PA_CONTEXT_FAILED || m_contextState == PA_CONTEXT_TERMINATED) {
+        qWarning("Razor-Volume: Context connection failed or terminated lets try to reconnect");
+        m_reconnectionTimer.start();
+    }
+}
+
+void PulseAudioEngine::connectContext()
+{
+    bool keepGoing = true;
+    bool ok = false;
+
+    m_reconnectionTimer.stop();
+
+    pa_threaded_mainloop_lock(m_mainLoop);
+
+    if (m_context) {
+        pa_context_unref(m_context);
+        m_context = 0;
+    }
+
+    m_context = pa_context_new(m_mainLoopApi, "razor-volume");
+    pa_context_set_state_callback(m_context, contextStateCallback, this);
+    pa_context_set_event_callback(m_context, contextEventCallback, this);
+
+    if (!m_context) {
+        pa_threaded_mainloop_unlock(m_mainLoop);
+        m_reconnectionTimer.start();
+        return;
+    }
+
+    if (pa_context_connect(m_context, NULL, (pa_context_flags_t)0, NULL) < 0) {
+        pa_threaded_mainloop_unlock(m_mainLoop);
+        m_reconnectionTimer.start();
+        return;
+    }
+
+    while (keepGoing) {
+        switch (m_contextState) {
+            case PA_CONTEXT_CONNECTING:
+            case PA_CONTEXT_AUTHORIZING:
+            case PA_CONTEXT_SETTING_NAME:
+                break;
+
+            case PA_CONTEXT_READY:
+                keepGoing = false;
+                ok = true;
+                break;
+
+            case PA_CONTEXT_TERMINATED:
+                keepGoing = false;
+                break;
+
+            case PA_CONTEXT_FAILED:
+            default:
+                qWarning() << QString("Connection failure: %1").arg(pa_strerror(pa_context_errno(m_context)));
+                keepGoing = false;
+        }
+
+        if (keepGoing)
+            pa_threaded_mainloop_wait(m_mainLoop);
+    }
+
+    pa_threaded_mainloop_unlock(m_mainLoop);
+
+    if (ok) {
+        retrieveSinks();
+        setupSubscription();
+    } else {
+        m_reconnectionTimer.start();
+    }
+}
+
 void PulseAudioEngine::retrieveSinkInfo(PulseAudioDevice *device)
 {
     if (!m_ready)
@@ -361,13 +387,14 @@ void PulseAudioEngine::setContextState(pa_context_state_t state)
         return;
 
     m_contextState = state;
-    emit contextStateChanged(m_contextState);
 
     // update ready member as it depends on state
     if (m_ready == (m_contextState == PA_CONTEXT_READY))
         return;
 
     m_ready = (m_contextState == PA_CONTEXT_READY);
+
+    emit contextStateChanged(m_contextState);
     emit readyChanged(m_ready);
 }
 
