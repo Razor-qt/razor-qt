@@ -56,10 +56,6 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     updateConfigurationSinkList();
 }
 
-RazorVolume::~RazorVolume()
-{
-}
-
 void RazorVolume::showConfigureDialog()
 {
     m_configWindow->show();

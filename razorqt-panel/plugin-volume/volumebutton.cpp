@@ -50,8 +50,8 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
     connect(m_panel, SIGNAL(positionChanged()), this, SLOT(hideVolumeSlider()));
     connect(&m_popupHideTimer, SIGNAL(timeout()), this, SLOT(handlePopupHideTimeout()));
 
-    connect(m_volumePopup, SIGNAL(mouseEnter()), this, SLOT(popupHideTimerStop()));
-    connect(m_volumePopup, SIGNAL(mouseExit()), this, SLOT(popupHideTimerStart()));
+    connect(m_volumePopup, SIGNAL(mouseEntered()), this, SLOT(popupHideTimerStop()));
+    connect(m_volumePopup, SIGNAL(mouseLeft()), this, SLOT(popupHideTimerStart()));
 
     connect(m_volumePopup->m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(updateStockIcon()));
     connect(m_volumePopup, SIGNAL(deviceChanged()), this, SLOT(handleDeviceChanged()));
