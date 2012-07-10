@@ -31,7 +31,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 #include <QtGui/QIcon>
-
+#include <QtCore/QDateTime>
 #include "ui_notification.h"
 
 
@@ -123,7 +123,7 @@ public slots:
     void resume();
 
 private:
-    qint64 m_startMsec;
+    QDateTime m_startTime;
     qint64 m_intervalMsec;
 };
 

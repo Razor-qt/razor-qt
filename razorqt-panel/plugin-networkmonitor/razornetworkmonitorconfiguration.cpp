@@ -30,46 +30,46 @@
 #include "ui_razornetworkmonitorconfiguration.h"
 
 RazorNetworkMonitorConfiguration::RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::RazorNetworkMonitorConfiguration),
-	mSettings(settings),
-	mOldSettings(settings)
+    QDialog(parent),
+    ui(new Ui::RazorNetworkMonitorConfiguration),
+    mSettings(settings),
+    mOldSettings(settings)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setObjectName("NetworkMonitorConfigurationWindow");
-	ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
+    setObjectName("NetworkMonitorConfigurationWindow");
+    ui->setupUi(this);
 
-	connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
+    connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
-	loadSettings();
+    loadSettings();
 }
 
 RazorNetworkMonitorConfiguration::~RazorNetworkMonitorConfiguration()
 {
-	delete ui;
+    delete ui;
 }
 
 void RazorNetworkMonitorConfiguration::loadSettings()
 {
-	ui->iconCB->setCurrentIndex( mSettings.value("icon", 1).toInt() );
+    ui->iconCB->setCurrentIndex(mSettings.value("icon", 1).toInt());
 
-	// TODO: use iface list from libstatgrab with editable combobox
-	ui->interfaceLE->setText(mSettings.value("interface", "eth0").toString());
+    // TODO: use iface list from libstatgrab with editable combobox
+    ui->interfaceLE->setText(mSettings.value("interface", "eth0").toString());
 }
 
 void RazorNetworkMonitorConfiguration::dialogButtonsAction(QAbstractButton *btn)
 {
-	if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
-	{
-		mOldSettings.loadToSettings();
-		loadSettings();
-	}
-	else
-	{
-		mSettings.setValue("icon", ui->iconCB->currentIndex());
-		mSettings.setValue("interface", ui->interfaceLE->text());
+    if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
+    {
+        mOldSettings.loadToSettings();
+        loadSettings();
+    }
+    else
+    {
+        mSettings.setValue("icon", ui->iconCB->currentIndex());
+        mSettings.setValue("interface", ui->interfaceLE->text());
 
-		close();
-	}
+        close();
+    }
 }
 
