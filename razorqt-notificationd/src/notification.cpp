@@ -288,11 +288,7 @@ NotificationTimer::NotificationTimer(QObject *parent)
 
 void NotificationTimer::start(int msec)
 {
-#if QT_VERSION >= 0x040700
-    m_startMsec = QDateTime::currentMSecsSinceEpoch();
-#else
-    m_startMsec = QDateTime::fromString("1970-01-01T00:00:00", Qt::ISODate).msecsTo( QDateTime::currentDateTime());
-#endif
+    m_startTime = QDateTime();
     m_intervalMsec = msec;
     QTimer::start(msec);
 }
@@ -303,11 +299,7 @@ void NotificationTimer::pause()
         return;
 
     stop();
-#if QT_VERSION >= 0x040700
-    m_intervalMsec -= QDateTime::currentMSecsSinceEpoch() - m_startMsec;
-#else
-    m_startMsec = QDateTime::fromString("1970-01-01T00:00:00", Qt::ISODate).msecsTo( QDateTime::currentDateTime()) - m_startMsec;
-#endif
+    m_intervalMsec = m_startTime.msecsTo(QDateTime());
 }
 
 void NotificationTimer::resume()
