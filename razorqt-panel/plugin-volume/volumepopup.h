@@ -39,7 +39,6 @@ class VolumePopup : public QWidget
     Q_OBJECT
 public:
     VolumePopup(QWidget* parent = 0);
-    ~VolumePopup();
 
     void open(QPoint pos, Qt::Corner anchor);
     void handleWheelEvent(QWheelEvent *event);
@@ -49,8 +48,9 @@ public:
     void setDevice(PulseAudioDevice *device);
 
 signals:
-    void mouseEnter();
-    void mouseExit();
+    void mouseEntered();
+    void mouseLeft();
+
     void volumeChanged(int value);
     void deviceChanged();
     void launchMixer();

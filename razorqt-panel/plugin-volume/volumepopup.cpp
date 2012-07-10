@@ -61,18 +61,14 @@ VolumePopup::VolumePopup(QWidget* parent):
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
 }
 
-VolumePopup::~VolumePopup()
-{
-}
-
 void VolumePopup::enterEvent(QEvent *event)
 {
-    emit mouseEnter();
+    emit mouseEntered();
 }
 
 void VolumePopup::leaveEvent(QEvent *event)
 {
-    emit mouseExit();
+    emit mouseLeft();
 }
 
 void VolumePopup::handleSliderValueChanged(int value)
@@ -156,4 +152,3 @@ void VolumePopup::realign()
 
     move(rect.topLeft());
 }
-

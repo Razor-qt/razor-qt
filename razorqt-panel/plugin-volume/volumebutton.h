@@ -47,10 +47,6 @@ public:
     void setMuteOnMiddleClick(bool state);
     void setMixerCommand(const QString &command);
 
-signals:
-    void mouseEnter();
-    void mouseExit();
-
 protected:
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);

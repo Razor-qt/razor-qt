@@ -42,7 +42,6 @@ class RazorVolume : public RazorPanelPlugin
     Q_OBJECT
 public:
     RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~RazorVolume();
 
     virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 
