@@ -37,6 +37,8 @@ class PulseAudioEngine;
 class PulseAudioDevice;
 class RazorVolumeConfiguration;
 
+class QxtGlobalShortcut;
+
 class RazorVolume : public RazorPanelPlugin
 {
     Q_OBJECT
@@ -56,6 +58,10 @@ private:
     int m_defaultSinkIndex;
     PulseAudioDevice *m_defaultSink;
     RazorVolumeConfiguration *m_configWindow;
+    QxtGlobalShortcut *m_keyVolumeUp;
+    QxtGlobalShortcut *m_keyVolumeDown;
+    QxtGlobalShortcut *m_keyMuteToggle;
+
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H

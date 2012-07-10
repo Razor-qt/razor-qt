@@ -34,11 +34,6 @@
 
 //#define PULSEAUDIO_ENGINE_DEBUG
 
-// PA_VOLUME_UI_MAX is only supported since pulseaudio 0.9.23
-#ifndef PA_VOLUME_UI_MAX
-#define PA_VOLUME_UI_MAX (pa_sw_volume_from_dB(+11.0))
-#endif
-
 static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int isLast, void *userdata)
 {
     PulseAudioEngine *pulseEngine = static_cast<PulseAudioEngine*>(userdata);

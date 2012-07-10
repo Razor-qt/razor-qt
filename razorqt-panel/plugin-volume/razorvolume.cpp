@@ -27,15 +27,17 @@
 
 #include "razorvolume.h"
 
-#include <QtGui/QMessageBox>
-#include <QtDebug>
-#include <qtxdg/xdgicon.h>
-
 #include "volumebutton.h"
 #include "volumepopup.h"
 #include "razorvolumeconfiguration.h"
 #include "pulseaudioengine.h"
 #include "pulseaudiodevice.h"
+
+#include <QtGui/QMessageBox>
+#include <QtDebug>
+#include <qtxdg/xdgicon.h>
+#include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/razornotification.h>
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorVolume)
 
@@ -50,6 +52,26 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     addWidget(m_volumeButton);
 
     m_configWindow = new RazorVolumeConfiguration(settings(), this);
+
+    // global key shortcuts
+    m_keyVolumeUp = new QxtGlobalShortcut(this);
+    m_keyVolumeDown = new QxtGlobalShortcut(this);
+    m_keyMuteToggle = new QxtGlobalShortcut(this);
+
+    QKeySequence keySequenceVolumeUp(Qt::Key_VolumeUp);
+    if (!m_keyVolumeUp->setShortcut(keySequenceVolumeUp)) {
+        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceVolumeUp.toString()));
+    }
+
+    QKeySequence keySequenceVolumeDown(Qt::Key_VolumeDown);
+    if (!m_keyVolumeDown->setShortcut(keySequenceVolumeDown)) {
+        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceVolumeDown.toString()));
+    }
+
+    QKeySequence keySequenceMuteToggle(Qt::Key_VolumeMute);
+    if (!m_keyMuteToggle->setShortcut(keySequenceMuteToggle)) {
+        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceMuteToggle.toString()));
+    }
 
     m_paEngine = new PulseAudioEngine(this);
     connect(m_paEngine, SIGNAL(sinkListChanged()), this, SLOT(updateConfigurationSinkList()));
@@ -69,6 +91,10 @@ void RazorVolume::settingsChanged()
     if (m_paEngine->sinks().at(m_defaultSinkIndex)) {
         m_defaultSink = m_paEngine->sinks().at(m_defaultSinkIndex);
         m_volumeButton->volumePopup()->setDevice(m_defaultSink);
+
+        connect(m_keyVolumeUp, SIGNAL(activated()), m_defaultSink, SLOT(increaseVolume()));
+        connect(m_keyVolumeDown, SIGNAL(activated()), m_defaultSink, SLOT(decreaseVolume()));
+        connect(m_keyMuteToggle, SIGNAL(activated()), m_defaultSink, SLOT(toggleMute()));
     }
 
     m_volumeButton->setShowOnClicked(settings().value("showOnClick", true).toBool());
