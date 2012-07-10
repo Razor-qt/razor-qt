@@ -41,11 +41,11 @@ public:
     VolumeButton(RazorPanel *panel, QWidget* parent = 0);
     ~VolumeButton();
 
-    VolumePopup *m_volumePopup;
-
     void setShowOnClicked(bool state);
     void setMuteOnMiddleClick(bool state);
     void setMixerCommand(const QString &command);
+
+    VolumePopup *volumePopup() const { return m_volumePopup; }
 
 protected:
     void enterEvent(QEvent *event);
@@ -65,6 +65,7 @@ private slots:
     void handleMixerLaunch();
 
 private:
+    VolumePopup *m_volumePopup;
     RazorPanel *m_panel;
     QTimer m_popupHideTimer;
     int m_popupHideTimerDuration;

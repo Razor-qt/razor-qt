@@ -43,7 +43,8 @@ public:
     void open(QPoint pos, Qt::Corner anchor);
     void handleWheelEvent(QWheelEvent *event);
 
-    QSlider *m_volumeSlider;
+    QSlider *volumeSlider() const { return m_volumeSlider; }
+
     PulseAudioDevice *device() const { return m_device; }
     void setDevice(PulseAudioDevice *device);
 
@@ -66,6 +67,7 @@ private slots:
 private:
     void realign();
 
+    QSlider *m_volumeSlider;
     QToolButton *m_mixerButton;
     QPoint m_pos;
     Qt::Corner m_anchor;

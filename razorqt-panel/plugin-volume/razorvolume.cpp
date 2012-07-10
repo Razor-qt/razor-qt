@@ -68,7 +68,7 @@ void RazorVolume::settingsChanged()
     m_defaultSinkIndex = settings().value("defaultSink", 0).toInt();
     if (m_paEngine->sinks().at(m_defaultSinkIndex)) {
         m_defaultSink = m_paEngine->sinks().at(m_defaultSinkIndex);
-        m_volumeButton->m_volumePopup->setDevice(m_defaultSink);
+        m_volumeButton->volumePopup()->setDevice(m_defaultSink);
     }
 
     m_volumeButton->setShowOnClicked(settings().value("showOnClick", true).toBool());
@@ -81,4 +81,3 @@ void RazorVolume::updateConfigurationSinkList()
     m_configWindow->setSinkList(m_paEngine->sinks());
     settingsChanged();
 }
-
