@@ -34,6 +34,8 @@ set(UIS
     razorvolumeconfiguration.ui
 )
 
+set(LIBRARIES ${LIBRARIES} razorqxt )
+
 LINK_LIBRARIES(${PLUGIN} ${VOLUME_LIB})
 
 #*******************************************
