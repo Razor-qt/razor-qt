@@ -27,7 +27,8 @@
 
 #include <razorqt/razorapplication.h>
 #include "razortranslate.h"
-#include "trayicon.h"
+#include "razorautosuspend.h"
+
 #include <QMessageBox>
 
 int main(int argc, char *argv[])
@@ -37,8 +38,8 @@ int main(int argc, char *argv[])
 
     TRANSLATE_APP;
 
-    TrayIcon w;
-    w.show();
-
+    /*TrayIcon w;
+    w.show();*/
+    RazorAutosuspendd razorAutosuspendd;
     return a.exec();
 }

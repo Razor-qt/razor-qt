@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Christian Surlykke <christian@surlykke.dk>
  *
@@ -24,28 +24,34 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+#ifndef GENERALSETTINGS_H
+#define GENERALSETTINGS_H
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QSystemTrayIcon>
 #include <QWidget>
-#include <QIcon>
+#include <razorqt/razorsettings.h>
+#include "constants.h"
 
+namespace Ui {
+class GeneralSettings;
+}
 
-class TrayIcon : public QSystemTrayIcon
+class GeneralSettings : public QWidget
 {
     Q_OBJECT
-
+    
 public:
-    explicit TrayIcon(QWidget *parent = 0);
-    ~TrayIcon();
-    void setStatus(double level, bool onBattery);
+    explicit GeneralSettings(RazorSettings *settings, QWidget *parent = 0);
+    ~GeneralSettings();
+
+public slots:
+    void loadSettings();
+
+private slots:
+    void saveSettings();
 
 private:
-    void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
+    RazorSettings *m_Settings;
+    Ui::GeneralSettings *ui;
 };
 
-#endif // MAINWINDOW_H
+#endif // GENERALSETTINGS_H

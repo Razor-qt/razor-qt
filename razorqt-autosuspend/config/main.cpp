@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Christian Surlykke <christian@surlykke.dk>
  *
@@ -25,27 +25,15 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QSystemTrayIcon>
-#include <QWidget>
-#include <QIcon>
-
-
-class TrayIcon : public QSystemTrayIcon
+#include <razorqt/razorapplication.h>
+#include "mainwindow.h"
+int main(int argc, char *argv[])
 {
-    Q_OBJECT
 
-public:
-    explicit TrayIcon(QWidget *parent = 0);
-    ~TrayIcon();
-    void setStatus(double level, bool onBattery);
+    RazorApplication a(argc, argv);
 
-private:
-    void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
-};
+    MainWindow mainWindow;
+    mainWindow.show();
 
-#endif // MAINWINDOW_H
+    return a.exec();
+}

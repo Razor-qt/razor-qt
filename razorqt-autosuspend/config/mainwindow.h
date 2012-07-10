@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Christian Surlykke <christian@surlykke.dk>
  *
@@ -24,50 +24,21 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#include <razorqt/razorconfigdialog.h>
 
-#include <QDialog>
-#include <QButtonGroup>
-#include <QMap>
-#include <QString>
-#include <QVariant>
-#include <QComboBox>
-#include "razorqt/razorsettings.h"
-
-namespace Ui
+class MainWindow : public RazorConfigDialog
 {
-    class Settings;
-}
-
-#define LIDCLOSEDACTION_KEY "lidClosedAction"
-#define POWERLOWACTION_KEY "powerLowAction"
-#define POWERLOWWARNING_KEY "powerLowWarning"
-enum
-{
-    NOTHING,
-    SLEEP,
-    HIBERNATE
-};
-
-class SettingsDialog : public QDialog
-{
-    Q_OBJECT
 public:
-    explicit SettingsDialog(QWidget *parent = 0);
-    ~SettingsDialog();
+    MainWindow(QWidget *parent = 0);
+
+signals:
+    void settingsRestored();
 
 private slots:
-    void dialogButtonsAction(QAbstractButton *btn);
-    void saveSettings();
-
-private:
-    void loadSettings();
-    void fillInActions(QComboBox* comboBox, int selectedData);
-    Ui::Settings *ui;
-    RazorSettings m_Settings;
-    RazorSettingsCache m_RollbackPoint;
+    void restoreSettings();
 };
 
-#endif // SETTINGS_H
+#endif // MAINWINDOW_H

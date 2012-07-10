@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Christian Surlykke <christian@surlykke.dk>
  *
@@ -24,28 +24,42 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+#ifndef RAZORAUTOSUSPENDD_H
+#define RAZORAUTOSUSPENDD_H
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include <QObject>
+#include <QTime>
+#include <razorqt/razornotification.h>
+#include <razorqt/razorsettings.h>
+#include <razorqt/razorpower/razorpower.h>
+#include "lid.h"
+#include "battery.h"
+#include "trayicon.h"
 
-#include <QSystemTrayIcon>
-#include <QWidget>
-#include <QIcon>
-
-
-class TrayIcon : public QSystemTrayIcon
+class RazorAutosuspendd : public QObject
 {
     Q_OBJECT
-
 public:
-    explicit TrayIcon(QWidget *parent = 0);
-    ~TrayIcon();
-    void setStatus(double level, bool onBattery);
+    explicit RazorAutosuspendd(QObject *parent = 0);
+    virtual ~RazorAutosuspendd();
+
+protected:
+    void timerEvent(QTimerEvent *event);
+
+private slots:
+    void lidChanged(bool closed);
+    void batteryChanged();
 
 private:
-    void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
+    void doAction(int action);
+    int powerLowAction();
+
+    Lid lid;
+    Battery battery;
+    RazorPower razorPower;
+    RazorNotification razorNotification;
+    QTime actionTime;
+    TrayIcon trayIcon;
 };
 
-#endif // MAINWINDOW_H
+#endif // RAZORAUTOSUSPENDD_H

@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Christian Surlykke <christian@surlykke.dk>
  *
@@ -24,28 +24,26 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+#include "mainwindow.h"
+#include "generalsettings.h"
+#include "lidsettings.h"
+#include "powerlowsettings.h"
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QSystemTrayIcon>
-#include <QWidget>
-#include <QIcon>
-
-
-class TrayIcon : public QSystemTrayIcon
+MainWindow::MainWindow(QWidget *parent) :
+    RazorConfigDialog(tr("Razor Autosuspend Configuration"), new RazorSettings("razor-autosuspend"), parent)
 {
-    Q_OBJECT
 
-public:
-    explicit TrayIcon(QWidget *parent = 0);
-    ~TrayIcon();
-    void setStatus(double level, bool onBattery);
+    GeneralSettings* generalSettings = new GeneralSettings(mSettings, this);
+    addPage(generalSettings, tr("General"), "razor-autosuspend");
+    connect(this, SIGNAL(reset()), generalSettings, SLOT(loadSettings()));
 
-private:
-    void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
-};
+    LidSettings *lidSettings = new LidSettings(mSettings, this);
+    addPage(lidSettings, tr("Lid closed"), "laptop-lid");
+    connect(this, SIGNAL(reset()), lidSettings, SLOT(loadSettings()));
 
-#endif // MAINWINDOW_H
+    PowerLowSettings* powerLowSettings = new PowerLowSettings(mSettings, this);
+    addPage(powerLowSettings, tr("Power Low"), "battery-low");
+    connect(this, SIGNAL(reset()), powerLowSettings, SLOT(loadSettings()));
+
+    emit reset();
+}

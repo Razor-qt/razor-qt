@@ -7,3 +7,4 @@ find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
 add_subdirectory(src)
+add_subdirectory(config)

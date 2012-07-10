@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Christian Surlykke <christian@surlykke.dk>
  *
@@ -24,28 +24,30 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+#include "generalsettings.h"
+#include "ui_generalsettings.h"
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QSystemTrayIcon>
-#include <QWidget>
-#include <QIcon>
-
-
-class TrayIcon : public QSystemTrayIcon
+GeneralSettings::GeneralSettings(RazorSettings *settings, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::GeneralSettings)
 {
-    Q_OBJECT
+    this->m_Settings = settings;
+    ui->setupUi(this);
 
-public:
-    explicit TrayIcon(QWidget *parent = 0);
-    ~TrayIcon();
-    void setStatus(double level, bool onBattery);
+    connect(ui->showTrayIconcheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
+}
 
-private:
-    void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
-};
+GeneralSettings::~GeneralSettings()
+{
+    delete ui;
+}
 
-#endif // MAINWINDOW_H
+void GeneralSettings::saveSettings()
+{
+    m_Settings->setValue(SHOWTRAYICON_KEY, ui->showTrayIconcheckBox->isChecked());
+}
+
+void GeneralSettings::loadSettings()
+{
+    ui->showTrayIconcheckBox->setChecked(m_Settings->value(SHOWTRAYICON_KEY, true).toBool());
+}
