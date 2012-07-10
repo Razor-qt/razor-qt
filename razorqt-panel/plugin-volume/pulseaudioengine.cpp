@@ -175,9 +175,10 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
 {
     PulseAudioDevice *dev = 0;
     bool newSink = false;
+    QString name = QString::fromUtf8(info->name);
 
     foreach (PulseAudioDevice *device, m_sinks) {
-        if (info->name == device->name) {
+        if (name == device->name) {
             dev = device;
             break;
         }
@@ -188,9 +189,9 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
         newSink = true;
     }
 
-    dev->name = info->name;
+    dev->name = name;
     dev->index = info->index;
-    dev->description = info->description;
+    dev->description = QString::fromUtf8(info->description);
     dev->cvolume = info->volume;
     dev->setMute(info->mute);
 
