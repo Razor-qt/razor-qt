@@ -79,17 +79,12 @@ void PulseAudioDevice::decreaseVolume()
 // this performs a volume change on the device
 void PulseAudioDevice::setVolume(int volume)
 {
-    int tmp = volume;
+    volume = qBound(0, volume, (int)PA_VOLUME_UI_MAX);
 
-    if (tmp < 0)
-        tmp = 0;
-    else if (tmp > (int)PA_VOLUME_UI_MAX)
-        tmp = PA_VOLUME_UI_MAX;
-
-    if (m_volume == tmp)
+    if (m_volume == volume)
         return;
 
-    m_volume = tmp;
+    m_volume = volume;
 
     if (m_engine)
         m_engine->commitDeviceVolume(this);
