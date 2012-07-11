@@ -51,6 +51,7 @@ void PowerLowSettings::loadSettings()
     ui->actionComboBox->addItem(tr("Nothing"), NOTHING);
     ui->actionComboBox->addItem(tr("Sleep"), SLEEP);
     ui->actionComboBox->addItem(tr("Hibernate"), HIBERNATE);
+    ui->actionComboBox->addItem(tr("Shutdown"), POWEROFF);
 
     for (int index = 0; index < ui->actionComboBox->count(); index++)
     {

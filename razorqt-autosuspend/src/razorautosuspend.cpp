@@ -99,7 +99,20 @@ void RazorAutosuspendd::timerEvent(QTimerEvent *event)
     }
     else if (QTime::currentTime().msecsTo(actionTime) > 0)
     {
-        QString notificationMsg = powerLowAction() == SLEEP ? tr("Sleeping in %1 seconds") : tr("Hibernating in %1 seconds");
+        QString notificationMsg;
+        switch (powerLowAction())
+        {
+        case SLEEP:
+            notificationMsg = tr("Sleeping in %1 seconds");
+            break;
+        case HIBERNATE:
+            notificationMsg = tr("Hibernating in %1 seconds");
+            break;
+        case POWEROFF:
+            notificationMsg = tr("Shutting down in %1 seconds");
+            break;
+        }
+
         razorNotification.setBody(notificationMsg.arg(QTime::currentTime().msecsTo(actionTime)/1000));
         razorNotification.update();
     }
@@ -120,6 +133,9 @@ void RazorAutosuspendd::doAction(int action)
         break;
     case HIBERNATE:
         razorPower.hibernate();
+        break;
+    case POWEROFF:
+        razorPower.shutdown();
         break;
     }
 }

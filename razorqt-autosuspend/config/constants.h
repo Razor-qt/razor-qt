@@ -10,7 +10,8 @@ enum
 {
     NOTHING,
     SLEEP,
-    HIBERNATE
+    HIBERNATE,
+    POWEROFF
 };
 
 #endif // CONSTANTS_H
