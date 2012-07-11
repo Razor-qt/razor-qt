@@ -73,6 +73,10 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
         RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceMuteToggle.toString()));
     }
 
+    connect(m_keyVolumeUp, SIGNAL(activated()), this, SLOT(handleShortcutVolumeUp()));
+    connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
+    connect(m_keyMuteToggle, SIGNAL(activated()), this, SLOT(handleShortcutVolumeMute()));
+
     m_paEngine = new PulseAudioEngine(this);
     connect(m_paEngine, SIGNAL(sinkListChanged()), this, SLOT(updateConfigurationSinkList()));
     updateConfigurationSinkList();
@@ -91,10 +95,6 @@ void RazorVolume::settingsChanged()
     if (m_paEngine->sinks().at(m_defaultSinkIndex)) {
         m_defaultSink = m_paEngine->sinks().at(m_defaultSinkIndex);
         m_volumeButton->volumePopup()->setDevice(m_defaultSink);
-
-        connect(m_keyVolumeUp, SIGNAL(activated()), m_defaultSink, SLOT(increaseVolume()));
-        connect(m_keyVolumeDown, SIGNAL(activated()), m_defaultSink, SLOT(decreaseVolume()));
-        connect(m_keyMuteToggle, SIGNAL(activated()), m_defaultSink, SLOT(toggleMute()));
     }
 
     m_volumeButton->setShowOnClicked(settings().value("showOnClick", true).toBool());
@@ -106,4 +106,22 @@ void RazorVolume::updateConfigurationSinkList()
 {
     m_configWindow->setSinkList(m_paEngine->sinks());
     settingsChanged();
+}
+
+void RazorVolume::handleShortcutVolumeUp()
+{
+    if (m_defaultSink)
+        m_defaultSink->increaseVolume();
+}
+
+void RazorVolume::handleShortcutVolumeDown()
+{
+    if (m_defaultSink)
+        m_defaultSink->decreaseVolume();
+}
+
+void RazorVolume::handleShortcutVolumeMute()
+{
+    if (m_defaultSink)
+        m_defaultSink->toggleMute();
 }

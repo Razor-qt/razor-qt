@@ -51,6 +51,9 @@ protected slots:
     virtual void showConfigureDialog();
     virtual void settingsChanged();
     void updateConfigurationSinkList();
+    void handleShortcutVolumeUp();
+    void handleShortcutVolumeDown();
+    void handleShortcutVolumeMute();
 
 private:
     PulseAudioEngine *m_paEngine;
