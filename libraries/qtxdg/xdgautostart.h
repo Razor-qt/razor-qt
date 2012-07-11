@@ -42,8 +42,10 @@
 class XdgAutoStart
 {
 public:
-    /// Returns a list of XdgDesktopFile objects for all the .desktop files in the Autostart directories
-    static XdgDesktopFileList desktopFileList();
+    /*! Returns a list of XdgDesktopFile objects for all the .desktop files in the Autostart directories
+        When the .desktop file has the Hidden key set to true, the .desktop file must be ignored. But you
+        can change this behavior by setting excludeHidden to false. */
+    static XdgDesktopFileList desktopFileList(bool excludeHidden=true);
 
     /*! Returns a list of XdgDesktopFile objects for .desktop files in the specified Autostart directories
         When the .desktop file has the Hidden key set to true, the .desktop file must be ignored. But you

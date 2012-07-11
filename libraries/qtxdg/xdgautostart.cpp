@@ -42,12 +42,12 @@ then only the Hidden key in the most important .desktop file must be considered:
 If it is set to true all .desktop files with the same name in the other
 directories MUST be ignored as well.
  ************************************************/
-XdgDesktopFileList XdgAutoStart::desktopFileList()
+XdgDesktopFileList XdgAutoStart::desktopFileList(bool excludeHidden)
 {
     QStringList dirs;
     dirs << XdgDirs::autostartHome(false) << XdgDirs::autostartDirs();
 
-    return desktopFileList(dirs);
+    return desktopFileList(dirs, excludeHidden);
 }
 
 XdgDesktopFileList XdgAutoStart::desktopFileList(QStringList dirs, bool excludeHidden)

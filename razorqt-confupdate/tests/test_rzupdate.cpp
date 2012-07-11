@@ -106,7 +106,7 @@ static void runKConfUpdate(const QString &updPath)
     QStringList dirs;
     dirs << ".";
     dirs << "..";
-    dirs << QProcessEnvironment::systemEnvironment().value("PATH");
+    dirs << QProcessEnvironment::systemEnvironment().value("PATH").split(':',QString::SkipEmptyParts);
 
     QString program;
     foreach (const QString &dir, dirs)
@@ -373,8 +373,8 @@ void TestRzUpdate::test()
         .arg(updFile->fileName().section('/', -1))
         .arg(QTest::currentDataTag());
 
-    QString newConfContentAfter = readFile(newConfPath);
-    expectedNewConfContent = expectedNewConfContent.arg(updateInfo);
+    QString newConfContentAfter = '\n' + readFile(newConfPath);
+    expectedNewConfContent = '\n' + expectedNewConfContent.arg(updateInfo);
     QCOMPARE(newConfContentAfter, expectedNewConfContent);
 
     if (oldConfName != newConfName)
@@ -581,6 +581,43 @@ void TestRzUpdate::testScript_data()
            "unchanged=value\n"
            ;
 
+    QTest::newRow("filter2")
+        <<
+           "File=testrc\n"
+           "Group=group\n"
+           "Script=test.sh,sh\n"
+        <<
+           "echo '# DELETEGROUP [group]'\n"
+           "echo '[newGroup]'\n"
+           "sed s/value/VALUE/\n"
+        <<
+           "[group]\n"
+           "changed=value\n"
+        <<
+           "[__Version__]\n"
+           "update_info=%1\n"
+           "[group]\n"
+           "newGroup\\changed=VALUE\n"
+           ;
+
+    QTest::newRow("filter3")
+        <<
+           "File=testrc\n"
+           "Group=group,newGroup\n"
+           "Script=test.sh,sh\n"
+        <<
+           "echo '# DELETEGROUP [group]'\n"
+           "sed s/value/VALUE/\n"
+        <<
+           "[group]\n"
+           "changed=value\n"
+        <<
+           "[__Version__]\n"
+           "update_info=%1\n"
+           "[newGroup]\n"
+           "changed=VALUE\n"
+           ;
+
     QTest::newRow("filter-subgroup")
         <<
            "File=testrc\n"
@@ -601,7 +638,6 @@ void TestRzUpdate::testScript_data()
            "sub\\unchanged=value\n"
            "unchanged=value\n"
            ;
-
 }
 
 void TestRzUpdate::testScript()
@@ -626,8 +662,8 @@ void TestRzUpdate::testScript()
     QString updateInfo = QString("%1:%2")
         .arg(updFile->fileName().section('/', -1))
         .arg(QTest::currentDataTag());
-    QString newConfContent = readFile(confPath);
-    expectedNewConfContent = expectedNewConfContent.arg(updateInfo);
+    QString newConfContent = '\n' + readFile(confPath);
+    expectedNewConfContent = '\n' + expectedNewConfContent.arg(updateInfo);
     QCOMPARE(newConfContent, expectedNewConfContent);
 }
 

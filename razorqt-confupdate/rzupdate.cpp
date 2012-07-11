@@ -590,7 +590,7 @@ void RzUpdate::gotFile(const QString &_file)
     }
 }
 
-QString RzUpdate::unescapeString(const QString &src, bool *ok, QString *error) const
+QString RzUpdate::unescapeString(const QString &src, bool *ok, QString *error)
 {
     QString dst;
     int length = src.length();
@@ -668,17 +668,17 @@ QString RzUpdate::unescapeString(const QString &src, bool *ok, QString *error) c
 }
 
 
-QString RzUpdate::parseGroupString(const QString &_str) const
+QString RzUpdate::parseGroupString(const QString &_str, bool *ok, QString *error)
 {
-    bool ok;
-    QString error;
+    QString e;
 
-    QString str = unescapeString(_str.trimmed(), &ok, &error);
+    QString str = unescapeString(_str.trimmed(), ok, error);
     if (!ok)
     {
-        logFileError() << error;
         return "";
     }
+
+    *ok = true;
 
     if (str[0] != '[')
     {
@@ -688,7 +688,8 @@ QString RzUpdate::parseGroupString(const QString &_str) const
 
     if (!str.endsWith(']'))
     {
-        logFileError() << QString("Missing closing ']' in %1").arg(_str);
+        *ok = false;
+        *error = QString("Missing closing ']' in %1").arg(_str);
         return "";
     }
 
@@ -697,6 +698,18 @@ QString RzUpdate::parseGroupString(const QString &_str) const
     str.remove(0, 1);
 
     return str.replace("][", "/");
+}
+
+QString RzUpdate::parseGroupString(const QString &_str) const
+{
+    bool ok;
+    QString error;
+    QString result = parseGroupString(_str, &ok, &error);
+    if (!ok)
+    {
+        logFileError() << error;
+    }
+    return result;
 }
 
 void RzUpdate::gotGroup(const QString &_group)
@@ -887,32 +900,32 @@ void RzUpdate::gotOptions(const QString &_options)
 }
 
 
-void RzUpdate::copyGroup(QSettings *cfg1, const QString &group1,
-                         QSettings *cfg2, const QString &group2)
+void RzUpdate::copyGroup(QSettings *srcCfg, const QString &srcGroup, QFile *outFile)
 {
-    QStringList keys;
-    if (!group1.isEmpty())
-    {
-        cfg1->beginGroup(group1);
-        keys = cfg1->allKeys();
-        cfg1->endGroup();
-    }
-    else
-    {
-        keys = cfg1->allKeys();
-    }
+    srcCfg->beginGroup(srcGroup);
+    QStringList keys = srcCfg->allKeys();
+    srcCfg->endGroup();
 
-    foreach (const QString key, keys)
+    QTextStream out(outFile);
+    QString group;
+    foreach (QString key, keys)
     {
-        QString srcKey  = QString("%1/%2").arg(group1, key);
-        QString destKey = QString("%1/%2").arg(group2, key);
-
-        if (m_bOverwrite || !cfg2->contains(destKey))
+        QString srcKey  = QString("%1/%2").arg(srcGroup, key);
+        if (key.contains('/'))
         {
-            cfg2->setValue(destKey, cfg1->value(srcKey));
-        }
-    }
+            QString g = key.section('/', 0, 0);
+            if (g != group)
+            {
+                group = g;
+                out << "[" << group << "]\n";
+            }
 
+            key = key.section('/', 1);
+        }
+
+        key.replace('\\', '/');
+        out << key << "=" << srcCfg->value(srcKey).toString() << "\n";
+    }
 }
 
 
@@ -921,6 +934,55 @@ void RzUpdate::gotScriptArguments(const QString &_arguments)
     m_arguments = _arguments;
 }
 
+bool customReadIni(QIODevice &device, QSettings::SettingsMap &map)
+{
+    QString group;
+    QTextStream stream(&device);
+    while (!stream.atEnd())
+    {
+        QString line = stream.readLine();
+
+        if (line.isEmpty())
+            continue;
+
+        if (line.startsWith('#'))
+            continue;
+
+        if (line.startsWith('['))
+        {
+            bool ok;
+            QString error;
+            group = RzUpdate::parseGroupString(line, &ok, &error);
+            continue;
+        }
+
+        if (!line.contains('='))
+        {
+            continue;
+        }
+
+        QString key = line.section('=', 0, 0).trimmed();
+        key.replace('\\', '/');
+        if (!group.isEmpty())
+            key = group + "/" + key;
+
+        QString value = line.section('=', 1).trimmed();
+
+        // Remove quotes ........................
+        if ((value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith('\'') && value.endsWith('\'')))
+            value = value.mid(1, value.length()-2);
+
+         map.insert(key, value);
+
+    }
+    return true;
+}
+
+ bool customWriteIni(QIODevice &device, const QSettings::SettingsMap &map)
+ {
+    return true;
+ }
 
 void RzUpdate::gotScript(const QString &_script)
 {
@@ -991,11 +1053,13 @@ void RzUpdate::gotScript(const QString &_script)
         cmd += m_arguments;
     }
 
-    QTemporaryFile scriptIn;
+    QTemporaryFile scriptIn(QDir::tempPath() + "/razor-confupdate_XXXXXX.in");
     scriptIn.open();
-    QTemporaryFile scriptOut;
+
+    QTemporaryFile scriptOut(QDir::tempPath() + "/razor-confupdate_XXXXXX.out");
     scriptOut.open();
-    QTemporaryFile scriptErr;
+
+    QTemporaryFile scriptErr(QDir::tempPath() + "/razor-confupdate_XXXXXX.err");
     scriptErr.open();
 
     int result;
@@ -1006,31 +1070,8 @@ void RzUpdate::gotScript(const QString &_script)
             scriptIn.setAutoRemove(false);
             log() << "Script input stored in " << scriptIn.fileName() << endl;
         }
+        copyGroup(m_oldConfig, m_oldGroup, &scriptIn);
 
-        QSettings cfg(scriptIn.fileName(), QSettings::IniFormat);
-
-        /*
-        if (m_oldGroup.isEmpty())
-        {
-            // Write all entries to tmpFile;
-            const QStringList grpList = m_oldConfig->groupList();
-            for (QStringList::ConstIterator it = grpList.begin();
-                    it != grpList.end();
-                    ++it)
-            {
-                copyGroup(m_oldConfig, *it, &cfg, *it);
-            }
-        }
-        else
-        {
-            copyGroup(m_oldConfig, m_oldGroup, &cfg, QString());
-            KConfigGroup cg1 = KConfigUtils::openGroup(m_oldConfig, m_oldGroup);
-            KConfigGroup cg2(&cfg, QString());
-            copyGroup(cg1, cg2);
-        }
-        */
-        copyGroup(m_oldConfig, m_oldGroup, &cfg, QString());
-        cfg.sync();
 #ifndef _WIN32_WCE
         result = system(QFile::encodeName(QString("%1 < %2 > %3 2> %4").arg(cmd, scriptIn.fileName(), scriptOut.fileName(), scriptErr.fileName())));
 #else
@@ -1165,73 +1206,20 @@ void RzUpdate::gotScript(const QString &_script)
     }
 
     // Merging in new entries.
-//    QSettings scriptOutConfig(scriptOut.fileName(), QSettings::IniFormat);
+    const QSettings::Format CustomIniFormat = QSettings::registerFormat("", customReadIni, customWriteIni);
+    QSettings cfgOut(scriptOut.fileName(), CustomIniFormat);
+    QStringList keys = cfgOut.allKeys();
 
-//****************
-  //  Q_ASSERT(QFileInfo(path).exists());
-
-  //  QFile file(path);
-  //  file.open(QIODevice::ReadOnly);
-
-    QString group;
-    QString dstGroup;
-    QTextStream stream(&scriptOut);
-    while (!stream.atEnd())
+    foreach (const QString &key, keys)
     {
-        QString line = stream.readLine();
-        if (line.isEmpty())
-            continue;
-
-        if (line.startsWith('#'))
-            continue;
-
-        if (line.startsWith('['))
-        {
-            group = parseGroupString(line);
-            dstGroup = group;
-            if (!m_newGroup.isEmpty())
-                dstGroup = m_newGroup + "/" + group;
-            continue;
-        }
-
-        if (!line.contains('='))
-        {
-            log() << m_currentFilename << ": !! Skipping invalid output line: " << line;
-            continue;
-        }
-
-        QString key = line.section('=', 0, 0).trimmed();
-        key.replace('\\', '/');
-        QString value = line.section('=', 1).trimmed();
-        // Remove quotes ........................
-        if ((value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith('\'') && value.endsWith('\'')))
-            value = value.mid(1, value.length()-2);
-
-        QString dstKey = dstGroup + "/" + key;
-
-
+        QString dstKey = m_newGroup + "/" + key;
         if (!m_bOverwrite && m_newConfig->contains(dstKey))
         {
             log() << m_currentFilename << ": Skipping " << m_newFileName << ":" << dstKey << ", already exists." << endl;
             continue;
         }
-
-
-        //QVariant value = m_oldConfig->value(srcKey);
-        log() << m_currentFilename << ": Updating " << m_newFileName << ":" << dstKey << " to '" << value << "'" << endl;
-        m_newConfig->setValue(dstKey, value);
+        m_newConfig->setValue(dstKey, cfgOut.value(key));
     }
-
-
-    //******************
-
-    //copyGroup(&scriptOutConfig, "", m_newConfig, m_newGroup);
-
-    //foreach(const QString &group, scriptOutConfig.childGroups())
-    //{
-    //    copyGroup(&scriptOutConfig, group, m_newConfig, m_newGroup);
-    //}
 }
 
 void RzUpdate::resetOptions()

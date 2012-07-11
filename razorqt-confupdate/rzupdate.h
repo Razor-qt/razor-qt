@@ -74,14 +74,13 @@ public:
     void gotScriptArguments(const QString &_arguments);
     void resetOptions();
 
-    void copyGroup(QSettings *cfg1, const QString &group1,
-                   QSettings *cfg2, const QString &group2);
-
+    void copyGroup(QSettings *cfg1, const QString &group1, QFile *out);
     void copyOrMoveKey(const QString &srcKey, const QString &dstKey);
     void copyOrMoveGroup(const QString &srcGroupPath, const QString &dstGroupPath);
 
+    static QString parseGroupString(const QString &_str, bool *ok, QString *error);
+    static QString unescapeString(const QString &src, bool *ok, QString *error);
     QString parseGroupString(const QString &_str) const;
-    QString unescapeString(const QString &src, bool *ok, QString *error) const;
 
     QString expandConfigFileName(const QString &file) const;
 protected:
