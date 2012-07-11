@@ -68,7 +68,6 @@ void PulseAudioDevice::setMute(bool state)
 
 void PulseAudioDevice::increaseVolume()
 {
-    qWarning("increase Volume");
     setVolume(volume()+10);
 }
 
@@ -80,16 +79,14 @@ void PulseAudioDevice::decreaseVolume()
 // this performs a volume change on the device
 void PulseAudioDevice::setVolume(int volume)
 {
-    int tmp = m_volume;
+    int tmp = volume;
 
-    if (volume < 0)
+    if (tmp < 0)
         tmp = 0;
-    else if (volume > (int)PA_VOLUME_UI_MAX)
+    else if (tmp > (int)PA_VOLUME_UI_MAX)
         tmp = PA_VOLUME_UI_MAX;
-    else
-        tmp = volume;
 
-    if (tmp == volume)
+    if (m_volume == tmp)
         return;
 
     m_volume = tmp;
