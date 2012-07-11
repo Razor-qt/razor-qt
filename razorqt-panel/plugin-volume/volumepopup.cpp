@@ -46,7 +46,7 @@ VolumePopup::VolumePopup(QWidget* parent):
 {
     m_volumeSlider = new QSlider(Qt::Vertical, this);
     m_mixerButton = new QToolButton(this);
-    m_mixerButton->setIcon(XdgIcon::fromTheme(QStringList() << "kmix"));
+    m_mixerButton->setIcon(XdgIcon::fromTheme(QStringList() << "kmix" << "multimedia-volume-control"));
 
     m_volumeSlider->setSingleStep(m_volumeSlider->pageStep());
 
