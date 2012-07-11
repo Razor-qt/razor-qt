@@ -30,7 +30,9 @@
 #include <QList>
 #include <QDBusObjectPath>
 #include <QDebug>
-#include "razorqt/razornotification.h"
+#include <razorqt/razornotification.h>
+#include <razorqt/razorsettings.h>
+#include "../config/constants.h"
 
 Battery::Battery()
 {
@@ -74,8 +76,6 @@ void Battery::uPowerBatteryChanged()
 {
     m_onBattery =  uPower->property("OnBattery").toBool();
     m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
-    m_powerLow = m_chargeLevel < POWER_LOW_LEVEL && m_onBattery;
-
     emit batteryChanged();
 }
 
@@ -88,7 +88,7 @@ double Battery::chargeLevel()
 
 bool Battery::powerLow()
 {
-    return m_powerLow;
+    return  m_onBattery && m_chargeLevel <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
 }
 
 bool Battery::onBattery()

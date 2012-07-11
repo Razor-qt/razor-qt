@@ -40,7 +40,7 @@ public:
     Battery();
     ~Battery();
 
-    static const int POWER_LOW_LEVEL=15;
+//    static const int POWER_LOW_LEVEL=15;
     double chargeLevel();
     bool   powerLow();
     bool   onBattery();
@@ -52,7 +52,6 @@ private:
     QDBusInterface *uPower;
     QDBusInterface *uPowerBatteryDevice;
     double m_chargeLevel;
-    bool m_powerLow;
     bool m_onBattery;
 };
 #endif

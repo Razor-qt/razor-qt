@@ -35,8 +35,9 @@ PowerLowSettings::PowerLowSettings(RazorSettings *settings, QWidget *parent) :
     m_Settings = settings;
     ui->setupUi(this);
 
-    connect(ui->actionComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveAction()));
-    connect(ui->warningSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveWarningTime()));
+    connect(ui->actionComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSettings()));
+    connect(ui->warningSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
+    connect(ui->levelSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
 }
 
 PowerLowSettings::~PowerLowSettings()
@@ -63,22 +64,17 @@ void PowerLowSettings::loadSettings()
     }
 
     ui->warningSpinBox->setValue(m_Settings->value(POWERLOWWARNING_KEY, 30).toInt());
+    ui->levelSpinBox->setValue(m_Settings->value(POWERLOWLEVEL_KEY, 15).toInt());
     loading = false;
 }
 
-void PowerLowSettings::saveAction()
+void PowerLowSettings::saveSettings()
 {
     if (! loading)
     {
         m_Settings->setValue(POWERLOWACTION_KEY, ui->actionComboBox->itemData(ui->actionComboBox->currentIndex()).toInt());
-    }
-}
-
-void PowerLowSettings::saveWarningTime()
-{
-    if (! loading)
-    {
         m_Settings->setValue(POWERLOWWARNING_KEY, ui->warningSpinBox->value());
+        m_Settings->setValue(POWERLOWLEVEL_KEY, ui->levelSpinBox->value());
     }
 }
 

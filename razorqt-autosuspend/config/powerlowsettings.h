@@ -46,8 +46,7 @@ public slots:
     void loadSettings();
 
 private slots:
-    void saveAction();
-    void saveWarningTime();
+    void saveSettings();
 
 private:
     RazorSettings *m_Settings;

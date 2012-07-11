@@ -4,6 +4,7 @@
 #define LIDCLOSEDACTION_KEY "lidClosedAction"
 #define POWERLOWACTION_KEY "powerLowAction"
 #define POWERLOWWARNING_KEY "powerLowWarning"
+#define POWERLOWLEVEL_KEY "powerLowLevel"
 #define SHOWTRAYICON_KEY "showTrayIcon"
 
 enum
