@@ -1,6 +1,13 @@
 razorqt for Debian
 ------------------
 
+Now razorqt are more close to 0.5.X release and new symbols will be in library, 
+so a possible SONAME update will appear in next release.
+
+Theres a new razor-update program, due 0.5.X next changes this program will 
+convert and update your config files to new format used by this newer versions.
+You can run from command line or menu if u have older configs that wan to preserv
+
 Theres a new item, razor-openssh-askpass, this module are very early stage, 
 and not enabled by default, so u must added a env in razor-settings SSH_ASKPASS= 
 with razor-openssh-askpass value, openssl and openssh-client packages must be required.
