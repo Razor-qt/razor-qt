@@ -5,4 +5,5 @@
 /usr/bin/razor-power
 /usr/bin/razor-autosuspend
 /usr/bin/razor-config-autosuspend
-# /usr/share/icons/hicolor/scalable/apps/* this must be in data package
+/usr/share/icons/hicolor/scalable/apps/razor-autosuspend.svg
+/usr/share/icons/hicolor/scalable/apps/laptop-lid.svg
