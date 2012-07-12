@@ -35,8 +35,8 @@ Depends:  razorqt-appswitcher,
           razorqt-policykit-agent,
 %endif
           razorqt-su | razorqt-openssh-askpass,
-          razorqt-notificationd,
-          razorqt-shorcutdaemon
+ #         razorqt-shorcutdaemon,
+          razorqt-notificationd
 Description: The Razor-qt desktop environment
  Razor-qt is an advanced, easy-to-use, and fast desktop environment
  based on Qt technologies. Unlike desktop environments, Razor-qt
@@ -229,19 +229,6 @@ Description:notification daemon for Razor-qt
  .
  This package is part of the Razor-qt.    cmake,
 
-
-Package: razorqt-su
-Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0 (= ${binary:Version})
-Description: Razor-Qt su - run as root graphical interface
- Own praphical su interface for Razor-Qt. This can be configure 
- using a env variable using the razorqt-config program, please r
- ead the documentation package in debian doc directory 
- of razorqt-su package.
- .
- This package is part of the Razor-Qt.
-
 Package: razorqt-openssh-askpass
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},
@@ -252,12 +239,24 @@ Description: Razor-Qt openssh ask password interface
  .
  This package is part of the Razor-Qt.
 
-Package: razorqt-shorcutdaemon
-Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0 (= ${binary:Version})
-Description: Razor-Qt global key shorcuts daemon
- Own global key shorcuts daemon for desktop.
- .
- This package is part of the Razor-Qt.
+#Package: razorqt-shorcutdaemon
+#Architecture: any
+#Depends: ${shlibs:Depends},  ${misc:Depends},
+#  librazorqt0 (= ${binary:Version})
+#Description: Razor-Qt global key shorcuts daemon
+# Own global key shorcuts daemon for desktop.
+# .
+# This package is part of the Razor-Qt.
+#
+#Package: razorqt-su
+#Architecture: any
+#Depends: ${shlibs:Depends},  ${misc:Depends},
+#  librazorqt0 (= ${binary:Version})
+#Description: Razor-Qt su - run as root graphical interface
+# Own praphical su interface for Razor-Qt. This can be configure 
+# using a env variable using the razorqt-config program, please r
+# ead the documentation package in debian doc directory 
+# of razorqt-su package.
+# .
+# This package is part of the Razor-Qt.
 
