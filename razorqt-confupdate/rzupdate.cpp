@@ -32,7 +32,6 @@
 #include <qtxdg/xdgdirs.h>
 
 #include <QtCore/QDebug>
-#include <QtCore/QStringList>
 #include <QtCore/QDate>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -165,18 +164,25 @@ QTextStream & RzUpdate::logFileError() const
     return log() << m_currentFilename << ':' << m_lineCount << ":'" << m_line << "': ";
 }
 
+QStringList RzUpdate::updDirs()
+{
+    QStringList dirs;
+    dirs << XdgDirs::dataHome(false) + "/razor/razor-confupdate";
+
+    foreach (QString dir, XdgDirs::dataDirs())
+        dirs << dir + "/razor/razor-confupdate";
+
+    return dirs;
+}
 
 QStringList RzUpdate::findUpdateFiles(bool dirtyOnly)
 {
     QStringList result;
-
-    QStringList dirs;
-    dirs << XdgDirs::dataHome(false);
-    dirs << XdgDirs::dataDirs();
+    QStringList dirs = updDirs();
 
     foreach (QString dirName, dirs)
     {
-        QDir dir(dirName + "/razor/razor-confupdate");
+        QDir dir(dirName);
         const QFileInfoList list = dir.entryInfoList(QStringList() << "*.upd",
                                                      QDir::Files | QDir::Readable
                                                     );

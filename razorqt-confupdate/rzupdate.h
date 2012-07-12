@@ -32,7 +32,7 @@
 #define RZ_UPDATE_H
 
 #include <QtCore/QString>
-class QStringList;
+#include <QtCore/QStringList>
 class QTextStream;
 class QSettings;
 class QFile;
@@ -43,7 +43,7 @@ class RzUpdate
 public:
     RzUpdate();
     ~RzUpdate();
-    void run(const QStringList &_files);
+    void run(const QStringList &_files = QStringList());
 
     bool isDebug() const { return m_debug; }
     void setDebug(bool _value) { m_debug = _value; }
@@ -51,6 +51,7 @@ public:
     QString argCheckFile() const { return m_argCheckFile; }
     void setArgCheckFile(const QString &_checkFile) { m_argCheckFile = _checkFile; }
 
+    static QStringList updDirs();
     QStringList findUpdateFiles(bool dirtyOnly);
 
     QTextStream &log() const;

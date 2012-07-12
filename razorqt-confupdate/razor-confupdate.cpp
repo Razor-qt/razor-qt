@@ -34,20 +34,19 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QStringList>
 
-#include <QtCore/QDebug>
-//#include <QtCore/QSettings>
-
+#include "rzwatcher.h"
 
 void printHelp()
 {
     QTextStream out(stdout);
-    out << "Usage: razor-confupdate [Qt-options] [options] [file]" << endl;
+    out << "Usage: razor-confupdate [options] [file]" << endl;
     out << endl;
     out << "Razor-qt tool for updating user configuration files" << endl;
     out << endl;
     out << "Generic options:" << endl;
     out << "  -h, --help                Show help about options" << endl;
     out << "  --version                 Show version information" << endl;
+    out << "  --watch                   Do not exit, but watch a new update files." << endl;
     out << "  --                        End of options" << endl;
     out << endl;
     out << "Options:" << endl;
@@ -63,10 +62,14 @@ void printVersion()
 {
     QTextStream out(stdout);
     out << "razor-confupdate " << "0.5" << endl;
-    out << "Copyright (C) 2012 Razor team" << endl;
+    out << "Copyright (c) 2012 Razor team" << endl;
+    out << endl;
     out << "License LGPLv2+: GNU Lesser GPL version 2 or later <http://www.gnu.org/licenses/lgpl-2.1.html>." << endl;
     out << "This is free software: you are free to change and redistribute it." << endl;
     out << "There is NO WARRANTY, to the extent permitted by law." << endl;
+    out << endl;
+    out << "Program based on kconf_update utility." << endl;
+    out << "Copyright (c) 2001 Waldo Bastian <bastian@kde.org>, <bastian@suse.com>" << endl;
 
 }
 
@@ -77,13 +80,14 @@ void printError(const QString &msg)
     out << "Use --help to get a list of available command line options.";
 }
 
-
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
 
     RzUpdate rzUpdate;
 
+    bool debug = false;
+    bool watch = false;
     bool processOptions = true;
     QStringList files;
     QStringList args = app.arguments();
@@ -104,9 +108,15 @@ int main(int argc, char **argv)
                 return 0;
             }
 
+            if (arg == "--watch")
+            {
+                watch = true;
+                continue;
+            }
+
             if (arg == "--debug")
             {
-                rzUpdate.setDebug(true);
+                debug = true;
                 continue;
             }
 
@@ -134,6 +144,13 @@ int main(int argc, char **argv)
         files << args.at(i);
     }
 
+    rzUpdate.setDebug(debug);
     rzUpdate.run(files);
+
+    if (watch)
+    {
+        RzWatcher watcher(debug);
+        app.exec();
+    }
     return 0;
 }
