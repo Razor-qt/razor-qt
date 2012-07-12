@@ -18,6 +18,7 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
 %endif
     zlib1g-dev,
     libstatgrab-dev,
+    libqt4-xml,
     libsensors4-dev
 Standards-Version: 3.9.1
 Homepage: http://razor-qt.org
@@ -34,8 +35,10 @@ Depends:  razorqt-appswitcher,
 %ifnot RELEASE lucid maverick squeeze lenny etch
           razorqt-policykit-agent,
 %endif
-          razorqt-notificationd
-Description: Razor-qt desktop environment
+          razorqt-su | razorqt-openssh-askpass,
+          razorqt-notificationd,
+          razorqt-shorcutdaemon
+Description: The Razor-qt desktop environment
  Razor-qt is an advanced, easy-to-use, and fast desktop environment
  based on Qt technologies. Unlike desktop environments, Razor-qt
  also works fine with weak machines.
@@ -43,10 +46,22 @@ Description: Razor-qt desktop environment
  This metapackage provides all the components of Razor-qt.
 
 
+Package: razorqt-data
+Architecture: all
+Replaces: razor-qt, razor-data
+Conflicts: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
+Replaces: razorqt-power (<< ${binary:Version})
+Recommends: oxygen-icon-theme
+Description: The shared data files for the Razor-qt
+ This package contains the architecture-independent shared
+ data files needed for the Razor-qt desktop environment.
+ .
+ This package is part of the Razor-qt.
+
+
 Package: razorqt-dev
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
-  libqtxdg-dev (= ${binary:Version})
+Depends: ${shlibs:Depends}, libqtxdg-dev (= ${binary:Version})
 Replaces: razor-qt
 Conflicts: razor-qt
 Description:Razor-qt development package
@@ -60,7 +75,7 @@ Package: libqtxdg0
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-xml
-Description:implementation of the XDG Specifications
+Description: Qt implementation of the XDG Specifications
  This library implements functions of the XDG Specifications in Qt.
  .
  This package is part of the Razor-qt.
@@ -69,9 +84,8 @@ Description:implementation of the XDG Specifications
 Package: libqtxdg-dev
 Architecture: any
 Section: libdevel
-Depends: ${misc:Depends},
-  libqtxdg0 (= ${binary:Version})
-Description:implementation of the XDG Specifications, development package
+Depends: ${misc:Depends}, libqtxdg0 (= ${binary:Version})
+Description: Qt implementation of the XDG Specifications, development package
  This package provides the development files for the qtxdg library.
  This library implements functions of the XDG Specifications in Qt.
  .
@@ -81,11 +95,10 @@ Description:implementation of the XDG Specifications, development package
 Package: librazorqt0
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
-  libqtxdg0 (= ${binary:Version})
+Depends: libqtxdg0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends},
 Replaces: razor-qt
 Conflicts: razor-qt
-Description:common libraries and binaries for the Razor-qt
+Description: Common libraries and binaries for the Razor-qt
  This package provides the libraries and binaries that are shared amongst
  the various components of Razor-qt.
  .
@@ -95,7 +108,6 @@ Description:common libraries and binaries for the Razor-qt
 Package: razorqt-appswitcher
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},
-  libqtxdg0 (= ${binary:Version}),
   librazorqt0 (= ${binary:Version})
 Replaces: razor-qt, razor-appswitcher
 Conflicts: razor-qt, razor-appswitcher
@@ -121,7 +133,6 @@ Description:RazorQt desktop
 Package: razorqt-panel
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},
-  libqtxdg0 (= ${binary:Version}),
   librazorqt0 (= ${binary:Version}),
   razorqt-data (= ${source:Version})
 Replaces: razor-qt, razor-panel
@@ -129,17 +140,6 @@ Conflicts: razor-qt, razor-panel
 Description:the Razor-qt desktop environment panel
  It provides a taskbar (list of all opened windows), desktop
  switcher, launchbar, clock, etc.
- .
- This package is part of the Razor-qt.
-
-
-Package: razorqt-data
-Architecture: all
-Replaces: razor-qt, razor-data
-Conflicts: razor-qt, razor-data
-Description:shared data files for the Razor-qt
- This package contains the architecture-independent shared
- data files needed for the Razor-qt desktop environment.
  .
  This package is part of the Razor-qt.
 
@@ -182,6 +182,9 @@ Depends: ${shlibs:Depends},  ${misc:Depends},
 Replaces: razor-qt, razor-session
 Conflicts: razor-qt, razor-session
 Description:Razor-qt session manager
+ The razor-session handles the razorqt desktop init, and
+ manage how razorqt will start, its a essencial part of 
+ the RazorQT desktop for work and manage applications startup.
  .
  This package is part of the Razor-qt.
 
@@ -192,7 +195,8 @@ Depends: ${shlibs:Depends},  ${misc:Depends},
   librazorqt0(= ${binary:Version}),
   razorqt-data (= ${source:Version})
 Replaces: razor-qt
-Conflicts: razor-qt
+Conflicts: razor-qt, razorqt-data (<< ${source:Version})
+Provides: razorqt-autosuspend
 Description:RazorQt power management apps
  .
  This package is part of the Razor-qt.
@@ -217,7 +221,6 @@ Description:A lightweight PolicyKit agent primarily
 Package: razorqt-notificationd
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},
-  libqtxdg0 (= ${binary:Version}),
   librazorqt0 (= ${binary:Version})
 Description:notification daemon for Razor-qt
  Own notification daemon for Razor-qt.
@@ -225,4 +228,37 @@ Description:notification daemon for Razor-qt
  This app can be used as independent notification for 
  any desktop or window manager.
  .
- This package is part of the Razor-qt.
+ This package is part of the Razor-qt.    cmake,
+
+
+Package: razorqt-su
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version})
+Description: Razor-Qt su - run as root graphical interface
+ Own praphical su interface for Razor-Qt. This can be configure 
+ using a env variable using the razorqt-config program, please r
+ ead the documentation package in debian doc directory 
+ of razorqt-su package.
+ .
+ This package is part of the Razor-Qt.
+
+Package: razorqt-openssh-askpass
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version}), openssl, openssh-client, libpam-ssh
+Description: Razor-Qt openssh ask password interface
+ Own ssh ask password interface for Razor-Qt 
+ over conections.
+ .
+ This package is part of the Razor-Qt.
+
+Package: razorqt-shorcutdaemon
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version})
+Description: Razor-Qt global key shorcuts daemon
+ Own global key shorcuts daemon for desktop.
+ .
+ This package is part of the Razor-Qt.
+

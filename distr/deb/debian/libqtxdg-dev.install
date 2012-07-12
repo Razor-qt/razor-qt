@@ -1,3 +1,3 @@
 /usr/include/qtxdg/
-/usr/lib*/pkgconfig/qtxdg.pc
+/usr/lib*/pkgconfig/qtxdg*.pc
 /usr/lib*/libqtx*.so
