@@ -33,8 +33,6 @@
 #include <QtCore/QTimer>
 #include <qtxdg/xdgdesktopfile.h>
 
-class QDBusInterface;
-
 typedef QMap<QProcess*,XdgDesktopFile*> ModulesMap;
 typedef QMapIterator<QProcess*,XdgDesktopFile*> ModulesMapIterator;
 typedef QMap<QProcess*,int> ModulesCrashReport;
@@ -93,9 +91,6 @@ private:
      */
     ModulesCrashReport m_crashReport;
     QTimer m_crashTimer;
-
-    //! \brief HAL (dbus) instance for shudown and reboot actions.
-    QDBusInterface* m_power;
 
 private slots:
 

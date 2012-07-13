@@ -31,7 +31,6 @@
 #include <unistd.h>
 
 #include <QtCore/QtDebug>
-#include <QtDBus/QDBusInterface>
 #include <QtCore/QCoreApplication>
 #include <QtGui/QMessageBox>
 #include <QtGui/QSystemTrayIcon>
@@ -49,10 +48,6 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     : QObject(parent),
     mConfig(config)
 {
-    m_power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
-                               "org.freedesktop.Hal.Device.SystemPowerManagement",
-                               QDBusConnection::systemBus());
-
     qDebug() << __FILE__ << ":" << __LINE__ << "Session" << config << "about to launch (deafult 'session')";
     if (mConfig.isEmpty())
         mConfig = "session";
@@ -219,7 +214,6 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
 
 RazorModuleManager::~RazorModuleManager()
 {
-    delete m_power;
     qDeleteAll(mProcMap);
 }
 
