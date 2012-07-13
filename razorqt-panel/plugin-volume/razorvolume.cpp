@@ -30,8 +30,9 @@
 #include "volumebutton.h"
 #include "volumepopup.h"
 #include "razorvolumeconfiguration.h"
+#include "audiodevice.h"
 #include "pulseaudioengine.h"
-#include "pulseaudiodevice.h"
+#include "alsaengine.h"
 
 #include <QtGui/QMessageBox>
 #include <QtDebug>
@@ -77,8 +78,13 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
     connect(m_keyMuteToggle, SIGNAL(activated()), this, SLOT(handleShortcutVolumeMute()));
 
-    m_paEngine = new PulseAudioEngine(this);
-    connect(m_paEngine, SIGNAL(sinkListChanged()), this, SLOT(updateConfigurationSinkList()));
+#ifdef USE_PULSEAUDIO
+    m_engine = new PulseAudioEngine(this);
+#else
+    m_engine = new AlsaEngine(this);
+#endif
+
+    connect(m_engine, SIGNAL(sinkListChanged()), this, SLOT(updateConfigurationSinkList()));
     updateConfigurationSinkList();
 }
 
@@ -92,8 +98,8 @@ void RazorVolume::showConfigureDialog()
 void RazorVolume::settingsChanged()
 {
     m_defaultSinkIndex = settings().value("defaultSink", 0).toInt();
-    if (m_paEngine->sinks().at(m_defaultSinkIndex)) {
-        m_defaultSink = m_paEngine->sinks().at(m_defaultSinkIndex);
+    if (m_engine->sinks().at(m_defaultSinkIndex)) {
+        m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
         m_volumeButton->volumePopup()->setDevice(m_defaultSink);
     }
 
@@ -104,7 +110,7 @@ void RazorVolume::settingsChanged()
 
 void RazorVolume::updateConfigurationSinkList()
 {
-    m_configWindow->setSinkList(m_paEngine->sinks());
+    m_configWindow->setSinkList(m_engine->sinks());
     settingsChanged();
 }
 

@@ -27,7 +27,7 @@
 
 #include "pulseaudioengine.h"
 
-#include "pulseaudiodevice.h"
+#include "audiodevice.h"
 
 #include <QtCore/QMetaType>
 #include <QtDebug>
@@ -115,7 +115,7 @@ static void contextSuccessCallback(pa_context *context, int success, void *userd
 static void contextSubscriptionCallback(pa_context *context, pa_subscription_event_type_t t, uint32_t idx, void *userdata)
 {
     PulseAudioEngine *pulseEngine = reinterpret_cast<PulseAudioEngine*>(userdata);
-    foreach (PulseAudioDevice *dev, pulseEngine->sinks()) {
+    foreach (AudioDevice *dev, pulseEngine->sinks()) {
         if (dev->index == idx) {
             pulseEngine->requestSinkInfoUpdate(dev);
             break;
@@ -125,7 +125,7 @@ static void contextSubscriptionCallback(pa_context *context, pa_subscription_eve
 
 
 PulseAudioEngine::PulseAudioEngine(QObject *parent) :
-    QObject(parent),
+    AudioEngine(parent),
     m_context(0),
     m_contextState(PA_CONTEXT_UNCONNECTED),
     m_ready(false)
@@ -157,9 +157,6 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
 
 PulseAudioEngine::~PulseAudioEngine()
 {
-    qDeleteAll(m_sinks);
-    m_sinks.clear();
-
     if (m_context) {
         pa_context_unref(m_context);
         m_context = 0;
@@ -173,11 +170,11 @@ PulseAudioEngine::~PulseAudioEngine()
 
 void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
 {
-    PulseAudioDevice *dev = 0;
+    AudioDevice *dev = 0;
     bool newSink = false;
     QString name = QString::fromUtf8(info->name);
 
-    foreach (PulseAudioDevice *device, m_sinks) {
+    foreach (AudioDevice *device, m_sinks) {
         if (name == device->name) {
             dev = device;
             break;
@@ -185,15 +182,16 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
     }
 
     if (!dev) {
-        dev = new PulseAudioDevice(Sink, this);
+        dev = new AudioDevice(Sink, this);
         newSink = true;
     }
 
     dev->name = name;
     dev->index = info->index;
     dev->description = QString::fromUtf8(info->description);
-    dev->cvolume = info->volume;
     dev->setMute(info->mute);
+
+    m_cVolumeMap.insert(dev, info->volume);
 
     pa_volume_t v = pa_cvolume_avg(&(info->volume));
     dev->setVolumeNoCommit(((double)v*100.0) / PA_VOLUME_UI_MAX);
@@ -204,18 +202,19 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
     }
 }
 
-void PulseAudioEngine::requestSinkInfoUpdate(PulseAudioDevice *device)
+void PulseAudioEngine::requestSinkInfoUpdate(AudioDevice *device)
 {
     emit sinkInfoChanged(device);
 }
 
-void PulseAudioEngine::commitDeviceVolume(PulseAudioDevice *device)
+void PulseAudioEngine::commitDeviceVolume(AudioDevice *device)
 {
     if (!device || !m_ready)
         return;
 
     pa_volume_t v = (device->volume()/100.0) * PA_VOLUME_UI_MAX;
-    pa_cvolume *volume = pa_cvolume_set(&(device->cvolume), device->cvolume.channels, v);
+    pa_cvolume tmpVolume = m_cVolumeMap.value(device);
+    pa_cvolume *volume = pa_cvolume_set(&tmpVolume, tmpVolume.channels, v);
 
     pa_threaded_mainloop_lock(m_mainLoop);
 
@@ -253,7 +252,7 @@ void PulseAudioEngine::setupSubscription()
     if (!m_ready)
         return;
 
-    connect(this, SIGNAL(sinkInfoChanged(PulseAudioDevice*)), this, SLOT(retrieveSinkInfo(PulseAudioDevice*)), Qt::QueuedConnection);
+    connect(this, SIGNAL(sinkInfoChanged(AudioDevice*)), this, SLOT(retrieveSinkInfo(AudioDevice*)), Qt::QueuedConnection);
     pa_context_set_subscribe_callback(m_context, contextSubscriptionCallback, this);
 
     pa_threaded_mainloop_lock(m_mainLoop);
@@ -341,7 +340,7 @@ void PulseAudioEngine::connectContext()
     }
 }
 
-void PulseAudioEngine::retrieveSinkInfo(PulseAudioDevice *device)
+void PulseAudioEngine::retrieveSinkInfo(AudioDevice *device)
 {
     if (!m_ready)
         return;
@@ -357,17 +356,7 @@ void PulseAudioEngine::retrieveSinkInfo(PulseAudioDevice *device)
     pa_threaded_mainloop_unlock(m_mainLoop);
 }
 
-void PulseAudioEngine::mute(PulseAudioDevice *device)
-{
-    setMute(device, true);
-}
-
-void PulseAudioEngine::unmute(PulseAudioDevice *device)
-{
-    setMute(device, false);
-}
-
-void PulseAudioEngine::setMute(PulseAudioDevice *device, bool state)
+void PulseAudioEngine::setMute(AudioDevice *device, bool state)
 {
     if (!m_ready)
         return;

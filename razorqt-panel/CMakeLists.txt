@@ -162,16 +162,17 @@ if (SENSORS_PLUGIN)
 endif (SENSORS_PLUGIN)
 
 if (VOLUME_PLUGIN)
-  FIND_LIBRARY(VOLUME_LIB pulse)
+  FIND_LIBRARY(PULSEAUDIO_LIB pulse)
+  FIND_LIBRARY(ALSA_LIB asound)
 
-  if ( NOT(${VOLUME_LIB} MATCHES "NOTFOUND" ))
+  if ( NOT(${PULSEAUDIO_LIB} MATCHES "NOTFOUND" ) OR NOT(${ALSA_LIB} MATCHES "NOTFOUND"))
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Volume")
     add_subdirectory(plugin-volume)
   else ()
     message(STATUS "")
-    message(STATUS "Volume plugin requires pulseaudio")
+    message(STATUS "Volume plugin requires pulseaudio or alsa")
     message(STATUS "")
-  endif ( NOT(${VOLUME_LIB} MATCHES "NOTFOUND" ))
+  endif ( NOT(${PULSEAUDIO_LIB} MATCHES "NOTFOUND" ) OR NOT(${ALSA_LIB} MATCHES "NOTFOUND"))
 
 endif (VOLUME_PLUGIN)
 

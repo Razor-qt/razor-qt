@@ -28,7 +28,7 @@
 #include "razorvolumeconfiguration.h"
 #include "ui_razorvolumeconfiguration.h"
 
-#include "pulseaudiodevice.h"
+#include "audiodevice.h"
 #include "pulseaudioengine.h"
 
 #include <QComboBox>
@@ -53,11 +53,11 @@ RazorVolumeConfiguration::~RazorVolumeConfiguration()
     delete ui;
 }
 
-void RazorVolumeConfiguration::setSinkList(const QList<PulseAudioDevice *> sinks)
+void RazorVolumeConfiguration::setSinkList(const QList<AudioDevice *> sinks)
 {
     ui->devAddedCombo->clear();
 
-    foreach (const PulseAudioDevice *dev, sinks) {
+    foreach (const AudioDevice *dev, sinks) {
         ui->devAddedCombo->addItem(dev->description, dev->index);
     }
 }

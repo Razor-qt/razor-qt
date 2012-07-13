@@ -25,34 +25,32 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PULSEAUDIODEVICE_H
-#define PULSEAUDIODEVICE_H
+#ifndef AUDIODEVICE_H
+#define AUDIODEVICE_H
 
 #include <QtCore/QObject>
 
-#include <pulse/pulseaudio.h>
+class AudioEngine;
 
-class PulseAudioEngine;
-
-typedef enum PulseAudioDeviceType {
+typedef enum AudioDeviceType {
     Sink = 0,
     Source = 1,
     PulseAudioDeviceTypeLength
-} PulseAudioDeviceType;
+} AudioDeviceType;
 
-class PulseAudioDevice : public QObject
+class AudioDevice : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
-    Q_PROPERTY(PulseAudioDeviceType type READ type CONSTANT)
+    Q_PROPERTY(AudioDeviceType type READ type CONSTANT)
 
 public:
-    PulseAudioDevice(PulseAudioDeviceType t, PulseAudioEngine *engine, QObject *parent = 0);
-    ~PulseAudioDevice();
+    AudioDevice(AudioDeviceType t, AudioEngine *engine, QObject *parent = 0);
+    ~AudioDevice();
 
     int volume() const { return m_volume; }
     bool mute() const { return m_mute; }
-    PulseAudioDeviceType type() const { return m_type; }
+    AudioDeviceType type() const { return m_type; }
 
 public slots:
     void setVolume(int volume);
@@ -70,13 +68,12 @@ public:
     QString name;
     uint index;
     QString description;
-    pa_cvolume cvolume;
 
 private:
-    PulseAudioEngine *m_engine;
+    AudioEngine *m_engine;
     int m_volume;
     bool m_mute;
-    PulseAudioDeviceType m_type;
+    AudioDeviceType m_type;
 };
 
-#endif // PULSEAUDIODEVICE_H
+#endif // AUDIODEVICE_H

@@ -28,9 +28,12 @@
 #ifndef PULSEAUDIOENGINE_H
 #define PULSEAUDIOENGINE_H
 
+#include "audioengine.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtCore/QTimer>
+#include <QtCore/QMap>
 
 #include <pulse/pulseaudio.h>
 
@@ -39,9 +42,9 @@
 #define PA_VOLUME_UI_MAX (pa_sw_volume_from_dB(+11.0))
 #endif
 
-class PulseAudioDevice;
+class AudioDevice;
 
-class PulseAudioEngine : public QObject
+class PulseAudioEngine : public AudioEngine
 {
     Q_OBJECT
 
@@ -49,25 +52,23 @@ public:
     PulseAudioEngine(QObject *parent = 0);
     ~PulseAudioEngine();
 
-    void requestSinkInfoUpdate(PulseAudioDevice *device);
+    int volumeMax() const { return (int)PA_VOLUME_UI_MAX; }
+
+    void requestSinkInfoUpdate(AudioDevice *device);
     void addOrUpdateSink(const pa_sink_info *info);
 
-    const QList<PulseAudioDevice *> &sinks() const { return m_sinks; }
     pa_context_state_t contextState() const { return m_contextState; }
     bool ready() const { return m_ready; }
     pa_threaded_mainloop *mainloop() const { return m_mainLoop; }
 
 public slots:
-    void commitDeviceVolume(PulseAudioDevice *device);
-    void retrieveSinkInfo(PulseAudioDevice *device);
-    void mute(PulseAudioDevice *device);
-    void unmute(PulseAudioDevice *device);
-    void setMute(PulseAudioDevice *device, bool state);
+    void commitDeviceVolume(AudioDevice *device);
+    void retrieveSinkInfo(AudioDevice *device);
+    void setMute(AudioDevice *device, bool state);
     void setContextState(pa_context_state_t state);
 
 signals:
-    void sinkListChanged();
-    void sinkInfoChanged(PulseAudioDevice *device);
+    void sinkInfoChanged(AudioDevice *device);
     void contextStateChanged(pa_context_state_t state);
     void readyChanged(bool ready);
 
@@ -83,11 +84,11 @@ private:
     pa_threaded_mainloop *m_mainLoop;
     pa_context *m_context;
 
-    QList<PulseAudioDevice*> m_sinks;
-
     pa_context_state_t m_contextState;
     bool m_ready;
     QTimer m_reconnectionTimer;
+
+    QMap<AudioDevice *, pa_cvolume> m_cVolumeMap;
 };
 
 #endif // PULSEAUDIOENGINE_H
