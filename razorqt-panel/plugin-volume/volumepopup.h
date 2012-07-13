@@ -32,7 +32,7 @@
 
 class QSlider;
 class QToolButton;
-class PulseAudioDevice;
+class AudioDevice;
 
 class VolumePopup : public QWidget
 {
@@ -45,8 +45,8 @@ public:
 
     QSlider *volumeSlider() const { return m_volumeSlider; }
 
-    PulseAudioDevice *device() const { return m_device; }
-    void setDevice(PulseAudioDevice *device);
+    AudioDevice *device() const { return m_device; }
+    void setDevice(AudioDevice *device);
 
 signals:
     void mouseEntered();
@@ -71,7 +71,7 @@ private:
     QToolButton *m_mixerButton;
     QPoint m_pos;
     Qt::Corner m_anchor;
-    PulseAudioDevice *m_device;
+    AudioDevice *m_device;
 };
 
 #endif // VOLUMEPOPUP_H

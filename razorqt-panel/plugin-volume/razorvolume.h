@@ -33,8 +33,8 @@
 #include <QtGui/QSlider>
 
 class VolumeButton;
-class PulseAudioEngine;
-class PulseAudioDevice;
+class AudioEngine;
+class AudioDevice;
 class RazorVolumeConfiguration;
 
 class QxtGlobalShortcut;
@@ -56,10 +56,10 @@ protected slots:
     void handleShortcutVolumeMute();
 
 private:
-    PulseAudioEngine *m_paEngine;
+    AudioEngine *m_engine;
     VolumeButton *m_volumeButton;
     int m_defaultSinkIndex;
-    PulseAudioDevice *m_defaultSink;
+    AudioDevice *m_defaultSink;
     RazorVolumeConfiguration *m_configWindow;
     QxtGlobalShortcut *m_keyVolumeUp;
     QxtGlobalShortcut *m_keyVolumeDown;

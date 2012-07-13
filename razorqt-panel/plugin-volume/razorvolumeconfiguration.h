@@ -32,7 +32,7 @@
 
 #include <QtCore/QList>
 
-class PulseAudioDevice;
+class AudioDevice;
 
 namespace Ui {
     class RazorVolumeConfiguration;
@@ -47,7 +47,7 @@ public:
     ~RazorVolumeConfiguration();
 
 public slots:
-    void setSinkList(const QList<PulseAudioDevice*> sinks);
+    void setSinkList(const QList<AudioDevice*> sinks);
     void sinkSelectionChanged(int index);
     void showOnClickedChanged(bool state);
     void muteOnMiddleClickChanged(bool state);

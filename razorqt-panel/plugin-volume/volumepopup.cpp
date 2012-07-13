@@ -27,7 +27,7 @@
 
 #include "volumepopup.h"
 
-#include "pulseaudiodevice.h"
+#include "audiodevice.h"
 
 #include <qtxdg/xdgicon.h>
 
@@ -98,7 +98,7 @@ void VolumePopup::handleWheelEvent(QWheelEvent *event)
     m_volumeSlider->event(reinterpret_cast<QEvent*>(event));
 }
 
-void VolumePopup::setDevice(PulseAudioDevice *device)
+void VolumePopup::setDevice(AudioDevice *device)
 {
     if (device == m_device)
         return;

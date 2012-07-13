@@ -25,11 +25,11 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "pulseaudiodevice.h"
+#include "audiodevice.h"
 
-#include "pulseaudioengine.h"
+#include "audioengine.h"
 
-PulseAudioDevice::PulseAudioDevice(PulseAudioDeviceType t, PulseAudioEngine *engine, QObject *parent) :
+AudioDevice::AudioDevice(AudioDeviceType t, AudioEngine *engine, QObject *parent) :
     QObject(parent),
     m_engine(engine),
     m_volume(0),
@@ -38,12 +38,12 @@ PulseAudioDevice::PulseAudioDevice(PulseAudioDeviceType t, PulseAudioEngine *eng
 {
 }
 
-PulseAudioDevice::~PulseAudioDevice()
+AudioDevice::~AudioDevice()
 {
 }
 
 // this is just for setting the internal volume
-void PulseAudioDevice::setVolumeNoCommit(int volume)
+void AudioDevice::setVolumeNoCommit(int volume)
 {
     if (m_volume == volume)
         return;
@@ -52,12 +52,12 @@ void PulseAudioDevice::setVolumeNoCommit(int volume)
     emit volumeChanged(m_volume);
 }
 
-void PulseAudioDevice::toggleMute()
+void AudioDevice::toggleMute()
 {
     m_engine->setMute(this, !m_mute);
 }
 
-void PulseAudioDevice::setMute(bool state)
+void AudioDevice::setMute(bool state)
 {
     if (m_mute == state)
         return;
@@ -66,20 +66,21 @@ void PulseAudioDevice::setMute(bool state)
     emit muteChanged();
 }
 
-void PulseAudioDevice::increaseVolume()
+void AudioDevice::increaseVolume()
 {
     setVolume(volume()+10);
 }
 
-void PulseAudioDevice::decreaseVolume()
+void AudioDevice::decreaseVolume()
 {
     setVolume(volume()-10);
 }
 
 // this performs a volume change on the device
-void PulseAudioDevice::setVolume(int volume)
+void AudioDevice::setVolume(int volume)
 {
-    volume = qBound(0, volume, (int)PA_VOLUME_UI_MAX);
+    if (m_engine)
+        volume = qBound(0, volume, m_engine->volumeMax());
 
     if (m_volume == volume)
         return;

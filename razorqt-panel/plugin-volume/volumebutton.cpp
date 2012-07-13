@@ -28,7 +28,7 @@
 #include "volumebutton.h"
 
 #include "volumepopup.h"
-#include "pulseaudiodevice.h"
+#include "audiodevice.h"
 
 #include <QtGui/QSlider>
 #include <QtGui/QMouseEvent>

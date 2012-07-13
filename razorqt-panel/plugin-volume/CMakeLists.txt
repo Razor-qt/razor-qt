@@ -7,36 +7,50 @@ set(HEADERS
     razorvolume.h
     volumebutton.h
     volumepopup.h
-    pulseaudioengine.h
-    pulseaudiodevice.h
+    audiodevice.h
     razorvolumeconfiguration.h
+    audioengine.h
 )
 
 set(SOURCES
     razorvolume.cpp
     volumebutton.cpp
     volumepopup.cpp
-    pulseaudioengine.cpp
-    pulseaudiodevice.cpp
+    audiodevice.cpp
     razorvolumeconfiguration.cpp
+    audioengine.cpp
 )
 
 set(MOCS
     razorvolume.h
     volumebutton.h
     volumepopup.h
-    pulseaudioengine.h
-    pulseaudiodevice.h
+    audiodevice.h
     razorvolumeconfiguration.h
+    audioengine.h
 )
 
 set(UIS
     razorvolumeconfiguration.ui
 )
 
+if ( NOT(${PULSEAUDIO_LIB} MATCHES "NOTFOUND") )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_PULSEAUDIO")
+    set(HEADERS ${HEADERS} pulseaudioengine.h)
+    set(SOURCES ${SOURCES} pulseaudioengine.cpp)
+    set(MOCS ${MOCS} pulseaudioengine.h)
+endif ( NOT(${PULSEAUDIO_LIB} MATCHES "NOTFOUND") )
+
+if ( NOT(${ALSA_LIB} MATCHES "NOTFOUND") )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_ALSA")
+    set(HEADERS ${HEADERS} alsaengine.h)
+    set(SOURCES ${SOURCES} alsaengine.cpp)
+    set(MOCS ${MOCS} alsaengine.h)
+endif ( NOT(${ALSA_LIB} MATCHES "NOTFOUND") )
+
 set(LIBRARIES ${LIBRARIES} razorqxt )
 
-LINK_LIBRARIES(${PLUGIN} ${VOLUME_LIB})
+LINK_LIBRARIES(${PLUGIN} ${PULSEAUDIO_LIB} ${ALSA_LIB})
 
 #*******************************************
 include ("../BuildPlugin.cmake")
