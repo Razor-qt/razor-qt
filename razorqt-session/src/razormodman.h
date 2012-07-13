@@ -79,6 +79,9 @@ private:
     //! \brief Start a process described in a desktop file
     void startProcess(const XdgDesktopFile &file);
 
+    //! \brief Start the razor-confupdate.
+    void startConfUpdate();
+
     //! \brief Session configuration.
     QString mConfig;
 
