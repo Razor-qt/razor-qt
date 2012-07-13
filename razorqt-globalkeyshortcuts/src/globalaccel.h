@@ -30,26 +30,72 @@
 #include <QKeySequence>
 #include <QObject>
 #include <QDebug>
+#include <QDBusMessage>
 #include <QDBusConnection>
 
+#include <razorqt/razorsettings.h>
 #include <razorqxt/qxtglobalshortcut.h>
+
+class AbstractShortcut : public QObject
+{
+    Q_OBJECT
+    public:
+       AbstractShortcut (QObject *parent = 0) {}
+
+       /* Execute the command */
+       virtual bool exec() = 0;
+};
+
+class CommandShortcut : public AbstractShortcut
+{
+    Q_OBJECT
+    public:
+        CommandShortcut(const QString & cmd, QObject *parent = 0);
+        bool exec();
+
+    private:
+        QString m_cmd;
+
+};
+
+class DBusShortcut : public AbstractShortcut
+{
+    Q_OBJECT
+    public:
+        DBusShortcut( const QString & dest, 
+                const QString & path,
+                const QString & interface,
+                const QString & method,
+                const QList<QVariant> & parameters = QList<QVariant>(),
+                QObject *parent = 0);
+        
+        bool exec();   
+
+    private:
+        QString m_dest,           /* DBUS destination */
+                m_path,           /* DBUS path */
+                m_interface,      /* Call interface */
+                m_method;         /* Call method */
+
+        QList<QVariant> m_params; /* Call parameters */
+
+};
 
 class GlobalAccel: public QObject
 {
     Q_OBJECT
 
 public:
-    ~GlobalAccel() {};
-    GlobalAccel();
+    ~GlobalAccel();
+    GlobalAccel(QObject *parent = 0);
 
     void bindDefault();
 
 private:
-    QMap<QKeySequence, QString> mapping;
+    RazorSettings *m_shortcutSettings;
+    QMap<QKeySequence, AbstractShortcut*> mapping;
 
 private slots:
-    void launchAppFromDBus();
-
     void launchApp();
     void rebindAll();
 };
