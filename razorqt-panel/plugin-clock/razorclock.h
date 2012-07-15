@@ -79,6 +79,7 @@ private:
     QString dateFormat;
     bool dateOnNewLine;
     bool showDate;
+    Qt::DayOfWeek firstDayOfWeek;
 
 private slots:
     void updateMinWidth();

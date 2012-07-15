@@ -148,6 +148,8 @@ void RazorClock::settingsChanged()
         }
     }
 
+    firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", Qt::Sunday).toInt());
+
     fontChanged();
 
     dateLabel->setVisible(showDate && dateOnNewLine);
@@ -301,6 +303,7 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
         calendarDialog->layout()->setMargin(1);
 
         QCalendarWidget* cal = new QCalendarWidget(calendarDialog);
+        cal->setFirstDayOfWeek(firstDayOfWeek);
         calendarDialog->layout()->addWidget(cal);
         calendarDialog->adjustSize();
 
