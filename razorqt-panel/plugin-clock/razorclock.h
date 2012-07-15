@@ -59,6 +59,8 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent* event);
     //virtual QSize sizeHint() const;
 
+    bool event(QEvent *event);
+
 protected slots:
     virtual void settingsChanged();
     virtual void showConfigureDialog();
@@ -80,20 +82,6 @@ private:
 
 private slots:
     void updateMinWidth();
-};
-
-
-class ClockWidget: public QWidget
-{
-    Q_OBJECT
-public:
-    ClockWidget(QWidget* parent = 0):
-        QWidget(parent)
-    {
-    }
-
-protected:
-    bool event(QEvent *event);
 };
 
 

@@ -357,17 +357,16 @@ void RazorClock::showConfigureDialog()
     confWindow->activateWindow();
 }
 
-
-
-bool ClockWidget::event(QEvent *event)
+bool RazorClock::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip)
     {
         setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
     }
 
-    return QWidget::event(event);
+    return RazorPanelPlugin::event(event);
 }
+
 
 bool ClockLabel::event(QEvent *event)
 {
