@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,35 +25,32 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "sudialog.h"
 
-#include <QByteArray>
+#ifndef RZ_WATCHER_H
+#define RZ_WATCHER_H
 
+#include <QObject>
+#include "rzupdate.h"
+#include <QtCore/QFileSystemWatcher>
 
-
-SuDialog::SuDialog(const QString & user, const QString & authUser, const QString & command)
-    : QDialog()
+class RzWatcher : public QObject
 {
-	setupUi(this);
+    Q_OBJECT
+public:
+    explicit RzWatcher(bool debug, QObject *parent = 0);
 
-    setWindowTitle(tr("Run as %1").arg(user));
+signals:
 
-    usernameEdit->setText(user);
-    passwordEdit->setFocus(Qt::OtherFocusReason);
+private slots:
+    void updDirChanged(const QString &path);
+    void parentDirChanged(const QString &path);
 
-    QString prompt;
-    if (authUser == "root") {
-        prompt = tr("The action you requested needs <b>root privileges</b>. "
-                    "Please enter <b>root's</b> password below.");
-    } else {
-        prompt = tr("The action you requested needs additional privileges. "
-                    "Please enter the password for <b>%1</b> below.").arg(authUser);
-    }
-    infoLabel->setText(prompt);
-    commandLabel->setText(command);
-}
+private:
+    bool m_debug;
+    QFileSystemWatcher m_updWatcher;
+    QFileSystemWatcher m_parentDirWatcher;
 
-QString SuDialog::password()
-{
-    return passwordEdit->text();
-}
+    void addDirs();
+};
+
+#endif // WATCHER_H

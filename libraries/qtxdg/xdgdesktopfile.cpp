@@ -562,6 +562,9 @@ void XdgDesktopFile::setValue(const QString &key, const QVariant &value)
             escape(s);
 
         d->mItems[path] = QVariant(s);
+
+        if (key.toUpper() == "TYPE")
+            d->mType = d->detectType(this);
     }
     else
     {
