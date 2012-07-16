@@ -27,7 +27,7 @@
 
 #include "alsaengine.h"
 
-#include "audiodevice.h"
+#include "alsadevice.h"
 
 #include <QtCore/QMetaType>
 #include <QtDebug>
@@ -38,8 +38,27 @@ AlsaEngine::AlsaEngine(QObject *parent) :
     discoverDevices();
 }
 
+int AlsaEngine::volumeMax(AudioDevice *device) const
+{
+    AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
+    if (!dev || !dev->m_elem)
+        return 100;
+
+    long vmin;
+    long vmax;
+    snd_mixer_selem_get_playback_volume_range(dev->m_elem, &vmin, &vmax);
+
+    return vmax;
+}
+
 void AlsaEngine::commitDeviceVolume(AudioDevice *device)
 {
+    AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
+    if (!dev || !dev->m_elem)
+        return;
+
+    long value = dev->volume();
+    snd_mixer_selem_set_playback_volume_all(dev->m_elem, value);
 }
 
 void AlsaEngine::setMute(AudioDevice *device, bool state)
@@ -57,13 +76,13 @@ void AlsaEngine::discoverDevices()
         if (cardNum < 0)
             break;
 
-        char   str[64];
+        char str[64];
         sprintf(str, "hw:%i", cardNum);
 
         snd_ctl_t *cardHandle;
         if ((error = snd_ctl_open(&cardHandle, str, 0)) < 0) {
-           qWarning("Can't open card %i: %s\n", cardNum, snd_strerror(error));
-           continue;
+            qWarning("Can't open card %i: %s\n", cardNum, snd_strerror(error));
+            continue;
         }
 
         snd_ctl_card_info_t *cardInfo;
@@ -72,13 +91,38 @@ void AlsaEngine::discoverDevices()
         if ((error = snd_ctl_card_info(cardHandle, cardInfo)) < 0) {
             qWarning("Can't get info for card %i: %s\n", cardNum, snd_strerror(error));
         } else {
-            AudioDevice *dev = new AudioDevice(Sink, this, this);
-            // TODO: check on encoding
-            dev->name = QString::fromAscii(snd_ctl_card_info_get_name(cardInfo));
-            dev->index = cardNum;
-            dev->description = QString::fromAscii(snd_ctl_card_info_get_longname(cardInfo));
+            // setup mixer and iterate over channels
+            snd_mixer_t *mixer = 0;
+            snd_mixer_open(&mixer, 0);
+            snd_mixer_attach(mixer, str);
+            snd_mixer_selem_register(mixer, NULL, NULL);
+            snd_mixer_load(mixer);
 
-            m_sinks.append(dev);
+            snd_mixer_elem_t *mixerElem = 0;
+            mixerElem = snd_mixer_first_elem(mixer);
+
+            while (mixerElem) {
+                // check if we have a Sink or Source
+                if (snd_mixer_selem_has_playback_volume(mixerElem)) {
+                    AlsaDevice *dev = new AlsaDevice(Sink, this, this);
+                    dev->name = QString::fromAscii(snd_mixer_selem_get_name(mixerElem));
+                    dev->index = cardNum;
+                    dev->description = QString::fromAscii(str) + " - " + dev->name;
+
+                    // set alsa specific members
+                    dev->m_cardName = QString::fromAscii(str);
+                    dev->m_mixer = mixer;
+                    dev->m_elem = mixerElem;
+
+                    long value;
+                    snd_mixer_selem_get_playback_volume(mixerElem, (snd_mixer_selem_channel_id_t)0, &value);
+                    dev->setVolumeNoCommit(value);
+
+                    m_sinks.append(dev);
+                }
+
+                mixerElem = snd_mixer_elem_next(mixerElem);
+            }
         }
 
         snd_ctl_close(cardHandle);
