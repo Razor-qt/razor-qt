@@ -25,34 +25,11 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef ALSAENGINE_H
-#define ALSAENGINE_H
+#include "alsadevice.h"
 
-#include "audioengine.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QTimer>
-
-#include <alsa/asoundlib.h>
-
-class AlsaDevice;
-
-class AlsaEngine : public AudioEngine
+AlsaDevice::AlsaDevice(AudioDeviceType t, AudioEngine *engine, QObject *parent) :
+    AudioDevice(t, engine, parent),
+    m_mixer(0),
+    m_elem(0)
 {
-    Q_OBJECT
-
-public:
-    AlsaEngine(QObject *parent = 0);
-
-    int volumeMax(AudioDevice *device) const;
-
-public slots:
-    void commitDeviceVolume(AudioDevice *device);
-    void setMute(AudioDevice *device, bool state);
-
-private:
-    void discoverDevices();
-};
-
-#endif // ALSAENGINE_H
+}

@@ -52,7 +52,7 @@ public:
     PulseAudioEngine(QObject *parent = 0);
     ~PulseAudioEngine();
 
-    int volumeMax() const { return (int)PA_VOLUME_UI_MAX; }
+    int volumeMax(AudioDevice */*device*/) const { return (int)PA_VOLUME_UI_MAX; }
 
     void requestSinkInfoUpdate(AudioDevice *device);
     void addOrUpdateSink(const pa_sink_info *info);

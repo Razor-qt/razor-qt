@@ -46,7 +46,7 @@ AudioDevice::~AudioDevice()
 void AudioDevice::setVolumeNoCommit(int volume)
 {
     if (m_engine)
-        volume = qBound(0, volume, m_engine->volumeMax());
+        volume = qBound(0, volume, m_engine->volumeMax(this));
 
     if (m_volume == volume)
         return;
