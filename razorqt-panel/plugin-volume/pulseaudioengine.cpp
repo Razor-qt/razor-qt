@@ -189,8 +189,9 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
     dev->name = name;
     dev->index = info->index;
     dev->description = QString::fromUtf8(info->description);
-    dev->setMute(info->mute);
+    dev->setMuteNoCommit(info->mute);
 
+    // TODO: save separately? alsa does not have it
     m_cVolumeMap.insert(dev, info->volume);
 
     pa_volume_t v = pa_cvolume_avg(&(info->volume));

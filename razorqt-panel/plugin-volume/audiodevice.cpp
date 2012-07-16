@@ -45,6 +45,9 @@ AudioDevice::~AudioDevice()
 // this is just for setting the internal volume
 void AudioDevice::setVolumeNoCommit(int volume)
 {
+    if (m_engine)
+        volume = qBound(0, volume, m_engine->volumeMax());
+
     if (m_volume == volume)
         return;
 
@@ -54,10 +57,22 @@ void AudioDevice::setVolumeNoCommit(int volume)
 
 void AudioDevice::toggleMute()
 {
-    m_engine->setMute(this, !m_mute);
+    if (m_engine)
+        m_engine->setMute(this, !m_mute);
 }
 
 void AudioDevice::setMute(bool state)
+{
+    if (m_mute == state)
+        return;
+
+    setMuteNoCommit(state);
+
+    if (m_engine)
+        m_engine->setMute(this, state);
+}
+
+void AudioDevice::setMuteNoCommit(bool state)
 {
     if (m_mute == state)
         return;
@@ -79,13 +94,11 @@ void AudioDevice::decreaseVolume()
 // this performs a volume change on the device
 void AudioDevice::setVolume(int volume)
 {
-    if (m_engine)
-        volume = qBound(0, volume, m_engine->volumeMax());
-
     if (m_volume == volume)
         return;
 
-    m_volume = volume;
+    setVolumeNoCommit(volume);
+    setMute(false);
 
     if (m_engine)
         m_engine->commitDeviceVolume(this);
