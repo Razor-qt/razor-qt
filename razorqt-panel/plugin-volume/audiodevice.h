@@ -57,6 +57,7 @@ public slots:
     void setVolumeNoCommit(int volume);
     void toggleMute();
     void setMute(bool state);
+    void setMuteNoCommit(bool state);
     void increaseVolume();
     void decreaseVolume();
 
