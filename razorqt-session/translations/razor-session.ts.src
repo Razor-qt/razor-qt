@@ -116,12 +116,12 @@
 <context>
     <name>DefaultApps</name>
     <message>
-        <location filename="../config/defaultappspage.cpp" line="70"/>
+        <location filename="../config/defaultappspage.cpp" line="72"/>
         <source>Select a terminal emulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../config/defaultappspage.cpp" line="75"/>
+        <location filename="../config/defaultappspage.cpp" line="77"/>
         <source>Select a web browser</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,12 +181,12 @@
 <context>
     <name>RazorModuleManager</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="185"/>
+        <location filename="../src/razormodman.cpp" line="198"/>
         <source>Razor Session Crash Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="186"/>
+        <location filename="../src/razormodman.cpp" line="199"/>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
         <translation type="unfinished"></translation>
     </message>

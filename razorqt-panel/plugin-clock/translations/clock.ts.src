@@ -15,32 +15,98 @@
     </message>
     <message>
         <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
+        <source>&amp;Show seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
+        <source>12 &amp;hour style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razorclockconfiguration.ui" line="43"/>
-        <source>Date</source>
+        <source>&amp;Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
+        <location filename="../razorclockconfiguration.ui" line="56"/>
+        <location filename="../razorclockconfiguration.ui" line="102"/>
+        <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
+        <location filename="../razorclockconfiguration.ui" line="72"/>
+        <source>Show &amp;date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.ui" line="82"/>
+        <source>D&amp;ate format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.ui" line="112"/>
+        <source>Fon&amp;t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.ui" line="125"/>
+        <source>Show date in &amp;new line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.ui" line="135"/>
+        <source>Use t&amp;heme fonts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="212"/>
+        <source>Time font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="224"/>
+        <source>Date font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="238"/>
+        <source>Ultra light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="240"/>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="242"/>
+        <source>Ultra black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="244"/>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="246"/>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="248"/>
+        <source>Demi bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorclockconfiguration.cpp" line="253"/>
+        <source>Italic</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

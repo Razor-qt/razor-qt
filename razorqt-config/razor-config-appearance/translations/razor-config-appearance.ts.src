@@ -35,12 +35,7 @@
 <context>
     <name>RazorThemeConfig</name>
     <message>
-        <location filename="../razorthemeconfig.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorthemeconfig.ui" line="26"/>
+        <location filename="../razorthemeconfig.ui" line="23"/>
         <source>Razor Theme</source>
         <translation type="unfinished"></translation>
     </message>
