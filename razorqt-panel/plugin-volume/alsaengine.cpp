@@ -30,7 +30,19 @@
 #include "alsadevice.h"
 
 #include <QtCore/QMetaType>
+#include <QtCore/QSocketNotifier>
 #include <QtDebug>
+
+static int alsa_elem_event_callback(snd_mixer_elem_t *elem, unsigned int mask)
+{
+    qWarning("elem event callback 0x%8x", elem);
+    return 0;
+}
+
+static int alsa_mixer_event_callback(snd_mixer_t *mixer, unsigned int mask, snd_mixer_elem_t *elem)
+{
+    return 0;
+}
 
 AlsaEngine::AlsaEngine(QObject *parent) :
     AudioEngine(parent)
@@ -73,6 +85,11 @@ void AlsaEngine::setMute(AudioDevice *device, bool state)
         dev->setVolume(0);
 }
 
+void AlsaEngine::driveAlsaEventHandling(int fd)
+{
+    snd_mixer_handle_events(m_mixerMap.value(fd));
+}
+
 void AlsaEngine::discoverDevices()
 {
     int error;
@@ -110,6 +127,17 @@ void AlsaEngine::discoverDevices()
             snd_mixer_selem_register(mixer, NULL, NULL);
             snd_mixer_load(mixer);
 
+            // setup event handler for mixer
+            snd_mixer_set_callback(mixer, alsa_mixer_event_callback);
+
+            // setup eventloop handling
+            struct pollfd pfd;
+            if (snd_mixer_poll_descriptors(mixer, &pfd, 1)) {
+                QSocketNotifier *notifier = new QSocketNotifier(pfd.fd, QSocketNotifier::Read, this);
+                connect(notifier, SIGNAL(activated(int)), this, SLOT(driveAlsaEventHandling(int)));
+                m_mixerMap.insert(pfd.fd, mixer);
+            }
+
             snd_mixer_elem_t *mixerElem = 0;
             mixerElem = snd_mixer_first_elem(mixer);
 
@@ -135,6 +163,9 @@ void AlsaEngine::discoverDevices()
                         snd_mixer_selem_get_playback_switch(mixerElem, (snd_mixer_selem_channel_id_t)0, &mute);
                         dev->setMuteNoCommit(!(bool)mute);
                     }
+
+                    // register event callback
+                    snd_mixer_elem_set_callback(mixerElem, alsa_elem_event_callback);
 
                     m_sinks.append(dev);
                 }

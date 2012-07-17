@@ -32,11 +32,13 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QList>
+#include <QtCore/QMap>
 #include <QtCore/QTimer>
 
 #include <alsa/asoundlib.h>
 
 class AlsaDevice;
+class QSocketNotifier;
 
 class AlsaEngine : public AudioEngine
 {
@@ -51,8 +53,12 @@ public slots:
     void commitDeviceVolume(AudioDevice *device);
     void setMute(AudioDevice *device, bool state);
 
+private slots:
+    void driveAlsaEventHandling(int fd);
+
 private:
     void discoverDevices();
+    QMap<int, snd_mixer_t *> m_mixerMap;
 };
 
 #endif // ALSAENGINE_H
