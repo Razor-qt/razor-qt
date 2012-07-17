@@ -57,8 +57,7 @@ void AudioDevice::setVolumeNoCommit(int volume)
 
 void AudioDevice::toggleMute()
 {
-    if (m_engine)
-        m_engine->setMute(this, !m_mute);
+    setMute(!m_mute);
 }
 
 void AudioDevice::setMute(bool state)

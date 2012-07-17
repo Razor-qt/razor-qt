@@ -63,6 +63,14 @@ void AlsaEngine::commitDeviceVolume(AudioDevice *device)
 
 void AlsaEngine::setMute(AudioDevice *device, bool state)
 {
+    AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
+    if (!dev || !dev->m_elem)
+        return;
+
+    if (snd_mixer_selem_has_playback_switch(dev->m_elem))
+        snd_mixer_selem_set_playback_switch_all(dev->m_elem, (int)state);
+    else if (state)
+        dev->setVolume(0);
 }
 
 void AlsaEngine::discoverDevices()
@@ -117,6 +125,12 @@ void AlsaEngine::discoverDevices()
                     long value;
                     snd_mixer_selem_get_playback_volume(mixerElem, (snd_mixer_selem_channel_id_t)0, &value);
                     dev->setVolumeNoCommit(value);
+
+                    if (snd_mixer_selem_has_playback_switch(mixerElem)) {
+                        int mute;
+                        snd_mixer_selem_get_playback_switch(mixerElem, (snd_mixer_selem_channel_id_t)0, &mute);
+                        dev->setMuteNoCommit(!(bool)mute);
+                    }
 
                     m_sinks.append(dev);
                 }
