@@ -96,6 +96,10 @@ void AlsaEngine::discoverDevices()
         snd_ctl_card_info_t *cardInfo;
         snd_ctl_card_info_alloca(&cardInfo);
 
+        QString cardName = QString::fromAscii(snd_ctl_card_info_get_name(cardInfo));
+        if (cardName.isEmpty())
+            cardName = QString::fromAscii(str);
+
         if ((error = snd_ctl_card_info(cardHandle, cardInfo)) < 0) {
             qWarning("Can't get info for card %i: %s\n", cardNum, snd_strerror(error));
         } else {
@@ -115,7 +119,7 @@ void AlsaEngine::discoverDevices()
                     AlsaDevice *dev = new AlsaDevice(Sink, this, this);
                     dev->name = QString::fromAscii(snd_mixer_selem_get_name(mixerElem));
                     dev->index = cardNum;
-                    dev->description = QString::fromAscii(str) + " - " + dev->name;
+                    dev->description = cardName + " - " + dev->name;
 
                     // set alsa specific members
                     dev->m_cardName = QString::fromAscii(str);
