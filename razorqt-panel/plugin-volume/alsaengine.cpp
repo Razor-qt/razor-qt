@@ -33,9 +33,14 @@
 #include <QtCore/QSocketNotifier>
 #include <QtDebug>
 
+AlsaEngine *AlsaEngine::m_instance = 0;
+
 static int alsa_elem_event_callback(snd_mixer_elem_t *elem, unsigned int mask)
 {
-    qWarning("elem event callback 0x%8x", elem);
+    AlsaEngine *engine = AlsaEngine::instance();
+    if (engine)
+        engine->updateDevice(engine->getDeviceByAlsaElem(elem));
+
     return 0;
 }
 
@@ -48,6 +53,12 @@ AlsaEngine::AlsaEngine(QObject *parent) :
     AudioEngine(parent)
 {
     discoverDevices();
+    m_instance = this;
+}
+
+AlsaEngine *AlsaEngine::instance()
+{
+    return m_instance;
 }
 
 int AlsaEngine::volumeMax(AudioDevice *device) const
@@ -61,6 +72,20 @@ int AlsaEngine::volumeMax(AudioDevice *device) const
     snd_mixer_selem_get_playback_volume_range(dev->m_elem, &vmin, &vmax);
 
     return vmax;
+}
+
+AlsaDevice *AlsaEngine::getDeviceByAlsaElem(snd_mixer_elem_t *elem) const
+{
+    foreach (AudioDevice *device, m_sinks) {
+        AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
+        if (!dev || !dev->m_elem)
+            continue;
+
+        if (dev->m_elem == elem)
+            return dev;
+    }
+
+    return 0;
 }
 
 void AlsaEngine::commitDeviceVolume(AudioDevice *device)
@@ -80,9 +105,25 @@ void AlsaEngine::setMute(AudioDevice *device, bool state)
         return;
 
     if (snd_mixer_selem_has_playback_switch(dev->m_elem))
-        snd_mixer_selem_set_playback_switch_all(dev->m_elem, (int)state);
+        snd_mixer_selem_set_playback_switch_all(dev->m_elem, (int)!state);
     else if (state)
         dev->setVolume(0);
+}
+
+void AlsaEngine::updateDevice(AlsaDevice *device)
+{
+    if (!device)
+        return;
+
+    long value;
+    snd_mixer_selem_get_playback_volume(device->m_elem, (snd_mixer_selem_channel_id_t)0, &value);
+    device->setVolumeNoCommit(value);
+
+    if (snd_mixer_selem_has_playback_switch(device->m_elem)) {
+        int mute;
+        snd_mixer_selem_get_playback_switch(device->m_elem, (snd_mixer_selem_channel_id_t)0, &mute);
+        device->setMuteNoCommit(!(bool)mute);
+    }
 }
 
 void AlsaEngine::driveAlsaEventHandling(int fd)
