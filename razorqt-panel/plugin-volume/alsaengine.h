@@ -46,12 +46,15 @@ class AlsaEngine : public AudioEngine
 
 public:
     AlsaEngine(QObject *parent = 0);
+    static AlsaEngine *instance();
 
     int volumeMax(AudioDevice *device) const;
+    AlsaDevice *getDeviceByAlsaElem(snd_mixer_elem_t *elem) const;
 
 public slots:
     void commitDeviceVolume(AudioDevice *device);
     void setMute(AudioDevice *device, bool state);
+    void updateDevice(AlsaDevice *device);
 
 private slots:
     void driveAlsaEventHandling(int fd);
@@ -59,6 +62,7 @@ private slots:
 private:
     void discoverDevices();
     QMap<int, snd_mixer_t *> m_mixerMap;
+    static AlsaEngine *m_instance;
 };
 
 #endif // ALSAENGINE_H
