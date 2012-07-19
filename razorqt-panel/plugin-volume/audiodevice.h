@@ -65,8 +65,6 @@ public slots:
     void toggleMute();
     void setMute(bool state);
     void setMuteNoCommit(bool state);
-    void increaseVolume();
-    void decreaseVolume();
 
 signals:
     void volumeChanged(int volume);

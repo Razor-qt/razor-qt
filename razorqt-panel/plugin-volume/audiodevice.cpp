@@ -107,16 +107,6 @@ void AudioDevice::setMuteNoCommit(bool state)
     emit muteChanged(m_mute);
 }
 
-void AudioDevice::increaseVolume()
-{
-    setVolume(volume()+10);
-}
-
-void AudioDevice::decreaseVolume()
-{
-    setVolume(volume()-10);
-}
-
 // this performs a volume change on the device
 void AudioDevice::setVolume(int volume)
 {

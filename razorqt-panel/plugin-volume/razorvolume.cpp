@@ -117,13 +117,13 @@ void RazorVolume::updateConfigurationSinkList()
 void RazorVolume::handleShortcutVolumeUp()
 {
     if (m_defaultSink)
-        m_defaultSink->increaseVolume();
+        m_defaultSink->setVolume(m_defaultSink->volume() + settings().value("step", 10).toInt());
 }
 
 void RazorVolume::handleShortcutVolumeDown()
 {
     if (m_defaultSink)
-        m_defaultSink->decreaseVolume();
+        m_defaultSink->setVolume(m_defaultSink->volume() - settings().value("step", 10).toInt());
 }
 
 void RazorVolume::handleShortcutVolumeMute()

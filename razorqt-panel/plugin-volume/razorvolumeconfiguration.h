@@ -52,6 +52,7 @@ public slots:
     void showOnClickedChanged(bool state);
     void muteOnMiddleClickChanged(bool state);
     void mixerLineEditChanged(const QString &command);
+    void stepSpinBoxChanged(int step);
 
 protected slots:
     virtual void loadSettings();
