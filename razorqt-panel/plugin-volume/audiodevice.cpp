@@ -42,6 +42,33 @@ AudioDevice::~AudioDevice()
 {
 }
 
+void AudioDevice::setName(const QString &name)
+{
+    if (m_name == name)
+        return;
+
+    m_name = name;
+    emit nameChanged(m_name);
+}
+
+void AudioDevice::setDescription(const QString &description)
+{
+    if (m_description == description)
+        return;
+
+    m_description = description;
+    emit descriptionChanged(m_description);
+}
+
+void AudioDevice::setIndex(uint index)
+{
+    if (m_index == index)
+        return;
+
+    m_index = index;
+    emit indexChanged(index);
+}
+
 // this is just for setting the internal volume
 void AudioDevice::setVolumeNoCommit(int volume)
 {
@@ -77,7 +104,7 @@ void AudioDevice::setMuteNoCommit(bool state)
         return;
 
     m_mute = state;
-    emit muteChanged();
+    emit muteChanged(m_mute);
 }
 
 void AudioDevice::increaseVolume()

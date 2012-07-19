@@ -64,12 +64,12 @@ AlsaEngine *AlsaEngine::instance()
 int AlsaEngine::volumeMax(AudioDevice *device) const
 {
     AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
-    if (!dev || !dev->m_elem)
+    if (!dev || !dev->element())
         return 100;
 
     long vmin;
     long vmax;
-    snd_mixer_selem_get_playback_volume_range(dev->m_elem, &vmin, &vmax);
+    snd_mixer_selem_get_playback_volume_range(dev->element(), &vmin, &vmax);
 
     return vmax;
 }
@@ -78,10 +78,10 @@ AlsaDevice *AlsaEngine::getDeviceByAlsaElem(snd_mixer_elem_t *elem) const
 {
     foreach (AudioDevice *device, m_sinks) {
         AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
-        if (!dev || !dev->m_elem)
+        if (!dev || !dev->element())
             continue;
 
-        if (dev->m_elem == elem)
+        if (dev->element() == elem)
             return dev;
     }
 
@@ -91,21 +91,21 @@ AlsaDevice *AlsaEngine::getDeviceByAlsaElem(snd_mixer_elem_t *elem) const
 void AlsaEngine::commitDeviceVolume(AudioDevice *device)
 {
     AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
-    if (!dev || !dev->m_elem)
+    if (!dev || !dev->element())
         return;
 
     long value = dev->volume();
-    snd_mixer_selem_set_playback_volume_all(dev->m_elem, value);
+    snd_mixer_selem_set_playback_volume_all(dev->element(), value);
 }
 
 void AlsaEngine::setMute(AudioDevice *device, bool state)
 {
     AlsaDevice *dev = qobject_cast<AlsaDevice*>(device);
-    if (!dev || !dev->m_elem)
+    if (!dev || !dev->element())
         return;
 
-    if (snd_mixer_selem_has_playback_switch(dev->m_elem))
-        snd_mixer_selem_set_playback_switch_all(dev->m_elem, (int)!state);
+    if (snd_mixer_selem_has_playback_switch(dev->element()))
+        snd_mixer_selem_set_playback_switch_all(dev->element(), (int)!state);
     else if (state)
         dev->setVolume(0);
 }
@@ -116,12 +116,12 @@ void AlsaEngine::updateDevice(AlsaDevice *device)
         return;
 
     long value;
-    snd_mixer_selem_get_playback_volume(device->m_elem, (snd_mixer_selem_channel_id_t)0, &value);
+    snd_mixer_selem_get_playback_volume(device->element(), (snd_mixer_selem_channel_id_t)0, &value);
     device->setVolumeNoCommit(value);
 
-    if (snd_mixer_selem_has_playback_switch(device->m_elem)) {
+    if (snd_mixer_selem_has_playback_switch(device->element())) {
         int mute;
-        snd_mixer_selem_get_playback_switch(device->m_elem, (snd_mixer_selem_channel_id_t)0, &mute);
+        snd_mixer_selem_get_playback_switch(device->element(), (snd_mixer_selem_channel_id_t)0, &mute);
         device->setMuteNoCommit(!(bool)mute);
     }
 }
@@ -186,14 +186,14 @@ void AlsaEngine::discoverDevices()
                 // check if we have a Sink or Source
                 if (snd_mixer_selem_has_playback_volume(mixerElem)) {
                     AlsaDevice *dev = new AlsaDevice(Sink, this, this);
-                    dev->name = QString::fromAscii(snd_mixer_selem_get_name(mixerElem));
-                    dev->index = cardNum;
-                    dev->description = cardName + " - " + dev->name;
+                    dev->setName(QString::fromAscii(snd_mixer_selem_get_name(mixerElem)));
+                    dev->setIndex(cardNum);
+                    dev->setDescription(cardName + " - " + dev->name());
 
                     // set alsa specific members
-                    dev->m_cardName = QString::fromAscii(str);
-                    dev->m_mixer = mixer;
-                    dev->m_elem = mixerElem;
+                    dev->setCardName(QString::fromAscii(str));
+                    dev->setMixer(mixer);
+                    dev->setElement(mixerElem);
 
                     long value;
                     snd_mixer_selem_get_playback_volume(mixerElem, (snd_mixer_selem_channel_id_t)0, &value);

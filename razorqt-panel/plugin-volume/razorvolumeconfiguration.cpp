@@ -58,7 +58,7 @@ void RazorVolumeConfiguration::setSinkList(const QList<AudioDevice *> sinks)
     ui->devAddedCombo->clear();
 
     foreach (const AudioDevice *dev, sinks) {
-        ui->devAddedCombo->addItem(dev->description, dev->index);
+        ui->devAddedCombo->addItem(dev->description(), dev->index());
     }
 }
 
