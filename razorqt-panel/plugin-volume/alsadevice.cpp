@@ -33,3 +33,30 @@ AlsaDevice::AlsaDevice(AudioDeviceType t, AudioEngine *engine, QObject *parent) 
     m_elem(0)
 {
 }
+
+void AlsaDevice::setMixer(snd_mixer_t *mixer)
+{
+    if (m_mixer == mixer)
+        return;
+
+    m_mixer = mixer;
+    emit mixerChanged();
+}
+
+void AlsaDevice::setElement(snd_mixer_elem_t *elem)
+{
+    if (m_elem == elem)
+        return;
+
+    m_elem = elem;
+    emit elementChanged();
+}
+
+void AlsaDevice::setCardName(const QString &cardName)
+{
+    if (m_cardName == cardName)
+        return;
+
+    m_cardName = cardName;
+    emit cardNameChanged();
+}

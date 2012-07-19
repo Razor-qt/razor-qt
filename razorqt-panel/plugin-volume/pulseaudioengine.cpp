@@ -116,7 +116,7 @@ static void contextSubscriptionCallback(pa_context *context, pa_subscription_eve
 {
     PulseAudioEngine *pulseEngine = reinterpret_cast<PulseAudioEngine*>(userdata);
     foreach (AudioDevice *dev, pulseEngine->sinks()) {
-        if (dev->index == idx) {
+        if (dev->index() == idx) {
             pulseEngine->requestSinkInfoUpdate(dev);
             break;
         }
@@ -175,7 +175,7 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
     QString name = QString::fromUtf8(info->name);
 
     foreach (AudioDevice *device, m_sinks) {
-        if (name == device->name) {
+        if (device->name() == name) {
             dev = device;
             break;
         }
@@ -186,9 +186,9 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
         newSink = true;
     }
 
-    dev->name = name;
-    dev->index = info->index;
-    dev->description = QString::fromUtf8(info->description);
+    dev->setName(name);
+    dev->setIndex(info->index);
+    dev->setDescription(QString::fromUtf8(info->description));
     dev->setMuteNoCommit(info->mute);
 
     // TODO: save separately? alsa does not have it
@@ -221,9 +221,9 @@ void PulseAudioEngine::commitDeviceVolume(AudioDevice *device)
 
     pa_operation *operation;
     if (device->type() == Sink)
-        operation = pa_context_set_sink_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);
+        operation = pa_context_set_sink_volume_by_index(m_context, device->index(), volume, contextSuccessCallback, this);
     else
-        operation = pa_context_set_source_volume_by_index(m_context, device->index, volume, contextSuccessCallback, this);
+        operation = pa_context_set_source_volume_by_index(m_context, device->index(), volume, contextSuccessCallback, this);
 
     while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
         pa_threaded_mainloop_wait(m_mainLoop);
@@ -349,7 +349,7 @@ void PulseAudioEngine::retrieveSinkInfo(AudioDevice *device)
     pa_threaded_mainloop_lock(m_mainLoop);
 
     pa_operation *operation;
-    operation = pa_context_get_sink_info_by_index(m_context, device->index, sinkInfoCallback, this);
+    operation = pa_context_get_sink_info_by_index(m_context, device->index(), sinkInfoCallback, this);
     while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
         pa_threaded_mainloop_wait(m_mainLoop);
     pa_operation_unref(operation);
@@ -365,7 +365,7 @@ void PulseAudioEngine::setMute(AudioDevice *device, bool state)
     pa_threaded_mainloop_lock(m_mainLoop);
 
     pa_operation *operation;
-    operation = pa_context_set_sink_mute_by_index(m_context, device->index, state, contextSuccessCallback, this);
+    operation = pa_context_set_sink_mute_by_index(m_context, device->index(), state, contextSuccessCallback, this);
     while (pa_operation_get_state(operation) == PA_OPERATION_RUNNING)
         pa_threaded_mainloop_wait(m_mainLoop);
     pa_operation_unref(operation);

@@ -210,7 +210,7 @@ void VolumeButton::updateStockIcon()
 
 void VolumeButton::handleDeviceChanged()
 {
-    connect(m_volumePopup->device(), SIGNAL(muteChanged()), this, SLOT(updateStockIcon()));
+    connect(m_volumePopup->device(), SIGNAL(muteChanged(bool)), this, SLOT(updateStockIcon()));
 }
 
 void VolumeButton::handleMixerLaunch()

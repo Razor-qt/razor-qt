@@ -51,6 +51,13 @@ public:
     int volume() const { return m_volume; }
     bool mute() const { return m_mute; }
     AudioDeviceType type() const { return m_type; }
+    const QString &name() const { return m_name; }
+    const QString &description() const { return m_description; }
+    uint index() const { return m_index; }
+
+    void setName(const QString &name);
+    void setDescription(const QString &description);
+    void setIndex(uint index);
 
 public slots:
     void setVolume(int volume);
@@ -63,18 +70,19 @@ public slots:
 
 signals:
     void volumeChanged(int volume);
-    void muteChanged();
-
-public:
-    QString name;
-    uint index;
-    QString description;
+    void muteChanged(bool state);
+    void nameChanged(const QString &name);
+    void descriptionChanged(const QString &description);
+    void indexChanged(uint index);
 
 private:
     AudioEngine *m_engine;
     int m_volume;
     bool m_mute;
     AudioDeviceType m_type;
+    QString m_name;
+    uint m_index;
+    QString m_description;
 };
 
 #endif // AUDIODEVICE_H
