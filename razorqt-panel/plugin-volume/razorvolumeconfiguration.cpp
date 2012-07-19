@@ -46,6 +46,7 @@ RazorVolumeConfiguration::RazorVolumeConfiguration(QSettings &settings, QWidget 
     connect(ui->showOnClickCheckBox, SIGNAL(toggled(bool)), this, SLOT(showOnClickedChanged(bool)));
     connect(ui->muteOnMiddleClickCheckbox, SIGNAL(toggled(bool)), this, SLOT(muteOnMiddleClickChanged(bool)));
     connect(ui->mixerLineEdit, SIGNAL(textChanged(QString)), this, SLOT(mixerLineEditChanged(QString)));
+    connect(ui->stepSpinBox, SIGNAL(valueChanged(int)), this, SLOT(stepSpinBoxChanged(int)));
 }
 
 RazorVolumeConfiguration::~RazorVolumeConfiguration()
@@ -82,11 +83,17 @@ void RazorVolumeConfiguration::mixerLineEditChanged(const QString &command)
     settings().setValue("mixerCommand", command);
 }
 
+void RazorVolumeConfiguration::stepSpinBoxChanged(int step)
+{
+    settings().setValue("step", step);
+}
+
 void RazorVolumeConfiguration::loadSettings()
 {
     ui->mixerLineEdit->setText(settings().value("mixerCommand", "pavucontrol").toString());
     ui->showOnClickCheckBox->setChecked(settings().value("showOnClick", true).toBool());
     ui->muteOnMiddleClickCheckbox->setChecked(settings().value("muteOnMiddleClick", true).toBool());
     setComboboxIndexByData(ui->devAddedCombo, settings().value("defaultSink", 0), 1);
+    ui->stepSpinBox->setValue(settings().value("step", 10).toInt());
 }
 
