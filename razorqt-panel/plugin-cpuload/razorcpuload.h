@@ -34,6 +34,16 @@ class RazorCpuLoad: public RazorPanelPlugin
 {
 	Q_OBJECT
 public:
+    /**
+      Describes orientation of cpu load bar
+     **/
+    enum BarOrientation {
+        BottomUpBar,    //! Bar begins at bottom and grows up
+        TopDownBar,     //! Bar begins at top and grows down
+        RightToLeftBar, //! Bar begins at right edge and grows to the left
+        LeftToRightBar  //! Bar begins at left edge and grows to the right
+    };
+
 	RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
 	~RazorCpuLoad();
 
@@ -57,6 +67,7 @@ private:
 	int m_avg;
 
 	bool m_showText;
+    BarOrientation m_barOrientation;
     int m_updateInterval;
     int m_timerID;
 

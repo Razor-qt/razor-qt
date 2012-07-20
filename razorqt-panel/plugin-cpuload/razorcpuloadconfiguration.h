@@ -53,6 +53,11 @@ private:
 	QSettings &mSettings;
 	RazorSettingsCache mOldSettings;
 
+    /*
+      Fills Bar orientation combobox
+    */
+    void fillBarOrientations();
+
 private slots:
 	/*
 	  Saves settings in conf file.
@@ -61,6 +66,7 @@ private slots:
 	void dialogButtonsAction(QAbstractButton *btn);
 	void showTextChanged(bool value);
     void updateIntervalChanged(double value);
+    void barOrientationChanged(int index);
 
 };
 
