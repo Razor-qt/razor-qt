@@ -97,15 +97,15 @@ void RazorVolume::showConfigureDialog()
 
 void RazorVolume::settingsChanged()
 {
-    m_defaultSinkIndex = settings().value("defaultSink", 0).toInt();
+    m_defaultSinkIndex = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
     if (m_engine->sinks().at(m_defaultSinkIndex)) {
         m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
         m_volumeButton->volumePopup()->setDevice(m_defaultSink);
     }
 
-    m_volumeButton->setShowOnClicked(settings().value("showOnClick", true).toBool());
-    m_volumeButton->setMuteOnMiddleClick(settings().value("muteOnMiddleClick", true).toBool());
-    m_volumeButton->setMixerCommand(settings().value("mixerCommand", "pavucontrol").toString());
+    m_volumeButton->setShowOnClicked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
+    m_volumeButton->setMuteOnMiddleClick(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
+    m_volumeButton->setMixerCommand(settings().value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
 }
 
 void RazorVolume::updateConfigurationSinkList()
@@ -117,13 +117,13 @@ void RazorVolume::updateConfigurationSinkList()
 void RazorVolume::handleShortcutVolumeUp()
 {
     if (m_defaultSink)
-        m_defaultSink->setVolume(m_defaultSink->volume() + settings().value("step", 10).toInt());
+        m_defaultSink->setVolume(m_defaultSink->volume() + settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
 }
 
 void RazorVolume::handleShortcutVolumeDown()
 {
     if (m_defaultSink)
-        m_defaultSink->setVolume(m_defaultSink->volume() - settings().value("step", 10).toInt());
+        m_defaultSink->setVolume(m_defaultSink->volume() - settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
 }
 
 void RazorVolume::handleShortcutVolumeMute()
