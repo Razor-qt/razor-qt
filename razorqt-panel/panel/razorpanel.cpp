@@ -647,6 +647,8 @@ void RazorPanelPrivate::updatePluginsMinSize()
  ************************************************/
 void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 {
+    Q_Q(RazorPanel);
+
     QString sectionName = pluginInfo.id();
     QStringList groups = mSettings->childGroups();
 
@@ -673,6 +675,7 @@ void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 
     realign();
     saveSettings();
+    q->adjustSize();
 }
 
 
@@ -848,6 +851,8 @@ void RazorPanelPrivate::startMoveWidget()
  ************************************************/
 void RazorPanelPrivate::onRemovePlugin()
 {
+    Q_Q(RazorPanel);
+
     RazorPanelPlugin* plugin;
     PluginAction* a = qobject_cast<PluginAction*>(sender());
     if (a)
@@ -865,6 +870,7 @@ void RazorPanelPrivate::onRemovePlugin()
     mPlugins.removeAll(plugin);
     delete plugin;
     saveSettings();
+    q->adjustSize();
 }
 
 
