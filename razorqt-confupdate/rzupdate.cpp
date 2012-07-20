@@ -1015,7 +1015,9 @@ void RzUpdate::gotScript(const QString &_script)
     QStringList dirs;
     dirs << QFileInfo(m_updFilePath).dir().absolutePath();
     dirs << "/usr/local/lib/razor-confupdate_bin";
+    dirs << "/usr/local/lib" LIB_SUFFIX "/razor-confupdate_bin";
     dirs << "/usr/lib/razor-confupdate_bin";
+    dirs << "/usr/lib" LIB_SUFFIX "/razor-confupdate_bin";
 
     QFileInfo file;
     foreach (const QString &dir, dirs)
