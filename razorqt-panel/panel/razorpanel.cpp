@@ -161,7 +161,7 @@ void RazorPanelPrivate::init()
     mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt());
     mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
     mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
-    mUseThemeSize = mSettings->value(CFG_KEY_THEMESIZE, true).toBool();
+    mUseThemeSize = mSettings->value(CFG_KEY_AUTOSIZE, true).toBool();
     mSettings->endGroup();
 
     q->setLayout(mLayout);
