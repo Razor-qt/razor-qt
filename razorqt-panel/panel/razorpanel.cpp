@@ -697,6 +697,19 @@ RazorPanel::Position RazorPanel::position() const
     return d->position();
 }
 
+RazorPanel::Orientation RazorPanel::orientation() const
+{
+    Q_D(const RazorPanel);
+    if (d->mPosition == RazorPanel::PositionBottom ||
+        d->mPosition == RazorPanel::PositionTop)
+    {
+        return RazorPanel::Horizontal;
+    }
+    else
+    {
+        return RazorPanel::Vertical;
+    }
+}
 
 /************************************************
 
