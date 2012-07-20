@@ -65,35 +65,35 @@ void RazorVolumeConfiguration::setSinkList(const QList<AudioDevice *> sinks)
 
 void RazorVolumeConfiguration::sinkSelectionChanged(int index)
 {
-    settings().setValue("defaultSink", index);
+    settings().setValue(SETTINGS_DEVICE, index);
 }
 
 void RazorVolumeConfiguration::showOnClickedChanged(bool state)
 {
-    settings().setValue("showOnClick", state);
+    settings().setValue(SETTINGS_SHOW_ON_LEFTCLICK, state);
 }
 
 void RazorVolumeConfiguration::muteOnMiddleClickChanged(bool state)
 {
-    settings().setValue("muteOnMiddleClick", state);
+    settings().setValue(SETTINGS_MUTE_ON_MIDDLECLICK, state);
 }
 
 void RazorVolumeConfiguration::mixerLineEditChanged(const QString &command)
 {
-    settings().setValue("mixerCommand", command);
+    settings().setValue(SETTINGS_MIXER_COMMAND, command);
 }
 
 void RazorVolumeConfiguration::stepSpinBoxChanged(int step)
 {
-    settings().setValue("step", step);
+    settings().setValue(SETTINGS_STEP, step);
 }
 
 void RazorVolumeConfiguration::loadSettings()
 {
-    ui->mixerLineEdit->setText(settings().value("mixerCommand", "pavucontrol").toString());
-    ui->showOnClickCheckBox->setChecked(settings().value("showOnClick", true).toBool());
-    ui->muteOnMiddleClickCheckbox->setChecked(settings().value("muteOnMiddleClick", true).toBool());
-    setComboboxIndexByData(ui->devAddedCombo, settings().value("defaultSink", 0), 1);
-    ui->stepSpinBox->setValue(settings().value("step", 10).toInt());
+    setComboboxIndexByData(ui->devAddedCombo, settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE), 1);
+    ui->showOnClickCheckBox->setChecked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
+    ui->muteOnMiddleClickCheckbox->setChecked(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
+    ui->mixerLineEdit->setText(settings().value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
+    ui->stepSpinBox->setValue(settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
 }
 
