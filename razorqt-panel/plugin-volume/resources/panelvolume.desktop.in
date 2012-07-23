@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Volume Control
+Comment=A volume control plugin.
+
+#TRANSLATIONS_DIR=../translations
