@@ -53,6 +53,7 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
 {
     setObjectName("Volume");
 
+    layout()->setAlignment(Qt::AlignCenter);
     m_volumeButton = new VolumeButton(panel(), this);
     addWidget(m_volumeButton);
 
