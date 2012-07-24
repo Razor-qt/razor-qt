@@ -102,7 +102,7 @@ function(razor_translate_ts _qmFiles)
     add_dependencies(UpdateTsFiles Update_${_tsSrcFileName})
     
     # TX file ***********************************************
-    set(_txFile "${CMAKE_BINARY_DIR}/tx/razor-qt.${_tsSrcFileName}.tx_config")  
+    set(_txFile "${CMAKE_BINARY_DIR}/tx/${_tsSrcFileName}.tx_config")  
     string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_translationDir ${_translationDir})
     string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_tsSrcFile ${_tsSrcFile})
     
@@ -145,6 +145,7 @@ function(razor_translate_ts _qmFiles)
     file(GLOB _tsFiles ${_translationDir}/${_tsSrcFileNameWE}_*.ts)    
     qt4_add_translation(_qmFilesLocal ${_tsFiles})
     install(FILES ${_qmFilesLocal} DESTINATION ${_installDir})
+    
     set(${_qmFiles} ${_qmFilesLocal} PARENT_SCOPE)
 endfunction(razor_translate_ts)
 
@@ -195,7 +196,7 @@ function(razor_translate_desktop2 _RESULT)
         string(REPLACE ".in" "" _fileExt ${_fileExt})
         #.......................................
         set(_outFile "${CMAKE_CURRENT_BINARY_DIR}/${_fileName}${_fileExt}")
-        
+
         file(GLOB _translations
             ${_translationDir}/${_fileName}_*${_fileExt}
         )    
@@ -214,11 +215,11 @@ function(razor_translate_desktop2 _RESULT)
             )
         endif()
 
-        set(${_RESULT} ${${_RESULT}} ${_outFile}) 
- 
+        set(__result ${__result} ${_outFile}) 
+
 
         # TX file ***********************************************
-        set(_txFile "${CMAKE_BINARY_DIR}/tx/razor-qt.${_fileName}${_fileExt}.tx_config")  
+        set(_txFile "${CMAKE_BINARY_DIR}/tx/${_fileName}${_fileExt}.tx_config")  
         string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_translationDir ${_translationDir})
         string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_inFile ${_inFile})
     
@@ -232,7 +233,8 @@ function(razor_translate_desktop2 _RESULT)
         )
 
     endforeach()
-    
+
+    set(${_RESULT} ${__result} PARENT_SCOPE)    
 endfunction(razor_translate_desktop2)
 
 
