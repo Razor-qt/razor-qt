@@ -34,23 +34,24 @@ set(UIS
     razorvolumeconfiguration.ui
 )
 
-if ( NOT(${PULSEAUDIO_LIB} MATCHES "NOTFOUND") )
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_PULSEAUDIO")
+if (PULSEAUDIO_FOUND)
+    add_definitions(-DUSE_PULSEAUDIO)
+    include_directories(${PULSEAUDIO_INCLUDE_DIR})
     set(HEADERS ${HEADERS} pulseaudioengine.h)
     set(SOURCES ${SOURCES} pulseaudioengine.cpp)
     set(MOCS ${MOCS} pulseaudioengine.h)
-endif ( NOT(${PULSEAUDIO_LIB} MATCHES "NOTFOUND") )
+    LINK_LIBRARIES(${PLUGIN} ${PULSEAUDIO_LIBRARY})
+endif (PULSEAUDIO_FOUND)
 
-if ( NOT(${ALSA_LIB} MATCHES "NOTFOUND") )
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_ALSA")
+if (ALSA_FOUND)
+    add_definitions(-DUSE_ALSA)
     set(HEADERS ${HEADERS} alsaengine.h alsadevice.h)
     set(SOURCES ${SOURCES} alsaengine.cpp alsadevice.cpp)
     set(MOCS ${MOCS} alsaengine.h alsadevice.h)
-endif ( NOT(${ALSA_LIB} MATCHES "NOTFOUND") )
+    LINK_LIBRARIES(${PLUGIN} ${ALSA_LIBRARIES})
+endif (ALSA_FOUND)
 
 set(LIBRARIES ${LIBRARIES} razorqxt )
-
-LINK_LIBRARIES(${PLUGIN} ${PULSEAUDIO_LIB} ${ALSA_LIB})
 
 #*******************************************
 include ("../BuildPlugin.cmake")

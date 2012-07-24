@@ -29,7 +29,6 @@
 #include "ui_razorvolumeconfiguration.h"
 
 #include "audiodevice.h"
-#include "pulseaudioengine.h"
 
 #include <QComboBox>
 #include <QDebug>
