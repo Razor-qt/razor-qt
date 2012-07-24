@@ -31,8 +31,12 @@
 #include "volumepopup.h"
 #include "razorvolumeconfiguration.h"
 #include "audiodevice.h"
+#ifdef USE_PULSEAUDIO
 #include "pulseaudioengine.h"
+#endif
+#ifdef USE_ALSA
 #include "alsaengine.h"
+#endif
 
 #include <QtGui/QMessageBox>
 #include <QtDebug>
