@@ -116,15 +116,35 @@ function(razor_translate_ts _qmFiles)
     )
 
     # translate.h file *************************************
-    set(TRANSLATIONS_DIR ${_installDir})
-    add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
-    configure_file(${CMAKE_MODULE_PATH}/razortranslate.h.in razortranslate.h)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/razortranslate.h
+        "#ifndef RAZOR_TRANSLATE_H\n"
+        "#include <QtCore/QLocale>\n"
+        "#include <QtCore/QTranslator>\n"
+        "#include <QtCore/QLibraryInfo>\n"
+        "class RazorTranslator {\n"
+        "public:\n"
+        "  static void translate()\n"
+        "  {\n"
+        "    QString locale = QLocale::system().name();\n"
+
+        "    QTranslator *qtTranslator = new QTranslator(qApp);\n"
+        "    qtTranslator->load(\"qt_\" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));\n"
+        "    qApp->installTranslator(qtTranslator);\n"
+
+        "    QTranslator *appTranslator = new QTranslator(qApp);\n"
+        "    appTranslator->load(QString(\"${_installDir}/${PROJECT_NAME}_%1.qm\").arg(locale));\n"
+        "    qApp->installTranslator(appTranslator);\n"
+        "  }\n"
+        "};\n"
+
+        "#define TRANSLATE_APP  RazorTranslator::translate();\n"
+        "#endif // RAZOR_TRANSLATE_H\n"
+    )
 
     # QM files **********************************************    
     file(GLOB _tsFiles ${_translationDir}/${_tsSrcFileNameWE}_*.ts)    
     qt4_add_translation(_qmFilesLocal ${_tsFiles})
-    install(FILES ${_qmFilesLocal} DESTINATION ${TRANSLATIONS_DIR})
+    install(FILES ${_qmFilesLocal} DESTINATION ${_installDir})
     set(${_qmFiles} ${_qmFilesLocal} PARENT_SCOPE)
 endfunction(razor_translate_ts)
 
