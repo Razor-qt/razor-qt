@@ -26,17 +26,7 @@
     </message>
     <message>
         <location filename="../configpaneldialog.ui" line="43"/>
-        <source>Use theme size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="116"/>
-        <source>Length:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="109"/>
-        <source>Alignment:</source>
+        <source>Use automatic sizing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -62,6 +52,16 @@
     <message>
         <location filename="../configpaneldialog.ui" line="96"/>
         <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configpaneldialog.ui" line="109"/>
+        <source>Alignment:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configpaneldialog.ui" line="116"/>
+        <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -113,18 +113,18 @@
 <context>
     <name>RazorPanel</name>
     <message>
-        <location filename="../razorpanel.cpp" line="745"/>
-        <location filename="../razorpanel.cpp" line="765"/>
+        <location filename="../razorpanel.cpp" line="761"/>
+        <location filename="../razorpanel.cpp" line="781"/>
         <source>Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="767"/>
+        <location filename="../razorpanel.cpp" line="783"/>
         <source>Configure panel...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="772"/>
+        <location filename="../razorpanel.cpp" line="788"/>
         <source>Add plugins ...</source>
         <translation type="unfinished"></translation>
     </message>
