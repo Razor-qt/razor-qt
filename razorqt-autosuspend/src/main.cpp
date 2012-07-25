@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 {
 
     RazorApplication a(argc, argv);
-
+    a.setQuitOnLastWindowClosed(false);
     TRANSLATE_APP;
 
     // To ensure only one instance of razor-autosuspend is running we register as a DBus service and refuse to run

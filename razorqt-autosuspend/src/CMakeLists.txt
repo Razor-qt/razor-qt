@@ -15,8 +15,12 @@ set ( razor-autosuspend_SRCS
         razorautosuspend.cpp
         lid.cpp
         battery.cpp
+        batteryinfo.cpp
         )
 
+set ( razor-autosuspend_UIS
+      batteryinfo.ui
+    )
 
 set ( razor-autosuspend_RSCS
         razor-autosuspend.qrc
@@ -28,9 +32,13 @@ set ( razor-autosuspend_MOCS
       trayicon.h
       lid.h
       battery.h
+      batteryinfo.h
     )
 
 QT4_WRAP_CPP(MOCS ${razor-autosuspend_MOCS})
+
+QT4_WRAP_UI( UIS ${razor-autosuspend_UIS}
+           )
 
 
 set ( ICON_FILES icons/razor-autosuspend.svg

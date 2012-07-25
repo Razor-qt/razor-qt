@@ -30,6 +30,8 @@
 #include <QList>
 #include <QDBusObjectPath>
 #include <QDebug>
+#include <QMetaObject>
+#include <QMetaProperty>
 #include <razorqt/razornotification.h>
 #include <razorqt/razorsettings.h>
 #include "../config/constants.h"
@@ -52,6 +54,10 @@ Battery::Battery()
         {
             uPowerBatteryDevice = device;
             connect(uPowerBatteryDevice, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
+            uPowerBatteryProperties = new QDBusInterface("org.freedesktop.UPower",
+                                                         objectPath.path(),
+                                                         "org.freedesktop.DBus.Properties",
+                                                         QDBusConnection::systemBus());
             uPowerBatteryChanged();
             break;
         }
@@ -76,6 +82,12 @@ void Battery::uPowerBatteryChanged()
 {
     m_onBattery =  uPower->property("OnBattery").toBool();
     m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
+
+    QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
+    props = reply.value();
+    qDebug() << "props:" << properties();
+    qDebug() << properties().size();
+
     emit batteryChanged();
 }
 
@@ -94,4 +106,9 @@ bool Battery::powerLow()
 bool Battery::onBattery()
 {
     return m_onBattery;
+}
+
+QVariantMap Battery::properties()
+{
+    return props;
 }
