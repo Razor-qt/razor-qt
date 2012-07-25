@@ -39,21 +39,19 @@ function(razor_translate_ts _qmFiles)
     
     # Parse arguments ***************************************
     set(_state "")
-    foreach (_arg ${ARGN})  
+    foreach (_arg ${ARGN})
         if (
-            (${_arg} STREQUAL "SOURCES") OR
-            (${_arg} STREQUAL "TRANSLATION_DIR") OR
-            (${_arg} STREQUAL "INSTALLATION_DIR") OR
-            (${_arg} STREQUAL "TS_SRC_FILE")        
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "SOURCES_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "TRANSLATION_DIR_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "INSTALLATION_DIR_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "TS_SRC_FILE_I_HATE_CMAKE")        
            )        
-
             set(_state ${_arg})
       
         else()
             if("${_state}" STREQUAL "SOURCES")
                 get_filename_component (__file ${_arg} ABSOLUTE)
                 set(_sources  ${_sources} ${__file})
-                #set(_sources  ${_sources} ${_arg})
  
             elseif("${_state}" STREQUAL "TRANSLATION_DIR")
                 set(_translationDir ${_arg})       
@@ -161,8 +159,8 @@ function(razor_translate_desktop2 _RESULT)
     set(_state "")
     foreach (_arg ${ARGN})  
         if (
-            (${_arg} STREQUAL "SOURCES") OR
-            (${_arg} STREQUAL "TRANSLATION_DIR")
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "SOURCES_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "TRANSLATION_DIR_I_HATE_CMAKE")
            )        
 
             set(_state ${_arg})
