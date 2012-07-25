@@ -3,6 +3,7 @@ cmake_minimum_required( VERSION 2.6 )
 
 set(PROG_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT_NAME})
 add_definitions(-DPROG_SHARE_DIR=\"${PROG_SHARE_DIR}\")
+add_definitions(-DLIB_SUFFIX=\"${LIB_SUFFIX}\")
 
 if(NOT CMAKE_BUILD_TYPE)
     set ( CMAKE_BUILD_TYPE Release )

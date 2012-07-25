@@ -3,7 +3,6 @@
  */
 RazorPanel {
     background-color:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #5C5B56, stop:0.25 #53524E, stop: 0.5 #4D4C47, stop: 0.75 #45442F, stop:1 #3C3B37);
-    height: 26px;
 }
 
 /* PositionBottom */

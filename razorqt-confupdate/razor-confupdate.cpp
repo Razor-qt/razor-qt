@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
 
-    RzUpdate rzUpdate;
+    RzUpdate *rzUpdate = new RzUpdate();
 
     bool debug = false;
     bool watch = false;
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
             {
                 if (i+1 < args.count())
                 {
-                    rzUpdate.setArgCheckFile(args.at(i+1));
+                    rzUpdate->setArgCheckFile(args.at(i+1));
                     i++;
                     continue;
                 }
@@ -144,8 +144,9 @@ int main(int argc, char **argv)
         files << args.at(i);
     }
 
-    rzUpdate.setDebug(debug);
-    rzUpdate.run(files);
+    rzUpdate->setDebug(debug);
+    rzUpdate->run(files);
+    delete rzUpdate;
 
     if (watch)
     {

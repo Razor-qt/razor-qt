@@ -73,7 +73,7 @@ XdgMenu::XdgMenu(QObject *parent) :
     QObject(parent),
     d_ptr(new XdgMenuPrivate(this))
 {
-    installTranslation("qtxdg");
+    installTranslation("libqtxdg");
 }
 
 

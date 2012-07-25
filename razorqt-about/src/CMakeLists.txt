@@ -1,38 +1,42 @@
-set(PROJECT razor-about)
-project(${PROJECT})
+project(razor-about)
 
 
-set(H_FILES
+set(razor-about_H_FILES
 )
 
-set(MOC_FILES
+set(razor-about_MOC_FILES
 )
 
-set(CPP_FILES
+set(razor-about_CPP_FILES
     main.cpp
 )
 
 
-set(UI_FILES
+set(razor-about_UI_FILES
 )
 
-set(QRC_FILES
+set(razor-about_QRC_FILES
 
 )
 
-set(LIBRARIES
+set(razor-about_LIBRARIES
     razorqt
     qtxdg
 )
 
-file(GLOB DESKTOP_FILES_IN
-    resources/*.desktop.in
-)
-
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
-razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN} )
+razor_translate_ts(razor-runner_QM_FILES 
+    SOURCES
+        ${razor-about_H_FILES}
+        ${razor-about_CPP_FILES} 
+        ${razor-about_UI_FILES}
+)
+
+razor_translate_desktop2(razor-about_DESKTOP_FILES
+    SOURCES
+        resources/razor-about.desktop.in
+)
 #************************************************
 cmake_minimum_required( VERSION 2.6 )
 
@@ -54,19 +58,27 @@ include(${QT_USE_FILE})
 
 
 set(RAZOR_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor)
-set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT})
+set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT_NAME})
 
 #************************************************
 
 
-qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
-qt4_wrap_ui(UI_HEADERS ${UI_FILES})
-qt4_add_resources(QRC_SOURCES ${QRC_FILES})
+qt4_wrap_cpp(razor-about_MOC_SOURCES ${razor-about_MOC_FILES})
+qt4_wrap_ui(razor-about_UI_HEADERS ${razor-about_UI_FILES})
+qt4_add_resources(razor-about_QRC_SOURCES ${razor-about_QRC_FILES})
 
-add_executable(${PROJECT} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES} ${DESKTOP_FILES})
-add_dependencies(${PROJECT} razorqt)
-target_link_libraries(${PROJECT}  ${LIBRARIES} ${QT_LIBRARIES})
+add_executable(${PROJECT_NAME} 
+    ${razor-about_CPP_FILES} 
+    ${razor-about_UI_FILES} 
+    ${razor-about_RESOURCES} 
+    ${razor-about_QRC_SOURCES} 
+    ${razor-about_QM_FILES} 
+    ${razor-about_MOC_SOURCES} 
+    ${razor-about_DESKTOP_FILES}
+)
+add_dependencies(${PROJECT_NAME} razorqt)
+target_link_libraries(${PROJECT_NAME}  ${razor-about_LIBRARIES} ${QT_LIBRARIES})
 
-install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES   ${CONFIG_FILES}    DESTINATION ${APP_SHARE_DIR})
-install(FILES   ${DESKTOP_FILES}   DESTINATION share/applications)
+install(FILES   ${razor-about_DESKTOP_FILES}   DESTINATION share/applications)

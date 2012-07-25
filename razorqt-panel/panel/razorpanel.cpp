@@ -161,7 +161,7 @@ void RazorPanelPrivate::init()
     mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt());
     mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
     mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
-    mUseThemeSize = mSettings->value(CFG_KEY_THEMESIZE, true).toBool();
+    mUseThemeSize = mSettings->value(CFG_KEY_AUTOSIZE, true).toBool();
     mSettings->endGroup();
 
     q->setLayout(mLayout);
@@ -647,6 +647,8 @@ void RazorPanelPrivate::updatePluginsMinSize()
  ************************************************/
 void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 {
+    Q_Q(RazorPanel);
+
     QString sectionName = pluginInfo.id();
     QStringList groups = mSettings->childGroups();
 
@@ -673,6 +675,7 @@ void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 
     realign();
     saveSettings();
+    q->adjustSize();
 }
 
 
@@ -697,6 +700,19 @@ RazorPanel::Position RazorPanel::position() const
     return d->position();
 }
 
+RazorPanel::Orientation RazorPanel::orientation() const
+{
+    Q_D(const RazorPanel);
+    if (d->mPosition == RazorPanel::PositionBottom ||
+        d->mPosition == RazorPanel::PositionTop)
+    {
+        return RazorPanel::Horizontal;
+    }
+    else
+    {
+        return RazorPanel::Vertical;
+    }
+}
 
 /************************************************
 
@@ -835,6 +851,8 @@ void RazorPanelPrivate::startMoveWidget()
  ************************************************/
 void RazorPanelPrivate::onRemovePlugin()
 {
+    Q_Q(RazorPanel);
+
     RazorPanelPlugin* plugin;
     PluginAction* a = qobject_cast<PluginAction*>(sender());
     if (a)
@@ -852,6 +870,7 @@ void RazorPanelPrivate::onRemovePlugin()
     mPlugins.removeAll(plugin);
     delete plugin;
     saveSettings();
+    q->adjustSize();
 }
 
 

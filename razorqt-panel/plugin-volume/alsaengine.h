@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Johannes Zellner <webmaster@nebulon.de>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,49 +25,44 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#ifndef ALSAENGINE_H
+#define ALSAENGINE_H
 
-#ifndef RAZORCPULOADCONFIGURATION_H
-#define RAZORCPULOADCONFIGURATION_H
+#include "audioengine.h"
 
-#include <razorqt/razorsettings.h>
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QTimer>
 
-#include <QtGui/QDialog>
+#include <alsa/asoundlib.h>
 
-class QSettings;
-class QAbstractButton;
+class AlsaDevice;
+class QSocketNotifier;
 
-namespace Ui {
-	class RazorCpuLoadConfiguration;
-}
-
-class RazorCpuLoadConfiguration : public QDialog
+class AlsaEngine : public AudioEngine
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit RazorCpuLoadConfiguration(QSettings &settings, QWidget *parent = 0);
-	~RazorCpuLoadConfiguration();
+    AlsaEngine(QObject *parent = 0);
+    static AlsaEngine *instance();
 
-private:
-	Ui::RazorCpuLoadConfiguration *ui;
-	QSettings &mSettings;
-	RazorSettingsCache mOldSettings;
+    int volumeMax(AudioDevice *device) const;
+    AlsaDevice *getDeviceByAlsaElem(snd_mixer_elem_t *elem) const;
 
-    /*
-      Fills Bar orientation combobox
-    */
-    void fillBarOrientations();
+public slots:
+    void commitDeviceVolume(AudioDevice *device);
+    void setMute(AudioDevice *device, bool state);
+    void updateDevice(AlsaDevice *device);
 
 private slots:
-	/*
-	  Saves settings in conf file.
-	*/
-	void loadSettings();
-	void dialogButtonsAction(QAbstractButton *btn);
-	void showTextChanged(bool value);
-    void updateIntervalChanged(double value);
-    void barOrientationChanged(int index);
+    void driveAlsaEventHandling(int fd);
 
+private:
+    void discoverDevices();
+    QMap<int, snd_mixer_t *> m_mixerMap;
+    static AlsaEngine *m_instance;
 };
 
-#endif // RAZORCPULOADCONFIGURATION_H
+#endif // ALSAENGINE_H

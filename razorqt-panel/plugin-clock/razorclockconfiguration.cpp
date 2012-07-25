@@ -60,6 +60,7 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     connect(ui->dateFormatCOB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
     connect(ui->timeFontB, SIGNAL(clicked()), this, SLOT(changeTimeFont()));
     connect(ui->dateFontB, SIGNAL(clicked()), this, SLOT(changeDateFont()));
+    connect(ui->firstDayOfWeekCB, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSettings()));
     updateEnableDateFont();
 }
 
@@ -167,6 +168,8 @@ void RazorClockConfiguration::loadSettings()
 
     ui->timeFontB->setText(constructFontDescription(timeFont));
     ui->dateFontB->setText(constructFontDescription(dateFont));
+
+    ui->firstDayOfWeekCB->setCurrentIndex(mSettings.value("firstDayOfWeek", Qt::Sunday).toInt() - 1);
 }
 
 void RazorClockConfiguration::saveSettings()
@@ -204,6 +207,8 @@ void RazorClockConfiguration::saveSettings()
     mSettings.setValue("dateFont/italic", dateFont.italic());
 
     mSettings.setValue("useThemeFonts", ui->useThemeFontCB->isChecked());
+
+    mSettings.setValue("firstDayOfWeek", ui->firstDayOfWeekCB->currentIndex() + 1);
 }
 
 void RazorClockConfiguration::changeTimeFont()

@@ -53,7 +53,7 @@ ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *sett
     connect(ui->comboBox_alignment, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxAlignmentIndexChanged(int)));
     connect(ui->comboBox_position, SIGNAL(currentIndexChanged(int)), this, SLOT(comboBoxPositionIndexChanged(int)));
     connect(ui->spinBox_length, SIGNAL(valueChanged(int)),this, SLOT(spinBoxWidthValueChanged(int)));
-    connect(ui->checkBox_useTheme, SIGNAL(toggled(bool)), this, SLOT(checkBoxUseThemeSizeChanged(bool)));
+    connect(ui->checkBox_useAutoSize, SIGNAL(toggled(bool)), this, SLOT(checkBoxUseAutoSizeChanged(bool)));
 }
 
 void ConfigPanelDialog::reset()
@@ -62,7 +62,7 @@ void ConfigPanelDialog::reset()
     mSize = mSettings->value(CFG_KEY_HEIGHT, mSizeDefault).toInt();
     mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
     mLength = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
-    mUseThemeSize = mSettings->value(CFG_KEY_THEMESIZE, true).toBool();
+    mUseAutoSize = mSettings->value(CFG_KEY_AUTOSIZE, true).toBool();
     mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, RazorPanel::AlignmentCenter).toInt());
     mPosition = RazorPanelPrivate::strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), RazorPanel::PositionBottom);
     mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
@@ -73,7 +73,7 @@ void ConfigPanelDialog::reset()
     ui->spinBox_length->setValue(mLength);
     ui->comboBox_widthType->setCurrentIndex(mWidthInPercents ? 0 : 1);
     ui->comboBox_alignment->setCurrentIndex(mAlignment + 1);
-    ui->checkBox_useTheme->setChecked(mUseThemeSize);
+    ui->checkBox_useAutoSize->setChecked(mUseAutoSize);
 
     if (ui->comboBox_position->count() == 0)
     {
@@ -104,9 +104,9 @@ void ConfigPanelDialog::reset()
             ui->comboBox_position->setCurrentIndex(ix);
     }
 
-    // checkBoxUseThemeSizeChanged emits the configChanged signal
-    // if mUseThemeSize is true it disables the size spinbox
-    checkBoxUseThemeSizeChanged(mUseThemeSize);
+    // checkBox_useAutoSizeChanged emits the configChanged signal
+    // if mUseAutoSize is true it disables the size spinbox
+    checkBoxUseAutoSizeChanged(mUseAutoSize);
     emit positionChanged(mScreenNum, mPosition);
 }
 
@@ -123,7 +123,7 @@ void ConfigPanelDialog::save()
     mSettings->setValue(CFG_KEY_PERCENT, mWidthInPercents);
     mSettings->setValue(CFG_KEY_HEIGHT, mSize);
     mSettings->setValue(CFG_KEY_ALIGNMENT, mAlignment);
-    mSettings->setValue(CFG_KEY_THEMESIZE, mUseThemeSize);
+    mSettings->setValue(CFG_KEY_AUTOSIZE, mUseAutoSize);
     mSettings->setValue(CFG_KEY_POSITION, RazorPanelPrivate::positionToStr(mPosition));
     mSettings->setValue(CFG_KEY_SCREENNUM, mScreenNum);
     mSettings->endGroup();
@@ -144,7 +144,7 @@ void ConfigPanelDialog::spinBoxWidthValueChanged(int q)
     else
        ui->comboBox_alignment->setEnabled(false);
 
-    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseThemeSize);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseAutoSize);
 }
 
 void ConfigPanelDialog::comboBoxWidthTypeIndexChanged(int q)
@@ -168,7 +168,7 @@ void ConfigPanelDialog::comboBoxWidthTypeIndexChanged(int q)
 void ConfigPanelDialog::comboBoxAlignmentIndexChanged(int q)
 {
     mAlignment = RazorPanel::Alignment(q - 1);
-    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseThemeSize);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseAutoSize);
 }
 
 void ConfigPanelDialog::comboBoxPositionIndexChanged(int q)
@@ -182,14 +182,14 @@ void ConfigPanelDialog::comboBoxPositionIndexChanged(int q)
 void ConfigPanelDialog::spinBoxHeightValueChanged(int q)
 {
     mSize=q;
-    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseThemeSize);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseAutoSize);
 }
 
-void ConfigPanelDialog::checkBoxUseThemeSizeChanged(bool state)
+void ConfigPanelDialog::checkBoxUseAutoSizeChanged(bool state)
 {
-    mUseThemeSize = state;
+    mUseAutoSize = state;
 
-    if (mUseThemeSize)
+    if (mUseAutoSize)
     {
         ui->label_size->setEnabled(false);
         ui->spinBox_size->setEnabled(false);
@@ -201,10 +201,10 @@ void ConfigPanelDialog::checkBoxUseThemeSizeChanged(bool state)
         ui->spinBox_size->setEnabled(true);
         ui->label_px->setEnabled(true);
 
-        // If the useTheme checkbox is unchecked, the size spinbox value
+        // If the useAutoSize checkbox is unchecked, the size spinbox value
         // should be retrieved
         mSize = ui->spinBox_size->value();
     }
 
-    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseThemeSize);
+    emit configChanged(mSize, mLength, mWidthInPercents, mAlignment, mUseAutoSize);
 }

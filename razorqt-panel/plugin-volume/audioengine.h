@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Johannes Zellner <webmaster@nebulon.de>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,49 +25,37 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#ifndef AUDIOENGINE_H
+#define AUDIOENGINE_H
 
-#ifndef RAZORCPULOADCONFIGURATION_H
-#define RAZORCPULOADCONFIGURATION_H
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
 
-#include <razorqt/razorsettings.h>
+class AudioDevice;
 
-#include <QtGui/QDialog>
-
-class QSettings;
-class QAbstractButton;
-
-namespace Ui {
-	class RazorCpuLoadConfiguration;
-}
-
-class RazorCpuLoadConfiguration : public QDialog
+class AudioEngine : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit RazorCpuLoadConfiguration(QSettings &settings, QWidget *parent = 0);
-	~RazorCpuLoadConfiguration();
+    AudioEngine(QObject *parent = 0);
+    ~AudioEngine();
 
-private:
-	Ui::RazorCpuLoadConfiguration *ui;
-	QSettings &mSettings;
-	RazorSettingsCache mOldSettings;
+    const QList<AudioDevice *> &sinks() const { return m_sinks; }
+    virtual int volumeMax(AudioDevice *device) const = 0;
 
-    /*
-      Fills Bar orientation combobox
-    */
-    void fillBarOrientations();
+public slots:
+    virtual void commitDeviceVolume(AudioDevice *device) = 0;
+    virtual void setMute(AudioDevice *device, bool state) = 0;
+    void mute(AudioDevice *device);
+    void unmute(AudioDevice *device);
 
-private slots:
-	/*
-	  Saves settings in conf file.
-	*/
-	void loadSettings();
-	void dialogButtonsAction(QAbstractButton *btn);
-	void showTextChanged(bool value);
-    void updateIntervalChanged(double value);
-    void barOrientationChanged(int index);
+signals:
+    void sinkListChanged();
 
+protected:
+    QList<AudioDevice*> m_sinks;
 };
 
-#endif // RAZORCPULOADCONFIGURATION_H
+#endif // AUDIOENGINE_H

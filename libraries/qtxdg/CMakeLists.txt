@@ -13,7 +13,7 @@ find_package(Qt4 REQUIRED)
 find_package(LibMagic REQUIRED)
 
 
-set(QTXDG_PUBLIC_HDRS
+set(libqtxdg_PUBLIC_H_FILES
     xdgaction.h
     xdgdesktopfile.h
     xdgdirs.h
@@ -25,7 +25,7 @@ set(QTXDG_PUBLIC_HDRS
     xdgautostart.h
 )
 
-set(QTXDG_PRIVATE_HDRS
+set(libqtxdg_PRIVATE_H_FILES
     xdgmenuapplinkprocessor.h
     xdgmenulayoutprocessor.h
     xdgmenu_p.h
@@ -34,7 +34,7 @@ set(QTXDG_PRIVATE_HDRS
     qiconfix/qiconloader_p.h
 )
 
-set(QTXDG_SRCS
+set(libqtxdg_CPP_FILES
     xdgaction.cpp
     xdgdesktopfile.cpp
     xdgdirs.cpp
@@ -51,7 +51,7 @@ set(QTXDG_SRCS
     qiconfix/qiconloader.cpp
 )
 
-set(QTXDG_MOCS
+set(libqtxdg_MOCS
     xdgaction.h
     xdgmenuapplinkprocessor.h
     xdgmenu.h
@@ -65,9 +65,16 @@ set(QT_USE_QTXML TRUE)
 
 
 # Translations **********************************
-file(GLOB QTXDG_TS_FILES
-    translations/*.ts
+# QtXdg is an independent library, so I do not use razor_translate_ts
+include(qrxdgTranslate)
+qtxdg_translate_ts(libqtxdg_QM_FILES 
+    SOURCES
+        ${libqtxdg_PUBLIC_H_FILES}
+        ${libqtxdg_PRIVATE_H_FILES}
+        ${libqtxdg_CPP_FILES} 
+        ${libqtxdg_UI_FILES}
 )
+
 #************************************************
 
 
@@ -77,18 +84,23 @@ cmake_minimum_required( VERSION 2.6 )
 include(RazorLibSuffix)
 include(${QT_USE_FILE})
 
-QT4_WRAP_CPP(QTXDG_CXX ${QTXDG_MOCS})
-qt4_add_translation(QTXDG_QM_FILES ${QTXDG_TS_FILES})
+QT4_WRAP_CPP(libqtxdg_CXX_FILES ${libqtxdg_MOCS})
 
 if (NOT CMAKE_BUILD_TYPE)
     set ( CMAKE_BUILD_TYPE Release )
 endif (NOT CMAKE_BUILD_TYPE)
 
 
-set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/qtxdg)
+set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/libqtxdg)
 add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
-add_library(qtxdg SHARED ${QTXDG_PUBLIC_HDRS} ${QTXDG_PRIVATE_HDRS} ${QTXDG_SRCS} ${QTXDG_CXX} ${QTXDG_QM_FILES})
+add_library(qtxdg SHARED 
+    ${libqtxdg_PUBLIC_H_FILES} 
+    ${libqtxdg_PRIVATE_H_FILES} 
+    ${libqtxdg_CPP_FILES} 
+    ${libqtxdg_CXX_FILES} 
+    ${libqtxdg_QM_FILES}
+)
 target_link_libraries(qtxdg  ${QT_LIBRARIES} ${LIBMAGIC_LIBRARY})
 
 set_target_properties(qtxdg PROPERTIES
@@ -97,8 +109,7 @@ set_target_properties(qtxdg PROPERTIES
 )
 
 install(TARGETS qtxdg DESTINATION lib${LIB_SUFFIX})
-install(FILES ${QTXDG_PUBLIC_HDRS} DESTINATION include/qtxdg)
-install(FILES ${QTXDG_QM_FILES}    DESTINATION ${APP_SHARE_DIR})
+install(FILES ${libqtxdg_PUBLIC_H_FILES} DESTINATION include/qtxdg)
 
 include(create_pkgconfig_file)
 create_pkgconfig_file(qtxdg "QtXdg, a Qt implementation of XDG standards")

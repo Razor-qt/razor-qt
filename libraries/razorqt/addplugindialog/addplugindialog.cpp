@@ -129,6 +129,19 @@ QSize HtmlDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
 /************************************************
 
  ************************************************/
+bool pluginDescriptionLessThan(const RazorPluginInfo &p1, const RazorPluginInfo &p2)
+{
+    int cmp = QString::compare(p1.name(), p2.name());
+    if (cmp != 0)
+        return cmp < 0;
+
+    return p1.comment() < p2.comment();
+}
+
+
+/************************************************
+
+ ************************************************/
 AddPluginDialog::AddPluginDialog(const QStringList& desktopFilesDirs,
                                  const QString &serviceType,
                                  const QString &nameFilter,
@@ -138,6 +151,7 @@ AddPluginDialog::AddPluginDialog(const QStringList& desktopFilesDirs,
     mTimerId(0)
 {
     mPlugins = RazorPluginInfo::search(desktopFilesDirs, serviceType, nameFilter);
+    qSort(mPlugins.begin(), mPlugins.end(), pluginDescriptionLessThan);
     init();
 }
 

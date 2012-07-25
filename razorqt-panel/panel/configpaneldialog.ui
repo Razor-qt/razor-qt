@@ -38,9 +38,9 @@
        </widget>
       </item>
       <item row="0" column="0" colspan="4">
-       <widget class="QCheckBox" name="checkBox_useTheme">
+       <widget class="QCheckBox" name="checkBox_useAutoSize">
         <property name="text">
-         <string>Use theme size</string>
+         <string>Use automatic sizing</string>
         </property>
        </widget>
       </item>

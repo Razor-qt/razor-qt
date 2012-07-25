@@ -90,23 +90,51 @@ void GlobalAccel::bindDefault()
     // clear existing
     mapping.clear();
 
+#define GET_VALUE_BOOL(a) m_shortcutSettings->value(a).toBool()
+#define GET_VALUE_STRING(a) m_shortcutSettings->value(a).toString()
+#define GET_VALUE_LIST(a) m_shortcutSettings->value(a).toList()
+
     foreach(const QString & group , m_shortcutSettings->childGroups())
     {
         m_shortcutSettings->beginGroup(group);
 
-        const QString & cmd = m_shortcutSettings->value("Exec").toString();
-        bool enabled = m_shortcutSettings->value("Enabled").toBool();
+		// shortcut is not enabled
+        if ( ! GET_VALUE_BOOL("Enabled") )
+		{
+			continue;
+		}
 
-        // bind shortcut only when it's enabled by user
-        if (enabled && ! cmd.isEmpty())
-        {
-            mapping.insert(QKeySequence(group), new CommandShortcut (cmd));
+		const QString & type = GET_VALUE_STRING("Type");
+		// if shortcut is dbus call
+		if ( type.toLower() == "dbus" )
+		{
+			mapping.insert(QKeySequence(group), new DBusShortcut (
+						GET_VALUE_STRING("Destination"),
+						GET_VALUE_STRING("Path"),
+						GET_VALUE_STRING("Interface"),
+						GET_VALUE_STRING("Method"),
+						GET_VALUE_LIST("Parameter")
+						));
 
-            // create shortcut
-            QxtGlobalShortcut *sc = new QxtGlobalShortcut(this);
-            sc->setShortcut(QKeySequence (group));
-            connect(sc , SIGNAL(activated()) , SLOT(launchApp()));
-        }
+			QxtGlobalShortcut *sc = new QxtGlobalShortcut(this);
+			sc->setShortcut(QKeySequence (group));
+			connect(sc , SIGNAL(activated()) , SLOT(launchApp()));
+		}
+		// otherwise it "should" be a command execution for now
+		else
+		{
+			const QString & cmd = GET_VALUE_STRING("Exec");
+			// command is not empty
+			if ( ! cmd.isEmpty() )
+			{
+				mapping.insert(QKeySequence(group), new CommandShortcut (cmd));
+
+				// create shortcut binding
+				QxtGlobalShortcut *sc = new QxtGlobalShortcut(this);
+				sc->setShortcut(QKeySequence (group));
+				connect(sc , SIGNAL(activated()) , SLOT(launchApp()));
+			}
+		}
 
         m_shortcutSettings->endGroup();
     }

@@ -5,7 +5,7 @@ set(PROJECT razor-panel )
 set(QT_USE_QTXML 1)
 set(QT_USE_QTDBUS 1)
 
-set(HEADERS
+set(razor-panel_H_FILES
     razorpanel.h
     razorpanel_p.h
     razorpanelplugin.h
@@ -16,7 +16,7 @@ set(HEADERS
     configpaneldialog.h
 )
 
-set(SOURCES
+set(razor-panel_CPP_FILES
     main.cpp
     razorpanel.cpp
     razorpanelplugin.cpp
@@ -47,11 +47,11 @@ set(RESOURCES
 
 )
 
-set ( razorqt_UIS
+set (razor-panel_UI_FILES
     configpaneldialog.ui
 )
 
-QT4_WRAP_UI(UI_HEADERS ${razorqt_UIS})
+QT4_WRAP_UI(UI_HEADERS ${razor-panel_UI_FILES})
 
 add_definitions(-DDEFULT_PANEL_PLUGINS=\"MainMenu,Quicklaunch,TaskBar,Tray,Clock\")
 
@@ -92,13 +92,23 @@ include(${QT_USE_FILE})
 qt4_wrap_cpp(MOC_SOURCES ${MOCS})
 qt4_wrap_ui(UI_HEADERS ${FORMS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
-razor_translate(QM_FILES)
+
+# Translations **********************************
+include(RazorTranslate)
+razor_translate_ts(razor-runner_QM_FILES 
+    SOURCES
+        ${razor-panel_H_FILES}
+        ${razor-panel_CPP_FILES} 
+        ${razor-panel_UI_FILES}
+)
+#************************************************
+
 
 set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
 add_definitions(-DPLUGIN_DIR=\"${PLUGIN_DIR}\")
 message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 
-add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UI_HEADERS})
+add_executable(${PROJECT} ${razor-panel_H_FILES} ${razor-panel_CPP_FILES} ${MOC_SOURCES} ${razor-runner_QM_FILES} ${QRC_SOURCES} ${UI_HEADERS})
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)

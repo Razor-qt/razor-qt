@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Johannes Zellner <webmaster@nebulon.de>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,49 +25,40 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#ifndef ALSADEVICE_H
+#define ALSADEVICE_H
 
-#ifndef RAZORCPULOADCONFIGURATION_H
-#define RAZORCPULOADCONFIGURATION_H
+#include "audiodevice.h"
 
-#include <razorqt/razorsettings.h>
+#include <alsa/asoundlib.h>
 
-#include <QtGui/QDialog>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 
-class QSettings;
-class QAbstractButton;
-
-namespace Ui {
-	class RazorCpuLoadConfiguration;
-}
-
-class RazorCpuLoadConfiguration : public QDialog
+class AlsaDevice : public AudioDevice
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit RazorCpuLoadConfiguration(QSettings &settings, QWidget *parent = 0);
-	~RazorCpuLoadConfiguration();
+    AlsaDevice(AudioDeviceType t, AudioEngine *engine, QObject *parent = 0);
+
+    snd_mixer_t *mixer() const { return m_mixer; }
+    snd_mixer_elem_t *element() const { return m_elem; }
+    const QString &cardName() const { return m_cardName; }
+
+    void setMixer(snd_mixer_t *mixer);
+    void setElement(snd_mixer_elem_t *elem);
+    void setCardName(const QString &cardName);
+
+signals:
+    void mixerChanged();
+    void elementChanged();
+    void cardNameChanged();
 
 private:
-	Ui::RazorCpuLoadConfiguration *ui;
-	QSettings &mSettings;
-	RazorSettingsCache mOldSettings;
-
-    /*
-      Fills Bar orientation combobox
-    */
-    void fillBarOrientations();
-
-private slots:
-	/*
-	  Saves settings in conf file.
-	*/
-	void loadSettings();
-	void dialogButtonsAction(QAbstractButton *btn);
-	void showTextChanged(bool value);
-    void updateIntervalChanged(double value);
-    void barOrientationChanged(int index);
-
+    snd_mixer_t *m_mixer;
+    snd_mixer_elem_t *m_elem;
+    QString m_cardName;
 };
 
-#endif // RAZORCPULOADCONFIGURATION_H
+#endif // ALSADEVICE_H
