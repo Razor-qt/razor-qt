@@ -129,7 +129,7 @@ TrayIcon {
 }
 
 #MainMenu > QToolButton {
-    margin-left: 4px;
+    margin-left: 2px;
     margin-right: 2px;
     border: 1px solid #E0875A;
     border-radius: 3px;
