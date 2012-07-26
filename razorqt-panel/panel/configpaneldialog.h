@@ -57,6 +57,8 @@ public:
     explicit ConfigPanelDialog(int hDefault, int wMax, RazorSettings *settings, QWidget *parent = 0);
     ~ConfigPanelDialog();
 
+    void setSizeLimits(const int minimum, const int maximum);
+
 signals:
     void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool mUseAutoSize);
     void positionChanged(int screen, RazorPanel::Position);

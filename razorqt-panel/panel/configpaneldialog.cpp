@@ -56,6 +56,12 @@ ConfigPanelDialog::ConfigPanelDialog(int hDefault, int wMax, RazorSettings *sett
     connect(ui->checkBox_useAutoSize, SIGNAL(toggled(bool)), this, SLOT(checkBoxUseAutoSizeChanged(bool)));
 }
 
+void ConfigPanelDialog::setSizeLimits(const int minimum, const int maximum)
+{
+    ui->spinBox_size->setMinimum(minimum);
+    ui->spinBox_size->setMaximum(maximum);
+}
+
 void ConfigPanelDialog::reset()
 {
     mSettings->beginGroup(CFG_PANEL_GROUP);
