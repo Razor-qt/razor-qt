@@ -581,6 +581,7 @@ void RazorPanelPrivate::showConfigPanelDialog()
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     RazorConfigDialog* dlg = new RazorConfigDialog(tr("Configure panel"), mSettings, q);
     ConfigPanelDialog* page = new ConfigPanelDialog (PANEL_DEFAULT_SIZE, screen.width(), mSettings, dlg);
+    page->setSizeLimits(PANEL_MINIMUM_SIZE, PANEL_MAXIMUM_SIZE);
     dlg->addPage(page, tr("Configure panel"));
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -607,7 +608,6 @@ void RazorPanelPrivate::updateSize(int height, int width, bool percent, RazorPan
     updatePluginsMinSize();
     realign();
 }
-
 
 /************************************************
 
