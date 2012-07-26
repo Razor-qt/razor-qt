@@ -52,6 +52,7 @@ function(razor_translate_ts _qmFiles)
             if("${_state}" STREQUAL "SOURCES")
                 get_filename_component (__file ${_arg} ABSOLUTE)
                 set(_sources  ${_sources} ${__file})
+                set(_sourcesSpace  "${_sourcesSpace} ${__file}")
  
             elseif("${_state}" STREQUAL "TRANSLATION_DIR")
                 set(_translationDir ${_arg})       
@@ -82,19 +83,22 @@ function(razor_translate_ts _qmFiles)
     get_filename_component (_tsSrcFile  ${_tsSrcFile} ABSOLUTE)
     get_filename_component (_tsSrcFileName  ${_tsSrcFile} NAME)
     get_filename_component (_tsSrcFileNameWE  ${_tsSrcFile} NAME_WE)
-    
-#    file(WRITE ${_translationDir}/update.sh "for f in *.ts; do\n  ${QT_LUPDATE_EXECUTABLE} -no-obsolete \\\n")
-#    foreach(_f ${_sources})
-#        file(APPEND ${_translationDir}/update.sh "  ${_f} \\\n")
-#    endforeach()
-#    file(APPEND ${_translationDir}/update.sh "  -ts $f \ndone")
-
+      
     # TS.SRC file *******************************************    
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/updateTsFile.sh
+        "#/bin/sh\n"
+        "\n"
+        "mkdir -p ${_translationDir} 2>/dev/null\n"
+        "cd ${_translationDir} && "
+        "${QT_LUPDATE_EXECUTABLE} -target-language en_US ${_sourcesSpace} -ts ${_tsSrcFile}.ts &&"
+        "mv ${_tsSrcFile}.ts ${_tsSrcFile}\n"
+        "grep -q 'source' '${_tsSrcFile}' || rm '${_tsSrcFile}'\n"
+    )
+
     add_custom_target(Update_${_tsSrcFileName}
-        COMMAND ${QT_LUPDATE_EXECUTABLE} -target-language en_US ${_sources} -ts ${_tsSrcFile}.ts
-        COMMAND mv ${_tsSrcFile}.ts ${_tsSrcFile}
+        COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/updateTsFile.sh
         DEPENDS ${_sources}
-        WORKING_DIRECTORY ${_translationDir}
+        VERBATIM
     )
   
     add_dependencies(UpdateTsFiles Update_${_tsSrcFileName})
