@@ -74,12 +74,11 @@ RazorPanelPlugin > QToolButton:hover{
  * TaskBar
  */
 #TaskBar {
-    margin-left: 1px;
-    margin-right: 1px;
+     margin-right: 2px;
+     margin-left: 2px;
 }
 
 #TaskBar QToolButton{
-     margin-right: 2px;
      border: 1px solid #4a4a4a;
      qproperty-iconSize: 16px;
 }
