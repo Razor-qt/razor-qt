@@ -46,9 +46,6 @@
       </item>
       <item row="1" column="1" colspan="2">
        <widget class="QSpinBox" name="spinBox_size">
-        <property name="minimum">
-         <number>32</number>
-        </property>
        </widget>
       </item>
      </layout>
