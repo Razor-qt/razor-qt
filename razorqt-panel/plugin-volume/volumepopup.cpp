@@ -32,7 +32,7 @@
 #include <qtxdg/xdgicon.h>
 
 #include <QtGui/QSlider>
-#include <QtGui/QToolButton>
+#include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
@@ -44,21 +44,32 @@ VolumePopup::VolumePopup(QWidget* parent):
     m_anchor(Qt::TopLeftCorner),
     m_device(0)
 {
-    m_volumeSlider = new QSlider(Qt::Vertical, this);
-    m_mixerButton = new QToolButton(this);
-    m_mixerButton->setIcon(XdgIcon::fromTheme(QStringList() << "kmix" << "multimedia-volume-control"));
+    m_mixerButton = new QPushButton(this);
+    m_mixerButton->setToolTip("Launch mixer");
+    m_mixerButton->setText("Mixer");
+    m_mixerButton->setFlat(true);
 
+    m_volumeSlider = new QSlider(Qt::Vertical, this);
+    m_volumeSlider->setTickPosition(QSlider::TicksBothSides);
+    m_volumeSlider->setTickInterval(10);
     m_volumeSlider->setSingleStep(m_volumeSlider->pageStep());
 
-    QVBoxLayout *l = new QVBoxLayout(this);
-    l->setSpacing(0);
-    l->setMargin(2);
+    m_muteToggleButton = new QPushButton(this);
+    m_muteToggleButton->setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-muted"));
+    m_muteToggleButton->setCheckable(true);
+    m_muteToggleButton->setFlat(true);
 
+    QVBoxLayout *l = new QVBoxLayout(this);
+    l->setSpacing(2);
+    l->setMargin(0);
+
+    l->addWidget(m_mixerButton, 0, Qt::AlignHCenter);
     l->addWidget(m_volumeSlider, 0, Qt::AlignHCenter);
-    l->addWidget(m_mixerButton);
+    l->addWidget(m_muteToggleButton, 0, Qt::AlignHCenter);
 
     connect(m_mixerButton, SIGNAL(clicked()), this, SIGNAL(launchMixer()));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+    connect(m_muteToggleButton, SIGNAL(clicked()), this, SLOT(handleMuteToggleClicked()));
 }
 
 void VolumePopup::enterEvent(QEvent *event)
@@ -77,6 +88,14 @@ void VolumePopup::handleSliderValueChanged(int value)
         return;
 
     m_device->setVolume(value);
+}
+
+void VolumePopup::handleMuteToggleClicked()
+{
+    if (!m_device)
+        return;
+
+    m_device->toggleMute();
 }
 
 void VolumePopup::resizeEvent(QResizeEvent *event)
@@ -111,8 +130,10 @@ void VolumePopup::setDevice(AudioDevice *device)
 
     m_device = device;
     m_volumeSlider->setValue(m_device->volume());
+    m_muteToggleButton->setChecked(m_device->mute());
 
     connect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
+    connect(m_device, SIGNAL(muteChanged(bool)), m_muteToggleButton, SLOT(setChecked(bool)));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
 
     emit deviceChanged();

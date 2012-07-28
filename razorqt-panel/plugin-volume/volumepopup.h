@@ -31,7 +31,7 @@
 #include <QtGui/QWidget>
 
 class QSlider;
-class QToolButton;
+class QPushButton;
 class AudioDevice;
 
 class VolumePopup : public QWidget
@@ -63,12 +63,14 @@ protected:
 
 private slots:
     void handleSliderValueChanged(int value);
+    void handleMuteToggleClicked();
 
 private:
     void realign();
 
     QSlider *m_volumeSlider;
-    QToolButton *m_mixerButton;
+    QPushButton *m_mixerButton;
+    QPushButton *m_muteToggleButton;
     QPoint m_pos;
     Qt::Corner m_anchor;
     AudioDevice *m_device;
