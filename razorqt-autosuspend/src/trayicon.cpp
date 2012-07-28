@@ -26,7 +26,6 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "trayicon.h"
-#include "batteryinfo.h"
 
 #include <QIcon>
 #include <QDebug>
@@ -37,8 +36,6 @@ TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent)
     qDebug() << "themeName: " << QIcon::themeName();
     setUpstatusIcons();
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(showStatus(QSystemTrayIcon::ActivationReason)));
-
-
 }
 
 TrayIcon::~TrayIcon()
@@ -69,6 +66,7 @@ void TrayIcon::setStatus(double level, bool onBattery, QVariantMap batteryProper
     }
 
     this->batteryProperties = batteryProperties;
+    batteryInfo.updateInfo(batteryProperties);
 }
 
 void TrayIcon::setUpstatusIcons()
@@ -102,6 +100,13 @@ void TrayIcon::showStatus(ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
     {
-        BatteryInfo(batteryProperties).exec();
+        if (batteryInfo.isVisible())
+        {
+            batteryInfo.close();
+        }
+        else
+        {
+            batteryInfo.open();
+        }
     }
 }

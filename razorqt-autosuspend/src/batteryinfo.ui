@@ -45,7 +45,7 @@
     <item row="4" column="0">
      <widget class="QLabel" name="energyCaption">
       <property name="text">
-       <string>Energy:</string>
+       <string>Energy Now:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

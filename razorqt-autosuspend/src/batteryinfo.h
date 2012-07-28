@@ -13,8 +13,9 @@ class BatteryInfo : public QDialog
     Q_OBJECT
     
 public:
-    explicit BatteryInfo(QVariantMap props, QWidget *parent = 0);
+    explicit BatteryInfo(QWidget *parent = 0);
     ~BatteryInfo();
+    void updateInfo(QVariantMap batteryProperties);
     static QString state2string(uint state);
 
 private:

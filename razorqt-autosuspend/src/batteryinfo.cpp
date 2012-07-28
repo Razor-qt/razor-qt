@@ -6,41 +6,48 @@
 #include <QDateTime>
 #include <QDebug>
 
-BatteryInfo::BatteryInfo(QVariantMap props, QWidget *parent) :
+BatteryInfo::BatteryInfo(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::BatteryInfo)
 {
     ui->setupUi(this);
+    updateInfo(QVariantMap());
+}
 
-    qDebug() << "Ind i BatteryInfo, props:" << props;
+BatteryInfo::~BatteryInfo()
+{
+    delete ui;
+}
 
+void BatteryInfo::updateInfo(QVariantMap batteryProperties)
+{
     QDateTime UpdateTime;
-    UpdateTime.setTime_t(props.value("UpdateTime").toULongLong());
+    UpdateTime.setTime_t(batteryProperties.value("UpdateTime").toULongLong());
     ui->updatedValue->setText(UpdateTime.toString("hh:mm:ss"));
 
-    QString state = state2string(props.value("State", 0).toUInt());
+    QString state = state2string(batteryProperties.value("State", 0).toUInt());
     ui->stateValue->setText(state);
 
     QString energyFullDesign("%1 Wh");
-    double efd = props.value("EnergyFullDesign").toDouble();
+    double efd = batteryProperties.value("EnergyFullDesign").toDouble();
     ui->energyFullDesignValue->setText(energyFullDesign.arg(efd, 0, 'f', 2));
 
     QString energyFull("%1 Wh (%2 %)");
-    double ef = props.value("EnergyFull").toDouble();
-    double capacity = props.value("Capacity").toDouble();
+    double ef = batteryProperties.value("EnergyFull").toDouble();
+    double capacity = batteryProperties.value("Capacity").toDouble();
     ui->energyFullValue->setText(energyFull.arg(ef, 0, 'f', 2).arg(capacity, 0, 'f', 1));
 
     QString energy("%1 Wh (%2 %)");
-    double e = props.value("Energy").toDouble();
-    double percentage = props.value("Percentage").toDouble();
+    double e = batteryProperties.value("Energy").toDouble();
+    double percentage = batteryProperties.value("Percentage").toDouble();
     ui->energyValue->setText(energy.arg(e, 0, 'f', 2).arg(percentage, 0, 'f', 1));
 
-    ui->energyRateValue->setText(QString::number(props.value("EnergyRate").toDouble(), 'f', 2) + " W");
+    ui->energyRateValue->setText(QString::number(batteryProperties.value("EnergyRate").toDouble(), 'f', 2) + " W");
 
 
-    ui->modelValue->setText(props.value("Model").toString());
+    ui->modelValue->setText(batteryProperties.value("Model").toString());
 
-    int technology = props.value("Technology", 0).toInt();
+    int technology = batteryProperties.value("Technology", 0).toInt();
     switch (technology)
     {
     case 1:  ui->technologyValue->setText(tr("Lithium ion")); break;
@@ -52,14 +59,10 @@ BatteryInfo::BatteryInfo(QVariantMap props, QWidget *parent) :
     default: ui->technologyValue->setText(tr("Unknown")); break;
     }
 
-    ui->voltageValue->setText(QString::number(props.value("Voltage").toDouble(), 'f', 2) + " V");
+    ui->voltageValue->setText(QString::number(batteryProperties.value("Voltage").toDouble(), 'f', 2) + " V");
 
 }
 
-BatteryInfo::~BatteryInfo()
-{
-    delete ui;
-}
 
 QString BatteryInfo::state2string(uint state)
 {
