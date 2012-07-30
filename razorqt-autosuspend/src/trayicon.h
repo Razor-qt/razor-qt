@@ -31,7 +31,8 @@
 #include <QSystemTrayIcon>
 #include <QWidget>
 #include <QIcon>
-
+#include <QVariantMap>
+#include "batteryinfo.h"
 
 class TrayIcon : public QSystemTrayIcon
 {
@@ -40,12 +41,18 @@ class TrayIcon : public QSystemTrayIcon
 public:
     explicit TrayIcon(QWidget *parent = 0);
     ~TrayIcon();
-    void setStatus(double level, bool onBattery);
+    void setStatus(double level, bool onBattery, QVariantMap batteryProperties);
 
 private:
     void setUpstatusIcons();
     QIcon statusIconsCharging[11];
     QIcon statusIconsDecharging[11];
+    QVariantMap batteryProperties;
+    BatteryInfo batteryInfo;
+
+private slots:
+    void showStatus(QSystemTrayIcon::ActivationReason reason);
+
 };
 
 #endif // MAINWINDOW_H

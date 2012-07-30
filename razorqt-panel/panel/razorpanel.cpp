@@ -28,6 +28,7 @@
 
 #include "razorpanel.h"
 #include "razorpanel_p.h"
+#include "razorpanellimits.h"
 #include "razorpanelplugin.h"
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
@@ -157,11 +158,11 @@ void RazorPanelPrivate::init()
     mSettings->beginGroup(CFG_PANEL_GROUP);
     mPosition = strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), RazorPanel::PositionBottom);
     mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
-    mHeight = mSettings->value(CFG_KEY_HEIGHT, q->sizeHint().height()).toInt();
+    mHeight = mSettings->value(CFG_KEY_HEIGHT, PANEL_DEFAULT_SIZE).toInt();
     mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt());
     mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
     mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
-    mUseThemeSize = mSettings->value(CFG_KEY_THEMESIZE, true).toBool();
+    mUseThemeSize = mSettings->value(CFG_KEY_AUTOSIZE, true).toBool();
     mSettings->endGroup();
 
     q->setLayout(mLayout);
@@ -579,7 +580,8 @@ void RazorPanelPrivate::showConfigPanelDialog()
     Q_Q(RazorPanel);
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
     RazorConfigDialog* dlg = new RazorConfigDialog(tr("Configure panel"), mSettings, q);
-    ConfigPanelDialog* page = new ConfigPanelDialog (mHeight, screen.width(), mSettings, dlg);
+    ConfigPanelDialog* page = new ConfigPanelDialog (PANEL_DEFAULT_SIZE, screen.width(), mSettings, dlg);
+    page->setSizeLimits(PANEL_MINIMUM_SIZE, PANEL_MAXIMUM_SIZE);
     dlg->addPage(page, tr("Configure panel"));
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -606,7 +608,6 @@ void RazorPanelPrivate::updateSize(int height, int width, bool percent, RazorPan
     updatePluginsMinSize();
     realign();
 }
-
 
 /************************************************
 
@@ -647,6 +648,8 @@ void RazorPanelPrivate::updatePluginsMinSize()
  ************************************************/
 void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 {
+    Q_Q(RazorPanel);
+
     QString sectionName = pluginInfo.id();
     QStringList groups = mSettings->childGroups();
 
@@ -673,6 +676,7 @@ void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
 
     realign();
     saveSettings();
+    q->adjustSize();
 }
 
 
@@ -697,6 +701,19 @@ RazorPanel::Position RazorPanel::position() const
     return d->position();
 }
 
+RazorPanel::Orientation RazorPanel::orientation() const
+{
+    Q_D(const RazorPanel);
+    if (d->mPosition == RazorPanel::PositionBottom ||
+        d->mPosition == RazorPanel::PositionTop)
+    {
+        return RazorPanel::Horizontal;
+    }
+    else
+    {
+        return RazorPanel::Vertical;
+    }
+}
 
 /************************************************
 
@@ -835,6 +852,8 @@ void RazorPanelPrivate::startMoveWidget()
  ************************************************/
 void RazorPanelPrivate::onRemovePlugin()
 {
+    Q_Q(RazorPanel);
+
     RazorPanelPlugin* plugin;
     PluginAction* a = qobject_cast<PluginAction*>(sender());
     if (a)
@@ -852,6 +871,7 @@ void RazorPanelPrivate::onRemovePlugin()
     mPlugins.removeAll(plugin);
     delete plugin;
     saveSettings();
+    q->adjustSize();
 }
 
 

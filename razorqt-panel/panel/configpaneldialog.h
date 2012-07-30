@@ -40,7 +40,7 @@
 #define CFG_KEY_WIDTH       "width"
 #define CFG_KEY_PERCENT     "width-percent"
 #define CFG_KEY_ALIGNMENT   "alignment"
-#define CFG_KEY_THEMESIZE   "theme-size"
+#define CFG_KEY_AUTOSIZE    "auto-size"
 
 #define CFG_FULLKEY_PLUGINS "panel/plugins"
 
@@ -57,8 +57,10 @@ public:
     explicit ConfigPanelDialog(int hDefault, int wMax, RazorSettings *settings, QWidget *parent = 0);
     ~ConfigPanelDialog();
 
+    void setSizeLimits(const int minimum, const int maximum);
+
 signals:
-    void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool mUseThemeSize);
+    void configChanged(int height, int width, bool percent, RazorPanel::Alignment, bool mUseAutoSize);
     void positionChanged(int screen, RazorPanel::Position);
 
 public slots:
@@ -71,7 +73,7 @@ private slots:
     void comboBoxWidthTypeIndexChanged(int q);
     void comboBoxAlignmentIndexChanged(int q);
     void comboBoxPositionIndexChanged(int q);
-    void checkBoxUseThemeSizeChanged(bool state);
+    void checkBoxUseAutoSizeChanged(bool state);
 
 private:
     Ui::ConfigPanelDialog *ui;
@@ -82,7 +84,7 @@ private:
     int mLengthMax;
     int mLength;
     bool mWidthInPercents;
-    bool mUseThemeSize;
+    bool mUseAutoSize;
     int mScreenNum;
     RazorPanel::Position mPosition;
     RazorPanel::Alignment mAlignment;

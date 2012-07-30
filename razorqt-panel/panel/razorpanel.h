@@ -43,7 +43,9 @@ class RazorPanel : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(Position position READ position NOTIFY positionChanged)
+    Q_PROPERTY(Orientation orientation READ orientation)
     Q_ENUMS(Position)
+    Q_ENUMS(Orientation)
     friend class RazorPanelPlugin;
 
 public:
@@ -60,11 +62,17 @@ public:
         AlignmentRight  =  1
     };
 
+    enum Orientation {
+        Horizontal,
+        Vertical
+    };
+
     RazorPanel(QWidget *parent = 0);
     virtual ~RazorPanel();
 
     Position position() const ;
     bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
+    Orientation orientation() const;
 
     void showPopupMenu(RazorPanelPlugin *plugin = 0);
     void x11EventFilter(XEvent* event);

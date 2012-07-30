@@ -38,7 +38,7 @@ RazorAutosuspendd::RazorAutosuspendd(QObject *parent) :
     razorNotification.setIcon("razor-autosuspend");
     razorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
     razorNotification.setTimeout(2000);
-    trayIcon.setStatus(battery.chargeLevel(), battery.onBattery());
+    trayIcon.setStatus(battery.chargeLevel(), battery.onBattery(), battery.properties());
     trayIcon.show();
     connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
     connect(&battery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
@@ -78,7 +78,7 @@ void RazorAutosuspendd::batteryChanged()
         trayIcon.hide();
     }
 
-    trayIcon.setStatus(battery.chargeLevel(), battery.onBattery());
+    trayIcon.setStatus(battery.chargeLevel(), battery.onBattery(), battery.properties());
 
     if (battery.powerLow() && actionTime.isNull() && powerLowAction() > 0)
     {

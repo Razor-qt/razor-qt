@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Johannes Zellner <webmaster@nebulon.de>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,24 +25,44 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SUPROCESS_H
-#define SUPROCESS_H
+#ifndef ALSAENGINE_H
+#define ALSAENGINE_H
 
-#include <QObject>
+#include "audioengine.h"
 
-class SuProcess : public QObject
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QTimer>
+
+#include <alsa/asoundlib.h>
+
+class AlsaDevice;
+class QSocketNotifier;
+
+class AlsaEngine : public AudioEngine
 {
     Q_OBJECT
 
 public:
-    SuProcess(const QString & username, const QString & password, const QString & command);
+    AlsaEngine(QObject *parent = 0);
+    static AlsaEngine *instance();
 
-    int execute();
+    int volumeMax(AudioDevice *device) const;
+    AlsaDevice *getDeviceByAlsaElem(snd_mixer_elem_t *elem) const;
+
+public slots:
+    void commitDeviceVolume(AudioDevice *device);
+    void setMute(AudioDevice *device, bool state);
+    void updateDevice(AlsaDevice *device);
+
+private slots:
+    void driveAlsaEventHandling(int fd);
 
 private:
-    QString m_username;
-    QString m_password;
-    QString m_command;
+    void discoverDevices();
+    QMap<int, snd_mixer_t *> m_mixerMap;
+    static AlsaEngine *m_instance;
 };
 
-#endif
+#endif // ALSAENGINE_H

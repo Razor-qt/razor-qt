@@ -22,17 +22,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="199"/>
+        <location filename="../mountbutton.cpp" line="195"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="218"/>
+        <location filename="../mountbutton.cpp" line="214"/>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mountbutton.cpp" line="246"/>
+        <location filename="../mountbutton.cpp" line="242"/>
         <source>No devices Available.</source>
         <translation type="unfinished"></translation>
     </message>

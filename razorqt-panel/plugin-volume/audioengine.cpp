@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Johannes Zellner <webmaster@nebulon.de>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,22 +25,30 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SUDIALOG_H
-#define SUDIALOG_H
+#include "audioengine.h"
 
-#include <QByteArray>
+#include "audiodevice.h"
 
-#include "ui_sudialog.h"
+#include <QtCore/QMetaType>
+#include <QtDebug>
 
-
-class SuDialog : public QDialog, public Ui::SuDialog
+AudioEngine::AudioEngine(QObject *parent) :
+    QObject(parent)
 {
-    Q_OBJECT
+}
 
-public:
-    SuDialog(const QString & user, const QString & authUser, const QString & command);
-    QString password();
-};
+AudioEngine::~AudioEngine()
+{
+    qDeleteAll(m_sinks);
+    m_sinks.clear();
+}
 
+void AudioEngine::mute(AudioDevice *device)
+{
+    setMute(device, true);
+}
 
-#endif
+void AudioEngine::unmute(AudioDevice *device)
+{
+    setMute(device, false);
+}

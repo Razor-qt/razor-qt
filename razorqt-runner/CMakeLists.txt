@@ -1,8 +1,7 @@
-set(PROJECT razor-runner)
-project(${PROJECT})
+project(razor-runner)
 
 
-set(H_FILES
+set(razor-runner_H_FILES
     dialog.h
     commanditemmodel.h
     widgets.h
@@ -10,7 +9,7 @@ set(H_FILES
     configuredialog/configuredialog.h
 )
 
-set(MOC_FILES
+set(razor-runner_MOC_FILES
     dialog.h
     commanditemmodel.h
     widgets.h
@@ -18,7 +17,7 @@ set(MOC_FILES
     providers.h
 )
 
-set(CPP_FILES
+set(razor-runner_CPP_FILES
     main.cpp
     dialog.cpp
     commanditemmodel.cpp
@@ -27,7 +26,7 @@ set(CPP_FILES
     configuredialog/configuredialog.cpp
 )
 
-set(UI_FILES
+set(razor-runner_UI_FILES
     dialog.ui
     configuredialog/configuredialog.ui
 )
@@ -36,7 +35,7 @@ set(QRC_FILES
 
 )
 
-set(LIBRARIES
+set(razor-runner_LIBRARIES
     razorqt
     razorqxt
     qtxdg
@@ -65,7 +64,12 @@ setByDefault(RUNNER_VBOX Yes )
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
+razor_translate_ts(razor-runner_QM_FILES 
+    SOURCES
+        ${razor-runner_H_FILES}
+        ${razor-runner_CPP_FILES} 
+        ${razor-runner_UI_FILES}
+)
 #************************************************
 cmake_minimum_required( VERSION 2.6 )
 
@@ -87,7 +91,7 @@ include(${QT_USE_FILE})
 
 
 set(RAZOR_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor)
-set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT})
+set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT_NAME})
 
 #************************************************
 
@@ -103,13 +107,19 @@ if (RUNNER_VBOX)
 	add_definitions(-DVBOX_ENABLED)
 endif (RUNNER_VBOX)
 
-qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
-qt4_wrap_ui(UI_HEADERS ${UI_FILES})
-qt4_add_resources(QRC_SOURCES ${QRC_FILES})
+qt4_wrap_cpp(razor-runner_MOC_SOURCES ${razor-runner_MOC_FILES})
+qt4_wrap_ui(razor-runner_UI_HEADERS ${razor-runner_UI_FILES})
+qt4_add_resources(razor-runner_QRC_SOURCES ${QRC_FILES})
 
-add_executable(${PROJECT} ${CPP_FILES} ${UI_FILES} ${RESOURCES} ${QRC_SOURCES} ${QM_FILES} ${MOC_SOURCES})
-add_dependencies(${PROJECT} razorqt)
-target_link_libraries(${PROJECT}  ${LIBRARIES} ${QT_LIBRARIES})
+add_executable(${PROJECT_NAME} 
+    ${razor-runner_CPP_FILES} 
+    ${razor-runner_UI_FILES} 
+    ${razor-runner_QRC_SOURCES} 
+    ${razor-runner_QM_FILES} 
+    ${razor-runner_MOC_SOURCES})
 
-install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+add_dependencies(${PROJECT_NAME} razorqt)
+target_link_libraries(${PROJECT_NAME}  ${razor-runner_LIBRARIES} ${QT_LIBRARIES})
+
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES   ${CONFIG_FILES}    DESTINATION ${APP_SHARE_DIR})

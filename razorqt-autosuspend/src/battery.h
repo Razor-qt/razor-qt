@@ -29,6 +29,7 @@
 
 #include <QObject>
 #include <QDBusInterface>
+#include <QVariantMap>
 
 class Battery : public QObject
 {
@@ -44,14 +45,16 @@ public:
     double chargeLevel();
     bool   powerLow();
     bool   onBattery();
-
+    QVariantMap properties();
 private slots:
     void uPowerBatteryChanged();
 
 private:
     QDBusInterface *uPower;
     QDBusInterface *uPowerBatteryDevice;
+    QDBusInterface *uPowerBatteryProperties;
     double m_chargeLevel;
     bool m_onBattery;
+    QVariantMap props;
 };
 #endif

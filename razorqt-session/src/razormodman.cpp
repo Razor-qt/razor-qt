@@ -31,7 +31,6 @@
 #include <unistd.h>
 
 #include <QtCore/QtDebug>
-#include <QtDBus/QDBusInterface>
 #include <QtCore/QCoreApplication>
 #include <QtGui/QMessageBox>
 #include <QtGui/QSystemTrayIcon>
@@ -49,10 +48,6 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     : QObject(parent),
     mConfig(config)
 {
-    m_power = new QDBusInterface("org.freedesktop.Hal", "/org/freedesktop/Hal/devices/computer",
-                               "org.freedesktop.Hal.Device.SystemPowerManagement",
-                               QDBusConnection::systemBus());
-
     qDebug() << __FILE__ << ":" << __LINE__ << "Session" << config << "about to launch (deafult 'session')";
     if (mConfig.isEmpty())
         mConfig = "session";
@@ -72,6 +67,9 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
 
     // then rest of the config:
     
+    // The razor-confupdate can update the settings of the WM, so run it first.
+    startConfUpdate();
+
     // window manager
     // If the WM is active do not run WM.
     if (!xfitMan().isWindowManagerActive())
@@ -151,6 +149,11 @@ void RazorModuleManager::startProcess(const XdgDesktopFile& file)
         return;
     }
     QStringList args = file.expandExecString();
+    if (args.isEmpty())
+    {
+        qWarning() << "Wrong desktop file" << file.fileName();
+        return;
+    }
     QString command = args.takeFirst();
     QProcess* proc = new QProcess(this);
     proc->start(command, args);
@@ -159,6 +162,16 @@ void RazorModuleManager::startProcess(const XdgDesktopFile& file)
 
     connect(proc, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(restartModules(int, QProcess::ExitStatus)));
+}
+
+void RazorModuleManager::startConfUpdate()
+{
+    XdgDesktopFile desktop;
+    desktop.setValue("Type", "Application");
+    desktop.setValue("Name", "Razor config updater");
+    desktop.setValue("Exec", "razor-confupdate --watch");
+    desktop.setValue("X-Razor-Module", true);
+    startProcess(desktop);
 }
 
 void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitStatus)
@@ -201,7 +214,6 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
 
 RazorModuleManager::~RazorModuleManager()
 {
-    delete m_power;
     qDeleteAll(mProcMap);
 }
 

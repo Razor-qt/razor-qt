@@ -25,21 +25,31 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include <QDBusConnection>
+#include <QDebug>
+
 #include <razorqt/razorapplication.h>
 #include "razortranslate.h"
 #include "razorautosuspend.h"
-
-#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
 
     RazorApplication a(argc, argv);
-
+    a.setQuitOnLastWindowClosed(false);
     TRANSLATE_APP;
 
-    /*TrayIcon w;
-    w.show();*/
-    RazorAutosuspendd razorAutosuspendd;
-    return a.exec();
+    // To ensure only one instance of razor-autosuspend is running we register as a DBus service and refuse to run
+    // if not able to do so.
+    // We do not register any object as we don't have any dbus-operations to expose.g
+    if (! QDBusConnection::sessionBus().registerService("org.razor-qt.razor-autosuspend"))
+    {
+        qWarning() << "Unable to register 'org.razor-qt.razor-autosuspend' service - is another instance of razor-autosuspend running?";
+        return 1;
+    }
+    else
+    {
+        RazorAutosuspendd razorAutosuspendd;
+        return a.exec();
+    }
 }

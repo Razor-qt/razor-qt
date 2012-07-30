@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Luís Pereira <luis.artur.pereira@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,35 +25,11 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "sudialog.h"
+#ifndef RAZORPANELLIMITS_H
+#define RAZORPANELLIMITS_H
 
-#include <QByteArray>
+#define PANEL_MINIMUM_SIZE  16
+#define PANEL_MAXIMUM_SIZE  200
+#define PANEL_DEFAULT_SIZE  32
 
-
-
-SuDialog::SuDialog(const QString & user, const QString & authUser, const QString & command)
-    : QDialog()
-{
-	setupUi(this);
-
-    setWindowTitle(tr("Run as %1").arg(user));
-
-    usernameEdit->setText(user);
-    passwordEdit->setFocus(Qt::OtherFocusReason);
-
-    QString prompt;
-    if (authUser == "root") {
-        prompt = tr("The action you requested needs <b>root privileges</b>. "
-                    "Please enter <b>root's</b> password below.");
-    } else {
-        prompt = tr("The action you requested needs additional privileges. "
-                    "Please enter the password for <b>%1</b> below.").arg(authUser);
-    }
-    infoLabel->setText(prompt);
-    commandLabel->setText(command);
-}
-
-QString SuDialog::password()
-{
-    return passwordEdit->text();
-}
+#endif // RAZORPANELLIMITS_H

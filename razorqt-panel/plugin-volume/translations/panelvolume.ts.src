@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US">
+<context>
+    <name>RazorVolume</name>
+    <message>
+        <location filename="../razorvolume.cpp" line="68"/>
+        <location filename="../razorvolume.cpp" line="73"/>
+        <location filename="../razorvolume.cpp" line="78"/>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RazorVolumeConfiguration</name>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="14"/>
+        <source>Razor Volume Control Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="20"/>
+        <source>Device to control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="32"/>
+        <source>Behavior</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="38"/>
+        <source>Mute on middle click</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="45"/>
+        <source>Show on mouse click</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="60"/>
+        <source>Volume adjust step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razorvolumeconfiguration.ui" line="75"/>
+        <source>External Mixer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+</TS>

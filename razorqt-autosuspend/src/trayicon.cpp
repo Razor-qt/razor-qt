@@ -26,37 +26,47 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "trayicon.h"
+
 #include <QIcon>
 #include <QDebug>
 #include <math.h>
 
 TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent)
 {
+    qDebug() << "themeName: " << QIcon::themeName();
     setUpstatusIcons();
+    connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(showStatus(QSystemTrayIcon::ActivationReason)));
 }
 
 TrayIcon::~TrayIcon()
 {
 }
 
-void TrayIcon::setStatus(double level, bool onBattery)
+void TrayIcon::setStatus(double level, bool onBattery, QVariantMap batteryProperties)
 {
     int levelAsNumberBetween0and10 = round(level/10);
 
     qDebug() << "Level: " << level << levelAsNumberBetween0and10;
 
-    if (onBattery)
+    uint state = batteryProperties.value("State", 0).toUInt();
+    QString toolTip = BatteryInfo::state2string(state);
+    if (state == 1 || state == 2)
     {
-        QString toolTip(tr("Decharging - %1 %"));
-        setToolTip(toolTip.arg(level, 0, 'f', 1));
-        setIcon(statusIconsDecharging[levelAsNumberBetween0and10]);
+        toolTip = toolTip + QString(" - %1 %").arg(batteryProperties.value("Percentage").toDouble(), 0, 'f', 1);
+    }
+    setToolTip(toolTip);
+
+    if (state == 1 || state == 4)
+    {
+        setIcon(statusIconsCharging[levelAsNumberBetween0and10]);
     }
     else
     {
-        QString toolTip(tr("Charging - %1 %"));
-        setToolTip(toolTip.arg(level, 0, 'f', 1));
-        setIcon(statusIconsCharging[levelAsNumberBetween0and10]);
+        setIcon(statusIconsDecharging[levelAsNumberBetween0and10]);
     }
+
+    this->batteryProperties = batteryProperties;
+    batteryInfo.updateInfo(batteryProperties);
 }
 
 void TrayIcon::setUpstatusIcons()
@@ -84,4 +94,19 @@ void TrayIcon::setUpstatusIcons()
     statusIconsDecharging[8] = QIcon(":icons/battery-080.svg");
     statusIconsDecharging[9] = QIcon(":icons/battery-090.svg");
     statusIconsDecharging[10] = QIcon(":icons/battery-100.svg");
+}
+
+void TrayIcon::showStatus(ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
+    {
+        if (batteryInfo.isVisible())
+        {
+            batteryInfo.close();
+        }
+        else
+        {
+            batteryInfo.open();
+        }
+    }
 }

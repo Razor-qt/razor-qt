@@ -40,7 +40,7 @@
 #include <QMouseEvent>
 #include <QPropertyAnimation>
 
-#define MINIMIM_SIZE 16
+#include "razorpanellimits.h"
 
 // QVariantAnimation class was introduced in Qt 4.6.
 #if QT_VERSION >= 0x040600
@@ -401,8 +401,8 @@ QSize RazorPanelLayout::sizeHint() const
     QSize size = QBoxLayout::sizeHint();
     if (isEmpty())
     {
-        size.rheight() = qMax(size.rheight(), MINIMIM_SIZE);
-        size.rwidth() = qMax(size.rwidth(), MINIMIM_SIZE);
+        size.rheight() = qMax(size.rheight(), PANEL_MINIMUM_SIZE);
+        size.rwidth() = qMax(size.rwidth(), PANEL_MINIMUM_SIZE);
     }
     return size;
 }

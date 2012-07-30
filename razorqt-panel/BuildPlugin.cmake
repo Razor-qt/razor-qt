@@ -1,15 +1,31 @@
-MACRO (BUILD_RAZOR_PLUGIN Name)
-    project(${Name})
+MACRO (BUILD_RAZOR_PLUGIN NAME)
     set(PROGRAM "razor-panel")
+    project(${PROGRAM}_${NAME})
 
     set(PROG_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM})
-    set(PLUGIN_SHARE_DIR ${PROG_SHARE_DIR}/${Name})
+    set(PLUGIN_SHARE_DIR ${PROG_SHARE_DIR}/${NAME})
 
     # Translations **********************************
     include(RazorTranslate)
-    razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM}/${PROJECT_NAME})
-    file (GLOB DESKTOP_FILES_IN resources/*.desktop.in)
-    razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
+    razor_translate_ts(${PROJECT_NAME}_QM_FILES 
+        SOURCES
+            ${HEADERS} 
+            ${SOURCES} 
+            ${MOCS} 
+            ${UIS}
+        TS_SRC_FILE
+            translations/${NAME}.ts.src
+        INSTALLATION_DIR
+            ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM}/${NAME}
+    )
+    
+
+    #razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM}/${PROJECT_NAME})
+    file (GLOB ${PROJECT_NAME}_DESKTOP_FILES_IN resources/*.desktop.in)
+    razor_translate_desktop2(DESKTOP_FILES 
+        SOURCES
+            ${${PROJECT_NAME}_DESKTOP_FILES_IN}
+    )
     #************************************************
 
     file (GLOB CONFIG_FILES     resources/*.conf    )
@@ -30,14 +46,14 @@ MACRO (BUILD_RAZOR_PLUGIN Name)
     qt4_add_resources(QRC_SOURCES ${RESOURCES})
     qt4_wrap_ui(UI_SOURCES ${UIS})
 
-    add_library(${Name} MODULE ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${UIS} ${DESKTOP_FILES})
-    target_link_libraries(${Name} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBRARIES})
+    add_library(${NAME} MODULE ${HEADERS} ${SOURCES} ${MOC_SOURCES} ${${PROJECT_NAME}_QM_FILES} ${QRC_SOURCES} ${UIS} ${DESKTOP_FILES})
+    target_link_libraries(${NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${LIBRARIES})
 
-    install(TARGETS ${Name} DESTINATION ${PLUGIN_DIR})
+    install(TARGETS ${NAME} DESTINATION ${PLUGIN_DIR})
     install(FILES ${CONFIG_FILES}  DESTINATION ${PLUGIN_SHARE_DIR})
     install(FILES ${DESKTOP_FILES} DESTINATION ${PROG_SHARE_DIR})
 
-    add_dependencies(${Name} razorqt)
+    add_dependencies(${NAME} razorqt)
 ENDMACRO(BUILD_RAZOR_PLUGIN)
 
 

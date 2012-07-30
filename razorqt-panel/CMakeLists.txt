@@ -33,6 +33,7 @@ setByDefault(HELLOWORLD_PLUGIN No)
 setByDefault(CPULOAD_PLUGIN Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
 setByDefault(SENSORS_PLUGIN Yes)
+setByDefault(VOLUME_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -159,6 +160,28 @@ if (SENSORS_PLUGIN)
   endif ( NOT(${SENSORS_LIB} MATCHES "NOTFOUND" ))
 
 endif (SENSORS_PLUGIN)
+
+if (VOLUME_PLUGIN)
+  FIND_PACKAGE(PulseAudio)
+  FIND_PACKAGE(ALSA)
+
+  if (PULSEAUDIO_FOUND OR ALSA_FOUND)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Volume")
+    message(STATUS "")
+    message(STATUS "Volume plugin will be built")
+    message(STATUS "    ALSA: ${ALSA_FOUND}")
+    message(STATUS "    PulseAudio: ${PULSEAUDIO_FOUND}")
+    message(STATUS "")
+    add_subdirectory(plugin-volume)
+  else ()
+    message(STATUS "")
+    message(STATUS "Volume plugin requires pulseaudio or alsa")
+    message(STATUS "    ALSA: ${ALSA_FOUND}")
+    message(STATUS "    PulseAudio: ${PULSEAUDIO_FOUND}")
+    message(STATUS "")
+  endif (PULSEAUDIO_FOUND OR ALSA_FOUND)
+
+endif (VOLUME_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
