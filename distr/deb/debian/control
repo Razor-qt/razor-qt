@@ -31,7 +31,7 @@ Depends: razorqt-appswitcher,
         razorqt-config,
         razorqt-data,
         razorqt-desktop,
-        razorqt-globalkeyshortcutd,
+        razorqt-globalkeyshortcuts,
         razorqt-notificationd,
         razorqt-panel,
         razorqt-power,
@@ -95,7 +95,7 @@ Package: librazorqt-dev
 Architecture: any
 Depends: ${shlibs:Depends}, libqtxdg-dev (= ${binary:Version})
 Replaces: razor-qt, razorqt-dev
-Conflicts: razor-qt, razorqt-dev (<< {binary:Version})
+Conflicts: razor-qt, razorqt-dev (<< ${binary:Version})
 Description: Razor-qt development package
  This package provides the development files for the libraries that are
  shared amongst the various components of Razor-qt.
