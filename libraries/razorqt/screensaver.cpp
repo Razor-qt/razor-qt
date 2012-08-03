@@ -120,7 +120,7 @@ void ScreenSaver::xdgProcess_finished(int err, QProcess::ExitStatus status)
         QMessageBox::warning(p,  
                              tr("Screen Saver Activation Error"),
                              tr("An error occurred starting screensaver. "
-                                "Unkown error - undocumented return value from xdg-screensaver=%1.").arg(err)
+                                "Unknown error - undocumented return value from xdg-screensaver=%1.").arg(err)
                             );
     }
 }
