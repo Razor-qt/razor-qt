@@ -33,6 +33,7 @@
 class QSlider;
 class QPushButton;
 class AudioDevice;
+class QLabel;
 
 class VolumePopup : public QWidget
 {
@@ -69,7 +70,7 @@ private:
     void realign();
 
     QSlider *m_volumeSlider;
-    QPushButton *m_mixerButton;
+    QLabel *m_mixerButton;
     QPushButton *m_muteToggleButton;
     QPoint m_pos;
     Qt::Corner m_anchor;
