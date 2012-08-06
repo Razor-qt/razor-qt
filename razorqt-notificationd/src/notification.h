@@ -64,6 +64,10 @@ public:
                    const QString &icon, int timeout,
                    const QStringList& actions, const QVariantMap& hints);
 
+    QString application() const;
+    QString summary() const;
+    QString body() const;
+
 signals:
     //! the server set timeout passed. Notification should close itself.
     void timeout();

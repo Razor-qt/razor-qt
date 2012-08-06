@@ -77,13 +77,37 @@ void NotificationLayout::addNotification(uint id, const QString &application,
     else
     {
         Notification *n = new Notification(application, summary, body, icon, timeout, actions, hints, this);
-        connect(n, SIGNAL(timeout()), this, SLOT(removeNotificationTimeout()));
-        connect(n, SIGNAL(userCanceled()), this, SLOT(removeNotificationUser()));
-        connect(n, SIGNAL(actionTriggered(QString)),
-                this, SLOT(notificationActionCalled(QString)));
-        m_notifications[id] = n;
-        m_layout->addWidget(n);
-        n->show();
+
+        // NOTE: it's hard to use == operator for Notification* in QList...
+        bool found = false;
+        QHashIterator<uint, Notification*> it(m_notifications);
+        while (it.hasNext())
+        {
+            it.next();
+            if (it.value()->application() == application
+                    && it.value()->summary() == summary
+                    && it.value()->body() == body)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            qDebug() << "Notification app" << application << "summary" << summary << "is already registered but this request is not an update. Broken app?";
+            delete n;
+        }
+        else
+        {
+            connect(n, SIGNAL(timeout()), this, SLOT(removeNotificationTimeout()));
+            connect(n, SIGNAL(userCanceled()), this, SLOT(removeNotificationUser()));
+            connect(n, SIGNAL(actionTriggered(QString)),
+                    this, SLOT(notificationActionCalled(QString)));
+            m_notifications[id] = n;
+            m_layout->addWidget(n);
+            n->show();
+        }
     }
 
     emit notificationAvailable();

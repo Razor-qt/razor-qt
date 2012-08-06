@@ -184,6 +184,21 @@ void Notification::setValues(const QString &application,
     setMinimumHeight(qMax(rect().height(), childrenRect().height()));
 }
 
+QString Notification::application() const
+{
+    return appLabel->text();
+}
+
+QString Notification::summary() const
+{
+    return summaryLabel->text();
+}
+
+QString Notification::body() const
+{
+    return bodyLabel->text();
+}
+
 void Notification::closeButton_clicked()
 {
     if (m_timer)
