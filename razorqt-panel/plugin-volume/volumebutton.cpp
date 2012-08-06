@@ -53,11 +53,9 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
     connect(m_volumePopup, SIGNAL(mouseEntered()), this, SLOT(popupHideTimerStop()));
     connect(m_volumePopup, SIGNAL(mouseLeft()), this, SLOT(popupHideTimerStart()));
 
-    connect(m_volumePopup->volumeSlider(), SIGNAL(valueChanged(int)), this, SLOT(updateStockIcon()));
     connect(m_volumePopup, SIGNAL(deviceChanged()), this, SLOT(handleDeviceChanged()));
     connect(m_volumePopup, SIGNAL(launchMixer()), this, SLOT(handleMixerLaunch()));
-
-    updateStockIcon();
+    connect(m_volumePopup, SIGNAL(stockIconChanged(QString)), this, SLOT(handleStockIconChanged(QString)));
 }
 
 VolumeButton::~VolumeButton()
@@ -196,24 +194,12 @@ void VolumeButton::popupHideTimerStop()
     m_popupHideTimer.stop();
 }
 
-void VolumeButton::updateStockIcon()
-{
-    if (m_volumePopup->volumeSlider()->value() <= 0 || m_volumePopup->device()->mute())
-        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-muted"));
-    else if (m_volumePopup->volumeSlider()->value() <= 33)
-        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-low"));
-    else if (m_volumePopup->volumeSlider()->value() <= 66)
-        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-medium"));
-    else
-        setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-high"));
-}
-
-void VolumeButton::handleDeviceChanged()
-{
-    connect(m_volumePopup->device(), SIGNAL(muteChanged(bool)), this, SLOT(updateStockIcon()));
-}
-
 void VolumeButton::handleMixerLaunch()
 {
     QProcess::startDetached(m_mixerCommand);
+}
+
+void VolumeButton::handleStockIconChanged(const QString &iconName)
+{
+    setIcon(XdgIcon::fromTheme(iconName));
 }

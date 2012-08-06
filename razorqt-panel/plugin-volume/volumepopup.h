@@ -56,6 +56,7 @@ signals:
     void volumeChanged(int value);
     void deviceChanged();
     void launchMixer();
+    void stockIconChanged(const QString &iconName);
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -65,9 +66,12 @@ protected:
 private slots:
     void handleSliderValueChanged(int value);
     void handleMuteToggleClicked();
+    void handleDeviceVolumeChanged(int volume);
+    void handleDeviceMuteChanged(bool mute);
 
 private:
     void realign();
+    void updateStockIcon();
 
     QSlider *m_volumeSlider;
     QLabel *m_mixerButton;

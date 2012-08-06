@@ -60,9 +60,8 @@ private slots:
     void handlePopupHideTimeout();
     void popupHideTimerStart();
     void popupHideTimerStop();
-    void updateStockIcon();
-    void handleDeviceChanged();
     void handleMixerLaunch();
+    void handleStockIconChanged(const QString &iconName);
 
 private:
     VolumePopup *m_volumePopup;

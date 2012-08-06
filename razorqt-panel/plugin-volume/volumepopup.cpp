@@ -100,6 +100,37 @@ void VolumePopup::handleMuteToggleClicked()
     m_device->toggleMute();
 }
 
+void VolumePopup::handleDeviceVolumeChanged(int volume)
+{
+    m_volumeSlider->setValue(volume);
+    updateStockIcon();
+}
+
+void VolumePopup::handleDeviceMuteChanged(bool mute)
+{
+    m_muteToggleButton->setChecked(mute);
+    updateStockIcon();
+}
+
+void VolumePopup::updateStockIcon()
+{
+    if (!m_device)
+        return;
+
+    QString iconName;
+    if (m_device->volume() <= 0 || m_device->mute())
+        iconName = "audio-volume-muted";
+    else if (m_device->volume() <= 33)
+        iconName = "audio-volume-low";
+    else if (m_device->volume() <= 66)
+        iconName = "audio-volume-medium";
+    else
+        iconName = "audio-volume-high";
+
+    m_muteToggleButton->setIcon(XdgIcon::fromTheme(iconName));
+    emit stockIconChanged(iconName);
+}
+
 void VolumePopup::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
@@ -126,7 +157,8 @@ void VolumePopup::setDevice(AudioDevice *device)
 
     // disconnect old device
     if (m_device) {
-        disconnect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
+        disconnect(m_device, SIGNAL(volumeChanged(int)), this, SLOT(handleDeviceVolumeChanged(int)));
+        disconnect(m_device, SIGNAL(muteChanged(bool)), this, SLOT(handleDeviceMuteChanged(bool)));
         disconnect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
     }
 
@@ -134,9 +166,11 @@ void VolumePopup::setDevice(AudioDevice *device)
     m_volumeSlider->setValue(m_device->volume());
     m_muteToggleButton->setChecked(m_device->mute());
 
-    connect(m_device, SIGNAL(volumeChanged(int)), m_volumeSlider, SLOT(setValue(int)));
-    connect(m_device, SIGNAL(muteChanged(bool)), m_muteToggleButton, SLOT(setChecked(bool)));
+    connect(m_device, SIGNAL(volumeChanged(int)), this, SLOT(handleDeviceVolumeChanged(int)));
+    connect(m_device, SIGNAL(muteChanged(bool)), this, SLOT(handleDeviceMuteChanged(bool)));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+
+    updateStockIcon();
 
     emit deviceChanged();
 }
