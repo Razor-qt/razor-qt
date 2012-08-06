@@ -36,6 +36,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QLabel>
 #include <QtCore/QProcess>
 
 VolumePopup::VolumePopup(QWidget* parent):
@@ -44,10 +45,11 @@ VolumePopup::VolumePopup(QWidget* parent):
     m_anchor(Qt::TopLeftCorner),
     m_device(0)
 {
-    m_mixerButton = new QPushButton(this);
+    m_mixerButton = new QLabel(this);
+    m_mixerButton->setMargin(5);
     m_mixerButton->setToolTip("Launch mixer");
-    m_mixerButton->setText("Mixer");
-    m_mixerButton->setFlat(true);
+    m_mixerButton->setTextFormat(Qt::RichText);
+    m_mixerButton->setText("<a href=\"#\">Mixer</a>");
 
     m_volumeSlider = new QSlider(Qt::Vertical, this);
     m_volumeSlider->setTickPosition(QSlider::TicksBothSides);
@@ -60,14 +62,14 @@ VolumePopup::VolumePopup(QWidget* parent):
     m_muteToggleButton->setFlat(true);
 
     QVBoxLayout *l = new QVBoxLayout(this);
-    l->setSpacing(2);
-    l->setMargin(0);
+    l->setSpacing(0);
+    l->setMargin(2);
 
     l->addWidget(m_mixerButton, 0, Qt::AlignHCenter);
     l->addWidget(m_volumeSlider, 0, Qt::AlignHCenter);
     l->addWidget(m_muteToggleButton, 0, Qt::AlignHCenter);
 
-    connect(m_mixerButton, SIGNAL(clicked()), this, SIGNAL(launchMixer()));
+    connect(m_mixerButton, SIGNAL(linkActivated(QString)), this, SIGNAL(launchMixer()));
     connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
     connect(m_muteToggleButton, SIGNAL(clicked()), this, SLOT(handleMuteToggleClicked()));
 }
