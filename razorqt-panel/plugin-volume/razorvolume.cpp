@@ -111,6 +111,7 @@ void RazorVolume::settingsChanged()
     m_volumeButton->setShowOnClicked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
     m_volumeButton->setMuteOnMiddleClick(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
     m_volumeButton->setMixerCommand(settings().value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
+    m_volumeButton->volumePopup()->setSliderStep(settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
 }
 
 void RazorVolume::updateConfigurationSinkList()
