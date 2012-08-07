@@ -44,7 +44,8 @@ static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int 
     stateMap[PA_SINK_SUSPENDED] = "SUSPENDED";
 
     if (isLast < 0) {
-        qWarning() << QString("Failed to get sink information: %s").arg(pa_strerror(pa_context_errno(context)));
+        pa_threaded_mainloop_signal(pulseEngine->mainloop(), 0);
+        qWarning() << QString("Failed to get sink information: %1").arg(pa_strerror(pa_context_errno(context)));
         return;
     }
 
@@ -145,6 +146,7 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
     if (pa_threaded_mainloop_start(m_mainLoop) != 0) {
         qWarning("Unable to start pulseaudio mainloop");
         pa_threaded_mainloop_free(m_mainLoop);
+        m_mainLoop = 0;
         return;
     }
 
@@ -281,6 +283,9 @@ void PulseAudioEngine::connectContext()
     bool ok = false;
 
     m_reconnectionTimer.stop();
+
+    if (!m_mainLoop)
+        return;
 
     pa_threaded_mainloop_lock(m_mainLoop);
 
