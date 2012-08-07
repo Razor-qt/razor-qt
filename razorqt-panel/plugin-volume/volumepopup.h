@@ -48,6 +48,7 @@ public:
 
     AudioDevice *device() const { return m_device; }
     void setDevice(AudioDevice *device);
+    void setSliderStep(int step);
 
 signals:
     void mouseEntered();

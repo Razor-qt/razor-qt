@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>337</width>
-    <height>272</height>
+    <width>363</width>
+    <height>297</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QCheckBox" name="muteOnMiddleClickCheckbox">
+       <widget class="QCheckBox" name="muteOnMiddleClickCheckBox">
         <property name="text">
          <string>Mute on middle click</string>
         </property>
@@ -43,6 +43,13 @@
        <widget class="QCheckBox" name="showOnClickCheckBox">
         <property name="text">
          <string>Show on mouse click</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="ignoreMaxVolumeCheckBox">
+        <property name="text">
+         <string>Allow volume beyond 100% (0dB)</string>
         </property>
        </widget>
       </item>
@@ -62,7 +69,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="stepSpinBox"/>
+         <widget class="QSpinBox" name="stepSpinBox">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

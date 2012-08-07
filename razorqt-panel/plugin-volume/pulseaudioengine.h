@@ -52,7 +52,7 @@ public:
     PulseAudioEngine(QObject *parent = 0);
     ~PulseAudioEngine();
 
-    int volumeMax(AudioDevice */*device*/) const { return (int)PA_VOLUME_UI_MAX; }
+    int volumeMax(AudioDevice */*device*/) const { return m_maximumVolume; }
 
     void requestSinkInfoUpdate(AudioDevice *device);
     void addOrUpdateSink(const pa_sink_info *info);
@@ -66,6 +66,7 @@ public slots:
     void retrieveSinkInfo(AudioDevice *device);
     void setMute(AudioDevice *device, bool state);
     void setContextState(pa_context_state_t state);
+    void setIgnoreMaxVolume(bool ignore);
 
 signals:
     void sinkInfoChanged(AudioDevice *device);
@@ -87,6 +88,7 @@ private:
     pa_context_state_t m_contextState;
     bool m_ready;
     QTimer m_reconnectionTimer;
+    int m_maximumVolume;
 
     QMap<AudioDevice *, pa_cvolume> m_cVolumeMap;
 };

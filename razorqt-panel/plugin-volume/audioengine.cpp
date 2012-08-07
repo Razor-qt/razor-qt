@@ -52,3 +52,8 @@ void AudioEngine::unmute(AudioDevice *device)
 {
     setMute(device, false);
 }
+
+void AudioEngine::setIgnoreMaxVolume(bool ignore)
+{
+    Q_UNUSED(ignore)
+}

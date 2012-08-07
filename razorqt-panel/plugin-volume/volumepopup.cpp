@@ -54,7 +54,6 @@ VolumePopup::VolumePopup(QWidget* parent):
     m_volumeSlider = new QSlider(Qt::Vertical, this);
     m_volumeSlider->setTickPosition(QSlider::TicksBothSides);
     m_volumeSlider->setTickInterval(10);
-    m_volumeSlider->setSingleStep(m_volumeSlider->pageStep());
 
     m_muteToggleButton = new QPushButton(this);
     m_muteToggleButton->setIcon(XdgIcon::fromTheme(QStringList() << "audio-volume-muted"));
@@ -173,6 +172,12 @@ void VolumePopup::setDevice(AudioDevice *device)
     updateStockIcon();
 
     emit deviceChanged();
+}
+
+void VolumePopup::setSliderStep(int step)
+{
+    m_volumeSlider->setSingleStep(step);
+    m_volumeSlider->setPageStep(step * 10);
 }
 
 void VolumePopup::realign()
