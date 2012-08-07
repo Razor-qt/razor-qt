@@ -50,6 +50,7 @@ public slots:
     virtual void setMute(AudioDevice *device, bool state) = 0;
     void mute(AudioDevice *device);
     void unmute(AudioDevice *device);
+    virtual void setIgnoreMaxVolume(bool ignore);
 
 signals:
     void sinkListChanged();

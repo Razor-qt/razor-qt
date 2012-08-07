@@ -37,16 +37,18 @@
 #define SETTINGS_MUTE_ON_MIDDLECLICK    "showOnMiddleClick"
 #define SETTINGS_DEVICE                 "device"
 #define SETTINGS_STEP                   "volumeAdjustStep"
+#define SETTINGS_IGNORE_MAX_VOLUME      "ignoreMaxVolume"
 
 #define SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK      true
 #define SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK    true
 #define SETTINGS_DEFAULT_DEVICE                 0
-#define SETTINGS_DEFAULT_STEP                   5
+#define SETTINGS_DEFAULT_STEP                   3
 #ifdef USE_PULSEAUDIO
     #define SETTINGS_DEFAULT_MIXER_COMMAND      "pavucontrol"
 #else
     #define SETTINGS_DEFAULT_MIXER_COMMAND      "qasmixer"
 #endif
+#define SETTINGS_DEFAULT_IGNORE_MAX_VOLUME      false
 
 class AudioDevice;
 
@@ -69,6 +71,7 @@ public slots:
     void muteOnMiddleClickChanged(bool state);
     void mixerLineEditChanged(const QString &command);
     void stepSpinBoxChanged(int step);
+    void ignoreMaxVolumeCheckBoxChanged(bool state);
 
 protected slots:
     virtual void loadSettings();

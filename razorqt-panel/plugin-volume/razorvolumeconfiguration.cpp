@@ -43,9 +43,14 @@ RazorVolumeConfiguration::RazorVolumeConfiguration(QSettings &settings, QWidget 
     connect(ui->devAddedCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(sinkSelectionChanged(int)));
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
     connect(ui->showOnClickCheckBox, SIGNAL(toggled(bool)), this, SLOT(showOnClickedChanged(bool)));
-    connect(ui->muteOnMiddleClickCheckbox, SIGNAL(toggled(bool)), this, SLOT(muteOnMiddleClickChanged(bool)));
+    connect(ui->muteOnMiddleClickCheckBox, SIGNAL(toggled(bool)), this, SLOT(muteOnMiddleClickChanged(bool)));
     connect(ui->mixerLineEdit, SIGNAL(textChanged(QString)), this, SLOT(mixerLineEditChanged(QString)));
     connect(ui->stepSpinBox, SIGNAL(valueChanged(int)), this, SLOT(stepSpinBoxChanged(int)));
+    connect(ui->ignoreMaxVolumeCheckBox, SIGNAL(toggled(bool)), this, SLOT(ignoreMaxVolumeCheckBoxChanged(bool)));
+
+#ifndef USE_PULSEAUDIO
+    ui->ignoreMaxVolumeCheckBox->setVisible(false);
+#endif
 }
 
 RazorVolumeConfiguration::~RazorVolumeConfiguration()
@@ -87,12 +92,18 @@ void RazorVolumeConfiguration::stepSpinBoxChanged(int step)
     settings().setValue(SETTINGS_STEP, step);
 }
 
+void RazorVolumeConfiguration::ignoreMaxVolumeCheckBoxChanged(bool state)
+{
+    settings().setValue(SETTINGS_IGNORE_MAX_VOLUME, state);
+}
+
 void RazorVolumeConfiguration::loadSettings()
 {
     setComboboxIndexByData(ui->devAddedCombo, settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE), 1);
     ui->showOnClickCheckBox->setChecked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
-    ui->muteOnMiddleClickCheckbox->setChecked(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
+    ui->muteOnMiddleClickCheckBox->setChecked(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
     ui->mixerLineEdit->setText(settings().value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
     ui->stepSpinBox->setValue(settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
+    ui->ignoreMaxVolumeCheckBox->setChecked(settings().value(SETTINGS_IGNORE_MAX_VOLUME, SETTINGS_DEFAULT_IGNORE_MAX_VOLUME).toBool());
 }
 

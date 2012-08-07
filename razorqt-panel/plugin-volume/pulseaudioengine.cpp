@@ -129,7 +129,8 @@ PulseAudioEngine::PulseAudioEngine(QObject *parent) :
     AudioEngine(parent),
     m_context(0),
     m_contextState(PA_CONTEXT_UNCONNECTED),
-    m_ready(false)
+    m_ready(false),
+    m_maximumVolume(PA_VOLUME_UI_MAX)
 {
     qRegisterMetaType<pa_context_state_t>("pa_context_state_t");
 
@@ -197,7 +198,7 @@ void PulseAudioEngine::addOrUpdateSink(const pa_sink_info *info)
     m_cVolumeMap.insert(dev, info->volume);
 
     pa_volume_t v = pa_cvolume_avg(&(info->volume));
-    dev->setVolumeNoCommit(((double)v*100.0) / PA_VOLUME_UI_MAX);
+    dev->setVolumeNoCommit(((double)v*100.0) / m_maximumVolume);
 
     if (newSink) {
         m_sinks.append(dev);
@@ -215,7 +216,7 @@ void PulseAudioEngine::commitDeviceVolume(AudioDevice *device)
     if (!device || !m_ready)
         return;
 
-    pa_volume_t v = (device->volume()/100.0) * PA_VOLUME_UI_MAX;
+    pa_volume_t v = (device->volume()/100.0) * m_maximumVolume;
     pa_cvolume tmpVolume = m_cVolumeMap.value(device);
     pa_cvolume *volume = pa_cvolume_set(&tmpVolume, tmpVolume.channels, v);
 
@@ -393,6 +394,14 @@ void PulseAudioEngine::setContextState(pa_context_state_t state)
 
     emit contextStateChanged(m_contextState);
     emit readyChanged(m_ready);
+}
+
+void PulseAudioEngine::setIgnoreMaxVolume(bool ignore)
+{
+    if (ignore)
+        m_maximumVolume = PA_VOLUME_UI_MAX;
+    else
+        m_maximumVolume = pa_sw_volume_from_dB(0);
 }
 
 
