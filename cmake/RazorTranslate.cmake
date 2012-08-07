@@ -207,7 +207,7 @@ function(razor_translate_desktop2 _RESULT)
         if (_translations)
             add_custom_command(OUTPUT ${_outFile}
                 COMMAND grep -v "'#TRANSLATIONS_DIR='" ${_inFile} > ${_outFile}
-                COMMAND grep --no-filename -P ${_pattern} ${_translations} >> ${_outFile}
+                COMMAND grep --no-filename ${_pattern} ${_translations} >> ${_outFile}
                 COMMENT "Generating ${_fileName}${_fileExt}"
             )
         else()
@@ -305,7 +305,7 @@ macro(razor_translate_desktop _RESULT)
     if (TR_FILES)
         add_custom_command(OUTPUT ${_OUT_FILE}
             COMMAND grep -v "'#TRANSLATIONS_DIR='" ${_IN_FILE} > ${_OUT_FILE}
-            COMMAND grep --no-filename -P ${PATTERN} ${TR_FILES} >> ${_OUT_FILE}
+            COMMAND grep --no-filename ${PATTERN} ${TR_FILES} >> ${_OUT_FILE}
             COMMENT "Generating ${_FILE_NAME}${_FILE_EXT}"
         )
     else()

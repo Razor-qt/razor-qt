@@ -26,6 +26,8 @@ message(STATUS "")
 message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
 message(STATUS "")
 
+link_directories(/usr/local/lib/)
+
 add_definitions ( -Wall )
 set( QT_USE_QTDBUS 1 )
 find_package ( Qt4 4.6.0 REQUIRED )

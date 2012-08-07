@@ -1,6 +1,7 @@
 include(RazorLibSuffix)
 
 find_package(X11 REQUIRED)
+include_directories(${X11_INCLUDE_DIR})
 
 # our Qxt library
 set ( razorqxt_PUBLIC_HDRS

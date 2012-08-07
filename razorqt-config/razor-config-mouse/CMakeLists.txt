@@ -1,3 +1,5 @@
+find_package(X11 REQUIRED)
+include_directories(${X11_INCLUDE_DIR})
 
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}

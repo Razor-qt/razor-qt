@@ -32,6 +32,8 @@ qt4_add_dbus_adaptor(NOTIFICATIONS_SRC
     notifyd.h Notifyd
 )
 
+find_package(X11 REQUIRED)
+include_directories(${X11_INCLUDE_DIR})
 
 add_executable(razor-notificationd
     ${NOTIFICATIONS_SRC}

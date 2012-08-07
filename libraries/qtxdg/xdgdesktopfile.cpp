@@ -1078,9 +1078,8 @@ bool XdgDesktopFile::isApplicable(bool excludeHidden, const QString& environment
  ************************************************/
 QString expandDynamicUrl(QString url)
 {
-    for (int i=0; environ[i]; i++)
+    foreach(QString line, QProcess::systemEnvironment())
     {
-        QString line(environ[i]);
         QString name = line.section("=", 0, 0);
         QString val =  line.section("=", 1);
         url.replace(QString("$%1").arg(name), val);

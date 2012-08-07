@@ -88,7 +88,8 @@ endif (NOT CMAKE_BUILD_TYPE)
 add_definitions(-Wall)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
-
+find_package(X11 REQUIRED)
+include_directories(${X11_INCLUDE_DIR})
 
 set(RAZOR_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor)
 set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT_NAME})
