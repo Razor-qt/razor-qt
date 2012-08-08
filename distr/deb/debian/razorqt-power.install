@@ -1,6 +1,3 @@
 /usr/share/razor/razor-power/*
 /usr/share/applications/razor-power.desktop
-/usr/share/applications/razor-autosuspend.desktop
 /usr/bin/razor-power
-/usr/bin/razor-autosuspend
-/usr/share/icons/hicolor/scalable/apps/razor-autosuspend.svg

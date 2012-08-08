@@ -2,3 +2,4 @@
 /usr/lib*/librazorqt.so.*
 /usr/lib*/librazorqxt.so.*
 /usr/share/librazorqt/
+/usr/bin/razor-about

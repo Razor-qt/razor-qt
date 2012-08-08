@@ -9,12 +9,14 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
     libxrender-dev,
     libxcomposite-dev,
     libxdamage-dev,
+    libxcursor-dev,
     libudev-dev,
     libqt4-webkit | libqtwebkit4, 
     libxcursor-dev,
 %ifnot RELEASE lucid maverick squeeze lenny etch
     libpolkit-agent-1-dev,
     libpolkit-qt-1-dev,
+    liblightdm-qt-dev,
 %endif
     zlib1g-dev,
     libstatgrab-dev,
@@ -22,207 +24,267 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
 Standards-Version: 3.9.1
 Homepage: http://razor-qt.org
 
-
 Package: razorqt
 Architecture: all
-Depends:  razorqt-appswitcher,
-          razorqt-desktop,
-          razorqt-panel,
-          razorqt-runner,
-          razorqt-config,
-          razorqt-session,
+Depends: razorqt-appswitcher,
+        razorqt-autosuspend,
+        razorqt-config,
+        razorqt-data,
+        razorqt-desktop,
+        razorqt-globalkeyshortcuts,
+        razorqt-notificationd,
+        razorqt-panel,
+        razorqt-power,
+        razorqt-runner,
+        razorqt-session,
 %ifnot RELEASE lucid maverick squeeze lenny etch
-          razorqt-policykit-agent,
+        lightdm-razorqt-greeter,
+        razorqt-policykit-agent,
 %endif
-          razorqt-notificationd
-Description: Razor-qt desktop environment
+        razorqt-openssh-askpass
+Description: The Razor-qt desktop environment
  Razor-qt is an advanced, easy-to-use, and fast desktop environment
  based on Qt technologies. Unlike desktop environments, Razor-qt
- also works fine with weak machines.
+ also works fine with weak machines and low requeriments software.
  .
  This metapackage provides all the components of Razor-qt.
-
-
-Package: razorqt-dev
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
-  libqtxdg-dev (= ${binary:Version})
-Replaces: razor-qt
-Conflicts: razor-qt
-Description:Razor-qt development package
- This package provides the development files for the libraries that are
- shared amongst the various components of Razor-qt.
- .
- This package is part of the Razor-qt.
-
-
-Package: libqtxdg0
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-xml
-Description:implementation of the XDG Specifications
- This library implements functions of the XDG Specifications in Qt.
- .
- This package is part of the Razor-qt.
-
-
-Package: libqtxdg-dev
-Architecture: any
-Section: libdevel
-Depends: ${misc:Depends},
-  libqtxdg0 (= ${binary:Version})
-Description:implementation of the XDG Specifications, development package
- This package provides the development files for the qtxdg library.
- This library implements functions of the XDG Specifications in Qt.
- .
- This package is part of the Razor-qt.
-
-
-Package: librazorqt0
-Section: libs
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
-  libqtxdg0 (= ${binary:Version})
-Replaces: razor-qt
-Conflicts: razor-qt
-Description:common libraries and binaries for the Razor-qt
- This package provides the libraries and binaries that are shared amongst
- the various components of Razor-qt.
- .
- This package is part of the Razor-qt.
-
-
-Package: razorqt-appswitcher
-Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  libqtxdg0 (= ${binary:Version}),
-  librazorqt0 (= ${binary:Version})
-Replaces: razor-qt, razor-appswitcher
-Conflicts: razor-qt, razor-appswitcher
-Description:Razor-qt window switcher
- Alt-Tab window switcher for Razor-qt.
- .
- This package is part of the Razor-qt.
-
-
-Package: razorqt-desktop
-Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0 (= ${binary:Version}),
-    razorqt-data (= ${source:Version})
-Replaces: razor-qt, razor-desktop
-Conflicts: razor-qt, razor-desktop
-Description:RazorQt desktop
- Displays widgets like file icons or clock on the desktop.
- .
- This package is part of the Razor-qt.
-
-
-Package: razorqt-panel
-Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  libqtxdg0 (= ${binary:Version}),
-  librazorqt0 (= ${binary:Version}),
-  razorqt-data (= ${source:Version})
-Replaces: razor-qt, razor-panel
-Conflicts: razor-qt, razor-panel
-Description:the Razor-qt desktop environment panel
- It provides a taskbar (list of all opened windows), desktop
- switcher, launchbar, clock, etc.
- .
- This package is part of the Razor-qt.
-
 
 Package: razorqt-data
 Architecture: all
 Replaces: razor-qt, razor-data
-Conflicts: razor-qt, razor-data
-Description:shared data files for the Razor-qt
+Conflicts: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
+Replaces: razorqt-power (<< ${binary:Version})
+Recommends: oxygen-icon-theme
+Description: The shared data files for the Razor-qt
  This package contains the architecture-independent shared
  data files needed for the Razor-qt desktop environment.
  .
  This package is part of the Razor-qt.
 
-
-Package: razorqt-runner
+Package: razorqt-dev
 Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0 (= ${binary:Version}),
-  razorqt-data (= ${source:Version})
-Replaces: razor-qt, razor-runner
-Conflicts: razor-qt, razor-runner
-Description:An application launcher for the the Razor-qt
- razor-runner is a tool for launching applications. On most
- systems razor-runner can be activated by pressing the
- Alt + F2 key combination.
+Depends: librazorqt-dev
+Conflicts: razor-qt
+Description: Razor-qt development dummy package upgrade
+ This package provides the development files for the libraries that are
+ shared amongst the various components of Razor-qt.
+ .
+ This package is a dummy for upgrade purposes, 
+ u can safety remove after installed.
+
+Package: libqtxdg0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-xml
+Description: Qt implementation of the XDG Specifications
+ This library implements functions of the XDG Specifications in Qt.
  .
  This package is part of the Razor-qt.
 
+Package: libqtxdg-dev
+Architecture: any
+Section: libdevel
+Depends: ${misc:Depends}, libqtxdg0 (= ${binary:Version})
+Description: Qt implementation of the XDG Specifications, development package
+ This package provides the development files for the qtxdg library.
+ This library implements functions of the XDG Specifications in Qt.
+ .
+ This package is part of the Razor-qt.
+
+Package: librazorqt-dev
+Architecture: any
+Depends: ${shlibs:Depends}, libqtxdg-dev (= ${binary:Version})
+Replaces: razor-qt, razorqt-dev
+Conflicts: razor-qt, razorqt-dev (<< ${binary:Version})
+Description: Razor-qt development package
+ This package provides the development files for the libraries that are
+ shared amongst the various components of Razor-qt.
+ .
+ This package is part of the Razor-qt.
+
+Package: librazorqt0
+Section: libs
+Architecture: any
+Depends: libqtxdg0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, 
+ razorqt-data (= ${source:Version})
+Replaces: razor-qt
+Conflicts: razor-qt
+Description: Common libraries and binaries for the Razor-qt
+ This package provides the libraries and binaries that are shared amongst
+ the various components of Razor-qt.
+ .
+ Theres a razor-about application that display information about 
+ the Razor-qt dekstop, including technical info.
+ .
+ This package is part of the Razor-qt.
+
+Package: razorqt-appswitcher
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: razor-qt, razor-appswitcher
+Conflicts: razor-qt, razor-appswitcher
+Description: Razor-qt window manager switcher
+ Desktop Independent Alt-Tab window switcher from Razor-qt, 
+ it was writen for Razor-qt but it can be used standalone as well.
+ .
+ This application switcher relies on window manager integration 
+ and works depending on shorcut integration.
+ .
+ This package is part of the Razor-qt.
 
 Package: razorqt-config
 Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0(= ${binary:Version}),
-  razorqt-data (= ${source:Version})
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
 Replaces: razor-qt, razor-config
 Conflicts: razor-qt, razor-config
-Description:Razor-qt config tools
- Razor-config is a user interface for configuring the other
- aspects of the Razor-qt desktop.
+Description: Razor-qt config tools applications
+ The Razor-qt user interface for configuring the 
+ aspects and aplications of the Razor-qt desktop.
+ .
+ This application also list configuration components 
+ of other desktop enviroments components such qt-config .
  .
  This package is part of the Razor-qt.
 
+Package: razorqt-desktop
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: razor-qt, razor-desktop
+Conflicts: razor-qt, razor-desktop
+Description: Razor-qt desktop component
+ Desktop basic component manage for Razor-qt
+ .
+ This package is part of the Razor-qt.
+
+Package: razorqt-globalkeyshortcuts
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: Razor-qt global keyboard shorcuts tool
+ The Razor-qt global keyboard shortcuts desktop tool 
+ manages the keyboard shorcuts assigned by user 
+ or also default asigned by desktop. Currently could 
+ no manage the key shorcuts handles by some window managers.
+ .
+ This package is part of the Razor-qt.
+
+Package: razorqt-panel
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: razor-qt, razor-panel
+Conflicts: razor-qt, razor-panel
+Description: Razor-qt desktop panel and its plugins
+ Desktop Independent panel component from Razor-qt desktop.
+ .
+ Buil in plugins, provides a taskbar list of all opened windows, 
+ icon desktop switcher, launchbar, clock, mounted devices and some more 
+ for the usage of Razor-qt desktop or any other desktop.
+ .
+ It was writen for Razor-qt but it can be used standalone as well, 
+ depending on window-manager its comunicate wiht it, 
+ for actions over the window list and runing task.
+ .
+ This package is part of the Razor-qt.
+
+Package: razorqt-runner
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: razor-qt, razor-runner
+Conflicts: razor-qt, razor-runner
+Recommends: razorqt-shorcutdaemon
+Description: Razor-qt quick launch and runner application
+ The quick launch and runner tool for launching applications. 
+ .
+ Depending on window-manager razor-runner can be activated by 
+ pressing the Alt + F2 key combination.
+ .
+ This package is part of the Razor-qt.
 
 Package: razorqt-session
 Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0(= ${binary:Version}),
-  razorqt-data (= ${source:Version}),
-  openbox | x-window-manager
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends},
+ openbox | x-window-manager
 Replaces: razor-qt, razor-session
 Conflicts: razor-qt, razor-session
-Description:Razor-qt session manager
+Description: Razor-qt desktop session manager
+ The Razor-qt session manager handles the Razor-qt desktop init, 
+ and manage how Razor-qt will start, its a essencial part of 
+ the Razor-qt desktop for work and manage applications startup.
  .
  This package is part of the Razor-qt.
-
 
 Package: razorqt-power
 Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0(= ${binary:Version}),
-  razorqt-data (= ${source:Version})
-Replaces: razor-qt
-Conflicts: razor-qt
-Description:RazorQt power management apps
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: razor-qt, razorqt-power (<< ${binary:Version})
+Conflicts: razorqt-autosuspend (<< ${binary:Version}), razorqt-power (<< ${binary:Version})
+Description: Razor-qt power management component
+ The backend power management component handles 
+ basic power actions and events for the Razor-qt desktop.
  .
  This package is part of the Razor-qt.
 
+Package: razorqt-autosuspend
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Conflicts: razorqt-power (<< ${binary:Version})
+Description: Razor-qt suspend manage application tool
+ The frontend manage application tool for LID or power management 
+ actions that relies on power manager from Razor-qt desktop.
+ .
+ This package is part of the Razor-qt.
+
+Package: razorqt-notificationd
+Architecture: any
+Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: Razor-qt notification daemon
+ Desktop Independent notifications daemon from Razor-qt, 
+ it was writen for Razor-qt but it can be used standalone as well.
+ .
+ This application relies on system tray panel integration 
+ and works depending on it.
+ .
+ This package is part of the Razor-qt.
+
+Package: razorqt-openssh-askpass
+Architecture: any
+Depends: ${shlibs:Depends},  ${misc:Depends},
+  librazorqt0 (= ${binary:Version}), openssl, openssh-client, libpam-ssh
+Description: Razor-Qt openssh ask password interface
+ Desktop Independent ssh ask password interface from Razor-qt, 
+ it was writen for Razor-qt but it can be used standalone as well.
+ .
+ This application relies on desktop environment integration 
+ and works depending on it, for that please read README.Debian docs.
+ .
+ This package is part of the Razor-Qt.
 
 %ifnot RELEASE lucid maverick squeeze
 Package: razorqt-policykit-agent
 Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0 (= ${binary:Version}),
-  razorqt-data (= ${source:Version})
+Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
 Replaces: razor-qt
 Conflicts: razor-qt
 Description:A lightweight PolicyKit agent primarily
- writen for Razor-qt DE. But it can be used
- standalone as well.
+ Desktop Independent polkit component from Razor-Qt desktop.
+ .
+ A Qt based PolicyKit agent, provides a simple agent primarily 
+ for the usage of Razor-qt desktop or any other desktop.
+ .
+ It was writen for Razor-QT DE but can be used standar alone, 
+ depending on window-manager its comunicate wiht it, 
+ for actions over the window list and runing task.
  .
  This package is part of the Razor-qt.
+
 %endif
-
-
-Package: razorqt-notificationd
+%ifnot RELEASE squeeze
+Package: lightdm-razorqt-greeter
 Architecture: any
-Depends: ${shlibs:Depends},  ${misc:Depends},
-  libqtxdg0 (= ${binary:Version}),
-  librazorqt0 (= ${binary:Version})
-Description:notification daemon for Razor-qt
- Own notification daemon for Razor-qt.
+Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
+Description: A LightDM greeter that uses the Razor-qt (QT based) lib kit.
+ A LightDM greeter that uses the Razor-qt QT lib kit, 
+ it was writen for Razor-qt but it can be used standalone as well.
  .
- This app can be used as independent notification for 
- any desktop or window manager.
- .
- This package is part of the Razor-qt.
+ This package is part of the Razor-qt, and 
+ currently its in unstable status and continuos development.
+%endif
