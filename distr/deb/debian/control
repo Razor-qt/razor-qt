@@ -12,11 +12,27 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
     libxcursor-dev,
     libudev-dev,
     libqt4-webkit | libqtwebkit4, 
-    libxcursor-dev,
 %ifnot RELEASE lucid maverick squeeze lenny etch
     libpolkit-agent-1-dev,
     libpolkit-qt-1-dev,
+    %set POLICYKIT yes
+%endif
+%if DISTRIB Debian
+    %ifnot RELEASE squeeze lenny etch
     liblightdm-qt-dev,
+    %endif
+%endif
+%if DISTRIB Ubuntu
+    %if RELEASE natty 
+        liblightdm-qt-0-dev,
+        %set LIGHTDM yes
+    %elsif RELEASE oneiric
+        liblightdm-qt-1-dev,
+        %set LIGHTDM yes
+    %elsif RELEASE precise quantal 
+        liblightdm-qt-2-dev,
+        %set LIGHTDM yes
+    %endif
 %endif
     zlib1g-dev,
     libstatgrab-dev,
@@ -51,9 +67,8 @@ Description: The Razor-qt desktop environment
 
 Package: razorqt-data
 Architecture: all
-Replaces: razor-qt, razor-data
+Replaces: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
 Conflicts: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
-Replaces: razorqt-power (<< ${binary:Version})
 Recommends: oxygen-icon-theme
 Description: The shared data files for the Razor-qt
  This package contains the architecture-independent shared
@@ -70,7 +85,7 @@ Description: Razor-qt development dummy package upgrade
  shared amongst the various components of Razor-qt.
  .
  This package is a dummy for upgrade purposes, 
- u can safety remove after installed.
+ you can safety remove after installed.
 
 Package: libqtxdg0
 Section: libs
@@ -258,7 +273,7 @@ Description: Razor-Qt openssh ask password interface
  .
  This package is part of the Razor-Qt.
 
-%ifnot RELEASE lucid maverick squeeze
+%if POLICYKIT yes
 Package: razorqt-policykit-agent
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
@@ -275,9 +290,9 @@ Description:A lightweight PolicyKit agent primarily
  for actions over the window list and runing task.
  .
  This package is part of the Razor-qt.
-
 %endif
-%ifnot RELEASE squeeze
+
+%if LIGHTDM yes
 Package: lightdm-razorqt-greeter
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),

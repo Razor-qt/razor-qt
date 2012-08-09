@@ -17,60 +17,114 @@ Options
 HELP_TEXT
 }
 
+# VARIABLES is a array
+declare -A VARIABLES
+
 function checkIf
 {
-  shift
-  local TYPE=$1
-  shift
-  if [ "$TYPE" = "DISTRIB" ]; then VAL=${DISTRIB}; fi
-  if [ "$TYPE" = "RELEASE" ]; then VAL=${RELEASE}; fi
+    shift
+    local name=$1
+    shift
 
-  for i in $@ ; do
-    [ "$i" = "${VAL}" ] && return 0
-  done
+    case $name in
+        DISTRIB)
+            val=`echo $DISTRIB | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`;
+            local caseInsensitive=1;
+            ;;
 
-  return 1
+        RELEASE)
+            val=`echo $RELEASE | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`;
+            local caseInsensitive=1;
+            ;;
+
+        *)
+            val=${VARIABLES[$name]}
+            ;;
+    esac
+
+    for i in $@ ; do
+        local a=$i
+        [ "$caseInsensitive" ] && a=`echo $i | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
+        [ "$a" = "$val" ] && return 1
+    done
+
+    return 0
+}
+
+
+function setVariable
+{
+    VARIABLES["$2"]="$3"
+}
+
+
+function processBlock
+{
+    local skip=$1
+    local skipAll=$2
+    local skipNext=$(( ! $skip ))
+ 
+    while  IFS='' read "line"; do
+        local cmd=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
+        case $cmd in
+        %IF)
+            checkIf $line
+            local s=$(( ! $? ))
+            processBlock $s $skip
+            ;;
+
+        %IFNOT)
+            checkIf $line
+            local s=$?
+            processBlock $s $skip
+            ;;
+
+        %ELSIF | %ELSEIF)
+            if [ $skipNext = "1" ]; then
+                skip=1
+            else
+                checkIf $line
+                skip=$(( ! $? ))
+                skipNext=$(( ! $skip ))
+             fi
+            ;;
+
+        %ELSE)
+            if [ $skipNext = "1" ]; then
+                skip=1
+            else
+                skip=0
+                skipNext=$(( ! $skip ))
+             fi
+            ;;
+
+        %ENDIF)
+            return
+            ;;
+
+        %SET)
+            [ $skip = "1" ] || setVariable $line
+            ;;
+
+        *)
+            if [ "$skip" = "0" ] && [ "$skipAll" = 0 ]; then
+                echo "$line" | sed            \
+                    -e"s/%NAME%/${NAME}/g"    \
+                    -e"s/%VERSION%/${VER}/g"  \
+                    -e"s/%RELEASE%/${RELEASE}/g" \
+                    -e"s/%DISTRIB%/${DISTRIB}/g" \
+                    -e"s/%DATE%/${DATE}/g" \
+                    -e"s/%DEBEMAIL%/${DEBEMAIL}/g" \
+                    -e"s/%DEBFULLNAME%/${DEBFULLNAME}/g"
+            fi
+        esac
+     done
 }
 
 
 function prepareFile
 {
-  local file=$1
-  local skip=0
-  while  IFS='' read "line"; do
-    local cmd=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
-    case $cmd in
-      %IF)
-        checkIf $line || skip=1
-        ;;
-
-      %IFNOT)
-        checkIf $line && skip=1
-        ;;
-
-      %ELSE)
-        let "skip = 1-$skip"
-        ;;
-
-      %ENDIF)
-        skip=0
-        ;;
-
-      *)
-        if [ "$skip" = 0 ]; then
-			echo "$line" | sed            \
-				-e"s/%NAME%/${NAME}/g"    \
-				-e"s/%VERSION%/${VER}/g"  \
-				-e"s/%RELEASE%/${RELEASE}/g" \
-				-e"s/%DISTRIB%/${DISTRIB}/g" \
-				-e"s/%DATE%/${DATE}/g" \
-				-e"s/%DEBEMAIL%/${DEBEMAIL}/g" \
-				-e"s/%DEBFULLNAME%/${DEBFULLNAME}/g"
-		fi
-        ;;
-    esac
-
-  done < "${file}"
+    processBlock 0 0 < $1
 }
 
 
@@ -215,7 +269,6 @@ for RELEASE in ${RELEASE}; do
         chmod --reference "${src}" ${dest}
     done
     # Debin directory .....................
-
 
     cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
 done
