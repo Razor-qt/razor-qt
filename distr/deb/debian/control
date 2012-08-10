@@ -109,6 +109,7 @@ Description: Qt implementation of the XDG Specifications, development package
 
 Package: librazorqt-dev
 Architecture: any
+Section: libdevel
 Depends: ${shlibs:Depends}, libqtxdg-dev (= ${binary:Version})
 Replaces: razor-qt, razorqt-dev
 Conflicts: razor-qt, razorqt-dev (<< ${binary:Version})
