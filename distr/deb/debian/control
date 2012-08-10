@@ -59,7 +59,7 @@ Depends: razorqt-appswitcher,
         razorqt-policykit-agent,
 %endif
         razorqt-openssh-askpass
-Description: The Razor-qt desktop environment
+Description: Razor-qt desktop environment
  Razor-qt is an advanced, easy-to-use, and fast desktop environment
  based on Qt technologies. Unlike desktop environments, Razor-qt
  also works fine with weak machines and low requeriments software.
@@ -71,7 +71,7 @@ Architecture: all
 Replaces: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
 Conflicts: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
 Recommends: oxygen-icon-theme
-Description: The shared data files for the Razor-qt
+Description: shared data files for the Razor-qt
  This package contains the architecture-independent shared
  data files needed for the Razor-qt desktop environment.
  .
@@ -281,7 +281,7 @@ Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
 Replaces: razor-qt
 Conflicts: razor-qt
-Description:A lightweight PolicyKit agent primarily
+Description: lightweight PolicyKit agent primarily
  Desktop Independent polkit component from Razor-Qt desktop.
  .
  A Qt based PolicyKit agent, provides a simple agent primarily 
@@ -298,7 +298,7 @@ Description:A lightweight PolicyKit agent primarily
 Package: lightdm-razorqt-greeter
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
-Description: A LightDM greeter that uses the Razor-qt (QT based) lib kit.
+Description: LightDM greeter that uses the Razor-qt (QT based) lib kit.
  A LightDM greeter that uses the Razor-qt QT lib kit, 
  it was writen for Razor-qt but it can be used standalone as well.
  .
