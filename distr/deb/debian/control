@@ -231,8 +231,8 @@ Description: Razor-qt desktop session manager
 Package: razorqt-power
 Architecture: any
 Depends: librazorqt0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Replaces: razor-qt, razorqt-power (<< ${binary:Version})
-Conflicts: razorqt-autosuspend (<< ${binary:Version}), razorqt-power (<< ${binary:Version})
+Replaces: razor-qt
+Conflicts: razorqt-autosuspend (<< ${binary:Version})
 Description: Razor-qt power management component
  The backend power management component handles 
  basic power actions and events for the Razor-qt desktop.
