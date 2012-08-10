@@ -15,11 +15,12 @@ Build-Depends: debhelper (>= 7.0.50~), pkg-config,
 %ifnot RELEASE lucid maverick squeeze lenny etch
     libpolkit-agent-1-dev,
     libpolkit-qt-1-dev,
-    %set POLICYKIT yes
+    %set POLKIT yes
 %endif
 %if DISTRIB Debian
     %ifnot RELEASE squeeze lenny etch
     liblightdm-qt-dev,
+    %set LIGHTDM yes
     %endif
 %endif
 %if DISTRIB Ubuntu
@@ -273,7 +274,7 @@ Description: Razor-Qt openssh ask password interface
  .
  This package is part of the Razor-Qt.
 
-%if POLICYKIT yes
+%if POLKIT yes
 Package: razorqt-policykit-agent
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
