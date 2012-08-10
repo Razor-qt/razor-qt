@@ -3,3 +3,4 @@
 /usr/lib*/librazorqxt.so.*
 /usr/share/librazorqt/
 /usr/bin/razor-about
+/usr/share/applications/razor-about.desktop

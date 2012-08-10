@@ -7,4 +7,4 @@ OnlyShowIn=X-RAZOR;
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Name=Razor Autosuspend Configuration
 GenericName=Razor Autosuspend Configuration
-TRANSLATIONS_DIR=translations
+#TRANSLATIONS_DIR=translations
