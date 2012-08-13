@@ -17,8 +17,10 @@ Options
 HELP_TEXT
 }
 
+
 # VARIABLES is a array
 declare -A VARIABLES
+
 
 function checkIf
 {
@@ -45,10 +47,13 @@ function checkIf
     for i in $@ ; do
         local a=$i
         [ "$caseInsensitive" ] && a=`echo $i | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
-        [ "$a" = "$val" ] && return 1
+        if [ "$a" = "$val" ]; then
+            echo 1
+            return 1
+        fi
     done
 
-    return 0
+    echo 0
 }
 
 
@@ -57,57 +62,18 @@ function setVariable
     VARIABLES["$2"]="$3"
 }
 
-
-function processBlock
+token=''
+line=''
+function nextToken
 {
-    local skip=$1
-    local skipAll=$2
-    local skipNext=$(( ! $skip ))
- 
     while  IFS='' read "line"; do
-        local cmd=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
-        case $cmd in
-        %IF)
-            checkIf $line
-            local s=$(( ! $? ))
-            processBlock $s $skip
-            ;;
+        token=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
+        case $token in
+            %IF|%IFNOT|%ELSIF|%ELSEIF|%ELSE|%ENDIF|%SET)
+                return 0
+                ;;
 
-        %IFNOT)
-            checkIf $line
-            local s=$?
-            processBlock $s $skip
-            ;;
-
-        %ELSIF | %ELSEIF)
-            if [ $skipNext = "1" ]; then
-                skip=1
-            else
-                checkIf $line
-                skip=$(( ! $? ))
-                skipNext=$(( ! $skip ))
-             fi
-            ;;
-
-        %ELSE)
-            if [ $skipNext = "1" ]; then
-                skip=1
-            else
-                skip=0
-                skipNext=$(( ! $skip ))
-             fi
-            ;;
-
-        %ENDIF)
-            return
-            ;;
-
-        %SET)
-            [ $skip = "1" ] || setVariable $line
-            ;;
-
-        *)
-            if [ "$skip" = "0" ] && [ "$skipAll" = 0 ]; then
+            *)
                 echo "$line" | sed            \
                     -e"s/%NAME%/${NAME}/g"    \
                     -e"s/%VERSION%/${VER}/g"  \
@@ -116,15 +82,94 @@ function processBlock
                     -e"s/%DATE%/${DATE}/g" \
                     -e"s/%DEBEMAIL%/${DEBEMAIL}/g" \
                     -e"s/%DEBFULLNAME%/${DEBFULLNAME}/g"
-            fi
         esac
-     done
+    done
+
+    token=''
+    return
 }
 
 
+
+function skipBlock
+{
+    local level=0
+    while  IFS='' read "line"; do
+        token=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
+        case $token in
+            %IF|%IFNOT)
+                let 'level++'
+                ;;
+
+            %ENDIF)
+                [ $level = "0" ] && break
+                let 'level--'
+                ;;
+
+            %ELSIF|%ELSEIF|%ELSE)
+                [ $level = "0" ] && break
+                ;;
+
+            *)
+                ;;
+        esac
+    done
+}
+
+
+function processBlock
+{
+    nextToken
+
+    while [ "$token" != "" ]; do
+        case $token in
+            %IF|%IFNOT)
+                local skip=
+                while [ "$token" != "" ] && [ $token != "%ENDIF" ]; do
+                    case $token in
+                        %IF|%ELSIF|%ELSEIF)
+                            check=$(checkIf $line)
+                            ;;
+
+                        %IFNOT)
+                            check=$(checkIf $line)
+                            check=$(( ! $check ))
+                            ;;
+
+                        %ELSE)
+                            check=1
+                            ;;
+                    esac
+
+                    if [ "$skip" != "1" ] && [ "$check" = "1" ]; then
+                        processBlock
+                        skip=1
+                    else
+                        skipBlock
+                    fi
+                done
+                ;;
+
+            %SET)
+                setVariable $line
+                ;;
+
+            %ELSIF|%ELSEIF|%ELSE|%ENDIF)
+                break
+                ;;
+
+            *)
+                echo "Unexpected token '$line'" >&2
+                exit 3
+                ;;
+        esac
+        nextToken
+    done
+}
+
 function prepareFile
 {
-    processBlock 0 0 < $1
+    processBlock < $1
 }
 
 
@@ -265,11 +310,11 @@ for RELEASE in ${RELEASE}; do
     DATE=`date -R`
     for src in `find ${DIR}/distr/deb/debian -type f `; do
         dest=`echo $src | sed -e's|/distr/deb||'`
+
         prepareFile "${src}" > ${dest}
         chmod --reference "${src}" ${dest}
     done
     # Debin directory .....................
-
     cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
 done
 
