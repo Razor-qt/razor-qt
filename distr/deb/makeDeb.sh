@@ -272,7 +272,7 @@ if [ -z "$VER" ]; then
 fi
 
 if [ -z "$OUT_DIR" ]; then
-    OUT_DIR="${HOME}/{$NAME}_${VER}_deb"
+    OUT_DIR="${HOME}/${NAME}_${VER}_deb"
 fi
 
 if [ -z "$DEBEMAIL" ]; then
