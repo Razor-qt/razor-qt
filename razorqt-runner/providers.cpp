@@ -632,27 +632,27 @@ void VirtualBoxProvider::rebuild()
         }
 
         QDomNodeList _mlist = mspec.elementsByTagName( "Machine" );
-		for ( int j = 0; j < _mlist.count(); j++ )
-		{
-			QDomNode mnode = _mlist.at( j );
+        for ( int j = 0; j < _mlist.count(); j++ )
+        {
+         QDomNode mnode = _mlist.at( j );
 
-			QString type = mnode.toElement().attribute( "OSType" );
-			VirtualBoxItem *virtualBoxItem = new VirtualBoxItem
-				(
-				 mnode.toElement().attribute( "name" ) ,
-				 QIcon ( osIcons.value (type , ":/vbox-icons/os_other.png") )
-				);
+         QString type = mnode.toElement().attribute( "OSType" );
+         VirtualBoxItem *virtualBoxItem = new VirtualBoxItem
+            (
+             mnode.toElement().attribute( "name" ) ,
+             QIcon ( osIcons.value (type , ":/vbox-icons/os_other.png") )
+            );
 
-			const QDomNodeList & rdeportConfig = mnode.toElement().elementsByTagName("VRDEProperties");
-			if ( ! rdeportConfig.isEmpty() )
-			{
-				QDomNode portNode = rdeportConfig.at(0).firstChild();
-				virtualBoxItem->setRDEPort( portNode.toElement().attribute("value") );
-			}
+         const QDomNodeList & rdeportConfig = mnode.toElement().elementsByTagName("VRDEProperties");
+         if ( ! rdeportConfig.isEmpty() )
+         {
+            QDomNode portNode = rdeportConfig.at(0).firstChild();
+            virtualBoxItem->setRDEPort( portNode.toElement().attribute("value") );
+         }
 
-			append ( virtualBoxItem );
-		}
-	}
+         append ( virtualBoxItem );
+        }
+   }
 
     timeStamp = QDateTime::currentDateTime();
 
