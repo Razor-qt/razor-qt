@@ -494,11 +494,22 @@ VirtualBoxItem::VirtualBoxItem(const QString & MachineName , const QIcon & Icon)
     mIcon = Icon;
 }
 
+void VirtualBoxItem::setRDEPort(const QString & portNum)
+{
+	m_rdePortNum = portNum;
+}
+
 bool VirtualBoxItem::run() const
 {
     QStringList arguments;
+#ifdef VBOXRUNNER_HEADLESS
+    arguments << "-startvm" << title();
+    return QProcess::startDetached ("VBoxHeadless" , arguments);
+#else
     arguments << "startvm" << title();
     return QProcess::startDetached ("VBoxManage" , arguments);
+#endif
+
 }
 
 bool VirtualBoxItem::compare(const QRegExp &regExp) const
@@ -603,8 +614,8 @@ void VirtualBoxProvider::rebuild()
     QDomNodeList _dnlist = d.elementsByTagName( "MachineEntry" );
     for ( int i = 0; i < _dnlist.count(); i++ )
     {
-        QDomNode node = _dnlist.at( i );
-        QString ref = node.toElement().attribute( "src" );
+        const QDomNode & node = _dnlist.at( i );
+        const QString & ref = node.toElement().attribute( "src" );
         if ( ref.isEmpty() )
         {
             qDebug() << "MachineEntry with no src attribute";
@@ -623,18 +634,25 @@ void VirtualBoxProvider::rebuild()
         QDomNodeList _mlist = mspec.elementsByTagName( "Machine" );
         for ( int j = 0; j < _mlist.count(); j++ )
         {
-            QDomNode mnode = _mlist.at( j );
-            QString type = mnode.toElement().attribute( "OSType" );
+         QDomNode mnode = _mlist.at( j );
 
-            VirtualBoxItem *virtualBoxItem = new VirtualBoxItem
+         QString type = mnode.toElement().attribute( "OSType" );
+         VirtualBoxItem *virtualBoxItem = new VirtualBoxItem
             (
-                mnode.toElement().attribute( "name" ) ,
-		QIcon ( osIcons.value (type , ":/:/vbox-icons/os_other.png") )
+             mnode.toElement().attribute( "name" ) ,
+             QIcon ( osIcons.value (type , ":/vbox-icons/os_other.png") )
             );
 
-            append ( virtualBoxItem );
+         const QDomNodeList & rdeportConfig = mnode.toElement().elementsByTagName("VRDEProperties");
+         if ( ! rdeportConfig.isEmpty() )
+         {
+            QDomNode portNode = rdeportConfig.at(0).firstChild();
+            virtualBoxItem->setRDEPort( portNode.toElement().attribute("value") );
+         }
+
+         append ( virtualBoxItem );
         }
-    }
+   }
 
     timeStamp = QDateTime::currentDateTime();
 

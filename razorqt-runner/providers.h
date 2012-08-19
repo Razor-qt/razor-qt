@@ -250,14 +250,18 @@ public:
 #include <QtGui/QDesktopServices>
 #include <QtCore/QFileInfo>
 #include <QtCore/QMap>
+
 class VirtualBoxItem: public CommandProviderItem
 {
 public:
   VirtualBoxItem(const QString & MachineName , const QIcon & Icon);
   
+  void setRDEPort (const QString & portNum);
   bool run() const;
   bool compare(const QRegExp &regExp) const;
   virtual unsigned int rank(const QString &pattern) const;
+private:
+  QString m_rdePortNum;
 };
 
 class VirtualBoxProvider: public CommandProvider
