@@ -100,6 +100,10 @@ if (RUNNER_MATH)
     add_definitions(-DMATH_ENABLED)
 endif (RUNNER_MATH)
 
+if (VBOXRUNNER_HEADLESS)
+	add_definitions(-DVBOXRUNNER_HEADLESS)
+endif (VBOXRUNNER_HEADLESS)
+
 if (RUNNER_VBOX)
 	set(QRC_FILES 
 		${QRC_FILES}
