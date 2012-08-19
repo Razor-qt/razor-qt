@@ -40,7 +40,7 @@ add_executable(${PROJECT_NAME} ${NOTIFICATIONS_CONF_SRC}
 add_dependencies(${PROJECT_NAME} razorqt )
 target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY}
                                       ${QT_QTGUI_LIBRARY}
-                                      ${QT_DBUS_LIBRARY}
+                                      ${QT_QTDBUS_LIBRARY}
                                       razorqt)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
