@@ -4,18 +4,19 @@
     <message>
         <location filename="../xdgmenureader.cpp" line="74"/>
         <source>Menu file not defined.</source>
-        <translation type="unfinished"/>
+        <translation>Neaprašytas meniu failas</translation>
     </message>
     <message>
         <location filename="../xdgmenureader.cpp" line="91"/>
         <source>%1 not loading: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 neįkeltas: %2</translation>
     </message>
     <message>
         <location filename="../xdgmenureader.cpp" line="103"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Nagrinėjimo klaida ties %1 eilute, %2 stulpeliu:
+%3</translation>
     </message>
 </context>
 </TS>

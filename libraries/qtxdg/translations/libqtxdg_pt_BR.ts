@@ -4,12 +4,12 @@
     <message>
         <location filename="../xdgmenureader.cpp" line="74"/>
         <source>Menu file not defined.</source>
-        <translation>Menu arquivo não definido.</translation>
+        <translation>Arquivo de menu não definido.</translation>
     </message>
     <message>
         <location filename="../xdgmenureader.cpp" line="91"/>
         <source>%1 not loading: %2</source>
-        <translation>%1 não carregado: %2</translation>
+        <translation>%1 não carregando: %2</translation>
     </message>
     <message>
         <location filename="../xdgmenureader.cpp" line="103"/>

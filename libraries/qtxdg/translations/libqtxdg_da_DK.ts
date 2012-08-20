@@ -15,7 +15,7 @@
         <location filename="../xdgmenureader.cpp" line="103"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>Parsefejl i linie %1, kolonne %2:
+        <translation>Fortolkningsfejl i linie %1, kolonne %2:
 %3</translation>
     </message>
 </context>

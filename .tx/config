@@ -1,6 +1,7 @@
 [main]
 host = https://www.transifex.net
 type = QT
+minimum-perc = 5
 
 [razor-qt.razor-session]
 type = QT
@@ -14,11 +15,11 @@ source_file = razorqt-desktop/desktop-razor/plugin-analogclock/translations/anal
 source_lang = en
 file_filter = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock_<lang>.ts
 
-[razor-qt.qtxdg]
+[razor-qt.libqtxdg]
 type = QT
-source_file = libraries/qtxdg/translations/qtxdg.ts.src
+source_file = libraries/qtxdg/translations/libqtxdg.ts.src
 source_lang = en
-file_filter = libraries/qtxdg/translations/qtxdg_<lang>.ts
+file_filter = libraries/qtxdg/translations/libqtxdg_<lang>.ts
 
 [razor-qt.librazorqt]
 type = QT

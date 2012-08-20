@@ -4,18 +4,19 @@
     <message>
         <location filename="../xdgmenureader.cpp" line="74"/>
         <source>Menu file not defined.</source>
-        <translation type="unfinished"/>
+        <translation>Menü dosyası tanımlanmamış.</translation>
     </message>
     <message>
         <location filename="../xdgmenureader.cpp" line="91"/>
         <source>%1 not loading: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 yüklenmiyor: %2</translation>
     </message>
     <message>
         <location filename="../xdgmenureader.cpp" line="103"/>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation type="unfinished"/>
+        <translation>Satır %1, sütun %2 üzerinde ayrıştırma hatası:
+%3</translation>
     </message>
 </context>
 </TS>
