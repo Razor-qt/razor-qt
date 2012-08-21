@@ -39,21 +39,20 @@ function(qtxdg_translate_ts _qmFiles)
     
     # Parse arguments ***************************************
     set(_state "")
-    foreach (_arg ${ARGN})  
+    foreach (_arg ${ARGN})
         if (
-            (${_arg} STREQUAL "SOURCES") OR
-            (${_arg} STREQUAL "TRANSLATION_DIR") OR
-            (${_arg} STREQUAL "INSTALLATION_DIR") OR
-            (${_arg} STREQUAL "TS_SRC_FILE")        
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "SOURCES_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "TRANSLATION_DIR_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "INSTALLATION_DIR_I_HATE_CMAKE") OR
+            ("${_arg}_I_HATE_CMAKE" STREQUAL "TS_SRC_FILE_I_HATE_CMAKE")        
            )        
-
             set(_state ${_arg})
       
         else()
             if("${_state}" STREQUAL "SOURCES")
                 get_filename_component (__file ${_arg} ABSOLUTE)
                 set(_sources  ${_sources} ${__file})
-                #set(_sources  ${_sources} ${_arg})
+                set(_sourcesSpace  "${_sourcesSpace} ${__file}")
  
             elseif("${_state}" STREQUAL "TRANSLATION_DIR")
                 set(_translationDir ${_arg})       
@@ -84,20 +83,28 @@ function(qtxdg_translate_ts _qmFiles)
     get_filename_component (_tsSrcFile  ${_tsSrcFile} ABSOLUTE)
     get_filename_component (_tsSrcFileName  ${_tsSrcFile} NAME)
     get_filename_component (_tsSrcFileNameWE  ${_tsSrcFile} NAME_WE)
-
-
+      
     # TS.SRC file *******************************************    
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/updateTsFile.sh
+        "#/bin/sh\n"
+        "\n"
+        "mkdir -p ${_translationDir} 2>/dev/null\n"
+        "cd ${_translationDir} && "
+        "${QT_LUPDATE_EXECUTABLE} -target-language en_US ${_sourcesSpace} -ts ${_tsSrcFile}.ts &&"
+        "mv ${_tsSrcFile}.ts ${_tsSrcFile}\n"
+        "grep -q 'source' '${_tsSrcFile}' || rm '${_tsSrcFile}'\n"
+    )
+
     add_custom_target(Update_${_tsSrcFileName}
-        COMMAND ${QT_LUPDATE_EXECUTABLE} -target-language en_US ${_sources} -ts ${_tsSrcFile}.ts
-        COMMAND mv ${_tsSrcFile}.ts ${_tsSrcFile}
+        COMMAND sh ${CMAKE_CURRENT_BINARY_DIR}/updateTsFile.sh
         DEPENDS ${_sources}
-        WORKING_DIRECTORY ${_translationDir}
+        VERBATIM
     )
   
     add_dependencies(UpdateTsFiles Update_${_tsSrcFileName})
     
     # TX file ***********************************************
-    set(_txFile "${CMAKE_BINARY_DIR}/tx/razor-qt.${_tsSrcFileName}.tx_config")  
+    set(_txFile "${CMAKE_BINARY_DIR}/tx/${_tsSrcFileName}.tx_config")  
     string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_translationDir ${_translationDir})
     string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_tsSrcFile ${_tsSrcFile})
     
@@ -110,10 +117,37 @@ function(qtxdg_translate_ts _qmFiles)
         "\n"
     )
 
+    # translate.h file *************************************
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/razortranslate.h
+        "#ifndef RAZOR_TRANSLATE_H\n"
+        "#include <QtCore/QLocale>\n"
+        "#include <QtCore/QTranslator>\n"
+        "#include <QtCore/QLibraryInfo>\n"
+        "class RazorTranslator {\n"
+        "public:\n"
+        "  static void translate()\n"
+        "  {\n"
+        "    QString locale = QLocale::system().name();\n"
+
+        "    QTranslator *qtTranslator = new QTranslator(qApp);\n"
+        "    qtTranslator->load(\"qt_\" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));\n"
+        "    qApp->installTranslator(qtTranslator);\n"
+
+        "    QTranslator *appTranslator = new QTranslator(qApp);\n"
+        "    appTranslator->load(QString(\"${_installDir}/${PROJECT_NAME}_%1.qm\").arg(locale));\n"
+        "    qApp->installTranslator(appTranslator);\n"
+        "  }\n"
+        "};\n"
+
+        "#define TRANSLATE_APP  RazorTranslator::translate();\n"
+        "#endif // RAZOR_TRANSLATE_H\n"
+    )
+
     # QM files **********************************************    
     file(GLOB _tsFiles ${_translationDir}/${_tsSrcFileNameWE}_*.ts)    
     qt4_add_translation(_qmFilesLocal ${_tsFiles})
     install(FILES ${_qmFilesLocal} DESTINATION ${_installDir})
+    
     set(${_qmFiles} ${_qmFilesLocal} PARENT_SCOPE)
-endfunction(qtxdg_translate_ts)
+endfunction(razor_translate_ts)
 

@@ -66,7 +66,7 @@ set(QT_USE_QTXML TRUE)
 
 # Translations **********************************
 # QtXdg is an independent library, so I do not use razor_translate_ts
-include(qrxdgTranslate)
+include(qtxdgTranslate)
 qtxdg_translate_ts(libqtxdg_QM_FILES 
     SOURCES
         ${libqtxdg_PUBLIC_H_FILES}
