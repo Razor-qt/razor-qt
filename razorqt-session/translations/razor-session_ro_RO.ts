@@ -1,243 +1,193 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ro_RO" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="ro_RO">
 <context>
     <name>AutoStartEdit</name>
     <message>
-        <location filename="../config/autostartedit.ui" line="14"/>
         <source>Edit</source>
-        <translation>Editează</translation>
+        <translation type="obsolete">Editează</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="20"/>
         <source>Name:</source>
-        <translation>Nume:</translation>
+        <translation type="obsolete">Nume:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="27"/>
         <source>Search...</source>
-        <translation>Se caută...</translation>
+        <translation type="obsolete">Se caută...</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="47"/>
         <source>Command:</source>
-        <translation>Comandă:</translation>
+        <translation type="obsolete">Comandă:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.cpp" line="70"/>
+        <source>Wait for system tray</source>
+        <translation type="obsolete">Așteaptă după tava sistem</translation>
+    </message>
+    <message>
         <source>Select Application</source>
-        <translation>Selectează aplicația</translation>
+        <translation type="obsolete">Selectează aplicația</translation>
     </message>
 </context>
 <context>
     <name>AutoStartItemModel</name>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="156"/>
         <source>Global Autostart</source>
-        <translation type="unfinished"/>
+        <translation type="obsolete">Autostart global</translation>
     </message>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="158"/>
         <source>Razor Autostart</source>
-        <translation type="unfinished"/>
+        <translation type="obsolete">Autostart Razor</translation>
+    </message>
+    <message>
+        <source>Location: %1</source>
+        <translation type="obsolete">Locație: %1</translation>
+    </message>
+    <message>
+        <source>Overrides: %1</source>
+        <translation type="obsolete">Înlocuiri: %1</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>AutoStartPage</name>
     <message>
-        <location filename="../src/windowmanager.cpp" line="39"/>
-        <source>Openbox - light-weight window manager</source>
-        <translation type="unfinished"/>
+        <source>Delete</source>
+        <translation type="obsolete">Șterge</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="40"/>
-        <source>KWin - window manager of the KDE Software Compilation</source>
-        <translation type="unfinished"/>
+        <source>Add</source>
+        <translation type="obsolete">Adaugă</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="41"/>
-        <source>Metacity - window manager of the GNOME desktop environment</source>
-        <translation type="unfinished"/>
+        <source>Edit</source>
+        <translation type="obsolete">Editează</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="42"/>
-        <source>Windowmaker - a classical lightweight window manager</source>
-        <translation type="unfinished"/>
+        <source>Application Autostart</source>
+        <translation type="obsolete">Autostart aplicație</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="43"/>
-        <source>Enlightenement 16</source>
-        <translation type="unfinished"/>
+        <source>Error</source>
+        <translation type="obsolete">Eroare</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="44"/>
-        <source>Fvwm2 - a classical lightweight window manager</source>
-        <translation type="unfinished"/>
+        <source>File &apos;%1&apos; already exists!</source>
+        <translation type="obsolete">Fișierul  &apos;%1&apos; există deja!</translation>
+    </message>
+</context>
+<context>
+    <name>BasicSettings</name>
+    <message>
+        <source>Window Manager</source>
+        <translation type="obsolete">Gestiune ferestre</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="45"/>
-        <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
-        <translation type="unfinished"/>
+        <source>Search...</source>
+        <translation type="obsolete">Se caută...</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="46"/>
-        <source>Sawfish - a lightweight, flexible window manager</source>
-        <translation type="unfinished"/>
+        <source>Basic Settings</source>
+        <translation type="obsolete">Setări de bază</translation>
+    </message>
+    <message>
+        <source>Select a window manager</source>
+        <translation type="obsolete">Selectați un administrator de ferestre</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultApps</name>
+    <message>
+        <source>Select a terminal emulator</source>
+        <translation type="obsolete">Selectați un emulator de terminal</translation>
+    </message>
+    <message>
+        <source>Select a web browser</source>
+        <translation type="obsolete">Selectați un navigator web</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultAppsPage</name>
+    <message>
+        <source>Default Applications</source>
+        <translation type="obsolete">Aplicații implicite</translation>
+    </message>
+    <message>
+        <source>Terminal Emulation:</source>
+        <translation type="obsolete">Emulatoare de terminal:</translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation type="obsolete">Se caută...</translation>
+    </message>
+    <message>
+        <source>Web Browser:</source>
+        <translation type="obsolete">Navigator web:</translation>
+    </message>
+</context>
+<context>
+    <name>EnvironmentPage</name>
+    <message>
+        <source>Add</source>
+        <translation type="obsolete">Adaugă</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="obsolete">Șterge</translation>
+    </message>
+    <message>
+        <source>Environment Variables (Advanced)</source>
+        <translation type="obsolete">Variabile de mediu (mod avansat)</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="obsolete">Nume variabilă</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="obsolete">Valoare</translation>
     </message>
 </context>
 <context>
     <name>RazorModuleManager</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="179"/>
+        <location filename="../src/razormodman.cpp" line="198"/>
         <source>Razor Session Crash Report</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="180"/>
+        <location filename="../src/razormodman.cpp" line="199"/>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
-        <translation type="unfinished"/>
+        <translation>Aplicația &apos;%1&apos; a eșuat de prea multe ori. Repornirea automată a acestei aplicații a fost dezactivată pentru sesiunea curentă.</translation>
     </message>
 </context>
 <context>
     <name>SessionConfigWindow</name>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="14"/>
         <source>Razor Session Configuration</source>
-        <translation>Configurare sesiune Razor</translation>
+        <translation type="obsolete">Configurare sesiune Razor</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="58"/>
-        <source>Window Manager</source>
-        <translation>Gestiune ferestre</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="77"/>
-        <location filename="../config/sessionconfigwindow.ui" line="234"/>
-        <location filename="../config/sessionconfigwindow.ui" line="261"/>
-        <source>Search...</source>
-        <translation>Se caută...</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="87"/>
-        <source>Razor Modules</source>
-        <translation>Module Razor</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="111"/>
-        <source>Panel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="118"/>
-        <source>Desktop</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="125"/>
-        <source>Runner</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="132"/>
-        <source>Application Switcher</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="152"/>
-        <source>PolicyKit Handler</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="172"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="53"/>
         <source>Basic Settings</source>
-        <translation>Setări de bază</translation>
+        <translation type="obsolete">Setări de bază</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="189"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="54"/>
         <source>Default Applications</source>
-        <translation>Aplicații implicite</translation>
+        <translation type="obsolete">Aplicații implicite</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="214"/>
-        <source>Terminal Emulation:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="241"/>
-        <source>Web Browser:</source>
-        <translation>Navigator web:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="289"/>
-        <location filename="../config/sessionconfigwindow.ui" line="380"/>
-        <source>Delete</source>
-        <translation>Șterge</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="296"/>
-        <location filename="../config/sessionconfigwindow.ui" line="373"/>
-        <source>Add</source>
-        <translation>Adaugă</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="303"/>
-        <source>Edit</source>
-        <translation>Editează</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="316"/>
-        <source>Application Autostart</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="406"/>
-        <source>Environment Variables (Advanced)</source>
-        <translation>Variabile de mediu (mod avansat)</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="417"/>
-        <source>Variable Name</source>
-        <translation>Nume variabilă</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="422"/>
-        <source>Value</source>
-        <translation>Valoare</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="55"/>
         <source>Autostart</source>
-        <translation type="unfinished"/>
+        <translation type="obsolete">Autostart</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="56"/>
         <source>Environment (Advanced)</source>
-        <translation>Mediu (mod avansat)</translation>
+        <translation type="obsolete">Mediu (mod avansat)</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="196"/>
         <source>Session Restart Required</source>
-        <translation>Se necesită repornirea sesiunii</translation>
+        <translation type="obsolete">Se necesită repornirea sesiunii</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="197"/>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="242"/>
-        <source>Select a window manager</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="248"/>
-        <source>Select a terminal emulator</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="254"/>
-        <source>Select a web browser</source>
-        <translation>Selectați un navigator web</translation>
+        <translation type="obsolete">Trebuie să reporniți sesiunea (razor-session) pentru a reîncărca setările. Utilizați opțiunea de ieșire din meniul principal.</translation>
     </message>
 </context>
 <context>
@@ -245,19 +195,31 @@
     <message>
         <location filename="../src/wmselectdialog.ui" line="14"/>
         <source>Welcome to Razor-qt</source>
-        <translation type="unfinished"/>
+        <translation>Bine ați venit în Razor-qt</translation>
     </message>
     <message>
         <location filename="../src/wmselectdialog.ui" line="20"/>
         <source>&lt;b&gt;Welcome to Razor-qt&lt;/b&gt;
 &lt;p&gt;
 Before starting to use the Razor-qt, you might want to select the Windows Manager:</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Bine ați venit în Razor-qt&lt;/b&gt;
+&lt;p&gt;
+Înainte de a utiliza Razor-qt, selectați un administrator de ferestre:</translation>
     </message>
     <message>
-        <location filename="../src/wmselectdialog.ui" line="35"/>
+        <location filename="../src/wmselectdialog.ui" line="73"/>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="61"/>
+        <source>Other ...</source>
+        <translation>Altele...</translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="62"/>
+        <source>Choose your favorite one.</source>
+        <translation>Alegeți favoritul dvs.</translation>
     </message>
 </context>
 </TS>

@@ -40,13 +40,19 @@ set ( razor-session_UI
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
+razor_translate_ts(razor-runner_QM_FILES 
+    SOURCES
+        ${razor-session_HDRS}
+        ${razor-session_SRCS} 
+        ${razor-session_UI}
+)
+
 #************************************************
 
 QT4_WRAP_CPP(MOCS ${razor-session_MOCS})
 qt4_wrap_ui(UIS ${razor-session_UI})
 
-add_executable ( razor-session ${razor-session_SRCS} ${UIS} ${RSCS} ${QM_FILES} ${MOCS} )
+add_executable ( razor-session ${razor-session_SRCS} ${UIS} ${RSCS} ${razor-runner_QM_FILES} ${MOCS} )
 add_dependencies( razor-session razorqt qtxdg)
 target_link_libraries ( razor-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} razorqt qtxdg)
 INSTALL(TARGETS razor-session RUNTIME DESTINATION bin)

@@ -1,97 +1,160 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="da_DK" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="da_DK">
 <context>
     <name>AutoStartEdit</name>
     <message>
-        <location filename="../config/autostartedit.ui" line="14"/>
         <source>Edit</source>
-        <translation>Rediger</translation>
+        <translation type="obsolete">Rediger</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="20"/>
         <source>Name:</source>
-        <translation>Navn:</translation>
+        <translation type="obsolete">Navn:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="27"/>
         <source>Search...</source>
-        <translation>Søg...</translation>
+        <translation type="obsolete">Søg...</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="47"/>
         <source>Command:</source>
-        <translation>Kommando:</translation>
+        <translation type="obsolete">Kommando:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.cpp" line="70"/>
+        <source>Wait for system tray</source>
+        <translation type="obsolete">Vent på system bakke</translation>
+    </message>
+    <message>
         <source>Select Application</source>
-        <translation>Vælg program</translation>
+        <translation type="obsolete">Vælg program</translation>
     </message>
 </context>
 <context>
     <name>AutoStartItemModel</name>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="156"/>
         <source>Global Autostart</source>
-        <translation>Global Autostart</translation>
+        <translation type="obsolete">Global Autostart</translation>
     </message>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="158"/>
         <source>Razor Autostart</source>
-        <translation>Razor Autostart</translation>
+        <translation type="obsolete">Razor Autostart</translation>
+    </message>
+    <message>
+        <source>Location: %1</source>
+        <translation type="obsolete">Placering:%1</translation>
+    </message>
+    <message>
+        <source>Overrides: %1</source>
+        <translation type="obsolete">Tilsidesætter: %1</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>AutoStartPage</name>
     <message>
-        <location filename="../src/windowmanager.cpp" line="39"/>
-        <source>Openbox - light-weight window manager</source>
-        <translation>OpenBox - letvægts window manager</translation>
+        <source>Delete</source>
+        <translation type="obsolete">Slet</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="40"/>
-        <source>KWin - window manager of the KDE Software Compilation</source>
-        <translation>KWin - K Desktop Environment&apos;s window manager</translation>
+        <source>Add</source>
+        <translation type="obsolete">Tilføj</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="41"/>
-        <source>Metacity - window manager of the GNOME desktop environment</source>
-        <translation>Metacity - GNOME Desktop Envionment&apos;s window manager</translation>
+        <source>Edit</source>
+        <translation type="obsolete">Rediger</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="42"/>
-        <source>Windowmaker - a classical lightweight window manager</source>
-        <translation>Windowmaker - en klassisk letvægts window manager</translation>
+        <source>Application Autostart</source>
+        <translation type="obsolete">Program Autostart</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="43"/>
-        <source>Enlightenement 16</source>
-        <translation>Enlightenment 16 - en fin lille window manager</translation>
+        <source>Error</source>
+        <translation type="obsolete">Fejl</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="44"/>
-        <source>Fvwm2 - a classical lightweight window manager</source>
-        <translation>Fvwm2 - en klassisk letvægts window manager</translation>
+        <source>File &apos;%1&apos; already exists!</source>
+        <translation type="obsolete">Fil &apos;%1&apos; eksisterer allerede!</translation>
+    </message>
+</context>
+<context>
+    <name>BasicSettings</name>
+    <message>
+        <source>Window Manager</source>
+        <translation type="obsolete">Window Manager</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="45"/>
-        <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
-        <translation>Xfwm4 - Xfce Desktop Environment&apos;s window manager</translation>
+        <source>Search...</source>
+        <translation type="obsolete">Søg...</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="46"/>
-        <source>Sawfish - a lightweight, flexible window manager</source>
-        <translation>Sawfish - en fleksibel letvægts window manager</translation>
+        <source>Basic Settings</source>
+        <translation type="obsolete">Basale Indstillinger</translation>
+    </message>
+    <message>
+        <source>Select a window manager</source>
+        <translation type="obsolete">Vælg en window manager</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultApps</name>
+    <message>
+        <source>Select a terminal emulator</source>
+        <translation type="obsolete">Vælg en terminal emulator</translation>
+    </message>
+    <message>
+        <source>Select a web browser</source>
+        <translation type="obsolete">Vælg en web browser</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultAppsPage</name>
+    <message>
+        <source>Default Applications</source>
+        <translation type="obsolete">Standardprogrammer</translation>
+    </message>
+    <message>
+        <source>Terminal Emulation:</source>
+        <translation type="obsolete">Terminal Emulation:</translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation type="obsolete">Søg...</translation>
+    </message>
+    <message>
+        <source>Web Browser:</source>
+        <translation type="obsolete">Web Browser:</translation>
+    </message>
+</context>
+<context>
+    <name>EnvironmentPage</name>
+    <message>
+        <source>Add</source>
+        <translation type="obsolete">Tilføj</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="obsolete">Slet</translation>
+    </message>
+    <message>
+        <source>Environment Variables (Advanced)</source>
+        <translation type="obsolete">Miljøvariabler (Advanceret)</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="obsolete">Variabelnavn</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="obsolete">Værdi</translation>
     </message>
 </context>
 <context>
     <name>RazorModuleManager</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="179"/>
+        <location filename="../src/razormodman.cpp" line="198"/>
         <source>Razor Session Crash Report</source>
         <translation>Razor-session Nedbrudsrapport</translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="180"/>
+        <location filename="../src/razormodman.cpp" line="199"/>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
         <translation>Program &apos;%1&apos; har haft nedbrud for mange gange. Programmets autostart er blevet slået fra i denne session.</translation>
     </message>
@@ -99,145 +162,32 @@
 <context>
     <name>SessionConfigWindow</name>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="14"/>
         <source>Razor Session Configuration</source>
-        <translation>Razor Sessionsindstillinger</translation>
+        <translation type="obsolete">Razor Sessionsindstillinger</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="58"/>
-        <source>Window Manager</source>
-        <translation>Window Manager</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="77"/>
-        <location filename="../config/sessionconfigwindow.ui" line="234"/>
-        <location filename="../config/sessionconfigwindow.ui" line="261"/>
-        <source>Search...</source>
-        <translation>Søg...</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="87"/>
-        <source>Razor Modules</source>
-        <translation>Razor Moduler</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="111"/>
-        <source>Panel</source>
-        <translation>Panel</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="118"/>
-        <source>Desktop</source>
-        <translation>Skrivebord</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="125"/>
-        <source>Runner</source>
-        <translation>Programstarter</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="132"/>
-        <source>Application Switcher</source>
-        <translation>Programskifter</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="152"/>
-        <source>PolicyKit Handler</source>
-        <translation>Politikhåndtering</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="172"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="53"/>
         <source>Basic Settings</source>
-        <translation>Basale Indstillinger</translation>
+        <translation type="obsolete">Basale Indstillinger</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="189"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="54"/>
         <source>Default Applications</source>
-        <translation>Standardprogrammer</translation>
+        <translation type="obsolete">Standardprogrammer</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="214"/>
-        <source>Terminal Emulation:</source>
-        <translation>Terminal Emulation:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="241"/>
-        <source>Web Browser:</source>
-        <translation>Web Browser:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="289"/>
-        <location filename="../config/sessionconfigwindow.ui" line="380"/>
-        <source>Delete</source>
-        <translation>Slet</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="296"/>
-        <location filename="../config/sessionconfigwindow.ui" line="373"/>
-        <source>Add</source>
-        <translation>Tilføj</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="303"/>
-        <source>Edit</source>
-        <translation>Rediger</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="316"/>
-        <source>Application Autostart</source>
-        <translation>Program Autostart</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="406"/>
-        <source>Environment Variables (Advanced)</source>
-        <translation>Miljøvariabler (Advanceret)</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="417"/>
-        <source>Variable Name</source>
-        <translation>Variabelnavn</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="422"/>
-        <source>Value</source>
-        <translation>Værdi</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="55"/>
         <source>Autostart</source>
-        <translation>Autostart</translation>
+        <translation type="obsolete">Autostart</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="56"/>
         <source>Environment (Advanced)</source>
-        <translation>Miljø (Advanceret)</translation>
+        <translation type="obsolete">Miljø (Advanceret)</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="196"/>
         <source>Session Restart Required</source>
-        <translation>Genstart Af Session Er Påkrævet</translation>
+        <translation type="obsolete">Genstart Af Session Er Påkrævet</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="197"/>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>For at genindlæse indstillinger skal skrivebordssessionen genstartes. Brug log Ud fra hovedmenuen.</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="242"/>
-        <source>Select a window manager</source>
-        <translation>Vælg en window manager</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="248"/>
-        <source>Select a terminal emulator</source>
-        <translation>Vælg en terminal emulator</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="254"/>
-        <source>Select a web browser</source>
-        <translation>Vælg en web browser</translation>
+        <translation type="obsolete">For at genindlæse indstillinger skal skrivebordssessionen genstartes. Brug log Ud fra hovedmenuen.</translation>
     </message>
 </context>
 <context>
@@ -257,9 +207,20 @@ Before starting to use the Razor-qt, you might want to select the Windows Manage
 Før du starter Razor-Qt, skal du vælge window manager:</translation>
     </message>
     <message>
-        <location filename="../src/wmselectdialog.ui" line="35"/>
+        <location filename="../src/wmselectdialog.ui" line="73"/>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
         <translation>Du kan ændre valget af window manager på et vilkårligt tidspunkt.</translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="61"/>
+        <source>Other ...</source>
+        <translation>Andre ...
+</translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="62"/>
+        <source>Choose your favorite one.</source>
+        <translation>Vælg din favorit.</translation>
     </message>
 </context>
 </TS>

@@ -1,97 +1,140 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="nl">
 <context>
     <name>AutoStartEdit</name>
     <message>
-        <location filename="../config/autostartedit.ui" line="14"/>
         <source>Edit</source>
-        <translation>Bewerken</translation>
+        <translation type="obsolete">Bewerken</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="20"/>
         <source>Name:</source>
-        <translation>Naam:</translation>
+        <translation type="obsolete">Naam:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="27"/>
         <source>Search...</source>
-        <translation>Zoek...</translation>
+        <translation type="obsolete">Zoek...</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="47"/>
         <source>Command:</source>
-        <translation>Uitvoeren:</translation>
+        <translation type="obsolete">Uitvoeren:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.cpp" line="70"/>
         <source>Select Application</source>
-        <translation>Selecteer Programma</translation>
+        <translation type="obsolete">Selecteer Programma</translation>
     </message>
 </context>
 <context>
     <name>AutoStartItemModel</name>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="156"/>
         <source>Global Autostart</source>
-        <translation>Algemene Autostart</translation>
+        <translation type="obsolete">Algemene Autostart</translation>
     </message>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="158"/>
         <source>Razor Autostart</source>
-        <translation>Razor Autostart</translation>
+        <translation type="obsolete">Razor Autostart</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>AutoStartPage</name>
     <message>
-        <location filename="../src/windowmanager.cpp" line="39"/>
-        <source>Openbox - light-weight window manager</source>
-        <translation>Openbox - licht-gewicht window manager</translation>
+        <source>Delete</source>
+        <translation type="obsolete">Verwijder</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="40"/>
-        <source>KWin - window manager of the KDE Software Compilation</source>
-        <translation>KWin - window manager van de KDE Software Compilatie</translation>
+        <source>Add</source>
+        <translation type="obsolete">Toevoegen</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="41"/>
-        <source>Metacity - window manager of the GNOME desktop environment</source>
-        <translation>Metacity - window manager van de GMOME desktop environment</translation>
+        <source>Edit</source>
+        <translation type="obsolete">Bewerken</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="42"/>
-        <source>Windowmaker - a classical lightweight window manager</source>
-        <translation>Windowmaker - een klassieke licht-gewicht window manager</translation>
+        <source>Application Autostart</source>
+        <translation type="obsolete">Autostart Programma</translation>
+    </message>
+</context>
+<context>
+    <name>BasicSettings</name>
+    <message>
+        <source>Window Manager</source>
+        <translation type="obsolete">Venster Beheer</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="43"/>
-        <source>Enlightenement 16</source>
-        <translation>Enlightenment 16</translation>
+        <source>Search...</source>
+        <translation type="obsolete">Zoek...</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="44"/>
-        <source>Fvwm2 - a classical lightweight window manager</source>
-        <translation>Fvwm2 - een klassieke licht-gewicht window manager</translation>
+        <source>Basic Settings</source>
+        <translation type="obsolete">Basis Instellingen</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="45"/>
-        <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
-        <translation>Xfwm4 - een window/acceleration manager voor de XFCE desktop environment</translation>
+        <source>Select a window manager</source>
+        <translation type="obsolete">Selecteer een window manager</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultApps</name>
+    <message>
+        <source>Select a terminal emulator</source>
+        <translation type="obsolete">Selecteer een terminal</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="46"/>
-        <source>Sawfish - a lightweight, flexible window manager</source>
-        <translation>Sawfish - een licht-gewicht, flexibele window manager</translation>
+        <source>Select a web browser</source>
+        <translation type="obsolete">Selecteer een web browser</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultAppsPage</name>
+    <message>
+        <source>Default Applications</source>
+        <translation type="obsolete">Standaard Programma&apos;s</translation>
+    </message>
+    <message>
+        <source>Terminal Emulation:</source>
+        <translation type="obsolete">Terminal emulatie:</translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation type="obsolete">Zoek...</translation>
+    </message>
+    <message>
+        <source>Web Browser:</source>
+        <translation type="obsolete">Web Browser:</translation>
+    </message>
+</context>
+<context>
+    <name>EnvironmentPage</name>
+    <message>
+        <source>Add</source>
+        <translation type="obsolete">Toevoegen</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="obsolete">Verwijder</translation>
+    </message>
+    <message>
+        <source>Environment Variables (Advanced)</source>
+        <translation type="obsolete">Omgevings Variabelen (geavanceerd)</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="obsolete">Variabele Naam</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="obsolete">Waarde</translation>
     </message>
 </context>
 <context>
     <name>RazorModuleManager</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="179"/>
+        <location filename="../src/razormodman.cpp" line="198"/>
         <source>Razor Session Crash Report</source>
         <translation>Razor Sessie Fout Rapport</translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="180"/>
+        <location filename="../src/razormodman.cpp" line="199"/>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
         <translation>Programma &apos;%1&apos; is te vaak gecrashed. De autorestart functie is uitgeschakeld voor deze sessie.</translation>
     </message>
@@ -99,145 +142,32 @@
 <context>
     <name>SessionConfigWindow</name>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="14"/>
         <source>Razor Session Configuration</source>
-        <translation>Razor Sessie Configuratie</translation>
+        <translation type="obsolete">Razor Sessie Configuratie</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="58"/>
-        <source>Window Manager</source>
-        <translation>Venster Beheer</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="77"/>
-        <location filename="../config/sessionconfigwindow.ui" line="234"/>
-        <location filename="../config/sessionconfigwindow.ui" line="261"/>
-        <source>Search...</source>
-        <translation>Zoek...</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="87"/>
-        <source>Razor Modules</source>
-        <translation>Razor Modules</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="111"/>
-        <source>Panel</source>
-        <translation>Paneel</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="118"/>
-        <source>Desktop</source>
-        <translation>Bureaublad</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="125"/>
-        <source>Runner</source>
-        <translation>Starter</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="132"/>
-        <source>Application Switcher</source>
-        <translation>Programma Wisselaar</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="152"/>
-        <source>PolicyKit Handler</source>
-        <translation>PolicyKit Handler</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="172"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="53"/>
         <source>Basic Settings</source>
-        <translation>Basis Instellingen</translation>
+        <translation type="obsolete">Basis Instellingen</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="189"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="54"/>
         <source>Default Applications</source>
-        <translation>Standaard Programma&apos;s</translation>
+        <translation type="obsolete">Standaard Programma&apos;s</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="214"/>
-        <source>Terminal Emulation:</source>
-        <translation>Terminal emulatie:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="241"/>
-        <source>Web Browser:</source>
-        <translation>Web Browser:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="289"/>
-        <location filename="../config/sessionconfigwindow.ui" line="380"/>
-        <source>Delete</source>
-        <translation>Verwijder</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="296"/>
-        <location filename="../config/sessionconfigwindow.ui" line="373"/>
-        <source>Add</source>
-        <translation>Toevoegen</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="303"/>
-        <source>Edit</source>
-        <translation>Bewerken</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="316"/>
-        <source>Application Autostart</source>
-        <translation>Autostart Programma</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="406"/>
-        <source>Environment Variables (Advanced)</source>
-        <translation>Omgevings Variabelen (geavanceerd)</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="417"/>
-        <source>Variable Name</source>
-        <translation>Variabele Naam</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="422"/>
-        <source>Value</source>
-        <translation>Waarde</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="55"/>
         <source>Autostart</source>
-        <translation>Autostart</translation>
+        <translation type="obsolete">Autostart</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="56"/>
         <source>Environment (Advanced)</source>
-        <translation>Omgeving (geavanceerd)</translation>
+        <translation type="obsolete">Omgeving (geavanceerd)</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="196"/>
         <source>Session Restart Required</source>
-        <translation>Sessie herstart vereist</translation>
+        <translation type="obsolete">Sessie herstart vereist</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="197"/>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>U moet de Sessie herstarten (Razor-sessie) om de instellingen op te slaan.  Gebruik hiervoor &quot;uitloggen&quot; vanuit het hoofd menu.</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="242"/>
-        <source>Select a window manager</source>
-        <translation>Selecteer een window manager</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="248"/>
-        <source>Select a terminal emulator</source>
-        <translation>Selecteer een terminal</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="254"/>
-        <source>Select a web browser</source>
-        <translation>Selecteer een web browser</translation>
+        <translation type="obsolete">U moet de Sessie herstarten (Razor-sessie) om de instellingen op te slaan.  Gebruik hiervoor &quot;uitloggen&quot; vanuit het hoofd menu.</translation>
     </message>
 </context>
 <context>
@@ -257,9 +187,19 @@ Before starting to use the Razor-qt, you might want to select the Windows Manage
 Voordat u gebruik maakt van Razor-Qt, wilt u wellicht een Window Manager selecteren:</translation>
     </message>
     <message>
-        <location filename="../src/wmselectdialog.ui" line="35"/>
+        <location filename="../src/wmselectdialog.ui" line="73"/>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
         <translation>U kunt ook op een later tijdstip van Window Manager wisselen, via de Razor Sessie Configurator.</translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="61"/>
+        <source>Other ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="62"/>
+        <source>Choose your favorite one.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

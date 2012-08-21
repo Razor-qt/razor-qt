@@ -19,6 +19,29 @@
 #     By default is "${CMAKE_INSTALL_PREFIX}/share/razor/${PROJECT_NAME}" 
 
 
+MACRO(QT4_ADD_TRANSLATION_FIXED _qm_files)
+  FOREACH (_current_FILE ${ARGN})
+    GET_FILENAME_COMPONENT(_abs_FILE ${_current_FILE} ABSOLUTE)
+    GET_FILENAME_COMPONENT(qm ${_abs_FILE} NAME)
+    #Extract the real extension ............
+    STRING(REPLACE ".ts" "" qm ${qm})
+    GET_SOURCE_FILE_PROPERTY(output_location ${_abs_FILE} OUTPUT_LOCATION)
+    IF(output_location)
+      FILE(MAKE_DIRECTORY "${output_location}")
+      SET(qm "${output_location}/${qm}.qm")
+    ELSE(output_location)
+      SET(qm "${CMAKE_CURRENT_BINARY_DIR}/${qm}.qm")
+    ENDIF(output_location)
+
+    ADD_CUSTOM_COMMAND(OUTPUT ${qm}
+       COMMAND ${QT_LRELEASE_EXECUTABLE}
+       ARGS ${_abs_FILE} -qm ${qm}
+       DEPENDS ${_abs_FILE}
+    )
+    SET(${_qm_files} ${${_qm_files}} ${qm})
+  ENDFOREACH (_current_FILE)
+ENDMACRO(QT4_ADD_TRANSLATION_FIXED)
+
 if(NOT TARGET UpdateTsFiles)
   add_custom_target(UpdateTsFiles DEPENDS)
 endif()
@@ -145,7 +168,7 @@ function(razor_translate_ts _qmFiles)
 
     # QM files **********************************************    
     file(GLOB _tsFiles ${_translationDir}/${_tsSrcFileNameWE}_*.ts)    
-    qt4_add_translation(_qmFilesLocal ${_tsFiles})
+    QT4_ADD_TRANSLATION_FIXED(_qmFilesLocal ${_tsFiles})
     install(FILES ${_qmFilesLocal} DESTINATION ${_installDir})
     
     set(${_qmFiles} ${_qmFilesLocal} PARENT_SCOPE)
@@ -255,7 +278,7 @@ macro(razor_translate_to _QM_FILES _TRANSLATIONS_DIR)
 
     set(TRANSLATIONS_DIR ${_TRANSLATIONS_DIR})
     add_definitions(-DTRANSLATIONS_DIR=\"${TRANSLATIONS_DIR}\")
-    qt4_add_translation(${_QM_FILES} ${TS_FILES})
+    QT4_ADD_TRANSLATION_FIXED(${_QM_FILES} ${TS_FILES})
 
     install(FILES ${${_QM_FILES}} DESTINATION ${TRANSLATIONS_DIR})
 

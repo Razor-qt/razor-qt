@@ -1,243 +1,193 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="el_GR" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="el_GR">
 <context>
     <name>AutoStartEdit</name>
     <message>
-        <location filename="../config/autostartedit.ui" line="14"/>
         <source>Edit</source>
-        <translation>Επεξεργασία</translation>
+        <translation type="obsolete">Επεξεργασία</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="20"/>
         <source>Name:</source>
-        <translation>Όνομα:</translation>
+        <translation type="obsolete">Όνομα:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="27"/>
         <source>Search...</source>
-        <translation>Αναζήτηση...</translation>
+        <translation type="obsolete">Αναζήτηση...</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.ui" line="47"/>
         <source>Command:</source>
-        <translation>Εντολή:</translation>
+        <translation type="obsolete">Εντολή:</translation>
     </message>
     <message>
-        <location filename="../config/autostartedit.cpp" line="70"/>
+        <source>Wait for system tray</source>
+        <translation type="obsolete">Αναμονή για το πλαίσιο συστήματος</translation>
+    </message>
+    <message>
         <source>Select Application</source>
-        <translation>Επιλογή Εφαρμογής</translation>
+        <translation type="obsolete">Επιλογή εφαρμογής</translation>
     </message>
 </context>
 <context>
     <name>AutoStartItemModel</name>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="156"/>
         <source>Global Autostart</source>
-        <translation>Καθολική Αυτόματη Εκκίνηση</translation>
+        <translation type="obsolete">Καθολική αυτόματη εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../config/autostartmodel.cpp" line="158"/>
         <source>Razor Autostart</source>
-        <translation>Αυτόματη Εκκίνηση Razor</translation>
+        <translation type="obsolete">Αυτόματη εκκίνηση Razor</translation>
+    </message>
+    <message>
+        <source>Location: %1</source>
+        <translation type="obsolete">Τοποθεσία: %1</translation>
+    </message>
+    <message>
+        <source>Overrides: %1</source>
+        <translation type="obsolete">Αντικατάσταση: %1</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>AutoStartPage</name>
     <message>
-        <location filename="../src/windowmanager.cpp" line="39"/>
-        <source>Openbox - light-weight window manager</source>
-        <translation>Openbox - ένας ελαφρύς διαχειριστής παραθύρων</translation>
+        <source>Delete</source>
+        <translation type="obsolete">Διαγραφή</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="40"/>
-        <source>KWin - window manager of the KDE Software Compilation</source>
-        <translation>KWin - ο διαχειριστής παραθύρων για το γραφικό περιβάλλον KDE</translation>
+        <source>Add</source>
+        <translation type="obsolete">Προσθήκη</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="41"/>
-        <source>Metacity - window manager of the GNOME desktop environment</source>
-        <translation>Metacity - ο διαχειριστής παραθύρων για το περιβάλλον εργασίας GNOME</translation>
+        <source>Edit</source>
+        <translation type="obsolete">Επεξεργασία</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="42"/>
-        <source>Windowmaker - a classical lightweight window manager</source>
-        <translation>Windowmaker - ένας κλασικός ελαφρύς διαχειριστής παραθύρων</translation>
+        <source>Application Autostart</source>
+        <translation type="obsolete">Αυτόματη εκκίνηση εφαρμογής</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="43"/>
-        <source>Enlightenement 16</source>
-        <translation>Enlightenement 16</translation>
+        <source>Error</source>
+        <translation type="obsolete">Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="44"/>
-        <source>Fvwm2 - a classical lightweight window manager</source>
-        <translation>Fvwm2 - ένας κλασικός ελαφρύς διαχειριστής παραθύρων</translation>
+        <source>File &apos;%1&apos; already exists!</source>
+        <translation type="obsolete">Το αρχείο &quot;%1&quot; υπάρχει ήδη!</translation>
+    </message>
+</context>
+<context>
+    <name>BasicSettings</name>
+    <message>
+        <source>Window Manager</source>
+        <translation type="obsolete">Διαχειριστής παραθύρων</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="45"/>
-        <source>Xfwm4 - a window manager for the Xfce desktop environment</source>
-        <translation>Xfwm4 - ένας διαχειριστής παραθύρων για το γραφικό περιβάλλον Xfce</translation>
+        <source>Search...</source>
+        <translation type="obsolete">Αναζήτηση...</translation>
     </message>
     <message>
-        <location filename="../src/windowmanager.cpp" line="46"/>
-        <source>Sawfish - a lightweight, flexible window manager</source>
-        <translation>Sawfish - ένας ελαφρύς, ευέλικτος διαχειριστής παραθύρων</translation>
+        <source>Basic Settings</source>
+        <translation type="obsolete">Βασικές ρυθμίσεις</translation>
+    </message>
+    <message>
+        <source>Select a window manager</source>
+        <translation type="obsolete">Επιλογή διαχειριστή παραθύρων</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultApps</name>
+    <message>
+        <source>Select a terminal emulator</source>
+        <translation type="obsolete">Επιλογή εξομοιωτή τερματικού</translation>
+    </message>
+    <message>
+        <source>Select a web browser</source>
+        <translation type="obsolete">Επιλογή περιηγητή ιστού</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultAppsPage</name>
+    <message>
+        <source>Default Applications</source>
+        <translation type="obsolete">Προεπιλεγμένες εφαρμογές</translation>
+    </message>
+    <message>
+        <source>Terminal Emulation:</source>
+        <translation type="obsolete">Εξομοιωτής τερματικού:</translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation type="obsolete">Αναζήτηση...</translation>
+    </message>
+    <message>
+        <source>Web Browser:</source>
+        <translation type="obsolete">Περιηγητής ιστού:</translation>
+    </message>
+</context>
+<context>
+    <name>EnvironmentPage</name>
+    <message>
+        <source>Add</source>
+        <translation type="obsolete">Προσθήκη</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="obsolete">Διαγραφή</translation>
+    </message>
+    <message>
+        <source>Environment Variables (Advanced)</source>
+        <translation type="obsolete">Μεταβλητές περιβάλλοντος (για προχωρημένους)</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="obsolete">Όνομα μεταβλητής</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="obsolete">Τιμή</translation>
     </message>
 </context>
 <context>
     <name>RazorModuleManager</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="179"/>
+        <location filename="../src/razormodman.cpp" line="198"/>
         <source>Razor Session Crash Report</source>
-        <translation>Αναφορά Κατάρρευσης Συνεδρίας Razor</translation>
+        <translation>Αναφορά κατάρρευσης συνεδρίας Razor</translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="180"/>
+        <location filename="../src/razormodman.cpp" line="199"/>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
-        <translation>Η εφαρμογή &apos;%1&apos; κατέρρευσε πολλές φορές. Η αυτόματη εκκίνησή της έχει απενεργοποιηθεί για την τρέχουσα συνεδρία.</translation>
+        <translation>Η εφαρμογή &quot;%1&quot; κατέρρευσε πολλές φορές. Η αυτόματη εκκίνησή της έχει απενεργοποιηθεί για την τρέχουσα συνεδρία.</translation>
     </message>
 </context>
 <context>
     <name>SessionConfigWindow</name>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="14"/>
         <source>Razor Session Configuration</source>
-        <translation>Ρυθμίσεις Συνεδρίας Razor</translation>
+        <translation type="obsolete">Διαμόρφωση συνεδρίας Razor</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="58"/>
-        <source>Window Manager</source>
-        <translation>Διαχειριστής Παραθύρων</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="77"/>
-        <location filename="../config/sessionconfigwindow.ui" line="234"/>
-        <location filename="../config/sessionconfigwindow.ui" line="261"/>
-        <source>Search...</source>
-        <translation>Αναζήτηση...</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="87"/>
-        <source>Razor Modules</source>
-        <translation>Αρθρώματα Razor</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="111"/>
-        <source>Panel</source>
-        <translation>Πίνακας</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="118"/>
-        <source>Desktop</source>
-        <translation>Επιφάνεια Εργασίας</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="125"/>
-        <source>Runner</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="132"/>
-        <source>Application Switcher</source>
-        <translation>Εναλλαγή Εφαρμογής</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="152"/>
-        <source>PolicyKit Handler</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="172"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="53"/>
         <source>Basic Settings</source>
-        <translation>Βασικές Ρυθμίσεις</translation>
+        <translation type="obsolete">Βασικές ρυθμίσεις</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="189"/>
-        <location filename="../config/sessionconfigwindow.cpp" line="54"/>
         <source>Default Applications</source>
-        <translation>Προεπιλεγμένες Εφαρμογές</translation>
+        <translation type="obsolete">Προεπιλεγμένες εφαρμογές</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.ui" line="214"/>
-        <source>Terminal Emulation:</source>
-        <translation>Εξομοιωτής Τερμαρικού:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="241"/>
-        <source>Web Browser:</source>
-        <translation>Περιηγητής Ιστού:</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="289"/>
-        <location filename="../config/sessionconfigwindow.ui" line="380"/>
-        <source>Delete</source>
-        <translation>Διαγραφή</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="296"/>
-        <location filename="../config/sessionconfigwindow.ui" line="373"/>
-        <source>Add</source>
-        <translation>Προσθήκη</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="303"/>
-        <source>Edit</source>
-        <translation>Επεξεργασία</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="316"/>
-        <source>Application Autostart</source>
-        <translation>Αυτόματη Εκκίνηση Εφαρμογής</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="406"/>
-        <source>Environment Variables (Advanced)</source>
-        <translation>Μεταβλητές Περιβάλλοντος (Για Προχωρημένους)</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="417"/>
-        <source>Variable Name</source>
-        <translation>Όνομα Μεταβλητής</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.ui" line="422"/>
-        <source>Value</source>
-        <translation>Τιμή</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="55"/>
         <source>Autostart</source>
-        <translation>Αυτόματη Εκκίνηση</translation>
+        <translation type="obsolete">Αυτόματη εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="56"/>
         <source>Environment (Advanced)</source>
-        <translation>Περιβάλλον (Για Προχωρημένους)</translation>
+        <translation type="obsolete">Περιβάλλον (για προχωρημένους)</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="196"/>
         <source>Session Restart Required</source>
-        <translation>Απαιτείται Επαννεκίνηση Συνεδρίας</translation>
+        <translation type="obsolete">Απαιτείται επανεκκίνηση συνεδρίας</translation>
     </message>
     <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="197"/>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Πρέπει να επανεκκινήσετε την συνεδρια razor για να φορτώσετε τις ρυθμίσεις. Χρησιμοποιήστε την αποσύνδεση από το κυρίως μενού.</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="242"/>
-        <source>Select a window manager</source>
-        <translation>Επιλογή διαχειριστή παραθύρων</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="248"/>
-        <source>Select a terminal emulator</source>
-        <translation>Επιλογή εξομοιωτή τερματικού</translation>
-    </message>
-    <message>
-        <location filename="../config/sessionconfigwindow.cpp" line="254"/>
-        <source>Select a web browser</source>
-        <translation>Επιλογή περιηγητή ιστού</translation>
+        <translation type="obsolete">Πρέπει να επανεκκινήσετε τη συνεδρία razor για να φορτώσετε τις ρυθμίσεις. Χρησιμοποιήστε την αποσύνδεση από το κυρίως μενού.</translation>
     </message>
 </context>
 <context>
@@ -254,12 +204,22 @@
 Before starting to use the Razor-qt, you might want to select the Windows Manager:</source>
         <translation>&lt;b&gt;Καλως ήλθατε στο Razor-qt&lt;/b&gt;
 &lt;p&gt;
-Πριν ξεκινήσετε να χρησιμοποιείτε το Razor-qt, θα θέλατε να επιλέξετε Διαχειριστή Παραθύρων:</translation>
+Πριν ξεκινήσετε να χρησιμοποιείτε το Razor-qt, ίσως θέλετε να επιλέξετε ένα διαχειριστή παραθύρων:</translation>
     </message>
     <message>
-        <location filename="../src/wmselectdialog.ui" line="35"/>
+        <location filename="../src/wmselectdialog.ui" line="73"/>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
-        <translation>Μπορείτε να αλλάξετε τον Διαχειριστή Παραθύρων αργότερα μέσω των Ρυθμίσεων Συνεδρίας Razor.</translation>
+        <translation>Μπορείτε να αλλάξετε τον διαχειριστή παραθύρων αργότερα μέσω της διαμόρφωσης συνεδρίας Razor.</translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="61"/>
+        <source>Other ...</source>
+        <translation>Άλλο...</translation>
+    </message>
+    <message>
+        <location filename="../src/wmselectdialog.cpp" line="62"/>
+        <source>Choose your favorite one.</source>
+        <translation>Επιλέξτε το αγαπημένο σας.</translation>
     </message>
 </context>
 </TS>

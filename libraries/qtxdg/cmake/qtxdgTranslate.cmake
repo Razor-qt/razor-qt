@@ -149,5 +149,5 @@ function(qtxdg_translate_ts _qmFiles)
     install(FILES ${_qmFilesLocal} DESTINATION ${_installDir})
     
     set(${_qmFiles} ${_qmFilesLocal} PARENT_SCOPE)
-endfunction(razor_translate_ts)
+endfunction(qtxdg_translate_ts)
 
