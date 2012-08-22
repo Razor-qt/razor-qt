@@ -32,7 +32,7 @@
 #include <razorqt/razorsettings.h>
 
 #include "sessionconfigwindow.h"
-#include "../src/windowmanager.h"
+#include "../razor-session/src/windowmanager.h"
 #include "basicsettings.h"
 #include "autostartpage.h"
 #include "defaultappspage.h"

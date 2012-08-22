@@ -28,7 +28,7 @@
 #include "basicsettings.h"
 #include "ui_basicsettings.h"
 
-#include "../src/windowmanager.h"
+#include "../razor-session/src/windowmanager.h"
 #include "sessionconfigwindow.h"
 
 BasicSettings::BasicSettings(RazorSettings *settings, QWidget *parent) :

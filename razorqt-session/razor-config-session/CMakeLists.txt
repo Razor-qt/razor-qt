@@ -25,7 +25,7 @@ set( razor-sessioncfg_SRCS
     autostartedit.cpp
     defaultappspage.cpp
     environmentpage.cpp
-    ../src/windowmanager.cpp
+    ../razor-session/src/windowmanager.cpp
 )
 set(razor-sessioncfg_UI_FILES
     basicsettings.ui

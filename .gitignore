@@ -14,7 +14,6 @@ ui_*.h
 razorqt-appswitcher/razor-appswitcher
 razorqt-desktop/razor-desktop
 razorqt-panel/panel/razor-panel
-razorqt-session/razor-session
 *~
 CMakeLists.txt.user*
 /build
