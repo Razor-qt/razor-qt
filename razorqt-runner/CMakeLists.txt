@@ -100,6 +100,9 @@ if (RUNNER_MATH)
     add_definitions(-DMATH_ENABLED)
 endif (RUNNER_MATH)
 
+# *******************************************************************
+# Optional: start VBOX machines in headless mode,
+# instead of default window
 if (VBOXRUNNER_HEADLESS)
 	add_definitions(-DVBOXRUNNER_HEADLESS)
 endif (VBOXRUNNER_HEADLESS)
