@@ -9,6 +9,12 @@ source_file = razorqt-session/translations/razor-session.ts.src
 source_lang = en
 file_filter = razorqt-session/translations/razor-session_<lang>.ts
 
+[razor-qt.razor-config-session]
+type = QT
+source_file = razorqt-session/config/translations/razor-config-session.ts.src
+source_lang = en
+file_filter = razorqt-session/config/translations/razor-config-session_<lang>.ts
+
 [razor-qt.analogclock]
 type = QT
 source_file = razorqt-desktop/desktop-razor/plugin-analogclock/translations/analogclock.ts.src
