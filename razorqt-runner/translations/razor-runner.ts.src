@@ -80,12 +80,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="660"/>
+        <location filename="../providers.cpp" line="678"/>
         <source>Mathematics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="721"/>
+        <location filename="../providers.cpp" line="739"/>
         <source>Razor Power Management</source>
         <translation type="unfinished"></translation>
     </message>

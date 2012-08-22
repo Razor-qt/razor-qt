@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../configpaneldialog.ui" line="33"/>
-        <location filename="../configpaneldialog.ui" line="101"/>
+        <location filename="../configpaneldialog.ui" line="98"/>
         <source>px</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,82 +30,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="60"/>
+        <location filename="../configpaneldialog.ui" line="57"/>
         <source>Panel length &amp;&amp; position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="77"/>
+        <location filename="../configpaneldialog.ui" line="74"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="82"/>
+        <location filename="../configpaneldialog.ui" line="79"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="87"/>
+        <location filename="../configpaneldialog.ui" line="84"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="96"/>
+        <location filename="../configpaneldialog.ui" line="93"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="109"/>
+        <location filename="../configpaneldialog.ui" line="106"/>
         <source>Alignment:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="116"/>
+        <location filename="../configpaneldialog.ui" line="113"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="123"/>
+        <location filename="../configpaneldialog.ui" line="120"/>
         <source>Position:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="83"/>
+        <location filename="../configpaneldialog.cpp" line="89"/>
         <source>Top of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="84"/>
+        <location filename="../configpaneldialog.cpp" line="90"/>
         <source>Left of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="85"/>
+        <location filename="../configpaneldialog.cpp" line="91"/>
         <source>Right of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="86"/>
+        <location filename="../configpaneldialog.cpp" line="92"/>
         <source>Bottom of desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="92"/>
+        <location filename="../configpaneldialog.cpp" line="98"/>
         <source>Top of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="93"/>
+        <location filename="../configpaneldialog.cpp" line="99"/>
         <source>Left of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="94"/>
+        <location filename="../configpaneldialog.cpp" line="100"/>
         <source>Right of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.cpp" line="95"/>
+        <location filename="../configpaneldialog.cpp" line="101"/>
         <source>Bottom of desktop %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -113,18 +113,18 @@
 <context>
     <name>RazorPanel</name>
     <message>
-        <location filename="../razorpanel.cpp" line="761"/>
-        <location filename="../razorpanel.cpp" line="781"/>
+        <location filename="../razorpanel.cpp" line="762"/>
+        <location filename="../razorpanel.cpp" line="782"/>
         <source>Panel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="783"/>
+        <location filename="../razorpanel.cpp" line="784"/>
         <source>Configure panel...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="788"/>
+        <location filename="../razorpanel.cpp" line="789"/>
         <source>Add plugins ...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -150,8 +150,8 @@
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="581"/>
-        <location filename="../razorpanel.cpp" line="583"/>
+        <location filename="../razorpanel.cpp" line="582"/>
+        <location filename="../razorpanel.cpp" line="585"/>
         <source>Configure panel</source>
         <translation type="unfinished"></translation>
     </message>
