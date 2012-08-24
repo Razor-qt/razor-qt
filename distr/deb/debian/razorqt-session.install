@@ -5,6 +5,7 @@
 /etc/xdg/razor/session*.conf
 /etc/xdg/razor/windowmanagers.conf
 /usr/share/razor/razor-session/
+/usr/share/razor/razor-config-session/
 /usr/share/xsessions/
 /usr/share/apps/kdm/sessions/
 /etc/xdg/autostart/*
