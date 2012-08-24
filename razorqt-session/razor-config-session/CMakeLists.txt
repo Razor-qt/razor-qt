@@ -57,4 +57,4 @@ add_dependencies( razor-config-session razorqt qtxdg)
 target_link_libraries ( razor-config-session  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTXML_LIBRARY} ${X11_X11_LIB} razorqt qtxdg)
 
 INSTALL(TARGETS razor-config-session RUNTIME DESTINATION bin)
-install(FILES ${DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+install(FILES ${razor-sessioncfg_DESKTOP_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
