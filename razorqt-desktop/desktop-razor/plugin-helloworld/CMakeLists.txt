@@ -36,8 +36,8 @@ razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
 #************************************************
 
 add_library(${PROJECT} SHARED ${HW_HEADERS} ${HW_SOURCES} ${HW_MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${DESKTOP_FILES})
-target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} )
-add_dependencies(${PROJECT} razorqt)
+target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} desktop-razor)
+add_dependencies(${PROJECT} razorqt desktop-razor)
 
 install(TARGETS ${PROJECT} DESTINATION ${DESKTOP_PLUGIN_DIR})
 install(FILES ${DESKTOP_FILES} DESTINATION share/razor/razor-desktop/)

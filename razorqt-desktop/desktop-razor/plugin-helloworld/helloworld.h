@@ -28,27 +28,24 @@
 #ifndef HELLOWORLD_H
 #define HELLOWORLD_H
 
-#include <QGraphicsItem>
-
 #include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 
 
-class HelloWorld : public DesktopWidgetPlugin, public QGraphicsTextItem
+class HelloWorld : public DesktopWidgetPlugin
 {
 public:
-    HelloWorld(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
+    HelloWorld(DesktopScene * scene, const QString & configId, RazorSettings * config);
     ~HelloWorld();
 
     QString info();
     QString instanceInfo();
 
-    void setSizeAndPosition(const QPointF & position, const QSizeF & size);
     void save();
     void configure();
 
-    bool blockGlobalMenu() { return false; }
-
+private:
+    QGraphicsTextItem *m_item;
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H

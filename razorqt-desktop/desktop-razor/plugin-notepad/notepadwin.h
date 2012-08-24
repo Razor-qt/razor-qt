@@ -62,14 +62,12 @@ public:
 
     QString text();
     int pos() const;
-    void setParentSize(const QSizeF &size);
     void setTextAndPos(QString &text, int p);
 
 protected:
     void showEvent(QShowEvent *event);
 
 private:
-    QSizeF m_parentSize;
     QTextEdit *edit;
     QVBoxLayout *layout;
     QHBoxLayout *panelLayout;

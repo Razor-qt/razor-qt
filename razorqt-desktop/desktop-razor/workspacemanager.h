@@ -34,6 +34,28 @@
 #include "razorworkspace.h"
 
 class WorkspaceConfig;
+class DesktopScene;
+
+
+class DesktopConfig
+{
+public:
+    static DesktopConfig* instance()
+    {
+        if (!m_instance)
+            m_instance = new DesktopConfig;
+        return m_instance;
+    }
+
+    RazorSettings *config;
+    QString configId;
+private:
+    DesktopConfig(){};
+    DesktopConfig(DesktopConfig const&){};
+    //DesktopConfig& operator=(DesktopConfig const&){  };
+    static DesktopConfig* m_instance;
+};
+
 
 /**
  * @brief this class does all the managing, like looking in the settings for a wallpaper
@@ -54,15 +76,17 @@ public:
     
     QString info();
 
+
 protected:
     virtual void x11EventFilter(XEvent* event);
 
 private:
-    QString m_configId;
     QList< QList<RazorWorkSpace*> > m_workspaces;
+    DesktopScene *m_scene;
     int m_desktopCount;
 
     RazorWorkSpaceManager::BackgroundType strToBackgroundType(const QString& str, BackgroundType defaultValue) const;
+
 private slots:
     void setup();
 };
@@ -72,18 +96,15 @@ struct WorkspaceConfig
     WorkspaceConfig() {};
     WorkspaceConfig(RazorWorkSpaceManager::BackgroundType _wallpaperType,
                     bool _keepAspectRatio,
-                    const QString & _wallpaper,
-                    const QStringList & _plugins)
+                    const QString & _wallpaper)
     {
         wallpaperType = _wallpaperType;
         keepAspectRatio = _keepAspectRatio;
         wallpaper = _wallpaper;
-        plugins = _plugins;
     }
     RazorWorkSpaceManager::BackgroundType wallpaperType;
     bool keepAspectRatio;
     QString wallpaper;
-    QStringList plugins;
 };
 
 

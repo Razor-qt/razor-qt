@@ -26,12 +26,13 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "notepadwin.h"
-
 #include <QtCore/QtDebug>
 #include <QtGui/QScrollBar>
 #include <QtGui/QTextCharFormat>
 #include <qtxdg/xdgicon.h>
+
+#include "notepadwin.h"
+
 
 NotepadWin::NotepadWin(Notepad *notepad, SaveFunctionPointer sv, QWidget *parent) :
     QWidget(parent),
@@ -154,12 +155,6 @@ QString NotepadWin::text()
 int NotepadWin::pos() const
 {
     return edit->verticalScrollBar()->value();
-}
-
-void NotepadWin::setParentSize(const QSizeF &size)
-{
-    qDebug() << "Notepad::setParentSize" << size;
-    m_parentSize = size;
 }
 
 void NotepadWin::setTextAndPos(QString &text, int p)

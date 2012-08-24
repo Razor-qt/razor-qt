@@ -25,17 +25,17 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "iconscene.h"
-#include "desktopicon.h"
-
 #include <QtCore/QUrl>
 #include <QtCore/QDir>
 #include <QtCore/QFileSystemWatcher>
 #include <QtCore/QFileInfoList>
 #include <QtDebug>
-
 #include <QtGui/QDesktopServices>
 #include <QtGui/QMessageBox>
+
+#include <razorqt/razorsettings.h>
+#include "iconscene.h"
+#include "desktopicon.h"
 
 
 IconScene::IconScene(const QString & directory, QObject * parent)
@@ -196,10 +196,3 @@ void IconScene::setParentSize(const QSizeF & size)
     updateIconList();
 }
 
-bool IconScene::blockGlobalMenu()
-{
-    qDebug() << "bool IconScene::blockGlobalMenu()" << mouseGrabberItem();
-
-    IconBase * item = dynamic_cast<IconBase*>(mouseGrabberItem());
-    return item != 0;
-}

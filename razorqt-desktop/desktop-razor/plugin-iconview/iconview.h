@@ -29,17 +29,21 @@
 #define ICONVIEW_H
 
 #include <QtGui/QGraphicsView>
+#include <QGraphicsProxyWidget>
 
 #include <razorqt/razorsettings.h>
 #include <desktopwidgetplugin.h>
 
 class IconScene;
+class IconViewWidget;
 
-class IconView : public DesktopWidgetPlugin, public QGraphicsView
+
+class IconView : public DesktopWidgetPlugin
 {
+    Q_OBJECT
 public:
-    IconView(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
-    ~IconView();
+    IconView(DesktopScene * scene, const QString & configId, RazorSettings * config);
+//    ~IconView();
 
     QString info();
     QString instanceInfo();
@@ -48,10 +52,24 @@ public:
     void save();
     void configure();
 
-    bool blockGlobalMenu();
+private:
+    QGraphicsProxyWidget * m_proxy;
+    IconViewWidget * m_widget;
+};
+
+class IconViewWidget : public QGraphicsView
+{
+    Q_OBJECT
+public:
+    IconViewWidget(const QString & configId, RazorSettings * config);
+    ~IconViewWidget();
+
+    void setSizeAndPosition(const QPointF & position, const QSizeF & size);
+    QString dir();
+    void setDir(const QString &txt);
 
 private:
-    IconScene * m_scene;
+    IconScene * m_iconScene;
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H

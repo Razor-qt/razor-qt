@@ -45,7 +45,6 @@ public:
 
     void setParentSize(const QSizeF & size);
 
-    bool blockGlobalMenu();
     QString dir() { return m_directory; }
     void setDir(const QString & directory);
 

@@ -25,31 +25,35 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "helloworld.h"
 #include <QtDebug>
-#include <QGraphicsScene>
 #include <QInputDialog>
+#include <QFont>
+#include <QApplication>
+
+#include "helloworld.h"
+#include "desktopscene.h"
 
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(HelloWorld)
 
 
-HelloWorld::HelloWorld(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
+HelloWorld::HelloWorld(DesktopScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)
 {
     m_config->beginGroup(configId);
-    
-    setOpenExternalLinks(true);
+
+    m_item = new QGraphicsTextItem(this);
+    m_item->setOpenExternalLinks(true);
     QString text(m_config->value("text", "Lorem Ipsum").toString());
-    setHtml(text);
+    m_item->setHtml(text);
     
     QString color(m_config->value("color", "").toString());
     if (! color.isEmpty())
-        setDefaultTextColor(QColor(color));
+        m_item->setDefaultTextColor(QColor(color));
 
-    QFont f = font();
+    QFont f = qApp->font();
     f.setPixelSize(48);
-    setFont(f);
+    m_item->setFont(f);
     
     m_config->endGroup();
 }
@@ -69,19 +73,13 @@ QString HelloWorld::instanceInfo()
     return tr("Hello World:") + " " + m_configId;
 }
 
-void HelloWorld::setSizeAndPosition(const QPointF & position, const QSizeF & size)
-{
-    qDebug() << "Moving to" << position;
-    setPos(position);
-}
-
 void HelloWorld::configure()
 {
     bool ok;
-    QString txt = QInputDialog::getText(0, tr("Display Text Configuretion"), tr("Edit HTML"), QLineEdit::Normal, toHtml(), &ok);
+    QString txt = QInputDialog::getText(0, tr("Display Text Configuretion"), tr("Edit HTML"), QLineEdit::Normal, m_item->toHtml(), &ok);
     if (!ok)
         return;
-    setHtml(txt);
+    m_item->setHtml(txt);
     save();
 }
 
@@ -93,7 +91,8 @@ void HelloWorld::save()
     m_config->setValue("y", pos().y());
     m_config->setValue("w", boundingRect().width());
     m_config->setValue("h", boundingRect().height());
-    m_config->setValue("text", toHtml());
-    m_config->setValue("color", defaultTextColor().name());
+    m_config->setValue("text", m_item->toHtml());
+    m_config->setValue("color", m_item->defaultTextColor().name());
     m_config->endGroup();
 }
+

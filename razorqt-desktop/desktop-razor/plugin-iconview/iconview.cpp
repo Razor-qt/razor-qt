@@ -25,26 +25,78 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "iconview.h"
-#include "iconscene.h"
 #include <QtCore/QtDebug>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QGraphicsView>
 #include <QtCore/QPropertyAnimation>
 #include <QtGui/QFileDialog>
 
+#include "iconview.h"
+#include "iconscene.h"
+
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(IconView)
 
-IconView::IconView(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
+
+IconView::IconView(DesktopScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)
+{
+    m_proxy = new QGraphicsProxyWidget(this);
+    m_widget = new IconViewWidget(configId, config);
+    m_widget->show();
+    m_proxy->setWidget(m_widget);
+    m_proxy->show();
+}
+
+QString IconView::info()
+{
+    return QObject::tr("Display content of the given directory/folder");
+}
+
+QString IconView::instanceInfo()
+{
+    return QObject::tr("Icon View:") + " " + m_configId;
+}
+
+void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
+{
+    DesktopWidgetPlugin::setSizeAndPosition(position, size);
+    m_widget->setSizeAndPosition(position, size);
+}
+
+void IconView::save()
+{
+    m_config->beginGroup(m_configId);
+    m_config->setValue("plugin", "iconview");
+    m_config->setValue("x", pos().x());
+    m_config->setValue("y", pos().y());
+    m_config->setValue("w", m_boundingRect.width());
+    m_config->setValue("h", m_boundingRect.height());
+    m_config->setValue("directory", m_widget->dir());
+    m_config->endGroup();
+}
+
+void IconView::configure()
+{
+    QString txt = QFileDialog::getExistingDirectory(0, tr("Icon View Configuration"),
+                                                    m_widget->dir());
+    if (txt.isNull())
+        return;
+
+    m_widget->setDir(txt);
+    save();
+}
+
+
+
+IconViewWidget::IconViewWidget(const QString & configId, RazorSettings * config)
 {
     setObjectName("IconView");
 
-    m_config->beginGroup(configId);
+    config->beginGroup(configId);
 
     QString dir = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-    dir = m_config->value("directory", dir).toString();
-    m_config->endGroup();
+    dir = config->value("directory", dir).toString();
+    config->endGroup();
 
     // Hack to ensure the fully transparent QGraphicsView background
     QPalette palette;
@@ -57,9 +109,9 @@ IconView::IconView(QGraphicsScene * scene, const QString & configId, RazorSettin
     
     setAcceptDrops(true);
     
-    m_scene = new IconScene(dir);
+    m_iconScene = new IconScene(dir);
    
-    setScene(m_scene);
+    setScene(m_iconScene);
     
     setRenderHint(QPainter::Antialiasing);
     setRenderHint(QPainter::TextAntialiasing);
@@ -73,66 +125,26 @@ IconView::IconView(QGraphicsScene * scene, const QString & configId, RazorSettin
     setCacheMode(QGraphicsView::CacheBackground);
     
     setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    
-    // "cool" display effect
-    setWindowOpacity(0.0);
 }
 
-IconView::~IconView()
+IconViewWidget::~IconViewWidget()
 {
-    delete m_scene;
+    delete m_iconScene;
 }
 
-    
-QString IconView::info()
+void IconViewWidget::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
-    return QObject::tr("Display content of the given directory/folder");
-}
-
-QString IconView::instanceInfo()
-{
-    return QObject::tr("Icon View:") + " " + m_configId;
-}
-
-void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
-{
-    qDebug() << "Moving to" << position << "resizing" << size;
-    move(position.x(), position.y());
+    m_iconScene->setParentSize(size);
     resize(size.width(), size.height());
-    m_scene->setParentSize(size);
-    
-    // "cool" display FX - the main part
-    QPropertyAnimation * animation = new QPropertyAnimation(this, "windowOpacity");
-    animation->setDuration(500);
-    animation->setStartValue(0.0);
-    animation->setEndValue(1.0);
-    animation->start();
 }
 
-void IconView::save()
+QString IconViewWidget::dir()
 {
-    m_config->beginGroup(m_configId);
-    m_config->setValue("plugin", "iconview");
-    m_config->setValue("x", pos().x());
-    m_config->setValue("y", pos().y());
-    m_config->setValue("w", size().width());
-    m_config->setValue("h", size().height());
-    m_config->setValue("directory", m_scene->dir());
-    m_config->endGroup();
+    return m_iconScene->dir();
 }
 
-void IconView::configure()
+void IconViewWidget::setDir(const QString &txt)
 {
-    QString txt = QFileDialog::getExistingDirectory(0, tr("Icon View Configuration"),
-                                                    m_scene->dir());
-    if (txt.isNull())
-        return;
-
-    m_scene->setDir(txt);
-    save();
+    m_iconScene->setDir(txt);
 }
 
-bool IconView::blockGlobalMenu()
-{
-    return m_scene->blockGlobalMenu();
-}

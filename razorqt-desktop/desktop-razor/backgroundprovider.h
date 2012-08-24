@@ -25,37 +25,45 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef DESKTOPBACKGROUNDDIALOG_H
-#define DESKTOPBACKGROUNDDIALOG_H
+#ifndef BACKGROUNDPROVIDER_H
+#define BACKGROUNDPROVIDER_H
 
-#include "ui_desktopbackgrounddialog.h"
+
+#include <QtCore/QObject>
 #include "workspacemanager.h"
 
-class RazorSettings;
+class QPixmap;
+class QColor;
+class QRect;
 
 
-class DesktopBackgroundDialog : public QDialog, public Ui::DesktopBackgroundDialog
+class BackgroundProvider : public QObject
 {
     Q_OBJECT
     
 public:
-    DesktopBackgroundDialog(const QPixmap &preview, bool keepAspectRatio, QWidget * parent);
-    ~DesktopBackgroundDialog();
-    bool keepAspectRatio();
-    QString file() { return m_wallpaper; }
-    QString color() { return m_color.name(); }
-    RazorWorkSpaceManager::BackgroundType type() { return m_type; }
+    BackgroundProvider(int screen, QObject * parent);
+    ~BackgroundProvider();
+
+    void setFile(const QString &filename);
+    void setPixmap(const QPixmap &pixmap);
+    void setScaleRatio(Qt::AspectRatioMode ratio);
+    void setColor(const QColor &brush);
+
+    QPixmap pixmap(const QRect &rect);
+
+    bool gui();
 
 private:
-    RazorWorkSpaceManager::BackgroundType m_type;
-    QColor m_color;
-    QString m_wallpaper;
 
-private slots:
-    void colorButton_clicked();
-    void wallpaperButton_clicked();
-    void systemButton_clicked();
-    void preview();
+    int m_screen;
+    QPixmap *m_pixmap;
+    QString m_file;
+    QString m_color;
+    RazorWorkSpaceManager::BackgroundType m_type;
+    Qt::AspectRatioMode m_ratio;
+
+    void save();
 };
 
 #endif

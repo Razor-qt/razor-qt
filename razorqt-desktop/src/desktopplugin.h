@@ -28,8 +28,9 @@
 #ifndef DESKTOPPLUGIN_H
 #define DESKTOPPLUGIN_H
 
-#include <razorqt/razorsettings.h>
 #include <QtGui/qwindowdefs.h>  // For XEvent
+
+class RazorSettings;
 
 
 class DesktopPlugin

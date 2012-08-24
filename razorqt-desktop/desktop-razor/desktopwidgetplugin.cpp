@@ -25,111 +25,158 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QtGui/QPainter>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QCursor>
 #include <QtCore/QTimer>
-#include <QtGui/QGraphicsScene>
-#include <QtCore/QtDebug>
+#include <QtGui/QPainter>
+#include <QtGui/QCursor>
+#include <QtGui/QGraphicsSceneContextMenuEvent>
 
-#include "arrangeitem.h"
+#include "desktopwidgetplugin.h"
+#include "desktopscene.h"
 
-ArrangeItem::ArrangeItem(QGraphicsItem * related, DesktopWidgetPlugin * plugin, const QString & text, const QRectF & rect, bool editable, QGraphicsItem * parent)
-    : QGraphicsObject(parent),
-      m_related(related),
-      m_plugin(plugin),
-      m_mode(C_C),
-      m_rect(rect),
-      m_text(text),
-      m_editable(editable)
+
+DesktopWidgetPlugin::DesktopWidgetPlugin(DesktopScene *scene, const QString & configId, RazorSettings * config)
+    : QGraphicsObject(0),
+      m_config(config),
+      m_configId(configId),
+      m_timer(0)
 {
-    setPos(rect.x(), rect.y());
+    setZValue(ZVAL());
 
-    m_timer = new QTimer(this);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape, false); // allow expand children - decide later...
+    setEditable(false);
+}
+
+
+void DesktopWidgetPlugin::setEditable(bool editable)
+{
+    m_editable = editable;
 
     if (m_editable)
     {
+        if (!m_timer)
+            m_timer = new QTimer(this);
         m_timer->setInterval(500);
         connect(m_timer, SIGNAL(timeout()), this, SLOT(setCursorByTimer()));
 
         setAcceptHoverEvents(true);
-        setAcceptedMouseButtons(Qt::LeftButton);
-        setFlag(QGraphicsItem::ItemIsMovable);
-        setZValue(2);
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+
+        if (!childItems().isEmpty())
+        	childItems()[0]->setVisible(false);
     }
     else
-        setZValue(1);
+    {
+        if (m_timer)
+        {
+             m_timer->stop();
+             m_timer->deleteLater();
+             m_timer = 0;
+             // save only when it goes form "edit" mode - not on first call
+             save();
+        }
+        setAcceptsHoverEvents(false);
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+        if (!childItems().isEmpty())
+        	childItems()[0]->setVisible(true);
+    }
 }
 
-QRectF ArrangeItem::boundingRect() const
+QRectF DesktopWidgetPlugin::boundingRect() const
 {
-    return QRectF(0, 0, m_rect.width(), m_rect.height());
+    return m_boundingRect;
 }
 
-void ArrangeItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void DesktopWidgetPlugin::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QFont f = painter->font();
-    f.setPointSize(m_editable ? f.pointSize()*2 : f.pointSize()*6);
-    painter->setFont(f);
-
-    painter->setPen(QPen(Qt::white, 1));
     if (m_editable)
-        painter->setBrush(QColor(0, 0, 0, m_highlight ? 200 : 50));
-    else
-        painter->setBrush(QColor(0, 0, 0, 50));
+    {
+        QFont f = painter->font();
+        f.setPointSize(m_editable ? f.pointSize()*2 : f.pointSize()*6);
+        painter->setFont(f);
 
-    painter->drawRect(1, 1, boundingRect().width()-1, boundingRect().height()-1);
-    
+        painter->setPen(QPen(Qt::white, 1));
+        if (m_editable)
+            painter->setBrush(QColor(0, 0, 0, m_highlight ? 200 : 50));
+        else
+            painter->setBrush(QColor(0, 0, 0, 50));
+
+        painter->drawRect(1, 1, boundingRect().width()-1, boundingRect().height()-1);
+        painter->setPen(Qt::cyan);
+
+        painter->drawText(boundingRect(),
+                          Qt::AlignCenter | Qt::TextWordWrap | Qt::TextWrapAnywhere | Qt::TextDontClip,
+                          instanceInfo());
+
+    }
+    else
+    {
+        painter->fillRect(boundingRect(), Qt::transparent);
+    }
+}
+
+void DesktopWidgetPlugin::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
+{
+    event->accept();
+}
+
+void DesktopWidgetPlugin::setSizeAndPosition(const QPointF & position, const QSizeF & size)
+{
+    setPos(position);
+    m_boundingRect = QRectF(0, 0, size.width(), size.height());
+}
+
+
+void DesktopWidgetPlugin::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
+{
+    if (m_editable)
+    {
+        m_highlight = true;
+        m_timer->start();
+    }
+    QGraphicsObject::hoverEnterEvent(event);
+}
+
+void DesktopWidgetPlugin::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
+{
+    if (m_editable)
+    {
+        m_highlight = false;
+        m_timer->stop();
+        setCursor(Qt::ArrowCursor);
+    }
+    QGraphicsObject::hoverLeaveEvent(event);
+}
+
+void DesktopWidgetPlugin::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGraphicsObject::mousePressEvent(event);
+    if (m_editable)
+    {
+        setCursor(getCursorByPos(event->pos()));
+        m_timer->stop();
+    }
+}
+
+void DesktopWidgetPlugin::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGraphicsObject::mouseReleaseEvent(event);
+    if (m_editable)
+    {
+        m_timer->start();
+    }
+}
+
+void DesktopWidgetPlugin::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
     if (!m_editable)
     {
-        painter->setPen(Qt::cyan);
+        QGraphicsObject::mouseMoveEvent(event);
+        return;
     }
-    
-    painter->drawText(boundingRect(),
-                      Qt::AlignCenter | Qt::TextWordWrap | Qt::TextWrapAnywhere | Qt::TextDontClip,
-                      m_text);
-}
 
-DesktopWidgetPlugin * ArrangeItem::plugin()
-{
-    //qDebug() << "ArrangeItem::plugin" << m_text;
-    Q_ASSERT(m_plugin);
-    return m_plugin;
-}
-
-
-void ArrangeItem::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
-{
-    m_highlight = true;
-    m_timer->start();
-    QGraphicsItem::hoverEnterEvent(event);
-}
-
-void ArrangeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
-{
-    m_highlight = false;
-    m_timer->stop();
-    setCursor(Qt::ArrowCursor);
-    QGraphicsItem::hoverLeaveEvent(event);
-}
-
-void ArrangeItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mousePressEvent(event);
-    setCursor(getCursorByPos(event->pos()));
-    m_timer->stop();
-}
-
-void ArrangeItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-    QGraphicsItem::mouseReleaseEvent(event);
-    m_timer->start();
-}
-
-void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-    m_prevPos = pos();
-    m_prevRect = m_rect;
+    QRectF m_rect = m_boundingRect;
+    QRectF m_prevRect = m_boundingRect;
+    QPointF m_prevPos = pos();
 
     qreal x = event->scenePos().x();
     qreal y = event->scenePos().y();
@@ -138,7 +185,7 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     qreal diffy = (y - position.y()) / 2.0;
     qreal diffxw = (x - (position.x() + m_rect.width()));
     qreal diffyw = (y - (position.y() + m_rect.height()));
-    
+
     prepareGeometryChange();
 
     switch (m_mode)
@@ -178,9 +225,8 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             break;
         case C_C:
         default:
-            QGraphicsItem::mouseMoveEvent(event);
+            QGraphicsObject::mouseMoveEvent(event);
     }
-
     // scene boundaries
     QRectF sc(scene()->sceneRect());
     QRectF it(sceneBoundingRect());
@@ -191,12 +237,12 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
         m_rect = m_prevRect;
         return;
     }
-    
+
     // colliding plugins/items
     QList<QGraphicsItem*> colliding = collidingItems();
     foreach (QGraphicsItem* i, colliding)
     {
-        ArrangeItem * item = dynamic_cast<ArrangeItem*>(i);
+        DesktopWidgetPlugin * item = DesktopScene::getPluginFromItem(i);
         if (item && item->editable())
         {
             setPos(m_prevPos);
@@ -204,15 +250,17 @@ void ArrangeItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
             return;
         }
     }
+
+    m_boundingRect = m_rect;
 }
 
-void ArrangeItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+void DesktopWidgetPlugin::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
     if (m_editable)
-        m_plugin->configure();
+        configure();
 }
 
-QCursor ArrangeItem::getCursorByPos(const QPointF & position)
+QCursor DesktopWidgetPlugin::getCursorByPos(const QPointF & position)
 {
     if (! m_editable)
         return Qt::ArrowCursor;
@@ -221,7 +269,7 @@ QCursor ArrangeItem::getCursorByPos(const QPointF & position)
     qreal y = position.y();
     int size = 10;
     QRectF itemSize = boundingRect();
-    
+
     //qDebug() << "getCursorByPos" << position << x << y << itemSize << itemSize.width() << itemSize.height();
     // resizing
     if (x < size && y < size)
@@ -278,8 +326,9 @@ QCursor ArrangeItem::getCursorByPos(const QPointF & position)
     return Qt::SizeAllCursor;
 }
 
-void ArrangeItem::setCursorByTimer()
+void DesktopWidgetPlugin::setCursorByTimer()
 {
     setCursor(getCursorByPos(mapFromScene(QCursor::pos())));
     m_timer->start();
 }
+

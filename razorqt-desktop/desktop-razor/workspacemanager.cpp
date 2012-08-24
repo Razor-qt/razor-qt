@@ -25,22 +25,38 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <razorqt/razorapplication.h>
-#include <QtCore/QtDebug>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
-#include <razorqt/razorsettings.h>
 #include <QtCore/QFileSystemWatcher>
+#include <QtGui/QDesktopWidget>
+#include <QtDebug>
+
+#include <razorqt/razorapplication.h>
+
 #include "workspacemanager.h"
+#include "desktopscene.h"
+
+// this include must go last
+#include <razorqt/xfitman.h>
+
 
 EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorWorkSpaceManager);
 
+
+DesktopConfig* DesktopConfig::m_instance = NULL;
+
+
+
 RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSettings * config)
     : DesktopPlugin(configId, config)
-    , m_configId(configId)
+    , m_scene(0)
     , m_desktopCount(1)
 {
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
+    DesktopConfig::instance()->config = config;
+    DesktopConfig::instance()->configId = configId;
+
+    m_scene = new DesktopScene(this);
+    m_scene->setBackgroundBrush(Qt::transparent);
+
     setup();
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(setup()));
     QFileSystemWatcher *fw = new QFileSystemWatcher(this);
@@ -51,7 +67,7 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
 void RazorWorkSpaceManager::setup()
 {
     m_config->sync();
-    m_config->beginGroup(m_configId);
+    m_config->beginGroup(DesktopConfig::instance()->configId);
     
     bool useDifferentWallpapers = m_config->value("use_different_wallpapers", false).toBool();
 
@@ -60,8 +76,7 @@ void RazorWorkSpaceManager::setup()
     WorkspaceConfig defaults(
                             strToBackgroundType(m_config->value("wallpaper_type", "color").toString(), RazorWorkSpaceManager::BackgroundColor),
                             false,
-                            m_config->value("wallpaper", "#006600").toString(),
-                            m_config->value("plugins", QStringList()).toStringList()
+                            m_config->value("wallpaper", "#006600").toString()
                         );
 
     // important: here is used screenCount() instead of beginReadArray()
@@ -85,8 +100,7 @@ void RazorWorkSpaceManager::setup()
            desktops[screen][desktop] = WorkspaceConfig (
                                strToBackgroundType(m_config->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
                                m_config->value("keep_aspect_ratio", defaults.keepAspectRatio).toBool(),
-                               m_config->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString(),
-                               m_config->value("plugins", defaults.plugins).toStringList()
+                               m_config->value("wallpaper", themeWallpaper.isEmpty() ? defaults.wallpaper : themeWallpaper).toString()
                            );
         }
 
@@ -127,8 +141,8 @@ void RazorWorkSpaceManager::setup()
             if (!useDifferentWallpapers && desktop > 0)
                 break;
 
-            qDebug() << "workspace screen: " << screen;
-            qDebug() << "virtual desktop: " << desktop;
+//            qDebug() << "workspace screen: " << screen;
+//            qDebug() << "virtual desktop: " << desktop;
 
             // Use existing RazorWorkSpace instance or create a new one
             RazorWorkSpace * ws;
@@ -139,7 +153,8 @@ void RazorWorkSpaceManager::setup()
             else {
                 // New workspace
                 Q_ASSERT(desktop == screenWorkspaces->count());
-                ws = new RazorWorkSpace(m_config, screen, desktop);
+                ws = new RazorWorkSpace(m_scene, screen, desktop);
+                connect(m_scene, SIGNAL(saveConfig()), ws, SLOT(saveConfig()));
                 screenWorkspaces->append(ws);
             }
 

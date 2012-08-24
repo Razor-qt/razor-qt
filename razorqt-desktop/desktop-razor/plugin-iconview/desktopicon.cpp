@@ -25,7 +25,6 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "desktopicon.h"
 #include <QtGui/QPainter>
 #include <QtGui/QPalette>
 #include <QtGui/QApplication>
@@ -39,6 +38,8 @@
 #include <QtCore/QtDebug>
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgmime.h>
+#include "desktopicon.h"
+
 
 IconViewLabel::IconViewLabel(const QString & text, QGraphicsItem * parent)
     : QGraphicsTextItem(text, parent)

@@ -4,24 +4,30 @@ set(PLUGIN "razor")
 
 
 set(HEADERS
+  backgroundprovider.h
   razorworkspace.h
   workspacemanager.h
-  arrangeitem.h
   desktopbackgrounddialog.h
+  desktopwidgetplugin.h
+  desktopscene.h
 )
 
 set(SOURCES
-  razorworkspace.cpp
   workspacemanager.cpp
-  arrangeitem.cpp
+  backgroundprovider.cpp
+  razorworkspace.cpp
   desktopbackgrounddialog.cpp
+  desktopwidgetplugin.cpp
+  desktopscene.cpp
 )
 
 set(MOCS
+  backgroundprovider.h
   razorworkspace.h
   workspacemanager.h
-  arrangeitem.h
   desktopbackgrounddialog.h
+  desktopwidgetplugin.h
+  desktopscene.h
 )
 
 set(UIS

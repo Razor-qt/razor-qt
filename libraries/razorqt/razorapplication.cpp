@@ -25,11 +25,14 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razorapplication.h"
-#include "razorsettings.h"
+#include <QtCore/QDir>
+
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgdirs.h>
-#include <QtCore/QDir>
+
+#include "razorapplication.h"
+#include "razorsettings.h"
+
 
 #ifdef DEBUG
 #define COLOR_DEBUG "\033[32;2m"

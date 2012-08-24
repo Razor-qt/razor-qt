@@ -35,26 +35,48 @@
 #include <desktopwidgetplugin.h>
 
 class QPixmap;
+class Clock;
 
-class Clock : public DesktopWidgetPlugin, public QGraphicsWidget
+
+class ClockPlugin : public DesktopWidgetPlugin
 {
+    Q_OBJECT
 public:
-    Clock(QGraphicsScene * scene, const QString & configId, RazorSettings * config);
-    ~Clock();
+    ClockPlugin(DesktopScene * scene, const QString & configId, RazorSettings * config);
 
+    QString info();
     QString instanceInfo();
 
     void setSizeAndPosition(const QPointF & position, const QSizeF & size);
     void save();
     void configure();
 
-    bool blockGlobalMenu() { return false; }
+private:
+    Clock* m_widget;
+};
+
+
+class Clock : public QGraphicsWidget
+{
+    Q_OBJECT
+
+public:
+    Clock(ClockPlugin *parent, const QString & configId, RazorSettings * config);
+    ~Clock();
+
+    void save();
+    void configure();
+
+    void setSizeAndPosition(const QPointF & position, const QSizeF & size);
+
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget=0);
+
 
 protected:
     virtual void timerEvent(QTimerEvent* event);
 
 private:
+    ClockPlugin *m_parent;
     void startClock();
 
     QPixmap* mClockPix;

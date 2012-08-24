@@ -31,22 +31,75 @@
     http://doc.qt.nokia.com/latest/declarative-toys-clocks.html
  */
 
-#include "clock.h"
 #include <QtDebug>
 #include <QGraphicsScene>
-//#include <QInputDialog>
 #include <QPainter>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QTime>
 #include <QTimerEvent>
+
+#include "clock.h"
 #include "configuredialog.h"
 
-EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(Clock)
+EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(ClockPlugin)
 
 
-Clock::Clock(QGraphicsScene * scene, const QString & configId, RazorSettings * config)
+ClockPlugin::ClockPlugin(DesktopScene * scene, const QString & configId, RazorSettings * config)
     : DesktopWidgetPlugin(scene, configId, config)
+{
+    m_widget = new Clock(this, configId, config);
+    m_widget->show();
+}
+
+QString ClockPlugin::info()
+{
+    return QObject::tr("Clock");
+}
+
+QString ClockPlugin::instanceInfo()
+{
+    return QObject::tr("Clock:") + " " + m_configId;
+}
+
+void ClockPlugin::setSizeAndPosition(const QPointF & position, const QSizeF & size)
+{
+    int x = position.x();
+    int y = position.y();
+
+    QPixmap *mClockPix = new QPixmap(":/imgs/clock.png");
+
+    if (x<0)
+    {
+        x = QApplication::desktop()->availableGeometry().width()- mClockPix->width() - (-position.x());
+    }
+
+    if (y<0)
+    {
+        y = QApplication::desktop()->availableGeometry().height() - mClockPix->height() - (-position.y());
+    }
+
+    setPos(x, y);
+    m_boundingRect = QRectF(0, 0, mClockPix->width(), mClockPix->height());
+    delete mClockPix;
+
+    m_widget->setSizeAndPosition(position, size);
+}
+
+void ClockPlugin::save()
+{
+    m_widget->save();
+}
+
+void ClockPlugin::configure()
+{
+    m_widget->configure();
+}
+
+
+Clock::Clock(ClockPlugin *parent, const QString & configId, RazorSettings * config)
+    : QGraphicsWidget(parent),
+      m_parent(parent)
 {
     config->beginGroup(configId);
     mShowSeconds = config->value("showseconds", false).toBool();
@@ -86,16 +139,10 @@ void Clock::startClock()
 }
 
 
-QString Clock::instanceInfo()
-{
-    return QObject::tr("Clock");
-}
-
-
 void Clock::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
     int x = position.x();
-    int y=position.y();
+    int y = position.y();
 
     if (x<0)
     {
@@ -106,7 +153,8 @@ void Clock::setSizeAndPosition(const QPointF & position, const QSizeF & size)
     {
         y = QApplication::desktop()->availableGeometry().height() - mClockPix->height() - (-position.y());
     }
-    setGeometry(x, y, mClockPix->width(), mClockPix->height());
+
+    resize(mClockPix->width(), mClockPix->height());
 }
 
 
@@ -126,10 +174,12 @@ void Clock::configure()
 
 void Clock::save()
 {
+    RazorSettings *m_config = m_parent->config();
+    QString m_configId = m_parent->configId();
     m_config->beginGroup(m_configId);
     m_config->setValue("plugin", "analogclock");
-    m_config->setValue("x", pos().x());
-    m_config->setValue("y", pos().y());
+    m_config->setValue("x", scenePos().x());
+    m_config->setValue("y", scenePos().y());
     m_config->setValue("showseconds", mShowSeconds);
     m_config->endGroup();
 }

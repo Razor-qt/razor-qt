@@ -28,26 +28,11 @@
 #ifndef RAZORWORKSPACE_H
 #define RAZORWORKSPACE_H
 
-#include <QtCore/QTextStream>
 #include <QtGui/QGraphicsView>
-#include <QtGui/QMouseEvent>
-#include <QtGui/QAction>
-
-#include <razorqt/xfitman.h>
-#include <razorqt/razorplugininfo.h>
-#include <qtxdg/xdgmenu.h>
-#include "arrangeitem.h"
-
-/**
- * @file razorworkspace.h
- * @brief declares class Razorworkspace
- * @author Christopher "VdoP" Regali
- */
 
 class WorkspaceConfig;
-class RazorSettings;
-class PowerManager;
-class ScreenSaver;
+class BackgroundProvider;
+class DesktopScene;
 
 
 /**
@@ -58,62 +43,34 @@ class RazorWorkSpace : public QGraphicsView
 {
     Q_OBJECT
 public:
-    RazorWorkSpace(RazorSettings * config, int screen, int desktop, QWidget * parent=0);
+    RazorWorkSpace(DesktopScene *scene, int screen, int desktop, QWidget * parent=0);
     ~RazorWorkSpace();
 
     void setConfig(const WorkspaceConfig & bg);
     WorkspaceConfig getConfig();
 
+    void setDesktopBackground();
+
+public slots:
+	void saveConfig();
+
 protected:
-    void mouseReleaseEvent(QMouseEvent* _ev);
-    void wheelEvent(QWheelEvent* e);
+	void dragEnterEvent(QDragEnterEvent *event);
+	void dragMoveEvent(QDragMoveEvent * event);
+	void dropEvent(QDropEvent *event);
 
 private:
-   
-    enum Mode {
-        ModeNormal,
-        ModeArrange
-    };
 
-    QGraphicsScene * m_scene;
-    RazorSettings * m_config;
-    QString m_menuFile;
-    bool m_wheelDesktopSwitch;
+    DesktopScene * m_scene;
+
     int m_screen;
     int m_desktop;
-    Mode m_mode;
-    QMenu *m_menu;
-    XdgMenu m_xdgMenu;
-
-    QAction * m_actArrangeWidgets;
-    QAction * m_actAddNewPlugin;
-    QAction * m_actRemovePlugin;
-    QAction * m_actConfigurePlugin;
-    QAction * m_actSetbackground;
-    QAction * m_actAbout;
-
-    ArrangeItem * m_arrangeRoot;
-    QList<ArrangeItem*> m_arrangeList;
     
-    PowerManager * m_power;
-    ScreenSaver * m_screenSaver;
-    
-    DesktopWidgetPlugin * getPluginFromItem(QGraphicsItem * item);
-    QGraphicsItem * loadPlugin(QLibrary * lib, const QString & configId="default");
-    void saveConfig();
-    QStringList pluginDesktopDirs();
-    QLibrary* loadPluginLib(const RazorPluginInfo &pluginInfo);
-    QMap<QString, QGraphicsItem*> m_plugins;
+    BackgroundProvider *m_background;
+    QGraphicsPixmapItem *m_backgroundItem;
+
 private slots:
-    void about();
     void workspaceResized(int screen);
-    void arrangeWidgets(bool start);
-    void showAddPluginDialog();
-    void removePlugin();
-    void configurePlugin();
-    void setDesktopBackground();
-    void addPlugin(const RazorPluginInfo &pluginInfo);
-    void buildMenu();
 };
 
 #endif

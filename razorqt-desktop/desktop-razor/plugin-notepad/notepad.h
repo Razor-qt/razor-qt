@@ -36,12 +36,12 @@
 #include <desktopwidgetplugin.h>
 #include "notepadwin.h"
 
-class Notepad : public DesktopWidgetPlugin, public QWidget
+class Notepad : public DesktopWidgetPlugin
 {
     NotepadWin *win;
-    QVBoxLayout *layout;
+    QGraphicsProxyWidget * m_proxy;
 public:
-    Notepad(QGraphicsScene *scene, const QString &configId, RazorSettings *config);
+    Notepad(DesktopScene *scene, const QString &configId, RazorSettings *config);
     ~Notepad();
 
     QString info();
@@ -50,8 +50,6 @@ public:
     void setSizeAndPosition(const QPointF &position, const QSizeF &size);
     void save();
     void configure();
-
-    bool blockGlobalMenu() { return true; }
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H
