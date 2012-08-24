@@ -1,14 +1,18 @@
 razorqt for Debian
 ------------------
 
-Now razorqt are more close to 0.5.X release and new symbols will be in library, 
-so a possible SONAME update will appear in next release.
+Now razorqt are more close to 0.5 release and new symbols will be in library, 
+so a possible SONAME update will appear in next release that means the older 
+installed libraries dont work with newer razor modules.
 
-Panel plugin has new volume control at very early stage. Works with alsa and pulseaudio.
+Panel plugin has new volume control at very early stage. Works with alsa and pulseaudio, 
+current status of plugins its in early stage and work only by runtime build default 
+audio backend (if pulse audio its detected overlaps alsa backend). So if u use alsa 
+auido backend as defualt must uninstall devel headers of pulseaudio.
 
-Theres a new razor-update program, due 0.5.X next changes this program will 
-convert and update your config files to new format used by this newer versions.
-You can run from command line or menu if u have older configs that wan to preserv
+Here its a new razor-update program, due 0.5.X next changes this program will 
+convert and update your config files to new format used by this newer versions; 
+you can run from command line or menu if u have older configs that wan to preserv
 
 Theres a new item, razor-about, this binary its part of razor library so u can 
 invoke from desktop menu or manualy from command line, it display about info of 
@@ -17,9 +21,6 @@ current razorqt desktop installed and also techical info about razorqt instalati
 Theres a new item, razor-openssh-askpass, this module are very early stage, 
 and not enabled by default, so u must added a env in razor-settings SSH_ASKPASS= 
 with razor-openssh-askpass value, openssl and openssh-client packages must be required.
-
-This are close to 0.5.X release so a settings converter module are build for that 
-purpose, u can use it from command line.
 
  -- PICCORO Lenz McKAY <mckaygerhard@gmail.com>  Wed, 11 Jul 2012 14:23:40 -0430
 
