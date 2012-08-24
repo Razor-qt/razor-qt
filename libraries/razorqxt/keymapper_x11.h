@@ -134,6 +134,29 @@
 #define XF86XK_LaunchD          0x1008FF4D
 #define XF86XK_LaunchE          0x1008FF4E
 #define XF86XK_LaunchF          0x1008FF4F
+
+
+/* Backlight controls. */
+#ifndef XF86XK_MonBrightnessUp
+#define XF86XK_MonBrightnessUp   0x1008FF02  /* Monitor/panel brightness */
+#endif
+
+#ifndef XF86XK_MonBrightnessDown
+#define XF86XK_MonBrightnessDown 0x1008FF03  /* Monitor/panel brightness */
+#endif
+
+#ifndef XF86XK_KbdLightOnOff
+#define XF86XK_KbdLightOnOff     0x1008FF04  /* Keyboards may be lit     */
+#endif
+
+#ifndef XF86XK_KbdBrightnessUp
+#define XF86XK_KbdBrightnessUp   0x1008FF05  /* Keyboards may be lit     */
+#endif
+
+#ifndef XF86XK_KbdBrightnessDown
+#define XF86XK_KbdBrightnessDown 0x1008FF06  /* Keyboards may be lit     */
+#endif
+
 // end of XF86keysyms.h
 
 // Special keys used by Qtopia, mapped into the X11 private keypad range.
@@ -342,6 +365,11 @@ static const unsigned int KeyTbl[] = {
     XF86XK_AudioPrev,           Qt::Key_MediaPrevious,
     XF86XK_AudioNext,           Qt::Key_MediaNext,
     XF86XK_AudioRecord,         Qt::Key_MediaRecord,
+
+    XF86XK_MonBrightnessUp,     Qt::Key_MonBrightnessUp,
+    XF86XK_MonBrightnessDown,   Qt::Key_MonBrightnessDown,
+    XF86XK_KbdBrightnessUp,     Qt::Key_KeyboardBrightnessUp,
+    XF86XK_KbdBrightnessDown,   Qt::Key_KeyboardBrightnessDown,
 
     // launch keys
     XF86XK_Mail,                Qt::Key_LaunchMail,
