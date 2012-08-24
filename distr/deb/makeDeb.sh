@@ -18,8 +18,18 @@ HELP_TEXT
 }
 
 
-# VARIABLES is a array
-declare -A VARIABLES
+
+VARIABLES=""
+
+function setVariable
+{
+    VARIABLES="${VARIABLES}$2=$3\n"
+}
+
+function getVariable
+{
+    printf $VARIABLES | awk -F'=' "/${1}=/ {print(\$2)}"
+}
 
 
 function checkIf
@@ -40,7 +50,7 @@ function checkIf
             ;;
 
         *)
-            val=${VARIABLES[$name]}
+            val=`getVariable ${name}`
             ;;
     esac
 
@@ -56,11 +66,6 @@ function checkIf
     echo 0
 }
 
-
-function setVariable
-{
-    VARIABLES["$2"]="$3"
-}
 
 token=''
 line=''
