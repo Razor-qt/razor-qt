@@ -32,6 +32,8 @@
 #define RAZORCLOCK_CPP
 
 #include "razorclock.h"
+#include "calendar_utils.h"
+
 #include <QtCore/QDebug>
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
@@ -148,7 +150,7 @@ void RazorClock::settingsChanged()
         }
     }
 
-    firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", Qt::Sunday).toInt());
+    firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
     fontChanged();
 
