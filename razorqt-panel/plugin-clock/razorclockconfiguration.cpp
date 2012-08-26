@@ -28,8 +28,10 @@
 
 #include "razorclockconfiguration.h"
 #include "ui_razorclockconfiguration.h"
+#include "calendar_utils.h"
 
 #include <QtGui/QFontDialog>
+
 
 RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *parent) :
     QDialog(parent),
@@ -169,7 +171,7 @@ void RazorClockConfiguration::loadSettings()
     ui->timeFontB->setText(constructFontDescription(timeFont));
     ui->dateFontB->setText(constructFontDescription(dateFont));
 
-    ui->firstDayOfWeekCB->setCurrentIndex(mSettings.value("firstDayOfWeek", Qt::Sunday).toInt() - 1);
+    ui->firstDayOfWeekCB->setCurrentIndex(mSettings.value("firstDayOfWeek", firstDayOfWeek()).toInt() - 1);
 }
 
 void RazorClockConfiguration::saveSettings()
