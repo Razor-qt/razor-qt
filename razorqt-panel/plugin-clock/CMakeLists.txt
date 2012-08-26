@@ -6,11 +6,13 @@ set(PLUGIN "clock")
 set(HEADERS
     razorclock.h
     razorclockconfiguration.h
+    calendar_utils.h
 )
 
 set(SOURCES
     razorclock.cpp
     razorclockconfiguration.cpp
+    calendar_utils.cpp
 )
 
 set(MOCS
