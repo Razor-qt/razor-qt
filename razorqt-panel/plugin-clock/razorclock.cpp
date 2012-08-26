@@ -150,7 +150,7 @@ void RazorClock::settingsChanged()
         }
     }
 
-    firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
+    m_firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
     fontChanged();
 
@@ -305,7 +305,7 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
         calendarDialog->layout()->setMargin(1);
 
         QCalendarWidget* cal = new QCalendarWidget(calendarDialog);
-        cal->setFirstDayOfWeek(firstDayOfWeek);
+        cal->setFirstDayOfWeek(m_firstDayOfWeek);
         calendarDialog->layout()->addWidget(cal);
         calendarDialog->adjustSize();
 
