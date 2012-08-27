@@ -26,6 +26,6 @@ set(LIBRARIES
 add_executable ( ${PROJECT_NAME} ${${PROJECT_NAME}_SRCS})
 target_link_libraries ( ${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${LIBRARIES} )
 add_dependencies(${PROJECT_NAME} razorqt)
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION lib/razor-confupdate_bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION lib${LIB_SUFFIX}/razor-confupdate_bin)
 
 install(FILES razor-0.5.upd DESTINATION share/razor/razor-confupdate) 

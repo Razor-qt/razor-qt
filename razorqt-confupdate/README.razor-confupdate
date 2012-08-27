@@ -92,7 +92,7 @@ To delete a whole group use "# DELETEGROUP [group]".
 
 <script> should be installed into same dir where .upd file is located,
 or razor-confupdate will not be able to find it. It's also possible to install
-applications in /usr/<local>/lib/razor-confupdate_bin, which opens the
+applications in /usr/<local>/lib<libsuffix>/razor-confupdate_bin, which opens the
 door to razor-confupdate applications that are written in C++ and use Qt's
 powerful string API instead.
 
