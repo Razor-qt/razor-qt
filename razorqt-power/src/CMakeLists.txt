@@ -34,8 +34,17 @@ file(GLOB DESKTOP_FILES_IN
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
-razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN} )
+razor_translate_ts(QM_FILES
+    SOURCES
+        ${H_FILES}
+        ${CPP_FILES}
+        ${UI_FILES}
+)
+
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${DESKTOP_FILES_IN}
+)
 #************************************************
 cmake_minimum_required( VERSION 2.6 )
 
