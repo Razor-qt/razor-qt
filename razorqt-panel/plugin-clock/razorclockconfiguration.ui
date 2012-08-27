@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>362</width>
-    <height>434</height>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -137,70 +137,6 @@
      <property name="checked">
       <bool>true</bool>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="calendarGB">
-     <property name="title">
-      <string>Calendar</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout" columnstretch="1,2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="firstDayOfWeekL">
-        <property name="text">
-         <string>First day of &amp;week</string>
-        </property>
-        <property name="buddy">
-         <cstring>firstDayOfWeekCB</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="firstDayOfWeekCB">
-        <property name="currentIndex">
-         <number>6</number>
-        </property>
-        <property name="maxVisibleItems">
-         <number>7</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Monday</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Tuesday</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Wednesday</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Thursday</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Friday</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Saturday</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Sunday</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
    <item>
