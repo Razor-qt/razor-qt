@@ -46,12 +46,24 @@ include_directories(
 qt4_wrap_cpp(HW_MOC_SOURCES ${HW_MOCS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
 qt4_wrap_ui(FORMS ${AC_UIS})
-qt4_add_translation(QM_FILES ${TS_FILES})
 
 # Translations **********************************
 include(RazorTranslate)
+
+razor_translate_ts(QM_FILES 
+    SOURCES
+        ${HW_HEADERS}
+        ${HW_SOURCES} 
+        ${AC_UIS}
+    INSTALLATION_DIR        
+        ${PLUGIN_SHARE_DIR}/${NAME}
+)
+
 file (GLOB DESKTOP_FILES_IN resources/*.desktop.in)
-razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${DESKTOP_FILES_IN}
+)
 #************************************************
 
 
@@ -61,4 +73,4 @@ target_link_libraries(${PROJECT} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} deskto
 
 install(TARGETS ${PROJECT} DESTINATION ${DESKTOP_PLUGIN_DIR})
 install(FILES ${DESKTOP_FILES} DESTINATION share/razor/razor-desktop/)
-install(FILES ${QM_FILES}      DESTINATION ${PLUGIN_SHARE_DIR})
+#install(FILES ${QM_FILES}      DESTINATION ${PLUGIN_SHARE_DIR})
