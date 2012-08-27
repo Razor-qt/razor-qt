@@ -28,11 +28,22 @@ include_directories (
 
 qt4_wrap_cpp(HW_MOC_SOURCES ${HW_MOCS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
-qt4_add_translation(QM_FILES ${TS_FILES})
 # Translations **********************************
 include(RazorTranslate)
+
+razor_translate_ts(QM_FILES 
+    SOURCES
+        ${HW_HEADERS}
+        ${HW_SOURCES} 
+    INSTALLATION_DIR        
+        ${PLUGIN_SHARE_DIR}/${NAME}
+)
+
 file (GLOB DESKTOP_FILES_IN resources/*.desktop.in)
-razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${DESKTOP_FILES_IN}
+)
 #************************************************
 
 add_library(${PROJECT} SHARED ${HW_HEADERS} ${HW_SOURCES} ${HW_MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${DESKTOP_FILES})

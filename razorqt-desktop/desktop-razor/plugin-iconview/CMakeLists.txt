@@ -39,8 +39,21 @@ qt4_add_translation(QM_FILES ${TS_FILES})
 
 # Translations **********************************
 include(RazorTranslate)
+
+razor_translate_ts(QM_FILES 
+    SOURCES
+        ${IV_HEADERS}
+        ${IV_SOURCES} 
+    INSTALLATION_DIR        
+        ${PLUGIN_SHARE_DIR}/${NAME}
+)
+
 file (GLOB DESKTOP_FILES_IN resources/*.desktop.in)
-razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN})
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${DESKTOP_FILES_IN}
+)
+
 #************************************************
 
 add_library(${PROJECT} MODULE ${IV_HEADERS} ${IV_SOURCES} ${IV_MOC_SOURCES} ${QM_FILES} ${QRC_SOURCES} ${DESKTOP_FILES})
