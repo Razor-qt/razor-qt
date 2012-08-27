@@ -73,6 +73,7 @@ void DesktopWidgetPlugin::setEditable(bool editable)
              m_timer = 0;
              // save only when it goes form "edit" mode - not on first call
              save();
+             emit pluginResized(boundingRect().size());
         }
         setAcceptsHoverEvents(false);
         setFlag(QGraphicsItem::ItemIsMovable, false);

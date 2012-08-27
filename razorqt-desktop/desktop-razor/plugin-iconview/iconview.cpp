@@ -45,6 +45,9 @@ IconView::IconView(DesktopScene * scene, const QString & configId, RazorSettings
     m_widget->show();
     m_proxy->setWidget(m_widget);
     m_proxy->show();
+
+    connect(this, SIGNAL(pluginResized(QSizeF)),
+            m_widget, SLOT(setSize(QSizeF)));
 }
 
 QString IconView::info()
@@ -60,7 +63,7 @@ QString IconView::instanceInfo()
 void IconView::setSizeAndPosition(const QPointF & position, const QSizeF & size)
 {
     DesktopWidgetPlugin::setSizeAndPosition(position, size);
-    m_widget->setSizeAndPosition(position, size);
+    m_widget->setSize(size);
 }
 
 void IconView::save()
@@ -132,7 +135,7 @@ IconViewWidget::~IconViewWidget()
     delete m_iconScene;
 }
 
-void IconViewWidget::setSizeAndPosition(const QPointF & position, const QSizeF & size)
+void IconViewWidget::setSize(const QSizeF & size)
 {
     m_iconScene->setParentSize(size);
     resize(size.width(), size.height());

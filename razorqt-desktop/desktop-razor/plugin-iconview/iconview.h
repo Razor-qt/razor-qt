@@ -64,9 +64,11 @@ public:
     IconViewWidget(const QString & configId, RazorSettings * config);
     ~IconViewWidget();
 
-    void setSizeAndPosition(const QPointF & position, const QSizeF & size);
     QString dir();
     void setDir(const QString &txt);
+
+public slots:
+    void setSize(const QSizeF & size);
 
 private:
     IconScene * m_iconScene;

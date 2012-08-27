@@ -68,6 +68,9 @@ public:
     void setEditable(bool editable);
     bool editable() { return m_editable; }
 
+signals:
+    void pluginResized(const QSizeF &size);
+
 protected:
     RazorSettings * m_config;
     QString m_configId;
