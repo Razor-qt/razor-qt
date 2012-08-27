@@ -28,9 +28,8 @@ function setVariable
 
 function getVariable
 {
-    printf $VARIABLES | awk -F'=' "/${1}=/ {print(\$2)}"
+    printf "$VARIABLES" | awk -F'=' "/${1}=/ {print(\$2)}"
 }
-
 
 function checkIf
 {
