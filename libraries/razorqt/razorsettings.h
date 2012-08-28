@@ -77,8 +77,8 @@ public:
 signals:
     void settingsChanged();
 
-protected:
-    virtual bool event(QEvent *event);
+protected slots:
+    virtual void fileChanged();
 
 private:
     Q_DISABLE_COPY(RazorSettings)
@@ -182,7 +182,7 @@ signals:
     /// Signal emitted when the razor theme has changed.
     void razorThemeChanged();
 
-private slots:
+protected slots:
     void fileChanged();
 
 private:

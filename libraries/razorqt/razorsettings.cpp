@@ -47,6 +47,8 @@ public:
 
     QString localizedKey(const QString& key) const;
 
+    QFileSystemWatcher mWatcher;
+
 private:
     RazorSettings* mParent;
 };
@@ -78,7 +80,6 @@ public:
     }
 
     GlobalRazorSettings *mParent;
-    QFileSystemWatcher mWatcher;
     QString mIconTheme;
     QString mRazorTheme;
 
@@ -92,6 +93,12 @@ RazorSettings::RazorSettings(const QString& module, QObject* parent) :
     QSettings("razor", module, parent),
     d_ptr(new RazorSettingsPrivate(this))
 {
+    // HACK: we need to ensure that the user (~/.config/razor/<module>.conf)
+    //       exists to have functional mWatcher
+    setValue("__userfile__", true);
+    sync();
+    d_ptr->mWatcher.addPath(this->fileName());
+    connect(&(d_ptr->mWatcher), SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
 }
 
 
@@ -130,18 +137,11 @@ RazorSettings::~RazorSettings()
     delete d_ptr;
 }
 
-
-/************************************************
-
- ************************************************/
-bool RazorSettings::event(QEvent *event)
+void RazorSettings::fileChanged()
 {
-    if (event->type() == QEvent::UpdateRequest)
-    {
-        emit settingsChanged();
-    }
-
-    return QSettings::event(event);
+//    Q_D(RazorSettings);
+    sync();
+    emit settingsChanged();
 }
 
 
@@ -563,9 +563,6 @@ GlobalRazorSettings::GlobalRazorSettings():
     RazorSettings("razor"),
     d_ptr(new GlobalRazorSettingsPrivate(this))
 {
-    d_ptr->mWatcher.addPath(this->fileName());
-    connect(&(d_ptr->mWatcher), SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
-
     if (value("icon_theme").toString().isEmpty())
     {
         QStringList failback;
