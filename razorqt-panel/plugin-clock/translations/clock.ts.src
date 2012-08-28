@@ -65,92 +65,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="145"/>
-        <source>Calendar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="151"/>
-        <source>First day of &amp;week</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="168"/>
-        <source>Monday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="173"/>
-        <source>Tuesday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="178"/>
-        <source>Wednesday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="183"/>
-        <source>Thursday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="188"/>
-        <source>Friday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="193"/>
-        <source>Saturday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.ui" line="198"/>
-        <source>Sunday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razorclockconfiguration.cpp" line="217"/>
+        <location filename="../razorclockconfiguration.cpp" line="213"/>
         <source>Time font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="229"/>
+        <location filename="../razorclockconfiguration.cpp" line="225"/>
         <source>Date font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="243"/>
+        <location filename="../razorclockconfiguration.cpp" line="239"/>
         <source>Ultra light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="245"/>
+        <location filename="../razorclockconfiguration.cpp" line="241"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="247"/>
+        <location filename="../razorclockconfiguration.cpp" line="243"/>
         <source>Ultra black</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="249"/>
+        <location filename="../razorclockconfiguration.cpp" line="245"/>
         <source>Black</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="251"/>
+        <location filename="../razorclockconfiguration.cpp" line="247"/>
         <source>Bold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="253"/>
+        <location filename="../razorclockconfiguration.cpp" line="249"/>
         <source>Demi bold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.cpp" line="258"/>
+        <location filename="../razorclockconfiguration.cpp" line="254"/>
         <source>Italic</source>
         <translation type="unfinished"></translation>
     </message>

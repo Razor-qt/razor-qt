@@ -27,9 +27,16 @@ QT4_WRAP_UI(razor-desktopcfg_UIS
 
 QT4_WRAP_CPP(razor-desktopcfg_MOCS ${razor-desktopcfg_HDRS})
 
+set(DESKTOP_FILES_IN
+    razor-config-desktop.desktop.in
+)
+
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop(DESKTOP_FILES razor-config-desktop.desktop.in)
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${DESKTOP_FILES_IN}
+)
 #************************************************
 
 add_executable ( razor-config-desktop ${razor-desktopcfg_SRCS} ${razor-desktopcfg_UIS} ${razor-desktopcfg_MOCS} ${DESKTOP_FILES} )

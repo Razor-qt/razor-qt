@@ -1,4 +1,5 @@
 # build static helper class first
+project(razor-config)
 add_subdirectory(qcategorizedview)
 
 include_directories (
@@ -20,12 +21,24 @@ set ( razor-config_MOCS
     mainwindow.h
 	)
 
+set( razor-config_UIS
+    mainwindow.ui
+)
 QT4_WRAP_CPP(MOCS ${razor-config_MOCS})
-QT4_WRAP_UI(UIS mainwindow.ui)
+QT4_WRAP_UI(UIS ${razor-config_UIS})
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
-razor_translate_desktop(DESKTOP_FILES razor-config.desktop.in)
+razor_translate_ts(QM_FILES
+    SOURCES
+        ${razor-config_HDRS}
+        ${razor-config_SRCS}
+        ${razor-config_UIS}
+)
+
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        razor-config.desktop.in
+)
 #************************************************
 
 add_executable ( razor-config ${razor-config_SRCS} ${UIS} ${MOCS} ${DESKTOP_FILES})

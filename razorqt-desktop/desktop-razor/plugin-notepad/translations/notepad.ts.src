@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US">
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../notepad.cpp" line="61"/>
+        <source>Display a notepad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../notepad.cpp" line="66"/>
+        <source>Notepad:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+</TS>

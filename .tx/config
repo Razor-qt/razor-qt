@@ -33,6 +33,12 @@ source_file = libraries/razorqt/translations/librazorqt.ts.src
 source_lang = en
 file_filter = libraries/razorqt/translations/librazorqt_<lang>.ts
 
+[razor-qt.razor-config-mouse]
+type = QT
+source_file = razorqt-config/razor-config-mouse/translations/razor-config-mouse.ts.src
+source_lang = en
+file_filter = razorqt-config/razor-config-mouse/translations/razor-config-mouse_<lang>.ts
+
 [razor-qt.razor-config-appearance]
 type = QT
 source_file = razorqt-config/razor-config-appearance/translations/razor-config-appearance.ts.src
@@ -117,11 +123,11 @@ source_file = razorqt-resources/autostart/razor-policykit-agent.desktop.in
 source_lang = en
 file_filter = razorqt-resources/autostart/translations/razor-policykit-agent_<lang>.desktop
 
-[razor-qt.razor-autosuspend_desktop]
-type = DESKTOP
-source_file = razorqt-resources/autostart/razor-autosuspend.desktop.in
+[razor-qt.desktopswitch]
+type = QT
+source_file = razorqt-panel/plugin-desktopswitch/translations/desktopswitch.ts.src
 source_lang = en
-file_filter = razorqt-resources/autostart/translations/razor-autosuspend_<lang>.desktop
+file_filter = razorqt-panel/plugin-desktopswitch/translations/desktopswitch_<lang>.ts
 
 [razor-qt.razor-notifications_desktop]
 type = DESKTOP
@@ -327,9 +333,9 @@ source_file = razorqt-power/src/resources/razor-power.desktop.in
 source_lang = en
 file_filter = razorqt-power/src/translations/razor-power_<lang>.desktop
 
-[razor-qt.razor-autosuspend_desktop]
-type = DESKTOP
-source_file = razorqt-power/razor-autosuspend/resources/razor-autosuspend.desktop.in
+[razor-qt.razor-autosuspend]
+type = QT
 source_lang = en
-file_filter = razorqt-power/razor-autosuspend/translations/razor-autosuspend_<lang>.desktop
+source_file = razorqt-autosuspend/src/translations/razor-autosuspend.ts.src
+file_filter = razorqt-autosuspend/src/translations/razor-autosuspend_<lang>.ts
 

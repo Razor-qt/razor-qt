@@ -4,7 +4,10 @@ file(GLOB DESKTOP_FILES_IN *.desktop.in)
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop(DESKTOP_FILES ${DESKTOP_FILES_IN} )
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${DESKTOP_FILES_IN}
+)
 add_custom_target(autostart_desktop_files ALL DEPENDS ${DESKTOP_FILES})
 #************************************************
 

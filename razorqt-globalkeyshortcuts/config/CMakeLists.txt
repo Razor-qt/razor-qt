@@ -35,9 +35,19 @@ set(LIBRARIES
 
 
 # Translations **********************************
-include(RazorTranslate)
-razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config)
-razor_translate_desktop(DESKTOP_FILES ${PROJECT_NAME}.desktop.in)
+razor_translate_ts(razor-sessioncfg_QM_FILES
+    SOURCES
+        ${H_FILES}
+        ${CPP_FILES}
+        ${UI_FILES}
+    INSTALLATION_DIR
+        ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config
+)
+
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        ${PROJECT_NAME}.desktop.in
+)
 #************************************************
 
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en_US">
+<context>
+    <name>HelloWorld</name>
+    <message>
+        <location filename="../helloworld.cpp" line="73"/>
+        <source>Hello World:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../helloworld.cpp" line="79"/>
+        <source>Display Text Configuretion</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../helloworld.cpp" line="79"/>
+        <source>Edit HTML</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../helloworld.cpp" line="68"/>
+        <source>Display simple text. A debugging/sample widget.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+</TS>

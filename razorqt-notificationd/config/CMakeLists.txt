@@ -27,7 +27,10 @@ set(NOTIFICATIONS_CONF_UI
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop(DESKTOP_FILES razor-config-notificationd.desktop.in)
+razor_translate_desktop2(DESKTOP_FILES
+    SOURCES
+        razor-config-notificationd.desktop.in
+)
 #************************************************
 
 qt4_wrap_cpp(NOTIFICATIONS_CONF_MOC_CPP ${NOTIFICATIONS_CONF_MOC})

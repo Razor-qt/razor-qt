@@ -28,7 +28,12 @@ set(LIBRARIES
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate(QM_FILES)
+razor_translate_ts(QM_FILES
+    SOURCES
+        ${H_FILES}
+        ${CPP_FILES}
+        ${UI_FILES}
+)
 #************************************************
 cmake_minimum_required( VERSION 2.6 )
 

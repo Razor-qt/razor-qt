@@ -17,8 +17,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../clock.cpp" line="91"/>
+        <location filename="../clock.cpp" line="57"/>
         <source>Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../clock.cpp" line="62"/>
+        <source>Clock:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
