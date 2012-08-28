@@ -56,7 +56,6 @@
     <method name="GetCapabilities">
       <arg name="capabilities" type="as" direction="out"/>
     </method>
-    <method name="ReloadSettings" />
     <signal name="ActionInvoked">
       <arg type="u"/>
       <arg type="s"/>

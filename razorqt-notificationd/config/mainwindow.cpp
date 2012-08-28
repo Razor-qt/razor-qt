@@ -35,14 +35,6 @@
 #include "basicsettings.h"
 #include "advancedsettings.h"
 
-void serverReloadSettings()
-{
-    QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1("org.freedesktop.Notifications"),
-                                                    QString::fromLatin1("/org/freedesktop/Notifications"),
-                                                    QString::fromLatin1("org.freedesktop.Notifications"),
-                                                    QString::fromLatin1("ReloadSettings"));
-    QDBusConnection::sessionBus().call(m);
-}
 
 MainWindow::MainWindow(QWidget *parent) :
     RazorConfigDialog(tr("Razor Notifications Configuration"), new RazorSettings("notifications"), parent)

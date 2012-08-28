@@ -95,10 +95,6 @@ void BasicSettings::save()
         mSettings->setValue("placement", "top-right");
     else if (topLeftButton->isChecked())
         mSettings->setValue("placement", "top-left");
-
-    mSettings->sync();
-
-    serverReloadSettings();
 }
 
 void BasicSettings::testNotification()

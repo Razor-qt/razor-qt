@@ -63,8 +63,4 @@ void AdvancedSettings::save()
     mSettings->setValue("server_decides", serverDecidesBox->value());
     mSettings->setValue("spacing", spacingBox->value());
     mSettings->setValue("width", widthBox->value());
-
-    mSettings->sync();
-    serverReloadSettings();
 }
-

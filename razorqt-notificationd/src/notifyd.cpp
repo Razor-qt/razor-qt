@@ -41,7 +41,8 @@ Notifyd::Notifyd(QObject* parent)
       mId(0)
 {
     m_area = new NotificationArea();
-    ReloadSettings();
+    m_settings = new RazorSettings("notifications");
+    reloadSettings();
 
     connect(this, SIGNAL(notificationAdded(uint,QString,QString,QString,QString,int,QStringList,QVariantMap)),
             m_area->layout(), SLOT(addNotification(uint,QString,QString,QString,QString,int,QStringList,QVariantMap)));
@@ -52,6 +53,9 @@ Notifyd::Notifyd(QObject* parent)
             this, SIGNAL(NotificationClosed(uint,uint)));
     connect(m_area->layout(), SIGNAL(actionInvoked(uint, QString)),
             this, SIGNAL(ActionInvoked(uint,QString)));
+
+    connect(m_settings, SIGNAL(settingsChanged()),
+            this, SLOT(reloadSettings()));
 
 }
 
@@ -135,12 +139,11 @@ uint Notifyd::Notify(const QString& app_name,
     return ret;
 }
 
-void Notifyd::ReloadSettings()
+void Notifyd::reloadSettings()
 {
-    RazorSettings s("notifications");
-    m_serverTimeout = s.value("server_decides", 10).toInt();
+    m_serverTimeout = m_settings->value("server_decides", 10).toInt();
     m_area->setSettings(
-            s.value("placement", "bottom-right").toString().toLower(),
-            s.value("width", 300).toInt(),
-            s.value("spacing", 6).toInt());
+            m_settings->value("placement", "bottom-right").toString().toLower(),
+            m_settings->value("width", 300).toInt(),
+            m_settings->value("spacing", 6).toInt());
 }

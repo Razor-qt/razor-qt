@@ -36,6 +36,8 @@
 
 #include "notificationarea.h"
 
+class RazorSettings;
+
 
 /*
  * Class for interface org.freedesktop.Notifications
@@ -89,12 +91,6 @@ public slots:
                 const QVariantMap& hints,
                 int expire_timeout);
 
-    /*! Enforce daeomon to reload \c RazorSettings.
-     * A workaround for settings transfer from \c razor-config-notificationd to the daemon
-     * The config tool sends DBUS call to daemon.
-     */
-    void ReloadSettings();
-
 signals:
     // signals for DBUS API specs - going outside
 
@@ -134,6 +130,11 @@ private:
     uint mId;
     NotificationArea *m_area;
     int m_serverTimeout;
+
+    RazorSettings *m_settings;
+
+private slots:
+    void reloadSettings();
 };
 
 #endif // NOTIFYD_H
