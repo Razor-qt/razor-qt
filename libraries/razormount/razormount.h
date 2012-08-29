@@ -126,7 +126,7 @@ public:
     explicit RazorMountManager(QObject *parent = 0);
     virtual ~RazorMountManager();
 
-    const RazorMountDeviceList *devices() const;
+    const RazorMountDeviceList devices() const;
 
 public slots:
     void update();

@@ -58,7 +58,7 @@ Popup::Popup(RazorMountManager *manager, QWidget* parent):
     connect(mManager, SIGNAL(deviceAdded(RazorMountDevice*)),
                 this, SLOT(addItem(RazorMountDevice*)));
 
-    foreach(RazorMountDevice *device, *(mManager->devices()))
+    foreach(RazorMountDevice *device, mManager->devices())
     {
         addItem(device);
     }
@@ -215,7 +215,7 @@ void MountButton::onDeviceRemoved(RazorMountDevice *device)
         break;
 
     case DevActionMenu:
-        if (mManager.devices()->isEmpty())
+        if (mManager.devices().isEmpty())
             hidePopup();
         break;
 
@@ -238,7 +238,7 @@ void MountButton::showHidePopup()
     {
         mPopupHideTimer.stop();
 
-        if (mManager.devices()->isEmpty())
+        if (mManager.devices().isEmpty())
             showMessage(tr("No devices Available."));
         else
             showPopup();
@@ -252,7 +252,7 @@ void MountButton::showPopup()
     if (mPopup->isVisible())
         return;
 
-    if (mManager.devices()->isEmpty())
+    if (mManager.devices().isEmpty())
         return;
 
     mPopup->updateGeometry();

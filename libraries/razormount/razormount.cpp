@@ -98,12 +98,15 @@ void RazorMountManager::update()
 }
 
 
-const RazorMountDeviceList *RazorMountManager::devices() const
+const RazorMountDeviceList RazorMountManager::devices() const
 {
     if (mProvider)
         return mProvider->devices();
     else
-        return 0;
+    {
+        qDebug() << "RazorMountDeviceList RazorMountManager::devices() no valid provider in use";
+        return RazorMountDeviceList();
+    }
 }
 
 

@@ -44,7 +44,7 @@ public:
     explicit RzMountProvider(QObject *parent = 0);
     virtual ~RzMountProvider() {}
 
-    const RazorMountDeviceList *devices() const { return &mDevices; }
+    const RazorMountDeviceList devices() const { return mDevices; }
 
     bool isValid() const { return mIsValid; }
     virtual void update()=0;
