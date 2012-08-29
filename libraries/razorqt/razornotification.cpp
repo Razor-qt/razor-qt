@@ -144,7 +144,10 @@ void RazorNotificationPrivate::update()
     {
         QMessageBox::information(0, tr("Notifications Fallback"), mSummary + " \n\n " + mBody);
     }
-    mId = reply.value();
+    else
+    {
+        mId = reply.value();
+    }
 }
 
 

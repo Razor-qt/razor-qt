@@ -208,7 +208,11 @@ bool UPowerProvider::canAction(RazorPower::Action action) const
                 UPOWER_PATH,
                 UPOWER_INTERFACE,
                 QDBusConnection::systemBus(),
-                command
+                command,
+                // canAction should be always silent because it can freeze
+                // g_main_context_iteration Qt event loop in QMessageBox
+                // on panel startup if there is no DBUS running.
+                RazorPowerProvider::DontCheckDBUS
             );
 }
 
@@ -277,7 +281,11 @@ bool ConsoleKitProvider::canAction(RazorPower::Action action) const
                     CONSOLEKIT_PATH,
                     CONSOLEKIT_INTERFACE,
                     QDBusConnection::systemBus(),
-                    command
+                    command,
+                    // canAction should be always silent because it can freeze
+                    // g_main_context_iteration Qt event loop in QMessageBox
+                    // on panel startup if there is no DBUS running.
+                    RazorPowerProvider::DontCheckDBUS
                    );
 }
 
@@ -331,7 +339,8 @@ bool RazorProvider::canAction(RazorPower::Action action) const
         case RazorPower::PowerLogout:
             // there can be case when razo-session does not run
             return dbusCall(RAZOR_SERVICE, RAZOR_PATH, RAZOR_SERVICE,
-                            QDBusConnection::sessionBus(), "canLogout", RazorPowerProvider::DontCheckDBUS);
+                            QDBusConnection::sessionBus(), "canLogout",
+                            RazorPowerProvider::DontCheckDBUS);
         default:
             return false;
     }
