@@ -11,7 +11,7 @@ public:
     qtTranslator->load("qt_" + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     qApp->installTranslator(qtTranslator);
     QTranslator *appTranslator = new QTranslator(qApp);
-    appTranslator->load(QString("/opt/razor-qt/share/razor/razor-panel/panelvolume/razor-panel_panelvolume_%1.qm").arg(locale));
+    appTranslator->load(QString("/usr/share/razor/razor-panel/panelvolume/razor-panel_panelvolume_%1.qm").arg(locale));
     qApp->installTranslator(appTranslator);
   }
 };

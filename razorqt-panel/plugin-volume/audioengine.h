@@ -44,6 +44,7 @@ public:
 
     const QList<AudioDevice *> &sinks() const { return m_sinks; }
     virtual int volumeMax(AudioDevice *device) const = 0;
+    virtual const QString backendName() const = 0;
 
 public slots:
     virtual void commitDeviceVolume(AudioDevice *device) = 0;

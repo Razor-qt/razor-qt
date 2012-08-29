@@ -38,6 +38,7 @@
 #define SETTINGS_DEVICE                 "device"
 #define SETTINGS_STEP                   "volumeAdjustStep"
 #define SETTINGS_IGNORE_MAX_VOLUME      "ignoreMaxVolume"
+#define SETTINGS_AUDIO_ENGINE           "audioEngine"
 
 #define SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK      true
 #define SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK    true
@@ -45,8 +46,10 @@
 #define SETTINGS_DEFAULT_STEP                   3
 #ifdef USE_PULSEAUDIO
     #define SETTINGS_DEFAULT_MIXER_COMMAND      "pavucontrol"
+    #define SETTINGS_DEFAULT_AUDIO_ENGINE       "pulseaudio"
 #else
     #define SETTINGS_DEFAULT_MIXER_COMMAND      "qasmixer"
+    #define SETTINGS_DEFAULT_AUDIO_ENGINE       "alsa"
 #endif
 #define SETTINGS_DEFAULT_IGNORE_MAX_VOLUME      false
 
@@ -66,6 +69,7 @@ public:
 
 public slots:
     void setSinkList(const QList<AudioDevice*> sinks);
+    void audioEngineChanged(bool checked);
     void sinkSelectionChanged(int index);
     void showOnClickedChanged(bool state);
     void muteOnMiddleClickChanged(bool state);

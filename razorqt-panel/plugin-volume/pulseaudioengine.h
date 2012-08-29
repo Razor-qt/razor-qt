@@ -52,6 +52,8 @@ public:
     PulseAudioEngine(QObject *parent = 0);
     ~PulseAudioEngine();
 
+    virtual const QString backendName() const { return QLatin1String("PulseAudio"); }
+
     int volumeMax(AudioDevice */*device*/) const { return m_maximumVolume; }
 
     void requestSinkInfoUpdate(AudioDevice *device);

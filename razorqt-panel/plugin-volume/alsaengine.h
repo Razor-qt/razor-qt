@@ -48,6 +48,8 @@ public:
     AlsaEngine(QObject *parent = 0);
     static AlsaEngine *instance();
 
+    virtual const QString backendName() const { return QLatin1String("Alsa"); }
+
     int volumeMax(AudioDevice *device) const;
     AlsaDevice *getDeviceByAlsaElem(snd_mixer_elem_t *elem) const;
 

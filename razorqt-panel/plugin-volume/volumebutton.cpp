@@ -57,7 +57,6 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
     connect(m_volumePopup, SIGNAL(mouseEntered()), this, SLOT(popupHideTimerStop()));
     connect(m_volumePopup, SIGNAL(mouseLeft()), this, SLOT(popupHideTimerStart()));
 
-    connect(m_volumePopup, SIGNAL(deviceChanged()), this, SLOT(handleDeviceChanged()));
     connect(m_volumePopup, SIGNAL(launchMixer()), this, SLOT(handleMixerLaunch()));
     connect(m_volumePopup, SIGNAL(stockIconChanged(QString)), this, SLOT(handleStockIconChanged(QString)));
 }
