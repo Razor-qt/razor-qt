@@ -79,7 +79,6 @@ void NotificationLayout::addNotification(uint id, const QString &application,
         Notification *n = new Notification(application, summary, body, icon, timeout, actions, hints, this);
 
         // NOTE: it's hard to use == operator for Notification* in QList...
-        bool found = false;
         QHashIterator<uint, Notification*> it(m_notifications);
         while (it.hasNext())
         {
@@ -88,31 +87,23 @@ void NotificationLayout::addNotification(uint id, const QString &application,
                     && it.value()->summary() == summary
                     && it.value()->body() == body)
             {
-                found = true;
-                break;
+                qDebug() << "Notification app" << application << "summary" << summary << "is already registered but this request is not an update. Broken app?";
+                delete n;
+                return;
             }
         }
 
-        if (found)
-        {
-            qDebug() << "Notification app" << application << "summary" << summary << "is already registered but this request is not an update. Broken app?";
-            delete n;
-        }
-        else
-        {
-            connect(n, SIGNAL(timeout()), this, SLOT(removeNotificationTimeout()));
-            connect(n, SIGNAL(userCanceled()), this, SLOT(removeNotificationUser()));
-            connect(n, SIGNAL(actionTriggered(QString)),
-                    this, SLOT(notificationActionCalled(QString)));
-            m_notifications[id] = n;
-            m_layout->addWidget(n);
-            n->show();
-        }
+        connect(n, SIGNAL(timeout()), this, SLOT(removeNotificationTimeout()));
+        connect(n, SIGNAL(userCanceled()), this, SLOT(removeNotificationUser()));
+        connect(n, SIGNAL(actionTriggered(QString)),
+                this, SLOT(notificationActionCalled(QString)));
+        m_notifications[id] = n;
+        m_layout->addWidget(n);
+        n->show();
     }
 
     emit notificationAvailable();
     checkHeight();
-
 }
 
 void NotificationLayout::removeNotificationTimeout()
