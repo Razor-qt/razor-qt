@@ -40,7 +40,6 @@
 
 IconScene::IconScene(const QString & directory, QObject * parent)
     : QGraphicsScene(parent),
-      m_directory(directory),
       m_fsw(0)
 {
     setDirImpl(directory);
@@ -56,31 +55,42 @@ void IconScene::setDir(const QString & directory)
 
 void IconScene::setDirImpl(const QString & directory, bool repaint)
 {
-    m_directory = directory;
-
-    QStringList dirs;
-    if (QDir(directory).exists())
-        dirs << directory;
-    else
-    {
-        qDebug() << "ERROR config dir" << directory << "does not exist";
-        QString d(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-        if (!d.isEmpty() && QDir(d).exists())
-            dirs << QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-        else
-            dirs << QDir::homePath();
-    }
+    if (!directory.isEmpty() && m_directory == directory)
+        return;
 
     if (m_fsw)
     {
         delete m_fsw;
+        m_fsw = 0;
     }
 
-    m_fsw = new QFileSystemWatcher(dirs, this);
-    connect(m_fsw, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateIconList()));
-    
+    QStringList dirs;
+    if (!directory.isEmpty() && QDir(directory).exists())
+    {
+        qDebug() << "Setting dir from prefs" << directory;
+        m_directory = directory;
+    }
+    else if (QDir(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation)).exists())
+    {
+        qDebug() << "Setting dir" << "DesktopLocation";
+        m_directory = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
+    }
+    else if (QDir(QDir::homePath()).exists())
+    {
+        qDebug() << "Setting dir" << "homePath";
+        m_directory = QDir::homePath();
+    }
+    else
+    {
+        qDebug() << "Setting dir" << "filesystem root";
+        m_directory = QDir::rootPath();
+    }
+
     if (repaint)
         updateIconList();
+
+    m_fsw = new QFileSystemWatcher(QStringList() << m_directory, this);
+    connect(m_fsw, SIGNAL(directoryChanged(const QString&)), this, SLOT(updateIconList()));
 }
 
 void IconScene::dragEnterEvent(QGraphicsSceneDragDropEvent *e)
@@ -117,7 +127,7 @@ void IconScene::updateIconList()
 {
     qDebug() << "IconScene::updateIconList";
   
-    m_fsw->blockSignals(true);
+    if (m_fsw) m_fsw->blockSignals(true);
 
     // bruteforce cleanup
     foreach (QGraphicsItem* item, items())
@@ -127,7 +137,7 @@ void IconScene::updateIconList()
     }
     
     //QDirIterator dirIter(m_fsw->directories().at(0));
-    QDir d(m_fsw->directories().at(0));
+    QDir d(m_directory);
     int x = 30;
     int y = 10;
 
@@ -186,13 +196,16 @@ void IconScene::updateIconList()
         }
     }
 
-    m_fsw->blockSignals(false);
+    if (m_fsw) m_fsw->blockSignals(false);
 }
 
 void IconScene::setParentSize(const QSizeF & size)
 {
-    qDebug() << "IconScene::setParentSize" << size;
-    m_parentSize = size;
-    updateIconList();
+    qDebug() << "IconScene::setParentSize" << m_parentSize << size;
+    if (m_parentSize != size)
+    {
+        m_parentSize = size;
+        updateIconList();
+    }
 }
 

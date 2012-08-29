@@ -97,8 +97,7 @@ IconViewWidget::IconViewWidget(const QString & configId, RazorSettings * config)
 
     config->beginGroup(configId);
 
-    QString dir = QDesktopServices::storageLocation(QDesktopServices::DesktopLocation);
-    dir = config->value("directory", dir).toString();
+    QString dir = config->value("directory").toString();
     config->endGroup();
 
     // Hack to ensure the fully transparent QGraphicsView background
