@@ -27,8 +27,11 @@
 #include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QPalette>
+#include <QtGui/QX11Info>
+
 #include "mainwindow.h"
 #include "loginform.h"
+
 
 MainWindow::MainWindow(int screen, QWidget *parent)
     : QWidget(parent)
@@ -56,6 +59,14 @@ MainWindow::MainWindow(int screen, QWidget *parent)
         int offsetY = screenRect.height()/2 - loginForm->height()/2;
         loginForm->move(offsetX, offsetY);
         loginForm->show();
+
+        // This hack ensures that the primary screen will have focus
+        // if there are more screens (move the mouse cursor in the center
+        // of primary screen - not in the center of all X area). It
+        // won't affect single-screen environments.
+        int centerX = screenRect.width()/2 + screenRect.x();
+        int centerY = screenRect.height()/2 + screenRect.y();
+        QCursor::setPos(centerX, centerY);
     }
 }
 
