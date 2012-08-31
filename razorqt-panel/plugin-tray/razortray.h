@@ -60,11 +60,12 @@ public:
 signals:
     void iconSizeChanged(int iconSize);
 
+private slots:
+    void startTray();
+    void stopTray();
 
 private:
-    Visual* getVisual();
-    bool startTray();
-    void stopTray();
+    VisualID getVisual();
 
     void clientMessageEvent(XClientMessageEvent* e);
 

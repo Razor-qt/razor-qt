@@ -118,7 +118,8 @@ bool TrayIcon::init()
     XSync(dsp, false);
     XSetErrorHandler(old);
 
-    if (xError) {
+    if (xError)
+    {
         qWarning() << "****************************************";
         qWarning() << "* Not icon_swallow                     *";
         qWarning() << "****************************************";
@@ -137,11 +138,13 @@ bool TrayIcon::init()
         ret = XGetWindowProperty(dsp, mIconId, xfitMan().atom("_XEMBED_INFO"),
                                  0, 2, false, xfitMan().atom("_XEMBED_INFO"),
                                  &acttype, &actfmt, &nbitem, &bytes, &data);
-        if (ret == Success) {
+        if (ret == Success)
+        {
             if (data)
                 XFree(data);
         }
-        else {
+        else
+        {
             qWarning() << "TrayIcon: xembed error";
             XDestroyWindow(dsp, mWindowId);
             return false;

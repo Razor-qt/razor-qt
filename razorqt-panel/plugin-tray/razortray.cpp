@@ -43,6 +43,7 @@
 #include <X11/extensions/Xrender.h>
 #include <X11/extensions/Xdamage.h>
 #include "razorqt/xfitman.h"
+#include <QtCore/QTimer>
 
 
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
@@ -72,7 +73,10 @@ RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent
 {
     setObjectName("Tray");
     layout()->setAlignment(Qt::AlignCenter);
-    mValid = startTray();
+
+    // Init the selection later just to ensure that no signals are sent until
+    // after construction is done and the creating object has a chance to connect.
+    QTimer::singleShot(0, this, SLOT(startTray()));
 }
 
 
@@ -189,8 +193,9 @@ void RazorTray::setIconSize(QSize iconSize)
 /************************************************
 
 ************************************************/
-Visual* RazorTray::getVisual()
+VisualID RazorTray::getVisual()
 {
+    VisualID visualId = 0;
     Display* dsp = QX11Info::display();
 
     XVisualInfo templ;
@@ -201,7 +206,6 @@ Visual* RazorTray::getVisual()
     int nvi;
     XVisualInfo* xvi = XGetVisualInfo(dsp, VisualScreenMask|VisualDepthMask|VisualClassMask, &templ, &nvi);
 
-    Visual* visual = 0;
     if (xvi)
     {
         int i;
@@ -209,59 +213,25 @@ Visual* RazorTray::getVisual()
         for (i = 0; i < nvi; i++)
         {
             format = XRenderFindVisualFormat(dsp, xvi[i].visual);
-            if (format->type == PictTypeDirect && format->direct.alphaMask)
+            if (format &&
+                format->type == PictTypeDirect &&
+                format->direct.alphaMask)
             {
-                visual = xvi[i].visual;
+                visualId = xvi[i].visualid;
                 break;
             }
         }
-        XFree (xvi);
+        XFree(xvi);
     }
 
-    return visual;
-    // check composite manager
-//    Window composite_manager = XGetSelectionOwner(dsp, xfitMan().atom("_NET_WM_CM_S0"));
-
-   // if (mColormap)
-   //   XFreeColormap(dsp, mColormap);
-
-   // if (mColormap32)
-   //     XFreeColormap(dsp, mColormap32);
-
-//    if (visual)
-//    {
-//        mVisual32 = visual;
-//        mColormap32 = XCreateColormap(dsp, QX11Info::appRootWindow(), visual, AllocNone);
-//    }
-
-//    if (visual && composite_manager != None)
-//    {
-//        XSetWindowAttributes attrs;
-//        attrs.event_mask = StructureNotifyMask;
-//        XChangeWindowAttributes (dsp, composite_manager, CWEventMask, &attrs);
-
-//        //server.real_transparency = 1;
-//        mDepth = 32;
-//        qDebug() << "Real transparency on... depth:" << mDepth;
-//        mColormap = XCreateColormap(dsp, QX11Info::appRootWindow(), visual, AllocNone);
-//        mVisual = visual;
-//    }
-//    else
-//    {
-        // no composite manager or snapshot mode => fake transparency
-        //server.real_transparency = 0;
-//        mDepth = DefaultDepth(dsp, QX11Info::appScreen());
-//        qDebug() << "Real transparency off.... depth:" << mDepth;
-//        mColormap = DefaultColormap(dsp, QX11Info::appScreen());
-//        mVisual = DefaultVisual(dsp, QX11Info::appScreen());
-//    }
+    return visualId;
 }
 
 
 /************************************************
    freedesktop systray specification
  ************************************************/
-bool RazorTray::startTray()
+void RazorTray::startTray()
 {
     Display* dsp = QX11Info::display();
     Window root = QX11Info::appRootWindow();
@@ -272,12 +242,20 @@ bool RazorTray::startTray()
     if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != None)
     {
         qWarning() << "Another systray is running";
-        return false;
+        mValid = false;
+        return;
     }
 
     // init systray protocol
     mTrayId = XCreateSimpleWindow(dsp, root, -1, -1, 1, 1, 0, 0, 0);
 
+    XSetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S, mTrayId, CurrentTime);
+    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != mTrayId) {
+        qWarning() << "Can't get systray manager";
+        stopTray();
+        mValid = false;
+        return;
+    }
 
     int orientation = _NET_SYSTEM_TRAY_ORIENTATION_HORZ;
     XChangeProperty(dsp,
@@ -290,29 +268,19 @@ bool RazorTray::startTray()
                     1);
 
     // ** Visual ********************************
-    Visual* visual = getVisual();
-    if (visual)
+    VisualID visualId = getVisual();
+    if (visualId)
     {
-        VisualID vid = XVisualIDFromVisual(visual);
         XChangeProperty(QX11Info::display(),
                         mTrayId,
                         xfitMan().atom("_NET_SYSTEM_TRAY_VISUAL"),
                         XA_VISUALID,
                         32,
                         PropModeReplace,
-                        (unsigned char*)&vid,
+                        (unsigned char*)&visualId,
                         1);
     }
     // ******************************************
-
-
-    XSetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S, mTrayId, CurrentTime);
-
-    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != mTrayId) {
-        stopTray();
-        qWarning() << "Can't get systray manager";
-        return false;
-    }
 
     XClientMessageEvent ev;
     ev.type = ClientMessage;
@@ -329,7 +297,7 @@ bool RazorTray::startTray()
     XDamageQueryExtension(QX11Info::display(), &mDamageEvent, &mDamageError);
 
     qDebug() << "Systray started";
-    return true;
+    mValid = true;
 }
 
 
