@@ -34,7 +34,6 @@
 #include "razorsettings.h"
 
 
-#ifdef DEBUG
 #define COLOR_DEBUG "\033[32;2m"
 #define COLOR_WARN "\033[33;2m"
 #define COLOR_CRITICAL "\033[31;1m"
@@ -48,10 +47,11 @@
 #include <unistd.h>
 #include <QDateTime>
 /*! \brief Log qDebug input to file
-Used only in pure Debug builds.
+Used only in pure Debug builds or when is the system environment
+variable RAZOR_DEBUG set
 */
 void dbgMessageOutput(QtMsgType type, const char *msg)
- {
+{
     QDir dir(XdgDirs::configHome().toUtf8() + "/razor");
     dir.mkpath(".");
 
@@ -88,13 +88,15 @@ void dbgMessageOutput(QtMsgType type, const char *msg)
     if (type == QtFatalMsg)
         abort();
 }
-#endif
 
 RazorApplication::RazorApplication(int &argc, char** argv)
     : QApplication(argc, argv)
 {
 #ifdef DEBUG
     qInstallMsgHandler(dbgMessageOutput);
+#else
+    if (!qgetenv("RAZOR_DEBUG").isNull())
+        qInstallMsgHandler(dbgMessageOutput);
 #endif
 
     XdgIcon::setThemeName(RazorSettings::globalSettings()->value("icon_theme").toString());
