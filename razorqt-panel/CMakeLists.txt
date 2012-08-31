@@ -111,10 +111,10 @@ if (SHOWDESKTOP_PLUGIN)
 	add_subdirectory(plugin-showdesktop)
 endif (SHOWDESKTOP_PLUGIN)
 
-if (SHOWDESKTOP_PLUGIN)
+if (COLORPICKER_PLUGIN)
 	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Color Picker")
 	add_subdirectory(plugin-colorpicker)
-endif (SHOWDESKTOP_PLUGIN)
+endif (COLORPICKER_PLUGIN)
 
 if (HELLOWORLD_PLUGIN)
 	set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "HelloWorld")
