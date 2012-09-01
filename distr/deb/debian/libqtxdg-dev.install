@@ -1,3 +1,9 @@
 /usr/include/qtxdg/
+%ifnot RELEASE lucid maverick lenny etch squeeze
+/usr/lib/*/pkgconfig/qtxdg*.pc
+/usr/lib/*/libqtx*.so
+%endif
+%if RELEASE lucid maverick lenny etch squeeze
 /usr/lib*/pkgconfig/qtxdg*.pc
 /usr/lib*/libqtx*.so
+%endif

@@ -2,5 +2,11 @@
 /usr/include/razorqt/
 /usr/include/razorqxt/
 /usr/bin/razor-x11info
+%ifnot RELEASE lucid maverick lenny etch squeeze
+/usr/lib/*/pkgconfig/razor*.pc
+/usr/lib/*/librazor*.so
+%endif
+%if RELEASE lucid maverick lenny etch squeeze
 /usr/lib*/pkgconfig/razor*.pc
 /usr/lib*/librazor*.so
+%endif
