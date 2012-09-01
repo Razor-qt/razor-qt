@@ -4,9 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2012 Razor team
- * Authors:
- *   Petr Vanek <petr@scribus.info>
+ * Copyright (C) 2012  Alec Moskvin <alecm@gmx.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,41 +23,30 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef BASICSETTINGS_H
-#define BASICSETTINGS_H
+#ifndef MODULEMODEL_H
+#define MODULEMODEL_H
 
-#include <QtGui/QWidget>
-#include <razorqt/razorsettings.h>
+#include <QtGui/QStringListModel>
+#include "autostartitem.h"
 
-#include "modulemodel.h"
-
-namespace Ui {
-class BasicSettings;
-}
-
-class BasicSettings : public QWidget
+class ModuleModel : public QAbstractListModel
 {
     Q_OBJECT
-
 public:
-    explicit BasicSettings(RazorSettings *settings, QWidget *parent = 0);
-    ~BasicSettings();
+    ModuleModel(QObject *parent = 0);
+    ~ModuleModel();
+    void reset();
+    void writeChanges();
 
-signals:
-    void needRestart();
-
-public slots:
-    void restoreSettings();
-    void save();
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex& index, const QVariant& value, int role);
+    int rowCount(const QModelIndex& parent) const;
+    int columnCount(const QModelIndex&) const { return 1; }
+    Qt::ItemFlags flags(const QModelIndex& index) const;
 
 private:
-    RazorSettings* m_settings;
-    ModuleModel* m_moduleModel;
-    Ui::BasicSettings* ui;
-
-private slots:
-    void findWmButton_clicked();
-
+    QMap<QString,AutostartItem> mItemMap;
+    QStringList mKeyList;
 };
 
-#endif // BASICSETTINGS_H
+#endif // MODULEMODEL_H

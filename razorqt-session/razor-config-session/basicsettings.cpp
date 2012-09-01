@@ -34,6 +34,7 @@
 BasicSettings::BasicSettings(RazorSettings *settings, QWidget *parent) :
     QWidget(parent),
     m_settings(settings),
+    m_moduleModel(new ModuleModel()),
     ui(new Ui::BasicSettings)
 {
     ui->setupUi(this);
@@ -41,6 +42,8 @@ BasicSettings::BasicSettings(RazorSettings *settings, QWidget *parent) :
     connect(ui->wmComboBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(setRestart()));
     connect(ui->wmComboBox, SIGNAL(editTextChanged(const QString&)), SIGNAL(needRestart()));
     restoreSettings();
+
+    ui->moduleView->setModel(m_moduleModel);
 }
 
 BasicSettings::~BasicSettings()
@@ -58,11 +61,13 @@ void BasicSettings::restoreSettings()
 
     QString wm = m_settings->value("windowmanager", "openbox").toString();
     SessionConfigWindow::handleCfgComboBox(ui->wmComboBox, knownWMs, wm);
+    m_moduleModel->reset();
 }
 
 void BasicSettings::save()
 {
     m_settings->setValue("windowmanager", ui->wmComboBox->currentText());
+    m_moduleModel->writeChanges();
 }
 
 void BasicSettings::findWmButton_clicked()

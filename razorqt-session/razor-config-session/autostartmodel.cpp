@@ -37,10 +37,13 @@ AutoStartItemModel::AutoStartItemModel(QObject* parent) :
     QMap<QString,AutostartItem>::iterator iter;
     for (iter = mItemMap.begin(); iter != mItemMap.end(); ++iter)
     {
-        if (showOnlyInRazor(iter.value().file()))
-            mRazorItems.append(iter.key());
-        else
-            mGlobalItems.append(iter.key());
+        if (!iter.value().file().value("X-Razor-Module", false).toBool())
+        {
+            if (showOnlyInRazor(iter.value().file()))
+                mRazorItems.append(iter.key());
+            else
+                mGlobalItems.append(iter.key());
+        }
     }
 }
 
