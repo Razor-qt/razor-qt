@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Color Picker
-Comment=Color Picker for Web Developers
+Name=Color picker
+Comment=Get the color under the cursor. For web developers.

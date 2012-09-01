@@ -2,4 +2,4 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Sensors
-Comment=View readings from hardware sensors (currently lm_sensors)
+Comment=View readings from hardware sensors.
