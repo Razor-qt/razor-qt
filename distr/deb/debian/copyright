@@ -1,27 +1,380 @@
-This package was debianized by:
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Razor-qt
+Upstream-Contact: <razor-qt@googlegroups.com> http://groups.google.com/group/razor-qt
+Source: http://razor-qt.org
 
-    %DEBFULLNAME% <%DEBEMAIL%>
 
-It was downloaded from:
+Files: *
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
 
-    http://razor-qt.org
 
-Upstream Author:
+Files: libraries/qtxdg/qiconfix/qiconloader.*
+Copyright: 2011 Nokia Corporation and/or its subsidiary(-ies).
+License: LGPL/Nokia
 
-    Razor team: http://razor-qt.org
 
-Copyright:
+Files: libraries/qtxdg/*
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
 
-    Copyright (C) 2010-2011 Razor team 
 
-License: GPL-2 and LGPL-2.1+
- On Debian systems the full text of the GNU Library General Public License can
- be found in the '/usr/share/common-licenses/GPL-2' and
- '/usr/share/common-licenses/LGPL-2.1' files.
+Files: libraries/razormount/*
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ *   Petr Vanek <petr@scribus.info>
 
-The Debian packaging is:
 
-    Copyright (C) 2010-2012 %DEBFULLNAME% <%DEBEMAIL%>
+Files: libraries/razorqt/*
+Copyright: 2010-2012 Razor team
+           2012 Alec Moskvin <alecm@gmx.com>
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ *   Petr Vanek <petr@scribus.info>
+ *   Christopher "VdoP" Regali
 
-and is licensed under the GPL version 2, see above.
 
+Files: libraries/razorqxt/*
+Copyright: 2006 - 2011, the LibQxt project.
+License: BSD3
+
+
+Files: razorqt-appswitcher/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+
+
+Files: razorqt-config/razorqt-config-appearance/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+
+
+Files: razorqt-config/razorqt-config-mouse/*
+Copyright: Ketmar // Vampire Avalon
+License: WTFPL
+Comment:
+ /* coded by Ketmar // Vampire Avalon (psyc://ketmar.no-ip.org/~Ketmar)
+  * (c)DWTFYW
+  *
+  * This program is free software. It comes without any warranty, to
+  * the extent permitted by applicable law. You can redistribute it
+  * and/or modify it under the terms of the Do What The Fuck You Want
+  * To Public License, Version 2, as published by Sam Hocevar. See
+  * http://sam.zoy.org/wtfpl/COPYING for more details.
+  */
+
+
+Files: razorqt-config/razorqt-config-mouse/crtheme.*
+       razorqt-config/razorqt-config-mouse/itemdelegate.*
+       razorqt-config/razorqt-config-mouse/previewwidget.*
+       razorqt-config/razorqt-config-mouse/thememodel.*
+Copyright: 2003-2007 Fredrik Höglund <fredrik@kde.org>
+License: GPL2/GPL3
+Comment: Extracted from one of the files
+ /* Copyright © 2006-2007 Fredrik Höglund <fredrik@kde.org>
+  * (c)GPL2 (c)GPL3
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public
+  * License version 2 or at your option version 3 as published 
+  * by the Free Software Foundation.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program; see the file COPYING.  If not, write to
+  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+  * Boston, MA 02110-1301, USA.
+  */
+ /*
+  * additional code: Ketmar // Vampire Avalon (psyc://ketmar.no-ip.org/~Ketmar)
+  */
+
+
+Files: razorqt-config/src/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+
+
+Files: razorqt-desktop/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+ *   Benoit Walter <b.walter@free.fr>
+
+
+Files: razorqt-panel/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+ *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Christopher "VdoP" Regali
+ *   Marat "Morion" Talipov <morion.self@gmail.com>
+
+
+Files: razorqt-policykit/*
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+
+
+Files: razorqt-power/*
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Christian Surlykke <christian@surlykke.dk>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+
+
+Files: razorqt-power/razor-autosuspend/org_freedesktop_UPower.*
+Copyright: 2011 Nokia Corporation and/or its subsidiary(-ies).
+License: LGPL/Nokia
+Comment:
+ * This file was generated by qdbusxml2cpp version 0.7
+ * Command line was: qdbusxml2cpp -p org_freedesktop_UPower UPowerInterface.xml
+ *
+ * qdbusxml2cpp is Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+ *
+ * This is an auto-generated file.
+ * This file may have been hand-edited. Look for HAND-EDIT comments
+ * before re-generating it.
+
+
+Files: razorqt-runner/*
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+
+
+Files: razorqt-session/config/autostar*
+Copyright: 2011  Alec Moskvin <alecm@gmx.com>
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+
+
+Files: razorqt-session/*
+Copyright: 2010-2012 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
+
+
+Files: razorqt-session/resources/*
+Copyright: Copyright 2009-2010, Fathi Boudra <fabo@freedesktop.org>
+           Copyright 2009-2010, Rex Dieter <rdieter@fedoraproject.org>
+           Copyright 2006, Kevin Krammer <kevin.krammer@gmx.at>
+           Copyright 2006, Jeremy White <jwhite@codeweavers.com>
+License: MIT/Expat
+
+
+Files: razorqt-su/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+
+
+Files: razorqt-x11info/*
+Copyright: 2010-2011 Razor team
+License: LGPL-2.1+
+Comment:
+ Authors:
+ *   Petr Vanek <petr@scribus.info>
+
+
+Files: scripts/smem.pl
+Copyright: Ben Maurer
+License: MIT/X11
+Comment: Original text:
+ Copyright Ben Maurer 
+ you can distribute this under the MIT/X11 License
+
+
+
+
+License: GPL2/GPL3
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public
+ License version 2 or at your option version 3 as published
+ by the Free Software Foundation.
+ .
+ On Debian systems the full text of the GNU General Public License can be found
+ in '/usr/share/common-licenses/GPL-2' and '/usr/share/common-licenses/GPL-3'.
+
+
+License: LGPL-2.1+
+ This program or library is free software; you can redistribute it
+ and/or modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ .
+ On Debian systems, the complete text of version 2.1 of the GNU Lesser
+ Public License can be found in '/usr/share/common-licenses/LGPL-2.1'.
+
+
+License: LGPL/Nokia
+ Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+ All rights reserved.
+ Contact: Nokia Corporation (qt-info@nokia.com)
+ .
+ This file is part of the QtGui module of the Qt Toolkit.
+ .
+ $QT_BEGIN_LICENSE:LGPL$
+ GNU Lesser General Public License Usage
+ This file may be used under the terms of the GNU Lesser General Public
+ License version 2.1 as published by the Free Software Foundation and
+ appearing in the file LICENSE.LGPL included in the packaging of this
+ file. Please review the following information to ensure the GNU Lesser
+ General Public License version 2.1 requirements will be met:
+ http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+ .
+ In addition, as a special exception, Nokia gives you certain additional
+ rights. These rights are described in the Nokia Qt LGPL Exception
+ version 1.1, included in the file LGPL_EXCEPTION.txt in this package.
+ .
+ GNU General Public License Usage
+ Alternatively, this file may be used under the terms of the GNU General
+ Public License version 3.0 as published by the Free Software Foundation
+ and appearing in the file LICENSE.GPL included in the packaging of this
+ file. Please review the following information to ensure the GNU General
+ Public License version 3.0 requirements will be met:
+ http://www.gnu.org/copyleft/gpl.html.
+ .
+ Other Usage
+ Alternatively, this file may be used in accordance with the terms and
+ conditions contained in a signed written agreement between you and Nokia.
+
+
+License: WTFPL
+ This program is free software. It comes without any warranty, to
+ the extent permitted by applicable law. You can redistribute it
+ and/or modify it under the terms of the Do What The Fuck You Want
+ To Public License, Version 2, as published by Sam Hocevar. See
+ http://sam.zoy.org/wtfpl/COPYING for more details.
+ .
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                    Version 2, December 2004
+ .
+ Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+ .
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+ .
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ .
+  0. You just DO WHAT THE FUCK YOU WANT TO.
+
+
+License: MIT/Expat
+ Permission is hereby granted, free of charge, to any person obtaining a
+ copy of this software and associated documentation files (the "Software"),
+ to deal in the Software without restriction, including without limitation
+ the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ and/or sell copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included
+ in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+
+
+License: MIT/X11
+ Copyright (C) 1996 X Consortium
+ .
+ Permission is hereby granted, free of charge, to any person obtaining a copy of
+ this software and associated documentation files (the "Software"), to deal in
+ the Software without restriction, including without limitation the rights to
+ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ of the Software, and to permit persons to whom the Software is furnished to do
+ so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE X
+ CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ .
+ Except as contained in this notice, the name of the X Consortium shall not be
+ used in advertising or otherwise to promote the sale, use or other dealings in
+ this Software without prior written authorization from the X Consortium.
+ .
+ X Window System is a trademark of X Consortium, Inc.
+
+
+License: BSD3
+ Copyright (c) 2006 - 2011, the LibQxt project.
+ See the Qxt AUTHORS file for a list of authors and copyright holders.
+ All rights reserved.
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+     * Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the distribution.
+     * Neither the name of the LibQxt project nor the
+       names of its contributors may be used to endorse or promote products
+       derived from this software without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ .
+ <http://libqxt.org>  <foundation@libqxt.org>

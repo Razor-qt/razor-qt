@@ -1,6 +1,13 @@
+%ifnot RELEASE lucid maverick lenny etch squeeze
+/usr/lib/*/librazormount.so.*
+/usr/lib/*/librazorqt.so.*
+/usr/lib/*/librazorqxt.so.*
+%endif
+%if RELEASE lucid maverick lenny etch squeeze
 /usr/lib*/librazormount.so.*
 /usr/lib*/librazorqt.so.*
 /usr/lib*/librazorqxt.so.*
+%endif
 /usr/share/librazorqt/
 /usr/bin/razor-about
 /usr/share/applications/razor-about.desktop
