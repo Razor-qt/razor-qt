@@ -45,32 +45,30 @@ Homepage: http://razor-qt.org/
 
 Package: razorqt
 Architecture: all
-Depends: razorqt-appswitcher (>= ${binary:Version}),,
-        razorqt-autosuspend (>= ${binary:Version}),,
-        razorqt-config (>= ${binary:Version}),,
-        razorqt-data (>= ${binary:Version}),,
-        razorqt-desktop (>= ${binary:Version}),,
-        razorqt-globalkeyshortcuts (>= ${binary:Version}),,
-        razorqt-notificationd (>= ${binary:Version}),,
-        razorqt-panel (>= ${binary:Version}),,
-        razorqt-power (>= ${binary:Version}),,
-        razorqt-runner (>= ${binary:Version}),,
-        razorqt-session (>= ${binary:Version}),,
+Depends: razorqt-appswitcher (>= ${binary:Version}),
+    razorqt-autosuspend (>= ${binary:Version}),
+        razorqt-config (>= ${binary:Version}),
+        razorqt-data (>= ${binary:Version}),
+        razorqt-desktop (>= ${binary:Version}),
+        razorqt-globalkeyshortcuts (>= ${binary:Version}),
+        razorqt-notificationd (>= ${binary:Version}),
+        razorqt-panel (>= ${binary:Version}),
+        razorqt-power (>= ${binary:Version}),
+        razorqt-runner (>= ${binary:Version}),
+        razorqt-session (>= ${binary:Version}),
 %if LIGHTDM yes
-        lightdm-razorqt-greeter (>= ${binary:Version}),,
+        lightdm-razorqt-greeter (>= ${binary:Version}),
 %endif
 %if POLKIT yes
-        razorqt-policykit-agent (>= ${binary:Version}),,
+        razorqt-policykit-agent (>= ${binary:Version}),
 %endif
         razorqt-openssh-askpass (>= ${binary:Version})
-
 Description: Razor-qt desktop environment
  Razor-qt is an advanced, easy-to-use, and fast desktop environment
  based on Qt technologies. It has been tailored for users who value
  simplicity, speed, and an intuitive interface. Unlike desktop environments,
  Razor-qt also works fine with weak machines and low requirements software.
-
-.
+ .
  Razor-qt already contains the key DE components thas means as
  each components can be used separately; the components are:
  .
