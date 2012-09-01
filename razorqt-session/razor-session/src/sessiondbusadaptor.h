@@ -64,6 +64,21 @@ public slots:
         m_manager->logout();
     }
 
+    QDBusVariant listModules()
+    {
+        return QDBusVariant(m_manager->listModules());
+    }
+
+    Q_NOREPLY void startModule(const QString& name)
+    {
+        m_manager->startProcess(name);
+    }
+
+    Q_NOREPLY void stopModule(const QString& name)
+    {
+        m_manager->stopProcess(name);
+    }
+
 private:
     RazorModuleManager * m_manager;
 };
