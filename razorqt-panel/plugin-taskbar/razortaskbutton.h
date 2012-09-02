@@ -70,6 +70,7 @@ public:
     void updateIcon();
 
     static void setShowOnlyCurrentDesktopTasks(bool);
+    static void setCloseOnMiddleClick(bool);
 
 public slots:
     void raiseApplication();
@@ -98,6 +99,7 @@ private:
     ElidedButtonStyle mStyle;
     const QMimeData *mDraggableMimeData;
     static bool mShowOnlyCurrentDesktopTasks;
+    static bool mCloseOnMiddleClick;
 
 private slots:
     void btnClicked(bool checked);

@@ -26,7 +26,7 @@
          <string>Show windows from current desktop</string>
         </property>
         <attribute name="buttonGroup">
-         <string>wlcB</string>
+         <string notr="true">wlcB</string>
         </attribute>
        </widget>
       </item>
@@ -36,7 +36,7 @@
          <string>Show windows from all desktops</string>
         </property>
         <attribute name="buttonGroup">
-         <string>wlcB</string>
+         <string notr="true">wlcB</string>
         </attribute>
        </widget>
       </item>
@@ -83,6 +83,13 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="middleClickCB">
+     <property name="text">
+      <string>Close on middle-click</string>
+     </property>
     </widget>
    </item>
    <item>
