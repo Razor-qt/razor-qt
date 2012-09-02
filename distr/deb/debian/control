@@ -1,10 +1,13 @@
+%ifnot RELEASE lucid maverick lenny etch squeeze
+    %set MULTIARCH yes
+%endif
 Source: razorqt
 Section: x11
 Priority: optional
 Maintainer: %DEBFULLNAME% <%DEBEMAIL%>
 Build-Depends: debhelper (>= 8.0.0~), pkg-config,
-%ifnot RELEASE lucid maverick lenny etch
-    dpkg-dev (>= 1.16.1~),
+%if MULTIARCH yes
+    dpkg-dev (>= 1.16.0~),
 %endif
     cmake,
     libqt4-dev (>= 4.6.0),
@@ -249,7 +252,7 @@ Package: razorqt-session
 Architecture: any
 Depends: librazorqt0 (= ${binary:Version}), openbox | x-window-manager,
 %ifnot RELEASE lucid maverick lenny etch squeeze
- xdg-utils
+ xdg-utils,
 %endif
  ${shlibs:Depends}, ${misc:Depends}
 Replaces: razor-qt, razor-session

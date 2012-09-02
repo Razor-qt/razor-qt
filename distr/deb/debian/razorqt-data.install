@@ -3,4 +3,8 @@
 /usr/share/razor/themes/
 /etc/xdg/menus/*
 /usr/share/desktop-directories/
+%if MULTIARCH yes
+/usr/lib/*/razor-xdg-tools
+%else
 /usr/lib*/razor-xdg-tools
+%endif

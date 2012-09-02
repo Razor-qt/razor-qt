@@ -11,4 +11,8 @@
 /etc/xdg/autostart/*
 /usr/share/razor/razor-confupdate/razor-0.5.upd
 /usr/bin/razor-confupdate
+%if MULTIARCH yes
+/usr/lib/*/razor-confupdate_bin/sesion_modules
+%else
 /usr/lib*/razor-confupdate_bin/sesion_modules
+%endif

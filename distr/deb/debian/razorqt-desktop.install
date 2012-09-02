@@ -1,6 +1,10 @@
 /usr/bin/razor-desktop
 /usr/bin/razor-config-desktop
+%if MULTIARCH yes
+/usr/lib/*/razor-desktop/
+%else
 /usr/lib*/razor-desktop/
+%endif
 /usr/share/applications/razor-config-desktop.desktop
 /etc/xdg/razor/desktop.conf
 /usr/share/razor/razor-desktop/
