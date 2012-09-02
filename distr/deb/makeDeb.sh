@@ -312,14 +312,18 @@ for RELEASE in ${RELEASE}; do
     mkdir -p ${DIR}/debian
     mkdir -p ${DIR}/debian/source
     DATE=`date -R`
-    for src in `find ${DIR}/distr/deb/debian -type f `; do
-        dest=`echo $src | sed -e's|/distr/deb||'`
 
+    prepareFile ${DIR}/distr/deb/debian/control > ${DIR}/debian/control
+
+    for src in `find ${DIR}/distr/deb/debian -type f \! -name "control"`; do
+        dest=`echo $src | sed -e's|/distr/deb||'`
         prepareFile "${src}" > ${dest}
         chmod --reference "${src}" ${dest}
     done
     # Debin directory .....................
     cd ${DIR} && debuild ${TYPE} ${SIGN} -rfakeroot
+    ret=$?
+    [ $ret -eq 0 ] || exit $ret
 done
 
 if [ "${TYPE}" = '-b' ]; then

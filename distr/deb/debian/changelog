@@ -3,6 +3,18 @@
 %else
 %NAME% (%VERSION%-1) %RELEASE%; urgency=low
 %endif
-  * New program release
+
+  * New program release 0.5.0 
+    + Closes: #683840 debian bug request.
+  * debian/compat:
+    + upgrade to debhelper 8 for multiarch support
+%ifnot RELEASE lucid maverick lenny etch squeeze
+  * debian/control:
+    + multiarch support added now.
+  * debian/lib*.install
+    + multiarch support added now.
+%endif
+  * debian/copyright
+    + updates to new format to make happy debian NMU and DD.
 
  -- %DEBFULLNAME% <%DEBEMAIL%>  %DATE%
