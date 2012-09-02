@@ -23,11 +23,22 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusReply>
+#include <QDebug>
+#include <qtxdg/xdgicon.h>
 #include "modulemodel.h"
 
 ModuleModel::ModuleModel(QObject* parent)
     : QAbstractListModel(parent)
 {
+    mInterface = new QDBusInterface("org.razorqt.session", "/RazorSession", "",
+                                    QDBusConnection::sessionBus(), this);
+}
+
+ModuleModel::~ModuleModel()
+{
+    delete mInterface;
 }
 
 void ModuleModel::reset()
@@ -55,6 +66,18 @@ QVariant ModuleModel::data(const QModelIndex& index, int role) const
                 return mItemMap.value(name).isEnabled() ? Qt::Checked : Qt::Unchecked;
             case Qt::ToolTipRole:
                 return mItemMap.value(name).file().value("Comment");
+        }
+    }
+    else if (index.column() == 1 && (role == Qt::DisplayRole || role ==Qt::DecorationRole))
+    {
+        QDBusReply<QVariant> reply = mInterface->call("listModules");
+        QStringList var = reply.value().toStringList();
+        if (var.contains(name))
+        {
+             if (role == Qt::DisplayRole)
+                 return tr("Running") + " ";
+             //else
+             //  return XdgIcon::fromTheme("flag");
         }
     }
     return QVariant();
@@ -88,4 +111,13 @@ void ModuleModel::writeChanges()
 {
     foreach (const QString& key, mKeyList)
         mItemMap[key].commit();
+}
+
+void ModuleModel::toggleModule(const QModelIndex &index, bool status)
+{
+    QList<QVariant> arg;
+    arg.append(mKeyList.at(index.row()));
+    mInterface->callWithArgumentList(QDBus::NoBlock,
+                                     status ? "startModule" : "stopModule",
+                                     arg);
 }

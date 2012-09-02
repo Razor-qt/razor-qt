@@ -39,11 +39,15 @@ BasicSettings::BasicSettings(RazorSettings *settings, QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->findWmButton, SIGNAL(clicked()), this, SLOT(findWmButton_clicked()));
+    connect(ui->startButton, SIGNAL(clicked()), this, SLOT(startButton_clicked()));
+    connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(stopButton_clicked()));
     connect(ui->wmComboBox, SIGNAL(currentIndexChanged(int)), parent, SLOT(setRestart()));
     connect(ui->wmComboBox, SIGNAL(editTextChanged(const QString&)), SIGNAL(needRestart()));
     restoreSettings();
 
     ui->moduleView->setModel(m_moduleModel);
+    ui->moduleView->header()->setResizeMode(0, QHeaderView::Stretch);
+    ui->moduleView->header()->setResizeMode(1, QHeaderView::ResizeToContents);
 }
 
 BasicSettings::~BasicSettings()
@@ -74,4 +78,14 @@ void BasicSettings::findWmButton_clicked()
 {
     SessionConfigWindow::updateCfgComboBox(ui->wmComboBox, tr("Select a window manager"));
     emit needRestart();
+}
+
+void BasicSettings::startButton_clicked()
+{
+    m_moduleModel->toggleModule(ui->moduleView->selectionModel()->currentIndex(), true);
+}
+
+void BasicSettings::stopButton_clicked()
+{
+    m_moduleModel->toggleModule(ui->moduleView->selectionModel()->currentIndex(), false);
 }

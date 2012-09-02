@@ -27,6 +27,7 @@
 #define MODULEMODEL_H
 
 #include <QtGui/QStringListModel>
+#include <QtDBus/QDBusInterface>
 #include "autostartitem.h"
 
 class ModuleModel : public QAbstractListModel
@@ -37,16 +38,18 @@ public:
     ~ModuleModel();
     void reset();
     void writeChanges();
+    void toggleModule(const QModelIndex &index, bool status);
 
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex& index, const QVariant& value, int role);
     int rowCount(const QModelIndex& parent) const;
-    int columnCount(const QModelIndex&) const { return 1; }
+    int columnCount(const QModelIndex&) const { return 2; }
     Qt::ItemFlags flags(const QModelIndex& index) const;
 
 private:
     QMap<QString,AutostartItem> mItemMap;
     QStringList mKeyList;
+    QDBusInterface* mInterface;
 };
 
 #endif // MODULEMODEL_H

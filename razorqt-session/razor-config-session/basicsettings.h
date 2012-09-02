@@ -59,7 +59,8 @@ private:
 
 private slots:
     void findWmButton_clicked();
-
+    void startButton_clicked();
+    void stopButton_clicked();
 };
 
 #endif // BASICSETTINGS_H
