@@ -33,8 +33,10 @@
 #include <QtCore/QTimer>
 #include <qtxdg/xdgdesktopfile.h>
 
-typedef QMap<QProcess*,XdgDesktopFile*> ModulesMap;
-typedef QMapIterator<QProcess*,XdgDesktopFile*> ModulesMapIterator;
+class RazorModule;
+
+typedef QMap<QString,RazorModule*> ModulesMap;
+typedef QMapIterator<QString,RazorModule*> ModulesMapIterator;
 typedef QMap<QProcess*,int> ModulesCrashReport;
 
 /*! \brief RazorModuleManager manages the processes of the session
@@ -43,12 +45,12 @@ and which modules of razor are about to load.
 RazorModuleManager handles the session management (logout/restart/shutdown)
 as well.
 
-Processes in RazorModuleManager are split into 2 sets.
- - basic processes, window manager, Razor components. Which has to be started
-   first.
- - autostart processes, user defined 3rd party apps, which has to be started
-   *after* razor parts are running (eg. due panel's systray). Autostart is delayed
-   in the RazorModuleManager constructor.
+Processes in RazorModuleManager are started as follows:
+ - run razor-confupdate
+ - start the window manager and wait until it's active
+ - start all normal autostart items (including Razor modules)
+ - if there are any applications that need a system tray, wait until a system tray
+   implementation becomes active, and then start those
 
 Potential process recovering is done in \see restartModules()
 */
@@ -61,6 +63,15 @@ public:
     //! \brief Construct RazorModuleManager, read configuration, and start processes.
     RazorModuleManager(const QString & config, const QString & windowManager, QObject * parent = 0);
     virtual ~RazorModuleManager();
+
+    //! \brief Start a module given its file name (e.g. "razor-panel.desktop")
+    void startProcess(const QString& name);
+
+    //! \brief Stop a running module
+    void stopProcess(const QString& name);
+
+    //! \brief List the running modules, identified by their file names
+    QStringList listModules() const;
 
 public slots:
     /*! \brief Exit Razor session.
@@ -83,8 +94,8 @@ private:
     //! \brief Session configuration.
     QString mConfig;
 
-    //! \brief map with Razor main modules. Window manager, and Razor components.
-    ModulesMap mProcMap;
+    //! \brief map file names to module processes
+    ModulesMap mNameMap;
 
     /*! \brief Keep creashes for given process to raise a message in the
         case of repeating crashes
@@ -132,5 +143,20 @@ See razor_setenv.
 */
 void razor_setenv_prepend(const char *env, const QByteArray &value, const QByteArray &separator=":");
 
+class RazorModule : public QProcess
+{
+    Q_OBJECT
+public:
+    RazorModule(const XdgDesktopFile& file, QObject *parent = 0);
+    void start();
+    void terminate();
+    bool isTerminating();
+
+    const XdgDesktopFile file;
+    const QString fileName;
+
+private:
+    bool mIsTerminating;
+};
 
 #endif

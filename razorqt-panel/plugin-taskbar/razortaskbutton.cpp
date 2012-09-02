@@ -127,6 +127,14 @@ void RazorTaskButton::setShowOnlyCurrentDesktopTasks(bool value)
 /************************************************
 
  ************************************************/
+void RazorTaskButton::setCloseOnMiddleClick(bool value)
+{
+    mCloseOnMiddleClick = value;
+}
+
+/************************************************
+
+ ************************************************/
 void RazorTaskButton::nextCheckState()
 {
     setChecked(xfitMan().getActiveAppWindow() == mWindow);
@@ -157,7 +165,7 @@ void RazorTaskButton::dragLeaveEvent(QDragLeaveEvent *event)
  ************************************************/
 void RazorTaskButton::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::MidButton)
+    if (mCloseOnMiddleClick && event->button() == Qt::MidButton)
     {
         closeApplication();
     }
@@ -594,3 +602,4 @@ int RazorTaskButton::desktopNum() const
 RazorTaskButton* RazorTaskButton::mCheckedBtn = 0;
 
 bool RazorTaskButton::mShowOnlyCurrentDesktopTasks = false;
+bool RazorTaskButton::mCloseOnMiddleClick = true;

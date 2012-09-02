@@ -76,7 +76,7 @@ void AutoStartPage::addButton_clicked()
         XdgDesktopFile file(XdgDesktopFile::ApplicationType, edit.name(), edit.command());
         if (edit.needTray())
             file.setValue("X-Razor-Need-Tray", true);
-        if (mXdgAutoStartModel->addEntry(index, file))
+        if (mXdgAutoStartModel->setEntry(index, file))
             success = true;
         else
             QMessageBox::critical(this, tr("Error"), tr("File '%1' already exists!").arg(file.fileName()));
@@ -86,21 +86,19 @@ void AutoStartPage::addButton_clicked()
 void AutoStartPage::editButton_clicked()
 {
     QModelIndex index = ui->autoStartView->selectionModel()->currentIndex();
-    XdgDesktopFile* file = mXdgAutoStartModel->desktopFile(index);
-    if (!file)
-        return;
-    AutoStartEdit edit(file->name(), file->value("Exec").toString(), file->contains("X-Razor-Need-Tray"));
+    XdgDesktopFile file = mXdgAutoStartModel->desktopFile(index);
+    AutoStartEdit edit(file.name(), file.value("Exec").toString(), file.contains("X-Razor-Need-Tray"));
     if (edit.exec() == QDialog::Accepted)
     {
-        file->setLocalizedValue("Name", edit.name());
-        file->setValue("Exec", edit.command());
+        file.setLocalizedValue("Name", edit.name());
+        file.setValue("Exec", edit.command());
         if (edit.needTray())
-            file->setValue("X-Razor-Need-Tray", true);
+            file.setValue("X-Razor-Need-Tray", true);
         else
-            file->removeEntry("X-Razor-Need-Tray");
+            file.removeEntry("X-Razor-Need-Tray");
 
+        mXdgAutoStartModel->setEntry(index, file, true);
     }
-    mXdgAutoStartModel->setData(index, 0, Qt::UserRole);
 }
 
 void AutoStartPage::deleteButton_clicked()

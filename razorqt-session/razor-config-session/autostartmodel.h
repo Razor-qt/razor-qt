@@ -26,10 +26,9 @@
 #define AUTOSTARTMODEL_H
 
 #include <QtCore/QAbstractItemModel>
-
 #include <qtxdg/xdgautostart.h>
-#include <QtCore/QList>
-#include <QtCore/QSet>
+
+#include "autostartitem.h"
 
 class AutoStartItemModel : public QAbstractItemModel
 {
@@ -52,31 +51,23 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
     QModelIndex parent(const QModelIndex &child) const;
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    void updateData(const QModelIndex& index);
     bool removeRow(int row, const QModelIndex& parent = QModelIndex());
-    bool addEntry(const QModelIndex& index, XdgDesktopFile entry);
-    ActiveButtons activeButtons(const QModelIndex& selection);
-    XdgDesktopFile* desktopFile(const QModelIndex &index);
+    bool setEntry(const QModelIndex& index, XdgDesktopFile entry, bool overwrite=false);
+    ActiveButtons activeButtons(const QModelIndex& selection) const;
+    XdgDesktopFile desktopFile(const QModelIndex& index) const;
 
 public slots:
     bool writeChanges();
 
 private:
-    struct AutoStartItem;
-    XdgDesktopFileList mFileList;
-    QMap<QString, AutoStartItem> mItemMap;
+    QMap<QString, AutostartItem> mItemMap;
     QPersistentModelIndex mGlobalIndex;
     QPersistentModelIndex mRazorIndex;
-    QList<AutoStartItem*> mGlobalItems;
-    QList<AutoStartItem*> mRazorItems;
-    QSet<const XdgDesktopFile*> mEditedItems;
-    QSet<const XdgDesktopFile*> mDeletedItems;
+    QStringList mGlobalItems;
+    QStringList mRazorItems;
 
-    XdgDesktopFile* localCopy(AutoStartItem* item);
-    void createItem(AutoStartItem* item, const XdgDesktopFile& file);
-    void deleteItem(AutoStartItem *item);
-
-    static bool showOnlyInRazor(const XdgDesktopFile* file);
+    static QString indexToName(const QModelIndex& index);
+    static bool showOnlyInRazor(const XdgDesktopFile& file);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(AutoStartItemModel::ActiveButtons)

@@ -52,6 +52,7 @@ RazorTaskbarConfiguration::RazorTaskbarConfiguration(QSettings &settings, QWidge
     connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(updateControls(int)));
     connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
     connect(ui->maxWidthSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
+    connect(ui->middleClickCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
 }
 
 RazorTaskbarConfiguration::~RazorTaskbarConfiguration()
@@ -70,6 +71,7 @@ void RazorTaskbarConfiguration::loadSettings()
         ui->fAllDesktopsCB->setChecked(true);
     }
 
+    ui->middleClickCB->setChecked(mSettings.value("closeOnMiddleClick", true).toBool());
     ui->buttonStyleCB->setCurrentIndex(ui->buttonStyleCB->findData(mSettings.value("buttonStyle", "IconText")));
     updateControls(ui->buttonStyleCB->currentIndex());
 
@@ -82,6 +84,7 @@ void RazorTaskbarConfiguration::saveSettings()
     mSettings.setValue("showOnlyCurrentDesktopTasks", ui->fCurrentDesktopRB->isChecked());
     mSettings.setValue("buttonStyle", ui->buttonStyleCB->itemData(ui->buttonStyleCB->currentIndex()));
     mSettings.setValue("maxWidth", ui->maxWidthSB->value());
+    mSettings.setValue("closeOnMiddleClick", ui->middleClickCB->isChecked());
 }
 
 void RazorTaskbarConfiguration::updateControls(int index)

@@ -9,8 +9,10 @@ include_directories (
 set( razor-sessioncfg_HDRS
     sessionconfigwindow.h
     basicsettings.h
+    modulemodel.h
     autostartpage.h
     autostartmodel.h
+    autostartitem.h
     autostartedit.h
     defaultappspage.h
     environmentpage.h
@@ -20,8 +22,10 @@ set( razor-sessioncfg_SRCS
     main.cpp
     sessionconfigwindow.cpp
     basicsettings.cpp
+    modulemodel.cpp
     autostartpage.cpp
     autostartmodel.cpp
+    autostartitem.cpp
     autostartedit.cpp
     defaultappspage.cpp
     environmentpage.cpp
