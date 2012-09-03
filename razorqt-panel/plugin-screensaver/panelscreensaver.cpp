@@ -28,6 +28,7 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QMessageBox>
 #include <razorqt/screensaver.h>
+#include <razorqt/razornotification.h>
 #include <razorqxt/qxtglobalshortcut.h>
 
 #include "panelscreensaver.h"
@@ -56,8 +57,7 @@ PanelScreenSaver::PanelScreenSaver(const RazorPanelPluginStartInfo* startInfo, Q
     QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_L);
     if (! m_key->setShortcut(ks))
     {
-        QMessageBox::information(this, tr("Global keyboard shortcut"),
-                                 tr("Panel Screensaver Global shorcut: '%1' cannot be registered").arg(ks.toString()));
+        RazorNotification::notify(tr("Panel Screensaver Global shorcut: '%1' cannot be registered").arg(ks.toString()));
     }
     
     connect(m_key, SIGNAL(activated()), m_saver, SLOT(lockScreen()));

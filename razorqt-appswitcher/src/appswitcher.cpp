@@ -41,6 +41,7 @@
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
 #include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/razornotification.h>
 
 
 #define DEFAULT_SHORTCUT "Alt+Tab"
@@ -83,8 +84,7 @@ void RazorAppSwitcher::AppSwitcher::applySettings()
 
     if (! m_key->setShortcut(shortcut))
     {
-        QMessageBox::information(this, tr("Global keyboard shortcut"),
-                                 tr("Global shorcut: '%1' cannot be registered").arg(shortcut.toString()));
+        RazorNotification::notify(tr("Global shorcut: '%1' cannot be registered").arg(shortcut.toString()));
         exit(1);
     }
     
