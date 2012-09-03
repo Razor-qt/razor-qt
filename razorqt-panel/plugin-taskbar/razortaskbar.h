@@ -73,7 +73,6 @@ private:
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
     void setButtonMaxWidth();
     bool mShowOnlyCurrentDesktopTasks;
-    bool mCloseOnMiddleClick;
 
     void handlePropertyNotify(XPropertyEvent* event);
     void wheelEvent(QWheelEvent* event);
