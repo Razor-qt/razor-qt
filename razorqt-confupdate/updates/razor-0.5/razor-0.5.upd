@@ -6,7 +6,7 @@ Script=sesion_modules
 
 File=~/.razor/desktop.conf,razor/desktop.conf
 Options=copy
-AllKeys
+Script=desktop-041-050.py,python
 
 File=~/.razor/razor.conf,razor/razor.conf
 Options=copy
@@ -19,8 +19,3 @@ AllKeys
 File=~/.razor/razor-panel/panel.conf,razor/razor-panel/panel.conf
 Options=copy
 AllKeys
-
-
-
-
-
