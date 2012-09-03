@@ -77,6 +77,9 @@ public:
 signals:
     void settingsChanged();
 
+protected:
+    bool event(QEvent *event);
+
 protected slots:
     virtual void fileChanged();
 

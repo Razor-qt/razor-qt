@@ -137,6 +137,16 @@ RazorSettings::~RazorSettings()
     delete d_ptr;
 }
 
+bool RazorSettings::event(QEvent *event)
+{
+    if (event->type() == QEvent::UpdateRequest)
+    {
+        emit settingsChanged();
+    }
+
+    return QSettings::event(event);
+}
+
 void RazorSettings::fileChanged()
 {
 //    Q_D(RazorSettings);
