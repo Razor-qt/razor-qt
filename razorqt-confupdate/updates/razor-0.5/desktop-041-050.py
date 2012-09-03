@@ -1,55 +1,56 @@
-#!/usr/bin/env
-#
-# port 0.4.x desktop.conf to 0.5.0 format
-#
-# from:
-#
-#[razor]
-#screens\1\desktops\1\plugins=iconview_default, analogclock_default
-#screens\1\desktops\size=1
-#screens\size=1
-#screens\1\desktops\2\plugins=iconview_default12, analogclock_default12
-#screens\2\desktops\1\plugins=iconview_default21, analogclock_default21
-#
-# to:
-#
-#[razor]
-#plugins=iconview_default, analogclock_default, iconview_default12, analogclock_default12, iconview_default21, analogclock_default21
-#screens\1\desktops\size=1
-#screens\size=1
-#
-# rest of file lines are kept untouched
+#!/usr/bin/env python
+"""
+Part of the Razor-Qt project
+
+Port desktop.conf syntax from 0.4.x to 0.5.0 format
+
+OLD:
+[razor]
+screens\1\desktops\1\plugins=iconview_default, analogclock_default
+screens\1\desktops\size=1
+screens\size=1
+screens\1\desktops\2\plugins=iconview_default12, analogclock_default12
+screens\2\desktops\1\plugins=iconview_default21, analogclock_default21
+
+NEW:
+[razor]
+plugins=iconview_default, analogclock_default, iconview_default12, analogclock_default12, iconview_default21, analogclock_default21
+screens\1\desktops\size=1
+screens\size=1
+"""
+
+import re
+import sys
+try:
+	from configparser import ConfigParser
+except ImportError:
+	from ConfigParser import ConfigParser
+
+QT_ARRAY_REGEX = re.compile(r"screens\\(\d+)\\desktops\\(\d+)\\plugins")
+
+def main():
+	cfg = ConfigParser()
+	cfg.readfp(sys.stdin)
+
+	for section in cfg.sections():
+		if section != "razor":
+			# Only touch the [razor] section
+			continue
+
+		for key, value in cfg.items(section):
+			if QT_ARRAY_REGEX.match(key):
+				plugins = cfg.get(section, key).split(",")
+
+				if not cfg.has_option(section, "plugins"):
+					cfg.set(section, "plugins", "")
+
+				plugins = cfg.get(section, "plugins").split(",") + plugins
+
+				cfg.set(section, "plugins", ", ".join(x.strip() for x in plugins if x.strip()))
+				cfg.remove_option(section, key)
+
+	cfg.write(sys.stdout)
 
 
-import string, sys
-
-
-def getPlugins(s):
-    parts = string.split(s, "=", 1)
-    return parts[1]+", "
-
-
-cont_old = sys.stdin.read()
-cont_new = list()
-
-inGroup = False;
-plugins = ""
-
-for i in cont_old.splitlines():
-    if i == '[razor]':
-        inGroup = True
-
-    if inGroup and len(i) > 0 and i != '[razor]' and i[0] == '[':
-        inGroup = False
-        
-    if inGroup:
-        if string.find(i, 'plugins') != -1:
-            plugins += getPlugins(i)
-        else:
-            cont_new.append(i);
-    else:
-        cont_new.append(i);
-        
-
-outstr = string.join(cont_new, "\n")
-print string.replace(outstr, "[razor]", "[razor]\nplugins="+plugins[0:len(plugins)-2])
+if __name__ == "__main__":
+	main()
