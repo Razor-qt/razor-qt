@@ -115,6 +115,9 @@ void ModuleModel::writeChanges()
 
 void ModuleModel::toggleModule(const QModelIndex &index, bool status)
 {
+    if (!index.isValid())
+        return;
+
     QList<QVariant> arg;
     arg.append(mKeyList.at(index.row()));
     mInterface->callWithArgumentList(QDBus::NoBlock,
