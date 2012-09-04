@@ -97,6 +97,9 @@ private:
     //! \brief map file names to module processes
     ModulesMap mNameMap;
 
+    //! \brief the window manager
+    QProcess* mWmProcess;
+
     /*! \brief Keep creashes for given process to raise a message in the
         case of repeating crashes
      */

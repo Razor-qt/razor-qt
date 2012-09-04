@@ -47,7 +47,8 @@
  */
 RazorModuleManager::RazorModuleManager(const QString & config, const QString & windowManager, QObject* parent)
     : QObject(parent),
-    mConfig(config)
+      mConfig(config),
+      mWmProcess(new QProcess(this))
 {
     qDebug() << __FILE__ << ":" << __LINE__ << "Session" << config << "about to launch (deafult 'session')";
     if (mConfig.isEmpty())
@@ -93,10 +94,7 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
             //qDebug() << "Using window manager specified with command line" << windowManager;
         }
 
-        QProcess * wmProcess = new QProcess(this);
-        wmProcess->start(wm);
-        connect(wmProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
-                this, SLOT(logout()));
+        mWmProcess->start(wm);
 
         // Wait until the WM loads
         int waitCnt = 300;
@@ -244,6 +242,7 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
 RazorModuleManager::~RazorModuleManager()
 {
     qDeleteAll(mNameMap);
+    delete mWmProcess;
 }
 
 /**
@@ -271,6 +270,14 @@ void RazorModuleManager::logout()
             p->kill();
         }
     }
+
+    mWmProcess->terminate();
+    if (mWmProcess->state() != QProcess::NotRunning && !mWmProcess->waitForFinished())
+    {
+        qWarning() << QString("Window Manager won't terminate ... killing.");
+        mWmProcess->kill();
+    }
+
     QCoreApplication::exit(0);
 }
 
