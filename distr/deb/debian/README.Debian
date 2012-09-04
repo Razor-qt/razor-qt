@@ -3,7 +3,7 @@ razorqt for Debian
 
 Now razorqt are more close to 0.5 release and new symbols will be in library, 
 so a possible SONAME update will appear in next release that means the older 
-installed libraries dont work with newer razor modules.
+installed libraries don't work with newer razor modules.
 
 Panel plugin has new volume control at very early stage. Works with alsa and pulseaudio, 
 current status of plugins its in early stage and work only by runtime build default 

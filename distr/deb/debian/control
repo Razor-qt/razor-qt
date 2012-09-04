@@ -1,3 +1,4 @@
+%set PULSE_AUDIO yes
 %ifnot RELEASE lucid maverick lenny etch squeeze
     %set MULTIARCH yes
 %endif
@@ -37,6 +38,9 @@ Build-Depends: debhelper (>= 8.0.0~), pkg-config,
         liblightdm-qt-2-dev,
         %set LIGHTDM yes
     %endif
+%endif
+%if PULSE_AUDIO yes
+    libpulse-dev,
 %endif
     zlib1g-dev,
     libstatgrab-dev,
@@ -298,7 +302,7 @@ Description: Razor-qt notification daemon
 Package: razorqt-openssh-askpass
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},
-  librazorqt0 (= ${binary:Version}), openssl, openssh-client, libpam-ssh
+  librazorqt0 (= ${binary:Version}), openssl, openssh-client
 Description: Razor-qt openssh ask password interface
  Desktop Independent ssh ask password interface from Razor-qt,
  it was written for Razor-qt but it can be used standalone as well.
