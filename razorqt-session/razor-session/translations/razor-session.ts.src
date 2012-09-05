@@ -4,12 +4,12 @@
 <context>
     <name>RazorModuleManager</name>
     <message>
-        <location filename="../src/razormodman.cpp" line="198"/>
+        <location filename="../src/razormodman.cpp" line="224"/>
         <source>Razor Session Crash Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/razormodman.cpp" line="199"/>
+        <location filename="../src/razormodman.cpp" line="225"/>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,7 +1,7 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 type = QT
-minimum-perc = 5
+minimum_perc = 5
 
 [razor-qt.razor-session]
 type = QT
@@ -123,12 +123,6 @@ source_file = razorqt-resources/autostart/razor-policykit-agent.desktop.in
 source_lang = en
 file_filter = razorqt-resources/autostart/translations/razor-policykit-agent_<lang>.desktop
 
-[razor-qt.desktopswitch]
-type = QT
-source_file = razorqt-panel/plugin-desktopswitch/translations/desktopswitch.ts.src
-source_lang = en
-file_filter = razorqt-panel/plugin-desktopswitch/translations/desktopswitch_<lang>.ts
-
 [razor-qt.razor-notifications_desktop]
 type = DESKTOP
 source_file = razorqt-resources/autostart/razor-notifications.desktop.in
@@ -191,9 +185,9 @@ file_filter = razorqt-resources/sys/translations/razor_<lang>.desktop
 
 [razor-qt.razor-config-session_desktop]
 type = DESKTOP
-source_file = razorqt-session/config/razor-config-session.desktop.in
+source_file = razorqt-session/razor-config-session/razor-config-session.desktop.in
 source_lang = en
-file_filter = razorqt-session/config/translations/razor-config-session_<lang>.desktop
+file_filter = razorqt-session/razor-config-session/translations/razor-config-session_<lang>.desktop
 
 [razor-qt.notepad_desktop]
 type = DESKTOP

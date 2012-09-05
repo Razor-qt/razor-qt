@@ -37,22 +37,22 @@
 <context>
     <name>AutoStartItemModel</name>
     <message>
-        <location filename="../autostartmodel.cpp" line="235"/>
+        <location filename="../autostartmodel.cpp" line="177"/>
         <source>Global Autostart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../autostartmodel.cpp" line="237"/>
+        <location filename="../autostartmodel.cpp" line="179"/>
         <source>Razor Autostart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../autostartmodel.cpp" line="247"/>
+        <location filename="../autostartmodel.cpp" line="194"/>
         <source>Location: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../autostartmodel.cpp" line="249"/>
+        <location filename="../autostartmodel.cpp" line="196"/>
         <source>Overrides: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,7 +108,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../basicsettings.cpp" line="70"/>
+        <location filename="../basicsettings.ui" line="59"/>
+        <source>Razor Modules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../basicsettings.ui" line="65"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../basicsettings.ui" line="72"/>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../basicsettings.cpp" line="79"/>
         <source>Select a window manager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -175,6 +190,14 @@
     <message>
         <location filename="../environmentpage.ui" line="79"/>
         <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ModuleModel</name>
+    <message>
+        <location filename="../modulemodel.cpp" line="78"/>
+        <source>Running</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

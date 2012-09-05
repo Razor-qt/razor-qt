@@ -303,7 +303,7 @@
     </message>
     <message>
         <location filename="../screensaver.cpp" line="122"/>
-        <source>An error occurred starting screensaver. Unkown error - undocumented return value from xdg-screensaver=%1.</source>
+        <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
