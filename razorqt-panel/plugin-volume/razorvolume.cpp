@@ -103,7 +103,10 @@ void RazorVolume::showConfigureDialog()
 void RazorVolume::settingsChanged()
 {
     m_defaultSinkIndex = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
-    if (m_engine->sinks().at(m_defaultSinkIndex)) {
+
+    if (m_defaultSinkIndex < m_engine->sinks().count()
+            && m_engine->sinks().at(m_defaultSinkIndex))
+    {
         m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
         m_volumeButton->volumePopup()->setDevice(m_defaultSink);
     }

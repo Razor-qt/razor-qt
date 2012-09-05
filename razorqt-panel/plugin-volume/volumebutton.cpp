@@ -44,6 +44,10 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
         m_showOnClick(true),
         m_muteOnMiddleClick(true)
 {
+    // initial icon for button. It will be replaced after devices scan.
+    // In the worst case - no soundcard/pulse - is found it remains
+    // in the button but at least the button is not blank ("invisible")
+    handleStockIconChanged("dialog-error");
     m_volumePopup = new VolumePopup();
 
     connect(this, SIGNAL(clicked()), this, SLOT(toggleVolumeSlider()));
