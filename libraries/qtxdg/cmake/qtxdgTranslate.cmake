@@ -24,12 +24,19 @@ if(NOT TARGET UpdateTsFiles)
 endif()
 
 if(NOT TARGET UpdateTxFile)
+  file(WRITE ${CMAKE_BINARY_DIR}/tx/_updateTxFile.sh
+        "echo '[main]'\n"
+        "echo 'host = https://www.transifex.com'\n"
+        "echo 'minimum_perc = 5'\n"
+        "echo ''\n"
+        "for f in `ls ${CMAKE_BINARY_DIR}/tx/*.tx.sh`; do\n"
+        " sh $f;\n"
+        "done\n"
+      )
+
   add_custom_target(UpdateTxFile  
-    COMMAND echo "[main]"                            > ${CMAKE_SOURCE_DIR}/.tx/config2
-    COMMAND echo "host = https://www.transifex.net" >> ${CMAKE_SOURCE_DIR}/.tx/config2
-    COMMAND echo ""                                 >> ${CMAKE_SOURCE_DIR}/.tx/config2
-    COMMAND cat ${CMAKE_BINARY_DIR}/tx/*.tx_config  >> ${CMAKE_SOURCE_DIR}/.tx/config2
-  )
+        COMMAND sh ${CMAKE_BINARY_DIR}/tx/_updateTxFile.sh > ${CMAKE_SOURCE_DIR}/.tx/config
+    )
 endif()
 
 
@@ -104,17 +111,18 @@ function(qtxdg_translate_ts _qmFiles)
     add_dependencies(UpdateTsFiles Update_${_tsSrcFileName})
     
     # TX file ***********************************************
-    set(_txFile "${CMAKE_BINARY_DIR}/tx/${_tsSrcFileName}.tx_config")  
+    set(_txFile "${CMAKE_BINARY_DIR}/tx/${_tsSrcFileName}.tx.sh")
     string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_translationDir ${_translationDir})
     string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_tsSrcFile ${_tsSrcFile})
     
     file(WRITE ${_txFile}
-        "[razor-qt.${_tsSrcFileNameWE}]\n"
-        "type = QT\n"
-        "source_lang = en\n"
-        "source_file = ${_tx_tsSrcFile}\n"
-        "file_filter = ${_tx_translationDir}/${_tsSrcFileNameWE}_<lang>.ts\n"
-        "\n"
+        "[ -f ${_tsSrcFile} ] || exit 0\n"
+        "echo '[razor-qt.${_tsSrcFileNameWE}]'\n"
+        "echo 'type = QT'\n"
+        "echo 'source_lang = en'\n"
+        "echo 'source_file = ${_tx_tsSrcFile}'\n"
+        "echo 'file_filter = ${_tx_translationDir}/${_tsSrcFileNameWE}_<lang>.ts'\n"
+        "echo ''\n"
     )
 
     # translate.h file *************************************
