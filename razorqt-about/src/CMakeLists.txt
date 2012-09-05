@@ -33,7 +33,7 @@ razor_translate_ts(razor-runner_QM_FILES
         ${razor-about_UI_FILES}
 )
 
-razor_translate_desktop2(razor-about_DESKTOP_FILES
+razor_translate_desktop(razor-about_DESKTOP_FILES
     SOURCES
         resources/razor-about.desktop.in
 )

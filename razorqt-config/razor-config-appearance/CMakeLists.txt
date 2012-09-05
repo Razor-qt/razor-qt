@@ -49,7 +49,7 @@ razor_translate_ts(QM_FILES
         ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config
 )
 
-razor_translate_desktop2(DESKTOP_FILES
+razor_translate_desktop(DESKTOP_FILES
     SOURCES
         ${PROJECT_NAME}.desktop.in
 ) 

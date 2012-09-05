@@ -4,7 +4,7 @@ file(GLOB DESKTOP_FILES_IN *.desktop.in)
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop2(DESKTOP_FILES
+razor_translate_desktop(DESKTOP_FILES
     SOURCES
         ${DESKTOP_FILES_IN}
 )

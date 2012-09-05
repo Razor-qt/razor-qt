@@ -22,7 +22,7 @@ MACRO (BUILD_RAZOR_PLUGIN NAME)
 
     #razor_translate_to(QM_FILES ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM}/${PROJECT_NAME})
     file (GLOB ${PROJECT_NAME}_DESKTOP_FILES_IN resources/*.desktop.in)
-    razor_translate_desktop2(DESKTOP_FILES 
+    razor_translate_desktop(DESKTOP_FILES 
         SOURCES
             ${${PROJECT_NAME}_DESKTOP_FILES_IN}
     )

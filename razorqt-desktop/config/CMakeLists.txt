@@ -33,7 +33,7 @@ set(DESKTOP_FILES_IN
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop2(DESKTOP_FILES
+razor_translate_desktop(DESKTOP_FILES
     SOURCES
         ${DESKTOP_FILES_IN}
 )

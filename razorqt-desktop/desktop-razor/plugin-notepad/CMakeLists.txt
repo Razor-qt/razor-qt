@@ -42,7 +42,7 @@ razor_translate_ts(QM_FILES
 )
 
 file (GLOB DESKTOP_FILES_IN resources/*.desktop.in)
-razor_translate_desktop2(DESKTOP_FILES
+razor_translate_desktop(DESKTOP_FILES
     SOURCES
         ${DESKTOP_FILES_IN}
 )

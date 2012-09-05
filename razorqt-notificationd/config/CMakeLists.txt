@@ -27,7 +27,7 @@ set(NOTIFICATIONS_CONF_UI
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop2(DESKTOP_FILES
+razor_translate_desktop(DESKTOP_FILES
     SOURCES
         razor-config-notificationd.desktop.in
 )

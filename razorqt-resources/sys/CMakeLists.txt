@@ -7,7 +7,7 @@ file(GLOB SESSION_FILES_IN *.desktop.in)
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_desktop2(SESSION_FILES
+razor_translate_desktop(SESSION_FILES
     SOURCES
         ${SESSION_FILES_IN}
 )

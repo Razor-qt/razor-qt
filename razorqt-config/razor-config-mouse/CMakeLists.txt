@@ -57,7 +57,7 @@ razor_translate_ts(QM_FILES
         ${razor-config-mouse_UIS}
 )
 
-razor_translate_desktop2(DESKTOP_FILES
+razor_translate_desktop(DESKTOP_FILES
     SOURCES
         razor-config-mouse.desktop.in
 )
