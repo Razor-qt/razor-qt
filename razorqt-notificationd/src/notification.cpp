@@ -169,7 +169,7 @@ void Notification::setValues(const QString &application,
     // Actions
     if (actions.count() && m_actionWidget == 0)
     {
-        if (actions.count() < 4)
+        if (actions.count()/2 < 4)
             m_actionWidget = new NotificationActionsButtonsWidget(actions, this);
         else
             m_actionWidget = new NotificationActionsComboWidget(actions, this);
