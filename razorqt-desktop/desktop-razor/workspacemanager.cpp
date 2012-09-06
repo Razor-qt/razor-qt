@@ -85,6 +85,7 @@ void RazorWorkSpaceManager::setup()
     int numScreens = QApplication::desktop()->screenCount();
 
     // Loop over screens
+    QString themeWallpaper;
     for (int screen = 0; screen < numScreens; ++screen) {
        m_config->setArrayIndex(screen);
        m_config->beginReadArray("desktops");
@@ -95,7 +96,7 @@ void RazorWorkSpaceManager::setup()
                break;
 
            m_config->setArrayIndex(desktop);
-           QString themeWallpaper = razorTheme.desktopBackground(desktop + 1);
+           themeWallpaper = razorTheme.desktopBackground(desktop + 1);
 
            desktops[screen][desktop] = WorkspaceConfig (
                                strToBackgroundType(m_config->value("wallpaper_type", themeWallpaper.isEmpty() ? "color" : "pixmap").toString(), RazorWorkSpaceManager::BackgroundColor),
@@ -119,22 +120,22 @@ void RazorWorkSpaceManager::setup()
 
     // Loop over screens
     for (int screen = 0; screen < numScreens; ++screen) {
-        QList<RazorWorkSpace*>* screenWorkspaces;
+        QList<RazorWorkSpace*> screenWorkspaces;
         if (screen < m_workspaces.count()) {
             // Existing screen
-            screenWorkspaces = &m_workspaces[screen];
+            screenWorkspaces = m_workspaces[screen];
         }
         else {
             // New screen
             Q_ASSERT(screen == m_workspaces.count());
             m_workspaces.append(QList<RazorWorkSpace*>());
-            screenWorkspaces = &m_workspaces.last();
+            screenWorkspaces = m_workspaces.last();
         }
 
         // Remove additional workspaces
-        int toRemove = screenWorkspaces->count() - m_desktopCount;
+        int toRemove = screenWorkspaces.count() - m_desktopCount;
         for (int i = 0; i < toRemove; ++i)
-            delete screenWorkspaces->takeLast();
+            delete screenWorkspaces.takeLast();
 
         // Loop over virtual desktops
         for (int desktop = 0; desktop < m_desktopCount; ++desktop) {
@@ -146,16 +147,16 @@ void RazorWorkSpaceManager::setup()
 
             // Use existing RazorWorkSpace instance or create a new one
             RazorWorkSpace * ws;
-            if (desktop < screenWorkspaces->count()) {
+            if (desktop < screenWorkspaces.count()) {
                 // Existing workspace
-                ws = screenWorkspaces->at(desktop);
+                ws = screenWorkspaces.at(desktop);
             }
             else {
                 // New workspace
-                Q_ASSERT(desktop == screenWorkspaces->count());
+                Q_ASSERT(desktop == screenWorkspaces.count());
                 ws = new RazorWorkSpace(m_scene, screen, desktop);
                 connect(m_scene, SIGNAL(saveConfig()), ws, SLOT(saveConfig()));
-                screenWorkspaces->append(ws);
+                screenWorkspaces.append(ws);
             }
 
             if (desktops.contains(screen) && desktops[screen].contains(desktop))
