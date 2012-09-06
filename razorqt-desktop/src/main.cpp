@@ -44,7 +44,7 @@ int main (int argc, char* argv[])
     RazorSettings config("desktop");
     
     QString configId(config.value("desktop", "razor").toString());
-    QString libraryFileName = QString(DESKTOP_PLUGIN_DIR) + "libdesktop-" + configId + ".so";
+    QString libraryFileName = QString("%1libdesktop-%2.so").arg(DESKTOP_PLUGIN_DIR).arg(configId);
 
     qDebug() << "RazorDesktop: try to load " << libraryFileName;
 
