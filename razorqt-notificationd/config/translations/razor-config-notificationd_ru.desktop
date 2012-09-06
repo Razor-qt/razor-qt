@@ -1,0 +1,20 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-notificationd
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-theme
+Name=Razor Freedesktop Notifications Configuration
+Comment=Configure freedesktop notifications in Razor desktop
+GenericName=Razor Freedesktop Notifications Configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+GenericName[ru]=Меню программ
+Name[ru]=Центр настроек Razor
+Icon[ru]=предпочтений-рабочий стол-тему
+Comment[ru]=Yстановка свободный рабочий стол объявления нa Paзop  рабочий стол

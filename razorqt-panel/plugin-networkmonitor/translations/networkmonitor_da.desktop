@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Network Monitor
+Comment=Network Monitor
+
+
+
+
+# Translations
+Comment[da]=Netværksovervågning
+Name[da]=Netværksovervågning

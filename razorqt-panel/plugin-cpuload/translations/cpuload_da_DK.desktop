@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Cpu Load
+Comment=Cpu Load monitor
+
+
+
+
+# Translations
+Comment[da_DK]=CPU Overvågning
+Name[da_DK]=CPU Belastning
+

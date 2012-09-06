@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors (currently lm_sensors)
+
+
+# Translations
+Name[zh_CN]=传感器
+Comment[zh_CN]=查看硬件传感器数据(当前是 lm_sensors)

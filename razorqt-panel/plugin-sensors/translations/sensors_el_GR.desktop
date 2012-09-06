@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors (currently lm_sensors)
+
+
+# Translations
+Name[el_GR]=Αισθητήρες
+Comment[el_GR]=Προβολή ενδείξεων αισθητήρων υλικού (τρέχον lm_sensors)

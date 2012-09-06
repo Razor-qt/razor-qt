@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Cpu Load
+Comment=Cpu Load monitor
+
+
+
+
+# Translations
+Comment[de_DE]=Cpu

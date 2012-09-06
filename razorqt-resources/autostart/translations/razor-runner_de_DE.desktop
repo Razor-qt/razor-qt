@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Runner
+TryExec=razor-runner
+Exec=razor-runner
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[de_DE]=Runner
