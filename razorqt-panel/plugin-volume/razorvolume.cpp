@@ -93,6 +93,8 @@ void RazorVolume::setAudioEngine(AudioEngine *engine)
         if (m_engine->backendName() == engine->backendName())
             return;
 
+        m_volumeButton->volumePopup()->setDevice(0);
+
         disconnect(m_engine, 0, 0, 0);
         delete m_engine;
         m_engine = 0;
@@ -126,22 +128,20 @@ void RazorVolume::settingsChanged()
     m_volumeButton->volumePopup()->setSliderStep(settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
 
     m_defaultSinkIndex = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
-    if (m_engine) {
-        if (m_engine->sinks().at(m_defaultSinkIndex)) {
-            m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
-            m_volumeButton->volumePopup()->setDevice(m_defaultSink);
-        }
+    if (m_engine && m_engine->sinks().count() > 0) {
+        m_defaultSinkIndex = qBound(0, m_defaultSinkIndex, m_engine->sinks().count()-1);
+
+        m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
+        m_volumeButton->volumePopup()->setDevice(m_defaultSink);
+
         m_engine->setIgnoreMaxVolume(settings().value(SETTINGS_IGNORE_MAX_VOLUME, SETTINGS_DEFAULT_IGNORE_MAX_VOLUME).toBool());
     }
 }
 
 void RazorVolume::updateConfigurationSinkList()
 {
-    if (!m_engine)
-        return;
-
-    m_configWindow->setSinkList(m_engine->sinks());
-    settingsChanged();
+    if (m_engine)
+        m_configWindow->setSinkList(m_engine->sinks());
 }
 
 void RazorVolume::handleShortcutVolumeUp()
