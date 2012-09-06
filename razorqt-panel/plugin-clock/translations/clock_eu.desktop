@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Clock
+Comment=Clock and calendar
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[eu]=Erlojua eta egutegia
+Name[eu]=Erlojua

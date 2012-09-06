@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Removable media
+Comment=Removable media handler (USB, CD, DVD, ...)
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[ja]=リムーバルメディアハンドラー(USB, CD, DVD, ...)
+Name[ja]=リムーバルメディア

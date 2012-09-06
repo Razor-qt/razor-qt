@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Network Monitor
+Comment=Network Monitor
+
+
+
+
+# Translations
+Comment[it_IT]=Esci
+Name[it_IT]=Permette di passare ad altri desktop virtuali

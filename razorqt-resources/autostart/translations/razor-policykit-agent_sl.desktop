@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=PolicyKit Handler
+TryExec=razor-policykit-agent
+Exec=razor-policykit-agent
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[sl]=Upravljalnik PolicyKit

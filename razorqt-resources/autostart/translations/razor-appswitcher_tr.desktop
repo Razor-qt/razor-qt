@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Application Switcher
+TryExec=razor-appswitcher
+Exec=razor-appswitcher
+Hidden=true
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[tr]=Uygulama Seçici

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Screensaver
+Comment=Activate a screensaver and/or lock the screen
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[ja]=スクリーンセーバーの有効および/またはスクリーンのロック
+Name[ja]=スクリーンセーバー

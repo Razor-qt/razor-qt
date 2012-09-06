@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-autosuspend
+Icon=razor-autosuspend
+Terminal=false
+Categories=Application;Qt;Utility
+Name=Razor autosuspend
+GenericName=Power management
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+GenericName[ja]=電源の管理
+Name[ja]=Razor自動サスペンド
+Icon[ja]=razor-autosuspend

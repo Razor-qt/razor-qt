@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors (currently lm_sensors)
+
+
+# Translations
+Name[de_DE]=Sensoren
+Comment[de_DE]=Zeige die Sensorwerte der Hardware-Sensoren (momentan lm_sensors) 

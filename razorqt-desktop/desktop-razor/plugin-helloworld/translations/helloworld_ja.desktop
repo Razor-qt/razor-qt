@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Hello World
+Comment=Display rich text on the screen
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[ja]=画面上のリッチテキストを表示
+Name[ja]=Hello World

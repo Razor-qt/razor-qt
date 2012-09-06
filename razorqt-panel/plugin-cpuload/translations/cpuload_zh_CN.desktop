@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Cpu Load
+Comment=Cpu Load monitor
+
+
+
+
+# Translations
+Comment[zh_CN]=CPU 负载监视器
+Name[zh_CN]=CPU 负载

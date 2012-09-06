@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors (currently lm_sensors)
+
+
+# Translations
+Name[ja]=センサ
+Comment[ja]=ハードウェアセンサからの測定値を表示(現在は lm_sensors)

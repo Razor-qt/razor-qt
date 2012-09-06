@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors (currently lm_sensors)
+
+
+# Translations
+Name[tr]=Algılayıcılar
+Comment[tr]=Donanım algılayıcılarının okudukları değerleri görüntüleyin (şimdilik lm_sensors)

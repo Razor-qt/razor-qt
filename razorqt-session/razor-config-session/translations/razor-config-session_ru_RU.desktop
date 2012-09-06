@@ -1,0 +1,19 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-session
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-system-session-services
+Name=Razor Session Configurator
+Comment=Configure Razor-Qt session module
+GenericName=Razor Session Configurator
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[ru_RU]=Настроить модуль управления сессией Razor-Qt
+GenericName[ru_RU]=Razor Настройка сессии
+Name[ru_RU]=Razor Настройка сессии
+Icon[ru_RU]=настройки системы, сессии, сервисов

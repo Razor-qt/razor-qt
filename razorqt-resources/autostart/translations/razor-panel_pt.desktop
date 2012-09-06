@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Panel
+TryExec=razor-panel
+Exec=razor-panel
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[pt]=Painel

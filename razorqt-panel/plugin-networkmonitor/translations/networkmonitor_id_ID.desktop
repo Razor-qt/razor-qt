@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Network Monitor
+Comment=Network Monitor
+
+
+
+
+# Translations
+Comment[id_ID]=Hell World
+Name[id_ID]=Sebuah Plugin "hello world".

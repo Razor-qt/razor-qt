@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Desktopswitch
+Comment=Allow to switch virtual desktops
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[pt]=Permite trocar entre áreas de trabalho
+Name[pt]=Alternador de áreas de trabalho
