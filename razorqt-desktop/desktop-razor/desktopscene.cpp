@@ -373,11 +373,23 @@ QLibrary* DesktopScene::loadPluginLib(const RazorPluginInfo &pluginInfo)
 {
     QLibrary* lib = 0;
 
+    if (m_libraries.contains(pluginInfo.id()))
+    {
+//        qDebug() << "lib found" << pluginInfo.id() << m_libraries[pluginInfo.id()];
+        return m_libraries[pluginInfo.id()];
+    }
+
     if (getenv("RAZORQT_DESKTOP_PLUGINS_SO_DIR"))
         lib = pluginInfo.loadLibrary(getenv("RAZORQT_DESKTOP_PLUGINS_SO_DIR"));
 
     if (!lib)
         lib = pluginInfo.loadLibrary(DESKTOP_PLUGIN_DIR);
+
+    if (lib)
+    {
+//        qDebug() << "lib map add" << pluginInfo.id() << lib;
+        m_libraries[pluginInfo.id()] = lib;
+    }
 
     return lib;
 }

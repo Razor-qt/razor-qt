@@ -74,10 +74,15 @@ private:
 
     DesktopWidgetPlugin *m_activePlugin;
 
+    // map <plugin instance id - plugin>
+    QMap<QString, DesktopWidgetPlugin*> m_plugins;
+    // QLibrary cache; map <RazorPluginInfo id - library>
+    QMap<QString, QLibrary *> m_libraries;
+
     DesktopWidgetPlugin * getPluginFromPoint(const QPointF &point);
 
     QStringList pluginDesktopDirs();
-    QMap<QString, DesktopWidgetPlugin*> m_plugins;
+
     DesktopWidgetPlugin * loadPlugin(QLibrary * lib, const QString & configId="default");
     QLibrary* loadPluginLib(const RazorPluginInfo &pluginInfo);
 
