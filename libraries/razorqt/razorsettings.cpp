@@ -95,8 +95,11 @@ RazorSettings::RazorSettings(const QString& module, QObject* parent) :
 {
     // HACK: we need to ensure that the user (~/.config/razor/<module>.conf)
     //       exists to have functional mWatcher
-    setValue("__userfile__", true);
-    sync();
+    if (!contains("__userfile__"))
+    {
+        setValue("__userfile__", true);
+        sync();
+    }
     d_ptr->mWatcher.addPath(this->fileName());
     connect(&(d_ptr->mWatcher), SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
 }
