@@ -59,9 +59,6 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
 
     setup();
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(setup()));
-    QFileSystemWatcher *fw = new QFileSystemWatcher(this);
-    fw->addPath(config->fileName());
-    connect(fw, SIGNAL(fileChanged(QString)), this, SLOT(setup()));
 }
     
 void RazorWorkSpaceManager::setup()
