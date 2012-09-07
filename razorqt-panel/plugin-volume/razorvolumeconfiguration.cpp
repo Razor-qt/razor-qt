@@ -50,8 +50,12 @@ RazorVolumeConfiguration::RazorVolumeConfiguration(QSettings &settings, QWidget 
     connect(ui->stepSpinBox, SIGNAL(valueChanged(int)), this, SLOT(stepSpinBoxChanged(int)));
     connect(ui->ignoreMaxVolumeCheckBox, SIGNAL(toggled(bool)), this, SLOT(ignoreMaxVolumeCheckBoxChanged(bool)));
 
-#ifndef USE_PULSEAUDIO
-    ui->ignoreMaxVolumeCheckBox->setVisible(false);
+#if defined(USE_PULSEAUDIO) && defined(USE_ALSA)
+    ui->pulseAudioRadioButton->setVisible(true);
+    ui->alsaRadioButton->setVisible(true);
+#else
+    ui->pulseAudioRadioButton->setVisible(false);
+    ui->alsaRadioButton->setVisible(false);
 #endif
 }
 

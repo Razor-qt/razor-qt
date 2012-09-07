@@ -115,12 +115,20 @@ void RazorVolume::showConfigureDialog()
 
 void RazorVolume::settingsChanged()
 {
+#if defined(USE_PULSEAUDIO) && defined(USE_ALSA)
     if (!m_engine || m_engine->backendName() != settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString()) {
         if (settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString() == "PulseAudio")
             setAudioEngine(new PulseAudioEngine(this));
         else
             setAudioEngine(new AlsaEngine(this));
     }
+#elif defined(USE_PULSEAUDIO)
+    if (!m_engine)
+        setAudioEngine(new PulseAudioEngine(this));
+#elif defined(USE_ALSA)
+    if (!m_engine)
+        setAudioEngine(new AlsaEngine(this));
+#endif
 
     m_volumeButton->setShowOnClicked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
     m_volumeButton->setMuteOnMiddleClick(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
