@@ -47,7 +47,7 @@ target_link_libraries ( razor-config
                 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY}
                 qtxdg razorqt)
 # helper static lib
-link_directories(./qcategorizedview)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/qcategorizedview)
 target_link_libraries( razor-config qcategorizedview)
 
 INSTALL(TARGETS razor-config RUNTIME DESTINATION bin)
