@@ -47,6 +47,8 @@ public:
 
     virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
 
+    void setAudioEngine(AudioEngine *engine);
+
 protected slots:
     virtual void showConfigureDialog();
     virtual void settingsChanged();

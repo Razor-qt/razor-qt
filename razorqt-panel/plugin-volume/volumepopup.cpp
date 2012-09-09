@@ -155,22 +155,20 @@ void VolumePopup::setDevice(AudioDevice *device)
         return;
 
     // disconnect old device
-    if (m_device) {
-        disconnect(m_device, SIGNAL(volumeChanged(int)), this, SLOT(handleDeviceVolumeChanged(int)));
-        disconnect(m_device, SIGNAL(muteChanged(bool)), this, SLOT(handleDeviceMuteChanged(bool)));
-        disconnect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
-    }
+    if (m_device)
+        disconnect(m_device);
 
     m_device = device;
-    m_volumeSlider->setValue(m_device->volume());
-    m_muteToggleButton->setChecked(m_device->mute());
 
-    connect(m_device, SIGNAL(volumeChanged(int)), this, SLOT(handleDeviceVolumeChanged(int)));
-    connect(m_device, SIGNAL(muteChanged(bool)), this, SLOT(handleDeviceMuteChanged(bool)));
-    connect(m_volumeSlider, SIGNAL(valueChanged(int)), this, SLOT(handleSliderValueChanged(int)));
+    if (m_device) {
+        m_volumeSlider->setValue(m_device->volume());
+        m_muteToggleButton->setChecked(m_device->mute());
+
+        connect(m_device, SIGNAL(volumeChanged(int)), this, SLOT(handleDeviceVolumeChanged(int)));
+        connect(m_device, SIGNAL(muteChanged(bool)), this, SLOT(handleDeviceMuteChanged(bool)));
+    }
 
     updateStockIcon();
-
     emit deviceChanged();
 }
 

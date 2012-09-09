@@ -40,6 +40,8 @@ RazorVolumeConfiguration::RazorVolumeConfiguration(QSettings &settings, QWidget 
     ui->setupUi(this);
 
     loadSettings();
+    connect(ui->pulseAudioRadioButton, SIGNAL(toggled(bool)), this, SLOT(audioEngineChanged(bool)));
+    connect(ui->alsaRadioButton, SIGNAL(toggled(bool)), this, SLOT(audioEngineChanged(bool)));
     connect(ui->devAddedCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(sinkSelectionChanged(int)));
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
     connect(ui->showOnClickCheckBox, SIGNAL(toggled(bool)), this, SLOT(showOnClickedChanged(bool)));
@@ -48,8 +50,12 @@ RazorVolumeConfiguration::RazorVolumeConfiguration(QSettings &settings, QWidget 
     connect(ui->stepSpinBox, SIGNAL(valueChanged(int)), this, SLOT(stepSpinBoxChanged(int)));
     connect(ui->ignoreMaxVolumeCheckBox, SIGNAL(toggled(bool)), this, SLOT(ignoreMaxVolumeCheckBoxChanged(bool)));
 
-#ifndef USE_PULSEAUDIO
-    ui->ignoreMaxVolumeCheckBox->setVisible(false);
+#if defined(USE_PULSEAUDIO) && defined(USE_ALSA)
+    ui->pulseAudioRadioButton->setVisible(true);
+    ui->alsaRadioButton->setVisible(true);
+#else
+    ui->pulseAudioRadioButton->setVisible(false);
+    ui->alsaRadioButton->setVisible(false);
 #endif
 }
 
@@ -60,11 +66,27 @@ RazorVolumeConfiguration::~RazorVolumeConfiguration()
 
 void RazorVolumeConfiguration::setSinkList(const QList<AudioDevice *> sinks)
 {
+    // preserve the current index, as we change the list
+    int tmp_index = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
+
     ui->devAddedCombo->clear();
 
     foreach (const AudioDevice *dev, sinks) {
         ui->devAddedCombo->addItem(dev->description(), dev->index());
     }
+
+    ui->devAddedCombo->setCurrentIndex(tmp_index);
+}
+
+void RazorVolumeConfiguration::audioEngineChanged(bool checked)
+{
+    if (!checked)
+        return;
+
+    if (ui->pulseAudioRadioButton->isChecked())
+        settings().setValue(SETTINGS_AUDIO_ENGINE, "PulseAudio");
+    else
+        settings().setValue(SETTINGS_AUDIO_ENGINE, "Alsa");
 }
 
 void RazorVolumeConfiguration::sinkSelectionChanged(int index)
@@ -99,6 +121,11 @@ void RazorVolumeConfiguration::ignoreMaxVolumeCheckBoxChanged(bool state)
 
 void RazorVolumeConfiguration::loadSettings()
 {
+    if (settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString() == "PulseAudio")
+        ui->pulseAudioRadioButton->setChecked(true);
+    else
+        ui->alsaRadioButton->setChecked(true);
+
     setComboboxIndexByData(ui->devAddedCombo, settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE), 1);
     ui->showOnClickCheckBox->setChecked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
     ui->muteOnMiddleClickCheckBox->setChecked(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());

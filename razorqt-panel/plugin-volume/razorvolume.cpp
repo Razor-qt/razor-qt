@@ -48,6 +48,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorVolume)
 
 RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
         RazorPanelPlugin(startInfo, parent),
+        m_engine(0),
         m_defaultSinkIndex(0),
         m_defaultSink(0)
 {
@@ -83,13 +84,25 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
     connect(m_keyMuteToggle, SIGNAL(activated()), this, SLOT(handleShortcutVolumeMute()));
 
-#ifdef USE_PULSEAUDIO
-    m_engine = new PulseAudioEngine(this);
-#else
-    m_engine = new AlsaEngine(this);
-#endif
+    settingsChanged();
+}
 
+void RazorVolume::setAudioEngine(AudioEngine *engine)
+{
+    if (m_engine) {
+        if (m_engine->backendName() == engine->backendName())
+            return;
+
+        m_volumeButton->volumePopup()->setDevice(0);
+
+        disconnect(m_engine, 0, 0, 0);
+        delete m_engine;
+        m_engine = 0;
+    }
+
+    m_engine = engine;
     connect(m_engine, SIGNAL(sinkListChanged()), this, SLOT(updateConfigurationSinkList()));
+
     updateConfigurationSinkList();
 }
 
@@ -102,26 +115,41 @@ void RazorVolume::showConfigureDialog()
 
 void RazorVolume::settingsChanged()
 {
-    m_defaultSinkIndex = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
-
-    if (m_defaultSinkIndex < m_engine->sinks().count()
-            && m_engine->sinks().at(m_defaultSinkIndex))
-    {
-        m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
-        m_volumeButton->volumePopup()->setDevice(m_defaultSink);
+#if defined(USE_PULSEAUDIO) && defined(USE_ALSA)
+    if (!m_engine || m_engine->backendName() != settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString()) {
+        if (settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString() == "PulseAudio")
+            setAudioEngine(new PulseAudioEngine(this));
+        else
+            setAudioEngine(new AlsaEngine(this));
     }
+#elif defined(USE_PULSEAUDIO)
+    if (!m_engine)
+        setAudioEngine(new PulseAudioEngine(this));
+#elif defined(USE_ALSA)
+    if (!m_engine)
+        setAudioEngine(new AlsaEngine(this));
+#endif
 
     m_volumeButton->setShowOnClicked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
     m_volumeButton->setMuteOnMiddleClick(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
     m_volumeButton->setMixerCommand(settings().value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
     m_volumeButton->volumePopup()->setSliderStep(settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
-    m_engine->setIgnoreMaxVolume(settings().value(SETTINGS_IGNORE_MAX_VOLUME, SETTINGS_DEFAULT_IGNORE_MAX_VOLUME).toBool());
+
+    m_defaultSinkIndex = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
+    if (m_engine && m_engine->sinks().count() > 0) {
+        m_defaultSinkIndex = qBound(0, m_defaultSinkIndex, m_engine->sinks().count()-1);
+
+        m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
+        m_volumeButton->volumePopup()->setDevice(m_defaultSink);
+
+        m_engine->setIgnoreMaxVolume(settings().value(SETTINGS_IGNORE_MAX_VOLUME, SETTINGS_DEFAULT_IGNORE_MAX_VOLUME).toBool());
+    }
 }
 
 void RazorVolume::updateConfigurationSinkList()
 {
-    m_configWindow->setSinkList(m_engine->sinks());
-    settingsChanged();
+    if (m_engine)
+        m_configWindow->setSinkList(m_engine->sinks());
 }
 
 void RazorVolume::handleShortcutVolumeUp()
