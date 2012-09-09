@@ -33,8 +33,6 @@ set( QT_USE_QTDBUS 1 )
 find_package ( Qt4 4.6.0 REQUIRED )
 include ( ${QT_USE_FILE} )
 include_directories (
-	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
 	)
 
@@ -58,24 +56,112 @@ message(STATUS "For building tests use -DBUILD_TESTS=Yes option.")
 message(STATUS "")
 
 # main build subdirs
-add_subdirectory( libraries )
-add_subdirectory( razorqt-session )
-add_subdirectory( razorqt-panel )
-add_subdirectory( razorqt-desktop )
-add_subdirectory( razorqt-appswitcher )
-add_subdirectory( razorqt-resources )
-add_subdirectory( razorqt-x11info )
-add_subdirectory( razorqt-runner )
-add_subdirectory( razorqt-config )
-add_subdirectory( razorqt-power )
-add_subdirectory( razorqt-autosuspend )
-add_subdirectory( razorqt-policykit )
-add_subdirectory( razorqt-lightdm-greeter )
-add_subdirectory( razorqt-notificationd )
-add_subdirectory( razorqt-openssh-askpass )
-add_subdirectory( razorqt-about )
-add_subdirectory( razorqt-globalkeyshortcuts )
-add_subdirectory( razorqt-confupdate )
+macro (build_module MODULE_VAR MODULE_NAME MODULE_DIR MODULE_DEFAULT)
+    if(SPLIT_BUILD)
+        set(MODULE_BUILD_DEFAULT Off)
+    else(SPLIT_BUILD)
+        set(MODULE_BUILD_DEFAULT ${MODULE_DEFAULT})
+    endif(SPLIT_BUILD)
+    option(${MODULE_VAR} ${MODULE_NAME} ${MODULE_BUILD_DEFAULT})
+    if(${MODULE_VAR})
+        #message(STATUS "Build: ${MODULE_NAME}")
+        add_subdirectory(${MODULE_DIR})
+        list(APPEND ENABLED_MODULES "${MODULE_NAME}")
+    #else()
+    #   message(STATUS "Skip:  ${MODULE_VAR}")
+    endif(${MODULE_VAR})
+endmacro()
+
+build_module(MODULE_QTXDG
+    "Qt library for XDG standards"
+    libraries/qtxdg On)
+
+build_module(MODULE_LIBRAZORQT
+    "Core Razor library"
+    libraries/razorqt On)
+
+build_module(MODULE_LIBRAZORQXT
+    "Razor global hotkey library"
+    libraries/razorqxt On)
+
+build_module(MODULE_LIBRAZORMOUNT
+    "Razor mount library"
+    libraries/razormount On)
+
+build_module(MODULE_RESOURCES
+    "Razor resources"
+    razorqt-resources On)
+
+build_module(MODULE_SESSION
+    "Razor Session manager"
+    razorqt-session On)
+
+build_module(MODULE_PANEL
+    "Razor Panel"
+    razorqt-panel On)
+
+build_module(MODULE_DESKTOP
+    "Razor Desktop"
+    razorqt-desktop On)
+
+build_module(MODULE_APPSWITCHER
+    "Razor Alt-Tab Application switcher"
+    razorqt-appswitcher On)
+
+build_module(MODULE_X11INFO
+    "X11 info"
+    razorqt-x11info Off)
+
+build_module(MODULE_RUNNER
+    "Razor Runner"
+    razorqt-runner On)
+
+build_module(MODULE_CONFIG
+    "Razor Configuration"
+    razorqt-config On)
+
+build_module(MODULE_POWER
+    "Razor power control"
+    razorqt-power On)
+
+build_module(MODULE_AUTOSUSPEND
+    "Razor Autosuspend"
+    razorqt-autosuspend On)
+
+build_module(MODULE_POLICYKIT
+    "Razor PolicyKit agent"
+    razorqt-policykit On)
+
+build_module(MODULE_LIGHTDM
+    "Razor LightDM greeter"
+    razorqt-lightdm-greeter On)
+
+build_module(MODULE_NOTIFICATIOND
+    "Razor Notifications Daemon"
+    razorqt-notificationd On)
+
+build_module(MODULE_ASKPASS
+    "SSH Askpass"
+    razorqt-openssh-askpass On)
+
+build_module(MODULE_ABOUT
+    "Razor information"
+    razorqt-about On)
+
+build_module(MODULE_GLOBALKEYSHORTCUTS
+    "Global Shortcut daemon"
+    razorqt-globalkeyshortcuts On)
+
+build_module(MODULE_CONFUPDATE
+    "Configuration updater"
+    razorqt-confupdate On)
+
+message(STATUS  "**************** The following modules will be built ****************")
+foreach (MODULE_NAME ${ENABLED_MODULES})
+    message(STATUS   "  ${MODULE_NAME}")
+endforeach()
+message(STATUS  "*********************************************************************")
+
 ########### Add uninstall target ###############
 CONFIGURE_FILE(
     "${CMAKE_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
