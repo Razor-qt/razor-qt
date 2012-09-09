@@ -154,6 +154,7 @@ void RazorModuleManager::startProcess(const XdgDesktopFile& file)
         return;
     }
     RazorModule* proc = new RazorModule(file, this);
+    connect(proc, SIGNAL(moduleStateChanged(QString,bool)), this, SIGNAL(moduleStateChanged(QString,bool)));
     proc->start();
 
     QString name = QFileInfo(file.fileName()).fileName();
@@ -167,7 +168,7 @@ void RazorModuleManager::startProcess(const QString& name)
 {
     if (!mNameMap.contains(name))
     {
-        foreach (const XdgDesktopFile& file, XdgAutoStart::desktopFileList())
+        foreach (const XdgDesktopFile& file, XdgAutoStart::desktopFileList(false))
         {
             if (QFileInfo(file.fileName()).fileName() == name)
             {
@@ -191,10 +192,8 @@ QStringList RazorModuleManager::listModules() const
 
 void RazorModuleManager::startConfUpdate()
 {
-    XdgDesktopFile desktop;
-    desktop.setValue("Type", "Application");
+    XdgDesktopFile desktop(XdgDesktopFile::ApplicationType, ":razor-confupdate", "razor-confupdate --watch");
     desktop.setValue("Name", "Razor config updater");
-    desktop.setValue("Exec", "razor-confupdate --watch");
     desktop.setValue("X-Razor-Module", true);
     startProcess(desktop);
 }
@@ -329,6 +328,7 @@ RazorModule::RazorModule(const XdgDesktopFile& file, QObject* parent) :
     file(file),
     fileName(QFileInfo(file.fileName()).fileName())
 {
+    connect(this, SIGNAL(stateChanged(QProcess::ProcessState)), SLOT(updateState(QProcess::ProcessState)));
 }
 
 void RazorModule::start()
@@ -348,4 +348,10 @@ void RazorModule::terminate()
 bool RazorModule::isTerminating()
 {
     return mIsTerminating;
+}
+
+void RazorModule::updateState(QProcess::ProcessState newState)
+{
+    if (newState != QProcess::Starting)
+        emit moduleStateChanged(fileName, (newState == QProcess::Running));
 }

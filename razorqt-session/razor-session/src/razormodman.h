@@ -81,6 +81,9 @@ public slots:
     */
     void logout();
 
+signals:
+    void moduleStateChanged(QString moduleName, bool state);
+
 private:
     //! \brief Show Window Manager select dialog
     QString showWmSelectDialog();
@@ -157,6 +160,12 @@ public:
 
     const XdgDesktopFile file;
     const QString fileName;
+
+signals:
+    void moduleStateChanged(QString name, bool state);
+
+private slots:
+    void updateState(QProcess::ProcessState newState);
 
 private:
     bool mIsTerminating;

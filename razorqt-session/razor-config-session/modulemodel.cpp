@@ -34,6 +34,7 @@ ModuleModel::ModuleModel(QObject* parent)
 {
     mInterface = new QDBusInterface("org.razorqt.session", "/RazorSession", "",
                                     QDBusConnection::sessionBus(), this);
+    connect(mInterface, SIGNAL(moduleStateChanged(QString,bool)), SLOT(updateModuleState(QString,bool)));
 }
 
 ModuleModel::~ModuleModel()
@@ -44,12 +45,22 @@ ModuleModel::~ModuleModel()
 void ModuleModel::reset()
 {
     mKeyList.clear();
+    mStateMap.clear();
     mItemMap = AutostartItem::createItemMap();
+
     QMap<QString,AutostartItem>::iterator iter;
     for (iter = mItemMap.begin(); iter != mItemMap.end(); ++iter)
     {
         if (iter.value().file().value("X-Razor-Module", false).toBool())
             mKeyList.append(iter.key());
+    }
+
+    QDBusReply<QVariant> reply = mInterface->call("listModules");
+    QStringList moduleList = reply.value().toStringList();
+    foreach (const QString& moduleName, moduleList)
+    {
+        if (mItemMap.contains(moduleName))
+            mStateMap[moduleName] = true;
     }
 }
 
@@ -68,17 +79,10 @@ QVariant ModuleModel::data(const QModelIndex& index, int role) const
                 return mItemMap.value(name).file().value("Comment");
         }
     }
-    else if (index.column() == 1 && (role == Qt::DisplayRole || role ==Qt::DecorationRole))
+    else if (index.column() == 1 && (role == Qt::DisplayRole || role == Qt::DecorationRole))
     {
-        QDBusReply<QVariant> reply = mInterface->call("listModules");
-        QStringList var = reply.value().toStringList();
-        if (var.contains(name))
-        {
-             if (role == Qt::DisplayRole)
-                 return tr("Running") + " ";
-             //else
-             //  return XdgIcon::fromTheme("flag");
-        }
+        if (role == Qt::DisplayRole && mStateMap[name] == true)
+            return tr("Running") + " ";
     }
     return QVariant();
 }
@@ -111,6 +115,16 @@ void ModuleModel::writeChanges()
 {
     foreach (const QString& key, mKeyList)
         mItemMap[key].commit();
+}
+
+void ModuleModel::updateModuleState(QString moduleName, bool state)
+{
+    if (mItemMap.contains(moduleName))
+    {
+        mStateMap[moduleName] = state;
+        QModelIndex i = index(mKeyList.indexOf(moduleName), 1);
+        emit dataChanged(i, i);
+    }
 }
 
 void ModuleModel::toggleModule(const QModelIndex &index, bool status)

@@ -46,8 +46,12 @@ public:
     int columnCount(const QModelIndex&) const { return 2; }
     Qt::ItemFlags flags(const QModelIndex& index) const;
 
+private slots:
+    void updateModuleState(QString moduleName, bool state);
+
 private:
     QMap<QString,AutostartItem> mItemMap;
+    QMap<QString,bool> mStateMap;
     QStringList mKeyList;
     QDBusInterface* mInterface;
 };

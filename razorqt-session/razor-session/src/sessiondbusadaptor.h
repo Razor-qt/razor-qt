@@ -48,7 +48,11 @@ public:
         : QDBusAbstractAdaptor(manager),
           m_manager(manager)
     {
+        connect(m_manager, SIGNAL(moduleStateChanged(QString,bool)), SIGNAL(moduleStateChanged(QString,bool)));
     }
+
+signals:
+    void moduleStateChanged(QString moduleName, bool state);
 
 public slots:
 
