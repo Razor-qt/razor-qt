@@ -29,9 +29,9 @@
 
 #include "razorpowerproviders.h"
 #include <QtDBus/QDBusInterface>
+#include <QtCore/QProcess>
 #include <QtCore/QDebug>
 #include "razorqt/razornotification.h"
-#include "razorqt/xfitman.h"
 
 #define UPOWER_SERVICE          "org.freedesktop.UPower"
 #define UPOWER_PATH             "/org/freedesktop/UPower"
@@ -394,4 +394,75 @@ bool HalProvider::canAction(RazorPower::Action action) const
 bool HalProvider::doAction(RazorPower::Action action)
 {
     return false;
+}
+
+
+/************************************************
+  CustomProvider
+ ************************************************/
+CustomProvider::CustomProvider(QObject *parent):
+    RazorPowerProvider(parent),
+    mSettings("power")
+{
+}
+
+CustomProvider::~CustomProvider()
+{
+}
+
+bool CustomProvider::canAction(RazorPower::Action action) const
+{
+    switch (action)
+    {
+    case RazorPower::PowerShutdown:
+        return mSettings.contains("shutdownCommand");
+
+    case RazorPower::PowerReboot:
+        return mSettings.contains("rebootCommand");
+
+    case RazorPower::PowerHibernate:
+        return mSettings.contains("hibernateCommand");
+
+    case RazorPower::PowerSuspend:
+        return mSettings.contains("suspendCommand");
+
+    case RazorPower::PowerLogout:
+        return mSettings.contains("logoutCommand");
+
+    default:
+        return false;
+    }
+}
+
+bool CustomProvider::doAction(RazorPower::Action action)
+{
+    QString command;
+
+    switch(action)
+    {
+    case RazorPower::PowerShutdown:
+        command = mSettings.value("shutdownCommand").toString();
+        break;
+
+    case RazorPower::PowerReboot:
+        command = mSettings.value("rebootCommand").toString();
+        break;
+
+    case RazorPower::PowerHibernate:
+        command = mSettings.value("hibernateCommand").toString();
+        break;
+
+    case RazorPower::PowerSuspend:
+        command = mSettings.value("suspendCommand").toString();
+        break;
+
+    case RazorPower::PowerLogout:
+        command = mSettings.value("logoutCommand").toString();
+        break;
+
+    default:
+        return false;
+    }
+
+    return QProcess::startDetached(command);
 }

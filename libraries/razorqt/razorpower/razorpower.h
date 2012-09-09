@@ -45,10 +45,10 @@ public:
     /// RazorPower can perform next actions:
     enum Action{
         PowerLogout,    /// Close the current user session.
-        PowerHibernate, /// Hibernate the comuter
-        PowerReboot,    /// Reboot the comuter
-        PowerShutdown,  /// Shutdown the comuter
-        PowerSuspend    /// Suspend the comuter
+        PowerHibernate, /// Hibernate the comupter
+        PowerReboot,    /// Reboot the computer
+        PowerShutdown,  /// Shutdown the computer
+        PowerSuspend    /// Suspend the computer
     };
 
     /// Constructs a RazorPower with parent.

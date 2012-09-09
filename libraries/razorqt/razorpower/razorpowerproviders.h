@@ -30,6 +30,7 @@
 #define RAZORPOWER_PROVIDERS_H
 
 #include <QtCore/QObject>
+#include <razorqt/razorsettings.h>
 #include "razorpower.h"
 
 class RazorPowerProvider: public QObject
@@ -105,6 +106,21 @@ public:
 
 public slots:
     bool doAction(RazorPower::Action action);
+};
+
+class CustomProvider: public RazorPowerProvider
+{
+    Q_OBJECT
+public:
+    CustomProvider(QObject *parent = 0);
+    ~CustomProvider();
+    bool canAction(RazorPower::Action action) const;
+
+public slots:
+    bool doAction(RazorPower::Action action);
+
+private:
+    RazorSettings mSettings;
 };
 
 #endif // RAZORPOWER_PROVIDERS_H
