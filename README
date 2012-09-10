@@ -1,7 +1,11 @@
-Razor Desktop Toolbox
+Razor-qt
+========
 
-http://razor-qt.org
+[Razor-qt](http://razor-qt.org) is a fast, simple and lightweight desktop environment based on the Qt framework.
+While still in alpha stage, Razor ships most core components one would expect from a DE. It is not recommended for production, but remains fully usable for day-to-day usage.
+
+Unlike more popular desktop environments, Razor-qt does not ship an application suite. We recommend using pure-Qt applications for best performance, but Gtk or KDE apps remain fully usable.
+A list of pure-Qt applications is maintained [on the wiki](https://github.com/Razor-qt/razor-qt/wiki/3rd-party-applications).
 
 
-For components info see READMEs in appropriate subdirectories in the source tree.
-
+For component-specific information, see README files in their respective subdirectories.
