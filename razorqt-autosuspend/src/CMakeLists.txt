@@ -34,8 +34,9 @@ set ( razor-autosuspend_MOCS
       batteryinfo.h
     )
 
+# TODO: remove actual file and its translations
 set(DESKTOP_FILES_IN
-    razor-autosuspend.desktop.in
+#    razor-autosuspend.desktop.in
 )
 
 
