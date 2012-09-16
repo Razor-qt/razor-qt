@@ -153,7 +153,15 @@ QString XdgDirs::runtimeDir()
  ************************************************/
 QString XdgDirs::autostartHome(bool createDir)
 {
-    return xdgSingleDir("XDG_DATA_HOME", ".config/autostart", createDir);
+    QDir dir(QString("%1/autostart").arg(configHome(createDir)));
+
+    if (createDir && !dir.exists())
+    {
+        if (!dir.mkpath("."))
+            qWarning() << QString("Can't create %1 directory.").arg(dir.absolutePath());
+    }
+
+    return dir.absolutePath();
 }
 
 
