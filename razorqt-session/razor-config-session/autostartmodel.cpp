@@ -185,7 +185,10 @@ QVariant AutoStartItemModel::data(const QModelIndex& index, int role) const
     const AutostartItem& item = mItemMap.value(name);
     if (role == Qt::DisplayRole)
     {
-        return item.file().name();
+        QString title = item.file().name();
+        if (title.isEmpty())
+            return name;
+        return title;
     }
     else if (role == Qt::ToolTipRole)
     {
