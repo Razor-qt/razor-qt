@@ -8,6 +8,14 @@ QPushButton {
     background-color: rgb(200, 200, 200);
 }
 
+QComboBox::drop-down {
+    border: none;
+    width: 24px;
+}
+
+QComboBox::down-arrow {
+    image: url(dropdown.svg);
+}
 
 #leaveButton {
     qproperty-iconSize: 25px;
