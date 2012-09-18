@@ -10,7 +10,6 @@ if (CMAKE_BUILD_TYPE MATCHES [Dd]ebug)
 else()
     message(STATUS "non-debug build")
     add_definitions(-DNDEBUG)
-    add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
 if (NOT CMAKE_INSTALL_PREFIX)
