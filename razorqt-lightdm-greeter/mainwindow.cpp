@@ -28,6 +28,7 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QPalette>
 #include <QtGui/QX11Info>
+#include <razorqt/razorsettings.h>
 
 #include "mainwindow.h"
 #include "loginform.h"
@@ -40,7 +41,7 @@ MainWindow::MainWindow(int screen, QWidget *parent)
 
     QRect screenRect = QApplication::desktop()->screenGeometry(screen);
     setGeometry(screenRect);
-    QImage image(QString(SHARE_DIR) + "/themes/light/simple_blue_widescreen.png");
+    QImage image(razorTheme.desktopBackground(screen));
 
     QPalette palette;
     palette.setBrush(this->backgroundRole(), QBrush(image.scaled(screenRect.width(), screenRect.right())));
