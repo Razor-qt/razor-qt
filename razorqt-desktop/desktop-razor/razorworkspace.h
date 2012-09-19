@@ -30,7 +30,7 @@
 
 #include <QtGui/QGraphicsView>
 
-class WorkspaceConfig;
+struct WorkspaceConfig;
 class BackgroundProvider;
 class DesktopScene;
 

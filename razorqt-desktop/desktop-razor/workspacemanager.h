@@ -33,7 +33,7 @@
 #include "desktopplugin.h"
 #include "razorworkspace.h"
 
-class WorkspaceConfig;
+struct WorkspaceConfig;
 class DesktopScene;
 
 
