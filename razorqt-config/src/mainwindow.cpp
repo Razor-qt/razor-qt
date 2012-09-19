@@ -140,7 +140,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role) const
     {
-        if (role == Qt::DisplayRole)
+        if (role == Qt::DisplayRole || role == Qt::ToolTipRole)
             return m_list[index.row()].xdg().name();
         if (role == QCategorizedSortFilterProxyModel::CategoryDisplayRole)
             return m_list[index.row()].category();
@@ -170,7 +170,9 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
 
     view->setViewMode(QListView::IconMode);
     view->setIconSize(QSize(32, 32));
-    view->setGridSize(QSize(140, 74));
+    view->setGridSize(QSize(100, 100));
+    view->setWordWrap(true);
+    view->setUniformItemSizes(true);
     view->setCategoryDrawer(new QCategoryDrawerV3(view));
 
     proxyModel = new QCategorizedSortFilterProxyModel();
