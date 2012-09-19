@@ -80,7 +80,7 @@ bool dbusCall(const QString &service,
         {
             RazorNotification::notify(
                                     QObject::tr("Power Manager Error"),
-                                    QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + method,
+                                    QObject::tr("QDBusInterface is invalid")+ "\n\n" + service + " " + path + " " + interface + " " + method,
                                     "razor-logo.png");
         }
         return false;
@@ -95,7 +95,7 @@ bool dbusCall(const QString &service,
         {
             RazorNotification::notify(
                                     QObject::tr("Power Manager Error (D-BUS call)"),
-                                    msg.errorName() + "<p>" + msg.errorMessage(),
+                                    msg.errorName() + "\n\n" + msg.errorMessage(),
                                     "razor-logo.png");
         }
     }
@@ -123,7 +123,7 @@ bool dbusGetProperty(const QString &service,
 //        RazorNotification::notify(QObject::tr("Razor Power Manager"),
 //                                  "razor-logo.png",
 //                                  QObject::tr("Power Manager Error"),
-//                                  QObject::tr("QDBusInterface is invalid")+ "<p>" + service +" " + path +" " + interface +" " + property);
+//                                  QObject::tr("QDBusInterface is invalid")+ "\n\n" + service +" " + path +" " + interface +" " + property);
 
         return false;
     }
@@ -136,7 +136,7 @@ bool dbusGetProperty(const QString &service,
 //        RazorNotification::notify(QObject::tr("Razor Power Manager"),
 //                                  "razor-logo.png",
 //                                  QObject::tr("Power Manager Error (Get Property)"),
-//                                  msg.errorName() + "<p>" + msg.errorMessage());
+//                                  msg.errorName() + "\n\n" + msg.errorMessage());
     }
 
     return !msg.arguments().isEmpty() &&

@@ -101,6 +101,6 @@ void BasicSettings::testNotification()
 {
     RazorNotification::notify(//"razor-config-notificationd",
                               tr("Notification Summary"),
-                              tr("Notification Body") + "<p>Lorem ipsim dolor sir amet...",
+                              tr("Notification Body") + "\n\nLorem ipsum dolor sit amet...",
                               "razor-logo.png");
 }
