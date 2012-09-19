@@ -5,7 +5,7 @@ Icon=help-about
 Terminal=false
 OnlyShowIn=X-RAZOR;
 Categories=Qt;System;X-RAZOR;DesktopSettings;Settings;
-Name=About Razor-Qt
-GenericName=Learn more about Razor-Qt
+Name=About Razor
+GenericName=Learn more about Razor-qt
 
 #TRANSLATIONS_DIR=../translations
