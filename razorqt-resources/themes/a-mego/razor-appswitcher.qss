@@ -1,0 +1,10 @@
+/*
+ * AppSwitcher
+ */
+#AppSwitcher {
+    background-color: #121212;
+}
+
+#AppSwitcher QLabel {
+    color: #aaaaaa;
+}
