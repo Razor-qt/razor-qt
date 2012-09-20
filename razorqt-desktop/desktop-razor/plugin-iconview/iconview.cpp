@@ -42,7 +42,6 @@ IconView::IconView(DesktopScene * scene, const QString & configId, RazorSettings
 {
     m_proxy = new QGraphicsProxyWidget(this);
     m_widget = new IconViewWidget(configId, config);
-    m_widget->show();
     m_proxy->setWidget(m_widget);
     m_proxy->show();
 

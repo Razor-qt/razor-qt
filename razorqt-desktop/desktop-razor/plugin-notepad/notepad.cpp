@@ -45,7 +45,6 @@ Notepad::Notepad(DesktopScene *scene, const QString &configId, RazorSettings *co
 
     m_proxy = new QGraphicsProxyWidget(this);
     win = new NotepadWin(this, &Notepad::save);
-    win->show();
     win->setTextAndPos(text, pos);
 
     m_proxy->setWidget(win);
