@@ -770,7 +770,7 @@ void RazorPanel::showPopupMenu(RazorPanelPlugin *plugin)
 
         if (m)
         {
-            menu.addTitle(plugin->windowTitle());
+            menu.addTitle(plugin->windowTitle().replace("&", "&&"));
 
             menu.addActions(m->actions());
             pluginsMenus << m;
@@ -962,8 +962,8 @@ QAction* PopupMenu::addTitle(const QIcon &icon, const QString &text)
     QAction *buttonAction = new QAction(this);
     QFont font = buttonAction->font();
     font.setBold(true);
+    buttonAction->setText(QString(text).replace("&", "&&"));
     buttonAction->setFont(font);
-    buttonAction->setText(text);
     buttonAction->setIcon(icon);
 
     QWidgetAction *action = new QWidgetAction(this);
@@ -972,7 +972,6 @@ QAction* PopupMenu::addTitle(const QIcon &icon, const QString &text)
     titleButton->installEventFilter(this); // prevent clicks on the title of the menu
     titleButton->setDefaultAction(buttonAction);
     titleButton->setDown(true); // prevent hover style changes in some styles
-    titleButton->setCheckable(true);
     titleButton->setCheckable(true);
     titleButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     action->setDefaultWidget(titleButton);
