@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors (currently lm_sensors)
+
+
+# Translations
+Name[ar]=إستشعار
+Comment[ar]=عرض قراءة من إستشعار لأجهزة (حاليا lm_sensors)

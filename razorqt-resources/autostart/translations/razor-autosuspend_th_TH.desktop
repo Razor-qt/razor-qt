@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-autosuspend
+Icon=razor-autosuspend
+Terminal=false
+Categories=Application;Qt;Utility
+Name=Razor autosuspend
+GenericName=Power management
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+GenericName[th_TH]=การจัดการพลังงาน
+Name[th_TH]=การพักเครื่องโดยอัตโนมัติ Razor
+Icon[th_TH]=การพักเครื่องโดยอัตโนมัติ-razor

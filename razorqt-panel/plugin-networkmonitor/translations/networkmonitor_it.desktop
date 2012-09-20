@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Network Monitor
+Comment=Network Monitor
+
+
+
+
+# Translations
+Comment[it]=Centro di Configurazione Razor
+Name[it]=Configura moduli di Razor-qt

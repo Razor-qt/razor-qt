@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Clock
-Comment=Clock and calendar
+Name=Date & time
+Comment=Displays the current time. Comes with a calendar.
 
 #TRANSLATIONS_DIR=../translations
 

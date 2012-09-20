@@ -9,15 +9,20 @@
     <message>
         <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
-        <translation>Montri sekundan naglon</translation>
+        <translation>Montri &amp;sekundojn</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../clock.cpp" line="91"/>
+        <location filename="../clock.cpp" line="57"/>
         <source>Clock</source>
         <translation>Horloĝo</translation>
+    </message>
+    <message>
+        <location filename="../clock.cpp" line="62"/>
+        <source>Clock:</source>
+        <translation>Horloĝo:</translation>
     </message>
 </context>
 </TS>

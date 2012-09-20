@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorDesktop/Plugin
+Name=Notepad
+Comment=Screen notepad
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[th_TH]=สมุดบันทึกทางหน้าจอ
+Name[th_TH]=สมุดบันทึก
