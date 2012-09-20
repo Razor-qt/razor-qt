@@ -4,17 +4,14 @@
 <context>
     <name>HelloWorld</name>
     <message>
-        <location filename="../helloworld.cpp" line="73"/>
         <source>Hello World:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../helloworld.cpp" line="79"/>
         <source>Display Text Configuretion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../helloworld.cpp" line="79"/>
         <source>Edit HTML</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22,7 +19,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../helloworld.cpp" line="68"/>
         <source>Display simple text. A debugging/sample widget.</source>
         <translation type="unfinished"></translation>
     </message>

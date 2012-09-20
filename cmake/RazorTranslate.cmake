@@ -120,7 +120,7 @@ function(razor_translate_ts _qmFiles)
         "\n"
         "mkdir -p ${_translationDir} 2>/dev/null\n"
         "cd ${_translationDir} && "
-        "${QT_LUPDATE_EXECUTABLE} -target-language en_US ${_sourcesSpace} -ts ${_tsSrcFile}.ts &&"
+        "${QT_LUPDATE_EXECUTABLE} -locations none -target-language en_US ${_sourcesSpace} -ts ${_tsSrcFile}.ts &&"
         "mv ${_tsSrcFile}.ts ${_tsSrcFile}\n"
         "grep -q 'source' '${_tsSrcFile}' || rm '${_tsSrcFile}'\n"
     )

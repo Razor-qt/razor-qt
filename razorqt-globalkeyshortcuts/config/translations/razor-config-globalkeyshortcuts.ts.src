@@ -4,12 +4,10 @@
 <context>
     <name>CommandFinder</name>
     <message>
-        <location filename="../shortcuteditor.cpp" line="40"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.cpp" line="53"/>
         <source>Find a command</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17,47 +15,38 @@
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
-        <location filename="../shortcuteditor.ui" line="14"/>
         <source>Razor Shortcut Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="29"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="34"/>
         <source>Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="39"/>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="62"/>
         <source>Add New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="69"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="83"/>
         <source>Add Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="109"/>
         <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.ui" line="129"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -65,28 +54,22 @@
 <context>
     <name>ShortcutEditor</name>
     <message>
-        <location filename="../shortcuteditor.cpp" line="142"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.cpp" line="148"/>
         <source>Add Shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.cpp" line="152"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.cpp" line="156"/>
-        <location filename="../shortcuteditor.cpp" line="315"/>
         <source>New Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../shortcuteditor.cpp" line="160"/>
         <source>Reset Changes</source>
         <translation type="unfinished"></translation>
     </message>

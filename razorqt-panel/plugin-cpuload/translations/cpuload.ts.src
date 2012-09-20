@@ -4,7 +4,6 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <location filename="../razorcpuload.cpp" line="102"/>
         <source>Cpu load %1%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12,52 +11,42 @@
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <location filename="../razorcpuloadconfiguration.ui" line="14"/>
         <source>Razor Cpu Load settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.ui" line="20"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.ui" line="35"/>
         <source>Show text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.ui" line="42"/>
         <source>Update interval:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.ui" line="49"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.ui" line="71"/>
         <source>Bar orientation:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.cpp" line="68"/>
         <source>Bottom up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.cpp" line="69"/>
         <source>Top down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.cpp" line="70"/>
         <source>Left to right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorcpuloadconfiguration.cpp" line="71"/>
         <source>Right to left</source>
         <translation type="unfinished"></translation>
     </message>

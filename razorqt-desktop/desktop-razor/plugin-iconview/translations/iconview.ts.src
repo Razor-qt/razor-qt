@@ -4,12 +4,10 @@
 <context>
     <name>IconScene</name>
     <message>
-        <location filename="../iconscene.cpp" line="120"/>
         <source>Copy File Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../iconscene.cpp" line="121"/>
         <source>Cannot copy file %1 to %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17,7 +15,6 @@
 <context>
     <name>IconView</name>
     <message>
-        <location filename="../iconview.cpp" line="83"/>
         <source>Icon View Configuration</source>
         <translation type="unfinished"></translation>
     </message>
@@ -25,12 +22,10 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../iconview.cpp" line="55"/>
         <source>Display content of the given directory/folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../iconview.cpp" line="60"/>
         <source>Icon View:</source>
         <translation type="unfinished"></translation>
     </message>

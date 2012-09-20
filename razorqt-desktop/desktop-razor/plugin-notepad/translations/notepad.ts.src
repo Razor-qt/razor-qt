@@ -4,12 +4,10 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../notepad.cpp" line="61"/>
         <source>Display a notepad</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../notepad.cpp" line="66"/>
         <source>Notepad:</source>
         <translation type="unfinished"></translation>
     </message>

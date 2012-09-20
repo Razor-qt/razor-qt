@@ -4,9 +4,6 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <location filename="../razorvolume.cpp" line="69"/>
-        <location filename="../razorvolume.cpp" line="74"/>
-        <location filename="../razorvolume.cpp" line="79"/>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14,42 +11,42 @@
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="14"/>
         <source>Razor Volume Control Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="20"/>
         <source>Device to control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="32"/>
+        <source>Alsa</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PulseAudio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Behavior</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="38"/>
         <source>Mute on middle click</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="45"/>
         <source>Show on mouse click</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="52"/>
         <source>Allow volume beyond 100% (0dB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="67"/>
         <source>Volume adjust step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razorvolumeconfiguration.ui" line="86"/>
         <source>External Mixer</source>
         <translation type="unfinished"></translation>
     </message>
