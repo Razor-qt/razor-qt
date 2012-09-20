@@ -179,8 +179,8 @@ file_filter = razorqt-resources/autostart/translations/razor-appswitcher_<lang>.
 [razor-qt.razor-autosuspend_desktop]
 type = DESKTOP
 source_lang = en
-source_file = razorqt-autosuspend/src/razor-autosuspend.desktop.in
-file_filter = razorqt-autosuspend/src/translations/razor-autosuspend_<lang>.desktop
+source_file = razorqt-resources/autostart/razor-autosuspend.desktop.in
+file_filter = razorqt-resources/autostart/translations/razor-autosuspend_<lang>.desktop
 
 [razor-qt.razor-autosuspend]
 type = QT
@@ -421,6 +421,12 @@ type = QT
 source_lang = en
 source_file = razorqt-panel/plugin-taskbar/translations/taskbar.ts.src
 file_filter = razorqt-panel/plugin-taskbar/translations/taskbar_<lang>.ts
+
+[razor-qt.translatorsinfo]
+type = MOZILLAPROPERTIES
+source_lang = en
+source_file = libraries/razorqt/translatorsinfo/translators.info.src
+file_filter = libraries/razorqt/translatorsinfo/translators_<lang>.info
 
 [razor-qt.tray_desktop]
 type = DESKTOP

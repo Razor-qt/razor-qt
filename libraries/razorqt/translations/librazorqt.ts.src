@@ -139,88 +139,118 @@
 <context>
     <name>RazorAboutDLGPrivate</name>
     <message>
-        <location filename="../razoraboutdlg.cpp" line="89"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="91"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="95"/>
-        <source>&lt;h1&gt;Razor Desktop Toolbox - Technical Info&lt;/h1&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="97"/>
-        <source>&lt;tr&gt;&lt;th&gt;Version:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="98"/>
-        <source>&lt;tr&gt;&lt;th&gt;Qt:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="99"/>
-        <source>&lt;tr&gt;&lt;th&gt;Debug Build:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../razoraboutdlg.cpp" line="100"/>
-        <source>&lt;tr&gt;&lt;th&gt;System Configuration:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="101"/>
-        <source>&lt;tr&gt;&lt;th&gt;Share Directory:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="102"/>
-        <source>&lt;tr&gt;&lt;th&gt;Translations:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="104"/>
-        <source>&lt;h2&gt;User Directories&lt;/h2&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="106"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Data Home:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <source>Version: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razoraboutdlg.cpp" line="107"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Config Home:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razoraboutdlg.cpp" line="108"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Data Dirs:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../razoraboutdlg.cpp" line="109"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Cache Home:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <source>Copyright: %1-%2 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razoraboutdlg.cpp" line="110"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Runtime Home:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <source>Homepage: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../razoraboutdlg.cpp" line="111"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Autostart Dirs:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <source>License: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razoraboutdlg.cpp" line="112"/>
-        <source>&lt;tr&gt;&lt;th&gt;Xdg Autostart Home:&lt;/th&gt;&lt;td&gt;%1&lt;/td&gt;&lt;/tr&gt;</source>
+        <location filename="../razoraboutdlg.cpp" line="159"/>
+        <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="176"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="178"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="183"/>
+        <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="185"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="186"/>
+        <source>Qt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="187"/>
+        <source>Debug Build</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="188"/>
+        <source>System Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="189"/>
+        <source>Share Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="190"/>
+        <source>Translations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="195"/>
+        <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="197"/>
+        <source>Xdg Data Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="198"/>
+        <source>Xdg Config Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="199"/>
+        <source>Xdg Data Dirs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="200"/>
+        <source>Xdg Cache Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="201"/>
+        <source>Xdg Runtime Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="202"/>
+        <source>Xdg Autostart Dirs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.cpp" line="203"/>
+        <source>Xdg Autostart Home</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -315,12 +345,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razoraboutdlg.ui" line="24"/>
+        <location filename="../razoraboutdlg.ui" line="66"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../razoraboutdlg.ui" line="38"/>
+        <location filename="../razoraboutdlg.ui" line="83"/>
+        <source>Authors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.ui" line="100"/>
+        <source>Thanks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.ui" line="117"/>
+        <source>Translations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../razoraboutdlg.ui" line="134"/>
         <source>Technical Info</source>
         <translation type="unfinished"></translation>
     </message>
