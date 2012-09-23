@@ -200,7 +200,6 @@ void RazorModuleManager::startConfUpdate()
 
 void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    qDebug() << "void RazorModuleManager::restartModules() called and it's wrong. Something is failing" << sender();
     RazorModule* proc = qobject_cast<RazorModule*>(sender());
     Q_ASSERT(proc);
 

@@ -427,7 +427,7 @@ QString RazorThemeData::loadQss(const QString& qssFile) const
     QFile f(qssFile);
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        qWarning() << "Theme: Canot open file for reading:" << qssFile;
+        qWarning() << "Theme: Cannot open file for reading:" << qssFile;
         return QString();
     }
 

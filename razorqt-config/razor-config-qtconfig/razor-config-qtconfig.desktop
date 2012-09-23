@@ -2,6 +2,7 @@
 OnlyShowIn=X-RAZOR;
 Type=Application
 Exec=qtconfig
+TryExec=qtconfig
 Terminal=false
 Categories=Settings;DesktopSettings;Qt;X-RAZOR;
 Icon=preferences-system
