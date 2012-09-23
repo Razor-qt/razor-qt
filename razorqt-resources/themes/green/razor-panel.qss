@@ -10,21 +10,28 @@ RazorPanel[position="0"] {
     border-top: 1px solid #B0B0B0;
 }
 
-
 /* PositionTop */
 RazorPanel[position="1"] {
     border-bottom: 1px solid #B0B0B0;
+}
+
+/* PositionLeft */
+RazorPanel[position="2"] {
+    border-right: 1px solid #B0B0B0;
+}
+
+/* PositionRight */
+RazorPanel[position="3"] {
+    border-left: 1px solid #B0B0B0;
 }
 
 /*
  * General plugins settings
  */
 RazorPanelPlugin {
-    margin: 3px 0 3px 0;
     padding: 0 2px 0 2px;
     spacing: 20px;
 }
-
 
 RazorPanelPlugin > QToolButton {
     margin: 0;
@@ -33,10 +40,9 @@ RazorPanelPlugin > QToolButton {
     qproperty-iconSize: 22px;
 }
 
-
-RazorPanelPlugin > QToolButton:hover{
-    margin: 1px;
-    border: 1px solid #80a8d3;
+RazorPanelPlugin > QToolButton:pressed {
+    margin: 2px 0 0 2px;
+    border: none;
 }
 
 /*
@@ -49,6 +55,13 @@ RazorPanelPlugin > QToolButton:hover{
     color: #555555;
     border: 1px solid #B0B0B0;
     background: rgba(0, 0, 0, 5%);
+}
+
+RazorPanel[position="0"] #DesktopSwitch QToolButton,
+RazorPanel[position="1"] #DesktopSwitch QToolButton
+{
+    margin-bottom: 4px;
+    margin-top: 4px;
 }
 
 #DesktopSwitch QToolButton:on {
@@ -70,31 +83,29 @@ RazorPanelPlugin > QToolButton:hover{
  */
 #TaskBar {}
 
-#TaskBar QToolButton{
-     border: 2px groove silver;
-     border-radius: 6px;
+#TaskBar > QToolButton {
+    border: 2px groove silver;
+    border-radius: 6px;
+    margin: 3px 0 3px 0;
 }
 
-#TaskBar QToolButton:on{
+#TaskBar > QToolButton:on {
     background: rgba(255, 255, 255, 80%);
-    border: 1px solid #80a8d3;
-    margin: 1px;
 }
 
-#TaskBar QToolButton:hover{
-   margin: 1px;
-   border: 1px solid #80a8d3;
+#TaskBar > QToolButton:on,
+#TaskBar > QToolButton:hover {
+    margin: 4px 1px 4px 1px;
+    border-radius: 4px;
+    border: 1px solid #80a8d3;
 }
 
 /*
  * Clock
  */
-#Clock > ClockLabel{
-	font-size: 8pt;
-}
-
-#Clock > QWidget > QLabel{
-	color: #606060;
+#Clock QLabel {
+    font-size: 8pt;
+    color: #606060;
 }
 
 /*
@@ -118,25 +129,19 @@ TrayIcon {
  */
 #MainMenu {
     border: 0;
+    padding: 0;
 }
 
 #MainMenu > QToolButton {
     border: none;
     qproperty-icon: url(mainmenu.png);
+    qproperty-iconSize: 30px;
 }
 
 /*
  * Mount plugin
  */
-MountButton:hover {
-    margin: 0;
-    border: 2px solid transparent;
-}
-
-MountButton:pressed {
-    margin: 2px;
-    border: 2px solid transparent;
-}
+MountButton {}
 
 #RazorMountPopup {
     background-color: #d7d3cc;
@@ -146,26 +151,9 @@ MountButton:pressed {
 /*
  * Screensaver
  */
-#PanelScreenSaver > QToolButton:hover {
-    margin: 0;
-    border: 2px solid transparent;
-}
-
-#PanelScreenSaver > QToolButton:pressed {
-    margin: 2px;
-    border: 2px solid transparent;
-}
+#PanelScreenSaver {}
 
 /*
  * ShowDesktop
  */
-#ShowDesktop > QToolButton:hover {
-    margin: 0px;
-    border: 2px solid transparent;
-}
-
-#ShowDesktop > QToolButton:pressed {
-    margin: 2px;
-    border: 2px solid transparent;
-}
-
+#ShowDesktop {}
