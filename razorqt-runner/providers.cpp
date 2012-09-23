@@ -410,16 +410,18 @@ QString which(const QString &progName)
 
     if (progName.startsWith(QDir::separator()))
     {
-        if (QFileInfo(progName).isExecutable())
-            QFileInfo(progName).absoluteFilePath();
+        QFileInfo fileInfo(progName);
+        if (fileInfo.isExecutable() && fileInfo.isFile())
+            return fileInfo.absoluteFilePath();
     }
 
     QStringList dirs = QString(getenv("PATH")).split(":");
 
     foreach (QString dir, dirs)
     {
-        if (QFileInfo(QDir(dir), progName).isExecutable())
-            return QFileInfo(QDir(dir), progName).absoluteFilePath();
+        QFileInfo fileInfo(QDir(dir), progName);
+        if (fileInfo.isExecutable() && fileInfo.isFile())
+            return fileInfo.absoluteFilePath();
     }
 
     return "";

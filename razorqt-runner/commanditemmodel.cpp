@@ -143,7 +143,7 @@ QModelIndex CommandItemModel::appropriateItem(const QString &pattern) const
         QModelIndex ind = index(i,0);
         QModelIndex srcIndex = mapToSource(ind);
         if (srcIndex == mSourceModel->customCommandIndex())
-            continue;
+            return ind;
 
         const CommandProviderItem *item = mSourceModel->command(srcIndex);
         if (!item)
