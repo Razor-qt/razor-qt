@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Keyboard indicator
+Comment=Keyboard indicator plugin.
+
+#TRANSLATIONS_DIR=../translations

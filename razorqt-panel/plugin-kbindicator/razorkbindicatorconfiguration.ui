@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RazorKbIndicatorConfiguration</class>
+ <widget class="QDialog" name="RazorKbIndicatorConfiguration">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>221</width>
+    <height>254</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Razor Keyboard Indicator Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QRadioButton" name="capsLockRB">
+     <property name="text">
+      <string>&amp;Caps lock</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="numLockRB">
+     <property name="text">
+      <string>&amp;Num lock</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="scrollLockRB">
+     <property name="text">
+      <string>&amp;Scroll lock</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QRadioButton" name="advancedRB">
+     <property name="text">
+      <string>&amp;Advanced control</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="advancedW" native="true">
+     <layout class="QGridLayout" name="gridLayout" columnstretch="1,2">
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="bitL">
+        <property name="text">
+         <string>&amp;Bit</string>
+        </property>
+        <property name="buddy">
+         <cstring>bitSB</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="bitSB">
+        <property name="prefix">
+         <string/>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>15</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="textL">
+        <property name="text">
+         <string>&amp;Text</string>
+        </property>
+        <property name="buddy">
+         <cstring>textLE</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="textLE"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>1</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttons">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>buttons</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttons</sender>
+   <signal>accepted()</signal>
+   <receiver>RazorKbIndicatorConfiguration</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttons</sender>
+   <signal>rejected()</signal>
+   <receiver>RazorKbIndicatorConfiguration</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>62</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>advancedRB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>advancedW</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>63</x>
+     <y>101</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>78</x>
+     <y>123</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>maximumNetSpeedChanged(QString)</signal>
+  <slot>on_typeCOB_currentIndexChanged(int)</slot>
+  <slot>on_sourceCOB_currentIndexChanged(int)</slot>
+  <slot>on_maximumHS_valueChanged(int)</slot>
+  <slot>saveSettings()</slot>
+ </slots>
+</ui>
