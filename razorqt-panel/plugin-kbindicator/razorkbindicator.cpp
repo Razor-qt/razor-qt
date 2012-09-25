@@ -29,21 +29,25 @@
 
 #include <QtGui/QLabel>
 
+#include "razorkbindicatoreventfilter.h"
+
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorKbIndicator)
 
+
 RazorKbIndicator::RazorKbIndicator(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
-    content(new QLabel(this))
+    content(new QLabel(this)),
+    eventFilter(RazorKbIndicatorEventFilter::instance())
 {
     setObjectName("KbIndicator");
 
+    connect(eventFilter, SIGNAL(indicatorsChanged(uint,uint)), this, SLOT(setIndicators(uint,uint)));
+
     addWidget(content);
 
-    this->layout()->setContentsMargins(0, 0, 0, 0);
-    this->layout()->setSpacing(0);
-
     settingsChanged();
+    content->setEnabled(eventFilter->getLockStatus(bit));
 }
 
 RazorKbIndicator::~RazorKbIndicator()
@@ -54,8 +58,7 @@ void RazorKbIndicator::settingsChanged()
 {
     bit = settings().value("bit", 0).toInt();
     content->setText(settings().value("text", QString("C")).toString());
-
-    update();
+    content->setEnabled(eventFilter->getLockStatus(bit));
 }
 
 void RazorKbIndicator::showConfigureDialog()
@@ -63,11 +66,15 @@ void RazorKbIndicator::showConfigureDialog()
     RazorKbIndicatorConfiguration *confWindow = this->findChild<RazorKbIndicatorConfiguration*>("KbIndicatorConfigurationWindow");
 
     if (!confWindow)
-    {
         confWindow = new RazorKbIndicatorConfiguration(settings(), this);
-    }
 
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+void RazorKbIndicator::setIndicators(unsigned int changed, unsigned int state)
+{
+    if (changed & (1 << bit))
+        content->setEnabled(state & (1 << bit));
 }

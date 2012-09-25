@@ -25,40 +25,37 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORPANELKBINDICATOR_H
-#define RAZORPANELKBINDICATOR_H
+#ifndef RAZORPANELKBINDICATOREVENTFILTER_H
+#define RAZORPANELKBINDICATOREVENTFILTER_H
 
-#include "../panel/razorpanelplugin.h"
-#include "razorkbindicatorconfiguration.h"
+#include <QtCore/QAbstractEventDispatcher>
+
+#include <QtGui/QX11Info>
 
 
-class QLabel;
-class RazorKbIndicatorEventFilter;
-
-class RazorKbIndicator : public RazorPanelPlugin
+class RazorKbIndicatorEventFilter : public QObject
 {
     Q_OBJECT
 public:
-    RazorKbIndicator(const RazorPanelPluginStartInfo* startInfo, QWidget *parent = NULL);
-    ~RazorKbIndicator();
+    RazorKbIndicatorEventFilter(QObject *parent = NULL);
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+    bool getLockStatus(int bit);
 
-protected slots:
-    virtual void settingsChanged();
-    virtual void showConfigureDialog();
+    static RazorKbIndicatorEventFilter* instance(void);
 
-    void setIndicators(unsigned int, unsigned int);
+signals:
+    void indicatorsChanged(unsigned int, unsigned int);
 
 private:
-    QLabel *content;
+    friend bool X11_eventFilter(void*);
 
-    int bit;
+    Display *display;
+    int XkbEventBase;
+    QAbstractEventDispatcher::EventFilter oldEventFilter;
 
-    RazorKbIndicatorEventFilter *eventFilter;
+    bool initXkbExtension(void);
+    bool X11_eventFilter(void *message);
 };
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
-
-#endif // RAZORPANELKBINDICATOR_H
+#endif // RAZORPANELKBINDICATOREVENTFILTER_H

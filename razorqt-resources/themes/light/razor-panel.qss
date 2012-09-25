@@ -157,3 +157,36 @@ MountButton {}
  * ShowDesktop
  */
 #ShowDesktop {}
+
+
+/*
+ * KbIndicator
+ */
+#KbIndicator {
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+}
+
+#KbIndicator > QLabel {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+#KbIndicator > QLabel:enabled {
+    background: qradialgradient(cx:0.5, cy:0.5, radius: 0.5, fx:0.5, fy:0.5, stop:0 lightskyblue, stop:1 transparent);
+    color: black;
+}
+
+#KbIndicator > QLabel:disabled {
+    background: transparent;
+    color: gray;
+}
+

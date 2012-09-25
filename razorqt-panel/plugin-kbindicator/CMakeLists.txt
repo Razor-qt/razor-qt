@@ -5,16 +5,19 @@ set(PLUGIN "panelkbindicator")
 
 set(HEADERS
     razorkbindicator.h
+    razorkbindicatoreventfilter.h
     razorkbindicatorconfiguration.h
 )
 
 set(SOURCES
     razorkbindicator.cpp
+    razorkbindicatoreventfilter.cpp
     razorkbindicatorconfiguration.cpp
 )
 
 set(MOCS
     razorkbindicator.h
+    razorkbindicatoreventfilter.h
     razorkbindicatorconfiguration.h
 )
 
