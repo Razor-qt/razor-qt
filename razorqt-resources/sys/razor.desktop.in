@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Exec=razor-session
-TryExec=razor-session
+#TryExec=razor-session
 Name=Razor Desktop
 Comment=Qt4 Desktop
 
