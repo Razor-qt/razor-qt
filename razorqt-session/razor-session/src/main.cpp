@@ -87,6 +87,7 @@ int main(int argc, char **argv)
     // connect to D-Bus and register as an object:
     QDBusConnection::sessionBus().registerService("org.razorqt.session");
     QDBusConnection::sessionBus().registerObject("/RazorSession", &modman);
+    modman.startup();
     return app.exec();
 }
 

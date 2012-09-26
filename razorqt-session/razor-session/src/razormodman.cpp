@@ -48,12 +48,16 @@
 RazorModuleManager::RazorModuleManager(const QString & config, const QString & windowManager, QObject* parent)
     : QObject(parent),
       mConfig(config),
+      mWindowManager(windowManager),
       mWmProcess(new QProcess(this))
 {
-    qDebug() << __FILE__ << ":" << __LINE__ << "Session" << config << "about to launch (deafult 'session')";
     if (mConfig.isEmpty())
         mConfig = "session";
+}
 
+void RazorModuleManager::startup()
+{
+    qDebug() << __FILE__ << ":" << __LINE__ << "Session" << mConfig << "about to launch (default 'session')";
 
     RazorSettings s(mConfig);
 
@@ -68,7 +72,7 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     s.endGroup();
 
     // then rest of the config:
-    
+
     // The razor-confupdate can update the settings of the WM, so run it first.
     startConfUpdate();
 
@@ -76,25 +80,19 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     // If the WM is active do not run WM.
     if (!xfitMan().isWindowManagerActive())
     {
-        QString wm;
-        if (windowManager.isNull())
+        if (mWindowManager.isEmpty())
         {
-            wm = s.value("windowmanager").toString();
-            if (wm.isEmpty())
+            mWindowManager = s.value("windowmanager").toString();
+            if (mWindowManager.isEmpty())
             {
-                wm = showWmSelectDialog();
-                s.setValue("windowmanager", wm);
+                mWindowManager = showWmSelectDialog();
+                s.setValue("windowmanager", mWindowManager);
                 s.sync();
             }
-            //qDebug() << "Using window manager from config file" << wm;
-        }
-        else
-        {
-            wm = windowManager;
-            //qDebug() << "Using window manager specified with command line" << windowManager;
+            //qDebug() << "Using window manager from config file" << mWindowManager;
         }
 
-        mWmProcess->start(wm);
+        mWmProcess->start(mWindowManager);
 
         // Wait until the WM loads
         int waitCnt = 300;

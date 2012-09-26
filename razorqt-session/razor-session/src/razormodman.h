@@ -60,9 +60,12 @@ class RazorModuleManager : public QObject
     Q_OBJECT
 
 public:
-    //! \brief Construct RazorModuleManager, read configuration, and start processes.
+    //! \brief Construct RazorModuleManager
     RazorModuleManager(const QString & config, const QString & windowManager, QObject * parent = 0);
     virtual ~RazorModuleManager();
+
+    //! \brief Read configuration and start processes
+    void startup();
 
     //! \brief Start a module given its file name (e.g. "razor-panel.desktop")
     void startProcess(const QString& name);
@@ -96,6 +99,9 @@ private:
 
     //! \brief Session configuration.
     QString mConfig;
+
+    //! \brief Window manager command
+    QString mWindowManager;
 
     //! \brief map file names to module processes
     ModulesMap mNameMap;
