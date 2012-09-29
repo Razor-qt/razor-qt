@@ -109,7 +109,7 @@ build_module(MODULE_APPSWITCHER
 
 build_module(MODULE_X11INFO
     "X11 info"
-    razorqt-x11info Off)
+    razorqt-x11info On)
 
 build_module(MODULE_RUNNER
     "Razor Runner"
