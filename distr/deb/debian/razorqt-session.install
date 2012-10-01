@@ -8,7 +8,6 @@
 /usr/share/razor/razor-config-session/
 /usr/share/xsessions/
 /usr/share/apps/kdm/sessions/
-/etc/xdg/autostart/*
 /usr/share/razor/razor-confupdate/*
 /usr/bin/razor-confupdate
 %if MULTIARCH yes
@@ -16,3 +15,8 @@
 %else
 /usr/lib*/razor-confupdate_bin/sesion_modules
 %endif
+/etc/xdg/autostart/razor-ptbatterysystemtray-autostart.desktop
+/etc/xdg/autostart/razor-qlipper-autostart.desktop
+/etc/xdg/autostart/razor-qstardict-autostart.desktop
+/etc/xdg/autostart/razor-qxkb-autostart.desktop
+/etc/xdg/autostart/razor-xscreensaver-autostart.desktop

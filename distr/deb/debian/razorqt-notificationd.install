@@ -1,3 +1,4 @@
 /usr/bin/razor-notificationd
 /usr/bin/razor-config-notificationd
 /usr/share/applications/razor-config-notificationd.desktop
+/etc/xdg/autostart/razor-notifications.desktop

@@ -8,3 +8,4 @@
 /usr/share/applications/razor-config-desktop.desktop
 /etc/xdg/razor/desktop.conf
 /usr/share/razor/razor-desktop/
+/etc/xdg/autostart/razor-desktop.desktop
