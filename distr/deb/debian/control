@@ -332,6 +332,7 @@ Description: lightweight PolicyKit agent/user interface
 Package: lightdm-razorqt-greeter
 Architecture: any
 Depends: ${shlibs:Depends},  ${misc:Depends},  librazorqt0 (= ${binary:Version}),
+Provides: lightdm-greeter
 Description: LightDM greeter that uses the Razor-qt (Qt based) lib kit
  A LightDM greeter that uses the Razor-qt and Qt libraries,
  it was written for Razor-qt but it can be used standalone as well.
