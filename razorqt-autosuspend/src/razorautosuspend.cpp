@@ -33,7 +33,8 @@
 RazorAutosuspendd::RazorAutosuspendd(QObject *parent) :
     QObject(parent),
     razorNotification(tr("Power low"), this),
-    actionTime()
+    actionTime(),
+    m_Settings("razor-autosuspend")
 {
     razorNotification.setIcon("razor-autosuspend");
     razorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
@@ -41,7 +42,8 @@ RazorAutosuspendd::RazorAutosuspendd(QObject *parent) :
     trayIcon.setStatus(battery.chargeLevel(), battery.onBattery(), battery.properties());
     trayIcon.show();
     connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
-    connect(&battery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
+    connect(&battery, SIGNAL(somethingChanged()), this, SLOT(somethingChanged()));
+    connect(&m_Settings, SIGNAL(settingsChanged()), this, SLOT(somethingChanged()));
 }
 
 RazorAutosuspendd::~RazorAutosuspendd()
@@ -50,26 +52,22 @@ RazorAutosuspendd::~RazorAutosuspendd()
 
 void RazorAutosuspendd::lidChanged(bool closed)
 {
-    RazorSettings settings("razor-autosuspend");
     qDebug() << "LidChanged: " << closed;
-    qDebug() << "Action: " << settings.value(LIDCLOSEDACTION_KEY).toInt();
+    qDebug() << "Action: " << m_Settings.value(LIDCLOSEDACTION_KEY).toInt();
     if (closed)
     {
-        doAction(settings.value(LIDCLOSEDACTION_KEY).toInt());
+        doAction(m_Settings.value(LIDCLOSEDACTION_KEY).toInt());
     }
 }
 
-void RazorAutosuspendd::batteryChanged()
+void RazorAutosuspendd::somethingChanged()
 {
     qDebug() <<  "onBattery: "  << battery.onBattery() <<
                  "chargeLevel:" << battery.chargeLevel() <<
                  "powerlow:"    << battery.powerLow() <<
                  "actionTime:"  << actionTime;
 
-    RazorSettings settings("razor-autosuspend");
-    qDebug() << "settingspath: " << settings.fileName() << ", Lidaction: " << settings.value(LIDCLOSEDACTION_KEY);
-
-    if (settings.value(SHOWTRAYICON_KEY, true).toBool())
+    if (m_Settings.value(SHOWTRAYICON_KEY, true).toBool())
     {
         trayIcon.show();
     }
@@ -82,7 +80,7 @@ void RazorAutosuspendd::batteryChanged()
 
     if (battery.powerLow() && actionTime.isNull() && powerLowAction() > 0)
     {
-        int warningTimeMsecs = settings.value(POWERLOWWARNING_KEY, 30).toInt()*1000;
+        int warningTimeMsecs = m_Settings.value(POWERLOWWARNING_KEY, 30).toInt()*1000;
         actionTime = QTime::currentTime().addMSecs(warningTimeMsecs);
         startTimer(100);
         // From here everything is handled by timerEvent below
@@ -142,6 +140,6 @@ void RazorAutosuspendd::doAction(int action)
 
 int RazorAutosuspendd::powerLowAction()
 {
-    return RazorSettings("razor-autosuspend").value(POWERLOWACTION_KEY).toInt();
+    return m_Settings.value(POWERLOWACTION_KEY).toInt();
 }
 
