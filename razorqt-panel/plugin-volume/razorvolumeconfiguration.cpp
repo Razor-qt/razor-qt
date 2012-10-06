@@ -86,7 +86,7 @@ void RazorVolumeConfiguration::audioEngineChanged(bool checked)
     if (ui->pulseAudioRadioButton->isChecked())
         settings().setValue(SETTINGS_AUDIO_ENGINE, "PulseAudio");
     else
-        settings().setValue(SETTINGS_AUDIO_ENGINE, "Alsa");
+        settings().setValue(SETTINGS_AUDIO_ENGINE, "ALSA");
 }
 
 void RazorVolumeConfiguration::sinkSelectionChanged(int index)
