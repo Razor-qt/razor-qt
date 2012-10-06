@@ -48,7 +48,8 @@ protected:
 
 private slots:
     void lidChanged(bool closed);
-    void somethingChanged();
+    void batteryChanged();
+    void settingsChanged();
 
 private:
     void doAction(int action);

@@ -40,10 +40,10 @@ RazorAutosuspendd::RazorAutosuspendd(QObject *parent) :
     razorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
     razorNotification.setTimeout(2000);
     trayIcon.setStatus(battery.chargeLevel(), battery.onBattery(), battery.properties());
-    trayIcon.show();
+    settingsChanged();
     connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
-    connect(&battery, SIGNAL(somethingChanged()), this, SLOT(somethingChanged()));
-    connect(&m_Settings, SIGNAL(settingsChanged()), this, SLOT(somethingChanged()));
+    connect(&battery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
+    connect(&m_Settings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 }
 
 RazorAutosuspendd::~RazorAutosuspendd()
@@ -60,21 +60,12 @@ void RazorAutosuspendd::lidChanged(bool closed)
     }
 }
 
-void RazorAutosuspendd::somethingChanged()
+void RazorAutosuspendd::batteryChanged()
 {
     qDebug() <<  "onBattery: "  << battery.onBattery() <<
                  "chargeLevel:" << battery.chargeLevel() <<
                  "powerlow:"    << battery.powerLow() <<
                  "actionTime:"  << actionTime;
-
-    if (m_Settings.value(SHOWTRAYICON_KEY, true).toBool())
-    {
-        trayIcon.show();
-    }
-    else
-    {
-        trayIcon.hide();
-    }
 
     trayIcon.setStatus(battery.chargeLevel(), battery.onBattery(), battery.properties());
 
@@ -87,6 +78,17 @@ void RazorAutosuspendd::somethingChanged()
     }
 }
 
+void RazorAutosuspendd::settingsChanged()
+{
+    if (m_Settings.value(SHOWTRAYICON_KEY, true).toBool())
+    {
+        trayIcon.show();
+    }
+    else
+    {
+        trayIcon.hide();
+    }
+}
 
 void RazorAutosuspendd::timerEvent(QTimerEvent *event)
 {
