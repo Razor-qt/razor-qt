@@ -55,7 +55,7 @@ void BatteryInfo::updateInfo(QVariantMap batteryProperties)
     case 3:  ui->technologyValue->setText(tr("Lithium iron phosphate")); break;
     case 4:  ui->technologyValue->setText(tr("Lead acid")); break;
     case 5:  ui->technologyValue->setText(tr("Nickel cadmium")); break;
-    case 6:  ui->technologyValue->setText(tr("Nickel metal hybride")); break;
+    case 6:  ui->technologyValue->setText(tr("Nickel metal hydride")); break;
     default: ui->technologyValue->setText(tr("Unknown")); break;
     }
 

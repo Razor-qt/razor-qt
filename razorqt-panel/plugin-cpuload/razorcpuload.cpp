@@ -99,7 +99,7 @@ void RazorCpuLoad::timerEvent(QTimerEvent *event)
 	if ( qAbs(m_avg-avg)>1 )
 	{
 		m_avg = avg;
-		setToolTip(tr("Cpu load %1%").arg(m_avg));
+        setToolTip(tr("CPU load %1%").arg(m_avg));
 		update();
 	}
 }

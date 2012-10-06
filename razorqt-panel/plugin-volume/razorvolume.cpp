@@ -67,17 +67,17 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
 
     QKeySequence keySequenceVolumeUp(Qt::Key_VolumeUp);
     if (!m_keyVolumeUp->setShortcut(keySequenceVolumeUp)) {
-        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceVolumeUp.toString()));
+        RazorNotification::notify(tr("Volume Control: Global shortcut '%1' cannot be registered").arg(keySequenceVolumeUp.toString()));
     }
 
     QKeySequence keySequenceVolumeDown(Qt::Key_VolumeDown);
     if (!m_keyVolumeDown->setShortcut(keySequenceVolumeDown)) {
-        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceVolumeDown.toString()));
+        RazorNotification::notify(tr("Volume Control: Global shortcut '%1' cannot be registered").arg(keySequenceVolumeDown.toString()));
     }
 
     QKeySequence keySequenceMuteToggle(Qt::Key_VolumeMute);
     if (!m_keyMuteToggle->setShortcut(keySequenceMuteToggle)) {
-        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(keySequenceMuteToggle.toString()));
+        RazorNotification::notify(tr("Volume Control: Global shortcut '%1' cannot be registered").arg(keySequenceMuteToggle.toString()));
     }
 
     connect(m_keyVolumeUp, SIGNAL(activated()), this, SLOT(handleShortcutVolumeUp()));

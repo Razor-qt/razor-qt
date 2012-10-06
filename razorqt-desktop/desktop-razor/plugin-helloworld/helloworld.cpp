@@ -76,7 +76,7 @@ QString HelloWorld::instanceInfo()
 void HelloWorld::configure()
 {
     bool ok;
-    QString txt = QInputDialog::getText(0, tr("Display Text Configuretion"), tr("Edit HTML"), QLineEdit::Normal, m_item->toHtml(), &ok);
+    QString txt = QInputDialog::getText(0, tr("Display Text Configuration"), tr("Edit HTML"), QLineEdit::Normal, m_item->toHtml(), &ok);
     if (!ok)
         return;
     m_item->setHtml(txt);

@@ -2,7 +2,7 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Cpu monitor
+Name=CPU monitor
 Comment=Displays the current CPU load.
 
 Name[ru]=Загрузка ЦП
