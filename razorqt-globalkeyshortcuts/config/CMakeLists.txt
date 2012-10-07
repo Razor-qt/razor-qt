@@ -35,7 +35,7 @@ set(LIBRARIES
 
 
 # Translations **********************************
-razor_translate_ts(razor-sessioncfg_QM_FILES
+razor_translate_ts(QM_FILES
     SOURCES
         ${H_FILES}
         ${CPP_FILES}

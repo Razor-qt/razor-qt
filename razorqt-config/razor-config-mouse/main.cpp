@@ -13,6 +13,7 @@
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
 #include "main.h"
+#include "razortranslate.h"
 
 #include <razorqt/razorapplication.h>
 #include <QtCore/QFile>
@@ -30,6 +31,7 @@ int main (int argc, char *argv[])
     //QTextCodec::setCodecForLocale(QTextCodec::codecForName("koi8-r"));
 
     RazorApplication app(argc, argv);
+    TRANSLATE_APP;
 
     //qDebug() << findDefaultTheme() << getCurrentTheme();
 

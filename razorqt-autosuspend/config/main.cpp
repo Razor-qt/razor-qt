@@ -26,11 +26,13 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <razorqt/razorapplication.h>
+#include "razortranslate.h"
 #include "mainwindow.h"
+
 int main(int argc, char *argv[])
 {
-
     RazorApplication a(argc, argv);
+    TRANSLATE_APP;
 
     MainWindow mainWindow;
     mainWindow.show();

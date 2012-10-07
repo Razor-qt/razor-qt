@@ -20,6 +20,11 @@ set(PROJECT "${PLUGIN}")
 
 project(${PROJECT})
 
+set(PROGRAM "razor-desktop")
+
+set(PROG_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor/${PROGRAM})
+set(PLUGIN_SHARE_DIR ${PROG_SHARE_DIR}/${PLUGIN})
+
 include_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}/../../libraries
     ${CMAKE_CURRENT_SOURCE_DIR}/../
@@ -28,6 +33,7 @@ include_directories (
 
 qt4_wrap_cpp(HW_MOC_SOURCES ${HW_MOCS})
 qt4_add_resources(QRC_SOURCES ${RESOURCES})
+
 # Translations **********************************
 include(RazorTranslate)
 
@@ -52,5 +58,3 @@ add_dependencies(${PROJECT} razorqt desktop-razor)
 
 install(TARGETS ${PROJECT} DESTINATION ${DESKTOP_PLUGIN_DIR})
 install(FILES ${DESKTOP_FILES} DESTINATION share/razor/razor-desktop/)
-install(FILES ${QM_FILES}      DESTINATION ${PLUGIN_SHARE_DIR})
-

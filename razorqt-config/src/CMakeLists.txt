@@ -41,7 +41,7 @@ razor_translate_desktop(DESKTOP_FILES
 )
 #************************************************
 
-add_executable ( razor-config ${razor-config_SRCS} ${UIS} ${MOCS} ${DESKTOP_FILES})
+add_executable ( razor-config ${razor-config_SRCS} ${UIS} ${MOCS} ${DESKTOP_FILES} ${QM_FILES})
 add_dependencies( razor-config razorqt qtxdg)
 target_link_libraries ( razor-config
                 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTXML_LIBRARY}

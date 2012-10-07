@@ -67,6 +67,7 @@ add_executable ( ${PROJECT_NAME}
                  ${UIS} 
                  ${MOCS} 
                  ${DESKTOP_FILES}
+                 ${QM_FILES}
                )
 
 target_link_libraries ( razor-config-autosuspend  

@@ -31,12 +31,13 @@
 #include <razorqt/razorsettings.h>
 
 #include "desktopconfigwindow.h"
-
+//#include "razortranslate.h"
 
 int main(int argc, char** argv)
 {
     // TODO/FIXME: maybe singleapp?
     RazorApplication a(argc, argv);
+    //TRANSLATE_APP;
 
     DesktopConfigWindow w;
     w.show();
