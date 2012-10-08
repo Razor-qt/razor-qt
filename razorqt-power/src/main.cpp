@@ -47,10 +47,10 @@ void help()
     out << endl;
     out << "Actions:" << endl;
     out << "  logout            Close the current user session." << endl;
-    out << "  hibernate         Hibernate the comuter" << endl;
-    out << "  reboot            Reboot the comuter" << endl;
-    out << "  shutdown, halt    Shutdown the comuter" << endl;
-    out << "  suspend           Suspend the comuter" << endl;
+    out << "  hibernate         Hibernate the computer" << endl;
+    out << "  reboot            Reboot the computer" << endl;
+    out << "  shutdown, halt    Shutdown the computer" << endl;
+    out << "  suspend           Suspend the computer" << endl;
 
 }
 

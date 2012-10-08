@@ -121,7 +121,7 @@ void RazorVolumeConfiguration::ignoreMaxVolumeCheckBoxChanged(bool state)
 
 void RazorVolumeConfiguration::loadSettings()
 {
-    if (settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString() == "PulseAudio")
+    if (settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString().toLower() == "pulseaudio")
         ui->pulseAudioRadioButton->setChecked(true);
     else
         ui->alsaRadioButton->setChecked(true);

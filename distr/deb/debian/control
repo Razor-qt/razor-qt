@@ -310,7 +310,7 @@ Description: Razor-qt openssh ask password interface
  This application relies on desktop environment integration
  and works depending on it, for that please read docs.
  .
- This package is part of the Razor-Qt.
+ This package is part of the Razor-qt.
 
 %if POLKIT yes
 Package: razorqt-policykit-agent
@@ -323,7 +323,7 @@ Description: lightweight PolicyKit agent/user interface
  for the usage of Razor-qt desktop or any other desktop.
  .
  It was written for Razor-qt DE but it can be used standalone as well.
- Desktop Independent polkit component from Razor-Qt desktop.
+ Desktop Independent polkit component from Razor-qt desktop.
  .
  This package is part of the Razor-qt.
 %endif
