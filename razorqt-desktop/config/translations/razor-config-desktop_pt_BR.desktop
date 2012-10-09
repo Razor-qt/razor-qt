@@ -13,3 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+Comment[pt_BR]=Configure o módulo da área de trabalho do Razor-Qt
+GenericName[pt_BR]=Configurador da área de trabalho Razor
+Name[pt_BR]=Configurador da área de trabalho Razor
+Icon[pt_BR]=preferences-desktop

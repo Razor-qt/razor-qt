@@ -2,12 +2,12 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Network Monitor
-Comment=Network Monitor
+Name=Network monitor
+Comment=Displays network status and activity.
 
 
 
 
 # Translations
-Comment[uk]=Центр налаштувань Razor
-Name[uk]=Налаштувати модулі Razor-Qt
+Comment[uk]=Показує стан та активність мережі.
+Name[uk]=Монітор мережі

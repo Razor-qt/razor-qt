@@ -13,3 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+Comment[fi]=Hallinnoi Razor-Qt:n työpöytämoduulia
+GenericName[fi]=Razor-työpöydän hallinta
+Name[fi]=Razor-työpöydän hallinta
+Icon[fi]=asetukset-työpöytä

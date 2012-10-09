@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
+Comment[pt_BR]=Configurar módulos Qt
+GenericName[pt_BR]=Configuração
+Name[pt_BR]=Centro De Configuração
+Icon[pt_BR]=preferences-system

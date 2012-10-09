@@ -13,3 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+Comment[pl_PL]=Konfiguruj moduł pulpitu Razor-Qt
+GenericName[pl_PL]=Konfigurator Razor Desktop
+Name[pl_PL]=Konfigurator Razor Desktop
+Icon[pl_PL]=ustawienia-pulpitu

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Color picker
+Comment=Get the color under the cursor. For web developers.
+
+
+# Translations
+Comment[it_IT]=Rileva il colore sotto il cursore. Per sviluppatori web.
+Name[it_IT]=Selettore del colore

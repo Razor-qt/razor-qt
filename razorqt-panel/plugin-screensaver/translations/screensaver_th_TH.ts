@@ -2,14 +2,8 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <location filename="../panelscreensaver.cpp" line="59"/>
-        <source>Global keyboard shortcut</source>
-        <translation>ปุ่มลัดส่วนกลาง</translation>
-    </message>
-    <message>
-        <location filename="../panelscreensaver.cpp" line="60"/>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>ปุ่มลัดส่วนกลางโปรแกรมรักษาหน้าจอ: &apos;%1&apos; ไม่สามารถใช้ปุ่มนี้ได้</translation>
+        <translation>โปรแกรมรักษาหน้าจอ: ไม่สารมารถตั้ง &apos;%1&apos; เป็นปุ่มลัดส่วนกลางได้</translation>
     </message>
 </context>
 </TS>

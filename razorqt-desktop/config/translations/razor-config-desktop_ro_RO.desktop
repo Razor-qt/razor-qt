@@ -13,3 +13,6 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+GenericName[ro_RO]=Configurare desktop Razor
+Name[ro_RO]=Configurare desktop Razor
+Icon[ro_RO]=preferences-desktop

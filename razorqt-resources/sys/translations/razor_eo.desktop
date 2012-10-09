@@ -1,7 +1,7 @@
 [Desktop Entry]
-Encoding=UTF-8
-Type=XSession
+Type=Application
 Exec=razor-session
+#TryExec=razor-session
 Name=Razor Desktop
 Comment=Qt4 Desktop
 
@@ -9,3 +9,5 @@ Comment=Qt4 Desktop
 
 
 # Translations
+Name[eo]=Razora labortablo
+Comment[eo]=Qt4-labortablo

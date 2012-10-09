@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
         <translation>Configuración del reloj de Razor</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation>Mostrar segundos</translation>
+        <source>&amp;Show seconds</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation>Estilo de 12 horas</translation>
+        <source>12 &amp;hour style</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Fecha</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation>Mostrar la fecha</translation>
+        <source>Show &amp;date</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation>Mostrar la fecha en una nueva línea</translation>
+        <source>D&amp;ate format</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation>Formato de fecha</translation>
+        <source>Fon&amp;t</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

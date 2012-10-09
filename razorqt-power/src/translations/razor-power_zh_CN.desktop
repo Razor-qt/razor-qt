@@ -12,3 +12,6 @@ GenericName=Leave the system
 
 
 # Translations
+GenericName[zh_CN]=离开系统
+Name[zh_CN]=离开
+Icon[zh_CN]=系统关闭

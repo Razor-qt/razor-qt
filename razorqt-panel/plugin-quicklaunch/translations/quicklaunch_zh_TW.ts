@@ -1,20 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="zh_TW">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.0">
 <context>
     <name>QuickLaunchButton</name>
     <message>
-        <location filename="../quicklaunchbutton.cpp" line="54"/>
         <source>Move left</source>
         <translation>往左移</translation>
     </message>
     <message>
-        <location filename="../quicklaunchbutton.cpp" line="57"/>
         <source>Move right</source>
         <translation>往右移</translation>
     </message>
     <message>
-        <location filename="../quicklaunchbutton.cpp" line="61"/>
         <source>Remove from quicklaunch</source>
         <translation>從快速啟動中移除</translation>
     </message>
@@ -22,14 +17,12 @@
 <context>
     <name>RazorQuickLaunch</name>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="176"/>
         <source>Drop Error</source>
-        <translation>出現錯誤</translation>
+        <translation>移入錯誤</translation>
     </message>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="177"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
-        <translation>檔案位址 &apos;%1&apos; 暫時無法被嵌入快速啟動中</translation>
+        <translation>檔案位址&apos;%1&apos;現在無法嵌入至快速啟動</translation>
     </message>
 </context>
 </TS>

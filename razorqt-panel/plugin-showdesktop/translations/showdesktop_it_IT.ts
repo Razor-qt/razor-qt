@@ -2,19 +2,12 @@
 <context>
     <name>ShowDesktop</name>
     <message>
-        <location filename="../showdesktop.cpp" line="55"/>
-        <source>Global keyboard shortcut</source>
-        <translation>Scorciatoie globali da tastiera</translation>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Mostra desktop: la scorciatoia globale &apos;%1&apos; non può essere registrata</translation>
     </message>
     <message>
-        <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>La scorciatoia globale da tastiera: &apos;%1&apos; non può essere registrata</translation>
-    </message>
-    <message>
-        <location filename="../showdesktop.cpp" line="61"/>
         <source>Show Desktop</source>
-        <translation>Mostra Desktop</translation>
+        <translation>Mostra desktop</translation>
     </message>
 </context>
 </TS>

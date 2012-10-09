@@ -15,3 +15,5 @@ GenericName=Razor Configuration
 # Translations
 Comment[ro_RO]=Configurează modulele Razor-Qt
 GenericName[ro_RO]=Configurație Razor
+Name[ro_RO]=Centru de configurare Razor
+Icon[ro_RO]=preferences-system

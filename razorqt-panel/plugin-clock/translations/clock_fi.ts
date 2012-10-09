@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
         <translation>Razorin kellon asetukset</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
         <translation>Aika</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation>Näytä sekunnit</translation>
+        <source>&amp;Show seconds</source>
+        <translation>&amp;Näytä sekunnit</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation>12 tunnin näyttötapa</translation>
+        <source>12 &amp;hour style</source>
+        <translation>&amp;12 tunnin esitystapa</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation>&amp;Kirjasin</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>Kirjasin</translation>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Päivä</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation>Näytä päivä</translation>
+        <source>Show &amp;date</source>
+        <translation>Näytä &amp;päivä</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation>Näytä päivä omalla rivillään</translation>
+        <source>D&amp;ate format</source>
+        <translation>Päiväyksen &amp;muoto</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation>Päivän muoto</translation>
+        <source>Fon&amp;t</source>
+        <translation>Ki&amp;rjasin</translation>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation>Näytä päivä &amp;omalla rivillä</translation>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation>Käytä &amp;teeman kirjasimia</translation>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation>Kirjasin aikaa varten</translation>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation>Kirjasin päiväystä varten</translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation>Todella vaalea</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Vaalea</translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation>Todella musta</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation>Musta</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Lihavoitu</translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation>Hieman lihavoitu</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Kursivoitu</translation>
     </message>
 </context>
 </TS>

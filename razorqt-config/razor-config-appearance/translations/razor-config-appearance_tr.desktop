@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[tr]=preferences-desktop-theme
+Comment[tr]=Razor masaüstünün görünümünü yapılandırın
+GenericName[tr]=Razor Görünüm Yapılandırıcı
+Name[tr]=Razor Görünüm Yapılandırıcı

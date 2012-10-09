@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Task Manager
+Name=Task manager
 Comment=Switch between running applications
 
 #TRANSLATIONS_DIR=../translations
@@ -9,4 +9,4 @@ Comment=Switch between running applications
 
 # Translations
 Comment[es]=Cambia entre aplicaciones activas
-Name[es]=Administrador de Tareas
+Name[es]=Administrador de tareas

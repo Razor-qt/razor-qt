@@ -13,3 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+Comment[zh_CN]=配置 Razor-Qt 桌面模块
+GenericName[zh_CN]=Razor 桌面配置
+Name[zh_CN]=Razor 桌面配置
+Icon[zh_CN]=桌面首选项

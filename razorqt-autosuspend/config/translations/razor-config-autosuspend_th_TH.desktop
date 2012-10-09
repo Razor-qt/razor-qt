@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-config-autosuspend
+Icon=razor-autosuspend
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Name=Razor Autosuspend Configuration
+GenericName=Razor Autosuspend Configuration
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+GenericName[th_TH]=การตั้งค่าการพักเครื่องอัตโนมัติ Razor
+Name[th_TH]=การตั้งค่าการพักเครื่องอัตโนมัติ Razor
+Icon[th_TH]=razor-การพักเครื่องอัตโนมัติ

@@ -2,47 +2,38 @@
 <context>
     <name>ConfigureDialog</name>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="14"/>
         <source>Razor-runner Settings</source>
-        <translation>Configurações do executador</translation>
+        <translation>Configurações do executor do Razor</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="20"/>
         <source>Appearance</source>
         <translation>Aparência</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="26"/>
         <source>Positioning:</source>
         <translation>Posicionamento:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="36"/>
         <source>Show on:</source>
-        <translation>Mostrar em:</translation>
+        <translation>Exibir em:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="56"/>
         <source>Shortcut:</source>
         <translation>Atalho:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="70"/>
         <source>Top edge of screen</source>
         <translation>Borda superior da tela</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="71"/>
         <source>Center of screen</source>
         <translation>Centro da tela</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="77"/>
         <source>Monitor where the mouse</source>
         <translation>Onde o mouse estiver no monitor</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="82"/>
         <source>Always on %1 monitor</source>
         <translation>Sempre no monitor %1</translation>
     </message>
@@ -50,32 +41,35 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../dialog.ui" line="26"/>
         <source>Application launcher </source>
-        <translation>Lançador de aplicação</translation>
+        <translation>Lançador de aplicativo</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="91"/>
         <source>Configure razor-runner</source>
-        <translation>Configurar executador</translation>
+        <translation>Configurar o executor do Razor</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="296"/>
+        <source>Clear razor-runner History</source>
+        <translation>Limpar o histórico do executor do Razor</translation>
+    </message>
+    <message>
         <source>Press &quot;%1&quot; to see dialog.</source>
-        <translation>ressione &quot;%1&quot; para ver diálogo.</translation>
+        <translation>Pressione &quot;%1&quot; para ver o diálogo.</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../providers.cpp" line="221"/>
         <source>History</source>
-        <translation>Hostórico</translation>
+        <translation>Histórico</translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="307"/>
         <source>Mathematics</source>
         <translation>Matemática</translation>
+    </message>
+    <message>
+        <source>Razor Power Management</source>
+        <translation>Gerenciamento de energia do Razor</translation>
     </message>
 </context>
 </TS>

@@ -2,14 +2,8 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <location filename="../panelscreensaver.cpp" line="59"/>
-        <source>Global keyboard shortcut</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../panelscreensaver.cpp" line="60"/>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Ekrano užsklandos klavišas: „%1“ negali būti registruojamas</translation>
     </message>
 </context>
 </TS>

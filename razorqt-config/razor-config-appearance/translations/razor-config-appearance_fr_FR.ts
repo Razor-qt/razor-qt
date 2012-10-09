@@ -2,12 +2,10 @@
 <context>
     <name>IconThemeConfig</name>
     <message>
-        <location filename="../mainwindow.ui" line="14"/>
         <source>Razor Appearance Configuration</source>
         <translation>Configuration de l&apos;apparence de Razor</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="26"/>
         <source>Icons Theme</source>
         <translation>Thème d&apos;icones</translation>
     </message>
@@ -15,14 +13,23 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="44"/>
         <source>Razor Appearance Configuration</source>
         <translation>Configuration de l&apos;apparence de Razor</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="46"/>
         <source>Icons Theme</source>
         <translation>Thème d&apos;icones</translation>
+    </message>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Thème de Razor</translation>
+    </message>
+</context>
+<context>
+    <name>RazorThemeConfig</name>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Thème de Razor</translation>
     </message>
 </context>
 </TS>

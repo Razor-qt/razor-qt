@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[ro_RO]=preferences-desktop-theme
+Comment[ro_RO]=Configurează aspectul desktopului Razor
+GenericName[ro_RO]=Configurare aspect Razor
+Name[ro_RO]=Configurare aspect Razor

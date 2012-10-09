@@ -2,169 +2,125 @@
 <context>
     <name>ConfigPanelDialog</name>
     <message>
-        <location filename="../configpaneldialog.ui" line="14"/>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>Configurează panoul</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="20"/>
         <source>Panel size</source>
-        <translation type="unfinished"/>
+        <translation>Dimensiune panou</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="26"/>
         <source>Size:</source>
         <translation>Dimensiune:</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="33"/>
-        <location filename="../configpaneldialog.ui" line="115"/>
         <source>px</source>
         <translation>px</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="43"/>
-        <source>Use theme size</source>
-        <translation>Utilizează dimensiunea temei</translation>
+        <source>Use automatic sizing</source>
+        <translation>Utilizează dimensionarea automată</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="60"/>
-        <source>Panel lenght &amp; position</source>
-        <translation type="unfinished"/>
+        <source>Panel length &amp;&amp; position</source>
+        <translation>Lungime și &amp;poziție panou</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="73"/>
-        <source>Length:</source>
-        <translation>Lungime:</translation>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="80"/>
-        <source>Alignment:</source>
-        <translation>Aliniere:</translation>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="91"/>
         <source>Left</source>
         <translation>Stânga</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="96"/>
         <source>Center</source>
         <translation>Centru</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="101"/>
         <source>Right</source>
         <translation>Dreapta</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="110"/>
         <source>%</source>
         <translation>%</translation>
     </message>
-</context>
-<context>
-    <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="583"/>
+        <source>Alignment:</source>
+        <translation>Aliniere:</translation>
+    </message>
+    <message>
+        <source>Length:</source>
+        <translation>Lungime:</translation>
+    </message>
+    <message>
+        <source>Position:</source>
+        <translation>Poziție:</translation>
+    </message>
+    <message>
         <source>Top of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Partea de sus a ecranului</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="584"/>
-        <source>Bottom of desktop</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="585"/>
         <source>Left of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Stânga ecranului</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="586"/>
         <source>Right of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Dreapta ecranului</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="593"/>
+        <source>Bottom of desktop</source>
+        <translation>Partea de jos a ecranului</translation>
+    </message>
+    <message>
         <source>Top of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Partea de sus a ecranului %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="594"/>
-        <source>Bottom of desktop %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="595"/>
         <source>Left of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Stânga ecranului %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="596"/>
         <source>Right of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Dreapta ecranului %1</translation>
+    </message>
+    <message>
+        <source>Bottom of desktop %1</source>
+        <translation>Partea de jos a ecranului %1</translation>
     </message>
 </context>
 <context>
-    <name>RazorPanelPluginPrivate</name>
+    <name>RazorPanel</name>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="149"/>
+        <source>Panel</source>
+        <translation>Părăsește</translation>
+    </message>
+    <message>
+        <source>Configure panel...</source>
+        <translation>Configurează panoul...</translation>
+    </message>
+    <message>
+        <source>Add plugins ...</source>
+        <translation>Adaugă module....</translation>
+    </message>
+</context>
+<context>
+    <name>RazorPanelPlugin</name>
+    <message>
         <source>Configure</source>
         <translation>Configurează</translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="154"/>
         <source>Move</source>
         <translation>Mută</translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="160"/>
-        <source>Delete</source>
-        <translation>Șterge</translation>
+        <source>Remove</source>
+        <translation>Elimină</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="838"/>
-        <source>Panel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="849"/>
-        <source>Plugins</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="851"/>
-        <source>Add plugins ...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="860"/>
-        <source>Move plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="866"/>
-        <source>Configure plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="873"/>
-        <source>Delete plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="880"/>
-        <source>Show this panel at</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="923"/>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>Configurează panoul</translation>
     </message>
 </context>
 </TS>

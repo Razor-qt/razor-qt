@@ -1,18 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="zh_CN">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
 <context>
-    <name>MainWindow</name>
+    <name>IconThemeConfig</name>
     <message>
-        <location filename="../mainwindow.ui" line="14"/>
         <source>Razor Appearance Configuration</source>
         <translation>Razor 外观配置</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="55"/>
-        <location filename="../mainwindow.cpp" line="50"/>
         <source>Icons Theme</source>
         <translation>图标主题</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Razor Appearance Configuration</source>
+        <translation>Razor 外观配置</translation>
+    </message>
+    <message>
+        <source>Icons Theme</source>
+        <translation>图标主题</translation>
+    </message>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Razor 主题</translation>
+    </message>
+</context>
+<context>
+    <name>RazorThemeConfig</name>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Razor 主题</translation>
     </message>
 </context>
 </TS>

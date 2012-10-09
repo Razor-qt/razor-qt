@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
+Comment[tr]=Razor-Qt modüllerini yapılandır
+GenericName[tr]=Razor Yapılandırması
+Name[tr]=Razor Yapılandırma Merkezi
+Icon[tr]=preferences-system

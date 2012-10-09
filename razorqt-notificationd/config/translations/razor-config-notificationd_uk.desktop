@@ -14,5 +14,7 @@ GenericName=Razor Freedesktop Notifications Configuration
 
 
 # Translations
-GenericName[uk]=Центр налаштувань Razor
-Name[uk]=Налаштування Razor
+GenericName[uk]=Налаштування Freedesktop сповіщень Razor
+Name[uk]=Налаштування Freedesktop сповіщень Razor
+Icon[uk]=preferences-desktop-theme
+Comment[uk]=Налаштувати Freedesktop сповіщення в стільниці Razor

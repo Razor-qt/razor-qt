@@ -13,3 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+Comment[lt]=Konfigūruoti Razor-Qt darbalaukio modulį
+GenericName[lt]=Razor darbalaukio konfigūravimas
+Name[lt]=Razor darbalaukio konfigūravimas
+Icon[lt]=preferences-desktop

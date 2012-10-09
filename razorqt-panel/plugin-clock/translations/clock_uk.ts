@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
         <translation>Налаштування годинника Razor</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
         <translation>Час</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation>Показувати секунди</translation>
+        <source>&amp;Show seconds</source>
+        <translation>Показувати &amp;секунди</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation>12 годин</translation>
+        <source>12 &amp;hour style</source>
+        <translation>12-&amp;годинний стиль</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation>&amp;Шрифт</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>Шрифт</translation>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation>Показувати дату</translation>
+        <source>Show &amp;date</source>
+        <translation>Показувати &amp;дату</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation>Дата з нового рядка</translation>
+        <source>D&amp;ate format</source>
+        <translation>Формат д&amp;ати</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation>Формат дати</translation>
+        <source>Fon&amp;t</source>
+        <translation>Шриф&amp;т</translation>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation>Показувати дату в &amp;новому рядку</translation>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation>&amp;Використовувати шрифти з теми</translation>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation>Шрифт часу</translation>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation>Шрифт дати</translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation>Надтонкий</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Тонкий</translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation>Дуже темний</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation>Темний</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Жирний</translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation>Напівжирний</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Нахилений</translation>
     </message>
 </context>
 </TS>

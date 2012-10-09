@@ -8,3 +8,5 @@ Comment=Display content (as icons) of the specified directory
 
 
 # Translations
+Comment[pl_PL]=Pokazuje zawartość folderu (jako ikony)
+Name[pl_PL]=Widok ikon

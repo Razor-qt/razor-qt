@@ -14,3 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
+Comment[lt]=Konfigūruoti X11 pelę
+GenericName[lt]=Razor pelės konfigūravimas
+Name[lt]=Razor pelės konfigūravimas
+Icon[lt]=preferences-desktop-mouse

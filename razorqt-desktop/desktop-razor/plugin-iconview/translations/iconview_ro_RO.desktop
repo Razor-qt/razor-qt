@@ -8,3 +8,5 @@ Comment=Display content (as icons) of the specified directory
 
 
 # Translations
+Comment[ro_RO]=Afișează (ca pictograme) conținutul dosarului specificat
+Name[ro_RO]=Vizualizare pictograme

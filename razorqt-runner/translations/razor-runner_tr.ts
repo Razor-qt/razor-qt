@@ -2,80 +2,74 @@
 <context>
     <name>ConfigureDialog</name>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="14"/>
         <source>Razor-runner Settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor-çalıştırıcı Ayarları</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="20"/>
         <source>Appearance</source>
-        <translation type="unfinished"/>
+        <translation>Görünüm</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="26"/>
         <source>Positioning:</source>
-        <translation type="unfinished"/>
+        <translation>Konumlandırma:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="36"/>
         <source>Show on:</source>
-        <translation type="unfinished"/>
+        <translation>Şunda Göster:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.ui" line="56"/>
         <source>Shortcut:</source>
-        <translation type="unfinished"/>
+        <translation>Kısayol:</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="70"/>
         <source>Top edge of screen</source>
-        <translation type="unfinished"/>
+        <translation>Ekranın üst köşesi</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="71"/>
         <source>Center of screen</source>
-        <translation type="unfinished"/>
+        <translation>Ekranın merkezi</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="77"/>
         <source>Monitor where the mouse</source>
-        <translation type="unfinished"/>
+        <translation>Fare konumunda görüntüle</translation>
     </message>
     <message>
-        <location filename="../configuredialog/configuredialog.cpp" line="82"/>
         <source>Always on %1 monitor</source>
-        <translation type="unfinished"/>
+        <translation>Her zaman %1 ekranında</translation>
     </message>
 </context>
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../dialog.ui" line="26"/>
         <source>Application launcher </source>
-        <translation type="unfinished"/>
+        <translation>Uygulama başlatıcı </translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="91"/>
         <source>Configure razor-runner</source>
-        <translation type="unfinished"/>
+        <translation>Razor-çalıştırıcıyı yapılandır</translation>
     </message>
     <message>
-        <location filename="../dialog.cpp" line="296"/>
+        <source>Clear razor-runner History</source>
+        <translation>Razor-çalıştırıcı geçmişini temizle</translation>
+    </message>
+    <message>
         <source>Press &quot;%1&quot; to see dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Diyaloğu görmek için &quot;%1&quot; üzerine basın</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../providers.cpp" line="221"/>
         <source>History</source>
-        <translation type="unfinished"/>
+        <translation>Geçmiş</translation>
     </message>
     <message>
-        <location filename="../providers.cpp" line="307"/>
         <source>Mathematics</source>
-        <translation type="unfinished"/>
+        <translation>İşlemler</translation>
+    </message>
+    <message>
+        <source>Razor Power Management</source>
+        <translation>Razor Güç Yönetimi</translation>
     </message>
 </context>
 </TS>

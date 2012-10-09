@@ -1,16 +1,16 @@
 [Desktop Entry]
 Type=Application
+Version=1.0
+Name=Razor Autosuspend
+TryExec=razor-autosuspend
 Exec=razor-autosuspend
-Icon=razor-autosuspend
-Terminal=false
-Categories=Application;Qt;Utility
-Name=Razor autosuspend
-GenericName=Power management
+OnlyShowIn=Razor;
+Hidden=true
+X-Razor-Need-Tray=true
+X-Razor-Module=true
 
-#TRANSLATIONS_DIR=../translations
+#TRANSLATIONS_DIR=translations
 
 
 # Translations
-GenericName[ro_RO]=Gestiune alimentare
 Name[ro_RO]=Suspendare automată Razor
-Icon[ro_RO]=razor-autosuspend

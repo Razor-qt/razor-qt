@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor laikrodžio nuostatos</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Laikas</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation type="unfinished"/>
+        <source>&amp;Show seconds</source>
+        <translation>&amp;Rodyti sekundes</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation type="unfinished"/>
+        <source>12 &amp;hour style</source>
+        <translation>12 &amp;valandų stilius</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation>Šri&amp;ftas</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>Šriftas</translation>
+    </message>
+    <message>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Data</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation type="unfinished"/>
+        <source>Show &amp;date</source>
+        <translation>Rodyti &amp;datą</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation type="unfinished"/>
+        <source>D&amp;ate format</source>
+        <translation>D&amp;atos formatas</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation type="unfinished"/>
+        <source>Fon&amp;t</source>
+        <translation>Šrif&amp;tas</translation>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation>Datą rodyti &amp;naujoje eilutėje</translation>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation>Na&amp;udoti apipavidalinimo šriftus</translation>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation>Laiko šriftas</translation>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation>Datos šriftas</translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation>Ypač lengvas</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Lengvas</translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation>Ypač juodas</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation>Juodas</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Pusjuodis</translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation>Šiek tiek pastorintas</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Pasviręs</translation>
     </message>
 </context>
 </TS>

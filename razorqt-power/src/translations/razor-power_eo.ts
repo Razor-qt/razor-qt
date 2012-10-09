@@ -2,44 +2,36 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../dialog.ui" line="20"/>
         <source>Leave</source>
-        <translation type="unfinished"/>
+        <translation>Forlasi</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="26"/>
         <source>What do you want the computer to do?</source>
-        <translation type="unfinished"/>
+        <translation>Kion vi volas, ke la komputilo faras?</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="38"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>Elsaluti</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="54"/>
         <source>Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Restartigi</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="70"/>
         <source>Shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Elŝalti</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="80"/>
         <source>Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Prokrasti</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="90"/>
         <source>Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Pasivumigi</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="115"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Nuligi</translation>
     </message>
 </context>
 </TS>

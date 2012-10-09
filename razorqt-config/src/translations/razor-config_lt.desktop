@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
+Comment[lt]=Konfigūruoti Razor-Qt modulius
+GenericName[lt]=Razor konfigūracija
+Name[lt]=Razor konfigūravimo centras
+Icon[lt]=preferences-system

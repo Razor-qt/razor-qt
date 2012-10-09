@@ -8,3 +8,5 @@ Comment=Display content (as icons) of the specified directory
 
 
 # Translations
+Comment[el_GR]=Εμφάνιση περιεχομένου (ως εικονίδια) του συγκεκριμένου καταλόγου
+Name[el_GR]=Προβολή εικονιδίων

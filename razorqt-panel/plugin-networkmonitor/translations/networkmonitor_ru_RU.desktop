@@ -2,8 +2,8 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Network Monitor
-Comment=Network Monitor
+Name=Network monitor
+Comment=Displays network status and activity.
 
 
 

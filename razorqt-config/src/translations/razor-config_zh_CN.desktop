@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
+Comment[zh_CN]=配置 Razor-Qt 模块
+GenericName[zh_CN]=Razor 配置
+Name[zh_CN]=Razor 配置中心
+Icon[zh_CN]=系统首选项

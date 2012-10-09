@@ -1,0 +1,110 @@
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_TW" version="2.0">
+<context>
+    <name>GeneralSettings</name>
+    <message>
+        <source>Dialog</source>
+        <translation>對話</translation>
+    </message>
+    <message>
+        <source>Show battery status icon in tray</source>
+        <translation>在系統夾中顯示電池狀態圖示</translation>
+    </message>
+</context>
+<context>
+    <name>LidSettings</name>
+    <message>
+        <source>Dialog</source>
+        <translation>對話</translation>
+    </message>
+    <message>
+        <source>Lid closed</source>
+        <translation>蓋上</translation>
+    </message>
+    <message>
+        <source>Action:</source>
+        <translation>動作:</translation>
+    </message>
+    <message>
+        <source>Nothing</source>
+        <translation>無</translation>
+    </message>
+    <message>
+        <source>Sleep</source>
+        <translation>睡眠</translation>
+    </message>
+    <message>
+        <source>Hibernate</source>
+        <translation>休眠</translation>
+    </message>
+    <message>
+        <source>Shutdown</source>
+        <translation>關機</translation>
+    </message>
+</context>
+<context>
+    <name>MainWindow</name>
+    <message>
+        <source>Razor Autosuspend Configuration</source>
+        <translation>Razor自動休眠設定</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>一般</translation>
+    </message>
+    <message>
+        <source>Lid closed</source>
+        <translation>蓋上</translation>
+    </message>
+    <message>
+        <source>Power Low</source>
+        <translation>低電量</translation>
+    </message>
+</context>
+<context>
+    <name>PowerLowSettings</name>
+    <message>
+        <source>Dialog</source>
+        <translation>對話</translation>
+    </message>
+    <message>
+        <source>Power low</source>
+        <translation>低電量</translation>
+    </message>
+    <message>
+        <source>Action:</source>
+        <translation>動作:</translation>
+    </message>
+    <message>
+        <source>Warning:</source>
+        <translation>警告:</translation>
+    </message>
+    <message>
+        <source> seconds</source>
+        <translation>秒</translation>
+    </message>
+    <message>
+        <source>Level is low at:</source>
+        <translation>電量低於:</translation>
+    </message>
+    <message>
+        <source> %</source>
+        <translation>%</translation>
+    </message>
+    <message>
+        <source>Nothing</source>
+        <translation>無</translation>
+    </message>
+    <message>
+        <source>Sleep</source>
+        <translation>睡眠</translation>
+    </message>
+    <message>
+        <source>Hibernate</source>
+        <translation>休眠</translation>
+    </message>
+    <message>
+        <source>Shutdown</source>
+        <translation>關機</translation>
+    </message>
+</context>
+</TS>

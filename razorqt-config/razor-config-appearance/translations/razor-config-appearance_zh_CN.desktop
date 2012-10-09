@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[zh_CN]=桌面主题首选项
+Comment[zh_CN]=配置 Razor 桌面的外观
+GenericName[zh_CN]=Razor 外观配置
+Name[zh_CN]=Razor 外观配置

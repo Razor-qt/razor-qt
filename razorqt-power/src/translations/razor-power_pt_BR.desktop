@@ -12,3 +12,6 @@ GenericName=Leave the system
 
 
 # Translations
+GenericName[pt_BR]=Sair do sistema
+Name[pt_BR]=Sair
+Icon[pt_BR]=system-shutdown

@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[el_GR]=preferences-desktop-theme
+Comment[el_GR]=Διαμόρφωση εμφάνισης της επιφάνειας εργασίας Razor
+GenericName[el_GR]=Διαμόρφωση εμφάνισης Razor
+Name[el_GR]=Διαμόρφωση εμφάνισης Razor

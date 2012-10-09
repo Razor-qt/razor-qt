@@ -1,0 +1,20 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-mouse
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-mouse
+Name=Razor Mouse Configurator
+Comment=Configure X11 mouse
+GenericName=Razor Mouse Configurator
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[eu]=Konfiguratu X11 sagua
+GenericName[eu]=Razor sagu-konfiguratzailea
+Name[eu]=Razor sagu-konfiguratzailea
+Icon[eu]=hobespenak-mahaigaina-sagua

@@ -2,21 +2,22 @@
 <context>
     <name>ConfigureDialog</name>
     <message>
-        <location filename="../configuredialog.ui" line="14"/>
         <source>Analog clock settings</source>
-        <translation type="unfinished"/>
+        <translation>Basit saat ayarları</translation>
     </message>
     <message>
-        <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Saniye kolunu göster</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../clock.cpp" line="91"/>
         <source>Clock</source>
+        <translation>Saat</translation>
+    </message>
+    <message>
+        <source>Clock:</source>
         <translation type="unfinished"/>
     </message>
 </context>

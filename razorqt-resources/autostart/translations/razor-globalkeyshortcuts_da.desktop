@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Global Keyboard Shortcuts
+TryExec=razor-globalkeyshortcuts
+Exec=razor-globalkeyshortcuts
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[da]=Globale genvejstaster

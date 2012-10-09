@@ -2,17 +2,10 @@
 <context>
     <name>ShowDesktop</name>
     <message>
-        <location filename="../showdesktop.cpp" line="55"/>
-        <source>Global keyboard shortcut</source>
-        <translation>Algemeen toetsenbord snelkoppeling</translation>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Bureaublad weergeven: Global snelkoppeling &apos;%1&apos; kan niet worden geregistreerd</translation>
     </message>
     <message>
-        <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>Paneel Toon Bureaublad Algemene snelkoppeling: &apos;%1&apos; kan niet worden toegepast</translation>
-    </message>
-    <message>
-        <location filename="../showdesktop.cpp" line="61"/>
         <source>Show Desktop</source>
         <translation>Toon Bureaublad</translation>
     </message>

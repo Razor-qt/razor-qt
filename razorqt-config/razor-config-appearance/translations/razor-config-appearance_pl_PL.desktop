@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[pl_PL]=preferences-desktop-theme
+Comment[pl_PL]=Konfiguruj wylgąd pulpitu Razor
+GenericName[pl_PL]=Konfiguracja wyglądu Razor
+Name[pl_PL]=Konfiguracja wyglądu Razor

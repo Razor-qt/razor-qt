@@ -2,9 +2,11 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Application menu
-Comment=Menu based application launcher
+Comment=A menu of all your applications.
 
 #TRANSLATIONS_DIR=../translations
 
 
 # Translations
+Comment[eo]=Lanĉilo de aplikaĵoj baziĝita sur menuo
+Name[eo]=Menuo de aplikaĵoj

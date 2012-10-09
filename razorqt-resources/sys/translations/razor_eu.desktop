@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-session
+#TryExec=razor-session
+Name=Razor Desktop
+Comment=Qt4 Desktop
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[eu]=Razor mahaigaina
+Comment[eu]=Qt4 mahaigaina

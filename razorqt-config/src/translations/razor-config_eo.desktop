@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
+Comment[eo]=Agordi modulojn de Razor-Qt
+GenericName[eo]=Agordilo de Razor
+Name[eo]=Agordcentro de Razor
+Icon[eo]=preferences-system

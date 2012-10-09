@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[lt]=preferences-desktop-theme
+Comment[lt]=Konfigūruoti Razor darbalaukio išvaizdą
+GenericName[lt]=Razor išvaizdos konfigūravimas
+Name[lt]=Razor išvaizdos konfigūravimas

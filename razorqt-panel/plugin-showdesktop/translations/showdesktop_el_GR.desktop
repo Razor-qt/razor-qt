@@ -1,10 +1,12 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Show Desktop
+Name=Show desktop
 Comment=Minimize all windows and show the desktop
 
 #TRANSLATIONS_DIR=../translations
 
 
 # Translations
+Comment[el_GR]=Ελαχιστοποίηση όλων των παραθύρων και εμφάνιση της επιφάνειας εργασίας
+Name[el_GR]=Εμφάνιση επιφάνειας εργασίας

@@ -13,3 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
+Comment[tr]=Razor-Qt masaüstü modülünü yapılandır
+GenericName[tr]=Razor Masaüstü Yapılandırıcı
+Name[tr]=Razor Masaüstü Yapılandırıcı
+Icon[tr]=preferences-desktop

@@ -9,7 +9,11 @@ Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
 
-#TRANSLATIONS_DIR=../translations
+#TRANSLATIONS_DIR=translations
 
 
 # Translations
+Comment[eo]=Agordi modulon de seanco de Razor-Qt
+GenericName[eo]=Agordilo de seanco de Razor
+Name[eo]=Agordilo de seanco de Razor
+Icon[eo]=preferences-system-session-services

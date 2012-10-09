@@ -8,3 +8,5 @@ Comment=Display rich text on the screen
 
 
 # Translations
+Comment[zh_CN]=在屏幕上显示富文本
+Name[zh_CN]=Hello World

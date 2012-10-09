@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
-        <translation>Impostazioni Orologio</translation>
+        <translation>Impostazioni dell&apos;orologio di Razor</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
         <translation>Ora</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation>Mostra Secondi</translation>
+        <source>&amp;Show seconds</source>
+        <translation>&amp;Mostra i secondi</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation>12 ore</translation>
+        <source>12 &amp;hour style</source>
+        <translation>&amp;Stile 12 ore</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation>&amp;Carattere</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>Carattere</translation>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation>Mostra data</translation>
+        <source>Show &amp;date</source>
+        <translation>Mostra la &amp;data</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation>Mostra data su altra riga</translation>
+        <source>D&amp;ate format</source>
+        <translation>&amp;Formato della data</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation>Formato data</translation>
+        <source>Fon&amp;t</source>
+        <translation>Cara&amp;ttere</translation>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation>Mostra la data in una &amp;nuova riga</translation>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation>&amp;Utilizza i caratteri del tema</translation>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation>Carattere dell&apos;ora</translation>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation>Carattere della data</translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation>Chiarissimo</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Chiaro</translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation>Nerissimo</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation>Nero</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Grassetto</translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation>Neretto</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Corsivo</translation>
     </message>
 </context>
 </TS>

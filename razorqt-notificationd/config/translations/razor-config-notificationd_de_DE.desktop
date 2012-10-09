@@ -16,4 +16,5 @@ GenericName=Razor Freedesktop Notifications Configuration
 # Translations
 GenericName[de_DE]=Anwendungsmenü
 Name[de_DE]=Razor Freedesktop Mitteilungen Konfiguration
+Icon[de_DE]=Einstellungen-Desktop-Theme
 Comment[de_DE]=Freedesktop Mitteilungen für Razor Desktop konfigurieren

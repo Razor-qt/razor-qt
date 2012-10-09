@@ -12,3 +12,6 @@ GenericName=Leave the system
 
 
 # Translations
+GenericName[de_DE]=System verlassen
+Name[de_DE]=Verlassen
+Icon[de_DE]=System herunterfahren

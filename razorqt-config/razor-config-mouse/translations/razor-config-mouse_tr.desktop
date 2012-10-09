@@ -14,3 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
+Comment[tr]=X11 faresini yapılandır
+GenericName[tr]=Razor Fare Yapılandırıcı
+Name[tr]=Razor Fare Yapılandırıcı
+Icon[tr]=preferences-desktop-mouse

@@ -1,16 +1,16 @@
 [Desktop Entry]
 Type=Application
+Version=1.0
+Name=Razor Autosuspend
+TryExec=razor-autosuspend
 Exec=razor-autosuspend
-Icon=razor-autosuspend
-Terminal=false
-Categories=Application;Qt;Utility
-Name=Razor autosuspend
-GenericName=Power management
+OnlyShowIn=Razor;
+Hidden=true
+X-Razor-Need-Tray=true
+X-Razor-Module=true
 
-#TRANSLATIONS_DIR=../translations
+#TRANSLATIONS_DIR=translations
 
 
 # Translations
-GenericName[fi]=Virranhallinta
 Name[fi]=Razorin automaattinen valmiustila
-Icon[fi]=razor-autosuspend

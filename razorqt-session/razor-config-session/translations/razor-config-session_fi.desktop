@@ -9,7 +9,11 @@ Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
 
-#TRANSLATIONS_DIR=../translations
+#TRANSLATIONS_DIR=translations
 
 
 # Translations
+Comment[fi]=Hallinnoi Razor-Qt:n istuntomoduulia
+GenericName[fi]=Razorin istunnonhallinta
+Name[fi]=Razorin istunnonhallinta
+Icon[fi]=asetukset-järjestelmä-istunto-palvelut

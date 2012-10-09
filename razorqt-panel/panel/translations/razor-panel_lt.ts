@@ -2,169 +2,125 @@
 <context>
     <name>ConfigPanelDialog</name>
     <message>
-        <location filename="../configpaneldialog.ui" line="14"/>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>Skydelio konfigūravimas</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="20"/>
         <source>Panel size</source>
-        <translation type="unfinished"/>
+        <translation>Skydelio dydis</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="26"/>
         <source>Size:</source>
-        <translation type="unfinished"/>
+        <translation>Dydis:</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="33"/>
-        <location filename="../configpaneldialog.ui" line="115"/>
         <source>px</source>
-        <translation type="unfinished"/>
+        <translation>taškeliai</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="43"/>
-        <source>Use theme size</source>
-        <translation type="unfinished"/>
+        <source>Use automatic sizing</source>
+        <translation>Automatinis dydis</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="60"/>
-        <source>Panel lenght &amp; position</source>
-        <translation type="unfinished"/>
+        <source>Panel length &amp;&amp; position</source>
+        <translation>Skydelio ilgis ir padėtis</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="73"/>
-        <source>Length:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="80"/>
-        <source>Alignment:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="91"/>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Kairinė</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="96"/>
         <source>Center</source>
-        <translation type="unfinished"/>
+        <translation>Centrinė</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="101"/>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Dešininė</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="110"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
-</context>
-<context>
-    <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="583"/>
+        <source>Alignment:</source>
+        <translation>Lygiuotė:</translation>
+    </message>
+    <message>
+        <source>Length:</source>
+        <translation>Ilgis:</translation>
+    </message>
+    <message>
+        <source>Position:</source>
+        <translation>Padėtis:</translation>
+    </message>
+    <message>
         <source>Top of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Darbalaukio viršuje</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="584"/>
-        <source>Bottom of desktop</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="585"/>
         <source>Left of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Darbalaukio kairėje</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="586"/>
         <source>Right of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Darbalaukio dešinėje</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="593"/>
+        <source>Bottom of desktop</source>
+        <translation>Darbalaukio apačioje</translation>
+    </message>
+    <message>
         <source>Top of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 darbalaukio viršuje</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="594"/>
-        <source>Bottom of desktop %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="595"/>
         <source>Left of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 darbalaukio kairėje</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="596"/>
         <source>Right of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 darbalaukio dešinėje</translation>
+    </message>
+    <message>
+        <source>Bottom of desktop %1</source>
+        <translation>%1 darbalaukio apačioje</translation>
     </message>
 </context>
 <context>
-    <name>RazorPanelPluginPrivate</name>
+    <name>RazorPanel</name>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="149"/>
+        <source>Panel</source>
+        <translation>Qlipper</translation>
+    </message>
+    <message>
+        <source>Configure panel...</source>
+        <translation>Konfigūruoti skydelį...</translation>
+    </message>
+    <message>
+        <source>Add plugins ...</source>
+        <translation>Įdėti papildinių...</translation>
+    </message>
+</context>
+<context>
+    <name>RazorPanelPlugin</name>
+    <message>
         <source>Configure</source>
-        <translation type="unfinished"/>
+        <translation>Konfigūruoti</translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="154"/>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>Perkelti</translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="160"/>
-        <source>Delete</source>
-        <translation type="unfinished"/>
+        <source>Remove</source>
+        <translation>Pašalinti</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="838"/>
-        <source>Panel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="849"/>
-        <source>Plugins</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="851"/>
-        <source>Add plugins ...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="860"/>
-        <source>Move plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="866"/>
-        <source>Configure plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="873"/>
-        <source>Delete plugin</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="880"/>
-        <source>Show this panel at</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="923"/>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>Skydelio konfigūravimas</translation>
     </message>
 </context>
 </TS>

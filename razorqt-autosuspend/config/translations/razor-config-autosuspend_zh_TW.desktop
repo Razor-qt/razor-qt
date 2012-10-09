@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-config-autosuspend
+Icon=razor-autosuspend
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Name=Razor Autosuspend Configuration
+GenericName=Razor Autosuspend Configuration
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+GenericName[zh_TW]=Razor自動休眠設定
+Name[zh_TW]=Razor自動休眠設定
+Icon[zh_TW]=Razor自動休眠

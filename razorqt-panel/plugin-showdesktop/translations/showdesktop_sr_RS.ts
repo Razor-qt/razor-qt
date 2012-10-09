@@ -2,17 +2,10 @@
 <context>
     <name>ShowDesktop</name>
     <message>
-        <location filename="../showdesktop.cpp" line="55"/>
-        <source>Global keyboard shortcut</source>
-        <translation>Глобална пречица тастатуре</translation>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>Глобална пречица приказа површи за панел: „%1“ не може бити регистрована</translation>
-    </message>
-    <message>
-        <location filename="../showdesktop.cpp" line="61"/>
         <source>Show Desktop</source>
         <translation>Прикажи радну површ</translation>
     </message>

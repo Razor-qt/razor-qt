@@ -2,32 +2,27 @@
 <context>
     <name>QuickLaunchButton</name>
     <message>
-        <location filename="../quicklaunchbutton.cpp" line="54"/>
         <source>Move left</source>
-        <translation type="unfinished"/>
+        <translation>Sola kaydır</translation>
     </message>
     <message>
-        <location filename="../quicklaunchbutton.cpp" line="57"/>
         <source>Move right</source>
-        <translation type="unfinished"/>
+        <translation>Sağa kaydır</translation>
     </message>
     <message>
-        <location filename="../quicklaunchbutton.cpp" line="61"/>
         <source>Remove from quicklaunch</source>
-        <translation type="unfinished"/>
+        <translation>Hızlı başlatıcıdan kaldır</translation>
     </message>
 </context>
 <context>
     <name>RazorQuickLaunch</name>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="176"/>
         <source>Drop Error</source>
-        <translation type="unfinished"/>
+        <translation>Bırakma Hatası</translation>
     </message>
     <message>
-        <location filename="../razorquicklaunch.cpp" line="177"/>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
-        <translation type="unfinished"/>
+        <translation>Şimdilik &apos;%1&apos; dosyası/bağlantısı Hızlı Başlatıcı&apos; ya eklenemiyor</translation>
     </message>
 </context>
 </TS>

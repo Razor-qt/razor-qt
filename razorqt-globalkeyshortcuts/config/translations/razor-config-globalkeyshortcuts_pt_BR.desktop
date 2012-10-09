@@ -1,0 +1,20 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-globalkeyshortcuts
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-keyboard
+Name=Razor Shortcut Configuration
+Comment=Configure global shortcut of Razor desktop
+GenericName=Razor Global Shortcut Configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[pt_BR]=Configuração Do Atalho
+Icon[pt_BR]=preferências-desktop-teclado
+Comment[pt_BR]=Configurar atalhos globais do desktop Razor
+GenericName[pt_BR]=Configurações Dos Atalhos Globais

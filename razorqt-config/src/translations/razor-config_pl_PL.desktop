@@ -13,3 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
+Comment[pl_PL]=Konfiguruj moduły Razor
+GenericName[pl_PL]=Konfiguracja Razor
+Name[pl_PL]=Panel sterowania Razor
+Icon[pl_PL]=preferences-system

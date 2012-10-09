@@ -2,11 +2,12 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Cpu Load
-Comment=Cpu Load monitor
+Name=Cpu monitor
+Comment=Displays the current CPU load.
 
 
 
 
 # Translations
 Comment[de_DE]=Cpu
+Name[de_DE]=CPU-Auslastung

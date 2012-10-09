@@ -2,57 +2,48 @@
 <context>
     <name>SelectWnd</name>
     <message>
-        <location filename="../ui/selectwnd.ui" line="14"/>
         <source>Razor Mouse Theme Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Wygląd kursora</translation>
     </message>
     <message>
-        <location filename="../ui/selectwnd.ui" line="49"/>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Wybierz motyw kursora ( najedz kursorem na podgląd by przetestować): &lt;b&gt;
+Wymagane jest ponowne uruchomienie sesji &lt;/b&gt;:</translation>
     </message>
     <message>
-        <location filename="../ui/selectwnd.ui" line="78"/>
         <source>&amp;Install New Theme...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zainstaluj Nowe Motywy</translation>
     </message>
     <message>
-        <location filename="../ui/selectwnd.ui" line="85"/>
         <source>&amp;Set Theme</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Wybierz Motyw</translation>
     </message>
     <message>
-        <location filename="../ui/selectwnd.ui" line="92"/>
         <source>&amp;Remove Theme</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Usuń Motyw</translation>
     </message>
     <message>
-        <location filename="../ui/selectwnd.ui" line="99"/>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
     </message>
     <message>
-        <location filename="../selectwnd.cpp" line="150"/>
         <source>XCurTheme error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd XCurTheme</translation>
     </message>
     <message>
-        <location filename="../selectwnd.cpp" line="151"/>
         <source>You can&apos;t remove active theme!</source>
-        <translation type="unfinished"/>
+        <translation>Nie możesz usunąć aktywnego motywu</translation>
     </message>
 </context>
 <context>
     <name>XCursorThemeModel</name>
     <message>
-        <location filename="../thememodel.cpp" line="61"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa</translation>
     </message>
     <message>
-        <location filename="../thememodel.cpp" line="62"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Opis</translation>
     </message>
 </context>
 </TS>

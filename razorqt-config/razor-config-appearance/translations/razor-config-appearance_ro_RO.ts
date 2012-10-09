@@ -2,27 +2,34 @@
 <context>
     <name>IconThemeConfig</name>
     <message>
-        <location filename="../mainwindow.ui" line="14"/>
         <source>Razor Appearance Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Părăsește</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="26"/>
         <source>Icons Theme</source>
-        <translation type="unfinished"/>
+        <translation>Temă pictograme</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="44"/>
         <source>Razor Appearance Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Părăsește</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="46"/>
         <source>Icons Theme</source>
-        <translation type="unfinished"/>
+        <translation>Temă pictograme</translation>
+    </message>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Temă Razor</translation>
+    </message>
+</context>
+<context>
+    <name>RazorThemeConfig</name>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Temă Razor</translation>
     </message>
 </context>
 </TS>

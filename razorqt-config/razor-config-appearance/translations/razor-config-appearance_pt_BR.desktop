@@ -14,3 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[pt_BR]=preferences-desktop-theme
+Comment[pt_BR]=Configure a aparência da área de trabalho Razor
+GenericName[pt_BR]=Configuração da aparência do Razor
+Name[pt_BR]=Configuração da aparência do Razor

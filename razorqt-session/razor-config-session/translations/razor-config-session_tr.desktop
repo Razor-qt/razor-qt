@@ -9,7 +9,11 @@ Name=Razor Session Configurator
 Comment=Configure Razor-Qt session module
 GenericName=Razor Session Configurator
 
-#TRANSLATIONS_DIR=../translations
+#TRANSLATIONS_DIR=translations
 
 
 # Translations
+Comment[tr]=Razor-Qt oturum modülünü yapılandır
+GenericName[tr]=Razor Oturum Yapılandırıcı
+Name[tr]=Razor Oturum Yapılandırıcı
+Icon[tr]=preferences-system-session-services

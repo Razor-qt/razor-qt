@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Desktopswitch
-Comment=Allow to switch virtual desktops
+Name=Desktop switcher
+Comment=Allows easy switching between virtual desktops.
 
 #TRANSLATIONS_DIR=../translations
 

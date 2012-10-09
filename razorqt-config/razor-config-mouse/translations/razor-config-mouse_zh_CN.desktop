@@ -14,3 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
+Comment[zh_CN]=配置 X11 鼠标
+GenericName[zh_CN]=Razor 鼠标配置
+Name[zh_CN]=Razor 鼠标配置
+Icon[zh_CN]=桌面鼠标首选项

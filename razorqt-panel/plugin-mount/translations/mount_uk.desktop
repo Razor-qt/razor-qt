@@ -2,11 +2,11 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 Name=Removable media
-Comment=Removable media handler (USB, CD, DVD, ...)
+Comment=Easy mounting and unmounting of USB and optical drives.
 
 #TRANSLATIONS_DIR=../translations
 
 
 # Translations
-Comment[uk]=Керування знімними носіями (USB, CD, DVD тощо)
+Comment[uk]=Легке керування знімними носіями (USB, CD, DVD тощо)
 Name[uk]=Знімні носії

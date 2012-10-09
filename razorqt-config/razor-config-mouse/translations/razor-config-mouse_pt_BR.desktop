@@ -14,3 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
+Comment[pt_BR]=Configurar mouse X11
+GenericName[pt_BR]=Configurador Do Mouse
+Name[pt_BR]=Configurador Do Mouse
+Icon[pt_BR]=preferences-desktop-mouse

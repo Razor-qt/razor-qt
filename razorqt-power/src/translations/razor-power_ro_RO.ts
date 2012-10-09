@@ -2,44 +2,36 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../dialog.ui" line="20"/>
         <source>Leave</source>
-        <translation type="unfinished"/>
+        <translation>Părăsire</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="26"/>
         <source>What do you want the computer to do?</source>
-        <translation type="unfinished"/>
+        <translation>Ce acțiune doriți să efectuați?</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="38"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>Ieșire</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="54"/>
         <source>Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Repornire</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="70"/>
         <source>Shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Oprire</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="80"/>
         <source>Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Suspendare</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="90"/>
         <source>Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Hibernare</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="115"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Renunță</translation>
     </message>
 </context>
 </TS>

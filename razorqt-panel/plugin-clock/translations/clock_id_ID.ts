@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
         <translation>Setting Waktu Razor</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
         <translation>Waktu</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation>Tamplikan detik</translation>
+        <source>&amp;Show seconds</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation>Bentuk 12 Jam</translation>
+        <source>12 &amp;hour style</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <source>Date</source>
         <translation>Tanggal</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation>Tampilkan tanggal</translation>
+        <source>Show &amp;date</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation>Tampilkan tanggal di baris baru</translation>
+        <source>D&amp;ate format</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation>Format tanggal</translation>
+        <source>Fon&amp;t</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

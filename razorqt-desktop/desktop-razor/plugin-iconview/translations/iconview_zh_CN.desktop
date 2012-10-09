@@ -8,3 +8,5 @@ Comment=Display content (as icons) of the specified directory
 
 
 # Translations
+Comment[zh_CN]=以图标的方式显示制定目录的内容
+Name[zh_CN]=图标视图

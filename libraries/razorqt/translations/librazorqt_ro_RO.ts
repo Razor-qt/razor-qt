@@ -2,22 +2,18 @@
 <context>
     <name>AddPluginDialog</name>
     <message>
-        <location filename="../addplugindialog/addplugindialog.ui" line="14"/>
         <source>Add plugins</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă module</translation>
     </message>
     <message>
-        <location filename="../addplugindialog/addplugindialog.ui" line="22"/>
         <source>Search:</source>
         <translation>Caută:</translation>
     </message>
     <message>
-        <location filename="../addplugindialog/addplugindialog.ui" line="52"/>
         <source>Add plugin</source>
-        <translation type="unfinished"/>
+        <translation>Adaugă modul</translation>
     </message>
     <message>
-        <location filename="../addplugindialog/addplugindialog.ui" line="59"/>
         <source>Close</source>
         <translation>Închide</translation>
     </message>
@@ -25,114 +21,209 @@
 <context>
     <name>PowerManager</name>
     <message>
-        <location filename="../powermanager.cpp" line="96"/>
         <source>Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Hibernare</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="103"/>
         <source>Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Suspendare</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="110"/>
         <source>Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Repornire</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="117"/>
         <source>Shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Oprire</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="124"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>Ieșire</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="137"/>
         <source>Razor Session Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Sesiune Razor - suspendare</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="138"/>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
-        <translation type="unfinished"/>
+        <translation>Doriți să suspendați calculatorul?&lt;p&gt;Suspendă calculatorul într-o stare cu consum minim de energie. Starea sistemului nu va fi păstrată dacă se întrerupe alimentarea.</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="149"/>
         <source>Razor Session Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Sesiune Razor - hibernare</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="150"/>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
-        <translation type="unfinished"/>
+        <translation>Doriți să treceți calculatorul în stare de hibernare?&lt;p&gt;Calculatorul va trece într-o stare cu consum minim de energie. Starea sistemului va fi păstrată și dacă se întrerupe alimentarea.</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="161"/>
         <source>Razor Session Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Sesiune Razor - repornire</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="162"/>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
-        <translation type="unfinished"/>
+        <translation>Doriți să reporniți calculatorul? Tot ce nu ați salvat se va pierde...</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="173"/>
         <source>Razor Session Shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Sesiune Razor - oprire</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="174"/>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
-        <translation type="unfinished"/>
+        <translation>Doriți să opriți calculatorul? Tot ce nu ați salvat se va pierde...</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="185"/>
         <source>Razor Session Logout</source>
-        <translation type="unfinished"/>
+        <translation>Sesiune Razor - ieșire</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="186"/>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
-        <translation type="unfinished"/>
+        <translation>Doriți să ieșiți din sesiune? Tot ce nu ați salvat se va pierde...</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="197"/>
-        <location filename="../powermanager.cpp" line="202"/>
         <source>Razor Power Manager Error</source>
-        <translation type="unfinished"/>
+        <translation>Eroare gestiune alimentare Razor</translation>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="197"/>
         <source>Hibernate failed.</source>
+        <translation>Hibernarea a eșuat.</translation>
+    </message>
+    <message>
+        <source>Suspend failed.</source>
+        <translation>Suspendarea a eșuat.</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Power Manager Error</source>
+        <translation>Eroare gestiune alimentare</translation>
+    </message>
+    <message>
+        <source>QDBusInterface is invalid</source>
+        <translation>QDBusInterface este incorect</translation>
+    </message>
+    <message>
+        <source>Power Manager Error (D-BUS call)</source>
+        <translation>Eroare gestiune alimentare (apel D-Bus)</translation>
+    </message>
+</context>
+<context>
+    <name>RazorAboutDLGPrivate</name>
+    <message>
+        <source>Version: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../powermanager.cpp" line="202"/>
-        <source>Suspend failed.</source>
+        <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Copyright: %1-%2 %3</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Homepage: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>License: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Da</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Nu</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Qt</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Debug Build</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>System Configuration</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Share Directory</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Translations</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Data Home</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Config Home</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Data Dirs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Cache Home</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Runtime Home</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Autostart Dirs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Xdg Autostart Home</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>RazorConfigDialog</name>
     <message>
-        <location filename="../razorconfigdialog.ui" line="6"/>
         <source>Dialog</source>
         <translation>Dialog</translation>
     </message>
 </context>
 <context>
-    <name>RazorShortcutButton</name>
+    <name>RazorNotificationPrivate</name>
     <message>
-        <location filename="../razorshortcutbutton.cpp" line="49"/>
-        <source>Clear</source>
+        <source>Notifications Fallback</source>
         <translation type="unfinished"/>
     </message>
+</context>
+<context>
+    <name>RazorShortcutButton</name>
     <message>
-        <location filename="../razorshortcutbutton.cpp" line="199"/>
+        <source>Clear</source>
+        <translation>Curăță</translation>
+    </message>
+    <message>
         <source>None</source>
         <translation>Nimic</translation>
     </message>
@@ -140,63 +231,67 @@
 <context>
     <name>ScreenSaver</name>
     <message>
-        <location filename="../screensaver.cpp" line="49"/>
         <source>Lock Screen</source>
         <translation>Blochează ecranul</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="68"/>
-        <location filename="../screensaver.cpp" line="76"/>
-        <location filename="../screensaver.cpp" line="84"/>
-        <location filename="../screensaver.cpp" line="96"/>
-        <location filename="../screensaver.cpp" line="104"/>
-        <location filename="../screensaver.cpp" line="112"/>
-        <location filename="../screensaver.cpp" line="121"/>
         <source>Screen Saver Activation Error</source>
         <translation>Eroare la activarea protecției de ecran</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="69"/>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started due its crash.</source>
         <translation>A apărut o eroare la activarea protecției de ecran. xdg-screensaver nu a putut fi pornit.</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="77"/>
         <source>An error occurred starting screensaver. xdg-screensaver is not installed correctly.</source>
         <translation>A apărut o eroare la activarea protecției de ecran. xdg-screensaver nu a fost instalat corect.</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="85"/>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started.</source>
         <translation>A apărut o eroare la activarea protecției de ecran. xdg-screensaver nu a putut fi pornit.</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="97"/>
         <source>An error occurred starting screensaver. Syntax error in xdg-screensaver arguments.</source>
         <translation>A apărut o eroare la activarea protecției de ecran. Eroare de sintaxă în argumentele xdg-screensaver.</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="105"/>
         <source>An error occurred starting screensaver. Ensure you have xscreensaver installed and running.</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare la pornirea protecției de ecran. Asigurați-vă că ați instalat xscreensaver și că acesta rulează.</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="113"/>
         <source>An error occurred starting screensaver. Action &apos;activate&apos; failed. Ensure you have xscreensaver installed and running.</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare la pornirea protecției de ecran. Acțiunea  &apos;activează&apos;  a eșuat. Asigurați-vă că ați instalat xscreensaver și că acesta rulează.</translation>
     </message>
     <message>
-        <location filename="../screensaver.cpp" line="122"/>
-        <source>An error occurred starting screensaver. Unkown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation>An error occurred starting screensaver. Unkown error - undocumented return value from xdg-screensaver=%1.</translation>
+        <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>about</name>
     <message>
-        <location filename="../razoraboutdlg.ui" line="14"/>
         <source> About Razor</source>
         <translation> Despre Razor</translation>
+    </message>
+    <message>
+        <source>About</source>
+        <translation>Despre</translation>
+    </message>
+    <message>
+        <source>Authors</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Thanks</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Translations</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Technical Info</source>
+        <translation>Informații tehnice</translation>
     </message>
 </context>
 </TS>

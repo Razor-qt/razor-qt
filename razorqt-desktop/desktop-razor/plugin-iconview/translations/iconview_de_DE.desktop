@@ -8,3 +8,5 @@ Comment=Display content (as icons) of the specified directory
 
 
 # Translations
+Comment[de_DE]=Zeige den Inhalt des ausgewähten Ordners (als Symbole)
+Name[de_DE]=Symbol-Ansicht

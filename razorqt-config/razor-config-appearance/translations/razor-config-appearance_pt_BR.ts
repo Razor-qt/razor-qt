@@ -2,27 +2,34 @@
 <context>
     <name>IconThemeConfig</name>
     <message>
-        <location filename="../mainwindow.ui" line="14"/>
         <source>Razor Appearance Configuration</source>
-        <translation>Configuração Da Aparência</translation>
+        <translation>Configuração da aparência do Razor</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="26"/>
         <source>Icons Theme</source>
-        <translation>Tema De Ícones</translation>
+        <translation>Tema de ícones</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="44"/>
         <source>Razor Appearance Configuration</source>
-        <translation>Configuração Da Aparência</translation>
+        <translation>Configuração da aparência do Razor</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="46"/>
         <source>Icons Theme</source>
-        <translation>Tema De Ícones</translation>
+        <translation>Tema de ícones</translation>
+    </message>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Tema do Razor</translation>
+    </message>
+</context>
+<context>
+    <name>RazorThemeConfig</name>
+    <message>
+        <source>Razor Theme</source>
+        <translation>Tema do Razor</translation>
     </message>
 </context>
 </TS>

@@ -12,3 +12,6 @@ GenericName=Leave the system
 
 
 # Translations
+GenericName[pl_PL]=Opuść system
+Name[pl_PL]=Opuść
+Icon[pl_PL]=system-shutdown

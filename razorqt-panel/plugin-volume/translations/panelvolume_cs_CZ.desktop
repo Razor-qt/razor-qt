@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Volume control
+Comment=Control the system's volume and launch your preferred mixer.
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[cs_CZ]=Ovládejte hlasitost systému a spusťte svůj upřednostňovaný směšovač. 
+Name[cs_CZ]=Ovládání hlasitosti

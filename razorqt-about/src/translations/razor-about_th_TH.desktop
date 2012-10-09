@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-about
+Icon=help-about
+Terminal=false
+OnlyShowIn=X-RAZOR;
+Categories=Qt;System;X-RAZOR;DesktopSettings;Settings;
+Name=About Razor
+GenericName=Learn more about Razor-qt
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+GenericName[th_TH]=เรียนรู้เพิ่มเติมเกี่ยวกับ Razor-qt
+Name[th_TH]=เกี่ยวกับ Razor
+Icon[th_TH]=วิธีใช้-เกี่ยวกับ

@@ -2,19 +2,12 @@
 <context>
     <name>ShowDesktop</name>
     <message>
-        <location filename="../showdesktop.cpp" line="55"/>
-        <source>Global keyboard shortcut</source>
-        <translation>Atalhos globais do teclado</translation>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Mostrar Área De Trabalho: Atalho Global &apos;%1&apos;não pode se registrado</translation>
     </message>
     <message>
-        <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>Atalho Global Do Painel Para Mostrar A Área De Trabalho: &apos;%1&apos; não pôde ser registrado</translation>
-    </message>
-    <message>
-        <location filename="../showdesktop.cpp" line="61"/>
         <source>Show Desktop</source>
-        <translation>Mostrar Área De Trabalho</translation>
+        <translation>Exibir a área de trabalho</translation>
     </message>
 </context>
 </TS>

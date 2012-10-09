@@ -1,10 +1,12 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Screensaver
+Name=Launch screensaver
 Comment=Activate a screensaver and/or lock the screen
 
 #TRANSLATIONS_DIR=../translations
 
 
 # Translations
+Comment[zh_CN]=启用屏幕保护并锁定屏幕
+Name[zh_CN]=屏幕保护

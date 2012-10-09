@@ -2,169 +2,125 @@
 <context>
     <name>ConfigPanelDialog</name>
     <message>
-        <location filename="../configpaneldialog.ui" line="14"/>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>配置面板</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="20"/>
         <source>Panel size</source>
-        <translation type="unfinished"/>
+        <translation>面板大小</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="26"/>
         <source>Size:</source>
-        <translation type="unfinished"/>
+        <translation>大小：</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="33"/>
-        <location filename="../configpaneldialog.ui" line="115"/>
         <source>px</source>
-        <translation type="unfinished"/>
+        <translation>px</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="43"/>
-        <source>Use theme size</source>
-        <translation type="unfinished"/>
+        <source>Use automatic sizing</source>
+        <translation>使用自动缩放</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="60"/>
-        <source>Panel lenght &amp; position</source>
-        <translation type="unfinished"/>
+        <source>Panel length &amp;&amp; position</source>
+        <translation>面板长度和位置</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="73"/>
-        <source>Length:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="80"/>
-        <source>Alignment:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../configpaneldialog.ui" line="91"/>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>左</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="96"/>
         <source>Center</source>
-        <translation type="unfinished"/>
+        <translation>居中</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="101"/>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>右</translation>
     </message>
     <message>
-        <location filename="../configpaneldialog.ui" line="110"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
-</context>
-<context>
-    <name>PositionAction</name>
     <message>
-        <location filename="../razorpanel.cpp" line="583"/>
+        <source>Alignment:</source>
+        <translation>对齐：</translation>
+    </message>
+    <message>
+        <source>Length:</source>
+        <translation>长度：</translation>
+    </message>
+    <message>
+        <source>Position:</source>
+        <translation>位置：</translation>
+    </message>
+    <message>
         <source>Top of desktop</source>
         <translation>桌面顶部</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="584"/>
-        <source>Bottom of desktop</source>
-        <translation>桌面底部</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="585"/>
         <source>Left of desktop</source>
         <translation>桌面左侧</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="586"/>
         <source>Right of desktop</source>
         <translation>桌面右侧</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="593"/>
+        <source>Bottom of desktop</source>
+        <translation>桌面底部</translation>
+    </message>
+    <message>
         <source>Top of desktop %1</source>
         <translation>桌面顶部 %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="594"/>
-        <source>Bottom of desktop %1</source>
-        <translation>桌面底部 %1</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="595"/>
         <source>Left of desktop %1</source>
         <translation>桌面左侧 %1</translation>
     </message>
     <message>
-        <location filename="../razorpanel.cpp" line="596"/>
         <source>Right of desktop %1</source>
         <translation>左面右侧 %1</translation>
     </message>
+    <message>
+        <source>Bottom of desktop %1</source>
+        <translation>桌面底部 %1</translation>
+    </message>
 </context>
 <context>
-    <name>RazorPanelPluginPrivate</name>
+    <name>RazorPanel</name>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="149"/>
+        <source>Panel</source>
+        <translation>qxkb</translation>
+    </message>
+    <message>
+        <source>Configure panel...</source>
+        <translation>配置面板...</translation>
+    </message>
+    <message>
+        <source>Add plugins ...</source>
+        <translation>添加插件 ...</translation>
+    </message>
+</context>
+<context>
+    <name>RazorPanelPlugin</name>
+    <message>
         <source>Configure</source>
-        <translation type="unfinished"/>
+        <translation>配置</translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="154"/>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>移动</translation>
     </message>
     <message>
-        <location filename="../razorpanelplugin.cpp" line="160"/>
-        <source>Delete</source>
-        <translation type="unfinished"/>
+        <source>Remove</source>
+        <translation>删除</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPrivate</name>
     <message>
-        <location filename="../razorpanel.cpp" line="838"/>
-        <source>Panel</source>
-        <translation>面板</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="849"/>
-        <source>Plugins</source>
-        <translation>插件</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="851"/>
-        <source>Add plugins ...</source>
-        <translation>添加插件 ...</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="860"/>
-        <source>Move plugin</source>
-        <translation>移动插件</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="866"/>
-        <source>Configure plugin</source>
-        <translation>配置插件</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="873"/>
-        <source>Delete plugin</source>
-        <translation>删除插件</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="880"/>
-        <source>Show this panel at</source>
-        <translation>将面板显示在</translation>
-    </message>
-    <message>
-        <location filename="../razorpanel.cpp" line="923"/>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>配置面板</translation>
     </message>
 </context>
 </TS>

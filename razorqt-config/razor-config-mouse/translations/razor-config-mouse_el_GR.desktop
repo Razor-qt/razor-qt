@@ -14,3 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
+Comment[el_GR]=Διαμόρφωση ποντικιού X11
+GenericName[el_GR]=Διαμόρφωση ποντικιού Razor
+Name[el_GR]=Διαμόρφωση ποντικιού Razor
+Icon[el_GR]=preferences-desktop-mouse

@@ -14,6 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
-Comment[es]=Configura un ratón X11
-GenericName[es]=Configuración de Ratón Razor
-Name[es]=Configuración de Ratón Razor
+Comment[es]=Configurar ratón X11
+GenericName[es]=Configuración de ratón Razor
+Name[es]=Configuración de ratón Razor
+Icon[es]=preferences-desktop-mouse

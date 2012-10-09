@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
         <translation>Razor时钟设置</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation>显示秒</translation>
+        <source>&amp;Show seconds</source>
+        <translation>显示秒(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation>12小时制</translation>
+        <source>12 &amp;hour style</source>
+        <translation>12小时样式(&amp;H)</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation>字体(&amp;F)</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>字体</translation>
+    </message>
+    <message>
         <source>Date</source>
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation>显示日期</translation>
+        <source>Show &amp;date</source>
+        <translation>显示日期(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation>在新的一行显示日期</translation>
+        <source>D&amp;ate format</source>
+        <translation>日期格式(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation>日期格式</translation>
+        <source>Fon&amp;t</source>
+        <translation>字体(&amp;T)</translation>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation>在新行显示日期(&amp;N)</translation>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation>使用主题字体(&amp;U)</translation>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation>时间字体</translation>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation>日期字体</translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation>超亮</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>亮</translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation>超黑</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation>黑</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>黑体</translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation>半粗体</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>斜体</translation>
     </message>
 </context>
 </TS>

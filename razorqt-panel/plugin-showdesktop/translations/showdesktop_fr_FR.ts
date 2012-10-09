@@ -2,17 +2,10 @@
 <context>
     <name>ShowDesktop</name>
     <message>
-        <location filename="../showdesktop.cpp" line="55"/>
-        <source>Global keyboard shortcut</source>
-        <translation>Raccourci clavier global</translation>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Montrer le bureau : le raccourci global &apos;%1&apos; ne peut pas être défini</translation>
     </message>
     <message>
-        <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>Le raccourci clavier global pour montrer le bureau :&apos;%1&apos; n&apos;a pas pu être enregistré</translation>
-    </message>
-    <message>
-        <location filename="../showdesktop.cpp" line="61"/>
         <source>Show Desktop</source>
         <translation>Montrer le bureau</translation>
     </message>

@@ -2,12 +2,12 @@
 Type=Service
 ServiceTypes=RazorPanel/Plugin
 
-Name=Cpu Load
-Comment=Cpu Load monitor
+Name=Cpu monitor
+Comment=Displays the current CPU load.
 
 
 
 
 # Translations
-Comment[el_GR]=Επόπτης χρήσης CPU
-Name[el_GR]=Χρήση CPU
+Comment[el_GR]=Εμφανίζει την τρέχουσα χρήση ΚΜΕ.
+Name[el_GR]=Επόπτης ΚΜΕ

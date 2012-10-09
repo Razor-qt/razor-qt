@@ -2,19 +2,12 @@
 <context>
     <name>ShowDesktop</name>
     <message>
-        <location filename="../showdesktop.cpp" line="55"/>
-        <source>Global keyboard shortcut</source>
-        <translation type="unfinished"/>
+        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Rodyti darbalaukį: globalusis klavišas „%1“ negali būti registruojamas</translation>
     </message>
     <message>
-        <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../showdesktop.cpp" line="61"/>
         <source>Show Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti darbalaukį</translation>
     </message>
 </context>
 </TS>

@@ -2,12 +2,10 @@
 <context>
     <name>ConfigureDialog</name>
     <message>
-        <location filename="../configuredialog.ui" line="14"/>
         <source>Analog clock settings</source>
         <translation>إعدادات ساعة العقارب</translation>
     </message>
     <message>
-        <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
         <translation>إظهار عقرب ال&amp;ثَّواني</translation>
     </message>
@@ -15,9 +13,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../clock.cpp" line="91"/>
         <source>Clock</source>
         <translation>السَّاعة</translation>
+    </message>
+    <message>
+        <source>Clock:</source>
+        <translation>السَّاعة:</translation>
     </message>
 </context>
 </TS>
