@@ -40,8 +40,6 @@ razor_translate_ts(QM_FILES
         ${H_FILES}
         ${CPP_FILES}
         ${UI_FILES}
-    INSTALLATION_DIR
-        ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config
 )
 
 razor_translate_desktop(DESKTOP_FILES

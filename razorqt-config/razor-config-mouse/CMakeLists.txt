@@ -55,6 +55,8 @@ razor_translate_ts(QM_FILES
         ${razor-config-mouse_HDRS}
         ${razor-config-mouse_SRCS}
         ${razor-config-mouse_UIS}
+    INSTALLATION_DIR
+        ${CMAKE_INSTALL_PREFIX}/share/razor/razor-config
 )
 
 razor_translate_desktop(DESKTOP_FILES
