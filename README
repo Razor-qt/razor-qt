@@ -1,11 +1,46 @@
 Razor-qt
 ========
 
-[Razor-qt](http://razor-qt.org) is a fast, simple and lightweight desktop environment based on the Qt framework.
-While still in alpha stage, Razor ships most core components one would expect from a DE. It is not recommended for production, but remains fully usable for day-to-day usage.
+Razor-qt is an advanced, easy-to-use, and fast desktop environment based on Qt
+technologies. It has been tailored for users who value simplicity, speed, and an
+intuitive interface. Unlike most desktop environments, Razor-qt also works fine
+with weak machines.
 
-Unlike more popular desktop environments, Razor-qt does not ship an application suite. We recommend using pure-Qt applications for best performance, but Gtk or KDE apps remain fully usable.
-A list of pure-Qt applications is maintained [on the wiki](https://github.com/Razor-qt/razor-qt/wiki/3rd-party-applications).
+While still a new project, Razor-qt already contains the key DE components:
+
+    Panel
+    Desktop
+    Application launcher
+    Settings center
+    Notifications
+    Sessions
+
+You can use either all of them or part of them. Razor-qt works with various WMs,
+most of Razor developers use Openbox. But it's no problem to take any modern WM
+from fwwm2 to kwin (yes, KDE without Plasma Desktop is possible too).
+
+Razor-qt is a new open-source project and you can help us improve it. We welcome
+your bug reports and suggestions; you are free to translate all into your own
+language, create more attractive graphics, anything.
+
+For component-specific information, see README files in their respective
+subdirectories.
 
 
-For component-specific information, see README files in their respective subdirectories.
+Resources
+---------
+
+Web Site:
+    http://www.razor-qt.org
+
+Git Repository:
+    https://github.com/Razor-qt/razor-qt
+
+Mailing List:
+    https://groups.google.com/group/razor-qt
+
+Bug Reports:
+    https://github.com/Razor-qt/razor-qt/issues
+
+Wiki:
+    https://github.com/Razor-qt/razor-qt/wiki
