@@ -103,7 +103,7 @@ RazorPanel[position="1"] #DesktopSwitch QToolButton
 /*
  * Clock
  */
-#Clock QLabel {
+#Clock > QWidget > QLabel {
     font-size: 8pt;
     color: #606060;
 }
