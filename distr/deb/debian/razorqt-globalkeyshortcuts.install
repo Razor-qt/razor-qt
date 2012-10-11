@@ -2,3 +2,4 @@
 /usr/bin/razor-config-globalkeyshortcuts
 /usr/share/applications/razor-config-globalkeyshortcuts.desktop
 /etc/xdg/autostart/razor-globalkeyshortcuts.desktop
+/usr/share/razor/razor-config-globalkeyshortcuts/
