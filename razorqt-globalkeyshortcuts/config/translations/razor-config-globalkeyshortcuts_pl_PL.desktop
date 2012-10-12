@@ -1,0 +1,20 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-globalkeyshortcuts
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-keyboard
+Name=Razor Shortcut Configuration
+Comment=Configure global shortcut of Razor desktop
+GenericName=Razor Global Shortcut Configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[pl_PL]=Konfiguracja skrótów dla pulpitu Razor
+Icon[pl_PL]=ustawienia-pulpit-klawiatura
+Comment[pl_PL]=Określ globalny skrót dla pulpitu Razor
+GenericName[pl_PL]=Konfiguracja globalnych skrótów dla pulpitu Razor
