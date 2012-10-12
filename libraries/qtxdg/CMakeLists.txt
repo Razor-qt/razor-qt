@@ -4,8 +4,8 @@ project(libqtxdg)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 set (MAJOR_VERSION 0)
-set (MINOR_VERSION 4)
-set (PATCH_VERSION 99)
+set (MINOR_VERSION 5)
+set (PATCH_VERSION 0)
 
 
 add_definitions(-Wall)
