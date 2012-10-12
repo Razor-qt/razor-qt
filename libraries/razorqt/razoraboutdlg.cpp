@@ -115,23 +115,10 @@ QString RazorAboutDLGPrivate::aboutText() const
 
 QString RazorAboutDLGPrivate::authorsText() const
 {
-    return  QString::fromUtf8(
-                "<b>Authors</b>"
-                "<p>The razor-qt Crew consists of (in alphabetical order):</p>"
-                "<ul>"
-                "<li>Maciej Płaza &lt;<a href='mailto:plaza.maciej@gmail.com'>plaza.maciej@gmail.com</a>&gt;</li>"
-                "<li>Alexander Sokolov &lt;<a href='mailto:sokoloff.a@gmail.com'>sokoloff.a@gmail.com</a>&gt;</li>"
-                "<li>Petr Vanek &lt;<a href='mailto:petr@scribus.info'>petr@scribus.info</a>&gt;</li>"
-                "<li>Christopher 'VdoP' Regali (retired)</li>"
-                "</ul>"
-
-                "<b>Contributors</b>"
-                "<ul>"
-                "<li>Luis Gustavo Spern Barreto &lt;gustavosbarreto@gmail.com&gt;</li>"
-                "<li>Bartosz Taczala &lt;w0lanto@gmail.com&gt;</li>"
-                "</ul>"
-                "<p>If you want to contribute, just visit <a href='http://www.razor-qt.org'>www.razor-qt.org</a>.</p>"
-                );
+    return  "We use <a href='https://github.com/Razor-qt/razor-qt'>Github</a> to development and serve our project."
+            "<p>"
+            "If you're interested in working with our development <a href='https://github.com/Razor-qt/razor-qt/graphs/contributors'>team</a>, "
+            "join us.";
 }
 
 
