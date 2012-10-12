@@ -1,1 +1,5 @@
+%if MULTIARCH yes
 8
+%else
+7
+%endif

@@ -6,9 +6,12 @@ Source: razorqt
 Section: x11
 Priority: optional
 Maintainer: %DEBFULLNAME% <%DEBEMAIL%>
-Build-Depends: debhelper (>= 8.0.0~), pkg-config,
+Build-Depends: pkg-config,
 %if MULTIARCH yes
+    debhelper (>= 8.0.0~),
     dpkg-dev (>= 1.16.0~),
+%else
+    debhelper (>= 7.0.50~),
 %endif
     cmake,
     libqt4-dev (>= 4.6.0),

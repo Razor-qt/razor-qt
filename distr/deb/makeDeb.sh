@@ -29,14 +29,24 @@ function debug
 
 function setVariable
 {
-    VARIABLES="${VARIABLES}$2=$3\n"
-    debug "set variable: $2 = $3"
+    shift
+    local VAR=$1
+    shift
+
+    VARIABLES="${VARIABLES}${VAR}=$*\n"
+    debug "set variable: ${VAR} = $*"
     debug "variables $VARIABLES"
 }
 
 function getVariable
 {
     printf "$VARIABLES" | awk -F'=' "/${1}=/ {print(\$2)}"
+}
+
+function clearVariables
+{
+    debug "clear variables: $VARIABLES"
+    VARIABLES=''
 }
 
 function checkIf
@@ -336,6 +346,7 @@ for RELEASE in ${RELEASE}; do
     mkdir -p ${DIR}/debian/source
     DATE=`date -R`
 
+    clearVariables
     prepareFile ${DIR}/distr/deb/debian/control > ${DIR}/debian/control
 
     for src in `find ${DIR}/distr/deb/debian -type f \! -name "control"`; do
@@ -350,7 +361,7 @@ for RELEASE in ${RELEASE}; do
       ret=$?
       [ $ret -eq 0 ] || exit $ret
     else
-      exit
+      mv ${DIR}/debian ${DIR}/${RELEASE}-debian
     fi
 done
 
