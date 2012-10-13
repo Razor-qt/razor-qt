@@ -87,6 +87,10 @@ build_module(MODULE_LIBRAZORMOUNT
     "Razor mount library"
     libraries/razormount On)
 
+build_module(MODULE_LIBSYSSTAT
+    "System statistics library"
+    libraries/sysstat On)
+
 build_module(MODULE_RESOURCES
     "Razor resources"
     razorqt-resources On)

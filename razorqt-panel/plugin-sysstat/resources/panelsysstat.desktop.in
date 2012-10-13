@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=System Statistics
+Comment=System Statistics plugin.
+
+#TRANSLATIONS_DIR=../translations
