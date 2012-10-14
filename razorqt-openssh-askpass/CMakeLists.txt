@@ -24,13 +24,30 @@ set ( razor-openssh-askpass_SRCS
 	src/mainwindow.cpp
 	)
 
+set ( razor-openssh-askpass_UIS
+        src/mainwindow.ui
+        )
 
+# Translations **********************************
+include(RazorTranslate)
+razor_translate_ts(QM_FILES
+    SOURCES
+        ${razor-openssh-askpass_HDRS}
+        ${razor-openssh-askpass_SRCS}
+        ${razor-openssh-askpass_UIS}
+)
+
+razor_translate_desktop(DESKTOP_FILES
+    SOURCES
+        razor-config-mouse.desktop.in
+)
+#************************************************
 
 QT4_WRAP_CPP(MOCS ${razor-openssh-askpass_HDRS})
-QT4_WRAP_UI(UIS src/mainwindow.ui)
+QT4_WRAP_UI(UIS ${razor-openssh-askpass_UIS})
 
 
-add_executable ( razor-openssh-askpass ${razor-openssh-askpass_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+add_executable ( razor-openssh-askpass ${razor-openssh-askpass_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} ${QM_FILES} )
 add_dependencies( razor-openssh-askpass razorqt )
 target_link_libraries(razor-openssh-askpass ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} razorqt)
 INSTALL(TARGETS razor-openssh-askpass RUNTIME DESTINATION bin)

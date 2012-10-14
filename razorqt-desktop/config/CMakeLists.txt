@@ -1,3 +1,5 @@
+project(razor-config-desktop)
+
 include_directories (
 	${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
 	${QT_QTCORE_INCLUDE_DIR} ${QT_QTGUI_INCLUDE_DIR}
@@ -33,13 +35,27 @@ set(DESKTOP_FILES_IN
 
 # Translations **********************************
 include(RazorTranslate)
+razor_translate_ts(razor-desktopcfg_QM_FILES
+    SOURCES
+        ${razor-desktopcfg_HDRS}
+        ${razor-desktopcfg_SRCS}
+        ${razor-desktopcfg_UIS}
+    INSTALLATION_DIR
+        ${CMAKE_INSTALL_PREFIX}/share/razor/razor-desktop/razor-config-desktop
+)
+
 razor_translate_desktop(DESKTOP_FILES
     SOURCES
         ${DESKTOP_FILES_IN}
 )
 #************************************************
 
-add_executable ( razor-config-desktop ${razor-desktopcfg_SRCS} ${razor-desktopcfg_UIS} ${razor-desktopcfg_MOCS} ${DESKTOP_FILES} )
+add_executable ( razor-config-desktop ${razor-desktopcfg_SRCS}
+                                      ${razor-desktopcfg_UIS}
+                                      ${razor-desktopcfg_MOCS}
+                                      ${razor-desktopcfg_QM_FILES}
+                                      ${DESKTOP_FILES} )
+
 add_dependencies( razor-config-desktop razorqt qtxdg)
 target_link_libraries ( razor-config-desktop  ${QT_QTCORE_LIBRARY}
                             ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY}

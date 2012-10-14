@@ -29,6 +29,7 @@
 
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
+#include "razortranslate.h"
 
 #include "mainwindow.h"
 
@@ -37,6 +38,7 @@ int main(int argc, char** argv)
 {
     // TODO/FIXME: maybe singleapp?
     RazorApplication a(argc, argv);
+    TRANSLATE_APP;
 
     MainWindow w;
     w.show();

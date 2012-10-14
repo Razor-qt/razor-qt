@@ -1,37 +1,31 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2+
- *
- * Razor - a lightweight, Qt based, desktop toolset
- * http://razor-qt.org
- *
- * Copyright: 2012 Razor team
- * Authors:
- *   Aaron Lewis <the.warl0ck.1989@gmail.com>
- *
- * This program or library is free software; you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * (c)LGPL2+
+ *
+ * Razor - a lightweight, Qt based, desktop toolset
+ * http://razor-qt.org
+ *
+ * Copyright: 2012 Razor team
+ * Authors:
+ *   Aaron Lewis <the.warl0ck.1989@gmail.com>
+ *
+ * This program or library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
 
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * END_COMMON_COPYRIGHT_HEADER */
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA
+ *
+ * END_COMMON_COPYRIGHT_HEADER */
 
 #include "shortcuteditor.h"
-
-#define D_GROUP(q) (QMessageBox::question(this , tr("Question") , tr("Delete group: %1 (everything inside will be removed altogether) ?").arg (q) , QMessageBox::Yes , QMessageBox::No) == QMessageBox::No)
-
-#define D_SINGLE(q) (QMessageBox::question(this , tr("Question") , tr("Delete %1 ?").arg (q) , QMessageBox::Yes , QMessageBox::No) == QMessageBox::No)
-
-#define R_EXISTING(q) (QMessageBox::question(NULL , tr("Question") , tr("Binding for %1 already exists. Replace old one ?").arg (q) , QMessageBox::Yes , QMessageBox::No) == QMessageBox::Yes)
 
 ///
 CommandFinder::CommandFinder(QWidget *parent):
@@ -284,7 +278,7 @@ void ShortcutEditor::shortcutChanged(QTreeWidgetItem *item , int col)
             }
 
             /// conflict with existing , remove old one
-            if (R_EXISTING(sc))
+            if (replaceExisting(sc))
             {
                 mapping.value(sc)->setText(1 , noneString);
                 mapping.insert(sc , item);
@@ -363,10 +357,12 @@ void ShortcutEditor::removeCurrent()
         if (! item->parent())
         {
             if (item->childCount() > 0)
-                if (D_GROUP(text))
+            {
+                if (cancelDeleteGroup(text))
                 {
                     return;
                 }
+            }
 
             /// kill whole group
             const QModelIndex &idx = mTreeWidget->currentIndex();
@@ -375,7 +371,7 @@ void ShortcutEditor::removeCurrent()
             return;
 
         }
-        else if (D_SINGLE(text))
+        else if (cancelDeleteSingle(text))
         {
             return;
         }
@@ -385,6 +381,30 @@ void ShortcutEditor::removeCurrent()
         /// remove single child
         item->parent()->removeChild(item);
     }
+}
+
+bool ShortcutEditor::cancelDeleteGroup(const QString& group)
+{
+    return QMessageBox::No == QMessageBox::question(this,
+                    tr("Question"),
+                    tr("Delete group: %1? (everything inside will be removed altogether)").arg(group),
+                    QMessageBox::Yes , QMessageBox::No);
+}
+
+bool ShortcutEditor::cancelDeleteSingle(const QString& item)
+{
+    return QMessageBox::No == QMessageBox::question(this,
+                    tr("Question") ,
+                    tr("Delete %1?").arg(item),
+                    QMessageBox::Yes, QMessageBox::No);
+}
+
+bool ShortcutEditor::replaceExisting(const QString& item)
+{
+    return QMessageBox::Yes == QMessageBox::question(NULL,
+                    tr("Question"),
+                    tr("Binding for %1 already exists. Replace old one?").arg(item),
+                    QMessageBox::Yes , QMessageBox::No);
 }
 
 ShortcutEditor::~ShortcutEditor()

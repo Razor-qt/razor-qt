@@ -28,8 +28,9 @@
 #include <QtGui/QApplication>
 #include <QtDBus/QDBusConnection>
 
-#include "razorqt/razorapplication.h"
+#include <razorqt/razorapplication.h>
 
+#include "razortranslate.h"
 #include "notificationsadaptor.h"
 #include "notifyd.h"
 
@@ -66,6 +67,8 @@
 int main(int argc, char** argv)
 {
     RazorApplication a(argc, argv);
+    TRANSLATE_APP;
+
     a.setQuitOnLastWindowClosed(false);
 
     // Ensure the helper widgets are hidden

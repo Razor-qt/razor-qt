@@ -32,6 +32,15 @@ qt4_add_dbus_adaptor(NOTIFICATIONS_SRC
     notifyd.h Notifyd
 )
 
+# Translations **********************************
+razor_translate_ts(NOTIFICATIONS_QM_FILES
+    SOURCES
+        ${NOTIFICATIONS_MOC}
+        ${NOTIFICATIONS_SRC}
+        ${NOTIFICATIONS_UI}
+)
+#************************************************
+
 find_package(X11 REQUIRED)
 include_directories(${X11_INCLUDE_DIR})
 
@@ -39,6 +48,7 @@ add_executable(razor-notificationd
     ${NOTIFICATIONS_SRC}
     ${NOTIFICATIONS_MOC_CPP}
     ${NOTIFICATIONS_UI_CPP}
+    ${NOTIFICATIONS_QM_FILES}
 )
 add_dependencies(razor-notificationd razorqt)
 target_link_libraries(razor-notificationd ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
