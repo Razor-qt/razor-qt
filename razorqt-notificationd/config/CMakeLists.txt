@@ -27,6 +27,13 @@ set(NOTIFICATIONS_CONF_UI
 
 # Translations **********************************
 include(RazorTranslate)
+razor_translate_ts(NOTIFICATIONS_CONF_QM
+    SOURCES
+        ${NOTIFICATIONS_CONF_MOC}
+        ${NOTIFICATIONS_CONF_SRC}
+        ${NOTIFICATIONS_CONF_UI}
+)
+
 razor_translate_desktop(DESKTOP_FILES
     SOURCES
         razor-config-notificationd.desktop.in
@@ -39,6 +46,7 @@ qt4_wrap_ui(NOTIFICATIONS_CONF_UI_CPP ${NOTIFICATIONS_CONF_UI})
 add_executable(${PROJECT_NAME} ${NOTIFICATIONS_CONF_SRC}
                                ${NOTIFICATIONS_CONF_MOC_CPP}
                                ${NOTIFICATIONS_CONF_UI_CPP}
+                               ${NOTIFICATIONS_CONF_QM}
                                ${DESKTOP_FILES})
 add_dependencies(${PROJECT_NAME} razorqt )
 target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY}

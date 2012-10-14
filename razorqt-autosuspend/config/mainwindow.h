@@ -31,14 +31,10 @@
 
 class MainWindow : public RazorConfigDialog
 {
+    Q_OBJECT
+
 public:
     MainWindow(QWidget *parent = 0);
-
-signals:
-    void settingsRestored();
-
-private slots:
-    void restoreSettings();
 };
 
 #endif // MAINWINDOW_H

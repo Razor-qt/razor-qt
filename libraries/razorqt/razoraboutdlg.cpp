@@ -29,27 +29,12 @@
 #define RAZORABOUTDLG_CPP
 #include "razoraboutdlg.h"
 #include "ui_razoraboutdlg.h"
+#include "razoraboutdlg_p.h"
 #include "libtranslate.h"
 #include <qtxdg/xdgdirs.h>
 #include "translatorsinfo/translatorsinfo.h"
 #include <QDebug>
 #include <QtCore/QDate>
-
-/**
- * @brief prepares the data to show and fills the form, then shows.
- */
-class RazorAboutDLGPrivate: public Ui_about, public QDialog
-{
-public:
-    RazorAboutDLGPrivate();
-    QString titleText() const;
-    QString aboutText() const;
-    QString authorsText() const;
-    QString thanksText() const;
-    QString translationsText() const;
-    QString technicalText() const;
-};
-
 
 RazorAboutDLGPrivate::RazorAboutDLGPrivate()
 {

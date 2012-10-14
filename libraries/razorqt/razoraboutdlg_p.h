@@ -25,32 +25,27 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef HELLOWORLD_H
-#define HELLOWORLD_H
+#ifndef RAZORABOUTDLG_P_H
+#define RAZORABOUTDLG_P_H
 
-#include <razorqt/razorsettings.h>
-#include <desktopwidgetplugin.h>
+#include <QtGui/QDialog>
+#include "ui_razoraboutdlg.h"
 
-
-class HelloWorld : public DesktopWidgetPlugin
+/**
+ * @brief prepares the data to show and fills the form, then shows.
+ */
+class RazorAboutDLGPrivate: public QDialog, public Ui_about
 {
     Q_OBJECT
 
 public:
-    HelloWorld(DesktopScene * scene, const QString & configId, RazorSettings * config);
-    ~HelloWorld();
-
-    QString info();
-    QString instanceInfo();
-
-    void save();
-    void configure();
-
-private:
-    QGraphicsTextItem *m_item;
+    RazorAboutDLGPrivate();
+    QString titleText() const;
+    QString aboutText() const;
+    QString authorsText() const;
+    QString thanksText() const;
+    QString translationsText() const;
+    QString technicalText() const;
 };
 
-EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H
-
-
-#endif
+#endif // RAZORABOUTDLG_P_H

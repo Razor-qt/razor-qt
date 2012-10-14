@@ -103,7 +103,7 @@
         </font>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
        <property name="wordWrap">
         <bool>false</bool>
@@ -119,7 +119,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -135,7 +135,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -152,7 +152,7 @@
      <item>
       <widget class="QToolButton" name="closeButton">
        <property name="text">
-        <string>x</string>
+        <string notr="true">x</string>
        </property>
        <property name="autoRaise">
         <bool>true</bool>

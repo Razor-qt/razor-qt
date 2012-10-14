@@ -26,7 +26,7 @@ set(razor-about_LIBRARIES
 
 # Translations **********************************
 include(RazorTranslate)
-razor_translate_ts(razor-runner_QM_FILES 
+razor_translate_ts(razor-about_QM_FILES
     SOURCES
         ${razor-about_H_FILES}
         ${razor-about_CPP_FILES} 

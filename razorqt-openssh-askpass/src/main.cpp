@@ -26,14 +26,16 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <razorqt/razorapplication.h>
+#include "razortranslate.h"
 #include "mainwindow.h"
 
 
 int main(int argc, char *argv[])
 {
     RazorApplication a(argc, argv);
+    TRANSLATE_APP;
 
-    // TODO/FXIME: maybe a better algorithm?
+    // TODO/FIXME: maybe a better algorithm?
     QString prompt;
     if (a.arguments().count() < 2)
         prompt = QObject::tr("unknown request");
