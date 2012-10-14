@@ -62,7 +62,7 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     setObjectName("Clock");
     clockFormat = "hh:mm";
 
-    fakeThemedLabel = new ClockLabel(this);
+    fakeThemedLabel = new ClockLabel(content);
     fakeThemedLabel->setVisible(false);
 
     timeLabel = new QLabel(this);
