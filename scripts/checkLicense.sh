@@ -4,10 +4,8 @@
 #ONLY_ERRORS=1
 COLOR='YES'
 
-DIR=$1
-if [ -z "$DIR" ]; then
-    DIR='../'
-fi
+SEARCH="${SEARCH:-searchGit}"
+DIR="${1:-../}"
 
 if [ -n "$COLOR" ]; then
     RED='\E[0;31m'
@@ -23,10 +21,19 @@ fi
 #let 'gplCnt=0'
 #let 'unknownCnt=0'
 
+searchAll()
+{
+    find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null
+}
+
+searchGit()
+{
+    git ls-files -- "${DIR}" | grep -E '(*\.cpp|*\.h)$'
+}
 
 # License compatibility: BSD 3-Clause; LGPL v2.1 or later
 
-for file in `find ${DIR} -type f \( -name '*.h' -o -name '*.cpp' \)  2>/dev/null`; do
+$SEARCH | while read file; do
     license=`head -n 5 "$file"| grep '(c)' | sed -e 's/*//'`;# | sed -e 's/\([()]\)/\\1/g'`;
 
     case "$license" in
