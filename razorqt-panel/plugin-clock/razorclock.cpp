@@ -28,9 +28,6 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORCLOCK_CPP
-#define RAZORCLOCK_CPP
-
 #include "razorclock.h"
 #include "calendar_utils.h"
 
@@ -65,7 +62,7 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     setObjectName("Clock");
     clockFormat = "hh:mm";
 
-    fakeThemedLabel = new ClockLabel(this);
+    fakeThemedLabel = new ClockLabel(content);
     fakeThemedLabel->setVisible(false);
 
     timeLabel = new QLabel(this);
@@ -92,12 +89,13 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     content->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     this->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
-    settingsChanged();
     connect(fakeThemedLabel, SIGNAL(fontChanged()), this, SLOT(fontChanged()));
 
     clocktimer = new QTimer(this);
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
     clocktimer->start(1000);
+
+    QTimer::singleShot(0, this, SLOT(settingsChanged()));
 }
 
 /**
@@ -169,22 +167,22 @@ void RazorClock::fontChanged()
     {
         {
             QFont font(timeLabel->font());
-            timeLabel->setFont(QFont(
+            font = QFont(
                 settings().value("timeFont/family", font.family()).toString(),
                 settings().value("timeFont/pointSize", font.pointSize()).toInt(),
                 settings().value("timeFont/weight", font.weight()).toInt(),
-                settings().value("timeFont/italic", font.italic()).toBool() ));
-            font = timeLabel->font();
+                settings().value("timeFont/italic", font.italic()).toBool() );
+            timeLabel->setFont(font);
         }
 
         {
             QFont font(dateLabel->font());
-            dateLabel->setFont(QFont(
+            font = QFont(
                 settings().value("dateFont/family", font.family()).toString(),
                 settings().value("dateFont/pointSize", font.pointSize()).toInt(),
                 settings().value("dateFont/weight", font.weight()).toInt(),
-                settings().value("dateFont/italic", font.italic()).toBool() ));
-            font = dateLabel->font();
+                settings().value("dateFont/italic", font.italic()).toBool() );
+            dateLabel->setFont(font);
         }
     }
 
@@ -382,5 +380,3 @@ bool ClockLabel::event(QEvent *event)
 
     return QLabel::event(event);
 }
-
-#endif
