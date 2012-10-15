@@ -50,18 +50,11 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly
       change of state */
 
-    connect(ui->showDateCB, SIGNAL(toggled(bool)), this, SLOT(enableDateFont()));
-    connect(ui->dateOnNewLineCB, SIGNAL(toggled(bool)), this, SLOT(enableDateFont()));
-    connect(ui->useThemeFontCB, SIGNAL(toggled(bool)), this, SLOT(enableDateFont()));
-
     connect(ui->showSecondsCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->ampmClockCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->showDateCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->dateOnNewLineCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->dateFormatCOB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
-    connect(ui->timeFontB, SIGNAL(clicked()), this, SLOT(changeTimeFont()));
-    connect(ui->dateFontB, SIGNAL(clicked()), this, SLOT(changeDateFont()));
-    updateEnableDateFont();
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -119,55 +112,16 @@ void RazorClockConfiguration::loadSettings()
 
     ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->findData(mSettings.value("dateFormat", Qt::SystemLocaleShortDate)));
     if (ui->dateFormatCOB->currentIndex() < 0)
-    {
         ui->dateFormatCOB->setCurrentIndex(1);
-    }
 
-    if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
-    {
+    if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP"))
         timeFormat = mSettings.value("timeFormat", "h:mm AP").toString();
-    }
     else
-    {
         timeFormat = mSettings.value("timeFormat", "HH:mm").toString();
-    }
 
-    if (timeFormat.indexOf("ss") > -1)
-    {
-        ui->showSecondsCB->setChecked(true);
-    }
-    else
-    {
-        ui->showSecondsCB->setChecked(false);
-    }
+    ui->showSecondsCB->setChecked(timeFormat.indexOf("ss") > -1);
 
-    if (timeFormat.toUpper().indexOf("AP") > -1)
-    {
-        ui->ampmClockCB->setChecked(true);
-    }
-    else
-    {
-        ui->ampmClockCB->setChecked(false);
-    }
-
-    QFont defaultFont(QApplication::font());
-
-    timeFont = QFont(
-        mSettings.value("timeFont/family", defaultFont.family()).toString(),
-        mSettings.value("timeFont/pointSize", defaultFont.pointSize()).toInt(),
-        mSettings.value("timeFont/weight", defaultFont.weight()).toInt(),
-        mSettings.value("timeFont/italic", defaultFont.italic()).toBool() );
-
-    dateFont = QFont(
-        mSettings.value("dateFont/family", defaultFont.family()).toString(),
-        mSettings.value("dateFont/pointSize", defaultFont.pointSize()).toInt(),
-        mSettings.value("dateFont/weight", defaultFont.weight()).toInt(),
-        mSettings.value("dateFont/italic", defaultFont.italic()).toBool() );
-
-    ui->useThemeFontCB->setChecked(mSettings.value("useThemeFonts", true).toBool());
-
-    ui->timeFontB->setText(constructFontDescription(timeFont));
-    ui->dateFontB->setText(constructFontDescription(dateFont));
+    ui->ampmClockCB->setChecked(timeFormat.toUpper().indexOf("AP") > -1);
 }
 
 void RazorClockConfiguration::saveSettings()
@@ -179,82 +133,14 @@ void RazorClockConfiguration::saveSettings()
     mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
 
     if (ui->ampmClockCB->isChecked() == true)
-    {
         timeFormat = "h:mm AP";
-    }
     else
-    {
         timeFormat = "HH:mm";
-    }
 
     if (ui->showSecondsCB->isChecked() == true)
-    {
         timeFormat.insert(timeFormat.indexOf("mm") + 2, ":ss");
-    }
 
     mSettings.setValue("timeFormat", timeFormat);
-
-    mSettings.setValue("timeFont/family", timeFont.family());
-    mSettings.setValue("timeFont/pointSize", timeFont.pointSize());
-    mSettings.setValue("timeFont/weight", timeFont.weight());
-    mSettings.setValue("timeFont/italic", timeFont.italic());
-
-    mSettings.setValue("dateFont/family", dateFont.family());
-    mSettings.setValue("dateFont/pointSize", dateFont.pointSize());
-    mSettings.setValue("dateFont/weight", dateFont.weight());
-    mSettings.setValue("dateFont/italic", dateFont.italic());
-
-    mSettings.setValue("useThemeFonts", ui->useThemeFontCB->isChecked());
-}
-
-void RazorClockConfiguration::changeTimeFont()
-{
-    bool ok;
-    QFont font = QFontDialog::getFont(&ok, timeFont, this, tr("Time font") );
-    if (ok)
-    {
-        timeFont = font;
-        ui->timeFontB->setText(constructFontDescription(timeFont));
-        saveSettings();
-    }
-}
-
-void RazorClockConfiguration::changeDateFont()
-{
-    bool ok;
-    QFont font = QFontDialog::getFont(&ok, dateFont, this, tr("Date font") );
-    if (ok)
-    {
-        dateFont = font;
-        ui->dateFontB->setText(constructFontDescription(dateFont));
-        saveSettings();
-    }
-}
-
-QString RazorClockConfiguration::constructFontDescription(const QFont &font)
-{
-    QString result(font.family());
-
-    if (font.weight() < QFont::Light)
-        result += QString(", ") + tr("Ultra light");
-    else if (font.weight() < QFont::Normal)
-        result += QString(", ") + tr("Light");
-    else if (font.weight() > QFont::Black)
-        result += QString(", ") + tr("Ultra black");
-    else if (font.weight() > QFont::Bold)
-        result += QString(", ") + tr("Black");
-    else if (font.weight() > QFont::DemiBold)
-        result += QString(", ") + tr("Bold");
-    else if (font.weight() > QFont::Normal)
-        result += QString(", ") + tr("Demi bold");
-//    else
-//        result += QString(", ") + tr("Normal");
-
-    if (font.italic())
-        result += QString(", ") + tr("Italic");
-
-    result += QString(", %1pt").arg(font.pointSize());
-    return result;
 }
 
 void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
@@ -268,18 +154,4 @@ void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
     {
         close();
     }
-}
-
-void RazorClockConfiguration::updateEnableDateFont()
-{
-    bool enable = ui->showDateCB->isChecked() && ui->dateOnNewLineCB->isChecked() && !ui->useThemeFontCB->isChecked();
-    ui->dateFontB->setEnabled(enable);
-    ui->dateFontL->setEnabled(enable);
-}
-
-void RazorClockConfiguration::enableDateFont()
-{
-    updateEnableDateFont();
-
-    saveSettings();
 }

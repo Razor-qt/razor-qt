@@ -70,17 +70,7 @@ private slots:
       Saves settings in conf file.
     */
     void saveSettings();
-    void changeTimeFont();
-    void changeDateFont();
     void dialogButtonsAction(QAbstractButton *btn);
-    void enableDateFont();
-
-private:
-    QFont timeFont;
-    QFont dateFont;
-
-    QString constructFontDescription(const QFont &);
-    void updateEnableDateFont();
 };
 
 #endif // RAZORCLOCKCONFIGURATION_H

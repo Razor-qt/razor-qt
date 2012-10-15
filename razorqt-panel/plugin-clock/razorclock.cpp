@@ -62,11 +62,10 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     setObjectName("Clock");
     clockFormat = "hh:mm";
 
-    fakeThemedLabel = new ClockLabel(content);
-    fakeThemedLabel->setVisible(false);
-
     timeLabel = new QLabel(this);
+    timeLabel->setObjectName("TimeLabel");
     dateLabel = new QLabel(this);
+    dateLabel->setObjectName("DateLabel");
     QVBoxLayout *contentLayout = new QVBoxLayout(content);
     contentLayout->addWidget(timeLabel, 0, Qt::AlignCenter);
     contentLayout->addWidget(dateLabel, 0, Qt::AlignCenter);
@@ -88,8 +87,6 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     dateLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     content->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     this->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-
-    connect(fakeThemedLabel, SIGNAL(fontChanged()), this, SLOT(fontChanged()));
 
     clocktimer = new QTimer(this);
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
@@ -125,13 +122,9 @@ RazorClock::~RazorClock()
 void RazorClock::settingsChanged()
 {
     if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
-    {
         timeFormat = settings().value("timeFormat", "h:mm AP").toString();
-    }
     else
-    {
         timeFormat = settings().value("timeFormat", "HH:mm").toString();
-    }
 
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
@@ -139,47 +132,19 @@ void RazorClock::settingsChanged()
     showDate = settings().value("showDate", false).toBool();
 
     clockFormat = timeFormat;
-    if (showDate)
+    if (showDate && (!dateOnNewLine))
     {
-        if (!dateOnNewLine)
-        {
-            clockFormat.append(" ");
-            clockFormat += dateFormat;
-        }
+        clockFormat.append(" ");
+        clockFormat += dateFormat;
     }
 
     m_firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
-    fontChanged();
-
     dateLabel->setVisible(showDate && dateOnNewLine);
-    updateTime();
-}
-
-void RazorClock::fontChanged()
-{
-    if (settings().value("useThemeFonts", true).toBool())
-    {
-        timeLabel->setFont(fakeThemedLabel->font());
-        dateLabel->setFont(fakeThemedLabel->font());
-    }
-    else
-    {
-        // modifying only parameters specified in settings
-        timeLabel->setFont(QFont(
-            settings().value("timeFont/family",    timeLabel->font().family()   ).toString(),
-            settings().value("timeFont/pointSize", timeLabel->font().pointSize()).toInt(),
-            settings().value("timeFont/weight",    timeLabel->font().weight()   ).toInt(),
-            settings().value("timeFont/italic",    timeLabel->font().italic()   ).toBool() ));
-
-        dateLabel->setFont(QFont(
-            settings().value("dateFont/family",    dateLabel->font().family()   ).toString(),
-            settings().value("dateFont/pointSize", dateLabel->font().pointSize()).toInt(),
-            settings().value("dateFont/weight",    dateLabel->font().weight()   ).toInt(),
-            settings().value("dateFont/italic",    dateLabel->font().italic()   ).toBool() ));
-    }
 
     updateMinWidth();
+
+    updateTime();
 }
 
 
@@ -344,9 +309,7 @@ void RazorClock::showConfigureDialog()
     RazorClockConfiguration *confWindow = this->findChild<RazorClockConfiguration*>("ClockConfigurationWindow");
 
     if (!confWindow)
-    {
         confWindow = new RazorClockConfiguration(settings(), this);
-    }
 
     confWindow->show();
     confWindow->raise();
@@ -356,20 +319,7 @@ void RazorClock::showConfigureDialog()
 bool RazorClock::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip)
-    {
         setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
-    }
 
     return RazorPanelPlugin::event(event);
-}
-
-
-bool ClockLabel::event(QEvent *event)
-{
-    if (event->type() == QEvent::FontChange)
-    {
-        emit fontChanged();
-    }
-
-    return QLabel::event(event);
 }
