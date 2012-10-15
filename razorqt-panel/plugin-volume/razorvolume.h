@@ -36,7 +36,7 @@ class VolumeButton;
 class AudioEngine;
 class AudioDevice;
 class RazorVolumeConfiguration;
-
+class RazorNotification;
 class QxtGlobalShortcut;
 
 class RazorVolume : public RazorPanelPlugin
@@ -66,7 +66,7 @@ private:
     QxtGlobalShortcut *m_keyVolumeUp;
     QxtGlobalShortcut *m_keyVolumeDown;
     QxtGlobalShortcut *m_keyMuteToggle;
-
+    RazorNotification *m_notification;
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
