@@ -165,25 +165,18 @@ void RazorClock::fontChanged()
     }
     else
     {
-        {
-            QFont font(timeLabel->font());
-            font = QFont(
-                settings().value("timeFont/family", font.family()).toString(),
-                settings().value("timeFont/pointSize", font.pointSize()).toInt(),
-                settings().value("timeFont/weight", font.weight()).toInt(),
-                settings().value("timeFont/italic", font.italic()).toBool() );
-            timeLabel->setFont(font);
-        }
+        // modifying only parameters specified in settings
+        timeLabel->setFont(QFont(
+            settings().value("timeFont/family",    timeLabel->font().family()   ).toString(),
+            settings().value("timeFont/pointSize", timeLabel->font().pointSize()).toInt(),
+            settings().value("timeFont/weight",    timeLabel->font().weight()   ).toInt(),
+            settings().value("timeFont/italic",    timeLabel->font().italic()   ).toBool() ));
 
-        {
-            QFont font(dateLabel->font());
-            font = QFont(
-                settings().value("dateFont/family", font.family()).toString(),
-                settings().value("dateFont/pointSize", font.pointSize()).toInt(),
-                settings().value("dateFont/weight", font.weight()).toInt(),
-                settings().value("dateFont/italic", font.italic()).toBool() );
-            dateLabel->setFont(font);
-        }
+        dateLabel->setFont(QFont(
+            settings().value("dateFont/family",    dateLabel->font().family()   ).toString(),
+            settings().value("dateFont/pointSize", dateLabel->font().pointSize()).toInt(),
+            settings().value("dateFont/weight",    dateLabel->font().weight()   ).toInt(),
+            settings().value("dateFont/italic",    dateLabel->font().italic()   ).toBool() ));
     }
 
     updateMinWidth();
