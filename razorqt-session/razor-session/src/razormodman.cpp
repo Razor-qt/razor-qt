@@ -323,7 +323,8 @@ void razor_setenv_prepend(const char *env, const QByteArray &value, const QByteA
 RazorModule::RazorModule(const XdgDesktopFile& file, QObject* parent) :
     QProcess(parent),
     file(file),
-    fileName(QFileInfo(file.fileName()).fileName())
+    fileName(QFileInfo(file.fileName()).fileName()),
+    mIsTerminating(false)
 {
     connect(this, SIGNAL(stateChanged(QProcess::ProcessState)), SLOT(updateState(QProcess::ProcessState)));
 }

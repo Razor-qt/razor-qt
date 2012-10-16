@@ -43,6 +43,7 @@ BackgroundProvider::BackgroundProvider(int screen, QObject * parent)
     : QObject(parent),
       m_screen(screen),
       m_pixmap(0),
+      m_type(RazorWorkSpaceManager::BackgroundPixmap),
       m_ratio(Qt::IgnoreAspectRatio)
 {
 }
