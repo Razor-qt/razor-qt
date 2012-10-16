@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation type="unfinished"/>
+        <translation>Показывать значек состояния батареи в трее</translation>
     </message>
 </context>
 <context>
@@ -18,19 +18,19 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Закрытие крышки</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Действие:</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>Ничего</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>Засыпать</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Конфигурация автоматического выключения </translation>
     </message>
     <message>
         <source>General</source>
@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Закрытие крышки</translation>
     </message>
     <message>
         <source>Power Low</source>
-        <translation type="unfinished"/>
+        <translation>Низкий заряд</translation>
     </message>
 </context>
 <context>
@@ -68,35 +68,35 @@
     </message>
     <message>
         <source>Power low</source>
-        <translation type="unfinished"/>
+        <translation>Низкий заряд батареи</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Действие:</translation>
     </message>
     <message>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>Предупреждение:</translation>
     </message>
     <message>
         <source> seconds</source>
-        <translation type="unfinished"/>
+        <translation>секунд</translation>
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation type="unfinished"/>
+        <translation>Низкий уровень на:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>Ничего</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>Засыпать</translation>
     </message>
     <message>
         <source>Hibernate</source>

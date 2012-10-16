@@ -38,11 +38,11 @@
     </message>
     <message>
         <source>Location: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ort: %1</translation>
     </message>
     <message>
         <source>Overrides: %1</source>
-        <translation type="unfinished"/>
+        <translation>Überschreibung: %1</translation>
     </message>
 </context>
 <context>
@@ -92,11 +92,11 @@
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Start</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>Stopp</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <source>Variable Name</source>
-        <translation>Variablen-Name</translation>
+        <translation>Variablenname</translation>
     </message>
     <message>
         <source>Value</source>
@@ -160,14 +160,14 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation type="unfinished"/>
+        <translation>Läuft</translation>
     </message>
 </context>
 <context>
     <name>SessionConfigWindow</name>
     <message>
         <source>Razor Session Configuration</source>
-        <translation>Razor Session-Konfiguration</translation>
+        <translation>Razor Sitzungs-Konfiguration</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Sie müssen sich erneut anmelden (razor-session), damit Ihre Änderungen aktiv werden. Benutzen Sie dafür Abmelden im Hauptmenü.</translation>
+        <translation>Sie müssen sich erneut anmelden (razor-session), damit Ihre Änderungen aktiv werden. Klicken Sie dafür auf &quot;Abmelden&quot; im Hauptmenü.</translation>
     </message>
 </context>
 </TS>

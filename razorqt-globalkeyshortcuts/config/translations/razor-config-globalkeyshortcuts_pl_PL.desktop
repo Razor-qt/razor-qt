@@ -14,7 +14,7 @@ GenericName=Razor Global Shortcut Configuration
 
 
 # Translations
-Name[pl_PL]=Konfiguracja skrótów dla pulpitu Razor
+Name[pl_PL]=Konfiguracja skrótów pulpitu Razor
 Icon[pl_PL]=ustawienia-pulpit-klawiatura
-Comment[pl_PL]=Określ globalny skrót dla pulpitu Razor
-GenericName[pl_PL]=Konfiguracja globalnych skrótów dla pulpitu Razor
+Comment[pl_PL]=Określ globalny skrót pulpitu Razor
+GenericName[pl_PL]=Konfiguracja globalnych skrótów pulpitu Razor

@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Je třeba spustit sezení plochy znovu (razor-session) pro znovunahrání nastavení. Použijte odhlášení v hlavní nabídce.</translation>
+        <translation>Je třeba spustit sezení plochy znovu kvůli znovunahrání nastavení. Použijte odhlášení v hlavní nabídce.</translation>
     </message>
 </context>
 </TS>

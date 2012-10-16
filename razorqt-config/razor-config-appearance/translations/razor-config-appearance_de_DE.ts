@@ -3,22 +3,22 @@
     <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Anwendungsmenü</translation>
+        <translation>Razor Erscheinungsbild-Konfiguration</translation>
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Symbolschema</translation>
+        <translation>Icon-Theme</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Anwendungsmenü</translation>
+        <translation>Razor Erscheinungsbild-Konfiguration</translation>
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Symbolschema</translation>
+        <translation>Icon-Theme</translation>
     </message>
     <message>
         <source>Razor Theme</source>

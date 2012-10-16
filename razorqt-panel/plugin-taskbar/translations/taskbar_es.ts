@@ -74,7 +74,7 @@
     <name>RazorTaskbarConfiguration</name>
     <message>
         <source>Razor Task Manager Settings</source>
-        <translation>Configuración del gestor de tareas de Razor</translation>
+        <translation>Opciones del administrador de tareas de Razor</translation>
     </message>
     <message>
         <source>Window List Content</source>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Window List Appearance</source>
-        <translation>Apariencia del listado de ventanas</translation>
+        <translation>Apariencia de la lista de ventanas</translation>
     </message>
     <message>
         <source>Button style</source>
@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Close on middle-click</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar con el boton central</translation>
     </message>
     <message>
         <source>Icon and text</source>

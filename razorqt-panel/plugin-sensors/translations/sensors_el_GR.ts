@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Chip features:</source>
-        <translation>Χαρακτηριστικά </translation>
+        <translation>Χαρακτηριστικά κυκλώματος</translation>
     </message>
     <message>
         <source>Enabled</source>

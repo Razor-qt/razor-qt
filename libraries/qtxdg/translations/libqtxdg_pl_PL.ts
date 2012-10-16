@@ -7,12 +7,12 @@
     </message>
     <message>
         <source>%1 not loading: %2</source>
-        <translation>Nie mogę załadować %1: %2</translation>
+        <translation>Nie można załadować %1: %2</translation>
     </message>
     <message>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>Błąd parsowania w lini %1, kolumnie %2:
+        <translation>Błąd parsowania w linii %1, kolumnie %2:
 %3</translation>
     </message>
 </context>

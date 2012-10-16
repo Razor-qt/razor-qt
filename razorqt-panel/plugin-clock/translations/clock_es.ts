@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>&amp;Show seconds</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mostrar segundos</translation>
     </message>
     <message>
         <source>12 &amp;hour style</source>
-        <translation type="unfinished"/>
+        <translation>Estilo de 12 &amp;horas</translation>
     </message>
     <message>
         <source>&amp;Font</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Fuente</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Fuente</translation>
     </message>
     <message>
         <source>Date</source>
@@ -31,59 +31,59 @@
     </message>
     <message>
         <source>Show &amp;date</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar &amp;fecha</translation>
     </message>
     <message>
         <source>D&amp;ate format</source>
-        <translation type="unfinished"/>
+        <translation>Formato de &amp;fecha</translation>
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation type="unfinished"/>
+        <translation>Fuen&amp;te</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar fecha en &amp;nueva línea</translation>
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Usar fuente del tema</translation>
     </message>
     <message>
         <source>Time font</source>
-        <translation type="unfinished"/>
+        <translation>Fuente de la hora</translation>
     </message>
     <message>
         <source>Date font</source>
-        <translation type="unfinished"/>
+        <translation>Fuente de la fecha</translation>
     </message>
     <message>
         <source>Ultra light</source>
-        <translation type="unfinished"/>
+        <translation>Ultra ligero</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Ligero</translation>
     </message>
     <message>
         <source>Ultra black</source>
-        <translation type="unfinished"/>
+        <translation>Ultra negro</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished"/>
+        <translation>Negro</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"/>
+        <translation>Negrita</translation>
     </message>
     <message>
         <source>Demi bold</source>
-        <translation type="unfinished"/>
+        <translation>Semi negrita</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"/>
+        <translation>Cursiva</translation>
     </message>
 </context>
 </TS>

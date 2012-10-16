@@ -3,14 +3,14 @@
     <name>RazorVolume</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Tecla de atalho global: &apos;%1&apos; não pode ser registada</translation>
+        <translation>Tecla de atalho global: &quot;%1&quot; não pode ser registada</translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation>Definições do controlo de volume Razor</translation>
+        <translation>Definições do controlo de volume do Razor</translation>
     </message>
     <message>
         <source>Device to control</source>

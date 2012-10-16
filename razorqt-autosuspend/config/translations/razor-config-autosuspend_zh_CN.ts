@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation type="unfinished"/>
+        <translation>在托盘处显示电池状态图标</translation>
     </message>
 </context>
 <context>
@@ -18,19 +18,19 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>合上盖子时</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>动作：</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>无</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>睡眠</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Razor 自动待机配置</translation>
     </message>
     <message>
         <source>General</source>
@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>合上盖子时</translation>
     </message>
     <message>
         <source>Power Low</source>
-        <translation type="unfinished"/>
+        <translation>电量低</translation>
     </message>
 </context>
 <context>
@@ -72,31 +72,31 @@
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>动作：</translation>
     </message>
     <message>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>警告：</translation>
     </message>
     <message>
         <source> seconds</source>
-        <translation type="unfinished"/>
+        <translation>秒</translation>
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation type="unfinished"/>
+        <translation>电量低至：</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>无</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>睡眠</translation>
     </message>
     <message>
         <source>Hibernate</source>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Display Text Configuretion</source>
-        <translation type="unfinished"/>
+        <translation>Anzeigetext Konfiguration</translation>
     </message>
     <message>
         <source>Edit HTML</source>
@@ -18,7 +18,7 @@
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation type="unfinished"/>
+        <translation>Einfachen Text anzeigen.  Debug/Beispiel Widget.</translation>
     </message>
 </context>
 </TS>

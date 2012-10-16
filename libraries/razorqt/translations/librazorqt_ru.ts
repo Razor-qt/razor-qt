@@ -176,11 +176,11 @@
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation>Домашняя папка данных Xdg</translation>
+        <translation>Расположение данных Xdg</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation>Каталог настроек Xdg</translation>
+        <translation>Расположение настроек Xdg</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
@@ -188,19 +188,19 @@
     </message>
     <message>
         <source>Xdg Cache Home</source>
-        <translation type="unfinished"/>
+        <translation>Расположение кеша Xdg</translation>
     </message>
     <message>
         <source>Xdg Runtime Home</source>
-        <translation type="unfinished"/>
+        <translation>Расположение среды времени выполнения Xdg</translation>
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Папки автозапуска Xdg</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
-        <translation type="unfinished"/>
+        <translation>Расположение автозапуска Xdg</translation>
     </message>
 </context>
 <context>

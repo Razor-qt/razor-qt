@@ -3,18 +3,18 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>查找命令</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>Razor 快捷键编辑器</translation>
     </message>
     <message>
         <source>Description</source>
@@ -22,15 +22,15 @@
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>快捷键</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>命令</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>添加新</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -38,11 +38,11 @@
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>添加组</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>重置</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>添加快捷键</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>新建组</translation>
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation type="unfinished"/>
+        <translation>重置更改</translation>
     </message>
 </context>
 </TS>

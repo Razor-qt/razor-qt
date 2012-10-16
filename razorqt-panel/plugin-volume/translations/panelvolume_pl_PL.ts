@@ -10,43 +10,43 @@
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia regulacji poziomu dźwięku Razor</translation>
     </message>
     <message>
         <source>Device to control</source>
-        <translation type="unfinished"/>
+        <translation>Używane urządzenie</translation>
     </message>
     <message>
         <source>Alsa</source>
-        <translation type="unfinished"/>
+        <translation>ALSA</translation>
     </message>
     <message>
         <source>PulseAudio</source>
-        <translation type="unfinished"/>
+        <translation>PulseAudio</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Zachowanie</translation>
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation type="unfinished"/>
+        <translation>Wycisz na klikniecie środkowym przyciskiem myszy</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż na kliknięcie myszką</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation type="unfinished"/>
+        <translation>Pozwól poziom dźwięku powyżej 100% (0db)</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
-        <translation type="unfinished"/>
+        <translation>Stopień regulowania poziomu dźwięku</translation>
     </message>
     <message>
         <source>External Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Zewnętrzny mikser</translation>
     </message>
 </context>
 </TS>

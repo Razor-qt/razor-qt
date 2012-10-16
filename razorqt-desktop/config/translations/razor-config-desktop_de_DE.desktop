@@ -14,5 +14,6 @@ GenericName=Razor Desktop Configurator
 
 # Translations
 Comment[de_DE]=Razor-Qt Desktop-Modul konfigurieren
-GenericName[de_DE]=Razor Desktop Konfiguration
-Name[de_DE]=Razor Desktop Konfiguration
+GenericName[de_DE]=Razor Desktop Konfigurator
+Name[de_DE]=Razor Desktop Konfigurator
+Icon[de_DE]=Einstellungen-Desktop

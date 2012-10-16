@@ -13,6 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
-Comment[cs]=Nastavení modulů Razor-Qt
+Comment[cs]=Nastavit moduly Razor-Qt
 GenericName[cs]=Nastavení Razoru
-Name[cs]=Středisko nastavení Razoru
+Name[cs]=Nastavení Razoru
+Icon[cs]=Nastavení systému

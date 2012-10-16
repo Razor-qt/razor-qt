@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show &amp;seconds hand</source>
-        <translation>Mostrar &amp;secundario</translation>
+        <translation>Mostrar manecilla de &amp;segundos</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Clock:</source>
-        <translation type="unfinished"/>
+        <translation>Reloj:</translation>
     </message>
 </context>
 </TS>

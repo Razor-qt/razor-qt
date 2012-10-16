@@ -16,3 +16,5 @@ GenericName=Razor Freedesktop Notifications Configuration
 # Translations
 GenericName[hu]=Alkalmazásmenü
 Name[hu]=Razor beállítóközpont
+Icon[hu]=preferences-desktop-theme
+Comment[hu]=A Freedesktop értesítések beállítása

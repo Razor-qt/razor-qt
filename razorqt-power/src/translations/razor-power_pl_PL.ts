@@ -23,11 +23,11 @@
     </message>
     <message>
         <source>Suspend</source>
-        <translation>Wstrzymaj</translation>
+        <translation>Uśpij</translation>
     </message>
     <message>
         <source>Hibernate</source>
-        <translation>Zahibernuj</translation>
+        <translation>Hibernuj</translation>
     </message>
     <message>
         <source>Cancel</source>

@@ -172,7 +172,7 @@
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Diretórios do utilizador&lt;/b&gt;</translation>
+        <translation>Diretórios do utilizador</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>

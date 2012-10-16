@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
-        <translation>Der Datenträger &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/br&gt; is entfernt.</translation>
+        <translation>Der Datenträger &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/br&gt; ist entfernt.</translation>
     </message>
     <message>
         <source>No devices Available.</source>

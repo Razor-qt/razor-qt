@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation>verwerfen</translation>
+        <translation>Verwerfen</translation>
     </message>
     <message>
         <source>Close</source>

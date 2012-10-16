@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
-        <translation>Panel llængde &amp;&amp; position</translation>
+        <translation>Panel længde &amp;&amp; position</translation>
     </message>
     <message>
         <source>Left</source>

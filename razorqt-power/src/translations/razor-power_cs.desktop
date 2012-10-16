@@ -12,3 +12,6 @@ GenericName=Leave the system
 
 
 # Translations
+GenericName[cs]=Opustit systém
+Name[cs]=Odejít
+Icon[cs]=Vypnutí systému

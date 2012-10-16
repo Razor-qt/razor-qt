@@ -13,6 +13,7 @@ GenericName=Razor Session Configurator
 
 
 # Translations
-Comment[cs]=Nastavení modulu sezení Razor-Qt
-GenericName[cs]=Nastavení sezení Razoru
-Name[cs]=Nastavení sezení Razoru
+Comment[cs]=Nastavit modul sezení Razor-Qt
+GenericName[cs]=Nastavení sezení Razor-Qt
+Name[cs]=Nastavení sezení Razor-Qt
+Icon[cs]=Služby nastavení sezení systému

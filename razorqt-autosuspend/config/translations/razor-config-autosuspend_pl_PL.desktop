@@ -11,6 +11,6 @@ GenericName=Razor Autosuspend Configuration
 
 
 # Translations
-GenericName[pl_PL]=Konfiguracja Razor Autosuspend
-Name[pl_PL]=Konfiguracja Razor Autosuspend
-Icon[pl_PL]=razor-autosuspend
+GenericName[pl_PL]=Konfiguracja autouśpienia Razor
+Name[pl_PL]=Konfiguracja autouśpienia Razor
+Icon[pl_PL]=razor-autouśpienie

@@ -14,6 +14,6 @@ GenericName=Razor Configuration
 
 # Translations
 Comment[de_DE]=Razor-Qt-Module konfigurieren
-GenericName[de_DE]=Razor-Konfiguration
-Name[de_DE]=Razor-Einstellungen
+GenericName[de_DE]=Razor Konfiguration
+Name[de_DE]=Razor Konfigurationscenter
 Icon[de_DE]=Einstellungen-System

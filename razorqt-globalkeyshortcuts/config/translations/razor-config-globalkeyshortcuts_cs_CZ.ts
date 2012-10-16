@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Add New</source>
-        <translation>Přidat nový</translation>
+        <translation>Přidat novou</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -53,7 +53,7 @@
     <name>ShortcutEditor</name>
     <message>
         <source>None</source>
-        <translation>Žádný</translation>
+        <translation>Žádná</translation>
     </message>
     <message>
         <source>Add Shortcut</source>

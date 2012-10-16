@@ -3,7 +3,7 @@
     <name>RazorClockConfiguration</name>
     <message>
         <source>Razor Clock Settings</source>
-        <translation>Razor - ustawienia zegara</translation>
+        <translation>Ustawienia zegara Razor</translation>
     </message>
     <message>
         <source>Time</source>

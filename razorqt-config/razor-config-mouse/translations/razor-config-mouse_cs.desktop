@@ -14,6 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
-Comment[cs]=Nastavení myši
-GenericName[cs]=Nastavení myši
-Name[cs]=Nastavení myši
+Comment[cs]=Nastavit myš X11
+GenericName[cs]=Nastavení myši v Razoru
+Name[cs]=Nastavení myši v Razoru
+Icon[cs]=Nastavení myši

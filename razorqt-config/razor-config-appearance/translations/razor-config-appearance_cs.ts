@@ -3,33 +3,33 @@
     <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Nabídka</translation>
+        <translation>Nastavení vzhledu</translation>
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation type="unfinished"/>
+        <translation>Téma ikon</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Nabídka</translation>
+        <translation>Nastavení vzhledu</translation>
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation type="unfinished"/>
+        <translation>Téma ikon</translation>
     </message>
     <message>
         <source>Razor Theme</source>
-        <translation type="unfinished"/>
+        <translation>Motiv Razor</translation>
     </message>
 </context>
 <context>
     <name>RazorThemeConfig</name>
     <message>
         <source>Razor Theme</source>
-        <translation type="unfinished"/>
+        <translation>Motiv Razor</translation>
     </message>
 </context>
 </TS>

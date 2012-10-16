@@ -59,15 +59,15 @@
     </message>
     <message>
         <source>Ultra light</source>
-        <translation type="unfinished"/>
+        <translation>Ultra light</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Light</translation>
     </message>
     <message>
         <source>Ultra black</source>
-        <translation type="unfinished"/>
+        <translation>Ultra schwarz</translation>
     </message>
     <message>
         <source>Black</source>

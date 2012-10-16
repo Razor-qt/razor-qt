@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Temperature scale</source>
-        <translation>Temperatur Skala</translation>
+        <translation>Temperaturskala</translation>
     </message>
     <message>
         <source>Celsius</source>
@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Detected chips:</source>
-        <translation>Erkannte Chips</translation>
+        <translation>Erkannte Chips:</translation>
     </message>
     <message>
         <source>Chip features:</source>
-        <translation>Chip Eigenschaften</translation>
+        <translation>Chip Eigenschaften:</translation>
     </message>
     <message>
         <source>Enabled</source>

@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Always on %1 monitor</source>
-        <translation type="unfinished"/>
+        <translation>Immer auf Monitor %1</translation>
     </message>
 </context>
 <context>

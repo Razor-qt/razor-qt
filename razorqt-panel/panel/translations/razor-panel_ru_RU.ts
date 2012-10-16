@@ -113,7 +113,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>удалениt</translation>
+        <translation>удалить</translation>
     </message>
 </context>
 <context>
