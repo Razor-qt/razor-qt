@@ -95,7 +95,7 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
     clocktimer->start(1000);
 
-    QTimer::singleShot(0, this, SLOT(settingsChanged()));
+    settingsChanged();
 }
 
 /**

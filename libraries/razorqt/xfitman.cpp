@@ -80,13 +80,7 @@ const XfitMan&  xfitMan()
  */
 XfitMan::XfitMan()
 {
-#if 0
-    getAtoms();
-#endif
     root = QX11Info::appRootWindow();
-#if 0
-    screencount = ScreenCount(QX11Info::display());
-#endif
 }
 
 /**
@@ -147,16 +141,6 @@ Window XfitMan::getActiveAppWindow() const
 
     return 0;
 }
-
-#if 0
-/**
- * @brief this makes the wm send Windowevents to us which normally do not belong to zs
- */
-void XfitMan::setEventRoute() const
-{
-    XSelectInput(QX11Info::display(), root, StructureNotifyMask | SubstructureNotifyMask);
-}
-#endif
 
 /**
  * @brief returns the window that currently has inputfocus
@@ -345,20 +329,6 @@ QString XfitMan::getApplicationName(Window _wid) const
     return ret;
 }
 
-#if 0
-/**
- * @brief this add(1) / removes (0) / toggles (2) the _NET_WM_STATE_XXXX flag for a
- *  specified window
- * @param[in] _wid windowId for the action
- * @param[in] _atomcode the QString-code for atomMap - state
- * @param[in] _action the action to do (add 1, remove 0, toggle 2)
- */
-void XfitMan::setClientStateFlag(Window _wid, const QString & _atomcode, int _action) const
-{
-    clientMessage(_wid, atomMap["net_wm_state"],_action,atomMap[_atomcode],0,0,0);
-}
-#endif
-
 /**
  * @brief sends a clientmessage to a window
  */
@@ -386,13 +356,6 @@ int XfitMan::clientMessage(Window _wid, Atom _msg,
     else
         return EXIT_FAILURE;
 }
-
-#if 0
-void XfitMan::mapRaised(Window _wid) const
-{
-    XMapRaised(QX11Info::display(), _wid);
-}
-#endif
 
 
 /***********************************************
@@ -469,14 +432,6 @@ bool XfitMan::isHidden(Window _wid) const
     return getWindowState(_wid).Hidden;
 }
 
-#if 0
-bool XfitMan::requiresAttention(Window _wid) const
-{
-    return getWindowState(_wid).Attention;
-}
-#endif
-
-
 Atom XfitMan::atom(const char* atomName)
 {
     static QHash<QString, Atom> hash;
@@ -488,48 +443,6 @@ Atom XfitMan::atom(const char* atomName)
     hash[atomName] = atom;
     return atom;
 }
-
-#if 0
-/**
- * @brief gets the used atoms into a QMap for further usage
- */
-void XfitMan::getAtoms() const
-{
-    atomMap["net_wm_strut"] = XInternAtom(QX11Info::display(), "_NET_WM_STRUT", False);
-    atomMap["net_wm_strut_partial"] = XInternAtom(QX11Info::display(), "_NET_WM_STRUT_PARTIAL", False);
-    atomMap["net_client_list"] = XInternAtom(QX11Info::display(), "_NET_CLIENT_LIST", False);
-    atomMap["net_wm_visible_name"] =XInternAtom(QX11Info::display(), "_NET_WM_VISIBLE_NAME", False);
-    atomMap["net_wm_name"] =XInternAtom(QX11Info::display(), "_NET_WM_NAME", False);
-    atomMap["xa_wm_name"] =XInternAtom(QX11Info::display(), "XA_WM_NAME", False);
-    atomMap["utf8"] = XInternAtom(QX11Info::display(), "UTF8_STRING", False);
-    atomMap["net_wm_icon"] = XInternAtom(QX11Info::display(), "_NET_WM_ICON", False);
-    atomMap["net_wm_state_hidden"] = XInternAtom(QX11Info::display(), "_NET_WM_STATE_HIDDEN", False);
-    atomMap["net_wm_state_fullscreen"] = XInternAtom(QX11Info::display(), "_NET_WM_STATE_FULLSCREEN", False);
-    atomMap["net_wm_state"] = XInternAtom(QX11Info::display(), "_NET_WM_STATE", False);
-    atomMap["net_current_desktop"] = XInternAtom(QX11Info::display(), "_NET_CURRENT_DESKTOP", False);
-    atomMap["net_wm_desktop"] = XInternAtom(QX11Info::display(),"_NET_WM_DESKTOP", False);
-    atomMap["net_active_window"] = XInternAtom(QX11Info::display(), "_NET_ACTIVE_WINDOW", False);
-    atomMap["_win_workspace"] = XInternAtom(QX11Info::display(), "_WIN_WORKSPACE", False);
-    atomMap["net_number_of_desktops"] = XInternAtom(QX11Info::display(), "_NET_NUMBER_OF_DESKTOPS", False);
-
-    atomMap["net_wm_window_type"] = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE", False);
-    atomMap["net_wm_window_type_normal"] = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_NORMAL", False);
-    atomMap["net_wm_window_type_desktop"] = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_DESKTOP", False);
-    atomMap["net_wm_window_type_dock"] = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_DOCK", False);
-    atomMap["net_wm_window_type_splash"] = XInternAtom(QX11Info::display(), "_NET_WM_WINDOW_TYPE_SPLASH", False);
-    atomMap["kde_net_wm_window_type_override"] = XInternAtom(QX11Info::display(), "_KDE_NET_WM_WINDOW_TYPE_OVERRIDE", False);
-
-    char atomname[20] = {0};
-    qsnprintf(atomname, 20, "_NET_SYSTEM_TRAY_S%d", DefaultScreen(QX11Info::display()));
-    atomMap["net_system_tray"] = XInternAtom(QX11Info::display(), atomname, False);
-    atomMap["net_system_tray_opcode"] = XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_OPCODE", False);
-    atomMap["net_manager"] = XInternAtom(QX11Info::display(), "MANAGER", False);
-    atomMap["net_message_data"] = XInternAtom(QX11Info::display(), "_NET_SYSTEM_TRAY_MESSAGE_DATA", False);
-    atomMap["xrootpmap"] = XInternAtom(QX11Info::display(), "_XROOTPMAP_ID", False);
-    atomMap["esetroot"] = XInternAtom(QX11Info::display(), "ESETROOT_PMAP_ID", False);
-    atomMap["net_wm_window_demands_attention"] = XInternAtom(QX11Info::display(), "_NET_WM_STATE_DEMANDS_ATTENTION", False);
-}
-#endif
 
 AtomList XfitMan::getWindowType(Window window) const
 {
@@ -801,34 +714,6 @@ void XfitMan::setActiveDesktop(int _desktop) const
     clientMessage(root, atom("_NET_CURRENT_DESKTOP"), (unsigned long) _desktop,0,0,0,0);
 }
 
-#if 0
-/**
- * @brief this sets a window as selection owner for a specified atom - checks for success then sends the clientmessage
- */
-void XfitMan::setSelectionOwner(Window _wid, const QString & _selection, const QString & _manager) const
-{
-    if (getSelectionOwner(_selection))
-    {
-        qWarning() << "Another tray started";
-        return;
-    }
-
-    XSetSelectionOwner(QX11Info::display(), atomMap.value(_selection), _wid, CurrentTime);
-    if (getSelectionOwner(_selection)== _wid)
-        clientMessage(QApplication::desktop()->winId(),atomMap.value(_manager),CurrentTime,atomMap.value(_selection),_wid,0,0);
-}
-#endif
-
-#if 0
-/**
- * @brief returns the owning window of selection _selection
- */
-Window XfitMan::getSelectionOwner(const QString & _selection) const
-{
-    return XGetSelectionOwner(QX11Info::display(), atomMap.value(_selection));
-}
-#endif
-
 /**
  * @brief sets net_wm_strut_partial = our reserved panelspace for the mainbar!
  */
@@ -843,7 +728,7 @@ void XfitMan::setStrut(Window _wid,
                        ) const
 {
     //qDebug() << "XfitMan: Trying to set STRUT_PARTIAL for panel!";
-    //prepare strutsize
+    unsigned long desstrut[12];
     memset(desstrut,0,sizeof(desstrut));
     //prepare the array
     //it has format:
@@ -875,16 +760,6 @@ void XfitMan::setStrut(Window _wid,
                     XA_CARDINAL, 32, PropModeReplace, (unsigned char*) desstrut, 4);
 }
 
-#if 0
-/**
- * @brief this unsets the strut set for panel
- */
-void XfitMan::unsetStrut(Window _wid) const
-{
-    XDeleteProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT"));
-    XDeleteProperty(QX11Info::display(), _wid, atom("_NET_WM_STRUT_PARTIAL"));
-}
-#endif
 
 #ifdef DEBUG
 /************************************************

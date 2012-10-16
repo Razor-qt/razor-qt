@@ -297,7 +297,8 @@ void Notification::mouseReleaseEvent(QMouseEvent * event)
 }
 
 NotificationTimer::NotificationTimer(QObject *parent)
-    : QTimer(parent)
+    : QTimer(parent),
+      m_intervalMsec(-1)
 {
 }
 

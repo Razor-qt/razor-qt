@@ -37,6 +37,9 @@
 #include "../config/constants.h"
 
 Battery::Battery()
+    : uPowerBatteryProperties(0),
+      m_chargeLevel(0.0),
+      m_onBattery(false)
 {
     uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
     uPowerBatteryDevice = 0;
@@ -83,12 +86,17 @@ void Battery::uPowerBatteryChanged()
     m_onBattery =  uPower->property("OnBattery").toBool();
     m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
 
-    QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
-    props = reply.value();
-    qDebug() << "props:" << properties();
-    qDebug() << properties().size();
+    if (uPowerBatteryProperties)
+    {
+        QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
+        props = reply.value();
+        qDebug() << "props:" << properties();
+        qDebug() << properties().size();
 
-    emit batteryChanged();
+        emit batteryChanged();
+    }
+    else
+        qWarning() << "uPowerBatteryProperties has not been initialized";
 }
 
 
