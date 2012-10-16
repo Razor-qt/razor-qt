@@ -1,9 +1,9 @@
 # _help = Don't translate this text, it is only help. I want to thank you in the "About" dialog. So, please fill the following information about yourself. The number does not matter, all the names will be displayed in alphabetical order.
 
 
-translator_1_nameEnglish = Sérgio Marques
-translator_1_nameNative  = Sérgio Marques
-translator_1_contact     = smarquespt@gmail.com
+translator_1_nameEnglish = tuhaihe
+# translator_1_nameNative  = Translator 1. Your name in the native language.
+translator_1_contact     = 1132321739qq@gmail.com
 
 # translator_2_nameEnglish = Translator 2. Your name in English. 
 # translator_2_nameNative  = Translator 2. Your name in the native language.

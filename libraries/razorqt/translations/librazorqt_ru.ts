@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>Передовая, простая в использовании и быстрая среда рабочего стола, базирующаяся на технологиях Qt.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
@@ -132,7 +132,7 @@
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-Qt переведена на множество языков благодаря работе команд переводчиков по всему миру.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Инструментарий рабочего стола Razor - Техническая Информация&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
@@ -160,11 +160,11 @@
     </message>
     <message>
         <source>System Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Настройки системы</translation>
     </message>
     <message>
         <source>Share Directory</source>
-        <translation type="unfinished"/>
+        <translation>Открыть общий доступ к папке</translation>
     </message>
     <message>
         <source>Translations</source>
@@ -172,19 +172,19 @@
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Папки пользователя&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation type="unfinished"/>
+        <translation>Домашняя папка данных Xdg</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation type="unfinished"/>
+        <translation>Каталог настроек Xdg</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Папки данных Xdg</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
@@ -264,7 +264,7 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при запуске хранителя экрана. Неизвестная ошибка - команда xdg-screensaver=%1 вернула недокументированное значение.</translation>
     </message>
 </context>
 <context>
