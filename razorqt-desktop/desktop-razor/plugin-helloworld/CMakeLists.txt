@@ -12,7 +12,7 @@ set(HW_SOURCES
 )
 
 set(HW_MOCS
-
+  helloworld.h
 )
 
 #*******************************************
