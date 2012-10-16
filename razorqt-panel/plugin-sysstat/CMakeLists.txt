@@ -31,3 +31,8 @@ LINK_LIBRARIES(${PLUGIN} ${SYSSTAT_LIB})
 include ("../BuildPlugin.cmake")
 BUILD_RAZOR_PLUGIN(${PLUGIN})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+set(panelsysstat_LIBRARIES
+    sysstat
+)
+target_link_libraries(${PLUGIN}  ${panelsysstat_LIBRARIES})

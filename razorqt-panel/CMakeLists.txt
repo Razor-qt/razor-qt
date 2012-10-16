@@ -185,17 +185,8 @@ if (VOLUME_PLUGIN)
 endif (VOLUME_PLUGIN)
 
 if (SYSSTAT_PLUGIN)
-  FIND_LIBRARY(SYSSTAT_LIB sysstat)
-
-  if ( NOT(${SYSSTAT_LIB} MATCHES "NOTFOUND" ))
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "SysStat")
     add_subdirectory(plugin-sysstat)
-  else ()
-    message(STATUS "")
-    message(STATUS "SysStat plugin requires libsysstat")
-    message(STATUS "")
-  endif ( NOT(${SYSSTAT_LIB} MATCHES "NOTFOUND" ))
-
 endif (SYSSTAT_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
