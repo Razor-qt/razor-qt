@@ -36,11 +36,6 @@ razor_translate_ts(QM_FILES
         ${razor-openssh-askpass_SRCS}
         ${razor-openssh-askpass_UIS}
 )
-
-razor_translate_desktop(DESKTOP_FILES
-    SOURCES
-        razor-config-mouse.desktop.in
-)
 #************************************************
 
 QT4_WRAP_CPP(MOCS ${razor-openssh-askpass_HDRS})
