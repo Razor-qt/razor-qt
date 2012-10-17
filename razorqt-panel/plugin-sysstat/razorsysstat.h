@@ -114,6 +114,7 @@ private:
     int netMaximumSpeed;
     qreal netRealMaximumSpeed;
     bool logarithmicScale;
+    double logarithmicScaleValue;
 
     int historyOffset;
     QImage historyImage[2];

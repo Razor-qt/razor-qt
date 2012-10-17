@@ -137,6 +137,8 @@ void RazorSysStatConfiguration::loadSettings()
     ui->maximumHS->setValue(PluginSysStat::netSpeedFromString(mSettings.value("net/maximumSpeed", "1 MB/s").toString()));
     on_maximumHS_valueChanged(ui->maximumHS->value());
     ui->logarithmicCB->setChecked(mSettings.value("net/logarithmicScale", true).toBool());
+    ui->logScaleSB->setValue(mSettings.value("net/logarithmicScaleValue", 1.0).toDouble());
+
 
     lockSaving = false;
 }
@@ -179,6 +181,7 @@ void RazorSysStatConfiguration::saveSettings()
     mSettings.setValue("net/transmittedColour", QString("0x%1").arg(ui->netTransmittedF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
     mSettings.setValue("net/maximumSpeed", PluginSysStat::netSpeedToString(ui->maximumHS->value()));
     mSettings.setValue("net/logarithmicScale", ui->logarithmicCB->isChecked());
+    mSettings.setValue("net/logarithmicScaleValue", ui->logScaleSB->value());
 }
 
 void RazorSysStatConfiguration::dialogButtonsAction(QAbstractButton *btn)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>777</width>
-    <height>432</height>
+    <width>740</width>
+    <height>435</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
          <property name="title">
           <string>Graph</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,2">
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="2,3">
           <item row="0" column="0">
            <widget class="QLabel" name="bgColourL">
             <property name="text">
@@ -130,7 +130,7 @@
          <property name="title">
           <string>Grid</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,2">
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,3">
           <item row="0" column="0">
            <widget class="QLabel" name="linesL">
             <property name="text">
@@ -192,7 +192,7 @@
          <property name="title">
           <string>Title</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout" columnstretch="1,2">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
           <item row="0" column="0">
            <widget class="QLabel" name="labelL">
             <property name="text">
@@ -285,7 +285,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>1</height>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -299,7 +299,7 @@
          <property name="title">
           <string>Data</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,2">
+         <layout class="QGridLayout" name="gridLayout_4" columnstretch="2,3">
           <item row="0" column="0">
            <widget class="QLabel" name="typeL">
             <property name="text">
@@ -583,7 +583,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>76</height>
+                  <height>0</height>
                  </size>
                 </property>
                </spacer>
@@ -746,7 +746,7 @@
                     <property name="sizeHint" stdset="0">
                      <size>
                       <width>20</width>
-                      <height>35</height>
+                      <height>0</height>
                      </size>
                     </property>
                    </spacer>
@@ -816,7 +816,7 @@
                     <property name="sizeHint" stdset="0">
                      <size>
                       <width>20</width>
-                      <height>103</height>
+                      <height>0</height>
                      </size>
                     </property>
                    </spacer>
@@ -833,7 +833,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>133</height>
+                  <height>0</height>
                  </size>
                 </property>
                </spacer>
@@ -849,7 +849,7 @@
                <number>0</number>
               </property>
               <item>
-               <layout class="QGridLayout" name="gridLayout_8" columnstretch="1,2">
+               <layout class="QGridLayout" name="gridLayout_8" columnstretch="2,3">
                 <property name="spacing">
                  <number>6</number>
                 </property>
@@ -904,7 +904,7 @@
                   </item>
                  </layout>
                 </item>
-                <item row="3" column="0" colspan="2">
+                <item row="3" column="0">
                  <widget class="QCheckBox" name="logarithmicCB">
                   <property name="text">
                    <string>Logarithmic scale</string>
@@ -971,6 +971,25 @@
                   </item>
                  </layout>
                 </item>
+                <item row="3" column="1">
+                 <widget class="QDoubleSpinBox" name="logScaleSB">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>3.000000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.100000000000000</double>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>
@@ -981,7 +1000,7 @@
                 <property name="sizeHint" stdset="0">
                  <size>
                   <width>20</width>
-                  <height>155</height>
+                  <height>0</height>
                  </size>
                 </property>
                </spacer>
@@ -992,6 +1011,19 @@
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </item>
@@ -1093,12 +1125,12 @@
    <slot>setText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>767</x>
+     <x>739</x>
      <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>503</x>
-     <y>128</y>
+     <x>597</x>
+     <y>183</y>
     </hint>
    </hints>
   </connection>
@@ -1109,8 +1141,8 @@
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>361</x>
-     <y>89</y>
+     <x>354</x>
+     <y>95</y>
     </hint>
     <hint type="destinationlabel">
      <x>392</x>
@@ -1125,8 +1157,8 @@
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>364</x>
-     <y>118</y>
+     <x>354</x>
+     <y>126</y>
     </hint>
     <hint type="destinationlabel">
      <x>387</x>
@@ -1189,8 +1221,8 @@
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>503</x>
-     <y>128</y>
+     <x>515</x>
+     <y>213</y>
     </hint>
     <hint type="destinationlabel">
      <x>392</x>
@@ -1205,11 +1237,11 @@
    <slot>saveSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>748</x>
-     <y>80</y>
+     <x>717</x>
+     <y>92</y>
     </hint>
     <hint type="destinationlabel">
-     <x>781</x>
+     <x>739</x>
      <y>105</y>
     </hint>
    </hints>
@@ -1225,8 +1257,40 @@
      <y>48</y>
     </hint>
     <hint type="destinationlabel">
-     <x>777</x>
+     <x>739</x>
      <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logarithmicCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>logScaleSB</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>502</x>
+     <y>201</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>566</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logScaleSB</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>703</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>732</x>
+     <y>203</y>
     </hint>
    </hints>
   </connection>
