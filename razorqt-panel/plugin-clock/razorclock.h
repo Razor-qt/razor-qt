@@ -77,7 +77,9 @@ private:
     QString timeFormat;
     QString dateFormat;
     bool dateOnNewLine;
+    bool dateBeforeTime;
     bool showDate;
+    bool useUTC;
     Qt::DayOfWeek m_firstDayOfWeek;
 
 private slots:

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>282</height>
+    <width>370</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,18 +19,25 @@
      <property name="title">
       <string>Time</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0">
-      <item row="0" column="0" colspan="2">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
        <widget class="QCheckBox" name="showSecondsCB">
         <property name="text">
          <string>&amp;Show seconds</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item>
        <widget class="QCheckBox" name="ampmClockCB">
         <property name="text">
          <string>12 &amp;hour style</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="useUtcCB">
+        <property name="text">
+         <string>Use UTC</string>
         </property>
        </widget>
       </item>
@@ -50,20 +57,20 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="dateFormatL">
         <property name="enabled">
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>D&amp;ate format</string>
+         <string>Date &amp;format</string>
         </property>
         <property name="buddy">
          <cstring>dateFormatCOB</cstring>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QComboBox" name="dateFormatCOB">
         <property name="enabled">
          <bool>false</bool>
@@ -80,6 +87,16 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="dateBeforeTimeCB">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Show date &amp;before time</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -90,8 +107,8 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>1</width>
-       <height>1</height>
+       <width>20</width>
+       <height>0</height>
       </size>
      </property>
     </spacer>
@@ -117,8 +134,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>196</x>
-     <y>424</y>
+     <x>205</x>
+     <y>296</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -133,8 +150,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>196</x>
-     <y>424</y>
+     <x>205</x>
+     <y>296</y>
     </hint>
     <hint type="destinationlabel">
      <x>196</x>
@@ -145,28 +162,12 @@
   <connection>
    <sender>showDateCB</sender>
    <signal>toggled(bool)</signal>
-   <receiver>dateOnNewLineCB</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>167</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>68</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showDateCB</sender>
-   <signal>toggled(bool)</signal>
    <receiver>dateFormatCOB</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>129</x>
-     <y>169</y>
+     <x>149</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -181,8 +182,8 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>30</x>
-     <y>163</y>
+     <x>50</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>30</x>

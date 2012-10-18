@@ -32,7 +32,6 @@
 #include <QtGui/QDialog>
 #include <QtGui/QAbstractButton>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QFont>
 #include <QtCore/QLocale>
 #include <QtCore/QDateTime>
 
@@ -71,6 +70,14 @@ private slots:
     */
     void saveSettings();
     void dialogButtonsAction(QAbstractButton *btn);
+    void dateFormatActivated(int);
+    void updateDateCheckboxes(void);
+
+private:
+    int oldIndex;
+    QString customDateFormat;
+
+    void addDateFormat(const QString &format);
 };
 
 #endif // RAZORCLOCKCONFIGURATION_H

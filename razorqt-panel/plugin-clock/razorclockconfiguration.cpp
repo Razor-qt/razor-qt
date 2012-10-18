@@ -26,35 +26,41 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
+#include <QtGui/QInputDialog>
+
 #include "razorclockconfiguration.h"
 #include "ui_razorclockconfiguration.h"
-
-#include <QtGui/QFontDialog>
 
 
 RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorClockConfiguration),
     mSettings(settings),
-    oldSettings(settings)
+    oldSettings(settings),
+    oldIndex(1)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("ClockConfigurationWindow");
     ui->setupUi(this);
 
-    createDateFormats();
-
-    connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
+    connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), SLOT(dialogButtonsAction(QAbstractButton*)));
 
     loadSettings();
     /* We use clicked() and activated(int) because these signals aren't emitting after programmaticaly
       change of state */
 
-    connect(ui->showSecondsCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
-    connect(ui->ampmClockCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
-    connect(ui->showDateCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
-    connect(ui->dateOnNewLineCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
-    connect(ui->dateFormatCOB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
+    connect(ui->dateFormatCOB, SIGNAL(activated(int)), SLOT(dateFormatActivated(int)));
+
+    connect(ui->showSecondsCB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->ampmClockCB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->useUtcCB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->showDateCB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->dateBeforeTimeCB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->dateOnNewLineCB, SIGNAL(clicked()), SLOT(saveSettings()));
+
+    connect(ui->showDateCB, SIGNAL(toggled(bool)), SLOT(updateDateCheckboxes()));
+    connect(ui->dateBeforeTimeCB, SIGNAL(toggled(bool)), SLOT(updateDateCheckboxes()));
+    connect(ui->dateOnNewLineCB, SIGNAL(toggled(bool)), SLOT(updateDateCheckboxes()));
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -62,85 +68,147 @@ RazorClockConfiguration::~RazorClockConfiguration()
     delete ui;
 }
 
+static int currentYear = QDate::currentDate().year();
+
+void RazorClockConfiguration::addDateFormat(const QString &format)
+{
+    if (ui->dateFormatCOB->findData(QVariant(format)) == -1)
+        ui->dateFormatCOB->addItem(QDate(currentYear, 1, 1).toString(format), QVariant(format));
+}
+
 void RazorClockConfiguration::createDateFormats()
 {
-    QString systemLocale = QLocale::system().dateFormat(QLocale::ShortFormat);
-    ui->dateFormatCOB->addItem(QDate::currentDate().toString(systemLocale), QVariant(systemLocale));
-    systemLocale = systemLocale.toUpper();
+    ui->dateFormatCOB->clear();
 
-    if (systemLocale.indexOf("Y") < systemLocale.indexOf("D"))
+    QString systemDateLocale = QLocale::system().dateFormat(QLocale::ShortFormat).toUpper();
+
+    if (systemDateLocale.indexOf("Y") < systemDateLocale.indexOf("D"))
     // Big-endian (year, month, day) -> in some Asia countires like China or Japan
     {
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("MMM dd"), QVariant("MMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("MMMM dd"), QVariant("MMMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("yyyy MMM dd"), QVariant("yyyy MMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, MMM dd"), QVariant("ddd, MMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, MMMM dd"), QVariant("ddd, MMMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, yyyy MMM dd"), QVariant("ddd, yyyy MMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("dddd, yyyy MMMM dd"), QVariant("dddd, yyyy MMMM dd"));
+        addDateFormat("MMM d");
+        addDateFormat("MMMM d");
+        addDateFormat("MMM d, ddd");
+        addDateFormat("MMMM d, dddd");
+        addDateFormat("yyyy MMM d");
+        addDateFormat("yyyy MMMM d");
+        addDateFormat("yyyy MMM d, ddd");
+        addDateFormat("yyyy MMMM d, dddd");
+        addDateFormat("MMM dd");
+        addDateFormat("MMMM dd");
+        addDateFormat("MMM dd, ddd");
+        addDateFormat("MMMM dd, dddd");
+        addDateFormat("yyyy MMM dd");
+        addDateFormat("yyyy MMMM dd");
+        addDateFormat("yyyy MMM dd, ddd");
+        addDateFormat("yyyy MMMM dd, dddd");
     }
-    else if (systemLocale.indexOf("M") < systemLocale.indexOf("D"))
+    else if (systemDateLocale.indexOf("M") < systemDateLocale.indexOf("D"))
     // Middle-endian (month, day, year) -> USA
     {
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("MMM dd"), QVariant("MMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("MMMM dd"), QVariant("MMMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("MMM dd yyyy"), QVariant("MMM dd yyyy"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, MMM dd"), QVariant("ddd, MMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, MMMM dd"), QVariant("ddd, MMMM dd"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, MMM dd yyyy"), QVariant("ddd, MMM dd yyyy"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("dddd, MMMM dd yyyy"), QVariant("dddd, MMMM dd yyyy"));
+        addDateFormat("MMM d");
+        addDateFormat("MMMM d");
+        addDateFormat("ddd, MMM d");
+        addDateFormat("dddd, MMMM d");
+        addDateFormat("MMM d yyyy");
+        addDateFormat("MMMM d yyyy");
+        addDateFormat("ddd, MMM d yyyy");
+        addDateFormat("dddd, MMMM d yyyy");
+        addDateFormat("MMM dd");
+        addDateFormat("MMMM dd");
+        addDateFormat("ddd, MMM dd");
+        addDateFormat("dddd, MMMM dd");
+        addDateFormat("MMM dd yyyy");
+        addDateFormat("MMMM dd yyyy");
+        addDateFormat("ddd, MMM dd yyyy");
+        addDateFormat("dddd, MMMM dd yyyy");
     }
     else
     // Little-endian (day, month, year) -> most of Europe
     {
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("dd MMM"), QVariant("dd MMM"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("dd MMMM"), QVariant("dd MMMM"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("dd MMM yyyy"), QVariant("dd MMM yyyy"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, dd MMM"), QVariant("ddd, dd MMM"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, dd MMMM"), QVariant("ddd, dd MMMM"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("ddd, dd MMM yyyy"), QVariant("ddd, dd MMM yyyy"));
-        ui->dateFormatCOB->addItem(QDate::currentDate().toString("dddd, dd MMMM yyyy"), QVariant("dddd, dd MMMM yyyy"));
+        addDateFormat("d MMM");
+        addDateFormat("d MMMM");
+        addDateFormat("ddd, d MMM");
+        addDateFormat("dddd, d MMMM");
+        addDateFormat("d MMM yyyy");
+        addDateFormat("d MMMM yyyy");
+        addDateFormat("ddd, d MMM yyyy");
+        addDateFormat("dddd, d MMMM yyyy");
+        addDateFormat("dd MMM");
+        addDateFormat("dd MMMM");
+        addDateFormat("ddd, dd MMM");
+        addDateFormat("dddd, dd MMMM");
+        addDateFormat("dd MMM yyyy");
+        addDateFormat("dd MMMM yyyy");
+        addDateFormat("ddd, dd MMM yyyy");
+        addDateFormat("dddd, dd MMMM yyyy");
     }
+
+    addDateFormat(QLocale::system().dateFormat(QLocale::ShortFormat));
+    addDateFormat(QLocale::system().dateFormat(QLocale::LongFormat));
+
+    addDateFormat("yyyy-MM-dd"); // ISO
+
+    if (customDateFormat.isEmpty())
+        ui->dateFormatCOB->addItem("Custom ...", QVariant(customDateFormat));
+    else
+        ui->dateFormatCOB->addItem(QString("Custom (%1) ...").arg(QDate(currentYear, 1, 1).toString(customDateFormat)), QVariant(customDateFormat));
 }
 
 void RazorClockConfiguration::loadSettings()
 {
-    QString timeFormat;
+    QString systemDateLocale = QLocale::system().dateFormat(QLocale::ShortFormat).toUpper();
+    QString systemTimeLocale = QLocale::system().timeFormat(QLocale::ShortFormat).toUpper();
 
-    ui->showDateCB->setChecked(mSettings.value("showDate", false).toBool());
-    ui->dateOnNewLineCB->setChecked(mSettings.value("dateOnNewLine", true).toBool());
-
-    ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->findData(mSettings.value("dateFormat", Qt::SystemLocaleShortDate)));
-    if (ui->dateFormatCOB->currentIndex() < 0)
-        ui->dateFormatCOB->setCurrentIndex(1);
-
-    if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP"))
-        timeFormat = mSettings.value("timeFormat", "h:mm AP").toString();
-    else
-        timeFormat = mSettings.value("timeFormat", "HH:mm").toString();
+    QString timeFormat = mSettings.value("timeFormat", systemTimeLocale.contains("AP") ? "h:mm AP" : "HH:mm").toString();
 
     ui->showSecondsCB->setChecked(timeFormat.indexOf("ss") > -1);
 
     ui->ampmClockCB->setChecked(timeFormat.toUpper().indexOf("AP") > -1);
+
+    ui->useUtcCB->setChecked(mSettings.value("UTC", false).toBool());
+
+    ui->showDateCB->setChecked(mSettings.value("showDate", false).toBool());
+    ui->dateOnNewLineCB->setChecked(mSettings.value("dateOnNewLine", true).toBool());
+    ui->dateBeforeTimeCB->setChecked(mSettings.value("dateBeforeTimeCB", (systemDateLocale.indexOf("Y") < systemDateLocale.indexOf("H"))).toBool());
+
+    updateDateCheckboxes();
+
+    customDateFormat = mSettings.value("customDateFormat", QString()).toString();
+    QString dateFormat = mSettings.value("dateFormat", QLocale::system().dateFormat(QLocale::ShortFormat)).toString();
+
+    createDateFormats();
+
+    if (customDateFormat == dateFormat)
+        ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->count() - 1);
+    else
+    {
+        ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->findData(dateFormat));
+        if (ui->dateFormatCOB->currentIndex() < 0)
+            ui->dateFormatCOB->setCurrentIndex(1);
+    }
+    oldIndex = ui->dateFormatCOB->currentIndex();
 }
 
 void RazorClockConfiguration::saveSettings()
 {
-    QString timeFormat;
+    QString timeFormat(ui->ampmClockCB->isChecked() ? "h:mm AP" : "HH:mm");
 
-    mSettings.setValue("showDate", ui->showDateCB->isChecked());
-    mSettings.setValue("dateOnNewLine", ui->dateOnNewLineCB->isChecked());
-    mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
-
-    if (ui->ampmClockCB->isChecked() == true)
-        timeFormat = "h:mm AP";
-    else
-        timeFormat = "HH:mm";
-
-    if (ui->showSecondsCB->isChecked() == true)
+    if (ui->showSecondsCB->isChecked())
         timeFormat.insert(timeFormat.indexOf("mm") + 2, ":ss");
 
     mSettings.setValue("timeFormat", timeFormat);
+
+    mSettings.setValue("UTC", ui->useUtcCB->isChecked());
+
+    mSettings.setValue("showDate", ui->showDateCB->isChecked());
+    mSettings.setValue("dateOnNewLine", ui->dateOnNewLineCB->isChecked());
+    mSettings.setValue("dateBeforeTimeCB", ui->dateBeforeTimeCB->isChecked());
+
+    mSettings.setValue("customDateFormat", customDateFormat);
+    if (ui->dateFormatCOB->currentIndex() == (ui->dateFormatCOB->count() - 1))
+        mSettings.setValue("dateFormat", customDateFormat);
+    else
+        mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
 }
 
 void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
@@ -154,4 +222,52 @@ void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
     {
         close();
     }
+}
+
+void RazorClockConfiguration::dateFormatActivated(int index)
+{
+    if (index == ui->dateFormatCOB->count() - 1)
+    {
+        bool ok;
+        QString newCustomDateFormat = QInputDialog::getText(this, tr("Input custom date format"), tr(
+            "Interpreted sequences of date format are:\n"
+            "\n"
+            "d\tthe day as number without a leading zero (1 to 31)\n"
+            "dd\tthe day as number with a leading zero (01 to 31)\n"
+            "ddd\tthe abbreviated localized day name (e.g. 'Mon' to 'Sun').\n"
+            "dddd\tthe long localized day name (e.g. 'Monday' to 'Sunday').\n"
+            "M\tthe month as number without a leading zero (1-12)\n"
+            "MM\tthe month as number with a leading zero (01-12)\n"
+            "MMM\tthe abbreviated localized month name (e.g. 'Jan' to 'Dec').\n"
+            "MMMM\tthe long localized month name (e.g. 'January' to 'December').\n"
+            "yy\tthe year as two digit number (00-99)\n"
+            "yyyy\tthe year as four digit number\n"
+            "\n"
+            "All other input characters will be treated as text.\n"
+            "Any sequence of characters that are enclosed in single quotes (')\n"
+            "will also be treated as text and not be used as an expression.\n"
+            "\n"
+            "\n"
+            "Custom date format:"
+            ), QLineEdit::Normal, customDateFormat, &ok);
+        if (ok)
+        {
+            customDateFormat = newCustomDateFormat;
+            oldIndex = index;
+            createDateFormats();
+        }
+        ui->dateFormatCOB->setCurrentIndex(oldIndex);
+    }
+    else
+        oldIndex = index;
+
+    saveSettings();
+}
+
+void RazorClockConfiguration::updateDateCheckboxes(void)
+{
+    if (ui->dateOnNewLineCB->isChecked() && ui->dateBeforeTimeCB->isChecked())
+        ui->dateBeforeTimeCB->setChecked(false);
+    ui->dateOnNewLineCB->setEnabled(ui->showDateCB->isChecked() && !ui->dateBeforeTimeCB->isChecked());
+    ui->dateBeforeTimeCB->setEnabled(ui->showDateCB->isChecked() && !ui->dateOnNewLineCB->isChecked());
 }

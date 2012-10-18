@@ -101,14 +101,15 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
  */
 void RazorClock::updateTime()
 {
+    QDateTime now(useUTC ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
     if (dateOnNewLine && showDate)
     {
-        timeLabel->setText(QDateTime::currentDateTime().toString(timeFormat));
-        dateLabel->setText(QDateTime::currentDateTime().toString(dateFormat));
+        timeLabel->setText(QLocale::system().toString(now, timeFormat));
+        dateLabel->setText(QLocale::system().toString(now, dateFormat));
     }
     else
     {
-        timeLabel->setText(QDateTime::currentDateTime().toString(clockFormat));
+        timeLabel->setText(QLocale::system().toString(now, clockFormat));
     }
 }
 
@@ -121,22 +122,22 @@ RazorClock::~RazorClock()
 
 void RazorClock::settingsChanged()
 {
-    if (QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") == true)
-        timeFormat = settings().value("timeFormat", "h:mm AP").toString();
-    else
-        timeFormat = settings().value("timeFormat", "HH:mm").toString();
+    timeFormat = settings().value("timeFormat", QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") ? "h:mm AP" : "HH:mm").toString();
+
+    useUTC = settings().value("UTC", false).toBool();
+    if (useUTC)
+        timeFormat += "' Z'";
 
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
-    dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
     showDate = settings().value("showDate", false).toBool();
+    dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
+    QString systemLocale = QLocale::system().dateFormat(QLocale::ShortFormat).toUpper();
+    dateBeforeTime = settings().value("dateBeforeTimeCB", (systemLocale.indexOf("Y") < systemLocale.indexOf("H"))).toBool();
 
     clockFormat = timeFormat;
-    if (showDate && (!dateOnNewLine))
-    {
-        clockFormat.append(" ");
-        clockFormat += dateFormat;
-    }
+    if ((showDate) && (!dateOnNewLine))
+        clockFormat = QString(dateBeforeTime ? "%1 %2" : "%2 %1").arg(dateFormat).arg(clockFormat);
 
     m_firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
