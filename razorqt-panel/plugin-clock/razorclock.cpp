@@ -102,7 +102,7 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
 void RazorClock::updateTime()
 {
     QDateTime now(useUTC ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
-    if (dateOnNewLine && showDate)
+    if (dateOnNewLine)
     {
         timeLabel->setText(QLocale::system().toString(now, timeFormat));
         dateLabel->setText(QLocale::system().toString(now, dateFormat));
@@ -130,18 +130,20 @@ void RazorClock::settingsChanged()
 
     dateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
-    showDate = settings().value("showDate", false).toBool();
-    dateOnNewLine = settings().value("dateOnNewLine", true).toBool();
-    QString systemLocale = QLocale::system().dateFormat(QLocale::ShortFormat).toUpper();
-    dateBeforeTime = settings().value("dateBeforeTimeCB", (systemLocale.indexOf("Y") < systemLocale.indexOf("H"))).toBool();
+    bool dateBeforeTime = (settings().value("showDate", "no").toString().toLower() == "before");
+    bool dateAfterTime = (settings().value("showDate", "no").toString().toLower() == "after");
+    dateOnNewLine = (settings().value("showDate", "no").toString().toLower() == "below");
 
-    clockFormat = timeFormat;
-    if ((showDate) && (!dateOnNewLine))
-        clockFormat = QString(dateBeforeTime ? "%1 %2" : "%2 %1").arg(dateFormat).arg(clockFormat);
+    if (dateBeforeTime)
+        clockFormat = QString("%1 %2").arg(dateFormat).arg(timeFormat);
+    else if (dateAfterTime)
+        clockFormat = QString("%1 %2").arg(timeFormat).arg(dateFormat);
+    else
+        clockFormat = timeFormat;
 
     m_firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
-    dateLabel->setVisible(showDate && dateOnNewLine);
+    dateLabel->setVisible(dateOnNewLine);
 
     updateMinWidth();
 
@@ -213,7 +215,7 @@ void RazorClock::updateMinWidth()
 {
     QFontMetrics timeLabelMetrics(timeLabel->font());
     QFontMetrics dateLabelMetrics(dateLabel->font());
-    QDate maxDate = getMaxDate((dateOnNewLine && showDate) ? dateLabelMetrics : timeLabelMetrics, dateFormat);
+    QDate maxDate = getMaxDate(dateOnNewLine ? dateLabelMetrics : timeLabelMetrics, dateFormat);
     QTime maxTime = getMaxTime(timeLabelMetrics, timeFormat);
     QDateTime dt(maxDate, maxTime);
 
@@ -223,7 +225,7 @@ void RazorClock::updateMinWidth()
 
     int width;
     int height;
-    if (dateOnNewLine && showDate)
+    if (dateOnNewLine)
     {
         QRect rect1(timeLabelMetrics.boundingRect(dt.toString(timeFormat)));
         timeLabel->setMinimumSize(rect1.size());

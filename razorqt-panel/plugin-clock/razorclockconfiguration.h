@@ -71,7 +71,6 @@ private slots:
     void saveSettings();
     void dialogButtonsAction(QAbstractButton *btn);
     void dateFormatActivated(int);
-    void updateDateCheckboxes(void);
 
 private:
     int oldIndex;

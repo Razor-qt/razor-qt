@@ -54,13 +54,10 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     connect(ui->showSecondsCB, SIGNAL(clicked()), SLOT(saveSettings()));
     connect(ui->ampmClockCB, SIGNAL(clicked()), SLOT(saveSettings()));
     connect(ui->useUtcCB, SIGNAL(clicked()), SLOT(saveSettings()));
-    connect(ui->showDateCB, SIGNAL(clicked()), SLOT(saveSettings()));
-    connect(ui->dateBeforeTimeCB, SIGNAL(clicked()), SLOT(saveSettings()));
-    connect(ui->dateOnNewLineCB, SIGNAL(clicked()), SLOT(saveSettings()));
-
-    connect(ui->showDateCB, SIGNAL(toggled(bool)), SLOT(updateDateCheckboxes()));
-    connect(ui->dateBeforeTimeCB, SIGNAL(toggled(bool)), SLOT(updateDateCheckboxes()));
-    connect(ui->dateOnNewLineCB, SIGNAL(toggled(bool)), SLOT(updateDateCheckboxes()));
+    connect(ui->dontShowDateRB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->showDateBeforeTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->showDateAfterTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
+    connect(ui->showDateBelowTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -167,11 +164,10 @@ void RazorClockConfiguration::loadSettings()
 
     ui->useUtcCB->setChecked(mSettings.value("UTC", false).toBool());
 
-    ui->showDateCB->setChecked(mSettings.value("showDate", false).toBool());
-    ui->dateOnNewLineCB->setChecked(mSettings.value("dateOnNewLine", true).toBool());
-    ui->dateBeforeTimeCB->setChecked(mSettings.value("dateBeforeTimeCB", (systemDateLocale.indexOf("Y") < systemDateLocale.indexOf("H"))).toBool());
-
-    updateDateCheckboxes();
+    ui->dontShowDateRB->setChecked(true);
+    ui->showDateBeforeTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "before");
+    ui->showDateAfterTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "after");
+    ui->showDateBelowTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "below");
 
     customDateFormat = mSettings.value("customDateFormat", QString()).toString();
     QString dateFormat = mSettings.value("dateFormat", QLocale::system().dateFormat(QLocale::ShortFormat)).toString();
@@ -200,9 +196,10 @@ void RazorClockConfiguration::saveSettings()
 
     mSettings.setValue("UTC", ui->useUtcCB->isChecked());
 
-    mSettings.setValue("showDate", ui->showDateCB->isChecked());
-    mSettings.setValue("dateOnNewLine", ui->dateOnNewLineCB->isChecked());
-    mSettings.setValue("dateBeforeTimeCB", ui->dateBeforeTimeCB->isChecked());
+    mSettings.setValue("showDate",
+        ui->showDateBeforeTimeRB->isChecked() ? "before" :
+        (ui->showDateAfterTimeRB->isChecked() ? "after" :
+        (ui->showDateBelowTimeRB->isChecked() ? "below" : "no" )));
 
     mSettings.setValue("customDateFormat", customDateFormat);
     if (ui->dateFormatCOB->currentIndex() == (ui->dateFormatCOB->count() - 1))
@@ -262,12 +259,4 @@ void RazorClockConfiguration::dateFormatActivated(int index)
         oldIndex = index;
 
     saveSettings();
-}
-
-void RazorClockConfiguration::updateDateCheckboxes(void)
-{
-    if (ui->dateOnNewLineCB->isChecked() && ui->dateBeforeTimeCB->isChecked())
-        ui->dateBeforeTimeCB->setChecked(false);
-    ui->dateOnNewLineCB->setEnabled(ui->showDateCB->isChecked() && !ui->dateBeforeTimeCB->isChecked());
-    ui->dateBeforeTimeCB->setEnabled(ui->showDateCB->isChecked() && !ui->dateOnNewLineCB->isChecked());
 }
