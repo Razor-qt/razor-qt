@@ -64,7 +64,6 @@ protected:
 protected slots:
     virtual void settingsChanged();
     virtual void showConfigureDialog();
-    void fontChanged();
 
 private:
     QTimer* clocktimer;
@@ -78,28 +77,11 @@ private:
     QString timeFormat;
     QString dateFormat;
     bool dateOnNewLine;
-    bool showDate;
+    bool useUTC;
     Qt::DayOfWeek m_firstDayOfWeek;
 
 private slots:
     void updateMinWidth();
-};
-
-
-class ClockLabel: public QLabel
-{
-    Q_OBJECT
-public:
-    ClockLabel(QWidget* parent = 0):
-        QLabel(parent)
-    {
-    }
-
-signals:
-    void fontChanged();
-
-protected:
-    bool event(QEvent *event);
 };
 
 

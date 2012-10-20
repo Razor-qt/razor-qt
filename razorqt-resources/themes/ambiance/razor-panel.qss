@@ -95,11 +95,17 @@ RazorPanelPlugin > QToolButton:hover{
 /*
  * Clock
  */
-#Clock > QWidget > QLabel{
-    font-size: 10pt;
-    margin-right: 2px;
-    color: #F2F1F0;
-}
+ #Clock > QWidget{
+     margin-right: 2px;
+ }
+ #Clock #TimeLabel{
+     font-size: 10pt;
+     color: #cacaca;
+ }
+ #Clock #DateLabel{
+     font-size: 8pt;
+     color: #cacaca;
+ }
 
 /*
  * Tray
