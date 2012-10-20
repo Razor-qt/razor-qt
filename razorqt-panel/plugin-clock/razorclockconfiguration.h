@@ -73,8 +73,8 @@ private slots:
     void dateFormatActivated(int);
 
 private:
-    int oldIndex;
-    QString customDateFormat;
+    int mOldIndex;
+    QString mCustomDateFormat;
 
     void addDateFormat(const QString &format);
 };
