@@ -37,6 +37,7 @@ RazorPower::RazorPower(QObject *parent) :
     mProviders.append(new CustomProvider(this));
     mProviders.append(new UPowerProvider(this));
     mProviders.append(new ConsoleKitProvider(this));
+    mProviders.append(new SystemdProvider(this));
     mProviders.append(new RazorProvider(this));
 }
 
