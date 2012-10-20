@@ -83,6 +83,19 @@ public slots:
 };
 
 
+class SystemdProvider: public RazorPowerProvider
+{
+    Q_OBJECT
+public:
+    SystemdProvider(QObject *parent = 0);
+    ~SystemdProvider();
+    bool canAction(RazorPower::Action action) const;
+
+public slots:
+    bool doAction(RazorPower::Action action);
+};
+
+
 class RazorProvider: public RazorPowerProvider
 {
     Q_OBJECT
@@ -107,6 +120,7 @@ public:
 public slots:
     bool doAction(RazorPower::Action action);
 };
+
 
 class CustomProvider: public RazorPowerProvider
 {
