@@ -135,7 +135,9 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     netTransmittedColour = QColor(settings.value("net/transmittedColour", "0x808000").toString().toInt(NULL, 0) | 0xff000000);
     netMaximumSpeed = PluginSysStat::netSpeedFromString(settings.value("net/maximumSpeed", "1 MB/s").toString());
     logarithmicScale = settings.value("net/logarithmicScale", true).toBool();
-    logarithmicScaleValue = settings.value("net/logarithmicScaleValue", 1.0).toDouble();
+
+    logScaleSteps = settings.value("net/logarithmicScaleSteps", 4).toInt();
+    logScaleMax = static_cast<qreal>(static_cast<int64_t>(1) << logScaleSteps);
 
     netRealMaximumSpeed = static_cast<qreal>(static_cast<int64_t>(1) << netMaximumSpeed);
 
@@ -320,7 +322,7 @@ void RazorSysStatContent::swapUpdate(float used)
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
     int y_used = height - height * used + 0.5;
 
-    drawLine(imageIndex, x, 0,      y_used,   bgColour);
+    drawLine(imageIndex, x, 0,      y_used, bgColour);
     drawLine(imageIndex, x, y_used, height, swapUsedColour);
 
     ++historyOffset;
@@ -341,8 +343,8 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
     qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / netRealMaximumSpeed, 0.0), 1.0);
     if (logarithmicScale)
     {
-        min_value = qLn(min_value * (qPow(M_E, logarithmicScaleValue) - 1.0) + 1.0) / logarithmicScaleValue;
-        max_value = qLn(max_value * (qPow(M_E, logarithmicScaleValue) - 1.0) + 1.0) / logarithmicScaleValue;
+        min_value = qLn(min_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
+        max_value = qLn(max_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
     }
     int y_min = height - height * min_value + 0.5;
     int y_max = height - height * max_value + 0.5;

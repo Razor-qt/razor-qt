@@ -972,21 +972,18 @@
                  </layout>
                 </item>
                 <item row="3" column="1">
-                 <widget class="QDoubleSpinBox" name="logScaleSB">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
+                 <widget class="QSpinBox" name="logScaleSB">
+                  <property name="suffix">
+                   <string> steps</string>
                   </property>
                   <property name="minimum">
-                   <double>0.000000000000000</double>
+                   <number>1</number>
                   </property>
                   <property name="maximum">
-                   <double>3.000000000000000</double>
+                   <number>64</number>
                   </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
+                  <property name="value">
+                   <number>4</number>
                   </property>
                  </widget>
                 </item>
@@ -1259,38 +1256,6 @@
     <hint type="destinationlabel">
      <x>739</x>
      <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>logarithmicCB</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>logScaleSB</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>502</x>
-     <y>201</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>566</x>
-     <y>201</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>logScaleSB</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>RazorSysStatConfiguration</receiver>
-   <slot>saveSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>703</x>
-     <y>204</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>732</x>
-     <y>203</y>
     </hint>
    </hints>
   </connection>
