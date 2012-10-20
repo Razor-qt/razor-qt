@@ -114,7 +114,7 @@ void RazorMainMenu::showMenu()
     {
         case RazorPanel::PositionTop:
             x = mButton.mapToGlobal(QPoint(0, 0)).x();
-            y = panel()->mapToGlobal(QPoint(0, panel()->sizeHint().height())).y();
+            y = panel()->mapToGlobal(QPoint(0, panel()->height())).y();
             break;
 
         case RazorPanel::PositionBottom:
@@ -123,7 +123,7 @@ void RazorMainMenu::showMenu()
             break;
 
         case RazorPanel::PositionLeft:
-            x = panel()->mapToGlobal(QPoint(panel()->sizeHint().width(), 0)).x();
+            x = panel()->mapToGlobal(QPoint(panel()->width(), 0)).x();
             y = mButton.mapToGlobal(QPoint(0, 0)).y();
             break;
 
