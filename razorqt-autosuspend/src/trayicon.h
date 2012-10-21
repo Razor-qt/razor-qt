@@ -32,25 +32,39 @@
 #include <QWidget>
 #include <QIcon>
 #include <QVariantMap>
+#include <QMap>
+#include <razorqt/razorsettings.h>
 #include "batteryinfo.h"
+#include "battery.h"
 
 class TrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
 
 public:
-    explicit TrayIcon(QWidget *parent = 0);
+    TrayIcon(Battery* battery, QObject *parent = 0);
     ~TrayIcon();
-    void setStatus(double level, bool onBattery, QVariantMap batteryProperties);
 
 private:
+    void updateStatusIcon(); 
+    void updateToolTip();
+    void updateStateAsString();
+
+    void  checkThemeStatusIcons();
+    bool themeHasStatusIcons;
+   
     void setUpstatusIcons();
     QIcon statusIconsCharging[11];
     QIcon statusIconsDecharging[11];
-    QVariantMap batteryProperties;
+    
+    Battery* battery; 
     BatteryInfo batteryInfo;
+    RazorSettings m_Settings;
 
 private slots:
+    void update();
+    void iconThemeChanged();
+    void settingsChanged();
     void showStatus(QSystemTrayIcon::ActivationReason reason);
 
 };

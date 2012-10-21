@@ -26,47 +26,141 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "trayicon.h"
-
+#include "qtxdg/qiconfix/qiconloader_p.h"
+#include "razorqt/razorsettings.h"
+#include "battery.h"
+#include "../config/constants.h"
 #include <QIcon>
 #include <QDebug>
 #include <math.h>
+#include <QtGui/qicon.h>
+#include <sys/param.h>
 
-TrayIcon::TrayIcon(QWidget *parent) : QSystemTrayIcon(parent)
+TrayIcon::TrayIcon(Battery* battery, QObject *parent) : 
+    QSystemTrayIcon(parent), 
+        battery(battery), 
+        m_Settings("razor-autosuspend")
 {
-    qDebug() << "themeName: " << QIcon::themeName();
     setUpstatusIcons();
+
+    connect(battery, SIGNAL(batteryChanged()), this, SLOT(update()));
+    connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(iconThemeChanged()));
+    connect(&m_Settings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(showStatus(QSystemTrayIcon::ActivationReason)));
+
+    checkThemeStatusIcons(); 
+    update(); 
+    setVisible(m_Settings.value(SHOWTRAYICON_KEY, true).toBool());
 }
 
 TrayIcon::~TrayIcon()
 {
 }
 
-void TrayIcon::setStatus(double level, bool onBattery, QVariantMap batteryProperties)
+void TrayIcon::update()
 {
-    int levelAsNumberBetween0and10 = round(level/10);
+    updateStatusIcon();
+    updateToolTip();
+    batteryInfo.updateInfo(battery);
+}
 
-    qDebug() << "Level: " << level << levelAsNumberBetween0and10;
 
-    uint state = batteryProperties.value("State", 0).toUInt();
-    QString toolTip = BatteryInfo::state2string(state);
-    if (state == 1 || state == 2)
+void TrayIcon::updateStatusIcon()
+{
+    if (m_Settings.value(USETHEMEICONS_KEY, true).toBool() && themeHasStatusIcons)
     {
-        toolTip = toolTip + QString(" - %1 %").arg(batteryProperties.value("Percentage").toDouble(), 0, 'f', 1);
-    }
-    setToolTip(toolTip);
+        QString iconName;
+        bool charging = ! battery->decharging();
 
-    if (state == 1 || state == 4)
-    {
-        setIcon(statusIconsCharging[levelAsNumberBetween0and10]);
+        if (QIcon::themeName() == "oxygen")
+        {
+            if (battery->chargeLevel() < 20)        iconName = charging ? "battery-charging-low" : "battery-low";
+            else if (battery->chargeLevel() < 40)   iconName = charging ? "battery-charging-caution" : "battery-caution";
+            else if (battery->chargeLevel() < 60)   iconName = charging ? "battery-charging-040" : "battery-040";
+            else if (battery->chargeLevel() < 80)   iconName = charging ? "battery-charging-060" : "battery-060";
+            else if (battery->chargeLevel() < 99.5) iconName = charging ? "battery-charging-080" : "battery-080";
+            else                                  iconName = charging ? "battery-charging" : "battery-100";
+        }
+        else // For all themes but 'oxygen' we follow freedesktop's battery status icon name standard 
+             // (http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html) _with_ the changes proposed in
+             // https://bugs.freedesktop.org/show_bug.cgi?id=41458 (we assume that this patch will be accepted)
+        {
+            if (battery->chargeLevel() <  1 && !charging) iconName = "battery-empty" ;
+            else if (battery->chargeLevel() < 20)         iconName = charging ? "battery-caution-charging" : "battery-caution";
+            else if (battery->chargeLevel() < 40)         iconName = charging ? "battery-low-charging" : "battery-low";
+            else if (battery->chargeLevel() < 60)         iconName = charging ? "battery-good-charging" : "battery-good";
+            else                                          iconName = charging ? "battery-full-charging" : "battery-full";
+        }
+        
+        qDebug() << "ChargeLevel" << battery->chargeLevel() 
+                 << "- getting icon:"  << iconName 
+                 << "from" << QIcon::themeName() << "theme";
+        setIcon(QIcon::fromTheme(iconName));
     }
     else
     {
-        setIcon(statusIconsDecharging[levelAsNumberBetween0and10]);
-    }
+        int chargeLevel0_10 = round(battery->chargeLevel()/10);
 
-    this->batteryProperties = batteryProperties;
-    batteryInfo.updateInfo(batteryProperties);
+        if (battery->decharging())
+        {
+            setIcon(statusIconsDecharging[chargeLevel0_10]);
+        }
+        else 
+        {
+            setIcon(statusIconsCharging[chargeLevel0_10]);
+        }
+    }
+}
+
+void TrayIcon::updateToolTip()
+{
+    QString toolTip = battery->stateAsString();
+
+    if (battery->state() == 1 || battery->state() == 2)
+    {
+        toolTip = toolTip + QString(" - %1 %").arg(battery->chargeLevel(), 0, 'f', 1);
+    }
+    setToolTip(toolTip);
+}
+
+
+
+void TrayIcon::checkThemeStatusIcons()
+{
+    themeHasStatusIcons = true; 
+    if ("oxygen" != QIcon::themeName())
+    {
+        // We know what icons the oxygen theme contains, so with oxygen we're good
+        // but we don't know that all icon themes have those that the freedesktop
+        // standard prescribes. If the current theme doesn't, we will fall back to 
+        // the built in status icons.
+
+        static QStringList statusIconNames = QStringList() 
+            <<  "battery-empty" 
+            << "battery-caution"           << "battery-low"          << "battery-good"          << "battery-full"
+            <<  "battery-caution-charging" << "battery-low-charging" << "battery-good-charging" << "battery-full-charging";
+
+        foreach (QString statusIconName, statusIconNames) 
+        {
+            if (! QIcon::hasThemeIcon(statusIconName))
+            {
+                themeHasStatusIcons = false;
+                break;
+            }
+        }
+    }
+}
+
+void TrayIcon::iconThemeChanged()
+{
+    checkThemeStatusIcons();
+    updateStatusIcon();
+}
+
+void TrayIcon::settingsChanged()
+{
+    updateStatusIcon();
+    setVisible(m_Settings.value(SHOWTRAYICON_KEY, true).toBool()); 
 }
 
 void TrayIcon::setUpstatusIcons()
@@ -96,6 +190,7 @@ void TrayIcon::setUpstatusIcons()
     statusIconsDecharging[10] = QIcon(":icons/battery-100.svg");
 }
 
+
 void TrayIcon::showStatus(ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
@@ -110,3 +205,4 @@ void TrayIcon::showStatus(ActivationReason reason)
         }
     }
 }
+

@@ -27,7 +27,6 @@
 #include "lid.h"
 #include <QDBusConnection>
 #include <QDBusReply>
-#include <QDebug>
 
 Lid::Lid()
 {

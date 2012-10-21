@@ -52,6 +52,7 @@ private slots:
 private:
     RazorSettings *m_Settings;
     Ui::GeneralSettings *ui;
+    bool loading;
 };
 
 #endif // GENERALSETTINGS_H

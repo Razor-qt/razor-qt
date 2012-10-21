@@ -24,17 +24,21 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
+#include <QtGui/qabstractbutton.h>
+
 #include "generalsettings.h"
 #include "ui_generalsettings.h"
 
 GeneralSettings::GeneralSettings(RazorSettings *settings, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::GeneralSettings)
+    ui(new Ui::GeneralSettings),
+    loading(false)
 {
     this->m_Settings = settings;
     ui->setupUi(this);
 
-    connect(ui->showTrayIconcheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
+    connect(ui->showTrayIconCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
+    connect(ui->useThemeStatusIconsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -44,10 +48,19 @@ GeneralSettings::~GeneralSettings()
 
 void GeneralSettings::saveSettings()
 {
-    m_Settings->setValue(SHOWTRAYICON_KEY, ui->showTrayIconcheckBox->isChecked());
+    if (loading) return; // If we come heare because checkboxes changed state during loading
+                         // we don't wan't to save
+
+    m_Settings->setValue(SHOWTRAYICON_KEY, ui->showTrayIconCheckBox->isChecked());
+    m_Settings->setValue(USETHEMEICONS_KEY, ui->useThemeStatusIconsCheckBox->isChecked());
+    ui->useThemeStatusIconsCheckBox->setEnabled(ui->showTrayIconCheckBox->isChecked());
 }
 
 void GeneralSettings::loadSettings()
 {
-    ui->showTrayIconcheckBox->setChecked(m_Settings->value(SHOWTRAYICON_KEY, true).toBool());
+    loading = true; 
+    ui->showTrayIconCheckBox->setChecked(m_Settings->value(SHOWTRAYICON_KEY, true).toBool());
+    ui->useThemeStatusIconsCheckBox->setChecked(m_Settings->value(USETHEMEICONS_KEY, true).toBool());
+    ui->useThemeStatusIconsCheckBox->setEnabled(ui->showTrayIconCheckBox->isChecked());
+    loading = false;
 }

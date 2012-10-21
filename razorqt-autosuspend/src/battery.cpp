@@ -36,7 +36,7 @@
 #include <razorqt/razorsettings.h>
 #include "../config/constants.h"
 
-Battery::Battery()
+Battery::Battery(QObject* parent) : QObject(parent)
 {
     uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
     uPowerBatteryDevice = 0;
@@ -82,11 +82,11 @@ void Battery::uPowerBatteryChanged()
 {
     m_onBattery =  uPower->property("OnBattery").toBool();
     m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
-
+    m_State = uPowerBatteryDevice->property("State").toUInt();
+    m_StateAsString = state2string(m_State);
     QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
     props = reply.value();
     qDebug() << "props:" << properties();
-    qDebug() << properties().size();
 
     emit batteryChanged();
 }
@@ -103,12 +103,35 @@ bool Battery::powerLow()
     return  m_onBattery && m_chargeLevel <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
 }
 
-bool Battery::onBattery()
+bool Battery::decharging()
 {
     return m_onBattery;
+}
+
+uint Battery::state()
+{
+    return m_State;
+}
+
+QString Battery::stateAsString()
+{
+    return m_StateAsString;
 }
 
 QVariantMap Battery::properties()
 {
     return props;
+}
+
+QString Battery::state2string(uint state) {
+    switch (state) 
+    {
+        case 1:  return  tr("Charging");
+        case 2:  return  tr("Discharging");
+        case 3:  return  tr("Empty");
+        case 4:  return  tr("Fully charged");
+        case 5:  return  tr("Pending charge");
+        case 6:  return  tr("Pending discharge");
+        default: return  tr("Unknown");
+    }
 }
