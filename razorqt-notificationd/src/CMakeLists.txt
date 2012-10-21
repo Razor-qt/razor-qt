@@ -33,6 +33,7 @@ qt4_add_dbus_adaptor(NOTIFICATIONS_SRC
 )
 
 # Translations **********************************
+include(RazorTranslate)
 razor_translate_ts(NOTIFICATIONS_QM_FILES
     SOURCES
         ${NOTIFICATIONS_MOC}
