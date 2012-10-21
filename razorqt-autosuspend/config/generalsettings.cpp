@@ -31,36 +31,36 @@
 
 GeneralSettings::GeneralSettings(RazorSettings *settings, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::GeneralSettings),
-    loading(false)
+    mUi(new Ui::GeneralSettings),
+    mLoading(false)
 {
-    this->m_Settings = settings;
-    ui->setupUi(this);
+    this->mSettings = settings;
+    mUi->setupUi(this);
 
-    connect(ui->showTrayIconCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->useThemeStatusIconsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
+    connect(mUi->showTrayIconCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
+    connect(mUi->useThemeStatusIconsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
 }
 
 GeneralSettings::~GeneralSettings()
 {
-    delete ui;
+    delete mUi;
 }
 
 void GeneralSettings::saveSettings()
 {
-    if (loading) return; // If we come heare because checkboxes changed state during loading
+    if (mLoading) return; // If we come heare because checkboxes changed state during loading
                          // we don't wan't to save
 
-    m_Settings->setValue(SHOWTRAYICON_KEY, ui->showTrayIconCheckBox->isChecked());
-    m_Settings->setValue(USETHEMEICONS_KEY, ui->useThemeStatusIconsCheckBox->isChecked());
-    ui->useThemeStatusIconsCheckBox->setEnabled(ui->showTrayIconCheckBox->isChecked());
+    mSettings->setValue(SHOWTRAYICON_KEY, mUi->showTrayIconCheckBox->isChecked());
+    mSettings->setValue(USETHEMEICONS_KEY, mUi->useThemeStatusIconsCheckBox->isChecked());
+    mUi->useThemeStatusIconsCheckBox->setEnabled(mUi->showTrayIconCheckBox->isChecked());
 }
 
 void GeneralSettings::loadSettings()
 {
-    loading = true; 
-    ui->showTrayIconCheckBox->setChecked(m_Settings->value(SHOWTRAYICON_KEY, true).toBool());
-    ui->useThemeStatusIconsCheckBox->setChecked(m_Settings->value(USETHEMEICONS_KEY, true).toBool());
-    ui->useThemeStatusIconsCheckBox->setEnabled(ui->showTrayIconCheckBox->isChecked());
-    loading = false;
+    mLoading = true; 
+    mUi->showTrayIconCheckBox->setChecked(mSettings->value(SHOWTRAYICON_KEY, true).toBool());
+    mUi->useThemeStatusIconsCheckBox->setChecked(mSettings->value(USETHEMEICONS_KEY, true).toBool());
+    mUi->useThemeStatusIconsCheckBox->setEnabled(mUi->showTrayIconCheckBox->isChecked());
+    mLoading = false;
 }

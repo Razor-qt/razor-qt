@@ -30,51 +30,51 @@
 
 PowerLowSettings::PowerLowSettings(RazorSettings *settings, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PowerLowSettings), loading(false)
+    mUi(new Ui::PowerLowSettings), mLoading(false)
 {
-    m_Settings = settings;
-    ui->setupUi(this);
+    mSettings = settings;
+    mUi->setupUi(this);
 
-    connect(ui->actionComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->warningSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
-    connect(ui->levelSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
+    connect(mUi->actionComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveSettings()));
+    connect(mUi->warningSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
+    connect(mUi->levelSpinBox, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
 }
 
 PowerLowSettings::~PowerLowSettings()
 {
-    delete ui;
+    delete mUi;
 }
 
 void PowerLowSettings::loadSettings()
 {
-    loading = true;
-    ui->actionComboBox->clear();
-    ui->actionComboBox->addItem(tr("Nothing"), NOTHING);
-    ui->actionComboBox->addItem(tr("Sleep"), SLEEP);
-    ui->actionComboBox->addItem(tr("Hibernate"), HIBERNATE);
-    ui->actionComboBox->addItem(tr("Shutdown"), POWEROFF);
+    mLoading = true;
+    mUi->actionComboBox->clear();
+    mUi->actionComboBox->addItem(tr("Nothing"), NOTHING);
+    mUi->actionComboBox->addItem(tr("Sleep"), SLEEP);
+    mUi->actionComboBox->addItem(tr("Hibernate"), HIBERNATE);
+    mUi->actionComboBox->addItem(tr("Shutdown"), POWEROFF);
 
-    for (int index = 0; index < ui->actionComboBox->count(); index++)
+    for (int index = 0; index < mUi->actionComboBox->count(); index++)
     {
-        if (m_Settings->value(POWERLOWACTION_KEY, 0) == ui->actionComboBox->itemData(index).toInt())
+        if (mSettings->value(POWERLOWACTION_KEY, 0) == mUi->actionComboBox->itemData(index).toInt())
         {
-            ui->actionComboBox->setCurrentIndex(index);
+            mUi->actionComboBox->setCurrentIndex(index);
             break;
         }
     }
 
-    ui->warningSpinBox->setValue(m_Settings->value(POWERLOWWARNING_KEY, 30).toInt());
-    ui->levelSpinBox->setValue(m_Settings->value(POWERLOWLEVEL_KEY, 15).toInt());
-    loading = false;
+    mUi->warningSpinBox->setValue(mSettings->value(POWERLOWWARNING_KEY, 30).toInt());
+    mUi->levelSpinBox->setValue(mSettings->value(POWERLOWLEVEL_KEY, 15).toInt());
+    mLoading = false;
 }
 
 void PowerLowSettings::saveSettings()
 {
-    if (! loading)
+    if (! mLoading)
     {
-        m_Settings->setValue(POWERLOWACTION_KEY, ui->actionComboBox->itemData(ui->actionComboBox->currentIndex()).toInt());
-        m_Settings->setValue(POWERLOWWARNING_KEY, ui->warningSpinBox->value());
-        m_Settings->setValue(POWERLOWLEVEL_KEY, ui->levelSpinBox->value());
+        mSettings->setValue(POWERLOWACTION_KEY, mUi->actionComboBox->itemData(mUi->actionComboBox->currentIndex()).toInt());
+        mSettings->setValue(POWERLOWWARNING_KEY, mUi->warningSpinBox->value());
+        mSettings->setValue(POWERLOWLEVEL_KEY, mUi->levelSpinBox->value());
     }
 }
 

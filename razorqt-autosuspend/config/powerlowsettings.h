@@ -49,9 +49,9 @@ private slots:
     void saveSettings();
 
 private:
-    RazorSettings *m_Settings;
-    Ui::PowerLowSettings *ui;
-    bool loading;
+    RazorSettings *mSettings;
+    Ui::PowerLowSettings *mUi;
+    bool mLoading;
 };
 
 #endif // POWERLOWSETTINGS_H
