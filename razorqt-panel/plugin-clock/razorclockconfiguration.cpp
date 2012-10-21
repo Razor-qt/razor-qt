@@ -37,7 +37,7 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     ui(new Ui::RazorClockConfiguration),
     mSettings(settings),
     oldSettings(settings),
-    oldIndex(1)
+    mOldIndex(1)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("ClockConfigurationWindow");
@@ -145,10 +145,10 @@ void RazorClockConfiguration::createDateFormats()
 
     addDateFormat("yyyy-MM-dd"); // ISO
 
-    if (customDateFormat.isEmpty())
-        ui->dateFormatCOB->addItem("Custom ...", QVariant(customDateFormat));
+    if (mCustomDateFormat.isEmpty())
+        ui->dateFormatCOB->addItem("Custom ...", QVariant(mCustomDateFormat));
     else
-        ui->dateFormatCOB->addItem(QString("Custom (%1) ...").arg(QDate(currentYear, 1, 1).toString(customDateFormat)), QVariant(customDateFormat));
+        ui->dateFormatCOB->addItem(QString("Custom (%1) ...").arg(QDate(currentYear, 1, 1).toString(mCustomDateFormat)), QVariant(mCustomDateFormat));
 }
 
 void RazorClockConfiguration::loadSettings()
@@ -169,12 +169,12 @@ void RazorClockConfiguration::loadSettings()
     ui->showDateAfterTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "after");
     ui->showDateBelowTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "below");
 
-    customDateFormat = mSettings.value("customDateFormat", QString()).toString();
+    mCustomDateFormat = mSettings.value("mCustomDateFormat", QString()).toString();
     QString dateFormat = mSettings.value("dateFormat", QLocale::system().dateFormat(QLocale::ShortFormat)).toString();
 
     createDateFormats();
 
-    if (customDateFormat == dateFormat)
+    if (mCustomDateFormat == dateFormat)
         ui->dateFormatCOB->setCurrentIndex(ui->dateFormatCOB->count() - 1);
     else
     {
@@ -182,7 +182,7 @@ void RazorClockConfiguration::loadSettings()
         if (ui->dateFormatCOB->currentIndex() < 0)
             ui->dateFormatCOB->setCurrentIndex(1);
     }
-    oldIndex = ui->dateFormatCOB->currentIndex();
+    mOldIndex = ui->dateFormatCOB->currentIndex();
 }
 
 void RazorClockConfiguration::saveSettings()
@@ -201,9 +201,9 @@ void RazorClockConfiguration::saveSettings()
         (ui->showDateAfterTimeRB->isChecked() ? "after" :
         (ui->showDateBelowTimeRB->isChecked() ? "below" : "no" )));
 
-    mSettings.setValue("customDateFormat", customDateFormat);
+    mSettings.setValue("mCustomDateFormat", mCustomDateFormat);
     if (ui->dateFormatCOB->currentIndex() == (ui->dateFormatCOB->count() - 1))
-        mSettings.setValue("dateFormat", customDateFormat);
+        mSettings.setValue("dateFormat", mCustomDateFormat);
     else
         mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
 }
@@ -246,17 +246,17 @@ void RazorClockConfiguration::dateFormatActivated(int index)
             "\n"
             "\n"
             "Custom date format:"
-            ), QLineEdit::Normal, customDateFormat, &ok);
+            ), QLineEdit::Normal, mCustomDateFormat, &ok);
         if (ok)
         {
-            customDateFormat = newCustomDateFormat;
-            oldIndex = index;
+            mCustomDateFormat = newCustomDateFormat;
+            mOldIndex = index;
             createDateFormats();
         }
-        ui->dateFormatCOB->setCurrentIndex(oldIndex);
+        ui->dateFormatCOB->setCurrentIndex(mOldIndex);
     }
     else
-        oldIndex = index;
+        mOldIndex = index;
 
     saveSettings();
 }

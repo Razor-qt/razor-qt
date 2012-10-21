@@ -38,11 +38,6 @@ class QTimer;
 class QString;
 class QDialog;
 
-/**
- * @brief the clock-plugin for razorbar
- */
-class ClockLabel;
-
 class RazorClock : public RazorPanelPlugin
 {
     Q_OBJECT
@@ -66,19 +61,18 @@ protected slots:
     virtual void showConfigureDialog();
 
 private:
-    QTimer* clocktimer;
-    QWidget* content;
-    QLabel* timeLabel;
-    QLabel* dateLabel;
-    ClockLabel* fakeThemedLabel;
-    QString clockFormat;
-    QString toolTipFormat;
-    QDialog* calendarDialog;
-    QString timeFormat;
-    QString dateFormat;
-    bool dateOnNewLine;
-    bool useUTC;
-    Qt::DayOfWeek m_firstDayOfWeek;
+    QTimer* mClockTimer;
+    QWidget* mContent;
+    QLabel* mTimeLabel;
+    QLabel* mDateLabel;
+    QString mClockFormat;
+    QString mToolTipFormat;
+    QDialog* mCalendarDialog;
+    QString mTimeFormat;
+    QString mDateFormat;
+    bool mDateOnNewLine;
+    bool mUseUTC;
+    Qt::DayOfWeek mFirstDayOfWeek;
 
 private slots:
     void updateMinWidth();
