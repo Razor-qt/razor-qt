@@ -32,11 +32,12 @@
 
 #include "../panel/razorpanelplugin.h"
 #include "razorclockconfiguration.h"
-#include <QtGui/QLabel>
 
-class QTimer;
-class QString;
+#include <QtCore/QString>
+
+class QLabel;
 class QDialog;
+class QTimer;
 
 class RazorClock : public RazorPanelPlugin
 {

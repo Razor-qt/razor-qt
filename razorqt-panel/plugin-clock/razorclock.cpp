@@ -31,16 +31,17 @@
 #include "razorclock.h"
 #include "calendar_utils.h"
 
-#include <QtCore/QDebug>
-#include <QtCore/QDateTime>
-#include <QtCore/QTimer>
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDialog>
+#include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QMouseEvent>
+
+//#include <QtCore/QDebug>
+#include <QtCore/QDateTime>
+#include <QtCore/QTimer>
 #include <QtCore/QPoint>
-#include <QtCore/QSettings>
 #include <QtCore/QRect>
 
 /**
