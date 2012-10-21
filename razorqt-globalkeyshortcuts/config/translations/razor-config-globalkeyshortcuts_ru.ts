@@ -3,34 +3,34 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>Найти команду</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>Редактор сочетаний клавиш Razor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Описание</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Сочетание клавиш</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>Команда</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>Добавить новое</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -38,11 +38,11 @@
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Добавить группу</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Сброс</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Добавить сочетание клавиш</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>Новая группа</translation>
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation type="unfinished"/>
+        <translation>Убрать изменения</translation>
     </message>
 </context>
 </TS>

@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Close on middle-click</source>
-        <translation type="unfinished"/>
+        <translation>鼠标中击时关闭</translation>
     </message>
     <message>
         <source>Icon and text</source>

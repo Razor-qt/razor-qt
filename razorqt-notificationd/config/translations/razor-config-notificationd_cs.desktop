@@ -14,5 +14,7 @@ GenericName=Razor Freedesktop Notifications Configuration
 
 
 # Translations
-GenericName[cs]=Nabídka
-Name[cs]=Nastavení Razoru
+GenericName[cs]=Nastavení oznamování v Razoru
+Name[cs]=Nastavení oznamování v Razoru
+Icon[cs]=Nastavení-plocha-motiv
+Comment[cs]=Nastavit oznamování na ploše Razor

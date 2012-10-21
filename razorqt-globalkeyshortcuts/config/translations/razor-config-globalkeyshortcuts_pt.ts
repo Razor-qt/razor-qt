@@ -14,7 +14,7 @@
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation>Editor de atalhos Razor</translation>
+        <translation>Editor de atalhos do Razor</translation>
     </message>
     <message>
         <source>Description</source>

@@ -36,7 +36,11 @@
 #include <razorqt/razorsettings.h>
 #include "../config/constants.h"
 
-Battery::Battery(QObject* parent) : QObject(parent)
+Battery::Battery(QObject* parent) 
+   : QObject(parent),
+     uPowerBatteryProperties(0),
+     m_chargeLevel(0.0),
+     m_onBattery(false)
 {
     uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
     uPowerBatteryDevice = 0;
@@ -82,13 +86,17 @@ void Battery::uPowerBatteryChanged()
 {
     m_onBattery =  uPower->property("OnBattery").toBool();
     m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
-    m_State = uPowerBatteryDevice->property("State").toUInt();
-    m_StateAsString = state2string(m_State);
-    QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
-    props = reply.value();
-    qDebug() << "props:" << properties();
 
-    emit batteryChanged();
+    if (uPowerBatteryProperties)
+    {
+        QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
+        props = reply.value();
+        qDebug() << "props:" << properties();
+
+        emit batteryChanged();
+    }
+    else
+        qWarning() << "uPowerBatteryProperties has not been initialized";
 }
 
 

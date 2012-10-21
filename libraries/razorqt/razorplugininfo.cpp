@@ -76,7 +76,7 @@ QLibrary* RazorPluginInfo::loadLibrary(const QString& libDir) const
     path = fi.canonicalPath();
     baseName = value("X-Razor-Library", fi.completeBaseName()).toString();
 
-    QString soPath = QString("%1/lib%2.so").arg(libDir, baseName);
+    QString soPath = QDir(libDir).filePath(QString("lib%2.so").arg(baseName));
     QLibrary* library = new QLibrary(soPath);
 
     if (!library->load())

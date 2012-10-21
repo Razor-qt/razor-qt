@@ -164,7 +164,7 @@
     </message>
     <message>
         <source>Share Directory</source>
-        <translation>Verzeichnis freigeben</translation>
+        <translation>Freigegebenes Verzeichnis</translation>
     </message>
     <message>
         <source>Translations</source>
@@ -176,31 +176,31 @@
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Daten Pfad</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Konfigurations Pfad</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Daten Verzeichnisse</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Cache Pfad</translation>
     </message>
     <message>
         <source>Xdg Runtime Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Laufzeit Pfad</translation>
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Autostart Verzeichnisse</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
-        <translation>Xdg Autostart Home</translation>
+        <translation>Xdg Autostart Pfad</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <name>RazorNotificationPrivate</name>
     <message>
         <source>Notifications Fallback</source>
-        <translation type="unfinished"/>
+        <translation>Benachrichtigungs Rückgriff</translation>
     </message>
 </context>
 <context>

@@ -10,43 +10,43 @@
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки контроля громкости Razor</translation>
     </message>
     <message>
         <source>Device to control</source>
-        <translation type="unfinished"/>
+        <translation>Устройство</translation>
     </message>
     <message>
         <source>Alsa</source>
-        <translation type="unfinished"/>
+        <translation>Alsa</translation>
     </message>
     <message>
         <source>PulseAudio</source>
-        <translation type="unfinished"/>
+        <translation>PulseAudio</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Поведение</translation>
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation type="unfinished"/>
+        <translation>Отключать звук при клике средней кнопкой мыши</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation type="unfinished"/>
+        <translation>Показывать по клику мышью</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation type="unfinished"/>
+        <translation>Разрешить громкость выше 100% (0 Дб)</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
-        <translation type="unfinished"/>
+        <translation>Шаг регулировки громкости</translation>
     </message>
     <message>
         <source>External Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Внешний микшер</translation>
     </message>
 </context>
 </TS>

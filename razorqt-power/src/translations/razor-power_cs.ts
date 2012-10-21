@@ -2,44 +2,36 @@
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="../dialog.ui" line="20"/>
         <source>Leave</source>
-        <translation type="unfinished"/>
+        <translation>Odejít</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="26"/>
         <source>What do you want the computer to do?</source>
-        <translation type="unfinished"/>
+        <translation>Co chcete, aby počítač dělal?</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="38"/>
         <source>Logout</source>
-        <translation type="unfinished"/>
+        <translation>Odhlásit se</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="54"/>
         <source>Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Restartovat</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="70"/>
         <source>Shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Vypnout</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="80"/>
         <source>Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Uspat</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="90"/>
         <source>Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Hibernovat</translation>
     </message>
     <message>
-        <location filename="../dialog.ui" line="115"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
 </context>
 </TS>

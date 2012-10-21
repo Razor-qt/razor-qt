@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Temat ikon</translation>
+        <translation>Motyw ikon</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Temat ikon</translation>
+        <translation>Motyw ikon</translation>
     </message>
     <message>
         <source>Razor Theme</source>

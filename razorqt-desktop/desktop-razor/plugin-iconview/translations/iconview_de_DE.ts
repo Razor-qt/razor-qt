@@ -14,18 +14,18 @@
     <name>IconView</name>
     <message>
         <source>Icon View Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Icon Ansichtskonfiguration</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Display content of the given directory/folder</source>
-        <translation type="unfinished"/>
+        <translation>Inhalt des angegebenen Verzeichnisses/Ordners anzeigen</translation>
     </message>
     <message>
         <source>Icon View:</source>
-        <translation type="unfinished"/>
+        <translation>Icon Ansicht:</translation>
     </message>
 </context>
 </TS>

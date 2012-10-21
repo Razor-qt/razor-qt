@@ -3,34 +3,34 @@
     <name>GeneralSettings</name>
     <message>
         <source>Dialog</source>
-        <translation>Pantalla</translation>
+        <translation>Dialogo</translation>
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar estado de la bateria en la bandeja del sistema</translation>
     </message>
 </context>
 <context>
     <name>LidSettings</name>
     <message>
         <source>Dialog</source>
-        <translation>Pantalla</translation>
+        <translation>Dialogo</translation>
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Tapa cerrada</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Acción:</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>Nada</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>Dormir</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de autosuspensión de Razor</translation>
     </message>
     <message>
         <source>General</source>
@@ -53,50 +53,50 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Tapa cerrada</translation>
     </message>
     <message>
         <source>Power Low</source>
-        <translation type="unfinished"/>
+        <translation>Energía baja</translation>
     </message>
 </context>
 <context>
     <name>PowerLowSettings</name>
     <message>
         <source>Dialog</source>
-        <translation>Pantalla</translation>
+        <translation>Dialogo</translation>
     </message>
     <message>
         <source>Power low</source>
-        <translation type="unfinished"/>
+        <translation>Energía baja</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Acción:</translation>
     </message>
     <message>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>Advertencia:</translation>
     </message>
     <message>
         <source> seconds</source>
-        <translation type="unfinished"/>
+        <translation> segundos</translation>
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation type="unfinished"/>
+        <translation>Nivel es bajo a:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation> %</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>Nada</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>Dormir</translation>
     </message>
     <message>
         <source>Hibernate</source>

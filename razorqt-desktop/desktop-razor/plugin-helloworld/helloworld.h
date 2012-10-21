@@ -34,6 +34,8 @@
 
 class HelloWorld : public DesktopWidgetPlugin
 {
+    Q_OBJECT
+
 public:
     HelloWorld(DesktopScene * scene, const QString & configId, RazorSettings * config);
     ~HelloWorld();

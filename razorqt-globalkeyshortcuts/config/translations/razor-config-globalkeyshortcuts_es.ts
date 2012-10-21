@@ -3,46 +3,46 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>Encontrar un comando</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>Editor de Atajos de Razor</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Descripción</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Atajo</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>Comando</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>Agregar nuevo</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Agregar Grupo</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Reiniciar</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,19 +57,19 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Agregar Atajo</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo Grupo</translation>
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation type="unfinished"/>
+        <translation>Reiniciar Cambios</translation>
     </message>
 </context>
 </TS>

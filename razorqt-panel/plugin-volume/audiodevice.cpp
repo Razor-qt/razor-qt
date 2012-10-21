@@ -34,7 +34,8 @@ AudioDevice::AudioDevice(AudioDeviceType t, AudioEngine *engine, QObject *parent
     m_engine(engine),
     m_volume(0),
     m_mute(false),
-    m_type(t)
+    m_type(t),
+    m_index(0)
 {
 }
 

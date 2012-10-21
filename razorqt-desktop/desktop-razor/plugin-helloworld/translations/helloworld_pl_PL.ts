@@ -3,7 +3,7 @@
     <name>HelloWorld</name>
     <message>
         <source>Hello World:</source>
-        <translation>Hello World:</translation>
+        <translation>Witaj świecie:</translation>
     </message>
     <message>
         <source>Display Text Configuretion</source>

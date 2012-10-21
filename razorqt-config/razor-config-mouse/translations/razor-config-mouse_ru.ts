@@ -3,23 +3,24 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Настройки оформления мыши Razor</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Выберите тему курсора, которую вы хотите использовать(наведите мышь на область предварительного просмотра для проверки курсора).
+&lt;b&gt;Необходимо будет перезапустить сессию Razor после изменения этих настроек&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>&amp;Install New Theme...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Установить новую Тему...</translation>
     </message>
     <message>
         <source>&amp;Set Theme</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Установить Тему</translation>
     </message>
     <message>
         <source>&amp;Remove Theme</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Удалить Тему</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -27,22 +28,22 @@
     </message>
     <message>
         <source>XCurTheme error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка XCurTheme</translation>
     </message>
     <message>
         <source>You can&apos;t remove active theme!</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно удалить активную тему!</translation>
     </message>
 </context>
 <context>
     <name>XCursorThemeModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Название</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Описание</translation>
     </message>
 </context>
 </TS>

@@ -112,27 +112,27 @@
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Версия: %1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>Современная, быстрая, и простая в использовании среда рабочего стола на основе технологий Qt.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation type="unfinished"/>
+        <translation>Авторские права: %1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
-        <translation type="unfinished"/>
+        <translation>Домашняя страница: %1</translation>
     </message>
     <message>
         <source>License: %1</source>
-        <translation type="unfinished"/>
+        <translation>Лицензия: %1</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-Qt переведена на многие языки благодаря работе команд переводчиков по всему миру.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -144,11 +144,11 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Razor Desktop Toolbox - Техническая информация&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Версия</translation>
     </message>
     <message>
         <source>Qt</source>
@@ -264,7 +264,7 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation type="unfinished"/>
+        <translation>При запуске заставки произвошла ошибка. Неизвестная ошибка - недокументированное значение возвращено из xdg-screensaver=%1.</translation>
     </message>
 </context>
 <context>
@@ -279,11 +279,11 @@
     </message>
     <message>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>Авторы</translation>
     </message>
     <message>
         <source>Thanks</source>
-        <translation type="unfinished"/>
+        <translation>Благодарности</translation>
     </message>
     <message>
         <source>Translations</source>

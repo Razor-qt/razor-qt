@@ -34,7 +34,7 @@
     </message>
     <message>
         <source>Razor Autostart</source>
-        <translation>Arranque automático Razor</translation>
+        <translation>Arranque automático do Razor</translation>
     </message>
     <message>
         <source>Location: %1</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
         <source>File &apos;%1&apos; already exists!</source>
-        <translation>O ficheiro &apos;%1&apos; já existe!</translation>
+        <translation>O ficheiro &quot;%1&quot; já existe!</translation>
     </message>
 </context>
 <context>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Tem que reiniciar a sessão para carregar as novas definições. Utilize &apos;Terminar sessão&apos; no menu principal.</translation>
+        <translation>Tem que reiniciar a sessão (razor-session) para carregar as novas definições. Utilize &quot;Terminar sessão&quot; no menu principal.</translation>
     </message>
 </context>
 </TS>

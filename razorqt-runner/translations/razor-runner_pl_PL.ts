@@ -3,7 +3,7 @@
     <name>ConfigureDialog</name>
     <message>
         <source>Razor-runner Settings</source>
-        <translation>Ustawiania Razor runner</translation>
+        <translation>Ustawienia Razor-runner</translation>
     </message>
     <message>
         <source>Appearance</source>
@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Show on:</source>
-        <translation>Pokazuj na:</translation>
+        <translation>Pokasz na:</translation>
     </message>
     <message>
         <source>Shortcut:</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Center of screen</source>
-        <translation>Środku ekranu</translation>
+        <translation>Środek ekranu</translation>
     </message>
     <message>
         <source>Monitor where the mouse</source>

@@ -14,6 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
-Comment[cs]=Nastavení vzhledu plochy Razor
+Icon[cs]=Nastavení vzhledu pracovní plochy
+Comment[cs]=Nastavit vzhled pracovní plochy Razor
 GenericName[cs]=Nastavení vzhledu
 Name[cs]=Nastavení vzhledu

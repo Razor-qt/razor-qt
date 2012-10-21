@@ -32,6 +32,7 @@ set(DESKTOP_FILES_IN
 )
 
 set ( razor-config-autosuspend_MOCS
+      mainwindow.h
       generalsettings.h
       lidsettings.h
       powerlowsettings.h

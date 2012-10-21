@@ -3,23 +3,23 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Конфигурация Темы Мыши</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Выберите тему курсора, которую хотите использовать (наведите на область просмотра для теста). &lt;b&gt; Сессию Razor необходимо перезагрузить после этого изменения &lt;/ b&gt;:</translation>
     </message>
     <message>
         <source>&amp;Install New Theme...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Установить новую тему...</translation>
     </message>
     <message>
         <source>&amp;Set Theme</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Установить тему</translation>
     </message>
     <message>
         <source>&amp;Remove Theme</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Удалить тему</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -27,22 +27,22 @@
     </message>
     <message>
         <source>XCurTheme error</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка XCurTheme</translation>
     </message>
     <message>
         <source>You can&apos;t remove active theme!</source>
-        <translation type="unfinished"/>
+        <translation>Вы не можете удалить активную тему!</translation>
     </message>
 </context>
 <context>
     <name>XCursorThemeModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Имя</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Описание</translation>
     </message>
 </context>
 </TS>

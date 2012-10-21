@@ -3,14 +3,14 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>Cpu load %1%</source>
-        <translation type="unfinished"/>
+        <translation>Cpu 负载 %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor Cpu Load settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor Cpu 负载设置</translation>
     </message>
     <message>
         <source>General</source>
@@ -22,31 +22,31 @@
     </message>
     <message>
         <source>Update interval:</source>
-        <translation type="unfinished"/>
+        <translation>更新间隔：</translation>
     </message>
     <message>
         <source>sec</source>
-        <translation type="unfinished"/>
+        <translation>秒</translation>
     </message>
     <message>
         <source>Bar orientation:</source>
-        <translation type="unfinished"/>
+        <translation>状态栏方向：</translation>
     </message>
     <message>
         <source>Bottom up</source>
-        <translation type="unfinished"/>
+        <translation>自下而上</translation>
     </message>
     <message>
         <source>Top down</source>
-        <translation type="unfinished"/>
+        <translation>自上而下</translation>
     </message>
     <message>
         <source>Left to right</source>
-        <translation type="unfinished"/>
+        <translation>从左到右</translation>
     </message>
     <message>
         <source>Right to left</source>
-        <translation type="unfinished"/>
+        <translation>从右到左</translation>
     </message>
 </context>
 </TS>

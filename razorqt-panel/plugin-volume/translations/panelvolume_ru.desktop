@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Volume control
+Comment=Control the system's volume and launch your preferred mixer.
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Name[ru]=регулятор громкости

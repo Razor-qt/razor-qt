@@ -3,7 +3,7 @@
     <name>Battery</name>
     <message>
         <source>No battery!</source>
-        <translation>Keine Batterie eingesetzt</translation>
+        <translation>Keine Batterie eingesetzt!</translation>
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
@@ -22,11 +22,11 @@
     </message>
     <message>
         <source>Energy Now:</source>
-        <translation>Energiestand</translation>
+        <translation>Energiestand:</translation>
     </message>
     <message>
         <source>Updated:</source>
-        <translation>Aktualisiert</translation>
+        <translation>Aktualisiert:</translation>
     </message>
     <message>
         <source>Technology:</source>
@@ -102,11 +102,11 @@
     </message>
     <message>
         <source>Pending charge</source>
-        <translation>Akku wird geladen</translation>
+        <translation>Ausstehende Ladezeit</translation>
     </message>
     <message>
         <source>Pending discharge</source>
-        <translation type="unfinished"/>
+        <translation>Verbleibende Akkulaufzeit</translation>
     </message>
 </context>
 <context>

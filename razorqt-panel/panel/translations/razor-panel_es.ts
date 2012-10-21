@@ -19,11 +19,11 @@
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation type="unfinished"/>
+        <translation>Usar tamaño automático</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
-        <translation>Largo y ancho del panel</translation>
+        <translation>Largo y posición del panel</translation>
     </message>
     <message>
         <source>Left</source>
@@ -51,7 +51,7 @@
     </message>
     <message>
         <source>Position:</source>
-        <translation>Posición</translation>
+        <translation>Posición:</translation>
     </message>
     <message>
         <source>Top of desktop</source>
@@ -90,7 +90,7 @@
     <name>RazorPanel</name>
     <message>
         <source>Panel</source>
-        <translation>Administrador de tareas</translation>
+        <translation>Panel</translation>
     </message>
     <message>
         <source>Configure panel...</source>
@@ -113,7 +113,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Quitar</translation>
     </message>
 </context>
 <context>

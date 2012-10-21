@@ -3,7 +3,7 @@
     <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Definições de aparência do Razor</translation>
+        <translation>Configuração da aparência do Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>
@@ -14,7 +14,7 @@
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Definições de aparência do Razor</translation>
+        <translation>Configuração da aparência do Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>

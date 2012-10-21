@@ -3,50 +3,50 @@
     <name>RazorVolume</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Показатйл Рабочий стол: &apos;%1&apos; Глобальное кратчайший путь  не могут быть зарегистрированы</translation>
+        <translation>Показать Рабочий стол: Глобальный ярлык &apos;%1&apos;   не может быть зарегистрирован</translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки регулятора громкости Razor</translation>
     </message>
     <message>
         <source>Device to control</source>
-        <translation type="unfinished"/>
+        <translation>Устройство регулятора</translation>
     </message>
     <message>
         <source>Alsa</source>
-        <translation type="unfinished"/>
+        <translation>Alsa</translation>
     </message>
     <message>
         <source>PulseAudio</source>
-        <translation type="unfinished"/>
+        <translation>PulseAudio</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Поведение</translation>
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation type="unfinished"/>
+        <translation>Приглушить на средний клик</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation type="unfinished"/>
+        <translation>Показать на клик мышью</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation type="unfinished"/>
+        <translation>Допускать громкость выше 100% (0dB)</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
-        <translation type="unfinished"/>
+        <translation>Шаг регулировки громкости</translation>
     </message>
     <message>
         <source>External Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Внешний миксер</translation>
     </message>
 </context>
 </TS>

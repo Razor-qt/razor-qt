@@ -92,11 +92,11 @@
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Старт</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>Стоп</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -160,7 +160,7 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation type="unfinished"/>
+        <translation>Запущено</translation>
     </message>
 </context>
 <context>

@@ -3,14 +3,14 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>Cpu load %1%</source>
-        <translation type="unfinished"/>
+        <translation>Obciążenie CPU %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor Cpu Load settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia Razor CPU Load</translation>
     </message>
     <message>
         <source>General</source>
@@ -22,31 +22,31 @@
     </message>
     <message>
         <source>Update interval:</source>
-        <translation type="unfinished"/>
+        <translation>Odświeżanie widoku:</translation>
     </message>
     <message>
         <source>sec</source>
-        <translation type="unfinished"/>
+        <translation>sek</translation>
     </message>
     <message>
         <source>Bar orientation:</source>
-        <translation type="unfinished"/>
+        <translation>Orientacja paska stanu</translation>
     </message>
     <message>
         <source>Bottom up</source>
-        <translation type="unfinished"/>
+        <translation>Z dołu do góry</translation>
     </message>
     <message>
         <source>Top down</source>
-        <translation type="unfinished"/>
+        <translation>Z góry na dół</translation>
     </message>
     <message>
         <source>Left to right</source>
-        <translation type="unfinished"/>
+        <translation>Lewo na prawo</translation>
     </message>
     <message>
         <source>Right to left</source>
-        <translation type="unfinished"/>
+        <translation>Prawo na lewo</translation>
     </message>
 </context>
 </TS>

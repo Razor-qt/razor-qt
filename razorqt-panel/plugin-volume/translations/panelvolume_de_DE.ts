@@ -14,11 +14,11 @@
     </message>
     <message>
         <source>Device to control</source>
-        <translation>zu regelndes Gerät</translation>
+        <translation>Zu regelndes Gerät</translation>
     </message>
     <message>
         <source>Alsa</source>
-        <translation>Alsa</translation>
+        <translation>ALSA</translation>
     </message>
     <message>
         <source>PulseAudio</source>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation>Erlaube Lautstärken über 100% (0dB)</translation>
+        <translation>Lautstärken über 100% (0dB) erlauben</translation>
     </message>
     <message>
         <source>Volume adjust step</source>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation type="unfinished"/>
+        <translation>Wyświetl status baterii w tacce systemowej</translation>
     </message>
 </context>
 <context>
@@ -18,19 +18,19 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Klapa zamknięta</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Czynność:</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>Nic</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>Uśpij</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -38,14 +38,14 @@
     </message>
     <message>
         <source>Shutdown</source>
-        <translation>Wyłącz</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguracja autouśpienia Razor</translation>
     </message>
     <message>
         <source>General</source>
@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Klapa zamknięta</translation>
     </message>
     <message>
         <source>Power Low</source>
-        <translation type="unfinished"/>
+        <translation>Niski stan baterii</translation>
     </message>
 </context>
 <context>
@@ -68,35 +68,35 @@
     </message>
     <message>
         <source>Power low</source>
-        <translation>Bateria Słaba</translation>
+        <translation>Niski stan baterii</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>Czynność:</translation>
     </message>
     <message>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>Ostrzeżenie:</translation>
     </message>
     <message>
         <source> seconds</source>
-        <translation type="unfinished"/>
+        <translation>sekund</translation>
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation type="unfinished"/>
+        <translation>Niski stan baterii przy:</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>Nic</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>Uśpij</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -104,7 +104,7 @@
     </message>
     <message>
         <source>Shutdown</source>
-        <translation>Wyłącz</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 </TS>

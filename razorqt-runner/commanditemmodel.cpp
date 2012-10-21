@@ -40,7 +40,8 @@
  ************************************************/
 CommandItemModel::CommandItemModel(QObject *parent) :
     QSortFilterProxyModel(parent),
-    mSourceModel(new CommandSourceItemModel(this))
+    mSourceModel(new CommandSourceItemModel(this)),
+    mOnlyHistory(false)
 {
     setSourceModel(mSourceModel);
 }

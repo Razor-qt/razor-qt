@@ -50,6 +50,12 @@ DesktopScene::DesktopScene(QObject * parent)
     : QGraphicsScene(parent),
       m_wheelDesktopSwitch(false),
       m_menu(0),
+      m_actArrangeWidgets(0),
+      m_actAddNewPlugin(0),
+      m_actRemovePlugin(0),
+      m_actConfigurePlugin(0),
+      m_actSetbackground(0),
+      m_actAbout(0),
       m_activePlugin(0)
 {
     m_power = new PowerManager(this);

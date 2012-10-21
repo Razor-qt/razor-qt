@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <source>Configuration Center</source>
-        <translation>Konfigurations Center</translation>
+        <translation>Konfigurationscenter</translation>
     </message>
 </context>
 </TS>

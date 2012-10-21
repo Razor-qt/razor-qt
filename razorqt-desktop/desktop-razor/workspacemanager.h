@@ -50,8 +50,8 @@ public:
     RazorSettings *config;
     QString configId;
 private:
-    DesktopConfig(){};
-    DesktopConfig(DesktopConfig const&){};
+    DesktopConfig() : config(0) {};
+    DesktopConfig(DesktopConfig const&) : config(0) {};
     //DesktopConfig& operator=(DesktopConfig const&){  };
     static DesktopConfig* m_instance;
 };

@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>&amp;Show seconds</source>
-        <translation>&amp;Показать секунд</translation>
+        <translation>&amp;Показывать секунды</translation>
     </message>
     <message>
         <source>12 &amp;hour style</source>
-        <translation>12 &amp;час стиль</translation>
+        <translation>12-ти &amp;часовой формат</translation>
     </message>
     <message>
         <source>&amp;Font</source>
-        <translation>&amp;шрифт</translation>
+        <translation>&amp;Шрифт</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation>шрифт</translation>
+        <translation>Шрифт</translation>
     </message>
     <message>
         <source>Date</source>
@@ -31,31 +31,31 @@
     </message>
     <message>
         <source>Show &amp;date</source>
-        <translation>показать &amp;дата</translation>
+        <translation>Показывать &amp;дату</translation>
     </message>
     <message>
         <source>D&amp;ate format</source>
-        <translation>д&amp;ата формат</translation>
+        <translation>Ф&amp;ормат даты</translation>
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation>шриф&amp;т</translation>
+        <translation>Шриф&amp;т</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>
-        <translation>Показать даты в новой линии</translation>
+        <translation>Дата &amp;отдельной строкой</translation>
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation>Использование  шрифты темы</translation>
+        <translation>Использовать  шрифты темы</translation>
     </message>
     <message>
         <source>Time font</source>
-        <translation>шрифт время </translation>
+        <translation>Шрифт времени</translation>
     </message>
     <message>
         <source>Date font</source>
-        <translation>шрифт дата</translation>
+        <translation>Шрифт даты</translation>
     </message>
     <message>
         <source>Ultra light</source>
@@ -75,15 +75,15 @@
     </message>
     <message>
         <source>Bold</source>
-        <translation>жирный шрифт</translation>
+        <translation>Жирный шрифт</translation>
     </message>
     <message>
         <source>Demi bold</source>
-        <translation>половина жирный шрифт</translation>
+        <translation>Полужирный шрифт</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation>курсивный</translation>
+        <translation>Курсив</translation>
     </message>
 </context>
 </TS>

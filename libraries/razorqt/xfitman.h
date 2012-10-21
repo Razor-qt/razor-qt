@@ -1,5 +1,5 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)GPL2
+ * (c)LGPL2+
  *
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
@@ -9,16 +9,16 @@
  *   Christopher "VdoP" Regali
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation;  only version 2 of
- * the License is valid for this program.
+ * This program or library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
  * You should have received a copy of the GNU Lesser General
  * Public License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
@@ -123,26 +123,8 @@ public:
                   int topStartX,    int topEndX,
                   int bottomStartX, int bottomEndX
                   ) const;
-#if 0
-    void unsetStrut(Window _wid) const;
-#endif
-#if 0
-    void getAtoms() const;
-#endif
     WindowList getClientList() const;
     bool getClientIcon(Window _wid, QPixmap& _pixreturn) const;
-#if 0
-    void setEventRoute() const;
-#endif
-#if 0
-    void setClientStateFlag(Window _wid, const QString & _atomcode, int _action) const;
-#endif
-#if 0
-    void setSelectionOwner(Window _wid, const QString & _selection, const QString & _manager) const;
-#endif
-#if 0
-    Window getSelectionOwner(const QString & _selection) const;
-#endif
     int getWindowDesktop(Window _wid) const;
     void moveWindowToDesktop(Window _wid, int _display) const;
 
@@ -156,15 +138,9 @@ public:
     void setWindowLayer(Window _wid, Layer layer) const;
 
     void setActiveDesktop(int _desktop) const;
-#if 0
-    void mapRaised(Window _wid) const;
-#endif
     bool isHidden(Window _wid) const;
     WindowAllowedActions getAllowedActions(Window window) const;
     WindowState getWindowState(Window window) const;
-#if 0
-    bool requiresAttention(Window _wid) const;
-#endif
     int getActiveDesktop() const;
     Window getActiveAppWindow() const;
     Window getActiveWindow() const;
@@ -254,63 +230,10 @@ private:
 
 
     Window  root; //the actual root window on the used screen
-#if 0
-    int screencount;
-#endif
-    unsigned long strutsize;
-    mutable unsigned long desstrut[12];
-#if 0
-    mutable QMap<QString,Atom> atomMap;
-#endif
 };
 
 
 const XfitMan& xfitMan();
-
-#if 0
-inline QString xEventTypeToStr(XEvent* event)
-{
-    switch (event->type)
-    {
-        case KeyPress:                return "KeyPress";
-        case KeyRelease:              return "KeyRelease";
-        case ButtonPress:             return "ButtonPress";
-        case ButtonRelease:           return "ButtonRelease";
-        case MotionNotify:            return "MotionNotify";
-        case EnterNotify:             return "EnterNotify";
-        case LeaveNotify:             return "LeaveNotify";
-        case FocusIn:                 return "FocusIn";
-        case FocusOut:                return "FocusOut";
-        case KeymapNotify:            return "KeymapNotify";
-        case Expose:                  return "Expose";
-        case GraphicsExpose:          return "GraphicsExpose";
-        case NoExpose:                return "NoExpose";
-        case VisibilityNotify:        return "VisibilityNotify";
-        case CreateNotify:            return "CreateNotify";
-        case DestroyNotify:           return "DestroyNotify";
-        case UnmapNotify:             return "UnmapNotify";
-        case MapNotify:               return "MapNotify";
-        case MapRequest:              return "MapRequest";
-        case ReparentNotify:          return "ReparentNotify";
-        case ConfigureNotify:         return "ConfigureNotify";
-        case ConfigureRequest:        return "ConfigureRequest";
-        case GravityNotify:           return "GravityNotify";
-        case ResizeRequest:           return "ResizeRequest";
-        case CirculateNotify:         return "CirculateNotify";
-        case CirculateRequest:        return "CirculateRequest";
-        case PropertyNotify:          return "PropertyNotify";
-        case SelectionClear:          return "SelectionClear";
-        case SelectionRequest:        return "SelectionRequest";
-        case SelectionNotify:         return "SelectionNotify";
-        case ColormapNotify:          return "ColormapNotify";
-        case ClientMessage:           return "ClientMessage";
-        case MappingNotify:           return "MappingNotify";
-        case GenericEvent:            return "GenericEvent";
-    }
-    return "Unknown";
-}
-#endif
-
 
 
 #endif

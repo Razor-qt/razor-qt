@@ -46,7 +46,8 @@ RazorKbIndicatorEventFilter* RazorKbIndicatorEventFilter::instance(void)
 }
 
 RazorKbIndicatorEventFilter::RazorKbIndicatorEventFilter(QObject *parent):
-    QObject(parent)
+    QObject(parent),
+    oldEventFilter(0)
 {
     if (!filterObject)
     {

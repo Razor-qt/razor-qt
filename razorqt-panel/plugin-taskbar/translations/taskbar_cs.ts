@@ -2,148 +2,119 @@
 <context>
     <name>RazorTaskButton</name>
     <message>
-        <location filename="../razortaskbutton.cpp" line="372"/>
         <source>Application</source>
-        <translation type="unfinished"/>
+        <translation>Program</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="405"/>
         <source>To &amp;Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Na &amp;plochu</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="407"/>
         <source>&amp;All Desktops</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Všechny plochy</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="415"/>
         <source>Desktop &amp;%1</source>
-        <translation type="unfinished"/>
+        <translation>Plocha &amp;%1</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="422"/>
         <source>&amp;To Current Desktop</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Na nynější plochu</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="431"/>
         <source>Ma&amp;ximize</source>
-        <translation type="unfinished"/>
+        <translation>Zvě&amp;tšit</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="440"/>
         <source>Maximize vertically</source>
-        <translation type="unfinished"/>
+        <translation>Zvětšit svisle</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="445"/>
         <source>Maximize horizontally</source>
-        <translation type="unfinished"/>
+        <translation>Zvětšit vodorovně</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="451"/>
         <source>&amp;Restore</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Obnovit</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="455"/>
         <source>Mi&amp;nimize</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zmenšit</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="461"/>
         <source>Roll down</source>
-        <translation type="unfinished"/>
+        <translation>Sbalit</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="467"/>
         <source>Roll up</source>
-        <translation type="unfinished"/>
+        <translation>Rozbalit</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="476"/>
         <source>&amp;Layer</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Vrstva</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="478"/>
         <source>Always on &amp;top</source>
-        <translation type="unfinished"/>
+        <translation>Vždy &amp;nahoře</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="483"/>
         <source>&amp;Normal</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Obvyklé</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="488"/>
         <source>Always on &amp;bottom</source>
-        <translation type="unfinished"/>
+        <translation>Vždy &amp;dole</translation>
     </message>
     <message>
-        <location filename="../razortaskbutton.cpp" line="496"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zavřít</translation>
     </message>
 </context>
 <context>
     <name>RazorTaskbarConfiguration</name>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="14"/>
         <source>Razor Task Manager Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavení správce úkolů</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="20"/>
         <source>Window List Content</source>
-        <translation type="unfinished"/>
+        <translation>Obsah seznamu oken</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="26"/>
         <source>Show windows from current desktop</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat okna z nynější plochy</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="29"/>
-        <location filename="../razortaskbarconfiguration.ui" line="39"/>
-        <source>wlcB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../razortaskbarconfiguration.ui" line="36"/>
         <source>Show windows from all desktops</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat okna ze všech ploch</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="49"/>
         <source>Window List Appearance</source>
-        <translation type="unfinished"/>
+        <translation>Vzhled seznamu oken</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="55"/>
         <source>Button style</source>
-        <translation type="unfinished"/>
+        <translation>Styl tlačítek</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.ui" line="65"/>
         <source>Max button width</source>
-        <translation type="unfinished"/>
+        <translation>Největší šířka tlačítka</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.cpp" line="43"/>
+        <source>Close on middle-click</source>
+        <translation>Zavřít klepnutím prostředním tlačítkem</translation>
+    </message>
+    <message>
         <source>Icon and text</source>
-        <translation type="unfinished"/>
+        <translation>Ikona a text</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.cpp" line="44"/>
         <source>Only icon</source>
-        <translation type="unfinished"/>
+        <translation>Pouze ikona</translation>
     </message>
     <message>
-        <location filename="../razortaskbarconfiguration.cpp" line="45"/>
         <source>Only text</source>
-        <translation type="unfinished"/>
+        <translation>Pouze text</translation>
     </message>
 </context>
 </TS>

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors.
+
+
+# Translations
+Name[cs]=Čidla
+Comment[cs]=Zobrazit odečty z hardwarových čidel (nyní lm_sensors)

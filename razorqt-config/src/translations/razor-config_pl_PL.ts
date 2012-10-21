@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <source>Configuration Center</source>
-        <translation>Centrum Konfiguracji</translation>
+        <translation>Panel sterowania</translation>
     </message>
 </context>
 </TS>

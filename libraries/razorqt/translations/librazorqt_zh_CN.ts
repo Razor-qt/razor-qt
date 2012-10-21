@@ -112,27 +112,27 @@
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>版本：%1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>基于 Qt 技术的高级、易用、快速的桌面环境</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation type="unfinished"/>
+        <translation>版权所有：%1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
-        <translation type="unfinished"/>
+        <translation>主页：%1</translation>
     </message>
     <message>
         <source>License: %1</source>
-        <translation type="unfinished"/>
+        <translation>协议：%1</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt 已被翻译成多种语言，特别感谢来自世界各地的翻译团队的努力。</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -144,63 +144,63 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Razor 桌面工具箱 - 技术信息&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>版本</translation>
     </message>
     <message>
         <source>Qt</source>
-        <translation type="unfinished"/>
+        <translation>Qt</translation>
     </message>
     <message>
         <source>Debug Build</source>
-        <translation type="unfinished"/>
+        <translation>调试版本</translation>
     </message>
     <message>
         <source>System Configuration</source>
-        <translation type="unfinished"/>
+        <translation>系统配置</translation>
     </message>
     <message>
         <source>Share Directory</source>
-        <translation type="unfinished"/>
+        <translation>共享目录</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>翻译</translation>
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;用户目录&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 数据位置</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 配置文件</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 数据目录</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 缓存目录</translation>
     </message>
     <message>
         <source>Xdg Runtime Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 运行时目录</translation>
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 开机启动目录</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg 开机启动文件</translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation type="unfinished"/>
+        <translation>启动屏幕保护时出错。未知错误 - xdg-screensaver=%1 返回非正式返回值。</translation>
     </message>
 </context>
 <context>
@@ -279,15 +279,15 @@
     </message>
     <message>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>作者</translation>
     </message>
     <message>
         <source>Thanks</source>
-        <translation type="unfinished"/>
+        <translation>致谢</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>翻译</translation>
     </message>
     <message>
         <source>Technical Info</source>

@@ -3,7 +3,7 @@
     <name>QObject</name>
     <message>
         <source>Display a notepad</source>
-        <translation>Mostrar bloco de notas:</translation>
+        <translation>Mostrar um bloco de notas</translation>
     </message>
     <message>
         <source>Notepad:</source>

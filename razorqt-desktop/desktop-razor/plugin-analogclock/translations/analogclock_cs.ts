@@ -2,22 +2,23 @@
 <context>
     <name>ConfigureDialog</name>
     <message>
-        <location filename="../configuredialog.ui" line="14"/>
         <source>Analog clock settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavení ručičkových hodin</translation>
     </message>
     <message>
-        <location filename="../configuredialog.ui" line="23"/>
         <source>Show &amp;seconds hand</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat ručičku pro &amp;sekundy</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../clock.cpp" line="91"/>
         <source>Clock</source>
-        <translation type="unfinished"/>
+        <translation>Hodiny</translation>
+    </message>
+    <message>
+        <source>Clock:</source>
+        <translation>Hodiny:</translation>
     </message>
 </context>
 </TS>
