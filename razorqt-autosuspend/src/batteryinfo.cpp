@@ -33,54 +33,54 @@
 
 BatteryInfo::BatteryInfo(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::BatteryInfo)
+    mUi(new Ui::BatteryInfo)
 {
-    ui->setupUi(this);
+    mUi->setupUi(this);
 }
 
 BatteryInfo::~BatteryInfo()
 {
-    delete ui;
+    delete mUi;
 }
 
 void BatteryInfo::updateInfo(Battery* battery)
 {
     QDateTime UpdateTime;
     UpdateTime.setTime_t(battery->properties().value("UpdateTime").toULongLong());
-    ui->updatedValue->setText(UpdateTime.toString("hh:mm:ss"));
+    mUi->updatedValue->setText(UpdateTime.toString("hh:mm:ss"));
 
-    ui->stateValue->setText(battery->stateAsString());
+    mUi->stateValue->setText(battery->stateAsString());
 
     QString energyFullDesign("%1 Wh");
     double efd = battery->properties().value("EnergyFullDesign").toDouble();
-    ui->energyFullDesignValue->setText(energyFullDesign.arg(efd, 0, 'f', 2));
+    mUi->energyFullDesignValue->setText(energyFullDesign.arg(efd, 0, 'f', 2));
 
     QString energyFull("%1 Wh (%2 %)");
     double ef = battery->properties().value("EnergyFull").toDouble();
     double capacity = battery->properties().value("Capacity").toDouble();
-    ui->energyFullValue->setText(energyFull.arg(ef, 0, 'f', 2).arg(capacity, 0, 'f', 1));
+    mUi->energyFullValue->setText(energyFull.arg(ef, 0, 'f', 2).arg(capacity, 0, 'f', 1));
 
     QString energy("%1 Wh (%2 %)");
     double e = battery->properties().value("Energy").toDouble();
     double percentage = battery->properties().value("Percentage").toDouble();
-    ui->energyValue->setText(energy.arg(e, 0, 'f', 2).arg(percentage, 0, 'f', 1));
+    mUi->energyValue->setText(energy.arg(e, 0, 'f', 2).arg(percentage, 0, 'f', 1));
 
-    ui->energyRateValue->setText(QString::number(battery->properties().value("EnergyRate").toDouble(), 'f', 2) + " W");
+    mUi->energyRateValue->setText(QString::number(battery->properties().value("EnergyRate").toDouble(), 'f', 2) + " W");
 
 
-    ui->modelValue->setText(battery->properties().value("Model").toString());
+    mUi->modelValue->setText(battery->properties().value("Model").toString());
 
     int technology = battery->properties().value("Technology", 0).toInt();
     switch (technology)
     {
-    case 1:  ui->technologyValue->setText(tr("Lithium ion")); break;
-    case 2:  ui->technologyValue->setText(tr("Lithium polymer")); break;
-    case 3:  ui->technologyValue->setText(tr("Lithium iron phosphate")); break;
-    case 4:  ui->technologyValue->setText(tr("Lead acid")); break;
-    case 5:  ui->technologyValue->setText(tr("Nickel cadmium")); break;
-    case 6:  ui->technologyValue->setText(tr("Nickel metal hydride")); break;
-    default: ui->technologyValue->setText(tr("Unknown")); break;
+    case 1:  mUi->technologyValue->setText(tr("Lithium ion")); break;
+    case 2:  mUi->technologyValue->setText(tr("Lithium polymer")); break;
+    case 3:  mUi->technologyValue->setText(tr("Lithium iron phosphate")); break;
+    case 4:  mUi->technologyValue->setText(tr("Lead acid")); break;
+    case 5:  mUi->technologyValue->setText(tr("Nickel cadmium")); break;
+    case 6:  mUi->technologyValue->setText(tr("Nickel metal hydride")); break;
+    default: mUi->technologyValue->setText(tr("Unknown")); break;
     }
 
-    ui->voltageValue->setText(QString::number(battery->properties().value("Voltage").toDouble(), 'f', 2) + " V");
+    mUi->voltageValue->setText(QString::number(battery->properties().value("Voltage").toDouble(), 'f', 2) + " V");
 }

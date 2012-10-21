@@ -38,19 +38,19 @@
 
 TrayIcon::TrayIcon(Battery* battery, QObject *parent) : 
     QSystemTrayIcon(parent), 
-        battery(battery), 
-        m_Settings("razor-autosuspend")
+        mBattery(battery), 
+        mSettings("razor-autosuspend")
 {
     setUpstatusIcons();
 
     connect(battery, SIGNAL(batteryChanged()), this, SLOT(update()));
     connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(iconThemeChanged()));
-    connect(&m_Settings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
+    connect(&mSettings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(showStatus(QSystemTrayIcon::ActivationReason)));
 
     checkThemeStatusIcons(); 
     update(); 
-    setVisible(m_Settings.value(SHOWTRAYICON_KEY, true).toBool());
+    setVisible(mSettings.value(SHOWTRAYICON_KEY, true).toBool());
 }
 
 TrayIcon::~TrayIcon()
@@ -61,64 +61,64 @@ void TrayIcon::update()
 {
     updateStatusIcon();
     updateToolTip();
-    batteryInfo.updateInfo(battery);
+    mBatteryInfo.updateInfo(mBattery);
 }
 
 
 void TrayIcon::updateStatusIcon()
 {
-    if (m_Settings.value(USETHEMEICONS_KEY, true).toBool() && themeHasStatusIcons)
+    if (mSettings.value(USETHEMEICONS_KEY, true).toBool() && mThemeHasStatusIcons)
     {
         QString iconName;
-        bool charging = ! battery->decharging();
+        bool charging = ! mBattery->decharging();
 
         if (QIcon::themeName() == "oxygen")
         {
-            if (battery->chargeLevel() < 20)        iconName = charging ? "battery-charging-low" : "battery-low";
-            else if (battery->chargeLevel() < 40)   iconName = charging ? "battery-charging-caution" : "battery-caution";
-            else if (battery->chargeLevel() < 60)   iconName = charging ? "battery-charging-040" : "battery-040";
-            else if (battery->chargeLevel() < 80)   iconName = charging ? "battery-charging-060" : "battery-060";
-            else if (battery->chargeLevel() < 99.5) iconName = charging ? "battery-charging-080" : "battery-080";
+            if (mBattery->chargeLevel() < 20)        iconName = charging ? "battery-charging-low" : "battery-low";
+            else if (mBattery->chargeLevel() < 40)   iconName = charging ? "battery-charging-caution" : "battery-caution";
+            else if (mBattery->chargeLevel() < 60)   iconName = charging ? "battery-charging-040" : "battery-040";
+            else if (mBattery->chargeLevel() < 80)   iconName = charging ? "battery-charging-060" : "battery-060";
+            else if (mBattery->chargeLevel() < 99.5) iconName = charging ? "battery-charging-080" : "battery-080";
             else                                  iconName = charging ? "battery-charging" : "battery-100";
         }
         else // For all themes but 'oxygen' we follow freedesktop's battery status icon name standard 
              // (http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html) _with_ the changes proposed in
              // https://bugs.freedesktop.org/show_bug.cgi?id=41458 (we assume that this patch will be accepted)
         {
-            if (battery->chargeLevel() <  1 && !charging) iconName = "battery-empty" ;
-            else if (battery->chargeLevel() < 20)         iconName = charging ? "battery-caution-charging" : "battery-caution";
-            else if (battery->chargeLevel() < 40)         iconName = charging ? "battery-low-charging" : "battery-low";
-            else if (battery->chargeLevel() < 60)         iconName = charging ? "battery-good-charging" : "battery-good";
+            if (mBattery->chargeLevel() <  1 && !charging) iconName = "battery-empty" ;
+            else if (mBattery->chargeLevel() < 20)         iconName = charging ? "battery-caution-charging" : "battery-caution";
+            else if (mBattery->chargeLevel() < 40)         iconName = charging ? "battery-low-charging" : "battery-low";
+            else if (mBattery->chargeLevel() < 60)         iconName = charging ? "battery-good-charging" : "battery-good";
             else                                          iconName = charging ? "battery-full-charging" : "battery-full";
         }
         
-        qDebug() << "ChargeLevel" << battery->chargeLevel() 
+        qDebug() << "ChargeLevel" << mBattery->chargeLevel() 
                  << "- getting icon:"  << iconName 
                  << "from" << QIcon::themeName() << "theme";
         setIcon(QIcon::fromTheme(iconName));
     }
     else
     {
-        int chargeLevel0_10 = round(battery->chargeLevel()/10);
+        int chargeLevel0_10 = round(mBattery->chargeLevel()/10);
 
-        if (battery->decharging())
+        if (mBattery->decharging())
         {
-            setIcon(statusIconsDecharging[chargeLevel0_10]);
+            setIcon(mStatusIconsDecharging[chargeLevel0_10]);
         }
         else 
         {
-            setIcon(statusIconsCharging[chargeLevel0_10]);
+            setIcon(mStatusIconsCharging[chargeLevel0_10]);
         }
     }
 }
 
 void TrayIcon::updateToolTip()
 {
-    QString toolTip = battery->stateAsString();
+    QString toolTip = mBattery->stateAsString();
 
-    if (battery->state() == 1 || battery->state() == 2)
+    if (mBattery->state() == 1 || mBattery->state() == 2)
     {
-        toolTip = toolTip + QString(" - %1 %").arg(battery->chargeLevel(), 0, 'f', 1);
+        toolTip = toolTip + QString(" - %1 %").arg(mBattery->chargeLevel(), 0, 'f', 1);
     }
     setToolTip(toolTip);
 }
@@ -127,7 +127,7 @@ void TrayIcon::updateToolTip()
 
 void TrayIcon::checkThemeStatusIcons()
 {
-    themeHasStatusIcons = true; 
+    mThemeHasStatusIcons = true; 
     if ("oxygen" != QIcon::themeName())
     {
         // We know what icons the oxygen theme contains, so with oxygen we're good
@@ -144,7 +144,7 @@ void TrayIcon::checkThemeStatusIcons()
         {
             if (! QIcon::hasThemeIcon(statusIconName))
             {
-                themeHasStatusIcons = false;
+                mThemeHasStatusIcons = false;
                 break;
             }
         }
@@ -160,34 +160,34 @@ void TrayIcon::iconThemeChanged()
 void TrayIcon::settingsChanged()
 {
     updateStatusIcon();
-    setVisible(m_Settings.value(SHOWTRAYICON_KEY, true).toBool()); 
+    setVisible(mSettings.value(SHOWTRAYICON_KEY, true).toBool()); 
 }
 
 void TrayIcon::setUpstatusIcons()
 {
-    statusIconsCharging[0] = QIcon(":icons/battery-charging-000.svg");
-    statusIconsCharging[1] = QIcon(":icons/battery-charging-010.svg");
-    statusIconsCharging[2] = QIcon(":icons/battery-charging-020.svg");
-    statusIconsCharging[3] = QIcon(":icons/battery-charging-030.svg");
-    statusIconsCharging[4] = QIcon(":icons/battery-charging-040.svg");
-    statusIconsCharging[5] = QIcon(":icons/battery-charging-050.svg");
-    statusIconsCharging[6] = QIcon(":icons/battery-charging-060.svg");
-    statusIconsCharging[7] = QIcon(":icons/battery-charging-070.svg");
-    statusIconsCharging[8] = QIcon(":icons/battery-charging-080.svg");
-    statusIconsCharging[9] = QIcon(":icons/battery-charging-090.svg");
-    statusIconsCharging[10] = QIcon(":icons/battery-charging-100.svg");
+    mStatusIconsCharging[0] = QIcon(":icons/battery-charging-000.svg");
+    mStatusIconsCharging[1] = QIcon(":icons/battery-charging-010.svg");
+    mStatusIconsCharging[2] = QIcon(":icons/battery-charging-020.svg");
+    mStatusIconsCharging[3] = QIcon(":icons/battery-charging-030.svg");
+    mStatusIconsCharging[4] = QIcon(":icons/battery-charging-040.svg");
+    mStatusIconsCharging[5] = QIcon(":icons/battery-charging-050.svg");
+    mStatusIconsCharging[6] = QIcon(":icons/battery-charging-060.svg");
+    mStatusIconsCharging[7] = QIcon(":icons/battery-charging-070.svg");
+    mStatusIconsCharging[8] = QIcon(":icons/battery-charging-080.svg");
+    mStatusIconsCharging[9] = QIcon(":icons/battery-charging-090.svg");
+    mStatusIconsCharging[10] = QIcon(":icons/battery-charging-100.svg");
 
-    statusIconsDecharging[0] = QIcon(":icons/battery-000.svg");
-    statusIconsDecharging[1] = QIcon(":icons/battery-010.svg");
-    statusIconsDecharging[2] = QIcon(":icons/battery-020.svg");
-    statusIconsDecharging[3] = QIcon(":icons/battery-030.svg");
-    statusIconsDecharging[4] = QIcon(":icons/battery-040.svg");
-    statusIconsDecharging[5] = QIcon(":icons/battery-050.svg");
-    statusIconsDecharging[6] = QIcon(":icons/battery-060.svg");
-    statusIconsDecharging[7] = QIcon(":icons/battery-070.svg");
-    statusIconsDecharging[8] = QIcon(":icons/battery-080.svg");
-    statusIconsDecharging[9] = QIcon(":icons/battery-090.svg");
-    statusIconsDecharging[10] = QIcon(":icons/battery-100.svg");
+    mStatusIconsDecharging[0] = QIcon(":icons/battery-000.svg");
+    mStatusIconsDecharging[1] = QIcon(":icons/battery-010.svg");
+    mStatusIconsDecharging[2] = QIcon(":icons/battery-020.svg");
+    mStatusIconsDecharging[3] = QIcon(":icons/battery-030.svg");
+    mStatusIconsDecharging[4] = QIcon(":icons/battery-040.svg");
+    mStatusIconsDecharging[5] = QIcon(":icons/battery-050.svg");
+    mStatusIconsDecharging[6] = QIcon(":icons/battery-060.svg");
+    mStatusIconsDecharging[7] = QIcon(":icons/battery-070.svg");
+    mStatusIconsDecharging[8] = QIcon(":icons/battery-080.svg");
+    mStatusIconsDecharging[9] = QIcon(":icons/battery-090.svg");
+    mStatusIconsDecharging[10] = QIcon(":icons/battery-100.svg");
 }
 
 
@@ -195,13 +195,13 @@ void TrayIcon::showStatus(ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
     {
-        if (batteryInfo.isVisible())
+        if (mBatteryInfo.isVisible())
         {
-            batteryInfo.close();
+            mBatteryInfo.close();
         }
         else
         {
-            batteryInfo.open();
+            mBatteryInfo.open();
         }
     }
 }

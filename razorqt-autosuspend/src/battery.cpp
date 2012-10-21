@@ -38,13 +38,13 @@
 
 Battery::Battery(QObject* parent) 
    : QObject(parent),
-     uPowerBatteryProperties(0),
-     m_chargeLevel(0.0),
-     m_onBattery(false)
+     mUPowerBatteryPropertiesInterface(0),
+     mChargeLevel(0.0),
+     mDecharging(false)
 {
-    uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
-    uPowerBatteryDevice = 0;
-    QDBusReply<QList<QDBusObjectPath> > reply = uPower->call("EnumerateDevices");
+    mUPowerInterface = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
+    mUPowerBatteryDeviceInterface = 0;
+    QDBusReply<QList<QDBusObjectPath> > reply = mUPowerInterface->call("EnumerateDevices");
     foreach (QDBusObjectPath objectPath, reply.value())
     {
         QDBusInterface *device = new QDBusInterface("org.freedesktop.UPower",
@@ -56,9 +56,9 @@ Battery::Battery(QObject* parent)
             ( device->property("PowerSupply").toBool() ||                          // UPower < 0.9.16.3 wrongly reports this false for some laptop batteries
               device->property("NativePath").toString().contains("power_supply"))) // - hence this line
         {
-            uPowerBatteryDevice = device;
-            connect(uPowerBatteryDevice, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
-            uPowerBatteryProperties = new QDBusInterface("org.freedesktop.UPower",
+            mUPowerBatteryDeviceInterface = device;
+            connect(mUPowerBatteryDeviceInterface, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
+            mUPowerBatteryPropertiesInterface = new QDBusInterface("org.freedesktop.UPower",
                                                          objectPath.path(),
                                                          "org.freedesktop.DBus.Properties",
                                                          QDBusConnection::systemBus());
@@ -70,7 +70,7 @@ Battery::Battery(QObject* parent)
             delete device;
         }
     }
-    if (uPowerBatteryDevice == 0)
+    if (mUPowerBatteryDeviceInterface == 0)
     {
         RazorNotification::notify(tr("No battery!"),
                                   tr("Razor autosuspend could not find data about any battery - actions on power low will not work"),
@@ -84,13 +84,13 @@ Battery::~Battery()
 
 void Battery::uPowerBatteryChanged()
 {
-    m_onBattery =  uPower->property("OnBattery").toBool();
-    m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
+    mDecharging =  mUPowerInterface->property("OnBattery").toBool();
+    mChargeLevel = mUPowerBatteryDeviceInterface->property("Percentage").toDouble();
 
-    if (uPowerBatteryProperties)
+    if (mUPowerBatteryPropertiesInterface)
     {
-        QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
-        props = reply.value();
+        QDBusReply<QVariantMap> reply = mUPowerBatteryPropertiesInterface->call("GetAll", "org.freedesktop.UPower.Device");
+        mProperties = reply.value();
         qDebug() << "props:" << properties();
 
         emit batteryChanged();
@@ -102,33 +102,33 @@ void Battery::uPowerBatteryChanged()
 
 double Battery::chargeLevel()
 {
-    return m_chargeLevel;
+    return mChargeLevel;
 }
 
 
 bool Battery::powerLow()
 {
-    return  m_onBattery && m_chargeLevel <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
+    return  mDecharging && mChargeLevel <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
 }
 
 bool Battery::decharging()
 {
-    return m_onBattery;
+    return mDecharging;
 }
 
 uint Battery::state()
 {
-    return m_State;
+    return mState;
 }
 
 QString Battery::stateAsString()
 {
-    return m_StateAsString;
+    return mStateAsString;
 }
 
 QVariantMap Battery::properties()
 {
-    return props;
+    return mProperties;
 }
 
 QString Battery::state2string(uint state) {

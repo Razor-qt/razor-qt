@@ -46,7 +46,7 @@ public:
     void updateInfo(Battery* battery);
 
 private:
-    Ui::BatteryInfo *ui;
+    Ui::BatteryInfo *mUi;
 };
 
 #endif // BATTERYINFO_H

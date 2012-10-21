@@ -55,13 +55,13 @@ private slots:
 private:
     QString state2string(uint state);
 
-    QDBusInterface *uPower;
-    QDBusInterface *uPowerBatteryDevice;
-    QDBusInterface *uPowerBatteryProperties;
-    double m_chargeLevel;
-    bool m_onBattery;
-    uint m_State;
-    QString m_StateAsString;
-    QVariantMap props;
+    QDBusInterface *mUPowerInterface;
+    QDBusInterface *mUPowerBatteryDeviceInterface;
+    QDBusInterface *mUPowerBatteryPropertiesInterface;
+    double mChargeLevel;
+    bool mDecharging;
+    uint mState;
+    QString mStateAsString;
+    QVariantMap mProperties;
 };
 #endif

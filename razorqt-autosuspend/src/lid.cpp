@@ -30,20 +30,20 @@
 
 Lid::Lid()
 {
-    uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower",
+    mUPowerInterface = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower",
                                 QDBusConnection::systemBus(), this);
-    connect(uPower, SIGNAL(Changed()), this, SLOT(uPowerChange()));
-    uPowerProperties = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.DBus.Properties",
+    connect(mUPowerInterface, SIGNAL(Changed()), this, SLOT(uPowerChange()));
+    mUPowerPropertiesInterface = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.DBus.Properties",
                                           QDBusConnection::systemBus(), this);
-    closed = uPowerProperties->property("LidIsClosed").toBool();
+    mIsClosed = mUPowerPropertiesInterface->property("LidIsClosed").toBool();
 }
 
 void Lid::uPowerChange()
 {
-    bool newIsClosed = uPower->property("LidIsClosed").toBool();
-    if (newIsClosed != closed)
+    bool newIsClosed = mUPowerInterface->property("LidIsClosed").toBool();
+    if (newIsClosed != mIsClosed)
     {
-        closed = newIsClosed;
-        emit changed(closed);
+        mIsClosed = newIsClosed;
+        emit changed(mIsClosed);
     }
 }

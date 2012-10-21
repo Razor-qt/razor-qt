@@ -51,15 +51,15 @@ private:
     void updateStateAsString();
 
     void  checkThemeStatusIcons();
-    bool themeHasStatusIcons;
+    bool mThemeHasStatusIcons;
    
     void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
+    QIcon mStatusIconsCharging[11];
+    QIcon mStatusIconsDecharging[11];
     
-    Battery* battery; 
-    BatteryInfo batteryInfo;
-    RazorSettings m_Settings;
+    Battery* mBattery; 
+    BatteryInfo mBatteryInfo;
+    RazorSettings mSettings;
 
 private slots:
     void update();

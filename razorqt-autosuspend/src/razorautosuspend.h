@@ -54,12 +54,12 @@ private:
     void doAction(int action);
     int powerLowAction();
 
-    Lid lid;
-    Battery* battery;
-    RazorPower razorPower;
-    RazorNotification razorNotification;
-    QTime actionTime;
-    RazorSettings m_Settings;
+    Lid mLid;
+    Battery* mBattery;
+    RazorPower mRazorPower;
+    RazorNotification mRazorNotification;
+    QTime mActionTime;
+    RazorSettings mSettings;
 
 };
 

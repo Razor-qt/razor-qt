@@ -32,18 +32,18 @@
 
 RazorAutosuspendd::RazorAutosuspendd(QObject *parent) :
     QObject(parent),
-    razorNotification(tr("Power low"), this),
-    actionTime(),
-    m_Settings("razor-autosuspend")
+    mRazorNotification(tr("Power low"), this),
+    mActionTime(),
+    mSettings("razor-autosuspend")
 {
-    razorNotification.setIcon("razor-autosuspend");
-    razorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
-    razorNotification.setTimeout(2000);
-    battery = new Battery(this);
-    new TrayIcon(battery, this);
+    mRazorNotification.setIcon("razor-autosuspend");
+    mRazorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
+    mRazorNotification.setTimeout(2000);
+    mBattery = new Battery(this);
+    new TrayIcon(mBattery, this);
     
-    connect(&lid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
-    connect(battery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
+    connect(&mLid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));
+    connect(mBattery, SIGNAL(batteryChanged()), this, SLOT(batteryChanged()));
 }
 
 RazorAutosuspendd::~RazorAutosuspendd()
@@ -54,22 +54,22 @@ void RazorAutosuspendd::lidChanged(bool closed)
 {
     if (closed)
     {
-        doAction(m_Settings.value(LIDCLOSEDACTION_KEY).toInt());
+        doAction(mSettings.value(LIDCLOSEDACTION_KEY).toInt());
     }
 }
 
 void RazorAutosuspendd::batteryChanged()
 {
     qDebug() <<  "BatteryChanged"
-             <<  "decharging:"  << battery->decharging() 
-             << "chargeLevel:" << battery->chargeLevel() 
-             << "powerlow:"    << battery->powerLow() 
-             << "actionTime:"  << actionTime;
+             <<  "decharging:"  << mBattery->decharging() 
+             << "chargeLevel:" << mBattery->chargeLevel() 
+             << "powerlow:"    << mBattery->powerLow() 
+             << "actionTime:"  << mActionTime;
 
-    if (battery->powerLow() && actionTime.isNull() && powerLowAction() > 0)
+    if (mBattery->powerLow() && mActionTime.isNull() && powerLowAction() > 0)
     {
-        int warningTimeMsecs = m_Settings.value(POWERLOWWARNING_KEY, 30).toInt()*1000;
-        actionTime = QTime::currentTime().addMSecs(warningTimeMsecs);
+        int warningTimeMsecs = mSettings.value(POWERLOWWARNING_KEY, 30).toInt()*1000;
+        mActionTime = QTime::currentTime().addMSecs(warningTimeMsecs);
         startTimer(100);
         // From here everything is handled by timerEvent below
     }
@@ -77,12 +77,12 @@ void RazorAutosuspendd::batteryChanged()
 
 void RazorAutosuspendd::timerEvent(QTimerEvent *event)
 {
-    if (actionTime.isNull() || powerLowAction() == 0 || ! battery->powerLow())
+    if (mActionTime.isNull() || powerLowAction() == 0 || ! mBattery->powerLow())
     {
             killTimer(event->timerId());
-            actionTime = QTime();
+            mActionTime = QTime();
     }
-    else if (QTime::currentTime().msecsTo(actionTime) > 0)
+    else if (QTime::currentTime().msecsTo(mActionTime) > 0)
     {
         QString notificationMsg;
         switch (powerLowAction())
@@ -98,13 +98,13 @@ void RazorAutosuspendd::timerEvent(QTimerEvent *event)
             break;
         }
 
-        razorNotification.setBody(notificationMsg.arg(QTime::currentTime().msecsTo(actionTime)/1000));
-        razorNotification.update();
+        mRazorNotification.setBody(notificationMsg.arg(QTime::currentTime().msecsTo(mActionTime)/1000));
+        mRazorNotification.update();
     }
     else
     {
         doAction(powerLowAction());
-        actionTime = QTime();
+        mActionTime = QTime();
         killTimer(event->timerId());
     }
 }
@@ -114,19 +114,19 @@ void RazorAutosuspendd::doAction(int action)
     switch (action)
     {
     case SLEEP:
-        razorPower.suspend();
+        mRazorPower.suspend();
         break;
     case HIBERNATE:
-        razorPower.hibernate();
+        mRazorPower.hibernate();
         break;
     case POWEROFF:
-        razorPower.shutdown();
+        mRazorPower.shutdown();
         break;
     }
 }
 
 int RazorAutosuspendd::powerLowAction()
 {
-    return m_Settings.value(POWERLOWACTION_KEY).toInt();
+    return mSettings.value(POWERLOWACTION_KEY).toInt();
 }
 
