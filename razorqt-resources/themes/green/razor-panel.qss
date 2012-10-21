@@ -201,3 +201,12 @@ MountButton {}
 #SysStat {
     padding: 1px 1px 1px 1px;
 }
+
+
+/*
+ * WorldClock
+ */
+#WorldClock > QLabel{
+    font-size: 10pt;
+    color: #606060;
+}
