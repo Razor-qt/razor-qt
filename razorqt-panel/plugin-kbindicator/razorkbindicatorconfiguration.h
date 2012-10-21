@@ -33,20 +33,11 @@
 
 #include <QtGui/QDialog>
 #include <QtGui/QAbstractButton>
-#include <QtGui/QFont>
-#include <QtCore/QMap>
 
 
 namespace Ui {
     class RazorKbIndicatorConfiguration;
 }
-
-namespace KbIndicator {
-    class BaseStat;
-}
-
-class QSignalMapper;
-class QFrame;
 
 class RazorKbIndicatorConfiguration : public QDialog
 {
