@@ -30,9 +30,9 @@ namespace SysStat {
 NetStatPrivate::NetStatPrivate(NetStat *parent)
     : BaseStatPrivate(parent)
 {
-    m_source = defaultSource();
+    mSource = defaultSource();
 
-    connect(m_timer, SIGNAL(timeout()), SLOT(timeout()));
+    connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 
 
     QStringList rows(readAllFile("/proc/net/dev").split(QChar('\n'), QString::SkipEmptyParts));
@@ -45,7 +45,7 @@ NetStatPrivate::NetStatPrivate(NetStat *parent)
         if (tokens.size() != 2)
             continue;
 
-        m_sources.append(tokens[0].trimmed());
+        mSources.append(tokens[0].trimmed());
     }
 }
 
@@ -87,14 +87,14 @@ void NetStatPrivate::timeout(void)
         current.received    = data[receivedIndex   ].toULongLong();
         current.transmitted = data[transmittedIndex].toULongLong();
 
-        if (!m_previous.contains(interfaceName))
-            m_previous.insert(interfaceName, Values());
-        const Values &previous = m_previous[interfaceName];
+        if (!mPrevious.contains(interfaceName))
+            mPrevious.insert(interfaceName, Values());
+        const Values &previous = mPrevious[interfaceName];
 
-        if (interfaceName == m_source)
-            emit update((( current.received - previous.received ) * 1000 ) / m_timer->interval(), (( current.transmitted - previous.transmitted ) * 1000 ) / m_timer->interval());
+        if (interfaceName == mSource)
+            emit update((( current.received - previous.received ) * 1000 ) / mTimer->interval(), (( current.transmitted - previous.transmitted ) * 1000 ) / mTimer->interval());
 
-        m_previous[interfaceName] = current;
+        mPrevious[interfaceName] = current;
     }
 }
 

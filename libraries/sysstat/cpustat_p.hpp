@@ -76,12 +76,12 @@ private:
         void sum(void);
     } Values;
     typedef QMap<QString, Values> NamedValues;
-    NamedValues m_previous;
+    NamedValues mPrevious;
 
-    CpuStat::Monitoring m_monitoring;
+    CpuStat::Monitoring mMonitoring;
 
     typedef QMap<QString, QPair<uint, uint> > Bounds;
-    Bounds m_bounds;
+    Bounds mBounds;
 
     void addSource(const QString &source);
 };

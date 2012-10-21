@@ -60,7 +60,7 @@ private:
         qulonglong transmitted;
     } Values;
     typedef QMap<QString, Values> NamedValues;
-    NamedValues m_previous;
+    NamedValues mPrevious;
 };
 
 }

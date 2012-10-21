@@ -30,11 +30,11 @@ namespace SysStat {
 MemStatPrivate::MemStatPrivate(MemStat *parent)
     : BaseStatPrivate(parent)
 {
-    m_source = defaultSource();
+    mSource = defaultSource();
 
-    connect(m_timer, SIGNAL(timeout()), SLOT(timeout()));
+    connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 
-    m_sources << "memory" << "swap";
+    mSources << "memory" << "swap";
 }
 
 MemStatPrivate::~MemStatPrivate()
@@ -70,7 +70,7 @@ void MemStatPrivate::timeout(void)
             swapFree = tokens[1].toULong();
     }
 
-    if (m_source == "memory")
+    if (mSource == "memory")
     {
         if (memTotal)
         {
@@ -82,7 +82,7 @@ void MemStatPrivate::timeout(void)
             emit memoryUpdate(applications_d, buffers_d, cached_d);
         }
     }
-    else if (m_source == "swap")
+    else if (mSource == "swap")
     {
         if (swapTotal)
         {

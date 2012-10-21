@@ -29,11 +29,11 @@ namespace SysStat {
 
 CpuStatPrivate::CpuStatPrivate(CpuStat *parent)
     : BaseStatPrivate(parent)
-    , m_monitoring(CpuStat::LoadAndFrequency)
+    , mMonitoring(CpuStat::LoadAndFrequency)
 {
-    m_source = defaultSource();
+    mSource = defaultSource();
 
-    connect(m_timer, SIGNAL(timeout()), SLOT(timeout()));
+    connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 
     updateSources();
 }
@@ -47,13 +47,13 @@ void CpuStatPrivate::addSource(const QString &source)
     {
         uint max = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_max_freq").arg(source))).toUInt(&ok);
         if (ok)
-            m_bounds[source] = qMakePair(min, max);
+            mBounds[source] = qMakePair(min, max);
     }
 }
 
 void CpuStatPrivate::updateSources(void)
 {
-    m_sources.clear();
+    mSources.clear();
 
     foreach (QString row, readAllFile("/proc/stat").split(QChar('\n'), QString::SkipEmptyParts))
     {
@@ -62,10 +62,10 @@ void CpuStatPrivate::updateSources(void)
         || (!tokens[0].startsWith("cpu")) )
             continue;
 
-        m_sources.append(tokens[0]);
+        mSources.append(tokens[0]);
     }
 
-    m_bounds.clear();
+    mBounds.clear();
 
     bool ok;
 
@@ -98,8 +98,8 @@ CpuStatPrivate::~CpuStatPrivate()
 
 void CpuStatPrivate::timeout(void)
 {
-    if ( (m_monitoring == CpuStat::LoadOnly)
-      || (m_monitoring == CpuStat::LoadAndFrequency) )
+    if ( (mMonitoring == CpuStat::LoadOnly)
+      || (mMonitoring == CpuStat::LoadAndFrequency) )
     {
         foreach (QString row, readAllFile("/proc/stat").split(QChar('\n'), QString::SkipEmptyParts))
         {
@@ -120,27 +120,27 @@ void CpuStatPrivate::timeout(void)
                 current.other += tokens[i].toULongLong();
             current.sum();
 
-            if (!m_previous.contains(cpuName))
-                m_previous.insert(cpuName, Values());
-            const Values &previous = m_previous[cpuName];
+            if (!mPrevious.contains(cpuName))
+                mPrevious.insert(cpuName, Values());
+            const Values &previous = mPrevious[cpuName];
 
-            if (cpuName == m_source)
+            if (cpuName == mSource)
             {
                 float sumDelta = static_cast<float>(current.total - previous.total);
 
-                if (m_monitoring == CpuStat::LoadAndFrequency)
+                if (mMonitoring == CpuStat::LoadAndFrequency)
                 {
                     bool ok;
 
                     float freqRate = 1.0;
                     uint freq = 0;
 
-                    if (m_source == "cpu")
+                    if (mSource == "cpu")
                     {
                         uint count = 0;
                         freqRate = 0.0;
 
-                        for (Bounds::ConstIterator I = m_bounds.constBegin(); I != m_bounds.constEnd(); ++I)
+                        for (Bounds::ConstIterator I = mBounds.constBegin(); I != mBounds.constEnd(); ++I)
                         {
                             uint thisFreq = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_cur_freq").arg(I.key()))).toUInt(&ok);
 
@@ -161,12 +161,12 @@ void CpuStatPrivate::timeout(void)
                     }
                     else
                     {
-                        freq = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_cur_freq").arg(m_source))).toUInt(&ok);
+                        freq = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_cur_freq").arg(mSource))).toUInt(&ok);
 
                         if (ok)
                         {
-                            Bounds::ConstIterator I = m_bounds.constFind(m_source);
-                            if (I != m_bounds.constEnd())
+                            Bounds::ConstIterator I = mBounds.constFind(mSource);
+                            if (I != mBounds.constEnd())
                                 freqRate = static_cast<float>(freq) / static_cast<float>(I.value().second);
                         }
                     }
@@ -189,7 +189,7 @@ void CpuStatPrivate::timeout(void)
                 }
             }
 
-            m_previous[cpuName] = current;
+            mPrevious[cpuName] = current;
         }
     }
     else
@@ -197,11 +197,11 @@ void CpuStatPrivate::timeout(void)
         bool ok;
         uint freq = 0;
 
-        if (m_source == "cpu")
+        if (mSource == "cpu")
         {
             uint count = 0;
 
-            for (Bounds::ConstIterator I = m_bounds.constBegin(); I != m_bounds.constEnd(); ++I)
+            for (Bounds::ConstIterator I = mBounds.constBegin(); I != mBounds.constEnd(); ++I)
             {
                 uint thisFreq = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_cur_freq").arg(I.key()))).toUInt(&ok);
 
@@ -218,7 +218,7 @@ void CpuStatPrivate::timeout(void)
         }
         else
         {
-            freq = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_cur_freq").arg(m_source))).toUInt(&ok);
+            freq = readAllFile(qPrintable(QString("/sys/devices/system/cpu/%1/cpufreq/scaling_cur_freq").arg(mSource))).toUInt(&ok);
         }
         emit update(freq);
     }
@@ -246,12 +246,12 @@ void CpuStatPrivate::Values::sum(void)
 
 CpuStat::Monitoring CpuStatPrivate::monitoring(void) const
 {
-    return m_monitoring;
+    return mMonitoring;
 }
 
 void CpuStatPrivate::setMonitoring(CpuStat::Monitoring value)
 {
-    m_monitoring = value;
+    mMonitoring = value;
 }
 
 CpuStat::CpuStat(QObject *parent)

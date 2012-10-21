@@ -9,8 +9,7 @@ set (PATCH_VERSION 0)
 add_definitions(-DMAJOR_VERSION=${MAJOR_VERSION})
 add_definitions(-DMINOR_VERSION=${MINOR_VERSION})
 add_definitions(-DPATCH_VERSION=${PATCH_VERSION})
-
-include_directories( .. )
+add_definitions(-DSYSSTAT_LIBRARY)
 
 add_definitions(-Wall)
 find_package(Qt4 REQUIRED)

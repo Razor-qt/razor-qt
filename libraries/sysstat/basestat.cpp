@@ -34,14 +34,13 @@ namespace SysStat {
 
 BaseStatPrivate::BaseStatPrivate(BaseStat* parent)
     : QObject(parent)
-    , iface(parent)
-    , m_timer(new QTimer(this))
-    , m_synchroTimer(new QTimer(this))
+    , mTimer(new QTimer(this))
+    , mSynchroTimer(new QTimer(this))
 {
-    m_timer->setSingleShot(false);
+    mTimer->setSingleShot(false);
 
-    m_synchroTimer->setSingleShot(false);
-    connect(m_synchroTimer, SIGNAL(timeout()), SLOT(synchroTimeout()));
+    mSynchroTimer->setSingleShot(false);
+    connect(mSynchroTimer, SIGNAL(timeout()), SLOT(synchroTimeout()));
 }
 
 BaseStatPrivate::~BaseStatPrivate()
@@ -50,56 +49,56 @@ BaseStatPrivate::~BaseStatPrivate()
 
 bool BaseStatPrivate::timerIsActive(void) const
 {
-    return m_timer->isActive();
+    return mTimer->isActive();
 }
 
 int BaseStatPrivate::updateInterval(void) const
 {
-    return m_timer->interval();
+    return mTimer->interval();
 }
 
 void BaseStatPrivate::setUpdateInterval(int msec)
 {
-    m_timer->stop();
-    m_timer->setInterval(msec);
-    m_synchroTimer->setInterval(msec / 10);
+    mTimer->stop();
+    mTimer->setInterval(msec);
+    mSynchroTimer->setInterval(msec / 10);
     if (msec > 0)
     {
-        m_lastSynchro = 0;
-        m_synchroTimer->start();
+        mLastSynchro = 0;
+        mSynchroTimer->start();
     }
 }
 
 void BaseStatPrivate::synchroTimeout(void)
 {
     QTime now(QTime::currentTime());
-    int synchro = ((now.minute() * 60 + now.second()) * 1000 + now.msec() ) / m_timer->interval();
-    if ((m_lastSynchro != 0) && (m_lastSynchro != synchro))
+    int synchro = ((now.minute() * 60 + now.second()) * 1000 + now.msec() ) / mTimer->interval();
+    if ((mLastSynchro != 0) && (mLastSynchro != synchro))
     {
-        m_synchroTimer->stop();
-        m_timer->start();
+        mSynchroTimer->stop();
+        mTimer->start();
     }
-    m_lastSynchro = synchro;
+    mLastSynchro = synchro;
 }
 
 void BaseStatPrivate::stopUpdating(void)
 {
-    m_timer->stop();
+    mTimer->stop();
 }
 
 QString BaseStatPrivate::monitoredSource(void) const
 {
-    return m_source;
+    return mSource;
 }
 
 void BaseStatPrivate::setMonitoredSource(const QString &Source)
 {
-    m_source = Source;
+    mSource = Source;
 }
 
 void BaseStatPrivate::monitorDefaultSource(void)
 {
-    m_source = defaultSource();
+    mSource = defaultSource();
 }
 
 QString BaseStatPrivate::readAllFile(const char *filename)
@@ -123,7 +122,7 @@ QString BaseStatPrivate::readAllFile(const char *filename)
 
 QStringList BaseStatPrivate::sources(void) const
 {
-    return m_sources;
+    return mSources;
 }
 
 BaseStat::BaseStat(QObject *parent)

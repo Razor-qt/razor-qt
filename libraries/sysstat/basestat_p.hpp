@@ -61,16 +61,14 @@ private slots:
 protected:
     virtual QString defaultSource(void) = 0;
 
-    BaseStat * const iface;
-
     QString readAllFile(const char *filename);
 
-    QTimer *m_timer;
-    QTimer *m_synchroTimer;
-    QString m_source;
-    QStringList m_sources;
+    QTimer *mTimer;
+    QTimer *mSynchroTimer;
+    QString mSource;
+    QStringList mSources;
 
-    int m_lastSynchro;
+    int mLastSynchro;
 };
 
 }
