@@ -43,7 +43,7 @@ TrayIcon::TrayIcon(Battery* battery, QObject *parent) :
 {
     setUpstatusIcons();
 
-    connect(battery, SIGNAL(batteryChanged()), this, SLOT(update()));
+    connect(mBattery, SIGNAL(batteryChanged()), this, SLOT(update()));
     connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(iconThemeChanged()));
     connect(&mSettings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(showStatus(QSystemTrayIcon::ActivationReason)));

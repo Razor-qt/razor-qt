@@ -38,9 +38,7 @@
 
 Battery::Battery(QObject* parent) 
    : QObject(parent),
-     mUPowerBatteryPropertiesInterface(0),
-     mChargeLevel(0.0),
-     mDecharging(false)
+     mUPowerBatteryPropertiesInterface(0)
 {
     mUPowerInterface = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
     mUPowerBatteryDeviceInterface = 0;
@@ -84,15 +82,11 @@ Battery::~Battery()
 
 void Battery::uPowerBatteryChanged()
 {
-    mDecharging =  mUPowerInterface->property("OnBattery").toBool();
-    mChargeLevel = mUPowerBatteryDeviceInterface->property("Percentage").toDouble();
-
     if (mUPowerBatteryPropertiesInterface)
     {
         QDBusReply<QVariantMap> reply = mUPowerBatteryPropertiesInterface->call("GetAll", "org.freedesktop.UPower.Device");
         mProperties = reply.value();
         qDebug() << "props:" << properties();
-
         emit batteryChanged();
     }
     else
@@ -102,28 +96,28 @@ void Battery::uPowerBatteryChanged()
 
 double Battery::chargeLevel()
 {
-    return mChargeLevel;
+    return mProperties.value("Percentage", 0).toDouble();
 }
 
 
 bool Battery::powerLow()
 {
-    return  mDecharging && mChargeLevel <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
+    return  decharging() && chargeLevel() <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
 }
 
 bool Battery::decharging()
 {
-    return mDecharging;
+    return mProperties.value("OnBattery", true).toBool();
 }
 
 uint Battery::state()
 {
-    return mState;
+    return mProperties.value("State").toUInt();
 }
 
 QString Battery::stateAsString()
 {
-    return mStateAsString;
+    return state2string(state());
 }
 
 QVariantMap Battery::properties()

@@ -58,10 +58,6 @@ private:
     QDBusInterface *mUPowerInterface;
     QDBusInterface *mUPowerBatteryDeviceInterface;
     QDBusInterface *mUPowerBatteryPropertiesInterface;
-    double mChargeLevel;
-    bool mDecharging;
-    uint mState;
-    QString mStateAsString;
     QVariantMap mProperties;
 };
 #endif
