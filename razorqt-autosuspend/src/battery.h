@@ -44,7 +44,7 @@ public:
 //    static const int POWER_LOW_LEVEL=15;
     double  chargeLevel();
     bool    powerLow();
-    bool    decharging();
+    bool    discharging();
     uint    state();
     QString stateAsString(); 
     QVariantMap properties();

@@ -102,12 +102,12 @@ double Battery::chargeLevel()
 
 bool Battery::powerLow()
 {
-    return  decharging() && chargeLevel() <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
+    return  discharging() && chargeLevel() <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
 }
 
-bool Battery::decharging()
+bool Battery::discharging()
 {
-    return mProperties.value("OnBattery", true).toBool();
+    return 2 == state();
 }
 
 uint Battery::state()

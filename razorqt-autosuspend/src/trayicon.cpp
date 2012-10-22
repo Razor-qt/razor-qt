@@ -70,7 +70,7 @@ void TrayIcon::updateStatusIcon()
     if (mSettings.value(USETHEMEICONS_KEY, true).toBool() && mThemeHasStatusIcons)
     {
         QString iconName;
-        bool charging = ! mBattery->decharging();
+        bool charging = ! mBattery->discharging();
 
         if (QIcon::themeName() == "oxygen")
         {
@@ -101,7 +101,7 @@ void TrayIcon::updateStatusIcon()
     {
         int chargeLevel0_10 = round(mBattery->chargeLevel()/10);
 
-        if (mBattery->decharging())
+        if (mBattery->discharging())
         {
             setIcon(mStatusIconsDecharging[chargeLevel0_10]);
         }

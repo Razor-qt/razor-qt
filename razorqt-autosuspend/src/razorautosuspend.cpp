@@ -61,7 +61,7 @@ void RazorAutosuspendd::lidChanged(bool closed)
 void RazorAutosuspendd::batteryChanged()
 {
     qDebug() <<  "BatteryChanged"
-             <<  "decharging:"  << mBattery->decharging() 
+             <<  "discharging:"  << mBattery->discharging() 
              << "chargeLevel:" << mBattery->chargeLevel() 
              << "powerlow:"    << mBattery->powerLow() 
              << "actionTime:"  << mActionTime;
