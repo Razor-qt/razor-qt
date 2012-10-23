@@ -11,9 +11,7 @@
     </message>
     <message>
         <source>Update interval (seconds)</source>
-        <translation>Częstotliwość odświeżania
-
-</translation>
+        <translation>Częstotliwość odświeżania (sekundy)</translation>
     </message>
     <message>
         <source>Temperature bar width</source>

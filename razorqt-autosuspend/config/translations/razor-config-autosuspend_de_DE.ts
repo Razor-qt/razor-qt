@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>Zeige Batteriestatus Icon im Tray</translation>
+        <translation>Batterie-Statusicon im Tray anzeigen</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Geschlossene Bildschirmklappe</translation>
     </message>
     <message>
         <source>Action:</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Sleep</source>
-        <translation>Bereitschaft</translation>
+        <translation>Schlafmodus</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>Bildschirmklappe geschlossen</translation>
     </message>
     <message>
         <source>Power Low</source>
@@ -96,7 +96,7 @@
     </message>
     <message>
         <source>Sleep</source>
-        <translation>Bereitschaft</translation>
+        <translation>Schlafmodus</translation>
     </message>
     <message>
         <source>Hibernate</source>

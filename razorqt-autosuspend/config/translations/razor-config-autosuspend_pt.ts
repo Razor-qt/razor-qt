@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>Mostrar ícone de bateria na bandeja</translation>
+        <translation>Mostrar ícone na bandeja</translation>
     </message>
 </context>
 <context>
@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation>Configurações de suspensão automática Razor </translation>
+        <translation>Configurações de suspensão automática do Razor </translation>
     </message>
     <message>
         <source>General</source>

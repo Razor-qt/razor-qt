@@ -8,7 +8,7 @@
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
         <translation>Escolha o tema de cursor a utilizar (passe com o rato para visualizar).
-&lt;b&gt;Tem que reiniciar a sessão após a alteração&lt;/b&gt;:</translation>
+Tem que reiniciar a sessão após a alteração:</translation>
     </message>
     <message>
         <source>&amp;Install New Theme...</source>

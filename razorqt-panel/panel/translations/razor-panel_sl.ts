@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation type="unfinished"/>
+        <translation>Uporabi samodejno velikost</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>

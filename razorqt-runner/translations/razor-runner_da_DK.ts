@@ -61,7 +61,7 @@
     <name>QObject</name>
     <message>
         <source>History</source>
-        <translation>Historie</translation>
+        <translation>Historik</translation>
     </message>
     <message>
         <source>Mathematics</source>

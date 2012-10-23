@@ -3,11 +3,11 @@
     <name>ShowDesktop</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar Escritorio: Atajo global &apos;%1&apos; no puede ser registrado</translation>
     </message>
     <message>
         <source>Show Desktop</source>
-        <translation>Mostrar escritorio</translation>
+        <translation>Mostrar Escritorio</translation>
     </message>
 </context>
 </TS>

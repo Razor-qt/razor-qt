@@ -12,6 +12,6 @@ GenericName=Leave the system
 
 
 # Translations
-GenericName[el_GR]=Αποχώρηση από το σύστημα
-Name[el_GR]=Αποχώρηση
-Icon[el_GR]=τερματισμός-συστήματος
+GenericName[el_GR]=Έξοδος από το σύστημα
+Name[el_GR]=Έξοδος
+Icon[el_GR]=system-shutdown

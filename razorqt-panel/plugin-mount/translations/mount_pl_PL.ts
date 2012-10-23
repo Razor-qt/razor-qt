@@ -3,7 +3,7 @@
     <name>MenuDiskItem</name>
     <message>
         <source>Click to access this device from other applications.</source>
-        <translation>Kliknij aby uzyskać dostęp do tego urządzenia w innych aplikacjach.</translation>
+        <translation>Kliknij aby uzyskać dostęp do tego nośnika z innych aplikacji.</translation>
     </message>
     <message>
         <source>Click to eject this disc.</source>
@@ -14,26 +14,26 @@
     <name>MountButton</name>
     <message>
         <source>Removable media/devices manager</source>
-        <translation>Menedżer urządzeń</translation>
+        <translation>Menedżer nośników wymiennych</translation>
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
-        <translation>Urządzenie &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; jest podłączone.</translation>
+        <translation>Nośnik &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; jest podłączony.</translation>
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
-        <translation>Urządzenie &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; jest odłączone.</translation>
+        <translation>Nośnik &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; jest odłączony.</translation>
     </message>
     <message>
         <source>No devices Available.</source>
-        <translation>Brak urządzeń.</translation>
+        <translation>Brak nośników.</translation>
     </message>
 </context>
 <context>
     <name>RazorMountConfiguration</name>
     <message>
         <source>Razor Removable media manager settings</source>
-        <translation>Ustawienia Menedżera urządzeń</translation>
+        <translation>Ustawienia menedżera nośników wymiennych</translation>
     </message>
     <message>
         <source>Behaviour</source>
@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>When a device is connected </source>
-        <translation>Kiedy nowe urządzenie jest podłączane</translation>
+        <translation>Kiedy nośnik jest podłączony</translation>
     </message>
     <message>
         <source>Popup menu</source>
@@ -49,7 +49,7 @@
     </message>
     <message>
         <source>Show info</source>
-        <translation>Pokaż informację</translation>
+        <translation>Pokaż informacje</translation>
     </message>
     <message>
         <source>Do nothing</source>

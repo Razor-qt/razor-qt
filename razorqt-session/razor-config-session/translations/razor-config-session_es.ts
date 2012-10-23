@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Application Autostart</source>
-        <translation>Inicio automático de aplicaciones</translation>
+        <translation>Aplicaciones de inicio automático</translation>
     </message>
     <message>
         <source>Error</source>
@@ -92,11 +92,11 @@
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>Detener</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -160,7 +160,7 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation type="unfinished"/>
+        <translation>Ejecutandose</translation>
     </message>
 </context>
 <context>

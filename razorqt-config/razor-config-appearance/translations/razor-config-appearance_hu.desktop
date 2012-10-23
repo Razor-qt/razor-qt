@@ -14,6 +14,7 @@ GenericName=Razor Appearance Configuration
 
 
 # Translations
+Icon[hu]=preferences-desktop-theme
 Comment[hu]=A Razor asztal megjelenésének beállítása
 GenericName[hu]=Razor megjelenésbeállító
 Name[hu]=Razor megjelenésbeállító

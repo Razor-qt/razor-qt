@@ -3,11 +3,11 @@
     <name>Battery</name>
     <message>
         <source>No battery!</source>
-        <translation>Brak baterii !</translation>
+        <translation>Brak baterii!</translation>
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>Razor autosuspend nie może odnaleźć informacji o baterii - powiadomienie o niskim poziomie naładowanie nie będzie działać.</translation>
+        <translation>Razor autouśpienie nie może odnaleźć informacji o baterii - powiadomienie o niskim poziomie naładowania nie będzie działać.</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Energy rate:</source>
-        <translation>Tempo energii:</translation>
+        <translation>Zużycie energii:</translation>
     </message>
     <message>
         <source>Voltage:</source>
@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Pending charge</source>
-        <translation>czas do naładowania</translation>
+        <translation>Czas do naładowania</translation>
     </message>
     <message>
         <source>Pending discharge</source>

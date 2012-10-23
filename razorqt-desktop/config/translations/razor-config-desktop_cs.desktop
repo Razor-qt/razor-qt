@@ -13,6 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
-Comment[cs]=Nastavení modulů plochy Razor-Qt
-GenericName[cs]=Nastavení plochy Razoru
-Name[cs]=Nastavení plochy Razoru
+Comment[cs]=Nastavit modul pracovní plochy Razor-Qt
+GenericName[cs]=Nastavení pracovní plochy
+Name[cs]=Nastavení pracovní plochy
+Icon[cs]=Nastavení pracovní plochy

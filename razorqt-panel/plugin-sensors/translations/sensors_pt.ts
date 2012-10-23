@@ -3,7 +3,7 @@
     <name>RazorSensorsConfiguration</name>
     <message>
         <source>Razor Sensors Settings</source>
-        <translation>Definições dos sensores Razor</translation>
+        <translation>Definições dos sensores do Razor</translation>
     </message>
     <message>
         <source>Common</source>

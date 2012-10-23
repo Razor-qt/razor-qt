@@ -2,44 +2,88 @@
 <context>
     <name>RazorClockConfiguration</name>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="14"/>
         <source>Razor Clock Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavení hodin</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="20"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Čas</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="26"/>
-        <source>Show seconds</source>
-        <translation type="unfinished"/>
+        <source>&amp;Show seconds</source>
+        <translation>&amp;Ukázat sekundy</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="33"/>
-        <source>12 hour style</source>
-        <translation type="unfinished"/>
+        <source>12 &amp;hour style</source>
+        <translation>12 &amp;hodinový styl</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="43"/>
+        <source>&amp;Font</source>
+        <translation>&amp;Písmo</translation>
+    </message>
+    <message>
+        <source>Font</source>
+        <translation>Písmo</translation>
+    </message>
+    <message>
         <source>Date</source>
-        <translation type="unfinished"/>
+        <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="49"/>
-        <source>Show date</source>
-        <translation type="unfinished"/>
+        <source>Show &amp;date</source>
+        <translation>Ukázat &amp;datum</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="59"/>
-        <source>Show date in new line</source>
-        <translation type="unfinished"/>
+        <source>D&amp;ate format</source>
+        <translation>Formát d&amp;ata</translation>
     </message>
     <message>
-        <location filename="../razorclockconfiguration.ui" line="66"/>
-        <source>Date format</source>
-        <translation type="unfinished"/>
+        <source>Fon&amp;t</source>
+        <translation>Pí&amp;smo</translation>
+    </message>
+    <message>
+        <source>Show date in &amp;new line</source>
+        <translation>Ukázat datum na &amp;novém řádku</translation>
+    </message>
+    <message>
+        <source>&amp;Use theme fonts</source>
+        <translation>&amp;Použít písma motivu</translation>
+    </message>
+    <message>
+        <source>Time font</source>
+        <translation>Písmo pro čas</translation>
+    </message>
+    <message>
+        <source>Date font</source>
+        <translation>Písmo pro datum</translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation>Hodně světlé</translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation>Světlé</translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation>Hodně černé</translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation>Černé</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation>Tučné</translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation>Polotučné</translation>
+    </message>
+    <message>
+        <source>Italic</source>
+        <translation>Kurzíva</translation>
     </message>
 </context>
 </TS>

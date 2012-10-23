@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Cannot copy file %1 to %2</source>
-        <translation>Αδύνατη η αντιγραφή του αρχείου %1 στο %2</translation>
+        <translation>Αδύνατη η αντιγραφή του αρχείου %1 σε %2</translation>
     </message>
 </context>
 <context>

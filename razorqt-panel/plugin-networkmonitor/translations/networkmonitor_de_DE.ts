@@ -66,11 +66,11 @@
     </message>
     <message>
         <source>Wireless</source>
-        <translation type="unfinished"/>
+        <translation>Drahtlos</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Icon</translation>
     </message>
 </context>
 </TS>

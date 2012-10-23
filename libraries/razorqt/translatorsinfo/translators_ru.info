@@ -5,13 +5,13 @@ translator_1_nameEnglish = Alexander Sokolov
 translator_1_nameNative  = Александр Соколов
 translator_1_contact     = sokoloff.a@gmail.com
 
-# translator_2_nameEnglish = Translator 2. Your name in English. 
-# translator_2_nameNative  = Translator 2. Your name in the native language.
-# translator_2_contact     = Translator 2. Contact information, email or web site address.
+translator_2_nameEnglish = Oleg Maximov
+translator_2_nameNative  = Олег Максимов
+translator_2_contact     = gruz103@gmail.com
 
-# translator_3_nameEnglish = Translator 3. Your name in English. 
-# translator_3_nameNative  = Translator 3. Your name in the native language.
-# translator_3_contact     = Translator 3. Contact information, email or web site address.
+translator_3_nameEnglish = Alexey Schukin
+translator_3_nameNative  = Алексей Щукин
+translator_3_contact     = vedun.mail@gmail.com
 
 # translator_4_nameEnglish = Translator 4. Your name in English. 
 # translator_4_nameNative  = Translator 4. Your name in the native language.

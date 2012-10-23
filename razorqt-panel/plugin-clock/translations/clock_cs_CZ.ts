@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>12 &amp;hour style</source>
-        <translation>12 &amp;hodinový style</translation>
+        <translation>12 &amp;hodinový styl</translation>
     </message>
     <message>
         <source>&amp;Font</source>

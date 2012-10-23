@@ -3,23 +3,23 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Nastavitev teme miške za Razor</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Izberite katero temo kazalke želite uporabljati (postavoite kazalko na predogled, da preverite). &lt;b&gt;Po tej spremembi morate ponovno zagnati sejo Razor&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>&amp;Install New Theme...</source>
-        <translation type="unfinished"/>
+        <translation>Namest&amp;i novo temo</translation>
     </message>
     <message>
         <source>&amp;Set Theme</source>
-        <translation type="unfinished"/>
+        <translation>Na&amp;stavi temo</translation>
     </message>
     <message>
         <source>&amp;Remove Theme</source>
-        <translation type="unfinished"/>
+        <translation>Odst&amp;rani temo</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -27,22 +27,22 @@
     </message>
     <message>
         <source>XCurTheme error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka XCurTheme</translation>
     </message>
     <message>
         <source>You can&apos;t remove active theme!</source>
-        <translation type="unfinished"/>
+        <translation>Teme v uporabi ne morete odstraniti!</translation>
     </message>
 </context>
 <context>
     <name>XCursorThemeModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Ime</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Opis</translation>
     </message>
 </context>
 </TS>

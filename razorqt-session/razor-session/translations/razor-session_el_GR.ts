@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
-        <translation>Η εφαρμογή &quot;%1&quot; κατέρρευσε πολλές φορές. Η αυτόματη εκκίνησή της έχει απενεργοποιηθεί για την τρέχουσα συνεδρία.</translation>
+        <translation>Η εφαρμογή &quot;%1&quot; κατέρρευσε πολλές φορές. Η αυτόματη εκκίνηση της έχει απενεργοποιηθεί για την τρέχουσα συνεδρία.</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@ Before starting to use the Razor-qt, you might want to select the Windows Manage
     </message>
     <message>
         <source>Choose your favorite one.</source>
-        <translation>Επιλέξτε το αγαπημένο σας.</translation>
+        <translation>Επιλέξτε τον αγαπημένο σας.</translation>
     </message>
 </context>
 </TS>

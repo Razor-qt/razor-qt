@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Notepad:</source>
-        <translation>Notatnik</translation>
+        <translation>Notatnik:</translation>
     </message>
 </context>
 </TS>

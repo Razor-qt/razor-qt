@@ -13,6 +13,7 @@ GenericName=Razor Session Configurator
 
 
 # Translations
-Comment[de_DE]=Razor-Qt Sitzungs-Modul konfigurieren
-GenericName[de_DE]=Razor Sitzungs-Konfiguration
-Name[de_DE]=Razor Sitzungs-Konfiguration
+Comment[de_DE]=Razor-Qt Sitzungsmodul konfigurieren
+GenericName[de_DE]=Razor Sitzungskonfigurator
+Name[de_DE]=Razor Sitzungskonfigurator
+Icon[de_DE]=einstellungen-system-sitzung-dienste

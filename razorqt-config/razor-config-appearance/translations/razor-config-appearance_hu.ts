@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation type="unfinished"/>
+        <translation>Ikontéma</translation>
     </message>
 </context>
 <context>
@@ -18,18 +18,18 @@
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation type="unfinished"/>
+        <translation>Ikontéma</translation>
     </message>
     <message>
         <source>Razor Theme</source>
-        <translation type="unfinished"/>
+        <translation>Razor téma</translation>
     </message>
 </context>
 <context>
     <name>RazorThemeConfig</name>
     <message>
         <source>Razor Theme</source>
-        <translation type="unfinished"/>
+        <translation>Razor téma</translation>
     </message>
 </context>
 </TS>

@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
-        <translation>Opravdu chcete spustit svůj počítač znovu?&lt;p&gt;Všechna neuložená práce bude ztracena...</translation>
+        <translation>Opravdu chcete spustit svůj počítač znovu?&lt;p&gt;Všechna neuložená práce bude ztracena.</translation>
     </message>
     <message>
         <source>Razor Session Shutdown</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
-        <translation>Opravdu chcete vypnout svůj počítač?&lt;p&gt;Všechna neuložená práce bude ztracena...</translation>
+        <translation>Opravdu chcete vypnout svůj počítač?&lt;p&gt;Všechna neuložená práce bude ztracena.</translation>
     </message>
     <message>
         <source>Razor Session Logout</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
-        <translation>Opravdu se chcete odhlásit?&lt;p&gt;Všechna neuložená práce bude ztracena...</translation>
+        <translation>Opravdu se chcete odhlásit?&lt;p&gt;Všechna neuložená práce bude ztracena.</translation>
     </message>
     <message>
         <source>Razor Power Manager Error</source>
@@ -275,7 +275,7 @@
     </message>
     <message>
         <source>About</source>
-        <translation>O</translation>
+        <translation>O prostředí</translation>
     </message>
     <message>
         <source>Authors</source>

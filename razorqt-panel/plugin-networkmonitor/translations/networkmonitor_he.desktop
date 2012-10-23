@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+
+Name=Network monitor
+Comment=Displays network status and activity.
+
+
+
+
+# Translations
+Comment[he]=הצגת מצב רשת עבודה ופעילות.
+Name[he]=מוניטור רשת עבודה

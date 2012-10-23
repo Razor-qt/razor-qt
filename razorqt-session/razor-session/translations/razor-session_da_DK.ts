@@ -22,11 +22,11 @@
 Before starting to use the Razor-qt, you might want to select the Windows Manager:</source>
         <translation>&lt;b&gt;Velkommen til Razor-Qt&lt;/b&gt;
 &lt;p&gt;
-Før du starter Razor-Qt, skal du vælge window manager:</translation>
+Før du starter Razor-Qt, skal du vælge Window Manager:</translation>
     </message>
     <message>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
-        <translation>Du kan ændre valget af window manager på et vilkårligt tidspunkt.</translation>
+        <translation>Du kan ændre valget af Window Manager på et vilkårligt tidspunkt.</translation>
     </message>
     <message>
         <source>Other ...</source>

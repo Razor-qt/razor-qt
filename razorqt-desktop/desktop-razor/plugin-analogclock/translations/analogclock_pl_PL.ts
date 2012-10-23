@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show &amp;seconds hand</source>
-        <translation>Wyświetlanie &amp;sekundnika</translation>
+        <translation>Wyświetl &amp;sekundnika</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Clock:</source>
-        <translation type="unfinished"/>
+        <translation>Zegar:</translation>
     </message>
 </context>
 </TS>

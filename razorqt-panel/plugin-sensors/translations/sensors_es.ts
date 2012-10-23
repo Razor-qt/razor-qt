@@ -3,39 +3,39 @@
     <name>RazorSensorsConfiguration</name>
     <message>
         <source>Razor Sensors Settings</source>
-        <translation type="unfinished"/>
+        <translation>Opciones de Sensores de Razor</translation>
     </message>
     <message>
         <source>Common</source>
-        <translation type="unfinished"/>
+        <translation>Común</translation>
     </message>
     <message>
         <source>Update interval (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Intervalo de actualización (segundos)</translation>
     </message>
     <message>
         <source>Temperature bar width</source>
-        <translation type="unfinished"/>
+        <translation>Ancho de la barra de temperatura</translation>
     </message>
     <message>
         <source>Temperature scale</source>
-        <translation type="unfinished"/>
+        <translation>Escala de temperatura</translation>
     </message>
     <message>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsius</translation>
     </message>
     <message>
         <source>Fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Fahrenheit</translation>
     </message>
     <message>
         <source>Blink progress bars when the temperature is too high</source>
-        <translation type="unfinished"/>
+        <translation>Parpadeo en las barras de progreso cuando la temperatura es demasiado alta</translation>
     </message>
     <message>
         <source>Warning about high temperature</source>
-        <translation type="unfinished"/>
+        <translation>Advertencia cuando la temperatura sea alta</translation>
     </message>
     <message>
         <source>Sensors</source>
@@ -43,23 +43,23 @@
     </message>
     <message>
         <source>Detected chips:</source>
-        <translation type="unfinished"/>
+        <translation>Chips detectado:</translation>
     </message>
     <message>
         <source>Chip features:</source>
-        <translation type="unfinished"/>
+        <translation>Características del chip:</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"/>
+        <translation>Habilitado</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Etiqueta</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Color</translation>
     </message>
 </context>
 </TS>

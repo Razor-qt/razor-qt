@@ -14,6 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
-Comment[de_DE]=X11 Maus Konfigurieren
-GenericName[de_DE]=Razor Maus-Konfiguration
-Name[de_DE]=Razor Maus-Konfiguration
+Comment[de_DE]=X11 Maus konfigurieren
+GenericName[de_DE]=Razor Maus-Konfigurator
+Name[de_DE]=Razor Maus-Konfigurator
+Icon[de_DE]=Einstellungen-Desktop-Maus

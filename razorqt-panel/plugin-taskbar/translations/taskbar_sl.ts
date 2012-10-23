@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Close on middle-click</source>
-        <translation type="unfinished"/>
+        <translation>Zapri s srednjim klikom</translation>
     </message>
     <message>
         <source>Icon and text</source>

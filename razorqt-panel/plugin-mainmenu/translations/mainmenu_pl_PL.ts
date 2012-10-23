@@ -10,7 +10,7 @@
     <name>RazorMainMenuConfiguration</name>
     <message>
         <source>Razor Main Menu settings</source>
-        <translation>Razor - ustawienia menu</translation>
+        <translation>Ustawienia menu Razor</translation>
     </message>
     <message>
         <source>General</source>

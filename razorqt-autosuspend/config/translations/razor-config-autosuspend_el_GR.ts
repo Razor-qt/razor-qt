@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>Εμφάνιση εικονιδίου κατάστασης μπαταρίας στο πλαίσιο συστήματος</translation>
+        <translation>Εμφάνιση εικονιδίου κατάστασης μπαταρίας στο πλαίσιο</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>Κλειστό καπάκι</translation>
+        <translation>Κλειστό κάλυμμα</translation>
     </message>
     <message>
         <source>Action:</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>Κλειστό καπάκι</translation>
+        <translation>Κλειστό κάλυμμα</translation>
     </message>
     <message>
         <source>Power Low</source>

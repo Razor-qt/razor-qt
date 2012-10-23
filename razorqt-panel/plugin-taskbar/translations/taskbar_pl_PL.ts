@@ -74,7 +74,7 @@
     <name>RazorTaskbarConfiguration</name>
     <message>
         <source>Razor Task Manager Settings</source>
-        <translation>Razor - ustawienia listy zadań</translation>
+        <translation>Ustawienia listy zadań Razor</translation>
     </message>
     <message>
         <source>Window List Content</source>

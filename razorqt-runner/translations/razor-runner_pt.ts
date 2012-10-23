@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Show on:</source>
-        <translation>Mostrar no:</translation>
+        <translation>Mostrar:</translation>
     </message>
     <message>
         <source>Shortcut:</source>

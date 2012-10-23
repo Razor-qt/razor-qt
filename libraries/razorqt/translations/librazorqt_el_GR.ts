@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation>Κατάσταση αδρανοποίησης Razor</translation>
+        <translation>Αδρανοποίηση συνεδρίας Razor</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
@@ -86,11 +86,11 @@
     </message>
     <message>
         <source>Hibernate failed.</source>
-        <translation>Αποτυχία αδρανοποίησης.</translation>
+        <translation>Απέτυχε η αδρανοποίηση.</translation>
     </message>
     <message>
         <source>Suspend failed.</source>
-        <translation>Αποτυχία αναστολής.</translation>
+        <translation>Απέτυχε η αναστολή.</translation>
     </message>
 </context>
 <context>

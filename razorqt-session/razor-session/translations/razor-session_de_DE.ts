@@ -3,7 +3,7 @@
     <name>RazorModuleManager</name>
     <message>
         <source>Razor Session Crash Report</source>
-        <translation>Razor Session-Absturzbericht</translation>
+        <translation>Razor Sitzungs-Absturzbericht</translation>
     </message>
     <message>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
@@ -26,7 +26,7 @@ Bevor Sie Razor-qt starten, möchten Sie vielleicht einen Fenstermanager auswäh
     </message>
     <message>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
-        <translation>Sie können den Fenstermanager später durch die Razor Session-Konfiguration jederzeit wieder ändern.</translation>
+        <translation>Sie können den Fenstermanager später durch die Razor Sitzungs-Konfiguration jederzeit wieder ändern.</translation>
     </message>
     <message>
         <source>Other ...</source>

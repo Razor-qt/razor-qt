@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Uporabi pisavo motiva</translation>
     </message>
     <message>
         <source>Time font</source>

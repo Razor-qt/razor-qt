@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Sensors
+Comment=View readings from hardware sensors.
+
+
+# Translations
+Name[hu]=Szenzorok
+Comment[hu]=Megjeleníti a hardver szenzorjainak értékeit.
