@@ -102,7 +102,12 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
  */
 void RazorClock::updateTime()
 {
+#if QT_VERSION < 0x040700
+    QDateTime now(mUseUTC ? QDateTime::currentDateTime().toUTC() : QDateTime::currentDateTime());
+#else
     QDateTime now(mUseUTC ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
+#endif
+
     if (mDateOnNewLine)
     {
         mTimeLabel->setText(QLocale::system().toString(now, mTimeFormat));
