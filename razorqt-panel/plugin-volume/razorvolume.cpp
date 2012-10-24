@@ -92,6 +92,7 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     }
     
     m_notification->setTimeout(1000);
+    m_notification->setUrgencyHint(RazorNotification::UrgencyLow);
 
     connect(m_keyVolumeUp, SIGNAL(activated()), this, SLOT(handleShortcutVolumeUp()));
     connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
