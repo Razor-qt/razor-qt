@@ -68,8 +68,6 @@ RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget
     connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
 
     mPowerManager = new PowerManager(this);
-    mPowerManager->setParentWidget(panel());
-
     mScreenSaver = new ScreenSaver(this);
 
     mShortcut = new QxtGlobalShortcut(this);

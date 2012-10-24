@@ -43,8 +43,7 @@ public:
     PowerManager(QObject * parent);
     ~PowerManager();
     QList<QAction*> availableActions();
-    QWidget* parentWidget() const { return m_parentWidget; }
-    void setParentWidget(QWidget* parentWidget) { m_parentWidget = parentWidget; }
+
 public slots:
     // power management
     void suspend();
@@ -56,7 +55,6 @@ public slots:
 
 private:
     RazorPower * m_power;
-    QWidget * m_parentWidget;
 
 private slots:
     void hibernateFailed();
