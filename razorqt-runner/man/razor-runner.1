@@ -1,0 +1,50 @@
+.TH razorqt-runner "1" "September 2012" "Razor\-qt\ 0.5.0" "Razor\-Qt\ Module"
+.SH NAME
+razorqt-runner \- Application runner module of \fBRazor-qt\fR: the faster and lighter QT Desktop Environment
+.SH SYNOPSIS
+.B razorqt-runner
+[\fICurrently No command line arguments\fR]
+.br
+.SH DESCRIPTION
+This module will allow you to launch an application by typing Alt+F2 its pressed on the keyboard.
+.P
+The \fBRazor-qt modules\fR are desktop independent tools, 
+and operate as daemons for the local user for desktop specific operations. 
+.P
+\fBRazor-qt\fR is an advanced, easy-to-use, and fast desktop environment based on Qt
+technologies, ships several core desktop components, all of which are optional:
+.P
+ * Panel
+ * Desktop
+ * Application launcher \fI(this)\fR
+ * Settings center
+ * Session handler
+ * Polkit handler
+ * Display manager handler
+.P
+These components perform similar actions to those available in other desktop
+environments, and their names are self-descriptive.  They are usually not launched
+by hand but automatically, when choosing a \fBRazor\-qt\fR session in the Display
+Manager.
+.SH BEHAVIOR
+As you type, suggestions will appear. Once you see the application you wish to run you can navigate
+to it using the mouse or arrow keys on your keyboard. Pressing enter or clicking it will launch 
+the application. The activation key can be changed using the window manager or shorcut daemon 
+such as \fBrazor-globalkeyshortcuts\fR.
+.SH AUTOSTART
+This module only shows at \fBRazor-qt\fR desktop environment, but you can use in others desktops, by 
+setting an configuring into session startup.
+.SH "REPORTING BUGS"
+Report bugs to https://github.com/Razor-qt/Razor-qt/issues
+.SH "SEE ALSO"
+\fBRazor-qt\fR it has been tailored for users who value simplicity, speed, and
+an intuitive interface, also intended for less powerful machines. See also:
+.\" any module must refers to session app, for more info on start it
+.P
+\fBrazor-session.1\fR  Razor-qt for manage Razor-qt complete environment
+.P
+\fBrazor-config-session.1\fR  Razor-qt application for config modules on desktop
+.P
+.SH AUTHOR
+This manual page was created by \fBPICCORO Lenz McKAY\fR \fI<mckaygerhard@gmail.com>\fR
+for \fBRazor-qt\fR project and VENENUX GNU/Linux but can be used by others.

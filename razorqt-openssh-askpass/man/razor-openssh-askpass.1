@@ -1,0 +1,57 @@
+.TH razor-openssh-askpass "1" "September 2012" "Razor\-qt\ 0.5.0" "Razor\-qt\ Module"
+.SH NAME
+razor-openssh-askpass \- Password access over ssh module of \fBRazor-qt\fR: the faster and lighter QT Desktop Environment
+.SH SYNOPSIS
+.B razor-openssh-askpass
+[\fICurrently No command line arguments\fR]
+.br
+.SH DESCRIPTION
+This module handles openssh security password access for \fBRazor-qt\fR. The openssh askpass module, will perform 
+security tast over scale accesss privilegies.
+.P
+.P
+The \fBRazor-qt modules\fR are desktop independent tools, 
+and operate as daemons for the local user for desktop specific operations. 
+.P
+\fBRazor-qt\fR is an advanced, easy-to-use, and fast desktop environment based on Qt
+technologies, ships several core desktop components, all of which are optional:
+.P
+ * Panel
+ * Desktop
+ * Application launcher
+ * Settings center
+ * Session handler
+ * Polkit handler
+ * SSH password access \fI(this)\fR
+ * Display manager handler
+.P
+These components perform similar actions to those available in other desktop
+environments, and their names are self-descriptive.  They are usually not launched
+by hand but automatically, when choosing a \fBRazor\-qt\fR session in the Display
+Manager.
+.SH BEHAVIOR
+The module detected on shares privilege accesss, and maintain a security dialog 
+that ask for the user's key need for access over another machine host.
+.P
+This module are very early stage, and not enabled by default, so you must added a env 
+by the \fBrazor\-settings\fR application as \fISSH_ASKPASS=\fR 
+with \fBrazor\-openssh\-askpass\fR value, openssl and openssh-client packages must be required.
+.SH AUTOSTART
+The module only are showed on \fBRazor-qt\fR desktop, but u can create an autostart action 
+for you prefered desktop environment.
+.SH "REPORTING BUGS"
+Report bugs to https://github.com/Razor-qt/Razor-qt/issues
+.SH "SEE ALSO"
+\fBRazor-qt\fR it has been tailored for users who value simplicity, speed, and
+an intuitive interface, also intended for less powerful machines. See also:
+.\" any module must refers to session app, for more info on start it
+.P
+\fBrazor-session.1\fR  Razor-qt for manage Razor-qt complete environment
+.P
+\fBrazor-policykit-agent.1\fR  Razor-qt plolicykit agent module for privilegie scalation.
+.P
+\fBrazor-config-session.1\fR  Razor-qt application for performing session autostart applications
+.P
+.SH AUTHOR
+This manual page was created by \fBPICCORO Lenz McKAY\fR \fI<mckaygerhard@gmail.com>\fR
+for  project and VENENUX GNU/Linux but can be used by others.
