@@ -6,20 +6,24 @@ set(PLUGIN "panelworldclock")
 set(HEADERS
     razorworldclock.h
     razorworldclockconfiguration.h
+    razorworldclockconfigurationtimezones.h
 )
 
 set(SOURCES
     razorworldclock.cpp
     razorworldclockconfiguration.cpp
+    razorworldclockconfigurationtimezones.cpp
 )
 
 set(MOCS
     razorworldclock.h
     razorworldclockconfiguration.h
+    razorworldclockconfigurationtimezones.h
 )
 
 set(UIS
     razorworldclockconfiguration.ui
+    razorworldclockconfigurationtimezones.ui
 )
 
 

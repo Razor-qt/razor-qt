@@ -26,54 +26,31 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORWORLDCLOCKCONFIGURATION_H
-#define RAZORWORLDCLOCKCONFIGURATION_H
-
-#include "razorqt/razorsettings.h"
+#ifndef RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H
+#define RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H
 
 #include <QtGui/QDialog>
 #include <QtGui/QAbstractButton>
-#include <QtGui/QFont>
-#include <QtCore/QMap>
 
 
 namespace Ui {
-    class RazorWorldClockConfiguration;
+    class RazorWorldClockConfigurationTimeZones;
 }
 
-class RazorWorldClockConfiguration : public QDialog
+class RazorWorldClockConfigurationTimeZones : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit RazorWorldClockConfiguration(QSettings &settings, QWidget *parent = NULL);
-    ~RazorWorldClockConfiguration();
+    explicit RazorWorldClockConfigurationTimeZones(QWidget *parent = NULL);
+    ~RazorWorldClockConfigurationTimeZones();
 
 public slots:
     void saveSettings();
 
 private:
-    Ui::RazorWorldClockConfiguration *ui;
-    QSettings &mSettings;
-    RazorSettingsCache oldSettings;
+    Ui::RazorWorldClockConfigurationTimeZones *ui;
 
-    /*
-      Read settings from conf file and put data into controls.
-    */
-    void loadSettings();
-
-private slots:
-    /*
-      Saves settings in conf file.
-    */
-    void dialogButtonsAction(QAbstractButton *btn);
-
-    void updateTimeZoneButtons(void);
-    void addTimeZone(void);
-    void removeTimeZone(void);
-    void setTimeZoneAsDefault(void);
-    void moveTimeZoneUp(void);
-    void moveTimeZoneDown(void);
 };
 
-#endif // RAZORWORLDCLOCKCONFIGURATION_H
+#endif // RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H
