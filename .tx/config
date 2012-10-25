@@ -218,6 +218,12 @@ source_lang = en
 source_file = razorqt-desktop/config/razor-config-desktop.desktop.in
 file_filter = razorqt-desktop/config/translations/razor-config-desktop_<lang>.desktop
 
+[razor-qt.razor-config-desktop]
+type = QT
+source_lang = en
+source_file = razorqt-desktop/config/translations/razor-config-desktop.ts.src
+file_filter = razorqt-desktop/config/translations/razor-config-desktop_<lang>.ts
+
 [razor-qt.razor-config_desktop]
 type = DESKTOP
 source_lang = en
@@ -253,6 +259,12 @@ type = DESKTOP
 source_lang = en
 source_file = razorqt-notificationd/config/razor-config-notificationd.desktop.in
 file_filter = razorqt-notificationd/config/translations/razor-config-notificationd_<lang>.desktop
+
+[razor-qt.razor-config-notificationd]
+type = QT
+source_lang = en
+source_file = razorqt-notificationd/config/translations/razor-config-notificationd.ts.src
+file_filter = razorqt-notificationd/config/translations/razor-config-notificationd_<lang>.ts
 
 [razor-qt.razor-config-session_desktop]
 type = DESKTOP
@@ -290,11 +302,29 @@ source_lang = en
 source_file = razorqt-resources/autostart/razor-globalkeyshortcuts.desktop.in
 file_filter = razorqt-resources/autostart/translations/razor-globalkeyshortcuts_<lang>.desktop
 
+[razor-qt.razor-lightdm-greeter]
+type = QT
+source_lang = en
+source_file = razorqt-lightdm-greeter/translations/razor-lightdm-greeter.ts.src
+file_filter = razorqt-lightdm-greeter/translations/razor-lightdm-greeter_<lang>.ts
+
+[razor-qt.razor-notificationd]
+type = QT
+source_lang = en
+source_file = razorqt-notificationd/src/translations/razor-notificationd.ts.src
+file_filter = razorqt-notificationd/src/translations/razor-notificationd_<lang>.ts
+
 [razor-qt.razor-notifications_desktop]
 type = DESKTOP
 source_lang = en
 source_file = razorqt-resources/autostart/razor-notifications.desktop.in
 file_filter = razorqt-resources/autostart/translations/razor-notifications_<lang>.desktop
+
+[razor-qt.razor-openssh-askpass]
+type = QT
+source_lang = en
+source_file = razorqt-openssh-askpass/translations/razor-openssh-askpass.ts.src
+file_filter = razorqt-openssh-askpass/translations/razor-openssh-askpass_<lang>.ts
 
 [razor-qt.razor-panel_desktop]
 type = DESKTOP
