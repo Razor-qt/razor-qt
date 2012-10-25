@@ -4,7 +4,7 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

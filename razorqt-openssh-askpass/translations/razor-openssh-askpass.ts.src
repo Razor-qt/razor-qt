@@ -2,24 +2,20 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
-    <name>HelloWorld</name>
+    <name>MainWindow</name>
     <message>
-        <source>Hello World:</source>
+        <source>OpenSSH Authentication Passphrase request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display Text Configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit HTML</source>
+        <source>Enter your SSH passphrase for request:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <source>Display simple text. A debugging/sample widget.</source>
+        <source>unknown request</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,131 +2,130 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
-    <name>Battery</name>
+    <name>BasicSettings</name>
     <message>
-        <source>No battery!</source>
+        <source>&lt;b&gt;Razor Desktop&lt;/b&gt;&lt;br&gt;Desktop is fully controlled by Razor. &lt;b&gt;Configuration is available in the desktop context menu.&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>BatteryInfo</name>
-    <message>
-        <source>Dialog</source>
+        <source>&lt;b&gt;Window Manager Native Desktop&lt;/b&gt;&lt;br&gt;Desktop is handled by used window manager (including WM&apos;s own menus etc.). Only few things can be configured here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Battery info</source>
+        <source>Basic Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy Now:</source>
+        <source>Desktop Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Updated:</source>
+        <source>Icon Activation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Technology:</source>
+        <source>Singleclick</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Model:</source>
+        <source>Doubleclick</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy rate:</source>
+        <source>Virtual Desktops</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Voltage:</source>
+        <source>Use different widgets and wallpapers for each virtual desktop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy Full, Design:</source>
+        <source>Please note that this setting is not supported by all window managers!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy Full:</source>
+        <source>Use mouse wheel for desktop changing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>State:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lithium ion</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lithium polymer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lithium iron phosphate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Lead acid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Nickel cadmium</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Nickel metal hydride</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Charging</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Discharging</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Empty</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fully charged</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pending charge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pending discharge</source>
+        <source>&quot;On&quot; means that razor-desktop will switch desktops (may conflict with selected window manager). &quot;Off&quot; means that mouse wheel events are ignored by razor-desktop.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>RazorAutosuspendd</name>
+    <name>DesktopConfigWindow</name>
     <message>
-        <source>Power low</source>
+        <source>Razor Desktop Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sleeping in %1 seconds</source>
+        <source>Basic Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hibernating in %1 seconds</source>
+        <source>Menu Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Shutting down in %1 seconds</source>
+        <source>WM Native Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restart Desktop Module?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Razor Desktop module needs to be restarted to apply changes. Restart?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MenuConfig</name>
+    <message>
+        <source>Choose menu file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Menu files (*.menu)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Menu Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Menu file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WMNativeConfig</name>
+    <message>
+        <source>Select Wallpaper Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.png *.xpm *.jpg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Window Manager Native Desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Desktop Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wallpaper:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
