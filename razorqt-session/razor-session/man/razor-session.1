@@ -1,0 +1,52 @@
+.TH razor-session "1" "September 2012" "Razor\-Qt\ 0.5.0" "Razor\-Qt\ Module"
+.SH NAME
+razorqt-session \- Session manager of \fBRazor-qt\fR: the faster and lighter QT Desktop Environment
+.SH SYNOPSIS
+.B razor-session
+[\fICurrently No command line arguments\fR]
+.br
+.SH DESCRIPTION
+This module handle session autostart application over \fBRazor-qt\fR desktop environment startup.
+.P
+The \fBRazor-qt modules\fR are desktop independent tools, 
+and operate as daemons for the local user for desktop specific operations. 
+.P
+\fBRazor-qt\fR ships several core desktop components, all of which are optional:
+.P
+ * Panel
+ * Desktop
+ * Application launcher
+ * Settings center
+ * Session handler \fI(this)\fR
+ * Polkit handler
+ * SSH password access
+ * Display manager handler
+.P
+These components perform similar actions to those available in other desktop
+environments, and their names are self-descriptive.  They are usually not launched
+by hand but automatically, when choosing a \fBRazor\-qt\fR session in the Display
+Manager.
+.SH BEHAVIOR
+Through this application \fBRazor-qt\fR desktop environment manage the session desktop behavior, 
+module loading and related starup programs before user gets a working area. By default this module 
+load the panel, desktop and power modules of \fBRazor\-qt\fR environment, such then this its a 
+important module for a working razor sesion.
+.P
+Each of any desktop environment has any way to configure applications need or want to start at logon, 
+so user can manage manualy in the \fBrazor-config-session\fR application.
+.SH "REPORTING BUGS"
+Report bugs to https://github.com/Razor-qt/Razor-qt/issues
+.SH "SEE ALSO"
+\fBRazor-qt\fR it has been tailored for users who value simplicity, speed, and
+an intuitive interface, also intended for less powerful machines. See also:
+.\" any module must refers to session app, for more info on start it
+.P
+\fBrazor-config.1\fR  Razor-qt application for manage configurations and settings
+.P
+\fBrazor-config-session.1\fR  Razor-qt module for manage Razor-qt autostart session applications
+.P
+\fBstart-razor.1\fR  Razor-qt display management independient starup.
+.P
+.SH AUTHOR
+This manual page was created by \fBPICCORO Lenz McKAY\fR \fI<mckaygerhard@gmail.com>\fR
+for \fBRazor-qt\fR project and VENENUX GNU/Linux but can be used by others.
