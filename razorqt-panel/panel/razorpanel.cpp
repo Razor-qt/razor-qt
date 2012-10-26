@@ -29,10 +29,11 @@
 #include "razorpanel.h"
 #include "razorpanel_p.h"
 #include "razorpanellimits.h"
-#include "razorpanelplugin.h"
+#include "irazorpanelplugin.h"
 #include "razorpanelapplication.h"
 #include "razorpanellayout.h"
 #include "configpaneldialog.h"
+#include "plugin.h"
 #include <razorqt/addplugindialog/addplugindialog.h>
 #include <razorqt/razorsettings.h>
 #include <razorqt/razorplugininfo.h>
@@ -43,7 +44,7 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QMenu>
 #include <QtGui/QContextMenuEvent>
-
+#include <QtCore/QSet>
 #include <qtxdg/xdgicon.h>
 
 #include <razorqt/xfitman.h>
@@ -92,15 +93,57 @@ RazorPanel::RazorPanel(QWidget *parent) :
   QFrame(parent),
   d_ptr(new RazorPanelPrivate(this))
 {
-    Q_D(RazorPanel);
-    d->init();
+    // Read command line arguments ..............
+    // The first argument is config file name.
+    QString configFile = "panel";
+    if (qApp->arguments().count() > 1)
+    {
+        configFile = qApp->arguments().at(1);
+        if (configFile.endsWith(".conf"))
+            configFile.chop(5);
+    }
+
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setWindowTitle("Razor Panel");
-
     setObjectName("RazorPanel");
+
+    Q_D(RazorPanel);
+
+    d->mLayout = new RazorPanelLayout(QBoxLayout::LeftToRight, parent);
+    connect(d->mLayout, SIGNAL(widgetMoved(QWidget*)), d, SLOT(pluginMoved(QWidget*)));
+    setLayout(d->mLayout);
+
+    connect(QApplication::desktop(), SIGNAL(resized(int)), d_ptr, SLOT(screensChangeds()));
+    connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), d_ptr, SLOT(screensChangeds()));
+    connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
+    connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
+
+    d->mSettings = new RazorSettings("razor-panel/" + configFile, this);
+    d->readSettings();
+
+    d->loadPlugins();
+    d->reposition();
+
+}
+
+/************************************************
+
+ ************************************************/
+void RazorPanelPrivate::readSettings()
+{
+    // Read settings ............................
+    mSettings->beginGroup(CFG_PANEL_GROUP);
+    mPosition = strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), RazorPanel::PositionBottom);
+    mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
+    mHeight = mSettings->value(CFG_KEY_HEIGHT, PANEL_DEFAULT_SIZE).toInt();
+    mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt());
+    mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
+    mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
+    mUseThemeSize = mSettings->value(CFG_KEY_AUTOSIZE, true).toBool();
+    mSettings->endGroup();
 }
 
 
@@ -109,30 +152,10 @@ RazorPanel::RazorPanel(QWidget *parent) :
  ************************************************/
 RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     QObject(parent),
-    q_ptr(parent),
-    mScreenNum(0)
+    q_ptr(parent)
 {
-    // Read command line arguments ..............
-    // The first argument is config file name.
-    mConfigFile = "panel";
-    if (qApp->arguments().count() > 1)
-    {
-        mConfigFile = qApp->arguments().at(1);
-        if (mConfigFile.endsWith(".conf"))
-            mConfigFile.chop(5);
-    }
-
-    mSettings = new RazorSettings("razor-panel/" + mConfigFile, this);
-
-    mLayout = new RazorPanelLayout(QBoxLayout::LeftToRight, parent);
-    connect(mLayout, SIGNAL(widgetMoved(QWidget*)), this, SLOT(pluginMoved(QWidget*)));
-
-    connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(screensChangeds()));
-    connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChangeds()));
-    //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
-
-    connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), q_ptr, SLOT(update()));
-    connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
+    mScreenNum = 0;
+    mSpacer = 0;
 }
 
 
@@ -151,47 +174,13 @@ void RazorPanelPrivate::screensChangeds()
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::init()
-{
-    Q_Q(RazorPanel);
-    // Read settings ............................
-    mSettings->beginGroup(CFG_PANEL_GROUP);
-    mPosition = strToPosition(mSettings->value(CFG_KEY_POSITION).toString(), RazorPanel::PositionBottom);
-    mScreenNum = mSettings->value(CFG_KEY_SCREENNUM, QApplication::desktop()->primaryScreen()).toInt();
-    mHeight = mSettings->value(CFG_KEY_HEIGHT, PANEL_DEFAULT_SIZE).toInt();
-    mAlignment = RazorPanel::Alignment(mSettings->value(CFG_KEY_ALIGNMENT, 0).toInt());
-    mWidthInPercents = mSettings->value(CFG_KEY_PERCENT, true).toBool();
-    mWidth = mSettings->value(CFG_KEY_WIDTH, 100).toInt();
-    mUseThemeSize = mSettings->value(CFG_KEY_AUTOSIZE, true).toBool();
-    mSettings->endGroup();
-
-    q->setLayout(mLayout);
-
-    loadPlugins();
-    updatePluginsMinSize();
-    reposition();
-}
-
-
-
-/************************************************
-
- ************************************************/
 RazorPanel::~RazorPanel()
 {
     Q_D(RazorPanel);
     d->saveSettings();
+    qDeleteAll(d->mPlugins);
+    d->mSettings->sync();
     delete d;
-}
-
-
-/************************************************
-
- ************************************************/
-RazorPanelPrivate::~RazorPanelPrivate()
-{
-    qDeleteAll(mPlugins);
-    mSettings->sync();
 }
 
 
@@ -200,24 +189,22 @@ RazorPanelPrivate::~RazorPanelPrivate()
  ************************************************/
 void RazorPanelPrivate::saveSettings()
 {
-    foreach (RazorPanelPlugin* plugin, mPlugins)
+    qDebug() << Q_FUNC_INFO;
+    QStringList pluginsStr;
+
+    for (int i=0; i<mLayout->count(); ++i)
     {
-        if (plugin->alignment() == RazorPanelPlugin::AlignLeft)
-            plugin->settings().setValue("alignment", "Left");
-        else
-            plugin->settings().setValue("alignment", "Right");
+        qDebug() << "::" << i;
+        Plugin* plugin = qobject_cast<Plugin*>(mLayout->itemAt(i)->widget());
+        if (plugin)
+        {
+            plugin->saveSettings();
+            pluginsStr << plugin->settingsGroup();
+            qDebug() << " * " << pluginsStr;
+        }
     }
 
     mSettings->beginGroup(CFG_PANEL_GROUP);
-
-    QStringList pluginsStr;
-    for (int i=0; i<mLayout->count(); ++i)
-    {
-        RazorPanelPlugin* plugin = qobject_cast<RazorPanelPlugin*>(mLayout->itemAt(i)->widget());
-        if (plugin)
-            pluginsStr << plugin->configId();
-    }
-
     mSettings->setValue(CFG_KEY_PLUGINS, pluginsStr);
     mSettings->endGroup();
     mSettings->sync();
@@ -255,7 +242,6 @@ void RazorPanelPrivate::loadPlugins()
             continue;
         }
 
-
         RazorPluginInfoList list = RazorPluginInfo::search(desktopDirs, "RazorPanel/Plugin", QString("%1.desktop").arg(type));
         if( !list.count())
         {
@@ -267,12 +253,14 @@ void RazorPanelPrivate::loadPlugins()
     }
 
 
-    QList<RazorPanelPlugin*>::iterator i;
+    QList<Plugin*>::iterator i;
+
     // Add left plugins .........................
     for (i=mPlugins.begin(); i != mPlugins.end(); ++i)
     {
-        if ((*i)->alignment() != RazorPanelPlugin::AlignLeft)
+        if ((*i)->alignment() != Plugin::AlignLeft)
             break;
+
         mLayout->addWidget((*i));
     }
 
@@ -284,45 +272,26 @@ void RazorPanelPrivate::loadPlugins()
     {
         mLayout->addWidget((*i));
     }
+
 }
 
 
 /************************************************
 
  ************************************************/
-RazorPanelPlugin* RazorPanelPrivate::loadPlugin(const RazorPluginInfo& pluginInfo, const QString configSection)
+Plugin *RazorPanelPrivate::loadPlugin(const RazorPluginInfo &desktopFile, const QString &settingsGroup)
 {
     Q_Q(RazorPanel);
+    Plugin *plugin = new Plugin(desktopFile, mSettings->fileName(), settingsGroup, q);
+    if (plugin->isLoaded())
+    {
+        mPlugins.append(plugin);
+        connect(plugin, SIGNAL(move(QWidget*)), mLayout, SLOT(startMoveWidget(QWidget*)));
+        connect(plugin, SIGNAL(remove()), this, SLOT(pluginRemoved()));
+        return plugin;
+    }
 
-    QLibrary* lib = 0;
-
-    if (getenv("RAZORQT_PANEL_PLUGINS_SO_DIR"))
-        lib = pluginInfo.loadLibrary(getenv("RAZORQT_PANEL_PLUGINS_SO_DIR"));
-
-    if (!lib)
-        lib = pluginInfo.loadLibrary(PLUGIN_DIR);
-
-    if (!lib)
-        return 0;
-
-
-    PluginInitFunction initFunc = (PluginInitFunction) lib->resolve("init");
-
-    if (!initFunc)
-        return 0;
-
-    RazorPanelPluginStartInfo startInfo(mSettings, configSection, q, pluginInfo);
-    RazorPanelPlugin* plugin = initFunc(&startInfo, q);
-    if (!plugin)
-        return 0;
-
-    connect(q, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)),
-            plugin, SLOT(layoutDirectionChanged(QBoxLayout::Direction)));
-    connect(plugin, SIGNAL(move()), SLOT(onMovePlugin()));
-    connect(plugin, SIGNAL(remove()), SLOT(onRemovePlugin()));
-
-    mPlugins.append(plugin);
-    return plugin;
+    return 0;
 }
 
 
@@ -531,7 +500,7 @@ int RazorPanelPrivate::findAvailableScreen(RazorPanel::Position position)
  ************************************************/
 void RazorPanelPrivate::pluginMoved(QWidget* pluginWidget)
 {
-    RazorPanelPlugin* plugin = qobject_cast<RazorPanelPlugin*>(pluginWidget);
+    Plugin* plugin = qobject_cast<Plugin*>(pluginWidget);
     if (!plugin)
         return;
 
@@ -539,13 +508,13 @@ void RazorPanelPrivate::pluginMoved(QWidget* pluginWidget)
     {
         if (mLayout->itemAt(i) == mSpacer)
         {
-            plugin->setAlignment(RazorPanelPlugin::AlignRight);
+            plugin->setAlignment(Plugin::AlignRight);
             break;
         }
 
         if (mLayout->itemAt(i)->widget() == plugin)
         {
-            plugin->setAlignment(RazorPanelPlugin::AlignLeft);
+            plugin->setAlignment(Plugin::AlignLeft);
             break;
         }
     }
@@ -604,41 +573,37 @@ void RazorPanelPrivate::updateSize(int height, int width, bool percent, RazorPan
     mWidthInPercents = percent;
     mAlignment = alignment;    
     mUseThemeSize = useThemeSize;
-
-    updatePluginsMinSize();
     realign();
 }
 
+
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::updatePluginsMinSize()
+QString RazorPanelPrivate::findNewPluginSettingsGroup(const QString &pluginType) const
 {
-    Q_Q(RazorPanel);
-    if (mUseThemeSize)
-    {
-        foreach (RazorPanelPlugin *plugin, mPlugins)
-        {
-            plugin->setMinimumSize(QSize(0,0));
-        }
+    QSet<QString> loadedPlugins = QSet<QString>::fromList(mSettings->value(CFG_FULLKEY_PLUGINS).toStringList());
 
-        mHeight = -1;
+    QStringList groups = mSettings->childGroups();
+    groups.sort();
+
+    // Search free section name .................
+    foreach(const QString &group, groups)
+    {
+        if (!loadedPlugins.contains(group))
+        {
+            if (mSettings->value(group + "/type") == pluginType)
+            {
+                return group;
+            }
+        }
     }
-    else
-    {
-        foreach (RazorPanelPlugin *plugin, mPlugins)
-        {
-            plugin->setMinimumSize(QSize(1,1));
-        }
 
-        if (q->isHorizontal())
-        {
-            q->setMaximumHeight(mHeight);
-        }
-        else
-        {
-            q->setMaximumWidth(mHeight);
-        }
+    // Generate new section name ................
+    for (int i=2; true; ++i)
+    {
+        if (!groups.contains(QString("%1%2").arg(pluginType).arg(i)))
+            return QString("%1%2").arg(pluginType).arg(i);
     }
 }
 
@@ -646,37 +611,24 @@ void RazorPanelPrivate::updatePluginsMinSize()
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::addPlugin(const RazorPluginInfo &pluginInfo)
+void RazorPanelPrivate::addPlugin(const RazorPluginInfo &desktopFile)
 {
     Q_Q(RazorPanel);
 
-    QString sectionName = pluginInfo.id();
-    QStringList groups = mSettings->childGroups();
+    QString settingsGroup = findNewPluginSettingsGroup(desktopFile.id());
+    Plugin *plugin= loadPlugin(desktopFile, settingsGroup);
 
-    if (groups.contains(sectionName))
-    {
-        for (int i=2; true; ++i)
-        {
-            sectionName = QString("%1%2").arg(pluginInfo.id()).arg(i);
-            if (!groups.contains(sectionName))
-                break;
-        }
-    }
-
-    RazorPanelPlugin* plugin = loadPlugin(pluginInfo, sectionName);
     if (!plugin)
         return;
 
-    mSettings->setValue(QString("%1/type").arg(sectionName), pluginInfo.id());
-
-    if (plugin->flags().testFlag(RazorPanelPlugin::PreferRightAlignment))
-        mLayout->addWidget(plugin);
-    else
+    if (plugin->alignment() == Plugin::AlignLeft)
         mLayout->insertWidget(0, plugin);
+    else
+        mLayout->addWidget(plugin);
 
-    realign();
+//    realign();
+//    q->adjustSize();
     saveSettings();
-    q->adjustSize();
 }
 
 
@@ -698,7 +650,7 @@ void RazorPanel::show()
 RazorPanel::Position RazorPanel::position() const
 {
     Q_D(const RazorPanel);
-    return d->position();
+    return d->mPosition;
 }
 
 RazorPanel::Orientation RazorPanel::orientation() const
@@ -721,10 +673,19 @@ RazorPanel::Orientation RazorPanel::orientation() const
 void RazorPanel::x11EventFilter(XEvent* event)
 {
     Q_D(RazorPanel);
-    foreach (RazorPanelPlugin* plugin, d->mPlugins)
+    foreach (Plugin* plugin, d->mPlugins)
     {
         plugin->x11EventFilter(event);
     }
+}
+
+
+/************************************************
+
+ ************************************************/
+QRect RazorPanel::globalGometry() const
+{
+    return QRect(mapToGlobal(QPoint(0, 0)), this->size());
 }
 
 
@@ -754,7 +715,7 @@ bool RazorPanel::event(QEvent* e)
 /************************************************
 
  ************************************************/
-void RazorPanel::showPopupMenu(RazorPanelPlugin *plugin)
+void RazorPanel::showPopupMenu(Plugin *plugin)
 {
     Q_D(RazorPanel);
 
@@ -815,63 +776,15 @@ void RazorPanel::showPopupMenu(RazorPanelPlugin *plugin)
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::onMovePlugin()
+void RazorPanelPrivate::pluginRemoved()
 {
-    RazorPanelPlugin* plugin;
-    PluginAction* a = qobject_cast<PluginAction*>(sender());
-    if (a)
+    Plugin *p = qobject_cast<Plugin*>(sender());
+    if (p)
     {
-        plugin = a->plugin();
+        mLayout->removeWidget(p);
+        mPlugins.removeAll(p);
+        saveSettings();
     }
-    else
-    {
-        plugin = qobject_cast<RazorPanelPlugin*>(sender());
-        if (!plugin)
-            return;
-    }
-
-    CursorAnimation *cursorAnimation = new CursorAnimation(plugin);
-    connect(cursorAnimation, SIGNAL(finished()), SLOT(startMoveWidget()));
-    cursorAnimation->setEasingCurve(QEasingCurve::InOutQuad);
-    cursorAnimation->setDuration(150);
-    cursorAnimation->setStartValue(QCursor::pos());
-    cursorAnimation->setEndValue(plugin->mapToGlobal(plugin->rect().center()));
-    cursorAnimation->start(QAbstractAnimation::DeleteWhenStopped);
-}
-
-void RazorPanelPrivate::startMoveWidget()
-{
-    CursorAnimation* a = qobject_cast<CursorAnimation*>(sender());
-    if (!a)
-        return;
-    mLayout->startMoveWidget(qobject_cast<QWidget *>(a->parent()));
-}
-
-/************************************************
-
- ************************************************/
-void RazorPanelPrivate::onRemovePlugin()
-{
-    Q_Q(RazorPanel);
-
-    RazorPanelPlugin* plugin;
-    PluginAction* a = qobject_cast<PluginAction*>(sender());
-    if (a)
-    {
-        plugin = a->plugin();
-    }
-    else
-    {
-        plugin = qobject_cast<RazorPanelPlugin*>(sender());
-        if (!plugin)
-            return;
-    }
-
-    mSettings->remove(plugin->configId());
-    mPlugins.removeAll(plugin);
-    delete plugin;
-    saveSettings();
-    q->adjustSize();
 }
 
 
@@ -891,7 +804,7 @@ void RazorPanelPrivate::switchPosition(int screenNum, RazorPanel::Position posit
 void RazorPanelPrivate::reposition()
 {
     Q_Q(RazorPanel);
-
+/*
     QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
 
     if (q->isHorizontal())
@@ -899,7 +812,7 @@ void RazorPanelPrivate::reposition()
     else
         mLayout->setDirection(QBoxLayout::TopToBottom);
 
-    foreach (RazorPanelPlugin* plugin, mPlugins)
+    foreach (Plugin* plugin, mPlugins)
     {
         plugin->updateSizePolicy();
     }
@@ -929,26 +842,8 @@ void RazorPanelPrivate::reposition()
             q->setMaximumHeight(screen.height());
         }
     }
-
+*/
     realign();
-}
-
-
-/************************************************
-
- ************************************************/
-CursorAnimation::CursorAnimation(QObject *parent):
-    QVariantAnimation(parent)
-{
-}
-
-
-/************************************************
-
- ************************************************/
-void CursorAnimation::updateCurrentValue(const QVariant &value)
-{
-    QCursor::setPos(value.toPoint());
 }
 
 
@@ -1019,3 +914,5 @@ void PopupMenu::keyPressEvent(QKeyEvent* e)
 
     QMenu::keyPressEvent(e);
 }
+
+

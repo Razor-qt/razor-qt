@@ -25,35 +25,53 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORHELLOWORLD_H
-#define RAZORHELLOWORLD_H
+#ifndef TEATIMEPLUGIN_H
+#define TEATIMEPLUGIN_H
 
 #include "../panel/irazorpanelplugin.h"
 #include <QtGui/QToolButton>
 
-
-class RazorHelloWorldPlugin: public QObject, public IRazorPanelPlugin
+class TeaTimePlugin: public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorHelloWorldPlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+    TeaTimePlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "TeaTime"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return  PreferRightAlignment; }
+
+private:
+    QToolButton mButton;
+};
+
+/*
+class TeaTimePlugin: public QObject, public IRazorPanelPlugin
+{
+    Q_OBJECT
+public:
+    TeaTimePlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+    void init(const IRazorPanelPluginStartupInfo &startupInfo) {}
+
+    QString themeId() const { return "TeaTime"; }
     QWidget *widget();
 
-    QString themeId() const { return "HelloWorld"; }
 private slots:
     void showMessage();
 
 private:
     QToolButton mButton;
 };
-
-
-class RazorHelloWorldPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+*/
+class TeaTimePluginLibrary: public QObject, public IRazorPanelPluginLibrary
 {
     Q_OBJECT
     Q_INTERFACES(IRazorPanelPluginLibrary)
 public:
-    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new RazorHelloWorldPlugin(startupInfo);}
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new TeaTimePlugin(startupInfo);
+    }
 };
 
-#endif // RAZORHELLOWORLD_H
+#endif // TEATIMEPLUGIN_H

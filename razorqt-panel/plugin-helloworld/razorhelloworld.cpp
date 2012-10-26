@@ -27,24 +27,30 @@
 
 #include "razorhelloworld.h"
 #include <QtGui/QMessageBox>
+#include <QDebug>
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorHelloWorld)
+Q_EXPORT_PLUGIN2(panelhelloworld, RazorHelloWorldPluginLibrary)
 
-RazorHelloWorld::RazorHelloWorld(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-        RazorPanelPlugin(startInfo, parent)
+
+RazorHelloWorldPlugin::RazorHelloWorldPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
 {
     setObjectName("HelloWorld");
 
     mButton.setText(tr("HW"));
-    addWidget(&mButton);
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
 }
 
-RazorHelloWorld::~RazorHelloWorld()
+
+QWidget *RazorHelloWorldPlugin::widget()
 {
+    return &mButton;
 }
 
-void RazorHelloWorld::showMessage()
+void RazorHelloWorldPlugin::showMessage()
 {
     QMessageBox::information(0, tr("Panel"), tr("Hello, World!"));
 }
+
+

@@ -31,12 +31,12 @@
 #define RAZORPANEL_P_H
 
 #include "razorpanel.h"
-#include "razorpanelplugin.h"
 #include <razorqt/razorplugininfo.h>
 #include <QtGui/QAction>
-#include <QtCore/QVariantAnimation>
 #include <QtCore/QEvent>
 #include <QtGui/QMenu>
+#include <QList>
+#include "plugin.h"
 
 class QActionGroup;
 class QLayoutItem;
@@ -48,18 +48,28 @@ class RazorPanelPrivate: QObject {
     Q_OBJECT
 public:
     RazorPanelPrivate(RazorPanel* parent);
-    virtual ~RazorPanelPrivate();
 
-    void init();
-
-    RazorPanel::Position position() const { return mPosition; }
-
-    QList<RazorPanelPlugin*>& plugins() { return mPlugins; }
     static bool canPlacedOn(int screenNum, RazorPanel::Position position);
     static RazorPanel::Position strToPosition(const QString &str, RazorPanel::Position defaultValue);
     static QString positionToStr(RazorPanel::Position position);
 
+    void readSettings();
     void saveSettings();
+    void loadPlugins();
+    Plugin *loadPlugin(const RazorPluginInfo &desktopFile, const QString &settingsGroup);
+    QString findNewPluginSettingsGroup(const QString &pluginType) const;
+
+    QList<Plugin*> mPlugins;
+    RazorPanel::Position mPosition;
+    RazorPanel::Alignment mAlignment;
+    int mHeight;
+    int mWidth;
+    bool mWidthInPercents;
+    int mScreenNum;
+    RazorSettings* mSettings;
+    RazorPanelLayout* mLayout;
+    QLayoutItem* mSpacer;
+    bool mUseThemeSize;
 
 public slots:
     void realign();
@@ -69,15 +79,12 @@ public slots:
     void screensChangeds();
     void showAddPluginDialog();
     void showConfigPanelDialog();
-    void addPlugin(const RazorPluginInfo &pluginInfo);
-    void onRemovePlugin();
-    void onMovePlugin();
-    void startMoveWidget();
+    void addPlugin(const RazorPluginInfo &desktopFile);
+    void pluginRemoved();
     void updateSize(int height, int width, bool percent, RazorPanel::Alignment alignment, bool useThemeSize);
 
 private:
-    void loadPlugins();
-    RazorPanelPlugin* loadPlugin(const RazorPluginInfo& pluginInfo, const QString configSection);
+
     void reTheme();
     int findAvailableScreen(RazorPanel::Position position);
     QStringList pluginDesktopDirs();
@@ -85,19 +92,6 @@ private:
     RazorPanel* const q_ptr;
     Q_DECLARE_PUBLIC(RazorPanel)
 
-    RazorPanel::Position mPosition;
-    RazorPanel::Alignment mAlignment;
-    int mHeight;
-    int mWidth;
-    bool mWidthInPercents;
-    int mScreenNum;
-    QString mConfigFile;
-    RazorSettings* mSettings;
-    QList<RazorPanelPlugin*> mPlugins;
-    RazorPanelLayout* mLayout;
-    QLayoutItem* mSpacer;
-    bool mUseThemeSize;
-    void updatePluginsMinSize();
 };
 
 
@@ -116,15 +110,6 @@ private:
     RazorPanelPlugin* mPlugin;
 };
 
-class CursorAnimation: public QVariantAnimation
-{
-    Q_OBJECT
-
-public:
-    CursorAnimation(QObject *parent);
-
-    void updateCurrentValue(const QVariant &value);
-};
 
 
 class PopupMenu: public QMenu

@@ -74,6 +74,9 @@ private:
 #endif
 
 
+/************************************************
+
+ ************************************************/
 class MoveProcItem
 {
 public:
@@ -100,18 +103,26 @@ MoveProcessor::MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget):
     mWidget(movedWidget),
     mLayout(layout)
 {
+}
+
+
+/************************************************
+
+ ************************************************/
+void MoveProcessor::start()
+{
     mWidgetPlace = mWidget->geometry();
     mOffset = QCursor::pos() - mWidget->pos();
-    mIndex = layout->indexOf(movedWidget);
+    mIndex = mLayout->indexOf(mWidget);
     mWidget->raise();
 
-    for (int i=0; i<layout->count(); ++i)
+    for (int i=0; i<mLayout->count(); ++i)
     {
         if (i != mIndex)
-            mItems.append(new MoveProcItem(layout->itemAt(i)));
+            mItems.append(new MoveProcItem(mLayout->itemAt(i)));
     }
 
-    QBoxLayout::Direction dir = layout->direction();
+    QBoxLayout::Direction dir = mLayout->direction();
     mHoriz = (dir == QBoxLayout::LeftToRight || dir == QBoxLayout::RightToLeft);
 
     setMouseTracking(true);
@@ -120,7 +131,7 @@ MoveProcessor::MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget):
     if (mHoriz) this->grabMouse(Qt::SizeHorCursor);
     else        this->grabMouse(Qt::SizeVerCursor);
 
-    layout->setEnabled(false);
+    mLayout->setEnabled(false);
 }
 
 
@@ -293,7 +304,7 @@ void MoveProcessor::finished()
     mLayout->activate();
     mLayout->update();
     emit widgetMoved(mWidget);
-    delete this;
+    deleteLater();
 }
 
 
@@ -367,7 +378,7 @@ void MoveProcItem::move(QPoint topLeft)
 
  ************************************************/
 RazorPanelLayout::RazorPanelLayout(Direction dir, QWidget * parent):
-    QBoxLayout(dir, parent)
+  QBoxLayout(dir, parent)
 {
     setContentsMargins(0, 0, 0, 0);
     setSpacing(0);
@@ -388,8 +399,19 @@ RazorPanelLayout::~RazorPanelLayout()
  ************************************************/
 void RazorPanelLayout::startMoveWidget(QWidget* widget)
 {
-    MoveProcessor* mp = new MoveProcessor(this, widget);
-    connect(mp, SIGNAL(widgetMoved(QWidget*)), this, SIGNAL(widgetMoved(QWidget*)));
+    // We have not memoryleaks there.
+    // The processor and animation will be automatically deleted when stopped.
+    MoveProcessor *moveProcessor = new MoveProcessor(this, widget);
+    connect(moveProcessor, SIGNAL(widgetMoved(QWidget*)), this, SIGNAL(widgetMoved(QWidget*)));
+
+    CursorAnimation *cursorAnimation = new CursorAnimation();
+    connect(cursorAnimation, SIGNAL(finished()), moveProcessor, SLOT(start()));
+    cursorAnimation->setEasingCurve(QEasingCurve::InOutQuad);
+    cursorAnimation->setDuration(150);
+
+    cursorAnimation->setStartValue(QCursor::pos());
+    cursorAnimation->setEndValue(widget->mapToGlobal(widget->rect().center()));
+    cursorAnimation->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 

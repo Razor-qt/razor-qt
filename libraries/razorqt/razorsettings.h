@@ -58,6 +58,7 @@ public:
     //explicit RazorSettings(QObject* parent=0);
     explicit RazorSettings(const QSettings* parentSettings, const QString& subGroup, QObject* parent=0);
     explicit RazorSettings(const QSettings& parentSettings, const QString& subGroup, QObject* parent=0);
+    RazorSettings(const QString &fileName, QSettings::Format format, QObject *parent = 0);
     ~RazorSettings();
 
     static const GlobalRazorSettings *globalSettings();

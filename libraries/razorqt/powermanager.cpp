@@ -40,21 +40,30 @@ class MessageBox: public QMessageBox
 public:
     explicit MessageBox(QWidget *parent = 0): QMessageBox(parent) {}
 
-    static QMessageBox::StandardButton question(QWidget* parent,
-                                         const QString& title,
-                                         const QString& text,
-                                         StandardButton button0,
-                                         StandardButton button1)
+    static QWidget *parentWidget()
     {
-        MessageBox msgBox(parent);
+        QWidgetList widgets = QApplication::topLevelWidgets();
+
+        if (widgets.count())
+            return widgets.at(0);
+        else
+            return 0;
+    }
+
+    static bool question(const QString& title, const QString& text)
+    {
+        MessageBox msgBox(parentWidget());
         msgBox.setWindowTitle(title);
         msgBox.setText(text);
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 
-        if (msgBox.exec() == QMessageBox::Yes)
-            return QMessageBox::Yes;
-        else
-            return QMessageBox::No;
+        return (msgBox.exec() == QMessageBox::Yes);
+    }
+
+
+    static void warning(const QString& title, const QString& text)
+    {
+        QMessageBox::warning(parentWidget(), tr("Razor Power Manager Error"), tr("Hibernate failed."));
     }
 
 
@@ -69,8 +78,7 @@ protected:
 };
 
 PowerManager::PowerManager(QObject * parent)
-    : QObject(parent),
-    m_parentWidget(0)
+    : QObject(parent)
 {
     libTranslate("librazorqt");
     m_power = new RazorPower(this);
@@ -130,74 +138,57 @@ QList<QAction*> PowerManager::availableActions()
 }
     
 
-
-
 void PowerManager::suspend()
 {
-     if (MessageBox::question(m_parentWidget, tr("Razor Session Suspend"),
-                            tr("Do you want to really suspend your computer?<p>Suspends the computer into a low power state. System state is not preserved if the power is lost."),
-                            QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+     if (MessageBox::question(tr("Razor Session Suspend"),
+                            tr("Do you want to really suspend your computer?<p>Suspends the computer into a low power state. System state is not preserved if the power is lost.")))
     {
-        return;
+        m_power->suspend();
     }
-
-    m_power->suspend();
 }
 
 void PowerManager::hibernate()
 {
-    if (MessageBox::question(m_parentWidget, tr("Razor Session Hibernate"),
-                             tr("Do you want to really hibernate your computer?<p>Hibernates the computer into a low power state. System state is preserved if the power is lost."),
-                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    if (MessageBox::question(tr("Razor Session Hibernate"),
+                             tr("Do you want to really hibernate your computer?<p>Hibernates the computer into a low power state. System state is preserved if the power is lost.")))
     {
-        return;
+        m_power->hibernate();
     }
-
-    m_power->hibernate();
 }
 
 void PowerManager::reboot()
 {
-    if (MessageBox::question(m_parentWidget, tr("Razor Session Reboot"),
-                             tr("Do you want to really restart your computer? All unsaved work will be lost..."),
-                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    if (MessageBox::question(tr("Razor Session Reboot"),
+                             tr("Do you want to really restart your computer? All unsaved work will be lost...")))
     {
-        return;
+        m_power->reboot();
     }
-
-    m_power->reboot();
 }
 
 void PowerManager::shutdown()
 {
-    if (MessageBox::question(m_parentWidget, tr("Razor Session Shutdown"),
-                             tr("Do you want to really switch off your computer? All unsaved work will be lost..."),
-                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    if (MessageBox::question(tr("Razor Session Shutdown"),
+                             tr("Do you want to really switch off your computer? All unsaved work will be lost...")))
     {
-        return;
+        m_power->shutdown();
     }
-
-    m_power->shutdown();
 }
 
 void PowerManager::logout()
 {
-    if (MessageBox::question(m_parentWidget, tr("Razor Session Logout"),
-                             tr("Do you want to really logout? All unsaved work will be lost..."),
-                             QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+    if (MessageBox::question(tr("Razor Session Logout"),
+                             tr("Do you want to really logout? All unsaved work will be lost...")))
     {
-        return;
+        m_power->logout();
     }
-
-    m_power->logout();
 }
 
 void PowerManager::hibernateFailed()
 {
-    QMessageBox::warning(m_parentWidget, tr("Razor Power Manager Error"), tr("Hibernate failed."));
+    MessageBox::warning(tr("Razor Power Manager Error"), tr("Hibernate failed."));
 }
 
 void PowerManager::suspendFailed()
 {
-    QMessageBox::warning(m_parentWidget, tr("Razor Power Manager Error"), tr("Suspend failed."));
+    MessageBox::warning(tr("Razor Power Manager Error"), tr("Suspend failed."));
 }

@@ -32,29 +32,24 @@
 #include <QtGui/QFrame>
 #include <QtCore/QString>
 #include <QtGui/QBoxLayout>
+#include "irazorpanel.h"
 
 class QMenu;
 class RazorPanelPrivate;
 class RazorPanelPlugin;
+class Plugin;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */
-class RazorPanel : public QFrame
+class RazorPanel : public QFrame, public IRazorPanel
 {
     Q_OBJECT
-    Q_PROPERTY(Position position READ position NOTIFY positionChanged)
     Q_PROPERTY(Orientation orientation READ orientation)
     Q_ENUMS(Position)
     Q_ENUMS(Orientation)
     friend class RazorPanelPlugin;
 
 public:
-    enum Position{
-        PositionBottom,
-        PositionTop,
-        PositionLeft,
-        PositionRight
-    };
 
     enum Alignment {
         AlignmentLeft   = -1,
@@ -70,12 +65,15 @@ public:
     RazorPanel(QWidget *parent = 0);
     virtual ~RazorPanel();
 
-    Position position() const ;
-    bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
+    virtual Position position() const;
     Orientation orientation() const;
 
-    void showPopupMenu(RazorPanelPlugin *plugin = 0);
+    void showPopupMenu(Plugin *plugin = 0);
     void x11EventFilter(XEvent* event);
+
+    // IRazorPanel .........................
+    virtual QRect globalGometry() const;
+
 
 public slots:
     void show();

@@ -48,34 +48,32 @@
 #include <QStack>
 
 #include <QCursor>
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMainMenu)
 
+Q_EXPORT_PLUGIN2(mainmenu, RazorMainMenuPluginLibrary)
 
 /************************************************
 
  ************************************************/
-RazorMainMenu::RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-    RazorPanelPlugin(startInfo, parent),
+RazorMainMenu::RazorMainMenu(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
     mMenu(0)
 {
+
     setObjectName("MainMenu");
 
-    layout()->setAlignment(Qt::AlignCenter);
     mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mButton.setObjectName("Button");
 
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
-    connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
+    //connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
 
     mPowerManager = new PowerManager(this);
-    mPowerManager->setParentWidget(panel());
-
     mScreenSaver = new ScreenSaver(this);
 
     mShortcut = new QxtGlobalShortcut(this);
     connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
 
-    addWidget(&mButton);
     settingsChanged();
 }
 
@@ -108,31 +106,31 @@ void RazorMainMenu::showMenu()
     if (!mMenu)
         return;
 
-    int x, y;
+    int x=0, y=0;
 
     switch (panel()->position())
     {
-        case RazorPanel::PositionTop:
+        case IRazorPanel::PositionTop:
             x = mButton.mapToGlobal(QPoint(0, 0)).x();
-            y = panel()->mapToGlobal(QPoint(0, panel()->sizeHint().height())).y();
+            y = panel()->globalGometry().bottom();
             break;
 
-        case RazorPanel::PositionBottom:
+        case IRazorPanel::PositionBottom:
             x = mButton.mapToGlobal(QPoint(0, 0)).x();
-            y = panel()->mapToGlobal(QPoint(0, 0)).y() - mMenu->sizeHint().height();
+            y = panel()->globalGometry().top() - mMenu->sizeHint().height();
             break;
 
-        case RazorPanel::PositionLeft:
-            x = panel()->mapToGlobal(QPoint(panel()->sizeHint().width(), 0)).x();
+        case IRazorPanel::PositionLeft:
+            x = panel()->globalGometry().right();
             y = mButton.mapToGlobal(QPoint(0, 0)).y();
             break;
 
-        case RazorPanel::PositionRight:
-            x = panel()->mapToGlobal(QPoint(0, 0)).x() - mMenu->sizeHint().width();
+        case IRazorPanel::PositionRight:
+            x = panel()->globalGometry().left() - mMenu->sizeHint().width();
             y = mButton.mapToGlobal(QPoint(0, 0)).y();
             break;
-
     }
+
 
     QPoint pos(x, y);
     mMenu->exec(pos);
@@ -144,9 +142,9 @@ void RazorMainMenu::showMenu()
  ************************************************/
 void RazorMainMenu::settingsChanged()
 {
-    if (settings().value("showText", false).toBool())
+    if (settings()->value("showText", false).toBool())
     {
-        mButton.setText(settings().value("text", "Start").toString());
+        mButton.setText(settings()->value("text", "Start").toString());
         mButton.setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     }
     else
@@ -154,9 +152,9 @@ void RazorMainMenu::settingsChanged()
         mButton.setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 
-    mLogDir = settings().value("log_dir", "").toString();
+    mLogDir = settings()->value("log_dir", "").toString();
 
-    QString mMenuFile = settings().value("menu_file", "").toString();
+    QString mMenuFile = settings()->value("menu_file", "").toString();
     if (mMenuFile.isEmpty())
         mMenuFile = XdgMenu::getMenuFileName();
 
@@ -171,12 +169,12 @@ void RazorMainMenu::settingsChanged()
     }
     else
     {
-        QMessageBox::warning(this, "Parse error", mXdgMenu.errorString());
+        QMessageBox::warning(0, "Parse error", mXdgMenu.errorString());
         return;
     }
 
 
-    mShortcut->setShortcut(settings().value("shortcut", "ALT+F1").toString());
+    mShortcut->setShortcut(settings()->value("shortcut", "ALT+F1").toString());
 }
 
 
@@ -185,7 +183,7 @@ void RazorMainMenu::settingsChanged()
  ************************************************/
 void RazorMainMenu::buildMenu()
 {
-    XdgMenuWidget *menu = new XdgMenuWidget(mXdgMenu, "", this);
+    XdgMenuWidget *menu = new XdgMenuWidget(mXdgMenu, "", &mButton);
     menu->setObjectName("TopLevelMainMenu");
     menu->setStyle(&mTopMenuStyle);
 
@@ -204,18 +202,8 @@ void RazorMainMenu::buildMenu()
 /************************************************
 
  ************************************************/
-void RazorMainMenu::showConfigureDialog()
+QDialog *RazorMainMenu::configureDialog()
 {
-    RazorMainMenuConfiguration *confWindow =
-            this->findChild<RazorMainMenuConfiguration*>("MainMenuConfigurationWindow");
-
-    if (!confWindow)
-    {
-        confWindow = new RazorMainMenuConfiguration(settings(), this);
-    }
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+    return new RazorMainMenuConfiguration(*settings());
 }
 

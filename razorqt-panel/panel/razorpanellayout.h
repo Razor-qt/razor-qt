@@ -32,10 +32,13 @@
 #include <QtGui/QBoxLayout>
 #include <QtCore/QList>
 #include <QtGui/QWidget>
+#include <QtCore/QVariantAnimation>
 
 class MoveInfo;
 class QMouseEvent;
 class QEvent;
+class CursorAnimation;
+class MoveProcessor;
 
 class RazorPanelLayout : public QBoxLayout
 {
@@ -46,13 +49,13 @@ public:
     RazorPanelLayout(Direction dir, QWidget* parent=0);
     virtual ~RazorPanelLayout();
 
-    void startMoveWidget(QWidget* widget);
-
     QSize sizeHint() const;
+
+public slots:
+    void startMoveWidget(QWidget* widget);
 
 signals:
     void widgetMoved(QWidget* movedWidget);
-
 };
 
 class MoveProcItem;
@@ -63,6 +66,9 @@ class MoveProcessor: public QWidget
 public:
     explicit MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget);
     ~MoveProcessor();
+
+public slots:
+    void start();
 
 signals:
     void widgetMoved(QWidget* movedWidget);
@@ -85,6 +91,13 @@ private:
 
 private slots:
     void finished();
+};
+
+class CursorAnimation: public QVariantAnimation
+{
+    Q_OBJECT
+public:
+    void updateCurrentValue(const QVariant &value) { QCursor::setPos(value.toPoint()); }
 };
 
 #endif // RAZORPANELLAYOUT_H

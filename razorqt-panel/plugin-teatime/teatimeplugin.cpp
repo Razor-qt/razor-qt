@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,40 +25,42 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef POWERMANAGER_H
-#define POWERMANAGER_H
+#include "teatimeplugin.h"
+#include <QtGui/QMessageBox>
 
-#include <QObject>
-#include <QAction>
+Q_EXPORT_PLUGIN2(teatime, TeaTimePluginLibrary)
 
-class RazorPower;
-
-/*! QAction centric menu aware wrapper around razorpower
-*/
-class PowerManager : public QObject
+TeaTimePlugin::TeaTimePlugin(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
 {
-    Q_OBJECT
+    mButton.setText("Tea");
+    connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
+}
 
-public:
-    PowerManager(QObject * parent);
-    ~PowerManager();
-    QList<QAction*> availableActions();
+QWidget *TeaTimePlugin::widget()
+{
+    return &mButton;
+}
 
-public slots:
-    // power management
-    void suspend();
-    void hibernate();
-    void reboot();
-    void shutdown();
-    // razor session
-    void logout();
+/*
+TeaTimePlugin::TeaTimePlugin(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
+{
+    connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
+}
 
-private:
-    RazorPower * m_power;
+QWidget *TeaTimePlugin::widget()
+{
+    return &mButton;
+}
 
-private slots:
-    void hibernateFailed();
-    void suspendFailed();
-};
+void TeaTimePlugin::showMessage()
+{
+   QMessageBox::information(0, tr("Panel"), tr("Hello, World!"));
+}
+*/
 
-#endif
+
+

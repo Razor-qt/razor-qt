@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,40 +25,26 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef POWERMANAGER_H
-#define POWERMANAGER_H
 
-#include <QObject>
-#include <QAction>
+#ifndef IRAZORPANEL_H
+#define IRAZORPANEL_H
+#include <QRect>
 
-class RazorPower;
-
-/*! QAction centric menu aware wrapper around razorpower
-*/
-class PowerManager : public QObject
+class IRazorPanel
 {
-    Q_OBJECT
-
 public:
-    PowerManager(QObject * parent);
-    ~PowerManager();
-    QList<QAction*> availableActions();
+    enum Position{
+        PositionBottom,
+        PositionTop,
+        PositionLeft,
+        PositionRight
+    };
+    Q_PROPERTY(Position position READ position NOTIFY positionChanged)
 
-public slots:
-    // power management
-    void suspend();
-    void hibernate();
-    void reboot();
-    void shutdown();
-    // razor session
-    void logout();
+    virtual Position position() const = 0;
+    bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
 
-private:
-    RazorPower * m_power;
-
-private slots:
-    void hibernateFailed();
-    void suspendFailed();
+    virtual QRect globalGometry() const = 0;
 };
 
-#endif
+#endif // IRAZORPANEL_H

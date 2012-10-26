@@ -5,36 +5,41 @@ set(PROJECT razor-panel )
 set(QT_USE_QTXML 1)
 set(QT_USE_QTDBUS 1)
 
-set(razor-panel_H_FILES
+
+set(razor-panel_PRIV_H_FILES
     razorpanel.h
     razorpanel_p.h
-    razorpanelplugin.h
-    razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
     configpaneldialog.h
+    plugin.h
+)
+
+set(razor-panel_PUB_H_FILES
+    irazorpanelplugin.h
+    irazorpanel.h
 )
 
 set(razor-panel_CPP_FILES
     main.cpp
     razorpanel.cpp
-    razorpanelplugin.cpp
     razorpanelapplication.cpp
     razorpanellayout.cpp
     razorpanelpluginconfigdialog.cpp
     configpaneldialog.cpp
+    plugin.cpp
 )
 
 set(MOCS
     razorpanel.h
     razorpanel_p.h
-    razorpanelplugin.h
-    razorpanelplugin_p.h
     razorpanelapplication.h
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
     configpaneldialog.h
+    irazorpanelplugin.h
+    plugin.h
 )
 
 set(LIBRARIES
@@ -97,7 +102,8 @@ qt4_add_resources(QRC_SOURCES ${RESOURCES})
 include(RazorTranslate)
 razor_translate_ts(razor-runner_QM_FILES 
     SOURCES
-        ${razor-panel_H_FILES}
+        ${razor-panel_PUB_H_FILES}
+        ${razor-panel_PRIV_H_FILES}
         ${razor-panel_CPP_FILES} 
         ${razor-panel_UI_FILES}
 )
@@ -108,8 +114,9 @@ set (PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/razor-panel/)
 add_definitions(-DPLUGIN_DIR=\"${PLUGIN_DIR}\")
 message(STATUS "Panel plugins location: ${PLUGIN_DIR}")
 
-add_executable(${PROJECT} ${razor-panel_H_FILES} ${razor-panel_CPP_FILES} ${MOC_SOURCES} ${razor-runner_QM_FILES} ${QRC_SOURCES} ${UI_HEADERS})
+add_executable(${PROJECT} ${razor-panel_PUB_H_FILES} ${razor-panel_PRIV_H_FILES} ${razor-panel_CPP_FILES} ${MOC_SOURCES} ${razor-runner_QM_FILES} ${QRC_SOURCES} ${UI_HEADERS})
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES   ${CONFIG_FILES}    DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor/razor-panel/)
+install(FILES  ${razor-panel_PUB_H_FILES} DESTINATION include/razorqt)
