@@ -95,6 +95,8 @@ void ConfigPanelDialog::reset()
         {
             for (int screenNum = 0; screenNum < screenCount; screenNum++)
             {
+                if (screenNum)
+                    ui->comboBox_position->insertSeparator(9999);
                 addPosition(tr("Top of desktop %1").arg(screenNum +1), screenNum, RazorPanel::PositionTop);
                 addPosition(tr("Left of desktop %1").arg(screenNum +1), screenNum, RazorPanel::PositionLeft);
                 addPosition(tr("Right of desktop %1").arg(screenNum +1), screenNum, RazorPanel::PositionRight);
