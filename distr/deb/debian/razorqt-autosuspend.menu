@@ -1,2 +1,2 @@
 ?package(razorqt-autosuspend):needs="X11" section="Applications/System"\
-  title="Razor-Qt suspend config" command="/usr/bin/razor-config-autosuspend"
+  title="Razor-qt suspend settings" command="/usr/bin/razor-config-autosuspend"
