@@ -1,0 +1,2 @@
+?package(razorqt-globalkeyshortcuts):needs="X11" section="Applications/System"\
+  title="Razor-Qt suspend config" command="/usr/bin/razor-config-globalkeyshortcuts"
