@@ -19,14 +19,14 @@ RazorPanel[position="1"] {
 /*
  * General plugins settings
  */
-RazorPanelPlugin {
+Plugin {
     margin: 2px 0 2px 0;
     padding: 0;
     spacing: 20px;
 }
 
 
-RazorPanelPlugin > QToolButton {
+Plugin > QToolButton {
     margin: 0;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -35,7 +35,7 @@ RazorPanelPlugin > QToolButton {
 }
 
 
-RazorPanelPlugin > QToolButton:hover{
+Plugin > QToolButton:hover{
     margin: 0;
     border: 1px solid #33322E;
     color: #cacaca;

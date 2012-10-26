@@ -28,19 +28,19 @@ RazorPanel[position="3"] {
 /*
  * General plugins settings
  */
-RazorPanelPlugin {
+Plugin {
     padding: 0 2px 0 2px;
     spacing: 20px;
 }
 
-RazorPanelPlugin > QToolButton {
+Plugin > QToolButton {
     margin: 0;
     border: 2px solid transparent;
     border-radius: 3px;
     qproperty-iconSize: 22px;
 }
 
-RazorPanelPlugin > QToolButton:pressed {
+Plugin > QToolButton:pressed {
     margin: 2px 0 0 2px;
     border: none;
 }
