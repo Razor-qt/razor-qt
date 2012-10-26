@@ -26,23 +26,18 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "trayicon.h"
-#include "qtxdg/qiconfix/qiconloader_p.h"
 #include "razorqt/razorsettings.h"
-#include "battery.h"
 #include "../config/constants.h"
-#include <QIcon>
-#include <QDebug>
 #include <math.h>
-#include <QtGui/qicon.h>
-#include <sys/param.h>
+#include <QtCore/QDebug>
+#include <QtSvg/QSvgRenderer>
+#include <QtGui/QPainter>
 
 TrayIcon::TrayIcon(Battery* battery, QObject *parent) : 
     QSystemTrayIcon(parent), 
         mBattery(battery), 
         mSettings("razor-autosuspend")
 {
-    setUpstatusIcons();
-
     connect(mBattery, SIGNAL(batteryChanged()), this, SLOT(update()));
     connect(RazorSettings::globalSettings(), SIGNAL(iconThemeChanged()), this, SLOT(iconThemeChanged()));
     connect(&mSettings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
@@ -67,48 +62,50 @@ void TrayIcon::update()
 
 void TrayIcon::updateStatusIcon()
 {
+    static double chargeLevel = -1;
+    static bool   discharging = false;
+
+    if (fabs(mBattery->chargeLevel() - chargeLevel) < 0.1 && (mBattery->discharging() == discharging))
+    {
+        qDebug() << "No significant change - not updating icon";
+        return;
+    }
+
+    chargeLevel = mBattery->chargeLevel();
+    discharging = mBattery->discharging();
+
     if (mSettings.value(USETHEMEICONS_KEY, true).toBool() && mThemeHasStatusIcons)
     {
         QString iconName;
-        bool charging = ! mBattery->discharging();
-
+        
         if (QIcon::themeName() == "oxygen")
         {
-            if (mBattery->chargeLevel() < 20)        iconName = charging ? "battery-charging-low" : "battery-low";
-            else if (mBattery->chargeLevel() < 40)   iconName = charging ? "battery-charging-caution" : "battery-caution";
-            else if (mBattery->chargeLevel() < 60)   iconName = charging ? "battery-charging-040" : "battery-040";
-            else if (mBattery->chargeLevel() < 80)   iconName = charging ? "battery-charging-060" : "battery-060";
-            else if (mBattery->chargeLevel() < 99.5) iconName = charging ? "battery-charging-080" : "battery-080";
-            else                                  iconName = charging ? "battery-charging" : "battery-100";
+            if (chargeLevel < 20)        iconName = discharging ? "battery-low" : "battery-charging-low";
+            else if (chargeLevel < 40)   iconName = discharging ? "battery-caution" : "battery-charging-caution";
+            else if (chargeLevel < 60)   iconName = discharging ? "battery-040" : "battery-charging-040";
+            else if (chargeLevel < 80)   iconName = discharging ? "battery-060" : "battery-charging-060";
+            else if (chargeLevel < 99.5) iconName = discharging ? "battery-080" : "battery-charging-080";
+            else                         iconName = discharging ? "battery-100" : "battery-charging";
         }
         else // For all themes but 'oxygen' we follow freedesktop's battery status icon name standard 
              // (http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html) _with_ the changes proposed in
              // https://bugs.freedesktop.org/show_bug.cgi?id=41458 (we assume that this patch will be accepted)
         {
-            if (mBattery->chargeLevel() <  1 && !charging) iconName = "battery-empty" ;
-            else if (mBattery->chargeLevel() < 20)         iconName = charging ? "battery-caution-charging" : "battery-caution";
-            else if (mBattery->chargeLevel() < 40)         iconName = charging ? "battery-low-charging" : "battery-low";
-            else if (mBattery->chargeLevel() < 60)         iconName = charging ? "battery-good-charging" : "battery-good";
-            else                                          iconName = charging ? "battery-full-charging" : "battery-full";
+            if      (chargeLevel <  1 && discharging) iconName = "battery-empty" ;
+            else if (chargeLevel < 20)                iconName = discharging ? "battery-caution" : "battery-caution-discharging";
+            else if (chargeLevel < 40)                iconName = discharging ? "battery-low" : "battery-low-discharging";
+            else if (chargeLevel < 60)                iconName = discharging ? "battery-good" : "battery-good-discharging";
+            else                                      iconName = discharging ? "battery-full" : "battery-full-discharging";
         }
         
-        qDebug() << "ChargeLevel" << mBattery->chargeLevel() 
+        qDebug() << "ChargeLevel" << chargeLevel 
                  << "- getting icon:"  << iconName 
                  << "from" << QIcon::themeName() << "theme";
         setIcon(QIcon::fromTheme(iconName));
     }
     else
     {
-        int chargeLevel0_10 = round(mBattery->chargeLevel()/10);
-
-        if (mBattery->discharging())
-        {
-            setIcon(mStatusIconsDecharging[chargeLevel0_10]);
-        }
-        else 
-        {
-            setIcon(mStatusIconsCharging[chargeLevel0_10]);
-        }
+        setIcon(getBuiltInIcon(chargeLevel, discharging));
     }
 }
 
@@ -163,33 +160,75 @@ void TrayIcon::settingsChanged()
     setVisible(mSettings.value(SHOWTRAYICON_KEY, true).toBool()); 
 }
 
-void TrayIcon::setUpstatusIcons()
+
+QIcon TrayIcon::getBuiltInIcon(double chargeLevel, bool discharging)
 {
-    mStatusIconsCharging[0] = QIcon(":icons/battery-charging-000.svg");
-    mStatusIconsCharging[1] = QIcon(":icons/battery-charging-010.svg");
-    mStatusIconsCharging[2] = QIcon(":icons/battery-charging-020.svg");
-    mStatusIconsCharging[3] = QIcon(":icons/battery-charging-030.svg");
-    mStatusIconsCharging[4] = QIcon(":icons/battery-charging-040.svg");
-    mStatusIconsCharging[5] = QIcon(":icons/battery-charging-050.svg");
-    mStatusIconsCharging[6] = QIcon(":icons/battery-charging-060.svg");
-    mStatusIconsCharging[7] = QIcon(":icons/battery-charging-070.svg");
-    mStatusIconsCharging[8] = QIcon(":icons/battery-charging-080.svg");
-    mStatusIconsCharging[9] = QIcon(":icons/battery-charging-090.svg");
-    mStatusIconsCharging[10] = QIcon(":icons/battery-charging-100.svg");
+      // See http://www.w3.org/TR/SVG/Overview.html 
+    // and regarding circle-arch in particular: 
+    // http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
+    static const QString svgTemplate =
+        "<?xml version='1.0' standalone='no'?>\n"
+        "<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>\n"
+        "<svg xmlns='http://www.w3.org/2000/svg'  version='1.1' viewBox='0 0 200 200'>\n"
+        "   %1\n"
+        "   <circle cx='100' cy='100' r='55' fill='white'/>\n"
+        "   %2\n"
+        "</svg>\n";
+    
+    // We show charge with a segment of a circle.
+    // We start at the top of the circle
+    // The starting point of the circle segment is at the top (12 o'clock or (0,1) or pi/2 
+    // and it moves counter-clockwise as the charge increases
+    // First we calculate in floating point numbers, using a circle with center
+    // in (0,0) and a radius of 1
+    double angle = 2*M_PI*chargeLevel/100 + M_PI_2; 
+    double segment_endpoint_x = cos(angle);
+    double segment_endpoint_y = sin(angle);
+    int large_arch = (angle > M_PI + M_PI_2 ? 1 : 0); // 1 if the arch is more than half a circle, 0 otherwise
 
-    mStatusIconsDecharging[0] = QIcon(":icons/battery-000.svg");
-    mStatusIconsDecharging[1] = QIcon(":icons/battery-010.svg");
-    mStatusIconsDecharging[2] = QIcon(":icons/battery-020.svg");
-    mStatusIconsDecharging[3] = QIcon(":icons/battery-030.svg");
-    mStatusIconsDecharging[4] = QIcon(":icons/battery-040.svg");
-    mStatusIconsDecharging[5] = QIcon(":icons/battery-050.svg");
-    mStatusIconsDecharging[6] = QIcon(":icons/battery-060.svg");
-    mStatusIconsDecharging[7] = QIcon(":icons/battery-070.svg");
-    mStatusIconsDecharging[8] = QIcon(":icons/battery-080.svg");
-    mStatusIconsDecharging[9] = QIcon(":icons/battery-090.svg");
-    mStatusIconsDecharging[10] = QIcon(":icons/battery-100.svg");
+    // svg uses an coordinate system with (0,0) at the topmost left corner,  
+    // y increasing downwards and x increasing left-to-right.
+    // We draw the circle with center at (100,100) and radius 100 so that it 
+    // fits inside a viewBox of (0 0 200 200).
+    int x_start = 100;
+    int y_start =   0;
+    int x_end = round(100 + 100*segment_endpoint_x);
+    int y_end = round(100 - 100*segment_endpoint_y);
+    int x_rel = x_end - x_start;
+    int y_rel = y_end - y_start;
+
+    // We color the arch red when charge level < 30% and discharging, green otherwise
+    static const QString warningcolor = "rgb(200, 40, 40)"; 
+    static const QString green = "rgb(40, 200, 40)";
+    bool warn_level = chargeLevel < 30 && discharging;
+    QString chargeArch = 
+        QString("<path d='M100,100 v -100 a100,100 0 %1,0 %2,%3 z' fill='%4' stroke-width='0'/>")
+            .arg(large_arch)
+            .arg(x_rel)
+            .arg(y_rel)
+            .arg(warn_level ? warningcolor : green);
+   
+    //qDebug() << "chargeArch:" << chargeArch;
+    // We color the minus sign red when chargelevel below 30%, black otherwise
+    QString minus =
+        QString("<path d='M 60,100 h 80' stroke='%1' stroke-width='20'/>")
+            .arg(warn_level ? warningcolor : "black");
+ 
+    static QString plus =
+        "<path d='M 60,100 h 80 M 100,60 v 80' stroke='black' stroke-width='20'/>";
+ 
+    QString svg = svgTemplate.arg(chargeArch).arg(discharging ? minus : plus);
+
+   qDebug() << svg;
+
+    // Paint the svg on a pixmap and create an icon from that.
+    QSvgRenderer render(svg.toAscii());
+    QPixmap pixmap(render.defaultSize());
+    pixmap.fill(QColor(0,0,0,0));
+    QPainter painter(&pixmap);
+    render.render(&painter);
+    return QIcon(pixmap);
 }
-
 
 void TrayIcon::showStatus(ActivationReason reason)
 {

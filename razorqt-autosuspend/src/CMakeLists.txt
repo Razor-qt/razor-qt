@@ -65,7 +65,7 @@ razor_translate_desktop(DESKTOP_FILES
 #************************************************
 
 add_executable ( razor-autosuspend ${razor-autosuspend_SRCS} ${UIS} ${RSCS} ${QM_FILES} ${MOCS} ${DESKTOP_FILES})
-target_link_libraries ( razor-autosuspend  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} )
+target_link_libraries ( razor-autosuspend  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTSVG_LIBRARY})
 
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)

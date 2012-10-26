@@ -28,11 +28,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QSystemTrayIcon>
-#include <QWidget>
-#include <QIcon>
-#include <QVariantMap>
-#include <QMap>
+#include <QtGui/QSystemTrayIcon>
+#include <QtGui/QWidget>
+#include <QtGui/QIcon>
+#include <QtCore/QVariantMap>
 #include <razorqt/razorsettings.h>
 #include "batteryinfo.h"
 #include "battery.h"
@@ -53,9 +52,7 @@ private:
     void  checkThemeStatusIcons();
     bool mThemeHasStatusIcons;
    
-    void setUpstatusIcons();
-    QIcon mStatusIconsCharging[11];
-    QIcon mStatusIconsDecharging[11];
+    QIcon getBuiltInIcon(double chargeLevel, bool discharging);
     
     Battery* mBattery; 
     BatteryInfo mBatteryInfo;
@@ -65,8 +62,7 @@ private slots:
     void update();
     void iconThemeChanged();
     void settingsChanged();
-    void showStatus(QSystemTrayIcon::ActivationReason reason);
-
+   void showStatus(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // MAINWINDOW_H

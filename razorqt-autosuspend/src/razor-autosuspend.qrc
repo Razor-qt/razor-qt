@@ -1,27 +1,5 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/razor-autosuspend.svg</file>
-        <file>icons/battery-000.svg</file>
-        <file>icons/battery-010.svg</file>
-        <file>icons/battery-020.svg</file>
-        <file>icons/battery-030.svg</file>
-        <file>icons/battery-040.svg</file>
-        <file>icons/battery-050.svg</file>
-        <file>icons/battery-060.svg</file>
-        <file>icons/battery-070.svg</file>
-        <file>icons/battery-080.svg</file>
-        <file>icons/battery-090.svg</file>
-        <file>icons/battery-100.svg</file>
-        <file>icons/battery-charging-000.svg</file>
-        <file>icons/battery-charging-010.svg</file>
-        <file>icons/battery-charging-020.svg</file>
-        <file>icons/battery-charging-030.svg</file>
-        <file>icons/battery-charging-040.svg</file>
-        <file>icons/battery-charging-050.svg</file>
-        <file>icons/battery-charging-060.svg</file>
-        <file>icons/battery-charging-070.svg</file>
-        <file>icons/battery-charging-080.svg</file>
-        <file>icons/battery-charging-090.svg</file>
-        <file>icons/battery-charging-100.svg</file>
     </qresource>
 </RCC>
