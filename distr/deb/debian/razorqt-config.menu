@@ -1,0 +1,9 @@
+?package(razorqt-config):needs="X11" section="Applications/System"\
+  title="Razor-qt settings center" command="/usr/bin/razor-config"
+
+?package(razorqt-config):needs="X11" section="Applications/System"\
+  title="Razor-qt mouse settings" command="/usr/bin/razor-config-mouse"
+
+?package(razorqt-config):needs="X11" section="Applications/System"\
+  title="Razor-qt gui settings" command="/usr/bin/razor-config-appearance"
+

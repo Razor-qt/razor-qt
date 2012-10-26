@@ -1,0 +1,2 @@
+?package(librazorqt0):needs="X11" section="Applications/System"\
+  title="Razor-qt information" command="/usr/bin/razor-about"
