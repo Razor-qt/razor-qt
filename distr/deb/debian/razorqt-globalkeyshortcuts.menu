@@ -1,0 +1,2 @@
+?package(razorqt-globalkeyshortcuts):needs="X11" section="Applications/System"\
+  title="Razor-qt shorcuts settings" command="/usr/bin/razor-config-globalkeyshortcuts"

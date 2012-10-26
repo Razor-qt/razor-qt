@@ -1,0 +1,5 @@
+?package(razorqt-desktop):needs="X11" section="Applications/Viewers"\
+  title="Razor-qt desktop manager" command="/usr/bin/razor-desktop"
+
+?package(razorqt-desktop):needs="X11" section="Applications/System"\
+  title="Razor-qt desktop settings" command="/usr/bin/razor-config-desktop"
