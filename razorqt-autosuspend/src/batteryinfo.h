@@ -27,6 +27,8 @@
 #ifndef BATTERYINFO_H
 #define BATTERYINFO_H
 
+#include "battery.h"
+
 #include <QDialog>
 #include <QVariantMap>
 
@@ -41,11 +43,10 @@ class BatteryInfo : public QDialog
 public:
     explicit BatteryInfo(QWidget *parent = 0);
     ~BatteryInfo();
-    void updateInfo(QVariantMap batteryProperties);
-    static QString state2string(uint state);
+    void updateInfo(Battery* battery);
 
 private:
-    Ui::BatteryInfo *ui;
+    Ui::BatteryInfo *mUi;
 };
 
 #endif // BATTERYINFO_H

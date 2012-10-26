@@ -30,44 +30,44 @@
 
 LidSettings::LidSettings(RazorSettings *settings, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::LidSettings),
-    loading(false)
+    mUi(new Ui::LidSettings),
+    mLoading(false)
 {
     mSettings = settings;
-    ui->setupUi(this);
-    connect(ui->actionComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveAction()));
+    mUi->setupUi(this);
+    connect(mUi->actionComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(saveAction()));
 }
 
 LidSettings::~LidSettings()
 {
-    delete ui;
+    delete mUi;
 }
 
 
 void LidSettings::loadSettings()
 {
-    loading = true;
-    ui->actionComboBox->clear();
-    ui->actionComboBox->addItem(tr("Nothing"), NOTHING);
-    ui->actionComboBox->addItem(tr("Sleep"), SLEEP);
-    ui->actionComboBox->addItem(tr("Hibernate"), HIBERNATE);
-    ui->actionComboBox->addItem(tr("Shutdown"), POWEROFF);
+    mLoading = true;
+    mUi->actionComboBox->clear();
+    mUi->actionComboBox->addItem(tr("Nothing"), NOTHING);
+    mUi->actionComboBox->addItem(tr("Sleep"), SLEEP);
+    mUi->actionComboBox->addItem(tr("Hibernate"), HIBERNATE);
+    mUi->actionComboBox->addItem(tr("Shutdown"), POWEROFF);
 
-    for (int index = 0; index < ui->actionComboBox->count(); index++)
+    for (int index = 0; index < mUi->actionComboBox->count(); index++)
     {
-        if (mSettings->value(LIDCLOSEDACTION_KEY, 0) == ui->actionComboBox->itemData(index).toInt())
+        if (mSettings->value(LIDCLOSEDACTION_KEY, 0) == mUi->actionComboBox->itemData(index).toInt())
         {
-            ui->actionComboBox->setCurrentIndex(index);
+            mUi->actionComboBox->setCurrentIndex(index);
             break;
         }
     }
-    loading = false;
+    mLoading = false;
 }
 
 void LidSettings::saveAction()
 {
-    if (! loading)
+    if (! mLoading)
     {
-        mSettings->setValue(LIDCLOSEDACTION_KEY, ui->actionComboBox->itemData(ui->actionComboBox->currentIndex()).toInt());
+        mSettings->setValue(LIDCLOSEDACTION_KEY, mUi->actionComboBox->itemData(mUi->actionComboBox->currentIndex()).toInt());
     }
 }

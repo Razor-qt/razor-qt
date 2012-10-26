@@ -27,7 +27,6 @@
 
 #include <QDBusConnection>
 #include <QDebug>
-
 #include <razorqt/razorapplication.h>
 #include "razortranslate.h"
 #include "razorautosuspend.h"

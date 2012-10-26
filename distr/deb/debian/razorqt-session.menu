@@ -1,0 +1,2 @@
+?package(razorqt-session):needs="X11" section="Applications/System"\
+  title="Razor-qt session settings" command="/usr/bin/razor-config-session"

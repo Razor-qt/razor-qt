@@ -28,31 +28,41 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QSystemTrayIcon>
-#include <QWidget>
-#include <QIcon>
-#include <QVariantMap>
+#include <QtGui/QSystemTrayIcon>
+#include <QtGui/QWidget>
+#include <QtGui/QIcon>
+#include <QtCore/QVariantMap>
+#include <razorqt/razorsettings.h>
 #include "batteryinfo.h"
+#include "battery.h"
 
 class TrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
 
 public:
-    explicit TrayIcon(QWidget *parent = 0);
+    TrayIcon(Battery* battery, QObject *parent = 0);
     ~TrayIcon();
-    void setStatus(double level, bool onBattery, QVariantMap batteryProperties);
 
 private:
-    void setUpstatusIcons();
-    QIcon statusIconsCharging[11];
-    QIcon statusIconsDecharging[11];
-    QVariantMap batteryProperties;
-    BatteryInfo batteryInfo;
+    void updateStatusIcon(); 
+    void updateToolTip();
+    void updateStateAsString();
+
+    void  checkThemeStatusIcons();
+    bool mThemeHasStatusIcons;
+   
+    QIcon getBuiltInIcon(double chargeLevel, bool discharging);
+    
+    Battery* mBattery; 
+    BatteryInfo mBatteryInfo;
+    RazorSettings mSettings;
 
 private slots:
-    void showStatus(QSystemTrayIcon::ActivationReason reason);
-
+    void update();
+    void iconThemeChanged();
+    void settingsChanged();
+   void showStatus(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // MAINWINDOW_H

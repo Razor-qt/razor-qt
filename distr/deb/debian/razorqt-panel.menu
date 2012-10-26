@@ -1,0 +1,2 @@
+?package(razorqt-panel):needs="X11" section="Applications/Tools"\
+  title="Razor-qt panel" command="/usr/bin/razor-panel"

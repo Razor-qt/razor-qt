@@ -1,0 +1,82 @@
+.TH razor-desktop "1" "September 2012" "Razor\-qt\ 0.5.0" "Razor\-qt\ Module"
+.SH NAME
+razorqt-desktop \- Desktop module management of \fBRazor-qt\fR: the faster and lighter QT Desktop Environment
+.SH SYNOPSIS
+.B razor-desktop
+.br
+.SH DESCRIPTION
+This module manage the desktop behavior for \fBRazor-qt\fR desktop environment.
+.P
+The \fBRazor-qt modules\fR are desktop independent tools, 
+and operate as daemons for the local user for desktop specific operations. 
+.P
+\fBRazor-qt\fR  ships several core desktop components, all of which are optional:
+.P
+ * Panel
+ * Desktop \fI(this)\fR
+ * Application launcher
+ * Settings center
+ * Session handler
+ * Polkit handler
+ * SSH password access
+ * Display manager handler
+.P
+These components perform similar actions to those available in other desktop
+environments, and their names are self-descriptive.  They are usually not launched
+by hand but automatically, when choosing a \fBRazor\-qt\fR session in the Display
+Manager.
+.SH BEHAVIOR
+The module manages desktop throught comunicaton to window manager application. Currelntly 
+on changes, user must restart session by logout and login again to reflects correctly 
+the changes.
+.P
+The \fBRazor-qt Desktop\fR  component are desktop independent, and works in two type of modes:
+this modes of behavior are called \fBModes of desktops\fR. 
+.P
+.SH "DESKTOP MODES"
+When settings opens, there its two main options:
+.br
+.P
+ \fBNative\fR
+In this mode all desktop manage relies on native window manager, all icons, wallpaper and behavior 
+relies on how windowmanager (and depends of display manager) set and performing desktop actions. 
+In this mode \fBrazor-desktop\fR can comunicate with some window managers and tells that display 
+a specific wallpaper or display contents of desktop directory as desktop icons.
+.P
+ \fBRazor\fR
+In this mode, all desktop are manage by \fBrazor-desktop\fR module component, this have a set 
+of plugins for:
+.P
+ * manage icons (u can specify a directory that contains it),
+ * rich text (can set your name to show in desktop or whatever text u dessire),
+ * quick notepad info (for stiky notes)
+ * set a wallpaper (from system provides or from your home directory)
+.P
+Then, so in this mode, each component/plugin configuration are manage by separate own 
+plugin config dialog and you can set throught a right click desktop over the plugin 
+region and select "configure plugin".
+.SH CONFIGURATION
+This module coniguration are manage throught the \fBrazor-config-desktop\fR application, please see 
+the manual manpage for performing config settings.
+.P
+Module plugins cnfiguraton are manage by each module, you can set throught a right click desktop over the plugin 
+region and select "configure plugin".
+.SH AUTOSTART
+The module only are showed on \fBRazor-qt\fR desktop, but you can create an autostart action 
+for u prefered desktop environment.
+.SH "REPORTING BUGS"
+Report bugs to https://github.com/Razor-qt/Razor-qt/issues
+.SH "SEE ALSO"
+\fBRazor-qt\fR it has been tailored for users who value simplicity, speed, and
+an intuitive interface, also intended for less powerful machines. See:
+.\" any module must refers to session app, for more info on start it
+.P
+\fBrazor-session.1\fR  Razor-qt module for manage Razor-qt session handler
+.P
+\fBrazor-config-desktop.1\fR  Razor-qt Desktop settings application for manage desktop behavior.
+.P
+\fBrazor-config.1\fR  Razor-qt application for config and settings over environment.
+.P
+.SH AUTHOR
+This manual page was created by \fBPICCORO Lenz McKAY\fR \fI<mckaygerhard@gmail.com>\fR
+for \fBRazor-qt\fR project and VENENUX GNU/Linux but can be used by others.

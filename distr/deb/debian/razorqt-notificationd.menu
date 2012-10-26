@@ -1,0 +1,2 @@
+?package(razorqt-notificationd):needs="X11" section="Applications/System"\
+  title="Razor-qt Notification settings" command="/usr/bin/razor-config-notificationd"

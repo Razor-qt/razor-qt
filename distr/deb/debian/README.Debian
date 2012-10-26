@@ -1,38 +1,57 @@
 razorqt for Debian
 ------------------
 
-Now razorqt are more close to 0.5 release and new symbols will be in library, 
-so a possible SONAME update will appear in next release that means the older 
+%ifnot RELEASE lucid maverick lenny etch squeeze
+Now Razor-qt has new improved login manager, but depends of what version of lightdm 
+have installed, if you experience problems with greeter, please verify always before 
+send or ask question, the release and version of lightdm core and libraries.
+%endif
+
+Theres new sensor plugin, in panel, for correct work u must update and configure 
+the sensors throught sensors-detect command with root cow powers, and then the plugin 
+can work an show right values; if not it will show indicators bars up and down constantly.
+
+Volume plugin and mixer settings must depend on package distribution, Razor-qt 
+has no own mixer yet, due its only desktop environment, not desktop application combo, 
+so packagers of any distribution must set mixer by default. You can set this through 
+the mixer settings, values suggested are qasmixer for alsa due are a pure qt application.
+
+ -- PICCORO Lenz McKAY <mckaygerhard@gmail.com>  Wed, 24 Oct 2012 10:44:40 -0430
+
+
+Now Razor-qt are over 0.5.X releases and new symbols are in library, 
+so you must update all installed razor-qt older componends that means the older 
 installed libraries don't work with newer razor modules.
 
-Panel plugin has new volume control at very early stage. Works with alsa and pulseaudio, 
-current status of plugins its in early stage and work only by runtime build default 
-audio backend (if pulse audio its detected overlaps alsa backend). So if u use alsa 
-auido backend as defualt must uninstall devel headers of pulseaudio.
+Panel plugin has new volume control. Works with alsa and pulseaudio, 
+you can change backend but must restart session for see changes over 
+audio backend. Please remenbe that alsa its a directly over kernel audio 
+system and pulseaudio its a system that depends on alsa, so you must have 
+installed both if wish to use pulseaudio backend. 
 
 Here its a new razor-update program, due 0.5.X next changes this program will 
 convert and update your config files to new format used by this newer versions; 
-you can run from command line or menu if u have older configs that wan to preserv
+you can run from command line or menu if you have older configs that wan to preserv.
+the config files will be updated automaticaly.
 
-Theres a new item, razor-about, this binary its part of razor library so u can 
+Theres a new item, razor-about, this binary its part of razor library so you can 
 invoke from desktop menu or manualy from command line, it display about info of 
-current razorqt desktop installed and also techical info about razorqt instalation.
+current Razor-qt desktop installed and also techical info about Razor-qt instalation.
 
-Theres a new item, razor-openssh-askpass, this module are very early stage, 
+Theres a new item, razor-openssh-askpass, this module are basic usage, 
 and not enabled by default, so u must added a env in razor-settings SSH_ASKPASS= 
 with razor-openssh-askpass value, openssl and openssh-client packages must be required.
 
 %ifnot RELEASE lucid maverick lenny etch squeeze
-Now razorqt are multiarch capable. Since new release 0.5.0 builds are automaticaly.
+Now Razor-qt are multiarch capable. Since new release 0.5.0 builds are automaticaly.
 For multiarch info see wiki info debian multiarch http://wiki.debian.org/Multiarch/
 %endif
 
  -- PICCORO Lenz McKAY <mckaygerhard@gmail.com>  Wed, 11 Jul 2012 14:23:40 -0430
 
 
-
-The razorqt polkit authentication daemon must need a updated version of policykit
-as minimum 0.99 and policykit-qt minimum 0.99. Squeeze can't built a complete razorqt 
+The Razor-qt polkit authentication daemon must need a updated version of policykit
+as minimum 0.99 and policykit-qt minimum 0.99. Squeeze can't built a complete Razor-qt 
 desktop due this thing. You can use the gnome default or alternative lxpolkit.
 
 Razor display manager authentication login use qwebkit, if you not have updated webkit, 

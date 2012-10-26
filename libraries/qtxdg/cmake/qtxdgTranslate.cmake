@@ -27,7 +27,7 @@ if(NOT TARGET UpdateTxFile)
   file(WRITE ${CMAKE_BINARY_DIR}/tx/_updateTxFile.sh
         "echo '[main]'\n"
         "echo 'host = https://www.transifex.com'\n"
-        "echo 'minimum_perc = 5'\n"
+        "echo 'minimum_perc = 1'\n"
         "echo ''\n"
         "for f in `ls ${CMAKE_BINARY_DIR}/tx/*.tx.sh`; do\n"
         " sh $f;\n"

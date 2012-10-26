@@ -4,7 +4,7 @@ OPTION(ENABLE_LIGHTDM_GREETER "Build lightdm greeter" ON)
 if (ENABLE_LIGHTDM_GREETER)
 
 set(PROJECT razor-lightdm-greeter)
-project($PROJECT)
+project(${PROJECT})
 
 
 # This HACK is here to allow greeter to be built as a standalone binary...
@@ -84,13 +84,16 @@ else()
         )
     QT4_WRAP_UI(UIS ${razor-lightdm-greeter_UIS})
 
-    set ( razor-lightdm-greeter_RSCS )
-    QT4_ADD_RESOURCES(RSCS ${razor-lightdm-greeter_RSCS})
+    set ( razor-lightdm-greeter_HDRS
+          mainwindow.h
+          loginform.h
+        )
 
     set ( razor-lightdm-greeter_MOCS
           mainwindow.h
           loginform.h
         )
+
     QT4_WRAP_CPP(MOCS ${razor-lightdm-greeter_MOCS})
 
     if(CMAKE_BUILD_TYPE MATCHES [Dd]ebug)
@@ -99,8 +102,24 @@ else()
         configure_file(test/lightdm.conf test/lightdm.conf)
     endif()
 
+    # Translations **********************************
+    include(RazorTranslate)
+    razor_translate_ts( QM_FILES
+                    SOURCES
+                        ${razor-lightdm-greeter_HDRS}
+                        ${razor-lightdm-greeter_SRCS}
+                        ${razor-lightdm-greeter_UIS}
+                      )
+    #************************************************
+
     link_directories( ${LIGHTDM_QT_LIBRARY_DIRS} )
-    add_executable ( razor-lightdm-greeter ${razor-lightdm-greeter_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
+    add_executable ( razor-lightdm-greeter
+                        ${razor-lightdm-greeter_SRCS}
+                        ${razor-lightdm-greeter_HDRS}
+                        ${razor-lightdm-greeter_UIS}
+                        ${QM_FILES}
+                        ${MOCS}
+                   )
     target_link_libraries ( razor-lightdm-greeter  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${LIGHTDM_QT_LIBRARIES} )
 
     file(GLOB DESKTOP_FILES resources/*.desktop)

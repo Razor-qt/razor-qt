@@ -50,8 +50,9 @@ private slots:
     void saveSettings();
 
 private:
-    RazorSettings *m_Settings;
-    Ui::GeneralSettings *ui;
+    RazorSettings *mSettings;
+    Ui::GeneralSettings *mUi;
+    bool mLoading;
 };
 
 #endif // GENERALSETTINGS_H

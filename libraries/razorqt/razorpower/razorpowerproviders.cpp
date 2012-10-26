@@ -41,6 +41,10 @@
 #define CONSOLEKIT_PATH         "/org/freedesktop/ConsoleKit/Manager"
 #define CONSOLEKIT_INTERFACE    "org.freedesktop.ConsoleKit.Manager"
 
+#define SYSTEMD_SERVICE         "org.freedesktop.login1"
+#define SYSTEMD_PATH            "/org/freedesktop/login1"
+#define SYSTEMD_INTERFACE       "org.freedesktop.login1.Manager"
+
 #define RAZOR_SERVICE      "org.razorqt.session"
 #define RAZOR_PATH         "/RazorSession"
 #define RAZOR_INTERFACE    "org.razorqt.session"
@@ -103,6 +107,58 @@ bool dbusCall(const QString &service,
     // If the method no returns value, we believe that it was successful.
     return msg.arguments().isEmpty() ||
            msg.arguments().first().toBool();
+}
+
+/************************************************
+ Helper func
+
+ Just like dbusCall(), except that systemd
+ returns a string instead of a bool, and it takes
+ an "interactivity boolean" as an argument.
+ ************************************************/
+bool dbusCallSystemd(const QString &service,
+                     const QString &path,
+                     const QString &interface,
+                     const QDBusConnection &connection,
+                     const QString &method,
+                     RazorPowerProvider::DbusErrorCheck errorCheck = RazorPowerProvider::CheckDBUS
+                     )
+{
+    QDBusInterface dbus(service, path, interface, connection);
+    if (!dbus.isValid())
+    {
+        qWarning() << "dbusCall: QDBusInterface is invalid" << service << path << interface << method;
+        if (errorCheck == RazorPowerProvider::CheckDBUS)
+        {
+            RazorNotification::notify(
+                                    QObject::tr("Power Manager Error"),
+                                    QObject::tr("QDBusInterface is invalid")+ "\n\n" + service + " " + path + " " + interface + " " + method,
+                                    "razor-logo.png");
+        }
+        return false;
+    }
+
+    QDBusMessage msg = dbus.call(method, true);
+
+    if (!msg.errorName().isEmpty())
+    {
+        printDBusMsg(msg);
+        if (errorCheck == RazorPowerProvider::CheckDBUS)
+        {
+            RazorNotification::notify(
+                                    QObject::tr("Power Manager Error (D-BUS call)"),
+                                    msg.errorName() + "\n\n" + msg.errorMessage(),
+                                    "razor-logo.png");
+        }
+    }
+
+    // If the method no returns value, we believe that it was successful.
+    if (msg.arguments().isEmpty())
+        return true;
+
+    QString response = msg.arguments().first().toString();
+    qDebug() << "systemd:" << method << "=" << response;
+    return response == "yes" || response == "challenge";
 }
 
 
@@ -316,6 +372,95 @@ bool ConsoleKitProvider::doAction(RazorPower::Action action)
             );
 }
 
+/************************************************
+  SystemdProvider
+
+  http://www.freedesktop.org/wiki/Software/systemd/logind
+ ************************************************/
+
+SystemdProvider::SystemdProvider(QObject *parent):
+    RazorPowerProvider(parent)
+{
+}
+
+
+SystemdProvider::~SystemdProvider()
+{
+}
+
+
+bool SystemdProvider::canAction(RazorPower::Action action) const
+{
+    QString command;
+
+    switch (action)
+    {
+    case RazorPower::PowerReboot:
+        command = "CanReboot";
+        break;
+
+    case RazorPower::PowerShutdown:
+        command = "CanPowerOff";
+        break;
+
+    case RazorPower::PowerSuspend:
+        command = "CanSuspend";
+        break;
+
+    case RazorPower::PowerHibernate:
+        command = "CanHibernate";
+        break;
+
+    default:
+        return false;
+    }
+
+    return dbusCallSystemd(SYSTEMD_SERVICE,
+                    SYSTEMD_PATH,
+                    SYSTEMD_INTERFACE,
+                    QDBusConnection::systemBus(),
+                    command,
+                    // canAction should be always silent because it can freeze
+                    // g_main_context_iteration Qt event loop in QMessageBox
+                    // on panel startup if there is no DBUS running.
+                    RazorPowerProvider::DontCheckDBUS
+                   );
+}
+
+
+bool SystemdProvider::doAction(RazorPower::Action action)
+{
+    QString command;
+
+    switch (action)
+    {
+    case RazorPower::PowerReboot:
+        command = "Reboot";
+        break;
+
+    case RazorPower::PowerShutdown:
+        command = "PowerOff";
+        break;
+
+    case RazorPower::PowerSuspend:
+        command = "Suspend";
+        break;
+
+    case RazorPower::PowerHibernate:
+        command = "Hibernate";
+        break;
+
+    default:
+        return false;
+    }
+
+    return dbusCallSystemd(SYSTEMD_SERVICE,
+             SYSTEMD_PATH,
+             SYSTEMD_INTERFACE,
+             QDBusConnection::systemBus(),
+             command
+            );
+}
 
 
 /************************************************

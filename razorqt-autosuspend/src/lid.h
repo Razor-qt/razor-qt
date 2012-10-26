@@ -38,12 +38,12 @@ signals:
 
 public:
     Lid();
-    bool isClosed() { return closed; }
+    bool isClosed() { return mIsClosed; }
 
 private:
-    bool closed;
-    QDBusInterface *uPower;
-    QDBusInterface *uPowerProperties;
+    bool mIsClosed;
+    QDBusInterface *mUPowerInterface;
+    QDBusInterface *mUPowerPropertiesInterface;
 
 private slots:
     void uPowerChange();

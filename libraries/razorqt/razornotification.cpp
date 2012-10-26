@@ -140,13 +140,14 @@ void RazorNotificationPrivate::update()
 {
     QDBusPendingReply<uint> reply = mInterface->Notify(qAppName(), mId, mIconName, mSummary, mBody, mActions, mHints, mTimeout);
     reply.waitForFinished();
-    if (reply.isError())
+    if (!reply.isError())
     {
-        QMessageBox::information(0, tr("Notifications Fallback"), mSummary + " \n\n " + mBody);
+        mId = reply.value();
     }
     else
     {
-        mId = reply.value();
+        if (mHints.contains("urgency") && mHints.value("urgency").toInt() != RazorNotification::UrgencyLow)
+            QMessageBox::information(0, tr("Notifications Fallback"), mSummary + " \n\n " + mBody);
     }
 }
 

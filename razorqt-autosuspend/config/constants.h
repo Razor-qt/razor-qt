@@ -32,6 +32,7 @@
 #define POWERLOWWARNING_KEY "powerLowWarning"
 #define POWERLOWLEVEL_KEY "powerLowLevel"
 #define SHOWTRAYICON_KEY "showTrayIcon"
+#define USETHEMEICONS_KEY "useThemeIcons"
 
 enum
 {

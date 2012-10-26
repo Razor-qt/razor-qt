@@ -38,23 +38,26 @@ signals:
     void batteryChanged();
 
 public:
-    Battery();
+    Battery(QObject* parent = 0);
     ~Battery();
 
 //    static const int POWER_LOW_LEVEL=15;
-    double chargeLevel();
-    bool   powerLow();
-    bool   onBattery();
+    double  chargeLevel();
+    bool    powerLow();
+    bool    discharging();
+    uint    state();
+    QString stateAsString(); 
     QVariantMap properties();
+
 private slots:
     void uPowerBatteryChanged();
 
 private:
-    QDBusInterface *uPower;
-    QDBusInterface *uPowerBatteryDevice;
-    QDBusInterface *uPowerBatteryProperties;
-    double m_chargeLevel;
-    bool m_onBattery;
-    QVariantMap props;
+    QString state2string(uint state);
+
+    QDBusInterface *mUPowerInterface;
+    QDBusInterface *mUPowerBatteryDeviceInterface;
+    QDBusInterface *mUPowerBatteryPropertiesInterface;
+    QVariantMap mProperties;
 };
 #endif

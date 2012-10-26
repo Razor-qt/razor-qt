@@ -22,7 +22,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string notr="true">Dialog</string>
   </property>
   <property name="windowOpacity">
    <double>0.200000000000000</double>
@@ -51,7 +51,7 @@
     <string notr="true"/>
    </property>
    <property name="text">
-    <string>chr-pc</string>
+    <string notr="true">chr-pc</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -102,7 +102,7 @@
     <enum>QLineEdit::Password</enum>
    </property>
    <property name="placeholderText">
-    <string comment="hejsa" extracomment="Password her">password</string>
+    <string>password</string>
    </property>
   </widget>
   <widget class="QPushButton" name="loginButton">
@@ -166,7 +166,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Razor Icon</string>
+    <string notr="true">Razor Icon</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -197,17 +197,17 @@
    </property>
    <item>
     <property name="text">
-     <string>Razor</string>
+     <string notr="true">Razor</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Gnome</string>
+     <string notr="true">Gnome</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Kde</string>
+     <string notr="true">Kde</string>
     </property>
    </item>
   </widget>
@@ -219,9 +219,6 @@
      <width>40</width>
      <height>40</height>
     </rect>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
  </widget>

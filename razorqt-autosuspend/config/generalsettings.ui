@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>340</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QCheckBox" name="showTrayIconcheckBox">
+  <widget class="QCheckBox" name="showTrayIconCheckBox">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -24,6 +24,19 @@
    </property>
    <property name="text">
     <string>Show battery status icon in tray</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="useThemeStatusIconsCheckBox">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>50</y>
+     <width>291</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Use status icons from theme</string>
    </property>
   </widget>
  </widget>

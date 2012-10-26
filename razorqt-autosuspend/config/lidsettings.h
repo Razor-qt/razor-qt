@@ -51,8 +51,8 @@ private slots:
 private:
 
     RazorSettings *mSettings;
-    Ui::LidSettings *ui;
-    bool loading;
+    Ui::LidSettings *mUi;
+    bool mLoading;
 };
 
 #endif // LIDSETTINGS_H

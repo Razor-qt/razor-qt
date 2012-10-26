@@ -36,14 +36,13 @@
 #include <razorqt/razorsettings.h>
 #include "../config/constants.h"
 
-Battery::Battery()
-    : uPowerBatteryProperties(0),
-      m_chargeLevel(0.0),
-      m_onBattery(false)
+Battery::Battery(QObject* parent) 
+   : QObject(parent),
+     mUPowerBatteryPropertiesInterface(0)
 {
-    uPower = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
-    uPowerBatteryDevice = 0;
-    QDBusReply<QList<QDBusObjectPath> > reply = uPower->call("EnumerateDevices");
+    mUPowerInterface = new QDBusInterface("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower", QDBusConnection::systemBus());
+    mUPowerBatteryDeviceInterface = 0;
+    QDBusReply<QList<QDBusObjectPath> > reply = mUPowerInterface->call("EnumerateDevices");
     foreach (QDBusObjectPath objectPath, reply.value())
     {
         QDBusInterface *device = new QDBusInterface("org.freedesktop.UPower",
@@ -55,9 +54,9 @@ Battery::Battery()
             ( device->property("PowerSupply").toBool() ||                          // UPower < 0.9.16.3 wrongly reports this false for some laptop batteries
               device->property("NativePath").toString().contains("power_supply"))) // - hence this line
         {
-            uPowerBatteryDevice = device;
-            connect(uPowerBatteryDevice, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
-            uPowerBatteryProperties = new QDBusInterface("org.freedesktop.UPower",
+            mUPowerBatteryDeviceInterface = device;
+            connect(mUPowerBatteryDeviceInterface, SIGNAL(Changed()), this, SLOT(uPowerBatteryChanged()));
+            mUPowerBatteryPropertiesInterface = new QDBusInterface("org.freedesktop.UPower",
                                                          objectPath.path(),
                                                          "org.freedesktop.DBus.Properties",
                                                          QDBusConnection::systemBus());
@@ -69,7 +68,7 @@ Battery::Battery()
             delete device;
         }
     }
-    if (uPowerBatteryDevice == 0)
+    if (mUPowerBatteryDeviceInterface == 0)
     {
         RazorNotification::notify(tr("No battery!"),
                                   tr("Razor autosuspend could not find data about any battery - actions on power low will not work"),
@@ -83,16 +82,11 @@ Battery::~Battery()
 
 void Battery::uPowerBatteryChanged()
 {
-    m_onBattery =  uPower->property("OnBattery").toBool();
-    m_chargeLevel = uPowerBatteryDevice->property("Percentage").toDouble();
-
-    if (uPowerBatteryProperties)
+    if (mUPowerBatteryPropertiesInterface)
     {
-        QDBusReply<QVariantMap> reply = uPowerBatteryProperties->call("GetAll", "org.freedesktop.UPower.Device");
-        props = reply.value();
+        QDBusReply<QVariantMap> reply = mUPowerBatteryPropertiesInterface->call("GetAll", "org.freedesktop.UPower.Device");
+        mProperties = reply.value();
         qDebug() << "props:" << properties();
-        qDebug() << properties().size();
-
         emit batteryChanged();
     }
     else
@@ -102,21 +96,44 @@ void Battery::uPowerBatteryChanged()
 
 double Battery::chargeLevel()
 {
-    return m_chargeLevel;
+    return mProperties.value("Percentage", 0).toDouble();
 }
 
 
 bool Battery::powerLow()
 {
-    return  m_onBattery && m_chargeLevel <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
+    return  discharging() && chargeLevel() <  RazorSettings("razor-autosuspend").value(POWERLOWLEVEL_KEY, 15).toInt();
 }
 
-bool Battery::onBattery()
+bool Battery::discharging()
 {
-    return m_onBattery;
+    return 2 == state();
+}
+
+uint Battery::state()
+{
+    return mProperties.value("State").toUInt();
+}
+
+QString Battery::stateAsString()
+{
+    return state2string(state());
 }
 
 QVariantMap Battery::properties()
 {
-    return props;
+    return mProperties;
+}
+
+QString Battery::state2string(uint state) {
+    switch (state) 
+    {
+        case 1:  return  tr("Charging");
+        case 2:  return  tr("Discharging");
+        case 3:  return  tr("Empty");
+        case 4:  return  tr("Fully charged");
+        case 5:  return  tr("Pending charge");
+        case 6:  return  tr("Pending discharge");
+        default: return  tr("Unknown");
+    }
 }
