@@ -74,6 +74,8 @@ endif (NOT CMAKE_BUILD_TYPE)
 
 
 set(APP_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/sysstat)
+
+include_directories( .. )
 add_definitions(-DTRANSLATIONS_DIR=\"${APP_SHARE_DIR}\")
 
 add_library(sysstat SHARED ${SYSSTAT_PUBLIC_HDRS} ${SYSSTAT_PRIVATE_HDRS} ${SYSSTAT_SRCS} ${SYSSTAT_CXX} ${SYSSTAT_QM_FILES})
