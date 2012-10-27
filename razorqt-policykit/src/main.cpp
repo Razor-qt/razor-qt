@@ -31,6 +31,7 @@
 
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
+#include "razortranslate.h"
 
 #include "policykitagent.h"
 
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     g_type_init();
 
     RazorApplication app(argc, argv);    
+    TRANSLATE_APP;
     
     app.setQuitOnLastWindowClosed(false);
 

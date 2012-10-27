@@ -8,6 +8,8 @@ if (NOT POLKITQT-1_LIB_DIR AND NOT POLKITQT-1_INCLUDE_DIR)
     message(WARNING "Qt bindings for policykit are not found. Razor policykit integration won't be built")
     message(STATUS "Hint: package libpolkit-qt-1-devel on openSUSE")
 else ()
+    project(razor-policykit-agent)
+
     message(STATUS "PolkitQt-1: ${POLKITQT-1_VERSION_STRING}")
     message(STATUS "      libs: ${POLKITQT-1_CORE_LIBRARY} ${POLKITQT-1_AGENT_LIBRARY}")
     message(STATUS "   include: ${POLKITQT-1_INCLUDE_DIR}")
@@ -37,13 +39,29 @@ else ()
         src/policykitagent.h
         src/policykitagentgui.h
     )
+
+    set(razor-policykit-agent_UI
+        src/policykitagentgui.ui
+    )
+
+    # Translations **********************************
+    include(RazorTranslate)
+    razor_translate_ts(razor-policykit-agent_QM_FILES
+        SOURCES
+            ${razor-policykit-agent_H}
+            ${razor-policykit-agent_SRCS}
+            ${razor-policykit-agent_UI}
+    )
+    #************************************************
     
     QT4_WRAP_CPP(razor-policykit-agent_MOCS ${razor-policykit-agent_H})
-    QT4_WRAP_UI(razor-policykit-agent_UI src/policykitagentgui.ui)
+    QT4_WRAP_UI(razor-policykit-agent_UI_CPP ${razor-policykit-agent_UI})
 
     add_executable(razor-policykit-agent
-        ${razor-policykit-agent_SRCS} ${razor-policykit-agent_MOCS}
-        ${razor-policykit-agent_UI}
+        ${razor-policykit-agent_SRCS}
+        ${razor-policykit-agent_MOCS}
+        ${razor-policykit-agent_UI_CPP}
+        ${razor-policykit-agent_QM_FILES}
     )
 
     target_link_libraries(razor-policykit-agent
