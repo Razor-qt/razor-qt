@@ -187,7 +187,7 @@ void RazorWorldClockConfiguration::addTimeZone(void)
     if (!mConfigurationTimeZones)
         mConfigurationTimeZones = new RazorWorldClockConfigurationTimeZones(this);
 
-    if (mConfigurationTimeZones->exec() == QDialog::Accepted)
+    if (mConfigurationTimeZones->updateAndExec() == QDialog::Accepted)
         ui->timeZonesLW->addItem(mConfigurationTimeZones->timeZone());
 
     saveSettings();

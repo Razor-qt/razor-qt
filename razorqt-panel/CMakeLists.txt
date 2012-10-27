@@ -208,16 +208,16 @@ if (SYSSTAT_PLUGIN)
 endif (SYSSTAT_PLUGIN)
 
 if (WORLDCLOCK_PLUGIN)
-  FIND_PACKAGE(ICU)
+  FIND_PACKAGE(ICU 2.8 REQUIRED i18n data)
 
-  if(ICU_FOUND)
+  if(ICU_I18N_FOUND)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "WorldClock")
     add_subdirectory(plugin-worldclock)
   else ()
-     message(STATUS "")
-     message(STATUS "WorldClock plugin requires ICU")
-     message(STATUS "")
-  endif (ICU_FOUND)
+    message(STATUS "")
+    message(STATUS "WorldClock plugin requires ICU")
+    message(STATUS "")
+  endif (ICU_I18N_FOUND)
 
 endif (WORLDCLOCK_PLUGIN)
 

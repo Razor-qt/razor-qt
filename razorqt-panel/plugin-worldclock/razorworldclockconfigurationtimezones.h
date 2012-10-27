@@ -45,6 +45,8 @@ public:
     explicit RazorWorldClockConfigurationTimeZones(QWidget *parent = NULL);
     ~RazorWorldClockConfigurationTimeZones();
 
+    int updateAndExec(void);
+
     QString timeZone(void);
 
 public slots:
