@@ -45,12 +45,15 @@ public:
     explicit RazorWorldClockConfigurationTimeZones(QWidget *parent = NULL);
     ~RazorWorldClockConfigurationTimeZones();
 
+    QString timeZone(void);
+
 public slots:
     void saveSettings();
 
 private:
     Ui::RazorWorldClockConfigurationTimeZones *ui;
 
+    QString mTimeZone;
 };
 
 #endif // RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H

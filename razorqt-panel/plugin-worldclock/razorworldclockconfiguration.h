@@ -41,6 +41,8 @@ namespace Ui {
     class RazorWorldClockConfiguration;
 }
 
+class RazorWorldClockConfigurationTimeZones;
+
 class RazorWorldClockConfiguration : public QDialog
 {
     Q_OBJECT
@@ -55,7 +57,7 @@ public slots:
 private:
     Ui::RazorWorldClockConfiguration *ui;
     QSettings &mSettings;
-    RazorSettingsCache oldSettings;
+    RazorSettingsCache mOldSettings;
 
     /*
       Read settings from conf file and put data into controls.
@@ -74,6 +76,13 @@ private slots:
     void setTimeZoneAsDefault(void);
     void moveTimeZoneUp(void);
     void moveTimeZoneDown(void);
+
+private:
+    QString mActiveTimeZone;
+
+    bool mLockCascadeSettingChanges;
+
+    RazorWorldClockConfigurationTimeZones *mConfigurationTimeZones;
 };
 
 #endif // RAZORWORLDCLOCKCONFIGURATION_H

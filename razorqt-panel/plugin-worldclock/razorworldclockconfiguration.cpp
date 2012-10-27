@@ -29,12 +29,16 @@
 #include "razorworldclockconfiguration.h"
 #include "ui_razorworldclockconfiguration.h"
 
+#include "razorworldclockconfigurationtimezones.h"
+
 
 RazorWorldClockConfiguration::RazorWorldClockConfiguration(QSettings &settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorWorldClockConfiguration),
     mSettings(settings),
-    oldSettings(settings)
+    mOldSettings(settings),
+    mLockCascadeSettingChanges(false),
+    mConfigurationTimeZones(NULL)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("WorldClockConfigurationWindow");
@@ -66,19 +70,66 @@ RazorWorldClockConfiguration::~RazorWorldClockConfiguration()
 
 void RazorWorldClockConfiguration::loadSettings()
 {
-//    ui->...->setValue( mSettings.value("...", 0).toInt() );
+    mLockCascadeSettingChanges = true;
+
+    int size = mSettings.beginReadArray("timeZones");
+    for (int i = 0; i < size; ++i)
+        ui->timeZonesLW->addItem(mSettings.value("timeZone", "").toString());
+    mSettings.endArray();
+
+    mActiveTimeZone = mSettings.value("activeTimeZone", "").toString();
+    if (mActiveTimeZone.isEmpty() && ui->timeZonesLW->count())
+        mActiveTimeZone = ui->timeZonesLW->item(0)->text();
+
+    ui->customFormatPTE->setPlainText(mSettings.value("customFormat", "").toString());
+
+    QString formatType = mSettings.value("formatType", "").toString();
+    if (formatType == "custom")
+        ui->customFormatRB->setChecked(true);
+    else if (formatType == "full")
+        ui->fullFormatRB->setChecked(true);
+    else if (formatType == "long")
+        ui->longFormatRB->setChecked(true);
+    else if (formatType == "medium")
+        ui->mediumFormatRB->setChecked(true);
+    else
+        ui->shortFormatRB->setChecked(true);
+
+    mLockCascadeSettingChanges = false;
 }
 
 void RazorWorldClockConfiguration::saveSettings()
 {
-//    mSettings.setValue("...", ui->...->...());
+    if (mLockCascadeSettingChanges)
+        return;
+
+    int size = ui->timeZonesLW->count();
+    mSettings.beginWriteArray("timeZones", size);
+    for (int i = 0; i < size; ++i)
+        mSettings.setValue("timeZone", ui->timeZonesLW->item(i)->text());
+    mSettings.endArray();
+
+    mSettings.setValue("activeTimeZone", mActiveTimeZone);
+
+    mSettings.setValue("customFormat", ui->customFormatPTE->toPlainText());
+
+    if (ui->customFormatRB->isChecked())
+        mSettings.setValue("formatType", "custom");
+    else if (ui->fullFormatRB->isChecked())
+        mSettings.setValue("formatType", "full");
+    else if (ui->longFormatRB->isChecked())
+        mSettings.setValue("formatType", "long");
+    else if (ui->mediumFormatRB->isChecked())
+        mSettings.setValue("formatType", "medium");
+    else
+        mSettings.setValue("formatType", "short");
 }
 
 void RazorWorldClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
 {
     if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
     {
-        oldSettings.loadToSettings();
+        mOldSettings.loadToSettings();
         loadSettings();
     }
     else
@@ -133,18 +184,37 @@ void RazorWorldClockConfiguration::updateTimeZoneButtons(void)
 
 void RazorWorldClockConfiguration::addTimeZone(void)
 {
-//    ui->timeZonesLW->addItem(...);
+    if (!mConfigurationTimeZones)
+        mConfigurationTimeZones = new RazorWorldClockConfigurationTimeZones(this);
+
+    if (mConfigurationTimeZones->exec() == QDialog::Accepted)
+        ui->timeZonesLW->addItem(mConfigurationTimeZones->timeZone());
+
+    saveSettings();
 }
 
 void RazorWorldClockConfiguration::removeTimeZone(void)
 {
     foreach (QListWidgetItem *item, ui->timeZonesLW->selectedItems())
         delete item;
+
+    saveSettings();
 }
 
 void RazorWorldClockConfiguration::setTimeZoneAsDefault(void)
 {
+    QListWidgetItem *item = ui->timeZonesLW->findItems(mActiveTimeZone, Qt::MatchExactly)[0];
+    QFont font = item->font();
+    font.setBold(false);
+    item->setFont(font);
 
+    item = ui->timeZonesLW->selectedItems()[0];
+    font = item->font();
+    font.setBold(true);
+    item->setFont(font);
+    mActiveTimeZone = item->text();
+
+    saveSettings();
 }
 
 void RazorWorldClockConfiguration::moveTimeZoneUp(void)
@@ -164,6 +234,8 @@ void RazorWorldClockConfiguration::moveTimeZoneUp(void)
         else
             skipTop = false;
     }
+
+    saveSettings();
 }
 
 void RazorWorldClockConfiguration::moveTimeZoneDown(void)
@@ -183,4 +255,6 @@ void RazorWorldClockConfiguration::moveTimeZoneDown(void)
         else
             skipBottom = false;
     }
+
+    saveSettings();
 }

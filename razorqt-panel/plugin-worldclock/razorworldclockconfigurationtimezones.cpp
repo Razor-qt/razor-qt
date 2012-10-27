@@ -44,3 +44,8 @@ RazorWorldClockConfigurationTimeZones::~RazorWorldClockConfigurationTimeZones()
 {
     delete ui;
 }
+
+QString RazorWorldClockConfigurationTimeZones::timeZone(void)
+{
+    return mTimeZone;
+}
