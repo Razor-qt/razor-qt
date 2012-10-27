@@ -34,6 +34,7 @@ setByDefault(CPULOAD_PLUGIN Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
 setByDefault(SENSORS_PLUGIN Yes)
 setByDefault(VOLUME_PLUGIN Yes)
+setByDefault(KBINDICATOR_PLUGIN Yes)
 setByDefault(SYSSTAT_PLUGIN Yes)
 # *******************************************************************
 
@@ -183,6 +184,11 @@ if (VOLUME_PLUGIN)
   endif (PULSEAUDIO_FOUND OR ALSA_FOUND)
 
 endif (VOLUME_PLUGIN)
+
+if (KBINDICATOR_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Keyboard indicator")
+    add_subdirectory(plugin-kbindicator)
+endif (KBINDICATOR_PLUGIN)
 
 if (SYSSTAT_PLUGIN)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "SysStat")
