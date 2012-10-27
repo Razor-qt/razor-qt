@@ -1,0 +1,1270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RazorSysStatConfiguration</class>
+ <widget class="QDialog" name="RazorSysStatConfiguration">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>740</width>
+    <height>435</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Razor SysStat Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,1">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="graphGB">
+         <property name="title">
+          <string>Graph</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="2,3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="bgColourL">
+            <property name="text">
+             <string>Background colour</string>
+            </property>
+            <property name="buddy">
+             <cstring>bgColourB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="intervalL">
+            <property name="text">
+             <string>Update interval</string>
+            </property>
+            <property name="buddy">
+             <cstring>intervalSB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="sizeL">
+            <property name="text">
+             <string>Size</string>
+            </property>
+            <property name="buddy">
+             <cstring>sizeSB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sizeSB">
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>120</number>
+            </property>
+            <property name="value">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="intervalSB">
+            <property name="suffix">
+             <string> s</string>
+            </property>
+            <property name="decimals">
+             <number>1</number>
+            </property>
+            <property name="minimum">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>60.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.500000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+            <item>
+             <widget class="QFrame" name="bgColourF">
+              <property name="minimumSize">
+               <size>
+                <width>25</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="bgColourB">
+              <property name="text">
+               <string>Change ...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gridGB">
+         <property name="title">
+          <string>Grid</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="linesL">
+            <property name="text">
+             <string>Lines</string>
+            </property>
+            <property name="buddy">
+             <cstring>linesSB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="linesSB"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="gridColourL">
+            <property name="text">
+             <string>Colour</string>
+            </property>
+            <property name="buddy">
+             <cstring>gridColourB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
+            <item>
+             <widget class="QFrame" name="gridColourF">
+              <property name="minimumSize">
+               <size>
+                <width>25</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="gridColourB">
+              <property name="text">
+               <string>Change ...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="titleGB">
+         <property name="title">
+          <string>Title</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout" columnstretch="2,3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelL">
+            <property name="text">
+             <string>Label</string>
+            </property>
+            <property name="buddy">
+             <cstring>labelLE</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="labelLE"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="fontL">
+            <property name="text">
+             <string>Font</string>
+            </property>
+            <property name="buddy">
+             <cstring>fontB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="titleColourL">
+            <property name="text">
+             <string>Colour</string>
+            </property>
+            <property name="buddy">
+             <cstring>titleColourB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
+            <item>
+             <widget class="QLabel" name="fontValueL">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="fontB">
+              <property name="text">
+               <string>Change ...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,0">
+            <item>
+             <widget class="QFrame" name="titleColourF">
+              <property name="minimumSize">
+               <size>
+                <width>25</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>true</bool>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="titleColourB">
+              <property name="text">
+               <string>Change ...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="dataGB">
+         <property name="title">
+          <string>Data</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4" columnstretch="2,3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="typeL">
+            <property name="text">
+             <string>Type</string>
+            </property>
+            <property name="buddy">
+             <cstring>typeCOB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="typeCOB">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <property name="maxVisibleItems">
+             <number>3</number>
+            </property>
+            <item>
+             <property name="text">
+              <string>CPU</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Memory</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Network</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="sourceL">
+            <property name="text">
+             <string>Source</string>
+            </property>
+            <property name="buddy">
+             <cstring>sourceCOB</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="sourceCOB"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QStackedWidget" name="dataSW">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="cpuP">
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,2">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="cpuSystemL">
+                  <property name="text">
+                   <string>System</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>cpuSystemB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="cpuUserL">
+                  <property name="text">
+                   <string>User</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>cpuUserB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="cpuNiceL">
+                  <property name="text">
+                   <string>Nice</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>cpuNiceB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="cpuOtherL">
+                  <property name="text">
+                   <string>Other</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>cpuOtherB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0" colspan="2">
+                 <widget class="QCheckBox" name="useFrequencyCB">
+                  <property name="text">
+                   <string>Use Frequency</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="frequencyL">
+                  <property name="text">
+                   <string>Frequency</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>frequencyB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="cpuSystemF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="cpuSystemB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="cpuUserF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="cpuUserB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="2" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="cpuNiceF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="cpuNiceB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="cpuOtherF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="cpuOtherB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="5" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="frequencyF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="frequencyB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="memP">
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QStackedWidget" name="memorySW">
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <widget class="QWidget" name="memPhysicalP">
+                 <layout class="QVBoxLayout" name="verticalLayout_5">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="margin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,2">
+                    <property name="spacing">
+                     <number>6</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="memAppsL">
+                      <property name="text">
+                       <string>Applications</string>
+                      </property>
+                      <property name="buddy">
+                       <cstring>memAppsB</cstring>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="memBuffersL">
+                      <property name="text">
+                       <string>Buffers</string>
+                      </property>
+                      <property name="buddy">
+                       <cstring>memBuffersB</cstring>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="memCachedL">
+                      <property name="text">
+                       <string>Cached</string>
+                      </property>
+                      <property name="buddy">
+                       <cstring>memCachedB</cstring>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,0">
+                      <item>
+                       <widget class="QFrame" name="memAppsF">
+                        <property name="minimumSize">
+                         <size>
+                          <width>25</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="autoFillBackground">
+                         <bool>true</bool>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="memAppsB">
+                        <property name="text">
+                         <string>Change ...</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="1" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,0">
+                      <item>
+                       <widget class="QFrame" name="memBuffersF">
+                        <property name="minimumSize">
+                         <size>
+                          <width>25</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="autoFillBackground">
+                         <bool>true</bool>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="memBuffersB">
+                        <property name="text">
+                         <string>Change ...</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item row="2" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,0">
+                      <item>
+                       <widget class="QFrame" name="memCachedF">
+                        <property name="minimumSize">
+                         <size>
+                          <width>25</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="autoFillBackground">
+                         <bool>true</bool>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="memCachedB">
+                        <property name="text">
+                         <string>Change ...</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_3">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="memSwapP">
+                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <property name="margin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_7" columnstretch="1,2">
+                    <property name="spacing">
+                     <number>6</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="swapUsedL">
+                      <property name="text">
+                       <string>Used</string>
+                      </property>
+                      <property name="buddy">
+                       <cstring>swapUsedB</cstring>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="1,0">
+                      <item>
+                       <widget class="QFrame" name="swapUsedF">
+                        <property name="minimumSize">
+                         <size>
+                          <width>25</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="autoFillBackground">
+                         <bool>true</bool>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="swapUsedB">
+                        <property name="text">
+                         <string>Change ...</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_5">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </widget>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="netP">
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <item>
+               <layout class="QGridLayout" name="gridLayout_8" columnstretch="2,3">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="netReceivedL">
+                  <property name="text">
+                   <string>Received</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>netReceivedB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="netTransmittedL">
+                  <property name="text">
+                   <string>Transmitted</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>netTransmittedB</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="maximumL">
+                  <property name="text">
+                   <string>Maximum</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>maximumHS</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="2,3">
+                  <item>
+                   <widget class="QLabel" name="maximumValueL">
+                    <property name="text">
+                     <string>XXX KBs</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSlider" name="maximumHS">
+                    <property name="maximum">
+                     <number>39</number>
+                    </property>
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QCheckBox" name="logarithmicCB">
+                  <property name="text">
+                   <string>Logarithmic scale</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="netReceivedF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="netReceivedB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,0">
+                  <item>
+                   <widget class="QFrame" name="netTransmittedF">
+                    <property name="minimumSize">
+                     <size>
+                      <width>25</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>true</bool>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="netTransmittedB">
+                    <property name="text">
+                     <string>Change ...</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QSpinBox" name="logScaleSB">
+                  <property name="suffix">
+                   <string> steps</string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>64</number>
+                  </property>
+                  <property name="value">
+                   <number>4</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttons">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>bgColourB</tabstop>
+  <tabstop>intervalSB</tabstop>
+  <tabstop>sizeSB</tabstop>
+  <tabstop>linesSB</tabstop>
+  <tabstop>gridColourB</tabstop>
+  <tabstop>labelLE</tabstop>
+  <tabstop>fontB</tabstop>
+  <tabstop>titleColourB</tabstop>
+  <tabstop>typeCOB</tabstop>
+  <tabstop>sourceCOB</tabstop>
+  <tabstop>cpuSystemB</tabstop>
+  <tabstop>cpuUserB</tabstop>
+  <tabstop>cpuNiceB</tabstop>
+  <tabstop>cpuOtherB</tabstop>
+  <tabstop>useFrequencyCB</tabstop>
+  <tabstop>frequencyB</tabstop>
+  <tabstop>memAppsB</tabstop>
+  <tabstop>memBuffersB</tabstop>
+  <tabstop>memCachedB</tabstop>
+  <tabstop>swapUsedB</tabstop>
+  <tabstop>netReceivedB</tabstop>
+  <tabstop>netTransmittedB</tabstop>
+  <tabstop>maximumHS</tabstop>
+  <tabstop>logarithmicCB</tabstop>
+  <tabstop>buttons</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttons</sender>
+   <signal>accepted()</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttons</sender>
+   <signal>rejected()</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>422</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>62</x>
+     <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>typeCOB</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>dataSW</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>708</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>522</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>RazorSysStatConfiguration</sender>
+   <signal>maximumNetSpeedChanged(QString)</signal>
+   <receiver>maximumValueL</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>739</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>597</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>intervalSB</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>82</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sizeSB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>354</x>
+     <y>126</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>387</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>linesSB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>390</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>labelLE</sender>
+   <signal>editingFinished()</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>292</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>386</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useFrequencyCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>416</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>387</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>logarithmicCB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>515</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sourceCOB</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>717</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>739</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>typeCOB</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>RazorSysStatConfiguration</receiver>
+   <slot>saveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>717</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>739</x>
+     <y>52</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>maximumNetSpeedChanged(QString)</signal>
+  <slot>on_typeCOB_currentIndexChanged(int)</slot>
+  <slot>on_sourceCOB_currentIndexChanged(int)</slot>
+  <slot>on_maximumHS_valueChanged(int)</slot>
+  <slot>saveSettings()</slot>
+ </slots>
+</ui>
