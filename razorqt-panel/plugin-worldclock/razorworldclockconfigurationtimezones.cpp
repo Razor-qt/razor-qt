@@ -27,6 +27,7 @@
 
 
 #include <unicode/timezone.h>
+#include <unicode/calendar.h>
 
 #include "razorworldclockconfigurationtimezones.h"
 #include "ui_razorworldclockconfigurationtimezones.h"
@@ -39,7 +40,7 @@ RazorWorldClockConfigurationTimeZones::RazorWorldClockConfigurationTimeZones(QWi
     setObjectName("WorldClockConfigurationTimeZonesWindow");
     ui->setupUi(this);
 
-//    connect(ui->..., SIGNAL(...), this, SLOT(saveSettings()));
+    connect(ui->timeZonesTW, SIGNAL(itemSelectionChanged()), SLOT(selectionChanged()));
 }
 
 RazorWorldClockConfigurationTimeZones::~RazorWorldClockConfigurationTimeZones()
@@ -52,11 +53,20 @@ QString RazorWorldClockConfigurationTimeZones::timeZone(void)
     return mTimeZone;
 }
 
+void RazorWorldClockConfigurationTimeZones::selectionChanged(void)
+{
+    QList<QTreeWidgetItem*> items = ui->timeZonesTW->selectedItems();
+    if (!items.empty())
+        mTimeZone = items[0]->data(1, Qt::UserRole).toString();
+    else
+        mTimeZone.clear();
+}
+
 int RazorWorldClockConfigurationTimeZones::updateAndExec(void)
 {
     ui->timeZonesTW->clear();
 
-    UDate uDate = static_cast<UDate>(time(NULL));
+    UDate uDate = Calendar::getNow();
 
     StringEnumeration* allTimeZones = TimeZone::createEnumeration();
     UErrorCode uErrorCode = U_ZERO_ERROR;
@@ -86,14 +96,16 @@ int RazorWorldClockConfigurationTimeZones::updateAndExec(void)
             QString qString(QString::fromUtf16(uString->getBuffer()));
             QStringList qStrings(qString.split('/'));
 
-            if ((qStrings[0] == "Brazil") || (qStrings[0] == "Canada") || (qStrings[0] == "Chile") || (qStrings[0] == "Cuba") || (qStrings[0] == "Mexico") || (qStrings[0] == "US"))
+            if ((qStrings[0] == "Brazil") || (qStrings[0] == "Canada") || (qStrings[0] == "Chile") || (qStrings[0] == "Cuba") || (qStrings[0] == "Jamaica") || (qStrings[0] == "Mexico") || (qStrings[0] == "Navajo") || (qStrings[0] == "US"))
                 qStrings.prepend("America");
             else if (qStrings[0] == "Egypt")
                 qStrings.prepend("Africa");
-            else if ((qStrings[0] == "Mideast") || (qStrings[0] == "Iran") || (qStrings[0] == "Israel") || (qStrings[0] == "Japan") || (qStrings[0] == "Libya") || (qStrings[0] == "Singapore") || (qStrings[0] == "Turkey"))
+            else if ((qStrings[0] == "Mideast") || (qStrings[0] == "Hongkong") || (qStrings[0] == "Indian") || (qStrings[0] == "Iran") || (qStrings[0] == "Israel") || (qStrings[0] == "Japan") || (qStrings[0] == "Libya") || (qStrings[0] == "Singapore") || (qStrings[0] == "Turkey"))
                 qStrings.prepend("Asia");
-            else if ((qStrings[0] == "Greenwich") || (qStrings[0] == "Poland") ||(qStrings[0] == "Portugal"))
+            else if ((qStrings[0] == "Eire") || (qStrings[0] == "GB-Eire") || (qStrings[0] == "Greenwich") || (qStrings[0] == "Iceland") || (qStrings[0] == "Poland") ||(qStrings[0] == "Portugal"))
                 qStrings.prepend("Europe");
+            else if (qStrings[0] == "Kwajalein")
+                qStrings.prepend("Pacific");
             else if ((qStrings[0] == "Etc") || (qStrings[0] == "SystemV"))
                 qStrings.prepend("Other");
 

@@ -74,7 +74,10 @@ void RazorWorldClockConfiguration::loadSettings()
 
     int size = mSettings.beginReadArray("timeZones");
     for (int i = 0; i < size; ++i)
+    {
+        mSettings.setArrayIndex(i);
         ui->timeZonesLW->addItem(mSettings.value("timeZone", "").toString());
+    }
     mSettings.endArray();
 
     mActiveTimeZone = mSettings.value("activeTimeZone", "").toString();
@@ -106,7 +109,10 @@ void RazorWorldClockConfiguration::saveSettings()
     int size = ui->timeZonesLW->count();
     mSettings.beginWriteArray("timeZones", size);
     for (int i = 0; i < size; ++i)
+    {
+        mSettings.setArrayIndex(i);
         mSettings.setValue("timeZone", ui->timeZonesLW->item(i)->text());
+    }
     mSettings.endArray();
 
     mSettings.setValue("activeTimeZone", mActiveTimeZone);

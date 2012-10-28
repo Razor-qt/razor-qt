@@ -50,7 +50,7 @@ public:
     QString timeZone(void);
 
 public slots:
-    void saveSettings();
+    void selectionChanged(void);
 
 private:
     Ui::RazorWorldClockConfigurationTimeZones *ui;
