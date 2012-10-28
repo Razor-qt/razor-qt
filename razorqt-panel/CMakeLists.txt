@@ -19,7 +19,7 @@ endmacro()
 #    cmake -DCLOCK_PLUGIN=Yes .. # Enable clock plugin
 #    cmake -DCLOCK_PLUGIN=No ..  # Disable clock plugin
 
-setByDefault(CLOCK_PLUGIN          No)
+setByDefault(CLOCK_PLUGIN          Yes)
 setByDefault(DESKTOPSWITCH_PLUGIN  No)
 setByDefault(QUICKLAUNCH_PLUGIN    No)
 setByDefault(TRAY_PLUGIN           No)

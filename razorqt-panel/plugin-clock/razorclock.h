@@ -30,7 +30,7 @@
 #ifndef RAZORCLOCK_H
 #define RAZORCLOCK_H
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
 #include "razorclockconfiguration.h"
 
 #include <QtCore/QString>
@@ -39,27 +39,26 @@ class QLabel;
 class QDialog;
 class QTimer;
 
-class RazorClock : public RazorPanelPlugin
+class RazorClock : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorClock(const IRazorPanelPluginStartupInfo &startupInfo);
     ~RazorClock();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    virtual Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    QString themeId() const { return "Clock"; }
+    QWidget *widget() { return mContent; }
+    QDialog *configureDialog();
+    void settingsChanged();
+
+    void activated(ActivationReason reason);
 
 public slots:
     void updateTime();
 
 protected:
-    virtual void mouseReleaseEvent(QMouseEvent* event);
-    //virtual QSize sizeHint() const;
-
-    bool event(QEvent *event);
-
-protected slots:
-    virtual void settingsChanged();
-    virtual void showConfigureDialog();
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     QTimer* mClockTimer;
@@ -80,6 +79,13 @@ private slots:
 };
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class RazorClockPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new RazorClock(startupInfo);}
+};
+
 
 #endif

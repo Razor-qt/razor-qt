@@ -50,49 +50,45 @@
  * @author Christopher "VdoP" Regali
  * @author Kuzma Shapran
  */
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorClock)
+Q_EXPORT_PLUGIN2(clock, RazorClockPluginLibrary)
 
 /**
  * @brief constructor
  */
-RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-        RazorPanelPlugin(startInfo, parent),
-        mContent(new QWidget(this)),
-        mCalendarDialog(0)
+RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    mContent(new QFrame()),
+    mCalendarDialog(0)
 {
-    setObjectName("Clock");
     mClockFormat = "hh:mm";
 
-    mTimeLabel = new QLabel(this);
+    mTimeLabel = new QLabel(mContent);
     mTimeLabel->setObjectName("TimeLabel");
-    mDateLabel = new QLabel(this);
+    mDateLabel = new QLabel(mContent);
     mDateLabel->setObjectName("DateLabel");
     QVBoxLayout *contentLayout = new QVBoxLayout(mContent);
     contentLayout->addWidget(mTimeLabel, 0, Qt::AlignCenter);
     contentLayout->addWidget(mDateLabel, 0, Qt::AlignCenter);
     mContent->setLayout(contentLayout);
-    addWidget(mContent);
 
     contentLayout->setContentsMargins(0, 0, 0, 0);
-    this->layout()->setContentsMargins(2, 0, 2, 0);
 
     contentLayout->setSpacing(1);
-    this->layout()->setSpacing(0);
 
     mTimeLabel->setAlignment(Qt::AlignCenter);
     mDateLabel->setAlignment(Qt::AlignCenter);
     contentLayout->setAlignment(Qt::AlignCenter);
-    this->layout()->setAlignment(Qt::AlignCenter);
 
     mTimeLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     mDateLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     mContent->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-    this->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
     mClockTimer = new QTimer(this);
     connect (mClockTimer, SIGNAL(timeout()), SLOT(updateTime()));
     mClockTimer->start(1000);
 
+    mContent->installEventFilter(this);
     settingsChanged();
 }
 
@@ -124,21 +120,22 @@ void RazorClock::updateTime()
  */
 RazorClock::~RazorClock()
 {
+    delete mContent;
 }
 
 void RazorClock::settingsChanged()
 {
-    mTimeFormat = settings().value("timeFormat", QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") ? "h:mm AP" : "HH:mm").toString();
+    mTimeFormat = settings()->value("timeFormat", QLocale::system().timeFormat(QLocale::ShortFormat).toUpper().contains("AP") ? "h:mm AP" : "HH:mm").toString();
 
-    mUseUTC = settings().value("UTC", false).toBool();
+    mUseUTC = settings()->value("UTC", false).toBool();
     if (mUseUTC)
         mTimeFormat += "' Z'";
 
-    mDateFormat = settings().value("dateFormat", Qt::SystemLocaleShortDate).toString();
+    mDateFormat = settings()->value("dateFormat", Qt::SystemLocaleShortDate).toString();
 
-    bool dateBeforeTime = (settings().value("showDate", "no").toString().toLower() == "before");
-    bool dateAfterTime = (settings().value("showDate", "no").toString().toLower() == "after");
-    mDateOnNewLine = (settings().value("showDate", "no").toString().toLower() == "below");
+    bool dateBeforeTime = (settings()->value("showDate", "no").toString().toLower() == "before");
+    bool dateAfterTime = (settings()->value("showDate", "no").toString().toLower() == "after");
+    mDateOnNewLine = (settings()->value("showDate", "no").toString().toLower() == "below");
 
     if (dateBeforeTime)
         mClockFormat = QString("%1 %2").arg(mDateFormat).arg(mTimeFormat);
@@ -147,7 +144,7 @@ void RazorClock::settingsChanged()
     else
         mClockFormat = mTimeFormat;
 
-    mFirstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
+    mFirstDayOfWeek = static_cast<Qt::DayOfWeek>(settings()->value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
     mDateLabel->setVisible(mDateOnNewLine);
 
@@ -255,15 +252,14 @@ void RazorClock::updateMinWidth()
     mContent->setMinimumSize(width, height);
 }
 
-
-void RazorClock::mouseReleaseEvent(QMouseEvent* event)
+void RazorClock::activated(ActivationReason reason)
 {
-    if (event->button() != Qt::LeftButton)
+    if (reason != IRazorPanelPlugin::Trigger)
         return;
 
     if (!mCalendarDialog)
     {
-        mCalendarDialog = new QDialog(this);
+        mCalendarDialog = new QDialog();
         //mCalendarDialog->setAttribute(Qt::WA_DeleteOnClose, true);
         mCalendarDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         mCalendarDialog->setLayout(new QHBoxLayout(mCalendarDialog));
@@ -273,37 +269,8 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
         cal->setFirstDayOfWeek(mFirstDayOfWeek);
         mCalendarDialog->layout()->addWidget(cal);
         mCalendarDialog->adjustSize();
-
-        int x, y;
-        RazorPanel::Position pos = panel()->position();
-        QRect panelRect = panel()->geometry();
-        int calHeight = mCalendarDialog->height();
-        int calWidth = mCalendarDialog->width();
-
-        if (pos == RazorPanel::PositionBottom || pos == RazorPanel::PositionTop)
-        {
-            int rightMax = panelRect.topRight().x() - calWidth + 1;
-            x = panel()->mapToGlobal(this->geometry().topLeft()).x();
-            if (x > rightMax)
-                x = rightMax;
-            if (pos == RazorPanel::PositionBottom)
-                y = panelRect.top() - calHeight;
-            else
-                y = panelRect.bottom() + 1;
-        }
-        else // PositionRight or PositionLeft
-        {
-            int bottomMax = panelRect.bottomRight().y() - calHeight + 1;
-            y = panel()->mapToGlobal(this->geometry().topRight()).y();
-            if (y > bottomMax)
-                y = bottomMax;
-            if (pos == RazorPanel::PositionRight)
-                x = panelRect.left() - calWidth;
-            else
-                x = panelRect.right() + 1;
-        }
-
-        mCalendarDialog->move(QPoint(x, y));
+        QRect pos = calculatePopupWindowPos(mCalendarDialog->size());
+        mCalendarDialog->move(pos.topLeft());
         mCalendarDialog->show();
     }
     else
@@ -313,22 +280,23 @@ void RazorClock::mouseReleaseEvent(QMouseEvent* event)
     }
 }
 
-void RazorClock::showConfigureDialog()
+QDialog * RazorClock::configureDialog()
 {
-    RazorClockConfiguration *confWindow = this->findChild<RazorClockConfiguration*>("ClockConfigurationWindow");
-
-    if (!confWindow)
-        confWindow = new RazorClockConfiguration(settings(), this);
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+     return new RazorClockConfiguration(*settings());
 }
 
-bool RazorClock::event(QEvent *event)
+bool RazorClock::eventFilter(QObject *watched, QEvent *event)
 {
-    if (event->type() == QEvent::ToolTip)
-        setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
+    if (watched == mContent)
+    {
+        if (event->type() == QEvent::ToolTip)
+        {
+            mContent->setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
+        }
 
-    return RazorPanelPlugin::event(event);
+        return false;
+    }
+
+    return false;
 }
+
