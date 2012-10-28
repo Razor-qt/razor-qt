@@ -30,21 +30,45 @@
 #define IRAZORPANEL_H
 #include <QRect>
 
+class IRazorPanelPlugin;
+
+/**
+ **/
 class IRazorPanel
 {
 public:
+    /**
+    Specifies the position of the panel on screen.
+    **/
     enum Position{
-        PositionBottom,
-        PositionTop,
-        PositionLeft,
-        PositionRight
+        PositionBottom, //! The bottom side of the screen.
+        PositionTop,    //! The top side of the screen.
+        PositionLeft,   //! The left side of the screen.
+        PositionRight   //! The right side of the screen.
     };
-    Q_PROPERTY(Position position READ position NOTIFY positionChanged)
 
+    /**
+     This property holds position of the panel.
+     Possible values for this property are described by the Position enum
+     **/
     virtual Position position() const = 0;
+
+    /**
+     Helper functions for eazy direction checking.
+     Retuns true if panel on the top or bottom of the screen; otherwise returns false.
+     **/
     bool isHorizontal() const { return position() == PositionBottom || position() == PositionTop; }
 
+    /**
+     Returns global screen coordinates of the panel. You no need to use mapToGlobal.
+     **/
     virtual QRect globalGometry() const = 0;
+
+    /**
+     Helper functions for calculating global screen position of some popup window with windowSize size.
+     If you need to show some popup window, you can use it, to get global screen position for the new window.
+     **/
+    virtual QRect calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const QSize &windowSize) const = 0;
 };
 
 #endif // IRAZORPANEL_H

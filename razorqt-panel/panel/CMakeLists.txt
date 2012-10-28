@@ -38,7 +38,8 @@ set(MOCS
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
     configpaneldialog.h
-    irazorpanelplugin.h
+    #irazorpanelplugin.h
+    #irazorpanel.h
     plugin.h
 )
 

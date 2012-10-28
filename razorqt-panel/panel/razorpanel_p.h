@@ -43,6 +43,7 @@ class QLayoutItem;
 class RazorSettings;
 class RazorPanelLayout;
 class AddPluginDialog;
+class IRazorPanelPlugin;
 
 class RazorPanelPrivate: QObject {
     Q_OBJECT
@@ -58,6 +59,7 @@ public:
     void loadPlugins();
     Plugin *loadPlugin(const RazorPluginInfo &desktopFile, const QString &settingsGroup);
     QString findNewPluginSettingsGroup(const QString &pluginType) const;
+    Plugin *findPlugin(const IRazorPanelPlugin *iPlugin) const;
 
     QList<Plugin*> mPlugins;
     RazorPanel::Position mPosition;
@@ -93,23 +95,6 @@ private:
     Q_DECLARE_PUBLIC(RazorPanel)
 
 };
-
-
-class PluginAction: public QAction
-{
-  Q_OBJECT
-public:
-    PluginAction(RazorPanelPlugin* plugin, const QString &text, QObject* parent):
-        QAction(text, parent), mPlugin(plugin) {}
-
-    PluginAction(RazorPanelPlugin* plugin, const QIcon &icon, const QString &text, QObject* parent):
-        QAction(icon, text, parent), mPlugin(plugin) {}
-
-    RazorPanelPlugin* plugin() const { return mPlugin; }
-private:
-    RazorPanelPlugin* mPlugin;
-};
-
 
 
 class PopupMenu: public QMenu

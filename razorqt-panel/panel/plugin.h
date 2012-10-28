@@ -63,13 +63,14 @@ public:
     void x11EventFilter(XEvent* event);
 
     QMenu* popupMenu() const;
+    IRazorPanelPlugin * iPlugin() const { return mPlugin; }
 
 signals:
     void move(QWidget *widget);
     void remove();
 
 protected:
-    virtual bool event(QEvent* e);
+    virtual bool event(QEvent* event);
 
 private:
     bool loadLib(const QString &libraryName);
@@ -89,5 +90,6 @@ private slots:
     void requestMove();
     void requestRemove();
 };
+
 
 #endif // PLUGIN_H

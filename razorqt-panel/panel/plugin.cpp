@@ -39,7 +39,8 @@
 #include <QDialog>
 #include <QEvent>
 #include <QMenu>
-
+#include <QMouseEvent>
+#include <QApplication>
 
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgicon.h>
@@ -213,18 +214,42 @@ void Plugin::x11EventFilter(XEvent *event)
 /************************************************
 
  ************************************************/
-bool Plugin::event(QEvent *e)
+bool Plugin::event(QEvent *event)
 {
-    switch (e->type())
+    switch (event->type())
     {
-        case QEvent::ContextMenu:
-            mPanel->showPopupMenu(this);
-            return true;
+    case QEvent::ContextMenu:
+        mPanel->showPopupMenu(this);
+        return true;
+
+    case QEvent::MouseButtonRelease:
+    {
+        QMouseEvent *e =  static_cast<QMouseEvent*>(event);
+        switch (e->button())
+        {
+        case Qt::LeftButton:
+            mPlugin->activated(IRazorPanelPlugin::Trigger);
+            break;
+
+        case Qt::MiddleButton:
+            mPlugin->activated(IRazorPanelPlugin::MiddleClick);
+            break;
 
         default:
             break;
+        }
+        return true;
     }
-    return QFrame::event(e);
+
+    case QEvent::MouseButtonDblClick:
+        mPlugin->activated(IRazorPanelPlugin::DoubleClick);
+        return true;
+
+    default:
+            break;
+    }
+
+    return QFrame::event(event);
 }
 
 

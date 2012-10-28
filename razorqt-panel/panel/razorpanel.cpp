@@ -613,7 +613,7 @@ QString RazorPanelPrivate::findNewPluginSettingsGroup(const QString &pluginType)
  ************************************************/
 void RazorPanelPrivate::addPlugin(const RazorPluginInfo &desktopFile)
 {
-    Q_Q(RazorPanel);
+    //Q_Q(RazorPanel);
 
     QString settingsGroup = findNewPluginSettingsGroup(desktopFile.id());
     Plugin *plugin= loadPlugin(desktopFile, settingsGroup);
@@ -653,19 +653,6 @@ RazorPanel::Position RazorPanel::position() const
     return d->mPosition;
 }
 
-RazorPanel::Orientation RazorPanel::orientation() const
-{
-    Q_D(const RazorPanel);
-    if (d->mPosition == RazorPanel::PositionBottom ||
-        d->mPosition == RazorPanel::PositionTop)
-    {
-        return RazorPanel::Horizontal;
-    }
-    else
-    {
-        return RazorPanel::Vertical;
-    }
-}
 
 /************************************************
 
@@ -913,6 +900,61 @@ void PopupMenu::keyPressEvent(QKeyEvent* e)
     }
 
     QMenu::keyPressEvent(e);
+}
+
+
+/************************************************
+
+ ************************************************/
+Plugin *RazorPanelPrivate::findPlugin(const IRazorPanelPlugin *iPlugin) const
+{
+    foreach(Plugin *plugin, mPlugins)
+    {
+        if (plugin->iPlugin() == iPlugin)
+            return plugin;
+    }
+
+    return 0;
+}
+
+
+/************************************************
+
+ ************************************************/
+QRect RazorPanel::calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const QSize &windowSize) const
+{
+    Q_D(const RazorPanel);
+
+    Plugin *panelPlugin = d->findPlugin(plugin);
+    if (!plugin)
+        return QRect();
+
+    int x=0, y=0;
+
+    switch (position())
+    {
+        case IRazorPanel::PositionTop:
+            x = panelPlugin->mapToGlobal(QPoint(0, 0)).x();
+            y = globalGometry().bottom();
+            break;
+
+        case IRazorPanel::PositionBottom:
+            x = panelPlugin->mapToGlobal(QPoint(0, 0)).x();
+            y = globalGometry().top() - windowSize.height();
+            break;
+
+        case IRazorPanel::PositionLeft:
+            x = globalGometry().right();
+            y = panelPlugin->mapToGlobal(QPoint(0, 0)).y();
+            break;
+
+        case IRazorPanel::PositionRight:
+            x = globalGometry().left() - windowSize.width();
+            y = panelPlugin->mapToGlobal(QPoint(0, 0)).y();
+            break;
+    }
+
+    return QRect(QPoint(x, y), windowSize);
 }
 
 

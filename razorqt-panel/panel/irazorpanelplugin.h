@@ -35,6 +35,19 @@
 #include <razorqt/razorplugininfo.h>
 #include "irazorpanel.h"
 
+/**
+Razor panel plugins are standalone sharedlibraries
+(*.so) located in PLUGIN_DIR (define provided by CMakeLists.txt).
+
+Plugin for the panel is a library written on C++. One more necessary thing
+is a .desktop file describing this plugin. The same may be additional files,
+like translations. Themselves plugins will be installed to
+/usr/local/lib/razor-panel or /usr/lib/razor-panel (dependent on cmake option
+-DCMAKE_INSTALL_PREFIX). Desktop files are installed to
+/usr/local/share/razor/razor-panel, translations to
+/usr/local/share/razor/razor-panel/PLUGIN_NAME.
+**/
+
 class QDialog;
 
 struct IRazorPanelPluginStartupInfo
@@ -43,6 +56,17 @@ struct IRazorPanelPluginStartupInfo
     QSettings *settings;
     const RazorPluginInfo *desktopFile;
 };
+
+
+/*! \brief Base abstract class for Razor panel widgets/plugins.
+All plugins *must* be inherited from this one.
+
+This class provides some basic API and inherited/implemented
+plugins GUIs will be responsible on the functionality itself.
+
+See <a href=https://github.com/Razor-qt/razor-qt/wiki/How-to-write-the-panel-plugin>
+How to write the panel plugin</a> for more information about how to make your plugins.
+*/
 
 class IRazorPanelPlugin
 {
@@ -61,12 +85,30 @@ public:
 
     Q_DECLARE_FLAGS(Flags, Flag)
 
+    /**
+      This enum describes the reason the plugin was activated.
+     **/
+    enum ActivationReason {
+        Unknown             = 0,    //! Unknown reason
+//        Context             = 1,    //!	The context menu for the plugin entry was requested
+        DoubleClick         = 2,    //!	The plugin entry was double clicked
+        Trigger             = 3,    //!	The plugin was clicked
+        MiddleClick         = 4     //! The plugin was clicked with the middle mouse button
+    };
+
+    /**
+     Constructs a IRazorPanelPlugin object with the given startupInfo. You do not have to worry
+     about the startupInfo parameters, IRazorPanelPlugin process the parameters yourself.
+     **/
     IRazorPanelPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
         mSettings(startupInfo.settings),
         mPanel(startupInfo.razorPanel),
         mDesktopFile(startupInfo.desktopFile)
     {}
 
+    /**
+     Destroys the object.
+     **/
     virtual ~IRazorPanelPlugin() {}
 
     /**
@@ -76,12 +118,17 @@ public:
     virtual Flags flags() const { return NoFlags; }
 
     /**
-    Returns the plugin settings dialog. Reimplement this function if your plugin has it.
+    Returns the string that is used in the theme QSS file.
+    If you retuns "TeaTime" string, theme author may write something like `#TeaTime { border: 1px solid red; }`
+    to set custom border for the your plugin.
     **/
     virtual QString themeId() const = 0;
 
+    /**
+     From users point of view plugin is a some visual widget on the panel. This function retuns pointer to it.
+     This method called only once, so you are free to return pointer on class member, or create widget on the fly.
+     **/
     virtual QWidget *widget() = 0;
-
 
     /**
     If you reimplement this function, you get direct access to all X events that the
@@ -110,9 +157,25 @@ public:
     **/
     virtual void settingsChanged() {}
 
+    /**
+    This function is called when the user activates the plugin. reason specifies the reason for activation.
+    IRazorPanelPlugin::ActivationReason enumerates the various reasons.
+     **/
+    virtual void activated(ActivationReason reason) {}
+
+
     IRazorPanel *panel() const { return mPanel; }
     QSettings *settings() const { return mSettings; }
     const RazorPluginInfo *desktopFile() const { return mDesktopFile; }
+
+    /**
+     Helper functions for calculating global screen position of some popup window with windowSize size.
+     If you need to show some popup window, you can use it, to get global screen position for the new window.
+     **/
+    virtual QRect calculatePopupWindowPos(const QSize &windowSize)
+    {
+        return mPanel->calculatePopupWindowPos(this, windowSize);
+    }
 
 private:
     QSettings *mSettings;
@@ -120,12 +183,32 @@ private:
     const RazorPluginInfo *mDesktopFile;
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(IRazorPanelPlugin::Flags)
 
-
+/**
+Every plugin must has the loader. You shoul only reimplement instance() method, and return your plugin.
+Example:
+@code
+class RazorClockPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new RazorClock(startupInfo);}
+};
+@endcode
+**/
 class IRazorPanelPluginLibrary
 {
 public:
+    /**
+     Destroys the IRazorPanelPluginLibrary object.
+     **/
     virtual ~IRazorPanelPluginLibrary() {}
+
+    /**
+    Returns the root component object of the plugin. When the library is finally unloaded, the root component will automatically be deleted.
+     **/
     virtual IRazorPanelPlugin* instance(const IRazorPanelPluginStartupInfo &startupInfo) = 0;
 };
 
