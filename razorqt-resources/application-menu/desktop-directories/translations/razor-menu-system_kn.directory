@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Icon=preferences-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[kn]=ಗಣಕ
+Comment[kn]=ವೈಯಕ್ತಿಕ ಆದ್ಯತೆಗಳು ಹಾಗು ನಿರ್ವಹಣಾ ಸಂಯೋಜನೆಗಳು

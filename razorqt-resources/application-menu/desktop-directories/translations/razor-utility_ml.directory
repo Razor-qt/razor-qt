@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=ഉപകരണങ്ങള്‍
+Comment[ml]=പണിയിടോപകരണങ്ങള്‍

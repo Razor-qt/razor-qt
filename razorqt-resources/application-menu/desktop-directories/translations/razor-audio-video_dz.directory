@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Icon=applications-multimedia
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=སྒྲ་སྐད་དང་གཟུགས་བརྙན།
+Comment[dz]=སྣ་མང་བརྡ་ལམ་དཀར་ཆག།

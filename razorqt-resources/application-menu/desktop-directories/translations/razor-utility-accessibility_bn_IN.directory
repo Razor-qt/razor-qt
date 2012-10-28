@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+Icon=preferences-desktop-accessibility
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=সার্বজনীন ব্যবহারাধিকার
+Comment[bn_IN]=সার্বজনীন ব্যবহারাধিকার সংক্রান্ত সম্পর্কিত বৈশিষ্ট্য

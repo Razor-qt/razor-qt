@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Icon=applications-multimedia
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[si]=ශබ්ද සහ දෘශ්‍ය
+Comment[si]=බහුමාද්‍ය මෙනුව

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Icon=preferences-settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[zh_HK]=偏好設定
+Comment[zh_HK]=個人偏好設定

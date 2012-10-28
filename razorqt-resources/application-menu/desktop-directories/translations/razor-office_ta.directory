@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Icon=applications-office
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=அலுவலகம்
+Comment[ta]=அலுவலகப் பயன்பாடுகள்

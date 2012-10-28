@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Icon=applications-office
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ca]=Oficina
+Comment[ca]=Aplicacions d'oficina

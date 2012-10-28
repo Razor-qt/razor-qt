@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Icon=preferences-desktop
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[sq]=Pamje dhe Ndjesi
+Comment[sq]=Rregullime që kontrollojnë pamjen e hapësirës së punës dhe sjelljen

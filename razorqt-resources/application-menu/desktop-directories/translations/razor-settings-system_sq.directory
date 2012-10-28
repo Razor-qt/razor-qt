@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[sq]=Administrim
+Comment[sq]=Ndrysho rregullimet në rang sistemi (ndikon tek të gjithë përdoruesit)

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet and Network
+Comment=Network-related settings
+Icon=preferences-system-network
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=ഇന്റര്‍നെറ്റും ശൃംഖലയും
+Comment[ml]=ശൃംഖലയുമായി ബന്ധപ്പെട്ട സജ്ജീകരണങ്ങള്‍

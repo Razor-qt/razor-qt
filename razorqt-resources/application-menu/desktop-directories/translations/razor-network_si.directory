@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[si]=අන්තර්ජාලය
+Comment[si]=අන්තර්ජාලය පිවිසුමට වියුණු සහ ඉලෙක්ට්‍රොනික තැපෑල වැනි කේතයන්

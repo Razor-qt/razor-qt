@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+Icon=preferences-desktop-accessibility
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=உலகளாவிய அணுகல்
+Comment[ta]=உலகளாவிய அணுகல் அமைப்புகள்

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=System settings
+Icon=preferences-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=ତନ୍ତ୍ର
+Comment[or]=ତନ୍ତ୍ର ବିନ୍ୟାସ

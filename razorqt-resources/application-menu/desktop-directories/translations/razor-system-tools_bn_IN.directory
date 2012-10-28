@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=সিস্টেমের বিভিন্ন সরঞ্জাম
+Comment[bn_IN]=সিস্টেমের বৈশিষ্ট্য কনফিগারেশন এবং নিরীক্ষণ

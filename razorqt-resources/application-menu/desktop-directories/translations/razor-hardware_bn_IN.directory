@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Icon=preferences-desktop-peripherals
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=হার্ডওয়্যার
+Comment[bn_IN]=বিবিধ হার্ডওয়্যার ডিভাইস সংক্রান্ত বৈশিষ্ট্য

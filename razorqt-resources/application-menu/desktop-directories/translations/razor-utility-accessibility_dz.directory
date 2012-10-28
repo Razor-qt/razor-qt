@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+Icon=preferences-desktop-accessibility
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=འཛམ་གླིང་ཡོངས་ཁྱབ་འཛུལ་སྤྱོད་འབད་ནི
+Comment[dz]=འཛམ་གླིང་ཡོངས་ཁྱབ་འཛུལ་སྤྱོད་ཀྱི་གཞི་སྒྲིག་ཚུ

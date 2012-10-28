@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Icon=preferences-settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[si]=අභිප්‍රේත
+Comment[si]=පුද්ගලික අභිප්‍රේත

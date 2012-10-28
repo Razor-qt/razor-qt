@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn]=আনুসাঙ্গিক
+Comment[bn]=ডেস্কটপের আনুসাঙ্গিক অ্যাপ্লিকেশন

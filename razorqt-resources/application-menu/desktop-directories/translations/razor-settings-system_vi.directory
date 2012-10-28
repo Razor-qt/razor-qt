@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[vi]=Quản lý
+Comment[vi]=Thay đổi thiết lập cho toàn hệ thống (cho mọi người dùng)

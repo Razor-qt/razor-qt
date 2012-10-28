@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[uz@cyrillic]=Бошқарув
+Comment[uz@cyrillic]=Бутун тизимга оид мосламаларни ўзгартириш (барча фойдаланувчиларга таъсир қилади)

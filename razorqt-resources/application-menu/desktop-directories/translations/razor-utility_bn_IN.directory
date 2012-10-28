@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=আনুষঙ্গিক
+Comment[bn_IN]=ডেস্কটপের ব্যবহৃত আনুষঙ্গিক বস্তু

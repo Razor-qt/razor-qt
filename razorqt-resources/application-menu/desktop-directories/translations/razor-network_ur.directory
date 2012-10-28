@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ur]=انٹرنیٹ
+Comment[ur]=انٹرنیٹ رسائی کے پروگرام جیسے ویب اور ای میل

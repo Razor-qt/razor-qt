@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Other
+Comment=Applications that did not fit in other categories
+Icon=applications-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[gu]=અન્ય
+Comment[gu]=કાર્યક્રમો કે જે અન્ય વર્ગોમાં નહિં બંધબેસે

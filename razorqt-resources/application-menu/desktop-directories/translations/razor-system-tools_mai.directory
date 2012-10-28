@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[mai]=सिस्टम अओजार
+Comment[mai]=सिस्टम बिन्यास आ निरीक्षण

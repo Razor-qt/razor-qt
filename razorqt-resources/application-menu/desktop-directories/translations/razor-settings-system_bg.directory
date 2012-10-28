@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bg]=Администрация на системата
+Comment[bg]=Промяна на глобалните настройки на системата (ще се отрази на всички потребители)

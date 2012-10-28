@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[kn]=ಅಂತರ್ಜಾಲ
+Comment[kn]=ಜಾಲ ಹಾಗು ಇಮೈಲಿನಂತಹ ಅಂತರ್ಜಾಲವನ್ನು ನಿಲುಕಿಸಿಕೊಳ್ಳುವ ಪ್ರೊಗ್ರಾಂಗಳು

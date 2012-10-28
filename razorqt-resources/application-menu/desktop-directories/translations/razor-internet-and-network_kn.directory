@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet and Network
+Comment=Network-related settings
+Icon=preferences-system-network
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[kn]=ಅಂತರ್ಜಾಲ ಹಾಗು ಜಾಲಬಂಧ
+Comment[kn]=ಜಾಲಬಂಧ-ಸಂಬಂಧಿತ ಸಂಯೋಜನೆಗಳು

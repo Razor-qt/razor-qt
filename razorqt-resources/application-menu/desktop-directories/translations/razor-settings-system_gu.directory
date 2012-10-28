@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[gu]=સંચાલન
+Comment[gu]=સિસ્ટમ-લગતા સુયોજનો બદલો (બધા વપરાશકર્તાઓને અસર કરશે)

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Icon=preferences-settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=விருப்பங்கள்
+Comment[ta]=தனிப்பயன் விருப்பங்கள்

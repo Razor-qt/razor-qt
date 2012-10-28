@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ko]=인터넷
+Comment[ko]=웹과 전자메일 같은 인터넷에 접근 가능한 프로그램

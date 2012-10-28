@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Other
+Comment=Applications that did not fit in other categories
+Icon=applications-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[as]=অন্যান্য
+Comment[as]=অন্যান্য শ্ৰেণীত অন্তৰ্গত নকৰা অনুপ্ৰয়োগ

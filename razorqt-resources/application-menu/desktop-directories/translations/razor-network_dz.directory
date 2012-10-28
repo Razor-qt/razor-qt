@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=ཨིན་ཊར་ནེཊི།
+Comment[dz]=ཨིན་ཊར་ནེཊི་ལུ་ འཛུལ་སྤྱོད་འབད་ནིའི་ལས་རིམ་ དཔེར་ན་ ཝེབ་དང་གློག་འཕྲིན་ལྟ་བུ།

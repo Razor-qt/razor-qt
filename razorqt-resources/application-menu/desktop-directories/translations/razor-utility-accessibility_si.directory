@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+Icon=preferences-desktop-accessibility
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[si]=විශ්ව පිවිසුම
+Comment[si]=විශ්ව පිවිසුම් සැකසුම්

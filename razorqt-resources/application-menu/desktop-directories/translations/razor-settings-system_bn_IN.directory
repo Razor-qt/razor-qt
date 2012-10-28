@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=প্রশাসনিক বৈশিষ্ট্য
+Comment[bn_IN]=সম্পূর্ণ সিস্টেমব্যাপী বৈশিষ্ট্য পরিবর্তন করুন (সকল ব্যবহারকারী প্রভাবিত হবেন)

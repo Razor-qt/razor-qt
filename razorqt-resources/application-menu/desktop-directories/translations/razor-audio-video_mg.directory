@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Icon=applications-multimedia
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[mg]=Feo sy sarimihetsika
+Comment[mg]=Karazan-tsafidin'ny haino aman-jery

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=துணைப்பொருள்கள்
+Comment[ta]=மேஜை துணைப்பொருள்கள்

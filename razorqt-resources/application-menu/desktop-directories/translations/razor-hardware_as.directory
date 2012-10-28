@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Icon=preferences-desktop-peripherals
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[as]=যান্ত্ৰিক সামগ্ৰী
+Comment[as]=বিবিধ যন্ত্ৰৰ সামগ্ৰীৰ সংক্ৰান্ত বৈশিষ্ট্য
