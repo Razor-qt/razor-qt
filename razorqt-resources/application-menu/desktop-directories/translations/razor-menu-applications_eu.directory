@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Applications
+Comment=Applications
+Icon=applications-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[eu]=Aplikazioak
+Comment[eu]=Aplikazioak

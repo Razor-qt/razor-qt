@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[eo]=Interreto
+Comment[eo]=Programoj por TTT-uzo, ekzemple por TTT-legado kaj retpoŝto

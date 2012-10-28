@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=ഭരണം
+Comment[ml]=സിസ്റ്റം മുഴുവനുളള സജ്ജീകരണങ്ങളില്‍ മാറ്റം വരുത്തുക (എല്ലാ ഉപയോക്താക്കളേയും ബാധിക്കുന്നു)

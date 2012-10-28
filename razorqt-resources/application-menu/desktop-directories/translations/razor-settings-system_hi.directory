@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[hi]=प्रशासन
+Comment[hi]=सिस्टमवाइड जमावट बदलें (सभी उपयोक्ताओं को प्रभावित करता है)

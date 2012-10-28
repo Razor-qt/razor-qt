@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Icon=applications-development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[gu]=પ્રોગ્રામીંગ
+Comment[gu]=સોફ્ટવેર વિકાસ સાધનો

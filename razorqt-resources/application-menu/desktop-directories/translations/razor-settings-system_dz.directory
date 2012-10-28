@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=བདག་སྐྱོང་།
+Comment[dz]=རིམ་ལུགས་ཡོངས་ཀྱི་ གཞི་སྒྲིག་བསྒྱུར་བཅོས་འབད (ལག་ལེན་པ་ཀུན་ལུ་ཕན་གནོད་ཡོད)

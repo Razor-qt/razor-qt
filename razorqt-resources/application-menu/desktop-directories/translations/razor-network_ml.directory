@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=ഇന്റര്‍നെറ്റ്
+Comment[ml]=ഇന്റര്‍നെറ്റ് ലഭ്യതയ്ക്കാവശ്യമുളള പ്രോഗ്രാമുകളായ വെബും ഇമെയിലും

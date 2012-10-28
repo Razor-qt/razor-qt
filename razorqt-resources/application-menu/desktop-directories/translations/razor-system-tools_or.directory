@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=ତନ୍ତ୍ର ଉପକରଣ
+Comment[or]=ତନ୍ତ୍ର ବିନ୍ଯାସ ଏବଂ ନିରୀକ୍ଷଣ

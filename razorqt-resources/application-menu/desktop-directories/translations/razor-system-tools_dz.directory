@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=རིམ་ལུགས་ལག་ཆས།
+Comment[dz]=རིམ་ལུགས་རིམ་སྒྲིག་དང་ལྟ་རྟོག།

@@ -26,7 +26,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/razor-applications.menu.in
                ${CMAKE_CURRENT_BINARY_DIR}/razor-applications.menu
                @ONLY)
 
-#add_subdirectory(desktop-directories)
+add_subdirectory(desktop-directories)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/razor-applications.menu DESTINATION /etc/xdg/menus/)
-install(DIRECTORY desktop-directories DESTINATION share/ PATTERN ".desktop")

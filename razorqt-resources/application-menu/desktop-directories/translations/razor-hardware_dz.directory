@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Icon=preferences-desktop-peripherals
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=སྲ་ཆས་
+Comment[dz]=སྲ་ཆས་ཀྱི་ཐབས་འཕྲུལ་ལེ་ཤ་ཅིག་གི་དོན་ལུ་སྒྲིག་སྟངས་

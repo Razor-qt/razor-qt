@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet and Network
+Comment=Network-related settings
+Icon=preferences-system-network
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=ଇନ୍ଟରନେଟ ଏବଂ ନେଟୱର୍କ
+Comment[or]=ନେଟୱର୍କ ସମ୍ପର୍କୀୟ ବିନ୍ୟାସ

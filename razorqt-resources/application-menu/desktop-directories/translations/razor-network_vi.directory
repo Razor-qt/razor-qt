@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[vi]=Mạng
+Comment[vi]=Chương trình truy cập Mạng như trình duyệt và trình nhận/gửi thư điện tử

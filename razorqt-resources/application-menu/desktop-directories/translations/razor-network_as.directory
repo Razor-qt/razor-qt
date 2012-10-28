@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[as]=ইন্টাৰনেট
+Comment[as]=ইন্টাৰনেট ব্যবহাৰৰ অনুপ্ৰয়োগ যেনে ওৱেব আৰু ই-মেইল অনুপ্ৰয়োগ

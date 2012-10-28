@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=கணிப்பொறிக் கருவிகள்
+Comment[ta]=கணிப்பொறி அமைப்பு மற்றும் கண்காணித்தல்

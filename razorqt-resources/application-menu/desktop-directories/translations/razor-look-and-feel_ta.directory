@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Icon=preferences-desktop
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=பார்வையும் உணர்வும்
+Comment[ta]=மேல்மேசையின் தோற்றம் மற்றும் நடத்தைகளை கட்டுப்படுத்தும் வடிவமைப்பு

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=ପ୍ରଶାସନ
+Comment[or]=ତନ୍ତ୍ର ବ୍ଯାପି ବିନ୍ଯାସକୁ ପରିବର୍ତ୍ତନ କରନ୍ତୁ (ସମସ୍ତ ଉପଭୋକ୍ତା ମାନଙ୍କୁ ପ୍ରଭାବିତ କରିଥାଏ)

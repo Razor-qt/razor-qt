@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=System settings
+Icon=preferences-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=கணிப்பொறி
+Comment[ta]=கணினி அமைப்புகள்

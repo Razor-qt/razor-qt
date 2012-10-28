@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Icon=preferences-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Comment[br]=Pezh a blij deoc'h ar muiañ ha neuziadoù ar mererezh

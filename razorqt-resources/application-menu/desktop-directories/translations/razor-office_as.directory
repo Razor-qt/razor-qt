@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Icon=applications-office
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[as]=কাৰ্যালয়
+Comment[as]=কাৰ্যালয়ৰ অনুপ্ৰয়োগ

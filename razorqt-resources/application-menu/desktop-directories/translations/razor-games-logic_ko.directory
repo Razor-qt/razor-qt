@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Directory
+Name=Logic Games
+Icon=applications-games-logic
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ko]=논리 게임

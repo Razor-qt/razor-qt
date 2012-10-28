@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=System settings
+Icon=preferences-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[fur]=Sisteme
+Comment[fur]=Impostazions di sisteme

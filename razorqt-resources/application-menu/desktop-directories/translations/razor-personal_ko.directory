@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Personal
+Comment=Personal settings
+Icon=preferences-desktop-personal
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ko]=개인
+Comment[ko]=개인 설정

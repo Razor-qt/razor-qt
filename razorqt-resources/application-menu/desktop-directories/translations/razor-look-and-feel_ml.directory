@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Icon=preferences-desktop
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=ചമയം
+Comment[ml]=പണിയിടത്തിന്റെ കാഴ്ചയും പെരുമാറ്റവും നിയന്ത്രിയ്ക്കുന്ന സജ്ജീകരണങ്ങള്‍

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=ཡན་ལག་ཅ་ཆས།
+Comment[dz]=ཌེཀསི་ཊོཔ་གི་ ཡན་ལག་ཅ་ཆས།

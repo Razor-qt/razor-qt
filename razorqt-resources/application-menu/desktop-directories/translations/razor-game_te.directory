@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Games
+Comment=Games and amusements
+Icon=applications-games
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[te]=ఆటలు
+Comment[te]=ఆటలు మరియు వినోదకాలు

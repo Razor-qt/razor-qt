@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Icon=preferences-desktop
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[te]=రూపు రేఖలు
+Comment[te]=రంగస్థల రూపం మరియు ప్రవర్తనను నియంత్రణ చేయు అమరికలు

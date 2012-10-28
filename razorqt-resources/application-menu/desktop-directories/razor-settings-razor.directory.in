@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Directory
+Name=Razor-qt settings
+Icon=razor-qt-system
+X-Ubuntu-Gettext-Domain=desktop_kdebase-runtime
+
+#TRANSLATIONS_DIR=translations
+
+# Translations

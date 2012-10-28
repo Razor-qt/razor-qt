@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Games
+Comment=Games and amusements
+Icon=applications-games
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[zh_HK]=遊戲
+Comment[zh_HK]=遊戲及娛樂

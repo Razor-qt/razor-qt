@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Personal
+Comment=Personal settings
+Icon=preferences-desktop-personal
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[pa]=ਨਿੱਜੀ
+Comment[pa]=ਨਿੱਜੀ ਸੈਟਿੰਗ

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Icon=preferences-desktop-peripherals
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[hi]=हार्डवेयर
+Comment[hi]=कई हार्डवेयर युक्तियों के लिए सेटिंग
