@@ -40,7 +40,8 @@ RazorWorldClockConfigurationTimeZones::RazorWorldClockConfigurationTimeZones(QWi
     setObjectName("WorldClockConfigurationTimeZonesWindow");
     ui->setupUi(this);
 
-    connect(ui->timeZonesTW, SIGNAL(itemSelectionChanged()), SLOT(selectionChanged()));
+    connect(ui->timeZonesTW, SIGNAL(itemSelectionChanged()), SLOT(itemSelectionChanged()));
+    connect(ui->timeZonesTW, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(itemDoubleClicked(QTreeWidgetItem*,int)));
 }
 
 RazorWorldClockConfigurationTimeZones::~RazorWorldClockConfigurationTimeZones()
@@ -53,13 +54,19 @@ QString RazorWorldClockConfigurationTimeZones::timeZone(void)
     return mTimeZone;
 }
 
-void RazorWorldClockConfigurationTimeZones::selectionChanged(void)
+void RazorWorldClockConfigurationTimeZones::itemSelectionChanged(void)
 {
     QList<QTreeWidgetItem*> items = ui->timeZonesTW->selectedItems();
     if (!items.empty())
         mTimeZone = items[0]->data(1, Qt::UserRole).toString();
     else
         mTimeZone.clear();
+}
+
+void RazorWorldClockConfigurationTimeZones::itemDoubleClicked(QTreeWidgetItem* /*item*/, int /*column*/)
+{
+    if (!mTimeZone.isEmpty())
+        accept();
 }
 
 int RazorWorldClockConfigurationTimeZones::updateAndExec(void)

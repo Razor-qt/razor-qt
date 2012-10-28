@@ -42,6 +42,7 @@ namespace Ui {
 }
 
 class RazorWorldClockConfigurationTimeZones;
+class QListWidgetItem;
 
 class RazorWorldClockConfiguration : public QDialog
 {
@@ -83,6 +84,8 @@ private:
     bool mLockCascadeSettingChanges;
 
     RazorWorldClockConfigurationTimeZones *mConfigurationTimeZones;
+
+    void setActive(QListWidgetItem *item);
 };
 
 #endif // RAZORWORLDCLOCKCONFIGURATION_H

@@ -37,6 +37,8 @@ namespace Ui {
     class RazorWorldClockConfigurationTimeZones;
 }
 
+class QTreeWidgetItem;
+
 class RazorWorldClockConfigurationTimeZones : public QDialog
 {
     Q_OBJECT
@@ -50,7 +52,8 @@ public:
     QString timeZone(void);
 
 public slots:
-    void selectionChanged(void);
+    void itemSelectionChanged(void);
+    void itemDoubleClicked(QTreeWidgetItem*,int);
 
 private:
     Ui::RazorWorldClockConfigurationTimeZones *ui;

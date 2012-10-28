@@ -194,7 +194,15 @@ void RazorWorldClockConfiguration::addTimeZone(void)
         mConfigurationTimeZones = new RazorWorldClockConfigurationTimeZones(this);
 
     if (mConfigurationTimeZones->updateAndExec() == QDialog::Accepted)
-        ui->timeZonesLW->addItem(mConfigurationTimeZones->timeZone());
+    {
+        if (ui->timeZonesLW->findItems(mConfigurationTimeZones->timeZone(), Qt::MatchExactly).empty())
+        {
+            QListWidgetItem *item = new QListWidgetItem(mConfigurationTimeZones->timeZone());
+            ui->timeZonesLW->addItem(item);
+            if (mActiveTimeZone.isEmpty())
+                setActive(item);
+        }
+    }
 
     saveSettings();
 }
@@ -202,9 +210,23 @@ void RazorWorldClockConfiguration::addTimeZone(void)
 void RazorWorldClockConfiguration::removeTimeZone(void)
 {
     foreach (QListWidgetItem *item, ui->timeZonesLW->selectedItems())
+    {
+        if (item->text() == mActiveTimeZone)
+            mActiveTimeZone.clear();
         delete item;
+    }
+    if ((mActiveTimeZone.isEmpty()) && ui->timeZonesLW->count())
+        setActive(ui->timeZonesLW->item(0));
 
     saveSettings();
+}
+
+void RazorWorldClockConfiguration::setActive(QListWidgetItem *item)
+{
+    QFont font = item->font();
+    font.setBold(true);
+    item->setFont(font);
+    mActiveTimeZone = item->text();
 }
 
 void RazorWorldClockConfiguration::setTimeZoneAsDefault(void)
@@ -214,11 +236,7 @@ void RazorWorldClockConfiguration::setTimeZoneAsDefault(void)
     font.setBold(false);
     item->setFont(font);
 
-    item = ui->timeZonesLW->selectedItems()[0];
-    font = item->font();
-    font.setBold(true);
-    item->setFont(font);
-    mActiveTimeZone = item->text();
+    setActive(ui->timeZonesLW->selectedItems()[0]);
 
     saveSettings();
 }
