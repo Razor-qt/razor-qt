@@ -33,7 +33,12 @@ setByDefault(HELLOWORLD_PLUGIN No)
 setByDefault(CPULOAD_PLUGIN Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
 setByDefault(SENSORS_PLUGIN Yes)
+
 setByDefault(VOLUME_PLUGIN Yes)
+# Options for the volume plugin.
+setByDefault(VOLUME_USE_PULSEAUDIO Yes)
+setByDefault(VOLUME_USE_ALSA Yes)
+
 setByDefault(KBINDICATOR_PLUGIN Yes)
 setByDefault(SYSSTAT_PLUGIN Yes)
 # *******************************************************************
@@ -164,8 +169,13 @@ if (SENSORS_PLUGIN)
 endif (SENSORS_PLUGIN)
 
 if (VOLUME_PLUGIN)
-  FIND_PACKAGE(PulseAudio)
-  FIND_PACKAGE(ALSA)
+  if (VOLUME_USE_PULSEAUDIO)
+    FIND_PACKAGE(PulseAudio)
+  endif (VOLUME_USE_PULSEAUDIO)
+
+  if (VOLUME_USE_ALSA)
+    FIND_PACKAGE(ALSA)
+  endif (VOLUME_USE_ALSA)
 
   if (PULSEAUDIO_FOUND OR ALSA_FOUND)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Volume")
