@@ -51,8 +51,8 @@ public:
     RazorPanelPrivate(RazorPanel* parent);
 
     static bool canPlacedOn(int screenNum, RazorPanel::Position position);
-    static RazorPanel::Position strToPosition(const QString &str, RazorPanel::Position defaultValue);
-    static QString positionToStr(RazorPanel::Position position);
+    static IRazorPanel::Position strToPosition(const QString &str, RazorPanel::Position defaultValue);
+    static QString positionToStr(IRazorPanel::Position position);
 
     void readSettings();
     void saveSettings();

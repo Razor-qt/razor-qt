@@ -46,8 +46,7 @@ class RazorPanel : public QFrame, public IRazorPanel
 {
     Q_OBJECT
 
-    //Q_ENUMS(Position)
-    //Q_PROPERTY(IRazorPanel::Position position READ position)// NOTIFY positionChanged)
+    Q_PROPERTY(QString position READ qssPosition)
 public:
     enum Alignment {
         AlignmentLeft   = -1,
@@ -65,6 +64,9 @@ public:
     Position position() const;
     QRect globalGometry() const;
     QRect calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const QSize &windowSize) const;
+
+    // For QSS properties ..................
+    QString qssPosition() const;
 
 public slots:
     void show();

@@ -59,7 +59,7 @@
  String is one of "Top", "Left", "Bottom", "Right", string is not case sensitive.
  If the string is not correct, returns defaultValue.
  ************************************************/
-RazorPanel::Position RazorPanelPrivate::strToPosition(const QString& str, RazorPanel::Position defaultValue)
+IRazorPanel::Position RazorPanelPrivate::strToPosition(const QString& str, RazorPanel::Position defaultValue)
 {
     if (str.toUpper() == "TOP")    return RazorPanel::PositionTop;
     if (str.toUpper() == "LEFT")   return RazorPanel::PositionLeft;
@@ -72,7 +72,7 @@ RazorPanel::Position RazorPanelPrivate::strToPosition(const QString& str, RazorP
 /************************************************
  Return  string representation of the position
  ************************************************/
-QString RazorPanelPrivate::positionToStr(RazorPanel::Position position)
+QString RazorPanelPrivate::positionToStr(IRazorPanel::Position position)
 {
     switch (position)
     {
@@ -955,6 +955,12 @@ QRect RazorPanel::calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const
     }
 
     return QRect(QPoint(x, y), windowSize);
+}
+
+QString RazorPanel::qssPosition() const
+{
+    Q_D(const RazorPanel);
+    return d->positionToStr(d->mPosition);
 }
 
 
