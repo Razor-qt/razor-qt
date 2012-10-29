@@ -6,13 +6,13 @@ RazorPanel {
 }
 
 /* PositionBottom */
-RazorPanel[position="0"] {
+RazorPanel[position="Bottom"] {
     border-top: 1px solid #33322E;
 }
 
 
 /* PositionTop */
-RazorPanel[position="1"] {
+RazorPanel[position="Top"] {
     border-bottom: 1px solid #33322E;
 }
 
