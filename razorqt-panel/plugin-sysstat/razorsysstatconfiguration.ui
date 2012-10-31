@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>740</width>
-    <height>435</height>
+    <height>408</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,16 +25,6 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_3" columnstretch="2,3">
           <item row="0" column="0">
-           <widget class="QLabel" name="bgColourL">
-            <property name="text">
-             <string>Background colour</string>
-            </property>
-            <property name="buddy">
-             <cstring>bgColourB</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
            <widget class="QLabel" name="intervalL">
             <property name="text">
              <string>Update interval</string>
@@ -44,7 +34,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="sizeL">
             <property name="text">
              <string>Size</string>
@@ -54,7 +44,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="1">
            <widget class="QSpinBox" name="sizeSB">
             <property name="suffix">
              <string> px</string>
@@ -70,7 +60,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="0" column="1">
            <widget class="QDoubleSpinBox" name="intervalSB">
             <property name="suffix">
              <string> s</string>
@@ -91,36 +81,6 @@
              <double>1.000000000000000</double>
             </property>
            </widget>
-          </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
-            <item>
-             <widget class="QFrame" name="bgColourF">
-              <property name="minimumSize">
-               <size>
-                <width>25</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="autoFillBackground">
-               <bool>true</bool>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="bgColourB">
-              <property name="text">
-               <string>Change ...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
@@ -1039,7 +999,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>bgColourB</tabstop>
   <tabstop>intervalSB</tabstop>
   <tabstop>sizeSB</tabstop>
   <tabstop>linesSB</tabstop>

@@ -52,7 +52,7 @@ protected slots:
     virtual void showConfigureDialog();
 
 private:
-    RazorSysStatContent *content;
+    RazorSysStatContent *mContent;
 };
 
 class RazorSysStatContent : public QWidget

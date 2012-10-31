@@ -59,7 +59,6 @@ RazorSysStatConfiguration::RazorSysStatConfiguration(QSettings &settings, QWidge
 
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
 
-    CONNECT_SELECT_COLOUR(bgColour)
     CONNECT_SELECT_COLOUR(gridColour)
     CONNECT_SELECT_COLOUR(titleColour)
     CONNECT_SELECT_COLOUR(cpuSystem)
@@ -96,12 +95,11 @@ void RazorSysStatConfiguration::loadSettings()
 {
     lockSaving = true;
 
-    applyColor(ui->bgColourF, QColor(mSettings.value("graph/bgColour", "0x000000").toString().toInt(NULL, 0) | 0xff000000));
     ui->intervalSB->setValue(mSettings.value("graph/updateInterval", 1.0).toDouble());
     ui->sizeSB->setValue(mSettings.value("graph/historyLength", 30).toInt());
 
     ui->linesSB->setValue(mSettings.value("grid/lines", 1).toInt());
-    applyColor(ui->gridColourF, QColor(mSettings.value("grid/colour", "0x808080").toString().toInt(NULL, 0) | 0xff000000));
+    applyColor(ui->gridColourF, QColor(mSettings.value("grid/colour", "#808080").toString()));
 
     ui->labelLE->setText(mSettings.value("title/label", QString()).toString());
     QFont defaultFont(QApplication::font());
@@ -111,7 +109,7 @@ void RazorSysStatConfiguration::loadSettings()
         mSettings.value("title/font/weight", defaultFont.weight()).toInt(),
         mSettings.value("title/font/italic", defaultFont.italic()).toBool() );
     ui->fontValueL->setText(constructFontDescription(titleFont));
-    applyColor(ui->titleColourF, QColor(mSettings.value("title/colour", "0xffffff").toString().toInt(NULL, 0) | 0xff000000));
+    applyColor(ui->titleColourF, QColor(mSettings.value("title/colour", "#ffffff").toString()));
 
     int typeIndex = ui->typeCOB->findText(mSettings.value("data/type", QString("CPU")).toString());
     ui->typeCOB->setCurrentIndex((typeIndex >= 0) ? typeIndex : 0);
@@ -120,20 +118,20 @@ void RazorSysStatConfiguration::loadSettings()
     int sourceIndex = ui->sourceCOB->findText(mSettings.value("data/source", QString()).toString());
     ui->sourceCOB->setCurrentIndex((sourceIndex >= 0) ? sourceIndex : 0);
 
-    applyColor(ui->cpuSystemF, QColor(mSettings.value("cpu/systemColour",    "0x800000").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->cpuUserF,   QColor(mSettings.value("cpu/userColour",      "0x000080").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->cpuNiceF,   QColor(mSettings.value("cpu/niceColour",      "0x008000").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->cpuOtherF,  QColor(mSettings.value("cpu/otherColour",     "0x808000").toString().toInt(NULL, 0) | 0xff000000));
+    applyColor(ui->cpuSystemF, QColor(mSettings.value("cpu/systemColour",    "#800000").toString()));
+    applyColor(ui->cpuUserF,   QColor(mSettings.value("cpu/userColour",      "#000080").toString()));
+    applyColor(ui->cpuNiceF,   QColor(mSettings.value("cpu/niceColour",      "#008000").toString()));
+    applyColor(ui->cpuOtherF,  QColor(mSettings.value("cpu/otherColour",     "#808000").toString()));
     ui->useFrequencyCB->setChecked(mSettings.value("cpu/useFrequency", true).toBool());
-    applyColor(ui->frequencyF, QColor(mSettings.value("cpu/frequencyColour", "0x202020").toString().toInt(NULL, 0) | 0xff000000));
+    applyColor(ui->frequencyF, QColor(mSettings.value("cpu/frequencyColour", "#202020").toString()));
 
-    applyColor(ui->memAppsF,    QColor(mSettings.value("mem/appsColour",    "0x000080").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->memBuffersF, QColor(mSettings.value("mem/buffersColour", "0x008000").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->memCachedF,  QColor(mSettings.value("mem/cachedColour",  "0x808000").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->swapUsedF,   QColor(mSettings.value("mem/swapColour",    "0x800000").toString().toInt(NULL, 0) | 0xff000000));
+    applyColor(ui->memAppsF,    QColor(mSettings.value("mem/appsColour",    "#000080").toString()));
+    applyColor(ui->memBuffersF, QColor(mSettings.value("mem/buffersColour", "#008000").toString()));
+    applyColor(ui->memCachedF,  QColor(mSettings.value("mem/cachedColour",  "#808000").toString()));
+    applyColor(ui->swapUsedF,   QColor(mSettings.value("mem/swapColour",    "#800000").toString()));
 
-    applyColor(ui->netReceivedF,    QColor(mSettings.value("net/receivedColour",    "0x000080").toString().toInt(NULL, 0) | 0xff000000));
-    applyColor(ui->netTransmittedF, QColor(mSettings.value("net/transmittedColour", "0x808000").toString().toInt(NULL, 0) | 0xff000000));
+    applyColor(ui->netReceivedF,    QColor(mSettings.value("net/receivedColour",    "#000080").toString()));
+    applyColor(ui->netTransmittedF, QColor(mSettings.value("net/transmittedColour", "#808000").toString()));
     ui->maximumHS->setValue(PluginSysStat::netSpeedFromString(mSettings.value("net/maximumSpeed", "1 MB/s").toString()));
     on_maximumHS_valueChanged(ui->maximumHS->value());
     ui->logarithmicCB->setChecked(mSettings.value("net/logarithmicScale", true).toBool());
@@ -147,37 +145,36 @@ void RazorSysStatConfiguration::saveSettings()
     if (lockSaving)
         return;
 
-    mSettings.setValue("graph/bgColour", QString("0x%1").arg(ui->bgColourF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
     mSettings.setValue("graph/updateInterval", ui->intervalSB->value());
     mSettings.setValue("graph/historyLength", ui->sizeSB->value());
 
     mSettings.setValue("grid/lines", ui->linesSB->value());
-    mSettings.setValue("grid/colour", QString("0x%1").arg(ui->gridColourF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
+    mSettings.setValue("grid/colour", ui->gridColourF->palette().color(QPalette::Window).name());
 
     mSettings.setValue("title/label", ui->labelLE->text());
     mSettings.setValue("title/font/family", titleFont.family());
     mSettings.setValue("title/font/pointSize", titleFont.pointSize());
     mSettings.setValue("title/font/weight", titleFont.weight());
     mSettings.setValue("title/font/italic", titleFont.italic());
-    mSettings.setValue("title/colour", QString("0x%1").arg(ui->titleColourF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
+    mSettings.setValue("title/colour", ui->titleColourF->palette().color(QPalette::Window).name());
 
     mSettings.setValue("data/type", ui->typeCOB->currentText());
     mSettings.setValue("data/source", ui->sourceCOB->currentText());
 
-    mSettings.setValue("cpu/systemColour",    QString("0x%1").arg(ui->cpuSystemF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("cpu/userColour",      QString("0x%1").arg(ui->cpuUserF  ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("cpu/niceColour",      QString("0x%1").arg(ui->cpuNiceF  ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("cpu/otherColour",     QString("0x%1").arg(ui->cpuOtherF ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
+    mSettings.setValue("cpu/systemColour",    ui->cpuSystemF->palette().color(QPalette::Window).name());
+    mSettings.setValue("cpu/userColour",      ui->cpuUserF  ->palette().color(QPalette::Window).name());
+    mSettings.setValue("cpu/niceColour",      ui->cpuNiceF  ->palette().color(QPalette::Window).name());
+    mSettings.setValue("cpu/otherColour",     ui->cpuOtherF ->palette().color(QPalette::Window).name());
     mSettings.setValue("cpu/useFrequency", ui->useFrequencyCB->isChecked());
-    mSettings.setValue("cpu/frequencyColour", QString("0x%1").arg(ui->frequencyF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
+    mSettings.setValue("cpu/frequencyColour", ui->frequencyF->palette().color(QPalette::Window).name());
 
-    mSettings.setValue("mem/appsColour",    QString("0x%1").arg(ui->memAppsF   ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("mem/buffersColour", QString("0x%1").arg(ui->memBuffersF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("mem/cachedColour",  QString("0x%1").arg(ui->memCachedF ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("mem/swapColour",    QString("0x%1").arg(ui->swapUsedF  ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
+    mSettings.setValue("mem/appsColour",    ui->memAppsF   ->palette().color(QPalette::Window).name());
+    mSettings.setValue("mem/buffersColour", ui->memBuffersF->palette().color(QPalette::Window).name());
+    mSettings.setValue("mem/cachedColour",  ui->memCachedF ->palette().color(QPalette::Window).name());
+    mSettings.setValue("mem/swapColour",    ui->swapUsedF  ->palette().color(QPalette::Window).name());
 
-    mSettings.setValue("net/receivedColour",    QString("0x%1").arg(ui->netReceivedF   ->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
-    mSettings.setValue("net/transmittedColour", QString("0x%1").arg(ui->netTransmittedF->palette().color(QPalette::Window).rgb() & 0x00ffffff, 6, 16, QChar('0')));
+    mSettings.setValue("net/receivedColour",    ui->netReceivedF   ->palette().color(QPalette::Window).name());
+    mSettings.setValue("net/transmittedColour", ui->netTransmittedF->palette().color(QPalette::Window).name());
     mSettings.setValue("net/maximumSpeed", PluginSysStat::netSpeedToString(ui->maximumHS->value()));
     mSettings.setValue("net/logarithmicScale", ui->logarithmicCB->isChecked());
     mSettings.setValue("net/logarithmicScaleSteps", ui->logScaleSB->value());
