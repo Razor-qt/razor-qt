@@ -226,14 +226,12 @@ void RazorSysStatContent::reset(void)
     historyOffset = 0;
     historyImage[0] = QImage(historyLength, height(), QImage::Format_RGB32);
     historyImage[1] = QImage(historyLength, height(), QImage::Format_RGB32);
-#if QT_VERSION >= 0x040800
+#if QT_VERSION < 0x040800
+    historyImage[0].fill(bgColour.rgba());
+    historyImage[1].fill(bgColour.rgba());
+#else
     historyImage[0].fill(bgColour);
     historyImage[1].fill(bgColour);
-#else
-    QPainter p0(&historyImage[0]);
-    QPainter p1(&historyImage[1]);
-    p0.fillRect(historyImage[0].rect(), bgColour);
-    p1.fillRect(historyImage[1].rect(), bgColour);
 #endif
 
     update();
