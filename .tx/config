@@ -176,6 +176,12 @@ source_lang = en
 source_file = razorqt-resources/autostart/razor-appswitcher.desktop.in
 file_filter = razorqt-resources/autostart/translations/razor-appswitcher_<lang>.desktop
 
+[razor-qt.razor-audio-video_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-audio-video.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-audio-video_<lang>.directory
+
 [razor-qt.razor-autosuspend_desktop]
 type = DESKTOP
 source_lang = en
@@ -266,6 +272,12 @@ source_lang = en
 source_file = razorqt-notificationd/config/translations/razor-config-notificationd.ts.src
 file_filter = razorqt-notificationd/config/translations/razor-config-notificationd_<lang>.ts
 
+[razor-qt.razor-config-qtconfig_desktop]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-config/razor-config-qtconfig/razor-config-qtconfig.desktop.in
+file_filter = razorqt-config/razor-config-qtconfig/translations/razor-config-qtconfig_<lang>.desktop
+
 [razor-qt.razor-config-session_desktop]
 type = DESKTOP
 source_lang = en
@@ -296,17 +308,113 @@ source_lang = en
 source_file = razorqt-resources/sys/razor.desktop.in
 file_filter = razorqt-resources/sys/translations/razor_<lang>.desktop
 
+[razor-qt.razor-development_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-development.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-development_<lang>.directory
+
+[razor-qt.razor-education_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-education.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-education_<lang>.directory
+
+[razor-qt.razor-game_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-game.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-game_<lang>.directory
+
+[razor-qt.razor-games-arcade_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-games-arcade.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-games-arcade_<lang>.directory
+
+[razor-qt.razor-games-board_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-games-board.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-games-board_<lang>.directory
+
+[razor-qt.razor-games-card_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-games-card.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-games-card_<lang>.directory
+
+[razor-qt.razor-games-kids_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-games-kids.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-games-kids_<lang>.directory
+
+[razor-qt.razor-games-logic_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-games-logic.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-games-logic_<lang>.directory
+
+[razor-qt.razor-games-strategy_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-games-strategy.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-games-strategy_<lang>.directory
+
 [razor-qt.razor-globalkeyshortcuts_desktop]
 type = DESKTOP
 source_lang = en
 source_file = razorqt-resources/autostart/razor-globalkeyshortcuts.desktop.in
 file_filter = razorqt-resources/autostart/translations/razor-globalkeyshortcuts_<lang>.desktop
 
+[razor-qt.razor-graphics_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-graphics.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-graphics_<lang>.directory
+
+[razor-qt.razor-hardware_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-hardware.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-hardware_<lang>.directory
+
+[razor-qt.razor-internet-and-network_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-internet-and-network.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-internet-and-network_<lang>.directory
+
 [razor-qt.razor-lightdm-greeter]
 type = QT
 source_lang = en
 source_file = razorqt-lightdm-greeter/translations/razor-lightdm-greeter.ts.src
 file_filter = razorqt-lightdm-greeter/translations/razor-lightdm-greeter_<lang>.ts
+
+[razor-qt.razor-look-and-feel_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-look-and-feel.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-look-and-feel_<lang>.directory
+
+[razor-qt.razor-menu-applications_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-menu-applications.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-menu-applications_<lang>.directory
+
+[razor-qt.razor-menu-system_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-menu-system.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-menu-system_<lang>.directory
+
+[razor-qt.razor-network_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-network.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-network_<lang>.directory
 
 [razor-qt.razor-notificationd]
 type = QT
@@ -320,11 +428,23 @@ source_lang = en
 source_file = razorqt-resources/autostart/razor-notifications.desktop.in
 file_filter = razorqt-resources/autostart/translations/razor-notifications_<lang>.desktop
 
+[razor-qt.razor-office_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-office.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-office_<lang>.directory
+
 [razor-qt.razor-openssh-askpass]
 type = QT
 source_lang = en
 source_file = razorqt-openssh-askpass/translations/razor-openssh-askpass.ts.src
 file_filter = razorqt-openssh-askpass/translations/razor-openssh-askpass_<lang>.ts
+
+[razor-qt.razor-other_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-other.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-other_<lang>.directory
 
 [razor-qt.razor-panel_desktop]
 type = DESKTOP
@@ -338,11 +458,23 @@ source_lang = en
 source_file = razorqt-panel/panel/translations/razor-panel.ts.src
 file_filter = razorqt-panel/panel/translations/razor-panel_<lang>.ts
 
+[razor-qt.razor-personal_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-personal.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-personal_<lang>.directory
+
 [razor-qt.razor-policykit-agent_desktop]
 type = DESKTOP
 source_lang = en
 source_file = razorqt-resources/autostart/razor-policykit-agent.desktop.in
 file_filter = razorqt-resources/autostart/translations/razor-policykit-agent_<lang>.desktop
+
+[razor-qt.razor-policykit-agent]
+type = QT
+source_lang = en
+source_file = razorqt-policykit/translations/razor-policykit-agent.ts.src
+file_filter = razorqt-policykit/translations/razor-policykit-agent_<lang>.ts
 
 [razor-qt.razor-power_desktop]
 type = DESKTOP
@@ -397,6 +529,54 @@ type = QT
 source_lang = en
 source_file = razorqt-session/razor-session/translations/razor-session.ts.src
 file_filter = razorqt-session/razor-session/translations/razor-session_<lang>.ts
+
+[razor-qt.razor-settings_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-settings.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-settings_<lang>.directory
+
+[razor-qt.razor-settings-other_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-settings-other.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-settings-other_<lang>.directory
+
+[razor-qt.razor-settings-razor_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-settings-razor.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-settings-razor_<lang>.directory
+
+[razor-qt.razor-settings-system_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-settings-system.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-settings-system_<lang>.directory
+
+[razor-qt.razor-system_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-system.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-system_<lang>.directory
+
+[razor-qt.razor-system-tools_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-system-tools.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-system-tools_<lang>.directory
+
+[razor-qt.razor-utility-accessibility_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-utility-accessibility.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-utility-accessibility_<lang>.directory
+
+[razor-qt.razor-utility_directory]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-resources/application-menu/desktop-directories/razor-utility.directory.in
+file_filter = razorqt-resources/application-menu/desktop-directories/translations/razor-utility_<lang>.directory
 
 [razor-qt.razor-xscreensaver-autostart_desktop]
 type = DESKTOP
@@ -464,7 +644,7 @@ source_lang = en
 source_file = razorqt-panel/plugin-tray/resources/tray.desktop.in
 file_filter = razorqt-panel/plugin-tray/translations/tray_<lang>.desktop
 
-[razor-qt.windowmanagers_desktop]
+[razor-qt.windowmanagers_conf]
 type = DESKTOP
 source_lang = en
 source_file = razorqt-resources/config/windowmanagers.conf.in
