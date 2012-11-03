@@ -43,11 +43,18 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorSysStat)
 
 RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
-    content(new RazorSysStatContent(*this, this))
+    mContent(new RazorSysStatContent(*this, this))
 {
     setObjectName("SysStat");
 
-    addWidget(content);
+    QWidget *border = new QWidget(this);
+
+    QVBoxLayout *borderLayout = new QVBoxLayout(border);
+    borderLayout->setContentsMargins(0, 0, 0, 0);
+    borderLayout->setSpacing(0);
+    borderLayout->addWidget(mContent);
+
+    addWidget(border);
 
     this->layout()->setContentsMargins(0, 0, 0, 0);
     this->layout()->setSpacing(0);
@@ -62,7 +69,7 @@ RazorSysStat::~RazorSysStat()
 
 void RazorSysStat::settingsChanged()
 {
-    content->updateSettings(settings());
+    mContent->updateSettings(settings());
 }
 
 void RazorSysStat::showConfigureDialog()
@@ -99,12 +106,11 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
 {
     QString old_dataType = dataType;
 
-    bgColour = QColor(settings.value("graph/bgColour", "0x000000").toString().toInt(NULL, 0) | 0xff000000);
     updateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
     historyLength = settings.value("graph/historyLength", 30).toInt();
 
     gridLines = settings.value("grid/lines", 1).toInt();
-    gridColour = QColor(settings.value("grid/colour", "0xc0c0c0").toString().toInt(NULL, 0) | 0xff000000);
+    gridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
 
     titleLabel = settings.value("title/label", QString()).toString();
     QFont defaultFont(QApplication::font());
@@ -113,26 +119,26 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
         settings.value("title/font/pointSize", defaultFont.pointSize()).toInt(),
         settings.value("title/font/weight", defaultFont.weight()).toInt(),
         settings.value("title/font/italic", defaultFont.italic()).toBool() );
-    titleColour = QColor(settings.value("title/colour", "0xffffff").toString().toInt(NULL, 0) | 0xff000000);
+    titleColour = QColor(settings.value("title/colour", "#ffffff").toString());
 
     dataType = settings.value("data/type", QString("CPU")).toString();
 
     dataSource = settings.value("data/source", QString()).toString();
 
-    cpuSystemColour = QColor(settings.value("cpu/systemColour",    "0x800000").toString().toInt(NULL, 0) | 0xff000000);
-    cpuUserColour =   QColor(settings.value("cpu/userColour",      "0x000080").toString().toInt(NULL, 0) | 0xff000000);
-    cpuNiceColour =   QColor(settings.value("cpu/niceColour",      "0x008000").toString().toInt(NULL, 0) | 0xff000000);
-    cpuOtherColour =  QColor(settings.value("cpu/otherColour",     "0x808000").toString().toInt(NULL, 0) | 0xff000000);
+    cpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
+    cpuUserColour =   QColor(settings.value("cpu/userColour",      "#000080").toString());
+    cpuNiceColour =   QColor(settings.value("cpu/niceColour",      "#008000").toString());
+    cpuOtherColour =  QColor(settings.value("cpu/otherColour",     "#808000").toString());
     useFrequency = settings.value("cpu/useFrequency", true).toBool();
-    frequencyColour = QColor(settings.value("cpu/frequencyColour", "0x60c0c0").toString().toInt(NULL, 0) | 0xff000000);
+    frequencyColour = QColor(settings.value("cpu/frequencyColour", "#60c0c0").toString());
 
-    memAppsColour =    QColor(settings.value("mem/appsColour",    "0x000080").toString().toInt(NULL, 0) | 0xff000000);
-    memBuffersColour = QColor(settings.value("mem/buffersColour", "0x008000").toString().toInt(NULL, 0) | 0xff000000);
-    memCachedColour =  QColor(settings.value("mem/cachedColour",  "0x808000").toString().toInt(NULL, 0) | 0xff000000);
-    swapUsedColour =   QColor(settings.value("mem/swapColour",    "0x800000").toString().toInt(NULL, 0) | 0xff000000);
+    memAppsColour =    QColor(settings.value("mem/appsColour",    "#000080").toString());
+    memBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
+    memCachedColour =  QColor(settings.value("mem/cachedColour",  "#808000").toString());
+    swapUsedColour =   QColor(settings.value("mem/swapColour",    "#800000").toString());
 
-    netReceivedColour =    QColor(settings.value("net/receivedColour",    "0x000080").toString().toInt(NULL, 0) | 0xff000000);
-    netTransmittedColour = QColor(settings.value("net/transmittedColour", "0x808000").toString().toInt(NULL, 0) | 0xff000000);
+    netReceivedColour =    QColor(settings.value("net/receivedColour",    "#000080").toString());
+    netTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
     netMaximumSpeed = PluginSysStat::netSpeedFromString(settings.value("net/maximumSpeed", "1 MB/s").toString());
     logarithmicScale = settings.value("net/logarithmicScale", true).toBool();
 
@@ -224,14 +230,14 @@ void RazorSysStatContent::reset(void)
     setMinimumSize(plugin.panel()->isHorizontal() ? historyLength : 0, plugin.panel()->isHorizontal() ? 0 : historyLength);
 
     historyOffset = 0;
-    historyImage[0] = QImage(historyLength, height(), QImage::Format_RGB32);
-    historyImage[1] = QImage(historyLength, height(), QImage::Format_RGB32);
+    historyImage[0] = QImage(historyLength, height(), QImage::Format_ARGB32);
+    historyImage[1] = QImage(historyLength, height(), QImage::Format_ARGB32);
 #if QT_VERSION < 0x040800
-    historyImage[0].fill(bgColour.rgba());
-    historyImage[1].fill(bgColour.rgba());
+    historyImage[0].fill(QColor(Qt::transparent).rgba());
+    historyImage[1].fill(QColor(Qt::transparent).rgba());
 #else
-    historyImage[0].fill(bgColour);
-    historyImage[1].fill(bgColour);
+    historyImage[0].fill(Qt::transparent);
+    historyImage[1].fill(Qt::transparent);
 #endif
 
     update();
@@ -250,13 +256,12 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_system = height   - height * system * frequencyRate + 0.5;
-    int y_user   = y_system - height * user   * frequencyRate + 0.5;
-    int y_nice   = y_user   - height * nice   * frequencyRate + 0.5;
-    int y_other  = y_nice   - height * other  * frequencyRate + 0.5;
-    int y_freq   = height   - height * frequencyRate + 0.5;
+    int y_system = qMin(qMax(height   - height * system * frequencyRate + 0.5, 0), height - 1);
+    int y_user   = qMin(qMax(y_system - height * user   * frequencyRate + 0.5, 0), height - 1);
+    int y_nice   = qMin(qMax(y_user   - height * nice   * frequencyRate + 0.5, 0), height - 1);
+    int y_other  = qMin(qMax(y_nice   - height * other  * frequencyRate + 0.5, 0), height - 1);
+    int y_freq   = qMin(qMax(height   - height *          frequencyRate + 0.5, 0), height - 1);
 
-    drawLine(imageIndex, x, 0,        y_freq,   bgColour);
     drawLine(imageIndex, x, y_freq,   y_other,  frequencyColour);
     drawLine(imageIndex, x, y_other,  y_nice,   cpuOtherColour);
     drawLine(imageIndex, x, y_nice,   y_user,   cpuNiceColour);
@@ -266,6 +271,8 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     ++historyOffset;
     if (historyOffset == historyLength * 2)
         historyOffset = 0;
+    if (!(historyOffset % historyLength))
+        historyImage[1 - imageIndex].fill(Qt::transparent);
 
     update();
 }
@@ -277,12 +284,11 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_system = height   - height * system + 0.5;
-    int y_user   = y_system - height * user   + 0.5;
-    int y_nice   = y_user   - height * nice   + 0.5;
-    int y_other  = y_nice   - height * other  + 0.5;
+    int y_system = qMin(qMax(height   - height * system + 0.5, 0), height - 1);
+    int y_user   = qMin(qMax(y_system - height * user   + 0.5, 0), height - 1);
+    int y_nice   = qMin(qMax(y_user   - height * nice   + 0.5, 0), height - 1);
+    int y_other  = qMin(qMax(y_nice   - height * other  + 0.5, 0), height - 1);
 
-    drawLine(imageIndex, x, 0,        y_other,  bgColour);
     drawLine(imageIndex, x, y_other,  y_nice,   cpuOtherColour);
     drawLine(imageIndex, x, y_nice,   y_user,   cpuNiceColour);
     drawLine(imageIndex, x, y_user,   y_system, cpuUserColour);
@@ -291,6 +297,8 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     ++historyOffset;
     if (historyOffset == historyLength * 2)
         historyOffset = 0;
+    if (!(historyOffset % historyLength))
+        historyImage[1 - imageIndex].fill(Qt::transparent);
 
     update();
 }
@@ -302,11 +310,10 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_apps    = height    - height * apps    + 0.5;
-    int y_buffers = y_apps    - height * buffers + 0.5;
-    int y_cached  = y_buffers - height * cached  + 0.5;
+    int y_apps    = qMin(qMax(height    - height * apps    + 0.5, 0), height - 1);
+    int y_buffers = qMin(qMax(y_apps    - height * buffers + 0.5, 0), height - 1);
+    int y_cached  = qMin(qMax(y_buffers - height * cached  + 0.5, 0), height - 1);
 
-    drawLine(imageIndex, x, 0,         y_cached,  bgColour);
     drawLine(imageIndex, x, y_cached,  y_buffers, memCachedColour);
     drawLine(imageIndex, x, y_buffers, y_apps,    memBuffersColour);
     drawLine(imageIndex, x, y_apps,    height,    memAppsColour);
@@ -314,6 +321,8 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
     ++historyOffset;
     if (historyOffset == historyLength * 2)
         historyOffset = 0;
+    if (!(historyOffset % historyLength))
+        historyImage[1 - imageIndex].fill(Qt::transparent);
 
     update();
 }
@@ -325,14 +334,15 @@ void RazorSysStatContent::swapUpdate(float used)
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_used = height - height * used + 0.5;
+    int y_used = qMin(qMax(height - height * used + 0.5, 0), height - 1);
 
-    drawLine(imageIndex, x, 0,      y_used, bgColour);
     drawLine(imageIndex, x, y_used, height, swapUsedColour);
 
     ++historyOffset;
     if (historyOffset == historyLength * 2)
         historyOffset = 0;
+    if (!(historyOffset % historyLength))
+        historyImage[1 - imageIndex].fill(Qt::transparent);
 
     update();
 }
@@ -351,17 +361,18 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
         min_value = qLn(min_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
         max_value = qLn(max_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
     }
-    int y_min = height - height * min_value + 0.5;
-    int y_max = height - height * max_value + 0.5;
+    int y_min = qMin(qMax(height - height * min_value + 0.5, 0), height - 1);
+    int y_max = qMin(qMax(height - height * max_value + 0.5, 0), height - 1);
     QColor maxColor = (received > transmitted) ? netReceivedColour : netTransmittedColour;
 
-    drawLine(imageIndex, x, 0,     y_max,  bgColour);
     drawLine(imageIndex, x, y_max, y_min,  maxColor);
     drawLine(imageIndex, x, y_min, height, netBothColour);
 
     ++historyOffset;
     if (historyOffset == historyLength * 2)
         historyOffset = 0;
+    if (!(historyOffset % historyLength))
+        historyImage[1 - imageIndex].fill(Qt::transparent);
 
     update();
 
@@ -381,8 +392,6 @@ void RazorSysStatContent::paintEvent(QPaintEvent *)
         graphTop = titleFontPixelHeight - 1;
         graphHeight -= graphTop;
     }
-
-    p.fillRect(rect(), bgColour);
 
     if (!titleLabel.isEmpty())
     {
