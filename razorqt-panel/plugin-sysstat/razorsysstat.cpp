@@ -256,11 +256,11 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_system = height   - height * system * frequencyRate + 0.5;
-    int y_user   = y_system - height * user   * frequencyRate + 0.5;
-    int y_nice   = y_user   - height * nice   * frequencyRate + 0.5;
-    int y_other  = y_nice   - height * other  * frequencyRate + 0.5;
-    int y_freq   = height   - height * frequencyRate + 0.5;
+    int y_system = qMin(qMax(height   - height * system * frequencyRate + 0.5, 0), height - 1);
+    int y_user   = qMin(qMax(y_system - height * user   * frequencyRate + 0.5, 0), height - 1);
+    int y_nice   = qMin(qMax(y_user   - height * nice   * frequencyRate + 0.5, 0), height - 1);
+    int y_other  = qMin(qMax(y_nice   - height * other  * frequencyRate + 0.5, 0), height - 1);
+    int y_freq   = qMin(qMax(height   - height *          frequencyRate + 0.5, 0), height - 1);
 
     drawLine(imageIndex, x, y_freq,   y_other,  frequencyColour);
     drawLine(imageIndex, x, y_other,  y_nice,   cpuOtherColour);
@@ -284,10 +284,10 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_system = height   - height * system + 0.5;
-    int y_user   = y_system - height * user   + 0.5;
-    int y_nice   = y_user   - height * nice   + 0.5;
-    int y_other  = y_nice   - height * other  + 0.5;
+    int y_system = qMin(qMax(height   - height * system + 0.5, 0), height - 1);
+    int y_user   = qMin(qMax(y_system - height * user   + 0.5, 0), height - 1);
+    int y_nice   = qMin(qMax(y_user   - height * nice   + 0.5, 0), height - 1);
+    int y_other  = qMin(qMax(y_nice   - height * other  + 0.5, 0), height - 1);
 
     drawLine(imageIndex, x, y_other,  y_nice,   cpuOtherColour);
     drawLine(imageIndex, x, y_nice,   y_user,   cpuNiceColour);
@@ -310,9 +310,9 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_apps    = height    - height * apps    + 0.5;
-    int y_buffers = y_apps    - height * buffers + 0.5;
-    int y_cached  = y_buffers - height * cached  + 0.5;
+    int y_apps    = qMin(qMax(height    - height * apps    + 0.5, 0), height - 1);
+    int y_buffers = qMin(qMax(y_apps    - height * buffers + 0.5, 0), height - 1);
+    int y_cached  = qMin(qMax(y_buffers - height * cached  + 0.5, 0), height - 1);
 
     drawLine(imageIndex, x, y_cached,  y_buffers, memCachedColour);
     drawLine(imageIndex, x, y_buffers, y_apps,    memBuffersColour);
@@ -334,7 +334,7 @@ void RazorSysStatContent::swapUpdate(float used)
     int x = historyOffset % historyLength;
 
     int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_used = height - height * used + 0.5;
+    int y_used = qMin(qMax(height - height * used + 0.5, 0), height - 1);
 
     drawLine(imageIndex, x, y_used, height, swapUsedColour);
 
@@ -361,8 +361,8 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
         min_value = qLn(min_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
         max_value = qLn(max_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
     }
-    int y_min = height - height * min_value + 0.5;
-    int y_max = height - height * max_value + 0.5;
+    int y_min = qMin(qMax(height - height * min_value + 0.5, 0), height - 1);
+    int y_max = qMin(qMax(height - height * max_value + 0.5, 0), height - 1);
     QColor maxColor = (received > transmitted) ? netReceivedColour : netTransmittedColour;
 
     drawLine(imageIndex, x, y_max, y_min,  maxColor);
