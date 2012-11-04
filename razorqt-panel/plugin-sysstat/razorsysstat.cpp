@@ -43,7 +43,7 @@ EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorSysStat)
 
 RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
-    mContent(new RazorSysStatContent(*this, this))
+    mContent(new RazorSysStatContent(panel(), this))
 {
     setObjectName("SysStat");
 
@@ -85,16 +85,16 @@ void RazorSysStat::showConfigureDialog()
     confWindow->activateWindow();
 }
 
-RazorSysStatContent::RazorSysStatContent(RazorSysStat &plugin_, QWidget *parent):
+RazorSysStatContent::RazorSysStatContent(RazorPanel *panel, QWidget *parent):
     QWidget(parent),
-    plugin(plugin_),
-    stat(NULL),
-    updateInterval(0),
-    historyLength(0),
-    titleFontPixelHeight(0),
-    historyOffset(0)
+    mPanel(panel),
+    mStat(NULL),
+    mUpdateInterval(0),
+    mHistoryLength(0),
+    mTitleFontPixelHeight(0),
+    mHistoryOffset(0)
 {
-
+    connect(mPanel, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)), SLOT(reset()));
 }
 
 RazorSysStatContent::~RazorSysStatContent()
@@ -103,136 +103,136 @@ RazorSysStatContent::~RazorSysStatContent()
 
 void RazorSysStatContent::updateSettings(const QSettings &settings)
 {
-    QString old_dataType = dataType;
+    QString old_dataType = mDataType;
 
-    double old_updateInterval = updateInterval;
-    int old_historyLength = historyLength;
-    QString old_dataSource = dataSource;
-    bool old_useFrequency = useFrequency;
+    double old_updateInterval = mUpdateInterval;
+    int old_historyLength = mHistoryLength;
+    QString old_dataSource = mDataSource;
+    bool old_useFrequency = mUseFrequency;
 
-    updateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
-    historyLength = settings.value("graph/historyLength", 30).toInt();
+    mUpdateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
+    mHistoryLength = settings.value("graph/historyLength", 30).toInt();
 
-    gridLines = settings.value("grid/lines", 1).toInt();
-    gridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
+    mGridLines = settings.value("grid/lines", 1).toInt();
+    mGridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
 
-    titleLabel = settings.value("title/label", QString()).toString();
+    mTitleLabel = settings.value("title/label", QString()).toString();
     QFont defaultFont(QApplication::font());
-    titleFont = QFont(
+    mTitleFont = QFont(
         settings.value("title/font/family", defaultFont.family()).toString(),
         settings.value("title/font/pointSize", defaultFont.pointSize()).toInt(),
         settings.value("title/font/weight", defaultFont.weight()).toInt(),
         settings.value("title/font/italic", defaultFont.italic()).toBool() );
-    titleColour = QColor(settings.value("title/colour", "#ffffff").toString());
+    mTitleColour = QColor(settings.value("title/colour", "#ffffff").toString());
 
-    dataType = settings.value("data/type", QString("CPU")).toString();
+    mDataType = settings.value("data/type", QString("CPU")).toString();
 
-    dataSource = settings.value("data/source", QString()).toString();
+    mDataSource = settings.value("data/source", QString()).toString();
 
-    cpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
-    cpuUserColour =   QColor(settings.value("cpu/userColour",      "#000080").toString());
-    cpuNiceColour =   QColor(settings.value("cpu/niceColour",      "#008000").toString());
-    cpuOtherColour =  QColor(settings.value("cpu/otherColour",     "#808000").toString());
-    useFrequency = settings.value("cpu/useFrequency", true).toBool();
-    frequencyColour = QColor(settings.value("cpu/frequencyColour", "#60c0c0").toString());
+    mCpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
+    mCpuUserColour =   QColor(settings.value("cpu/userColour",      "#000080").toString());
+    mCpuNiceColour =   QColor(settings.value("cpu/niceColour",      "#008000").toString());
+    mCpuOtherColour =  QColor(settings.value("cpu/otherColour",     "#808000").toString());
+    mUseFrequency = settings.value("cpu/useFrequency", true).toBool();
+    mFrequencyColour = QColor(settings.value("cpu/frequencyColour", "#60c0c0").toString());
 
-    memAppsColour =    QColor(settings.value("mem/appsColour",    "#000080").toString());
-    memBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
-    memCachedColour =  QColor(settings.value("mem/cachedColour",  "#808000").toString());
-    swapUsedColour =   QColor(settings.value("mem/swapColour",    "#800000").toString());
+    mMemAppsColour =    QColor(settings.value("mem/appsColour",    "#000080").toString());
+    mMemBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
+    mMemCachedColour =  QColor(settings.value("mem/cachedColour",  "#808000").toString());
+    mSwapUsedColour =   QColor(settings.value("mem/swapColour",    "#800000").toString());
 
-    netReceivedColour =    QColor(settings.value("net/receivedColour",    "#000080").toString());
-    netTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
-    netMaximumSpeed = PluginSysStat::netSpeedFromString(settings.value("net/maximumSpeed", "1 MB/s").toString());
-    logarithmicScale = settings.value("net/logarithmicScale", true).toBool();
+    mNetReceivedColour =    QColor(settings.value("net/receivedColour",    "#000080").toString());
+    mNetTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
+    mNetMaximumSpeed = PluginSysStat::netSpeedFromString(settings.value("net/maximumSpeed", "1 MB/s").toString());
+    mLogarithmicScale = settings.value("net/logarithmicScale", true).toBool();
 
-    logScaleSteps = settings.value("net/logarithmicScaleSteps", 4).toInt();
-    logScaleMax = static_cast<qreal>(static_cast<int64_t>(1) << logScaleSteps);
+    mLogScaleSteps = settings.value("net/logarithmicScaleSteps", 4).toInt();
+    mLogScaleMax = static_cast<qreal>(static_cast<int64_t>(1) << mLogScaleSteps);
 
-    netRealMaximumSpeed = static_cast<qreal>(static_cast<int64_t>(1) << netMaximumSpeed);
+    mNetRealMaximumSpeed = static_cast<qreal>(static_cast<int64_t>(1) << mNetMaximumSpeed);
 
-    QColor netReceivedColour_hsv = netReceivedColour.toHsv();
-    QColor netTransmittedColour_hsv = netTransmittedColour.toHsv();
+    QColor netReceivedColour_hsv = mNetReceivedColour.toHsv();
+    QColor netTransmittedColour_hsv = mNetTransmittedColour.toHsv();
     qreal hue = (netReceivedColour_hsv.hueF() + netTransmittedColour_hsv.hueF()) / 2;
     if (qAbs(netReceivedColour_hsv.hueF() - netTransmittedColour_hsv.hueF()) > 0.5)
         hue += 0.5;
-    netBothColour.setHsvF(
+    mNetBothColour.setHsvF(
         hue,
         (netReceivedColour_hsv.saturationF() + netTransmittedColour_hsv.saturationF()) / 2,
         (netReceivedColour_hsv.valueF()      + netTransmittedColour_hsv.valueF()     ) / 2 );
 
 
-    if (titleLabel.isEmpty())
-        titleFontPixelHeight = 0;
+    if (mTitleLabel.isEmpty())
+        mTitleFontPixelHeight = 0;
     else
     {
-        QFontMetrics fm(titleFont);
-        titleFontPixelHeight = fm.height() - 1;
+        QFontMetrics fm(mTitleFont);
+        mTitleFontPixelHeight = fm.height() - 1;
     }
 
-    bool needReconnecting = (old_dataType != dataType) || (old_dataSource != dataSource) || (old_useFrequency != useFrequency);
+    bool needReconnecting = (old_dataType != mDataType) || (old_dataSource != mDataSource) || (old_useFrequency != mUseFrequency);
 
-    bool needTimerRestarting = (old_updateInterval != updateInterval) || needReconnecting;
+    bool needTimerRestarting = (old_updateInterval != mUpdateInterval) || needReconnecting;
 
-    bool needFullReset = (old_historyLength != historyLength) || needTimerRestarting;
+    bool needFullReset = (old_historyLength != mHistoryLength) || needTimerRestarting;
 
-    if (stat)
+    if (mStat)
     {
         if (needTimerRestarting)
-            stat->stopUpdating();
+            mStat->stopUpdating();
 
         if (needReconnecting)
-            stat->disconnect(this);
+            mStat->disconnect(this);
 
-        if (old_dataType != dataType)
-            stat->deleteLater();
+        if (old_dataType != mDataType)
+            mStat->deleteLater();
 
     }
 
-    if (old_dataType != dataType)
+    if (old_dataType != mDataType)
     {
-        if (dataType == "CPU")
-            stat = new SysStat::CpuStat(this);
-        else if (dataType == "Memory")
-            stat = new SysStat::MemStat(this);
-        else if (dataType == "Network")
-            stat = new SysStat::NetStat(this);
+        if (mDataType == "CPU")
+            mStat = new SysStat::CpuStat(this);
+        else if (mDataType == "Memory")
+            mStat = new SysStat::MemStat(this);
+        else if (mDataType == "Network")
+            mStat = new SysStat::NetStat(this);
     }
 
-    if (stat)
+    if (mStat)
     {
         if (needReconnecting)
         {
-            if (dataType == "CPU")
+            if (mDataType == "CPU")
             {
-                if (useFrequency)
+                if (mUseFrequency)
                 {
-                    qobject_cast<SysStat::CpuStat*>(stat)->setMonitoring(SysStat::CpuStat::LoadAndFrequency);
-                    connect(qobject_cast<SysStat::CpuStat*>(stat), SIGNAL(update(float, float, float, float, float, uint)), this, SLOT(cpuUpdate(float, float, float, float, float, uint)));
+                    qobject_cast<SysStat::CpuStat*>(mStat)->setMonitoring(SysStat::CpuStat::LoadAndFrequency);
+                    connect(qobject_cast<SysStat::CpuStat*>(mStat), SIGNAL(update(float, float, float, float, float, uint)), this, SLOT(cpuUpdate(float, float, float, float, float, uint)));
                 }
                 else
                 {
-                    qobject_cast<SysStat::CpuStat*>(stat)->setMonitoring(SysStat::CpuStat::LoadOnly);
-                    connect(qobject_cast<SysStat::CpuStat*>(stat), SIGNAL(update(float, float, float, float)), this, SLOT(cpuUpdate(float, float, float, float)));
+                    qobject_cast<SysStat::CpuStat*>(mStat)->setMonitoring(SysStat::CpuStat::LoadOnly);
+                    connect(qobject_cast<SysStat::CpuStat*>(mStat), SIGNAL(update(float, float, float, float)), this, SLOT(cpuUpdate(float, float, float, float)));
                 }
             }
-            else if (dataType == "Memory")
+            else if (mDataType == "Memory")
             {
-                if (dataSource == "memory")
-                    connect(qobject_cast<SysStat::MemStat*>(stat), SIGNAL(memoryUpdate(float, float, float)), this, SLOT(memoryUpdate(float, float, float)));
+                if (mDataSource == "memory")
+                    connect(qobject_cast<SysStat::MemStat*>(mStat), SIGNAL(memoryUpdate(float, float, float)), this, SLOT(memoryUpdate(float, float, float)));
                 else
-                    connect(qobject_cast<SysStat::MemStat*>(stat), SIGNAL(swapUpdate(float)), this, SLOT(swapUpdate(float)));
+                    connect(qobject_cast<SysStat::MemStat*>(mStat), SIGNAL(swapUpdate(float)), this, SLOT(swapUpdate(float)));
             }
-            else if (dataType == "Network")
+            else if (mDataType == "Network")
             {
-                connect(qobject_cast<SysStat::NetStat*>(stat), SIGNAL(update(unsigned, unsigned)), this, SLOT(networkUpdate(unsigned, unsigned)));
+                connect(qobject_cast<SysStat::NetStat*>(mStat), SIGNAL(update(unsigned, unsigned)), this, SLOT(networkUpdate(unsigned, unsigned)));
             }
 
-            stat->setMonitoredSource(dataSource);
+            mStat->setMonitoredSource(mDataSource);
         }
 
         if (needTimerRestarting)
-            stat->setUpdateInterval(updateInterval * 1000.0);
+            mStat->setUpdateInterval(mUpdateInterval * 1000.0);
     }
 
     if (needFullReset)
@@ -248,14 +248,14 @@ void RazorSysStatContent::resizeEvent(QResizeEvent *event)
 
 void RazorSysStatContent::reset(void)
 {
-    setMinimumSize(plugin.panel()->isHorizontal() ? historyLength : 0, plugin.panel()->isHorizontal() ? 0 : historyLength);
+    setMinimumSize(mPanel->isHorizontal() ? mHistoryLength : 0, mPanel->isHorizontal() ? 0 : mHistoryLength);
 
-    historyOffset = 0;
-    historyImage = QImage(historyLength, 100, QImage::Format_ARGB32);
+    mHistoryOffset = 0;
+    mHistoryImage = QImage(mHistoryLength, 100, QImage::Format_ARGB32);
 #if QT_VERSION < 0x040800
     historyImage.fill(QColor(Qt::transparent).rgba());
 #else
-    historyImage.fill(Qt::transparent);
+    mHistoryImage.fill(Qt::transparent);
 #endif
 
     update();
@@ -272,7 +272,7 @@ void RazorSysStatContent::clearLine(void)
 {
     QRgb bg = QColor(Qt::transparent).rgba();
     for (int i = 0; i < 100; ++i)
-        reinterpret_cast<QRgb*>(historyImage.scanLine(i))[historyOffset] = bg;
+        reinterpret_cast<QRgb*>(mHistoryImage.scanLine(i))[mHistoryOffset] = bg;
 }
 
 void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float other, float frequencyRate, uint)
@@ -284,36 +284,36 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     int y_freq   = clamp(static_cast<int>(         100.0 * frequencyRate)           , 0, 99);
 
     clearLine();
-    QPainter painter(&historyImage);
+    QPainter painter(&mHistoryImage);
     if (y_system != 0)
     {
-        painter.setPen(cpuSystemColour);
-        painter.drawLine(historyOffset, y_system, historyOffset, 0);
+        painter.setPen(mCpuSystemColour);
+        painter.drawLine(mHistoryOffset, y_system, mHistoryOffset, 0);
     }
     if (y_user != y_system)
     {
-        painter.setPen(cpuUserColour);
-        painter.drawLine(historyOffset, y_user, historyOffset, y_system);
+        painter.setPen(mCpuUserColour);
+        painter.drawLine(mHistoryOffset, y_user, mHistoryOffset, y_system);
     }
     if (y_nice != y_user)
     {
-        painter.setPen(cpuNiceColour);
-        painter.drawLine(historyOffset, y_nice, historyOffset, y_user);
+        painter.setPen(mCpuNiceColour);
+        painter.drawLine(mHistoryOffset, y_nice, mHistoryOffset, y_user);
     }
     if (y_other != y_nice)
     {
-        painter.setPen(cpuOtherColour);
-        painter.drawLine(historyOffset, y_other, historyOffset, y_nice);
+        painter.setPen(mCpuOtherColour);
+        painter.drawLine(mHistoryOffset, y_other, mHistoryOffset, y_nice);
     }
     if (y_freq != y_other)
     {
-        painter.setPen(frequencyColour);
-        painter.drawLine(historyOffset, y_freq, historyOffset, y_other);
+        painter.setPen(mFrequencyColour);
+        painter.drawLine(mHistoryOffset, y_freq, mHistoryOffset, y_other);
     }
 
-    historyOffset = (historyOffset + 1) % historyLength;
+    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
 
-    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
+    update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
 void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float other)
@@ -324,31 +324,31 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     int y_other  = clamp(static_cast<int>(other  * 100.0) + y_nice  , 0, 99);
 
     clearLine();
-    QPainter painter(&historyImage);
+    QPainter painter(&mHistoryImage);
     if (y_system != 0)
     {
-        painter.setPen(cpuSystemColour);
-        painter.drawLine(historyOffset, y_system, historyOffset, 0);
+        painter.setPen(mCpuSystemColour);
+        painter.drawLine(mHistoryOffset, y_system, mHistoryOffset, 0);
     }
     if (y_user != y_system)
     {
-        painter.setPen(cpuUserColour);
-        painter.drawLine(historyOffset, y_user, historyOffset, y_system);
+        painter.setPen(mCpuUserColour);
+        painter.drawLine(mHistoryOffset, y_user, mHistoryOffset, y_system);
     }
     if (y_nice != y_user)
     {
-        painter.setPen(cpuNiceColour);
-        painter.drawLine(historyOffset, y_nice, historyOffset, y_user);
+        painter.setPen(mCpuNiceColour);
+        painter.drawLine(mHistoryOffset, y_nice, mHistoryOffset, y_user);
     }
     if (y_other != y_nice)
     {
-        painter.setPen(cpuOtherColour);
-        painter.drawLine(historyOffset, y_other, historyOffset, y_nice);
+        painter.setPen(mCpuOtherColour);
+        painter.drawLine(mHistoryOffset, y_other, mHistoryOffset, y_nice);
     }
 
-    historyOffset = (historyOffset + 1) % historyLength;
+    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
 
-    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
+    update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
 void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
@@ -358,26 +358,26 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
     int y_cached  = clamp(static_cast<int>(cached  * 100.0) + y_buffers, 0, 99);
 
     clearLine();
-    QPainter painter(&historyImage);
+    QPainter painter(&mHistoryImage);
     if (y_apps != 0)
     {
-        painter.setPen(memAppsColour);
-        painter.drawLine(historyOffset, y_apps, historyOffset, 0);
+        painter.setPen(mMemAppsColour);
+        painter.drawLine(mHistoryOffset, y_apps, mHistoryOffset, 0);
     }
     if (y_buffers != y_apps)
     {
-        painter.setPen(memBuffersColour);
-        painter.drawLine(historyOffset, y_buffers, historyOffset, y_apps);
+        painter.setPen(mMemBuffersColour);
+        painter.drawLine(mHistoryOffset, y_buffers, mHistoryOffset, y_apps);
     }
     if (y_cached != y_buffers)
     {
-        painter.setPen(memCachedColour);
-        painter.drawLine(historyOffset, y_cached, historyOffset, y_buffers);
+        painter.setPen(mMemCachedColour);
+        painter.drawLine(mHistoryOffset, y_cached, mHistoryOffset, y_buffers);
     }
 
-    historyOffset = (historyOffset + 1) % historyLength;
+    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
 
-    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
+    update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
 void RazorSysStatContent::swapUpdate(float used)
@@ -385,47 +385,47 @@ void RazorSysStatContent::swapUpdate(float used)
     int y_used = clamp(static_cast<int>(used * 100.0), 0, 99);
 
     clearLine();
-    QPainter painter(&historyImage);
+    QPainter painter(&mHistoryImage);
     if (y_used != 0)
     {
-        painter.setPen(swapUsedColour);
-        painter.drawLine(historyOffset, y_used, historyOffset, 0);
+        painter.setPen(mSwapUsedColour);
+        painter.drawLine(mHistoryOffset, y_used, mHistoryOffset, 0);
     }
 
-    historyOffset = (historyOffset + 1) % historyLength;
+    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
 
-    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
+    update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
 void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 {
-    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / netRealMaximumSpeed, 0.0), 1.0);
-    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / netRealMaximumSpeed, 0.0), 1.0);
-    if (logarithmicScale)
+    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
+    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
+    if (mLogarithmicScale)
     {
-        min_value = qLn(min_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
-        max_value = qLn(max_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
+        min_value = qLn(min_value * (mLogScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(mLogScaleSteps);
+        max_value = qLn(max_value * (mLogScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(mLogScaleSteps);
     }
 
     int y_min_value = clamp(static_cast<int>(min_value * 100.0)              , 0, 99);
     int y_max_value = clamp(static_cast<int>(max_value * 100.0) + y_min_value, 0, 99);
 
     clearLine();
-    QPainter painter(&historyImage);
+    QPainter painter(&mHistoryImage);
     if (y_min_value != 0)
     {
-        painter.setPen(netBothColour);
-        painter.drawLine(historyOffset, y_min_value, historyOffset, 0);
+        painter.setPen(mNetBothColour);
+        painter.drawLine(mHistoryOffset, y_min_value, mHistoryOffset, 0);
     }
     if (y_max_value != y_min_value)
     {
-        painter.setPen((received > transmitted) ? netReceivedColour : netTransmittedColour);
-        painter.drawLine(historyOffset, y_max_value, historyOffset, y_min_value);
+        painter.setPen((received > transmitted) ? mNetReceivedColour : mNetTransmittedColour);
+        painter.drawLine(mHistoryOffset, y_max_value, mHistoryOffset, y_min_value);
     }
 
-    historyOffset = (historyOffset + 1) % historyLength;
+    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
 
-    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
+    update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
 void RazorSysStatContent::paintEvent(QPaintEvent *event)
@@ -435,38 +435,38 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
     qreal graphTop = 0;
     qreal graphHeight = height();
 
-    bool hasTitle = !titleLabel.isEmpty();
+    bool hasTitle = !mTitleLabel.isEmpty();
 
     if (hasTitle)
     {
-        graphTop = titleFontPixelHeight;
+        graphTop = mTitleFontPixelHeight;
         graphHeight -= graphTop;
 
         if (event->region().intersects(QRect(0, 0, width(), graphTop)))
         {
-            p.setPen(titleColour);
-            p.setFont(titleFont);
-            p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, titleLabel);
+            p.setPen(mTitleColour);
+            p.setFont(mTitleFont);
+            p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, mTitleLabel);
         }
     }
 
     p.scale(1.0, -1.0);
 
-    p.drawImage(QRect(0, -height(), historyLength - historyOffset, graphHeight), historyImage, QRect(historyOffset, 0, historyLength - historyOffset, 100));
-    if (historyOffset)
-        p.drawImage(QRect(historyLength - historyOffset, -height(), historyOffset, graphHeight), historyImage, QRect(0, 0, historyOffset, 100));
+    p.drawImage(QRect(0, -height(), mHistoryLength - mHistoryOffset, graphHeight), mHistoryImage, QRect(mHistoryOffset, 0, mHistoryLength - mHistoryOffset, 100));
+    if (mHistoryOffset)
+        p.drawImage(QRect(mHistoryLength - mHistoryOffset, -height(), mHistoryOffset, graphHeight), mHistoryImage, QRect(0, 0, mHistoryOffset, 100));
 
     p.resetTransform();
 
     p.setRenderHint(QPainter::Antialiasing);
 
-    p.setPen(gridColour);
+    p.setPen(mGridColour);
     qreal w = static_cast<qreal>(width());
     if (hasTitle)
         p.drawLine(QPointF(0.0, graphTop + 0.5), QPointF(w, graphTop + 0.5)); // 0.5 looks better with antialiasing
-    for (int l = 0; l < gridLines; ++l)
+    for (int l = 0; l < mGridLines; ++l)
     {
-        qreal y = graphTop + static_cast<qreal>(l + 1) * graphHeight / (static_cast<qreal>(gridLines + 1));
+        qreal y = graphTop + static_cast<qreal>(l + 1) * graphHeight / (static_cast<qreal>(mGridLines + 1));
         p.drawLine(QPointF(0.0, y), QPointF(w, y));
     }
 }
