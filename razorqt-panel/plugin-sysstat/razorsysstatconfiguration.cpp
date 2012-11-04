@@ -96,7 +96,7 @@ void RazorSysStatConfiguration::loadSettings()
     lockSaving = true;
 
     ui->intervalSB->setValue(mSettings.value("graph/updateInterval", 1.0).toDouble());
-    ui->sizeSB->setValue(mSettings.value("graph/historyLength", 30).toInt());
+    ui->sizeSB->setValue(mSettings.value("graph/minimalSize", 30).toInt());
 
     ui->linesSB->setValue(mSettings.value("grid/lines", 1).toInt());
     applyColor(ui->gridColourF, QColor(mSettings.value("grid/colour", "#808080").toString()));
@@ -146,7 +146,7 @@ void RazorSysStatConfiguration::saveSettings()
         return;
 
     mSettings.setValue("graph/updateInterval", ui->intervalSB->value());
-    mSettings.setValue("graph/historyLength", ui->sizeSB->value());
+    mSettings.setValue("graph/minimalSize", ui->sizeSB->value());
 
     mSettings.setValue("grid/lines", ui->linesSB->value());
     mSettings.setValue("grid/colour", ui->gridColourF->palette().color(QPalette::Window).name());

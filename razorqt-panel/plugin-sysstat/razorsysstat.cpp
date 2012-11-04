@@ -90,7 +90,7 @@ RazorSysStatContent::RazorSysStatContent(RazorPanel *panel, QWidget *parent):
     mPanel(panel),
     mStat(NULL),
     mUpdateInterval(0),
-    mHistoryLength(0),
+    mMinimalSize(0),
     mTitleFontPixelHeight(0),
     mHistoryOffset(0)
 {
@@ -106,12 +106,12 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     QString old_dataType = mDataType;
 
     double old_updateInterval = mUpdateInterval;
-    int old_historyLength = mHistoryLength;
+    int old_minimalSize = mMinimalSize;
     QString old_dataSource = mDataSource;
     bool old_useFrequency = mUseFrequency;
 
     mUpdateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
-    mHistoryLength = settings.value("graph/historyLength", 30).toInt();
+    mMinimalSize = settings.value("graph/minimalSize", 30).toInt();
 
     mGridLines = settings.value("grid/lines", 1).toInt();
     mGridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
@@ -174,7 +174,7 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
 
     bool needTimerRestarting = (old_updateInterval != mUpdateInterval) || needReconnecting;
 
-    bool needFullReset = (old_historyLength != mHistoryLength) || needTimerRestarting;
+    bool needFullReset = (old_minimalSize != mMinimalSize) || needTimerRestarting;
 
     if (mStat)
     {
@@ -248,10 +248,10 @@ void RazorSysStatContent::resizeEvent(QResizeEvent *event)
 
 void RazorSysStatContent::reset(void)
 {
-    setMinimumSize(mPanel->isHorizontal() ? mHistoryLength : 0, mPanel->isHorizontal() ? 0 : mHistoryLength);
+    setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 0, mPanel->isHorizontal() ? 0 : mMinimalSize);
 
     mHistoryOffset = 0;
-    mHistoryImage = QImage(mHistoryLength, 100, QImage::Format_ARGB32);
+    mHistoryImage = QImage(width(), 100, QImage::Format_ARGB32);
 #if QT_VERSION < 0x040800
     historyImage.fill(QColor(Qt::transparent).rgba());
 #else
@@ -311,7 +311,7 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
         painter.drawLine(mHistoryOffset, y_freq, mHistoryOffset, y_other);
     }
 
-    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
+    mHistoryOffset = (mHistoryOffset + 1) % width();
 
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
@@ -346,7 +346,7 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
         painter.drawLine(mHistoryOffset, y_other, mHistoryOffset, y_nice);
     }
 
-    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
+    mHistoryOffset = (mHistoryOffset + 1) % width();
 
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
@@ -375,7 +375,7 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
         painter.drawLine(mHistoryOffset, y_cached, mHistoryOffset, y_buffers);
     }
 
-    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
+    mHistoryOffset = (mHistoryOffset + 1) % width();
 
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
@@ -392,7 +392,7 @@ void RazorSysStatContent::swapUpdate(float used)
         painter.drawLine(mHistoryOffset, y_used, mHistoryOffset, 0);
     }
 
-    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
+    mHistoryOffset = (mHistoryOffset + 1) % width();
 
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
@@ -423,7 +423,7 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
         painter.drawLine(mHistoryOffset, y_max_value, mHistoryOffset, y_min_value);
     }
 
-    mHistoryOffset = (mHistoryOffset + 1) % mHistoryLength;
+    mHistoryOffset = (mHistoryOffset + 1) % width();
 
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
@@ -452,9 +452,9 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
 
     p.scale(1.0, -1.0);
 
-    p.drawImage(QRect(0, -height(), mHistoryLength - mHistoryOffset, graphHeight), mHistoryImage, QRect(mHistoryOffset, 0, mHistoryLength - mHistoryOffset, 100));
+    p.drawImage(QRect(0, -height(), width() - mHistoryOffset, graphHeight), mHistoryImage, QRect(mHistoryOffset, 0, width() - mHistoryOffset, 100));
     if (mHistoryOffset)
-        p.drawImage(QRect(mHistoryLength - mHistoryOffset, -height(), mHistoryOffset, graphHeight), mHistoryImage, QRect(0, 0, mHistoryOffset, 100));
+        p.drawImage(QRect(width() - mHistoryOffset, -height(), mHistoryOffset, graphHeight), mHistoryImage, QRect(0, 0, mHistoryOffset, 100));
 
     p.resetTransform();
 

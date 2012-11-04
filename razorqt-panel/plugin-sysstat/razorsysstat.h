@@ -84,7 +84,7 @@ private:
     SysStat::BaseStat *mStat;
 
     double mUpdateInterval;
-    int mHistoryLength;
+    int mMinimalSize;
 
     int mGridLines;
     QColor mGridColour;
