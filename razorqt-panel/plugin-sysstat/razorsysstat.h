@@ -80,7 +80,6 @@ private:
 
     SysStat::BaseStat *stat;
 
-    QColor bgColour;
     double updateInterval;
     int historyLength;
 
