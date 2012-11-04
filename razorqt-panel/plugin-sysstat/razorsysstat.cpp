@@ -36,13 +36,13 @@
 #include <QtCore/qmath.h>
 #include <QtGui/QPainter>
 #include <QtGui/QResizeEvent>
-#include <QtGui/QApplication>
 
 
 EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorSysStat)
 
 RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
+    mFakeTitle(new RazorSysStatTitle(this)),
     mContent(new RazorSysStatContent(panel(), this))
 {
     setObjectName("SysStat");
@@ -60,17 +60,21 @@ RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *
     this->layout()->setContentsMargins(0, 0, 0, 0);
     this->layout()->setSpacing(0);
 
+    // qproperty of font type doesn't work with qss, so fake QLabel is used instead
+    connect(mFakeTitle, SIGNAL(fontChanged(QFont)), mContent, SLOT(setTitleFont(QFont)));
+
     // has to be postponed to update the size first
-    QTimer::singleShot(0, this, SLOT(settingsChanged()));
+    QTimer::singleShot(0, this, SLOT(lateInit()));
 }
 
 RazorSysStat::~RazorSysStat()
 {
 }
 
-void RazorSysStat::settingsChanged()
+void RazorSysStat::lateInit()
 {
     mContent->updateSettings(settings());
+    mContent->setTitleFont(mFakeTitle->font());
 }
 
 void RazorSysStat::showConfigureDialog()
@@ -85,6 +89,25 @@ void RazorSysStat::showConfigureDialog()
     confWindow->activateWindow();
 }
 
+RazorSysStatTitle::RazorSysStatTitle(QWidget *parent):
+    QLabel(parent)
+{
+
+}
+
+RazorSysStatTitle::~RazorSysStatTitle()
+{
+
+}
+
+bool RazorSysStatTitle::event(QEvent *e)
+{
+    if (e->type() == QEvent::FontChange)
+        emit fontChanged(font());
+
+    return QLabel::event(e);
+}
+
 RazorSysStatContent::RazorSysStatContent(RazorPanel *panel, QWidget *parent):
     QWidget(parent),
     mPanel(panel),
@@ -92,13 +115,100 @@ RazorSysStatContent::RazorSysStatContent(RazorPanel *panel, QWidget *parent):
     mUpdateInterval(0),
     mMinimalSize(0),
     mTitleFontPixelHeight(0),
+    mUseThemeColours(true),
     mHistoryOffset(0)
 {
+    setObjectName("SysStat_Graph");
+
     connect(mPanel, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)), SLOT(reset()));
 }
 
 RazorSysStatContent::~RazorSysStatContent()
 {
+}
+
+
+// I don't like macros very much, but writing dozen similar functions is much much worse.
+
+#undef QSS_GET_COLOUR
+#define QSS_GET_COLOUR(GETNAME) \
+QColor RazorSysStatContent::GETNAME##Colour(void) const \
+{ \
+    return mThemeColours.GETNAME##Colour; \
+}
+
+#undef QSS_COLOUR
+#define QSS_COLOUR(GETNAME, SETNAME) \
+QSS_GET_COLOUR(GETNAME) \
+void RazorSysStatContent::SETNAME##Colour(QColor value) \
+{ \
+    mThemeColours.GETNAME##Colour = value; \
+    if (mUseThemeColours) \
+        mColours.GETNAME##Colour = mThemeColours.GETNAME##Colour; \
+}
+
+#undef QSS_NET_COLOUR
+#define QSS_NET_COLOUR(GETNAME, SETNAME) \
+QSS_GET_COLOUR(GETNAME) \
+void RazorSysStatContent::SETNAME##Colour(QColor value) \
+{ \
+    mThemeColours.GETNAME##Colour = value; \
+    if (mUseThemeColours) \
+    { \
+        mColours.GETNAME##Colour = mThemeColours.GETNAME##Colour; \
+        mixNetColours(); \
+    } \
+}
+
+QSS_COLOUR(grid,      setGrid)
+QSS_COLOUR(title,     setTitle)
+QSS_COLOUR(cpuSystem, setCpuSystem)
+QSS_COLOUR(cpuUser,   setCpuUser)
+QSS_COLOUR(cpuNice,   setCpuNice)
+QSS_COLOUR(cpuOther,  setCpuOther)
+QSS_COLOUR(frequency, setFrequency)
+QSS_COLOUR(memApps,   setMemApps)
+QSS_COLOUR(memBuffers,setMemBuffers)
+QSS_COLOUR(memCached, setMemCached)
+QSS_COLOUR(swapUsed,  setSwapUsed)
+
+QSS_NET_COLOUR(netReceived,    setNetReceived)
+QSS_NET_COLOUR(netTransmitted, setNetTransmitted)
+
+#undef QSS_NET_COLOUR
+#undef QSS_COLOUR
+#undef QSS_GET_COLOUR
+
+void RazorSysStatContent::mixNetColours(void)
+{
+    QColor netReceivedColour_hsv = mColours.netReceivedColour.toHsv();
+    QColor netTransmittedColour_hsv = mColours.netTransmittedColour.toHsv();
+    qreal hue = (netReceivedColour_hsv.hueF() + netTransmittedColour_hsv.hueF()) / 2;
+    if (qAbs(netReceivedColour_hsv.hueF() - netTransmittedColour_hsv.hueF()) > 0.5)
+        hue += 0.5;
+    mNetBothColour.setHsvF(
+        hue,
+        (netReceivedColour_hsv.saturationF() + netTransmittedColour_hsv.saturationF()) / 2,
+        (netReceivedColour_hsv.valueF()      + netTransmittedColour_hsv.valueF()     ) / 2 );
+}
+
+void RazorSysStatContent::setTitleFont(QFont value)
+{
+    mTitleFont = value;
+    updateTitleFontPixelHeight();
+
+    update();
+}
+
+void RazorSysStatContent::updateTitleFontPixelHeight(void)
+{
+    if (mTitleLabel.isEmpty())
+        mTitleFontPixelHeight = 0;
+    else
+    {
+        QFontMetrics fm(mTitleFont);
+        mTitleFontPixelHeight = fm.height() - 1;
+    }
 }
 
 void RazorSysStatContent::updateSettings(const QSettings &settings)
@@ -110,39 +220,20 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     QString old_dataSource = mDataSource;
     bool old_useFrequency = mUseFrequency;
 
+    mUseThemeColours = settings.value("graph/useThemeColours", true).toBool();
     mUpdateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
     mMinimalSize = settings.value("graph/minimalSize", 30).toInt();
 
     mGridLines = settings.value("grid/lines", 1).toInt();
-    mGridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
 
     mTitleLabel = settings.value("title/label", QString()).toString();
-    QFont defaultFont(QApplication::font());
-    mTitleFont = QFont(
-        settings.value("title/font/family", defaultFont.family()).toString(),
-        settings.value("title/font/pointSize", defaultFont.pointSize()).toInt(),
-        settings.value("title/font/weight", defaultFont.weight()).toInt(),
-        settings.value("title/font/italic", defaultFont.italic()).toBool() );
-    mTitleColour = QColor(settings.value("title/colour", "#ffffff").toString());
 
     mDataType = settings.value("data/type", QString("CPU")).toString();
 
     mDataSource = settings.value("data/source", QString()).toString();
 
-    mCpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
-    mCpuUserColour =   QColor(settings.value("cpu/userColour",      "#000080").toString());
-    mCpuNiceColour =   QColor(settings.value("cpu/niceColour",      "#008000").toString());
-    mCpuOtherColour =  QColor(settings.value("cpu/otherColour",     "#808000").toString());
     mUseFrequency = settings.value("cpu/useFrequency", true).toBool();
-    mFrequencyColour = QColor(settings.value("cpu/frequencyColour", "#60c0c0").toString());
 
-    mMemAppsColour =    QColor(settings.value("mem/appsColour",    "#000080").toString());
-    mMemBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
-    mMemCachedColour =  QColor(settings.value("mem/cachedColour",  "#808000").toString());
-    mSwapUsedColour =   QColor(settings.value("mem/swapColour",    "#800000").toString());
-
-    mNetReceivedColour =    QColor(settings.value("net/receivedColour",    "#000080").toString());
-    mNetTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
     mNetMaximumSpeed = PluginSysStat::netSpeedFromString(settings.value("net/maximumSpeed", "1 MB/s").toString());
     mLogarithmicScale = settings.value("net/logarithmicScale", true).toBool();
 
@@ -151,24 +242,35 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
 
     mNetRealMaximumSpeed = static_cast<qreal>(static_cast<int64_t>(1) << mNetMaximumSpeed);
 
-    QColor netReceivedColour_hsv = mNetReceivedColour.toHsv();
-    QColor netTransmittedColour_hsv = mNetTransmittedColour.toHsv();
-    qreal hue = (netReceivedColour_hsv.hueF() + netTransmittedColour_hsv.hueF()) / 2;
-    if (qAbs(netReceivedColour_hsv.hueF() - netTransmittedColour_hsv.hueF()) > 0.5)
-        hue += 0.5;
-    mNetBothColour.setHsvF(
-        hue,
-        (netReceivedColour_hsv.saturationF() + netTransmittedColour_hsv.saturationF()) / 2,
-        (netReceivedColour_hsv.valueF()      + netTransmittedColour_hsv.valueF()     ) / 2 );
+
+    mSettingsColours.gridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
+
+    mSettingsColours.titleColour = QColor(settings.value("title/colour", "#ffffff").toString());
+
+    mSettingsColours.cpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
+    mSettingsColours.cpuUserColour =   QColor(settings.value("cpu/userColour",      "#000080").toString());
+    mSettingsColours.cpuNiceColour =   QColor(settings.value("cpu/niceColour",      "#008000").toString());
+    mSettingsColours.cpuOtherColour =  QColor(settings.value("cpu/otherColour",     "#808000").toString());
+    mSettingsColours.frequencyColour = QColor(settings.value("cpu/frequencyColour", "#808080").toString());
+
+    mSettingsColours.memAppsColour =    QColor(settings.value("mem/appsColour",    "#000080").toString());
+    mSettingsColours.memBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
+    mSettingsColours.memCachedColour =  QColor(settings.value("mem/cachedColour",  "#808000").toString());
+    mSettingsColours.swapUsedColour =   QColor(settings.value("mem/swapColour",    "#800000").toString());
+
+    mSettingsColours.netReceivedColour =    QColor(settings.value("net/receivedColour",    "#000080").toString());
+    mSettingsColours.netTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
 
 
-    if (mTitleLabel.isEmpty())
-        mTitleFontPixelHeight = 0;
+    if (mUseThemeColours)
+        mColours = mThemeColours;
     else
-    {
-        QFontMetrics fm(mTitleFont);
-        mTitleFontPixelHeight = fm.height() - 1;
-    }
+        mColours = mSettingsColours;
+
+    mixNetColours();
+
+    updateTitleFontPixelHeight();
+
 
     bool needReconnecting = (old_dataType != mDataType) || (old_dataSource != mDataSource) || (old_useFrequency != mUseFrequency);
 
@@ -287,27 +389,27 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     QPainter painter(&mHistoryImage);
     if (y_system != 0)
     {
-        painter.setPen(mCpuSystemColour);
+        painter.setPen(mColours.cpuSystemColour);
         painter.drawLine(mHistoryOffset, y_system, mHistoryOffset, 0);
     }
     if (y_user != y_system)
     {
-        painter.setPen(mCpuUserColour);
+        painter.setPen(mColours.cpuUserColour);
         painter.drawLine(mHistoryOffset, y_user, mHistoryOffset, y_system);
     }
     if (y_nice != y_user)
     {
-        painter.setPen(mCpuNiceColour);
+        painter.setPen(mColours.cpuNiceColour);
         painter.drawLine(mHistoryOffset, y_nice, mHistoryOffset, y_user);
     }
     if (y_other != y_nice)
     {
-        painter.setPen(mCpuOtherColour);
+        painter.setPen(mColours.cpuOtherColour);
         painter.drawLine(mHistoryOffset, y_other, mHistoryOffset, y_nice);
     }
     if (y_freq != y_other)
     {
-        painter.setPen(mFrequencyColour);
+        painter.setPen(mColours.frequencyColour);
         painter.drawLine(mHistoryOffset, y_freq, mHistoryOffset, y_other);
     }
 
@@ -327,22 +429,22 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
     QPainter painter(&mHistoryImage);
     if (y_system != 0)
     {
-        painter.setPen(mCpuSystemColour);
+        painter.setPen(mColours.cpuSystemColour);
         painter.drawLine(mHistoryOffset, y_system, mHistoryOffset, 0);
     }
     if (y_user != y_system)
     {
-        painter.setPen(mCpuUserColour);
+        painter.setPen(mColours.cpuUserColour);
         painter.drawLine(mHistoryOffset, y_user, mHistoryOffset, y_system);
     }
     if (y_nice != y_user)
     {
-        painter.setPen(mCpuNiceColour);
+        painter.setPen(mColours.cpuNiceColour);
         painter.drawLine(mHistoryOffset, y_nice, mHistoryOffset, y_user);
     }
     if (y_other != y_nice)
     {
-        painter.setPen(mCpuOtherColour);
+        painter.setPen(mColours.cpuOtherColour);
         painter.drawLine(mHistoryOffset, y_other, mHistoryOffset, y_nice);
     }
 
@@ -361,17 +463,17 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
     QPainter painter(&mHistoryImage);
     if (y_apps != 0)
     {
-        painter.setPen(mMemAppsColour);
+        painter.setPen(mColours.memAppsColour);
         painter.drawLine(mHistoryOffset, y_apps, mHistoryOffset, 0);
     }
     if (y_buffers != y_apps)
     {
-        painter.setPen(mMemBuffersColour);
+        painter.setPen(mColours.memBuffersColour);
         painter.drawLine(mHistoryOffset, y_buffers, mHistoryOffset, y_apps);
     }
     if (y_cached != y_buffers)
     {
-        painter.setPen(mMemCachedColour);
+        painter.setPen(mColours.memCachedColour);
         painter.drawLine(mHistoryOffset, y_cached, mHistoryOffset, y_buffers);
     }
 
@@ -388,7 +490,7 @@ void RazorSysStatContent::swapUpdate(float used)
     QPainter painter(&mHistoryImage);
     if (y_used != 0)
     {
-        painter.setPen(mSwapUsedColour);
+        painter.setPen(mColours.swapUsedColour);
         painter.drawLine(mHistoryOffset, y_used, mHistoryOffset, 0);
     }
 
@@ -419,7 +521,7 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
     }
     if (y_max_value != y_min_value)
     {
-        painter.setPen((received > transmitted) ? mNetReceivedColour : mNetTransmittedColour);
+        painter.setPen((received > transmitted) ? mColours.netReceivedColour : mColours.netTransmittedColour);
         painter.drawLine(mHistoryOffset, y_max_value, mHistoryOffset, y_min_value);
     }
 
@@ -444,7 +546,7 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
 
         if (event->region().intersects(QRect(0, 0, width(), graphTop)))
         {
-            p.setPen(mTitleColour);
+            p.setPen(mColours.titleColour);
             p.setFont(mTitleFont);
             p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, mTitleLabel);
         }
@@ -460,7 +562,7 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
 
     p.setRenderHint(QPainter::Antialiasing);
 
-    p.setPen(mGridColour);
+    p.setPen(mColours.gridColour);
     qreal w = static_cast<qreal>(width());
     if (hasTitle)
         p.drawLine(QPointF(0.0, graphTop + 0.5), QPointF(w, graphTop + 0.5)); // 0.5 looks better with antialiasing

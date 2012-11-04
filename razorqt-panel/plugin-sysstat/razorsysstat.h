@@ -31,7 +31,10 @@
 #include "../panel/razorpanelplugin.h"
 #include "razorsysstatconfiguration.h"
 
+#include <QtGui/QLabel>
 
+
+class RazorSysStatTitle;
 class RazorSysStatContent;
 class RazorPanel;
 
@@ -49,21 +52,75 @@ public:
     virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
 
 protected slots:
-    virtual void settingsChanged();
+    virtual void lateInit();
     virtual void showConfigureDialog();
 
 private:
+    RazorSysStatTitle *mFakeTitle;
     RazorSysStatContent *mContent;
+};
+
+class RazorSysStatTitle : public QLabel
+{
+    Q_OBJECT
+public:
+    RazorSysStatTitle(QWidget *parent = NULL);
+    ~RazorSysStatTitle();
+
+protected:
+    bool event(QEvent *e);
+
+signals:
+    void fontChanged(QFont);
 };
 
 class RazorSysStatContent : public QWidget
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor gridColor           READ gridColour           WRITE setGridColour)
+    Q_PROPERTY(QColor titleColor          READ titleColour          WRITE setTitleColour)
+    Q_PROPERTY(QColor cpuSystemColor      READ cpuSystemColour      WRITE setCpuSystemColour)
+    Q_PROPERTY(QColor cpuUserColor        READ cpuUserColour        WRITE setCpuUserColour)
+    Q_PROPERTY(QColor cpuNiceColor        READ cpuNiceColour        WRITE setCpuNiceColour)
+    Q_PROPERTY(QColor cpuOtherColor       READ cpuOtherColour       WRITE setCpuOtherColour)
+    Q_PROPERTY(QColor frequencyColor      READ frequencyColour      WRITE setFrequencyColour)
+    Q_PROPERTY(QColor memAppsColor        READ memAppsColour        WRITE setMemAppsColour)
+    Q_PROPERTY(QColor memBuffersColor     READ memBuffersColour     WRITE setMemBuffersColour)
+    Q_PROPERTY(QColor memCachedColor      READ memCachedColour      WRITE setMemCachedColour)
+    Q_PROPERTY(QColor swapUsedColor       READ swapUsedColour       WRITE setSwapUsedColour)
+    Q_PROPERTY(QColor netReceivedColor    READ netReceivedColour    WRITE setNetReceivedColour)
+    Q_PROPERTY(QColor netTransmittedColor READ netTransmittedColour WRITE setNetTransmittedColour)
+
 public:
     RazorSysStatContent(RazorPanel *panel, QWidget *parent = NULL);
     ~RazorSysStatContent();
 
     void updateSettings(const QSettings&);
+
+#undef QSS_COLOUR
+#define QSS_COLOUR(GETNAME, SETNAME) \
+    QColor GETNAME##Colour(void) const; \
+    void SETNAME##Colour(QColor value);
+
+    QSS_COLOUR(grid,           setGrid)
+    QSS_COLOUR(title,          setTitle)
+    QSS_COLOUR(cpuSystem,      setCpuSystem)
+    QSS_COLOUR(cpuUser,        setCpuUser)
+    QSS_COLOUR(cpuNice,        setCpuNice)
+    QSS_COLOUR(cpuOther,       setCpuOther)
+    QSS_COLOUR(frequency,      setFrequency)
+    QSS_COLOUR(memApps,        setMemApps)
+    QSS_COLOUR(memBuffers,     setMemBuffers)
+    QSS_COLOUR(memCached,      setMemCached)
+    QSS_COLOUR(swapUsed,       setSwapUsed)
+    QSS_COLOUR(netReceived,    setNetReceived)
+    QSS_COLOUR(netTransmitted, setNetTransmitted)
+
+#undef QSS_COLOUR
+
+public slots:
+    void setTitleFont(QFont value);
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -83,46 +140,64 @@ private:
 
     SysStat::BaseStat *mStat;
 
+    typedef struct ColourPalette
+    {
+        QColor gridColour;
+
+        QColor titleColour;
+
+        QColor cpuSystemColour;
+        QColor cpuUserColour;
+        QColor cpuNiceColour;
+        QColor cpuOtherColour;
+        QColor frequencyColour;
+
+        QColor memAppsColour;
+        QColor memBuffersColour;
+        QColor memCachedColour;
+        QColor swapUsedColour;
+
+        QColor netReceivedColour;
+        QColor netTransmittedColour;
+    } ColourPalette;
+
     double mUpdateInterval;
     int mMinimalSize;
 
     int mGridLines;
-    QColor mGridColour;
 
     QString mTitleLabel;
     QFont mTitleFont;
     int mTitleFontPixelHeight;
-    QColor mTitleColour;
 
     QString mDataType;
 
     QString mDataSource;
 
-    QColor mCpuSystemColour;
-    QColor mCpuUserColour;
-    QColor mCpuNiceColour;
-    QColor mCpuOtherColour;
     bool mUseFrequency;
-    QColor mFrequencyColour;
 
-    QColor mMemAppsColour;
-    QColor mMemBuffersColour;
-    QColor mMemCachedColour;
-    QColor mSwapUsedColour;
-
-    QColor mNetReceivedColour;
-    QColor mNetTransmittedColour;
-    QColor mNetBothColour;
     int mNetMaximumSpeed;
     qreal mNetRealMaximumSpeed;
     bool mLogarithmicScale;
     int mLogScaleSteps;
     qreal mLogScaleMax;
 
+
+    bool mUseThemeColours;
+    ColourPalette mThemeColours;
+    ColourPalette mSettingsColours;
+    ColourPalette mColours;
+    QColor mNetBothColour;
+
+
     int mHistoryOffset;
     QImage mHistoryImage;
 
+
     void clearLine(void);
+
+    void mixNetColours(void);
+    void updateTitleFontPixelHeight(void);
 };
 
 

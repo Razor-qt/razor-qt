@@ -123,7 +123,7 @@ void RazorSysStatConfiguration::loadSettings()
     applyColor(ui->cpuNiceF,   QColor(mSettings.value("cpu/niceColour",      "#008000").toString()));
     applyColor(ui->cpuOtherF,  QColor(mSettings.value("cpu/otherColour",     "#808000").toString()));
     ui->useFrequencyCB->setChecked(mSettings.value("cpu/useFrequency", true).toBool());
-    applyColor(ui->frequencyF, QColor(mSettings.value("cpu/frequencyColour", "#202020").toString()));
+    applyColor(ui->frequencyF, QColor(mSettings.value("cpu/frequencyColour", "#808080").toString()));
 
     applyColor(ui->memAppsF,    QColor(mSettings.value("mem/appsColour",    "#000080").toString()));
     applyColor(ui->memBuffersF, QColor(mSettings.value("mem/buffersColour", "#008000").toString()));
