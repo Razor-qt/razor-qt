@@ -118,11 +118,11 @@ private:
     qreal logScaleMax;
 
     int historyOffset;
-    QImage historyImage[2];
+    QImage historyImage;
 
     void reset(void);
 
-    void drawLine(int index, int x, int y1, int y2, QColor clr);
+    void clearLine(void);
 };
 
 

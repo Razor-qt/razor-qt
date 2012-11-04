@@ -53,6 +53,7 @@ RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *
     borderLayout->setContentsMargins(0, 0, 0, 0);
     borderLayout->setSpacing(0);
     borderLayout->addWidget(mContent);
+    borderLayout->setStretchFactor(mContent, 1);
 
     addWidget(border);
 
@@ -77,9 +78,7 @@ void RazorSysStat::showConfigureDialog()
     RazorSysStatConfiguration *confWindow = this->findChild<RazorSysStatConfiguration*>("SysStatConfigurationWindow");
 
     if (!confWindow)
-    {
         confWindow = new RazorSysStatConfiguration(settings(), this);
-    }
 
     confWindow->show();
     confWindow->raise();
@@ -99,7 +98,6 @@ RazorSysStatContent::RazorSysStatContent(RazorSysStat &plugin_, QWidget *parent)
 
 RazorSysStatContent::~RazorSysStatContent()
 {
-
 }
 
 void RazorSysStatContent::updateSettings(const QSettings &settings)
@@ -230,130 +228,154 @@ void RazorSysStatContent::reset(void)
     setMinimumSize(plugin.panel()->isHorizontal() ? historyLength : 0, plugin.panel()->isHorizontal() ? 0 : historyLength);
 
     historyOffset = 0;
-    historyImage[0] = QImage(historyLength, height(), QImage::Format_ARGB32);
-    historyImage[1] = QImage(historyLength, height(), QImage::Format_ARGB32);
+    historyImage = QImage(historyLength, 100, QImage::Format_ARGB32);
 #if QT_VERSION < 0x040800
-    historyImage[0].fill(QColor(Qt::transparent).rgba());
-    historyImage[1].fill(QColor(Qt::transparent).rgba());
+    historyImage.fill(QColor(Qt::transparent).rgba());
 #else
-    historyImage[0].fill(Qt::transparent);
-    historyImage[1].fill(Qt::transparent);
+    historyImage.fill(Qt::transparent);
 #endif
 
     update();
 }
 
-void RazorSysStatContent::drawLine(int index, int x, int y1, int y2, QColor clr)
+template <typename T>
+T clamp(const T &value, const T &min, const T &max)
 {
-    for (int y = y1; y < y2; ++y)
-        historyImage[index].setPixel(x, y, clr.rgb());
+    return qMin(qMax(value, min), max);
+}
+
+// QPainter.drawLine with pen set to Qt::transparent doesn't clears anything
+void RazorSysStatContent::clearLine(void)
+{
+    QRgb bg = QColor(Qt::transparent).rgba();
+    for (int i = 0; i < 100; ++i)
+        reinterpret_cast<QRgb*>(historyImage.scanLine(i))[historyOffset] = bg;
 }
 
 void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float other, float frequencyRate, uint)
 {
-    int imageIndex = historyOffset / historyLength;
+    int y_system = clamp(static_cast<int>(system * 100.0 * frequencyRate)           , 0, 99);
+    int y_user   = clamp(static_cast<int>(user   * 100.0 * frequencyRate) + y_system, 0, 99);
+    int y_nice   = clamp(static_cast<int>(nice   * 100.0 * frequencyRate) + y_user  , 0, 99);
+    int y_other  = clamp(static_cast<int>(other  * 100.0 * frequencyRate) + y_nice  , 0, 99);
+    int y_freq   = clamp(static_cast<int>(         100.0 * frequencyRate)           , 0, 99);
 
-    int x = historyOffset % historyLength;
+    clearLine();
+    QPainter painter(&historyImage);
+    if (y_system != 0)
+    {
+        painter.setPen(cpuSystemColour);
+        painter.drawLine(historyOffset, y_system, historyOffset, 0);
+    }
+    if (y_user != y_system)
+    {
+        painter.setPen(cpuUserColour);
+        painter.drawLine(historyOffset, y_user, historyOffset, y_system);
+    }
+    if (y_nice != y_user)
+    {
+        painter.setPen(cpuNiceColour);
+        painter.drawLine(historyOffset, y_nice, historyOffset, y_user);
+    }
+    if (y_other != y_nice)
+    {
+        painter.setPen(cpuOtherColour);
+        painter.drawLine(historyOffset, y_other, historyOffset, y_nice);
+    }
+    if (y_freq != y_other)
+    {
+        painter.setPen(frequencyColour);
+        painter.drawLine(historyOffset, y_freq, historyOffset, y_other);
+    }
 
-    int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_system = qMin(qMax(height   - height * system * frequencyRate + 0.5, 0), height - 1);
-    int y_user   = qMin(qMax(y_system - height * user   * frequencyRate + 0.5, 0), height - 1);
-    int y_nice   = qMin(qMax(y_user   - height * nice   * frequencyRate + 0.5, 0), height - 1);
-    int y_other  = qMin(qMax(y_nice   - height * other  * frequencyRate + 0.5, 0), height - 1);
-    int y_freq   = qMin(qMax(height   - height *          frequencyRate + 0.5, 0), height - 1);
-
-    drawLine(imageIndex, x, y_freq,   y_other,  frequencyColour);
-    drawLine(imageIndex, x, y_other,  y_nice,   cpuOtherColour);
-    drawLine(imageIndex, x, y_nice,   y_user,   cpuNiceColour);
-    drawLine(imageIndex, x, y_user,   y_system, cpuUserColour);
-    drawLine(imageIndex, x, y_system, height,   cpuSystemColour);
-
-    ++historyOffset;
-    if (historyOffset == historyLength * 2)
-        historyOffset = 0;
-    if (!(historyOffset % historyLength))
-        historyImage[1 - imageIndex].fill(Qt::transparent);
+    historyOffset = (historyOffset + 1) % historyLength;
 
     update();
 }
 
 void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float other)
 {
-    int imageIndex = historyOffset / historyLength;
+    int y_system = clamp(static_cast<int>(system * 100.0)           , 0, 99);
+    int y_user   = clamp(static_cast<int>(user   * 100.0) + y_system, 0, 99);
+    int y_nice   = clamp(static_cast<int>(nice   * 100.0) + y_user  , 0, 99);
+    int y_other  = clamp(static_cast<int>(other  * 100.0) + y_nice  , 0, 99);
 
-    int x = historyOffset % historyLength;
+    clearLine();
+    QPainter painter(&historyImage);
+    if (y_system != 0)
+    {
+        painter.setPen(cpuSystemColour);
+        painter.drawLine(historyOffset, y_system, historyOffset, 0);
+    }
+    if (y_user != y_system)
+    {
+        painter.setPen(cpuUserColour);
+        painter.drawLine(historyOffset, y_user, historyOffset, y_system);
+    }
+    if (y_nice != y_user)
+    {
+        painter.setPen(cpuNiceColour);
+        painter.drawLine(historyOffset, y_nice, historyOffset, y_user);
+    }
+    if (y_other != y_nice)
+    {
+        painter.setPen(cpuOtherColour);
+        painter.drawLine(historyOffset, y_other, historyOffset, y_nice);
+    }
 
-    int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_system = qMin(qMax(height   - height * system + 0.5, 0), height - 1);
-    int y_user   = qMin(qMax(y_system - height * user   + 0.5, 0), height - 1);
-    int y_nice   = qMin(qMax(y_user   - height * nice   + 0.5, 0), height - 1);
-    int y_other  = qMin(qMax(y_nice   - height * other  + 0.5, 0), height - 1);
-
-    drawLine(imageIndex, x, y_other,  y_nice,   cpuOtherColour);
-    drawLine(imageIndex, x, y_nice,   y_user,   cpuNiceColour);
-    drawLine(imageIndex, x, y_user,   y_system, cpuUserColour);
-    drawLine(imageIndex, x, y_system, height,   cpuSystemColour);
-
-    ++historyOffset;
-    if (historyOffset == historyLength * 2)
-        historyOffset = 0;
-    if (!(historyOffset % historyLength))
-        historyImage[1 - imageIndex].fill(Qt::transparent);
+    historyOffset = (historyOffset + 1) % historyLength;
 
     update();
 }
 
 void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
 {
-    int imageIndex = historyOffset / historyLength;
+    int y_apps    = clamp(static_cast<int>(apps    * 100.0)            , 0, 99);
+    int y_buffers = clamp(static_cast<int>(buffers * 100.0) + y_apps   , 0, 99);
+    int y_cached  = clamp(static_cast<int>(cached  * 100.0) + y_buffers, 0, 99);
 
-    int x = historyOffset % historyLength;
+    clearLine();
+    QPainter painter(&historyImage);
+    if (y_apps != 0)
+    {
+        painter.setPen(memAppsColour);
+        painter.drawLine(historyOffset, y_apps, historyOffset, 0);
+    }
+    if (y_buffers != y_apps)
+    {
+        painter.setPen(memBuffersColour);
+        painter.drawLine(historyOffset, y_buffers, historyOffset, y_apps);
+    }
+    if (y_cached != y_buffers)
+    {
+        painter.setPen(memCachedColour);
+        painter.drawLine(historyOffset, y_cached, historyOffset, y_buffers);
+    }
 
-    int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_apps    = qMin(qMax(height    - height * apps    + 0.5, 0), height - 1);
-    int y_buffers = qMin(qMax(y_apps    - height * buffers + 0.5, 0), height - 1);
-    int y_cached  = qMin(qMax(y_buffers - height * cached  + 0.5, 0), height - 1);
-
-    drawLine(imageIndex, x, y_cached,  y_buffers, memCachedColour);
-    drawLine(imageIndex, x, y_buffers, y_apps,    memBuffersColour);
-    drawLine(imageIndex, x, y_apps,    height,    memAppsColour);
-
-    ++historyOffset;
-    if (historyOffset == historyLength * 2)
-        historyOffset = 0;
-    if (!(historyOffset % historyLength))
-        historyImage[1 - imageIndex].fill(Qt::transparent);
+    historyOffset = (historyOffset + 1) % historyLength;
 
     update();
 }
 
 void RazorSysStatContent::swapUpdate(float used)
 {
-    int imageIndex = historyOffset / historyLength;
+    int y_used = clamp(static_cast<int>(used * 100.0), 0, 99);
 
-    int x = historyOffset % historyLength;
+    clearLine();
+    QPainter painter(&historyImage);
+    if (y_used != 0)
+    {
+        painter.setPen(swapUsedColour);
+        painter.drawLine(historyOffset, y_used, historyOffset, 0);
+    }
 
-    int height = historyImage[imageIndex].height() - titleFontPixelHeight;
-    int y_used = qMin(qMax(height - height * used + 0.5, 0), height - 1);
-
-    drawLine(imageIndex, x, y_used, height, swapUsedColour);
-
-    ++historyOffset;
-    if (historyOffset == historyLength * 2)
-        historyOffset = 0;
-    if (!(historyOffset % historyLength))
-        historyImage[1 - imageIndex].fill(Qt::transparent);
+    historyOffset = (historyOffset + 1) % historyLength;
 
     update();
 }
 
 void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 {
-    int imageIndex = historyOffset / historyLength;
-
-    int x = historyOffset % historyLength;
-
-    int height = historyImage[imageIndex].height() - titleFontPixelHeight;
     qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / netRealMaximumSpeed, 0.0), 1.0);
     qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / netRealMaximumSpeed, 0.0), 1.0);
     if (logarithmicScale)
@@ -361,68 +383,73 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
         min_value = qLn(min_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
         max_value = qLn(max_value * (logScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(logScaleSteps);
     }
-    int y_min = qMin(qMax(height - height * min_value + 0.5, 0), height - 1);
-    int y_max = qMin(qMax(height - height * max_value + 0.5, 0), height - 1);
-    QColor maxColor = (received > transmitted) ? netReceivedColour : netTransmittedColour;
 
-    drawLine(imageIndex, x, y_max, y_min,  maxColor);
-    drawLine(imageIndex, x, y_min, height, netBothColour);
+    int y_min_value = clamp(static_cast<int>(min_value * 100.0)              , 0, 99);
+    int y_max_value = clamp(static_cast<int>(max_value * 100.0) + y_min_value, 0, 99);
 
-    ++historyOffset;
-    if (historyOffset == historyLength * 2)
-        historyOffset = 0;
-    if (!(historyOffset % historyLength))
-        historyImage[1 - imageIndex].fill(Qt::transparent);
+    clearLine();
+    QPainter painter(&historyImage);
+    if (y_min_value != 0)
+    {
+        painter.setPen(netBothColour);
+        painter.drawLine(historyOffset, y_min_value, historyOffset, 0);
+    }
+    if (y_max_value != y_min_value)
+    {
+        painter.setPen((received > transmitted) ? netReceivedColour : netTransmittedColour);
+        painter.drawLine(historyOffset, y_max_value, historyOffset, y_min_value);
+    }
+
+    historyOffset = (historyOffset + 1) % historyLength;
 
     update();
-
 }
 
-void RazorSysStatContent::paintEvent(QPaintEvent *)
+void RazorSysStatContent::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
 
-    int linesStart = 1;
     qreal graphTop = 0;
     qreal graphHeight = height();
 
-    if (!titleLabel.isEmpty())
+    bool hasTitle = !titleLabel.isEmpty();
+
+    if (hasTitle)
     {
-        linesStart = 0;
         graphTop = titleFontPixelHeight - 1;
         graphHeight -= graphTop;
+
+        if (event->region().intersects(QRect(0, 0, width(), graphTop)))
+        {
+            p.setPen(titleColour);
+            p.setFont(titleFont);
+            p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, titleLabel);
+        }
     }
 
-    if (!titleLabel.isEmpty())
+    p.scale(1.0, -1.0);
+
+    QRect targetRect(0, -height(), historyLength - historyOffset, graphHeight);
+    if (event->region().intersects(targetRect))
+        p.drawImage(targetRect, historyImage, QRect(historyOffset, 0, historyLength - historyOffset, 100));
+    if (historyOffset)
     {
-        p.setPen(titleColour);
-        p.setFont(titleFont);
-        p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, titleLabel);
+        targetRect = QRect(historyLength - historyOffset, -height(), historyOffset, graphHeight);
+        if (event->region().intersects(targetRect))
+            p.drawImage(targetRect, historyImage, QRect(0, 0, historyOffset, 100));
     }
 
+    p.resetTransform();
 
-    if (historyOffset < historyLength)
-    {
-        int x = historyLength - historyOffset;
-        int sx = 0;
-        int sw = historyOffset;
-        p.drawImage( x, titleFontPixelHeight, historyImage[0], sx, 0, sw, 0);
-        p.drawImage(sx, titleFontPixelHeight, historyImage[1], sw, 0,  x, 0);
-    }
-    else
-    {
-        int x = 0;
-        int sx = historyOffset - historyLength;
-        int sw = historyLength - sx;
-        p.drawImage( x, titleFontPixelHeight, historyImage[0], sx, 0, sw, 0);
-        p.drawImage(sw, titleFontPixelHeight, historyImage[1],  x, 0, sx, 0);
-    }
-
+    p.setRenderHint(QPainter::Antialiasing);
 
     p.setPen(gridColour);
-    for (int l = linesStart; l <= gridLines; ++l)
+    qreal w = static_cast<qreal>(width());
+    if (hasTitle)
+        p.drawLine(QPointF(0.0, graphTop + 0.5), QPointF(w, graphTop + 0.5)); // 0.5 looks better with antialiasing
+    for (int l = 0; l < gridLines; ++l)
     {
-        qreal y = graphTop + l * 1.0 * graphHeight / (gridLines + 1);
-        p.drawLine(QPointF(0, y), QPointF(width(), y));
+        qreal y = graphTop + static_cast<qreal>(l + 1) * graphHeight / (static_cast<qreal>(gridLines + 1));
+        p.drawLine(QPointF(0.0, y), QPointF(w, y));
     }
 }
