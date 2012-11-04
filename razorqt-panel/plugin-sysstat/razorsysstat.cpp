@@ -89,6 +89,7 @@ RazorSysStatContent::RazorSysStatContent(RazorSysStat &plugin_, QWidget *parent)
     QWidget(parent),
     plugin(plugin_),
     stat(NULL),
+    updateInterval(0),
     historyLength(0),
     titleFontPixelHeight(0),
     historyOffset(0)
@@ -103,6 +104,11 @@ RazorSysStatContent::~RazorSysStatContent()
 void RazorSysStatContent::updateSettings(const QSettings &settings)
 {
     QString old_dataType = dataType;
+
+    double old_updateInterval = updateInterval;
+    int old_historyLength = historyLength;
+    QString old_dataSource = dataSource;
+    bool old_useFrequency = useFrequency;
 
     updateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
     historyLength = settings.value("graph/historyLength", 30).toInt();
@@ -161,17 +167,30 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     else
     {
         QFontMetrics fm(titleFont);
-        titleFontPixelHeight = fm.height();
+        titleFontPixelHeight = fm.height() - 1;
     }
 
+    bool needReconnecting = (old_dataType != dataType) || (old_dataSource != dataSource) || (old_useFrequency != useFrequency);
+
+    bool needTimerRestarting = (old_updateInterval != updateInterval) || needReconnecting;
+
+    bool needFullReset = (old_historyLength != historyLength) || needTimerRestarting;
+
     if (stat)
-        stat->stopUpdating();
+    {
+        if (needTimerRestarting)
+            stat->stopUpdating();
+
+        if (needReconnecting)
+            stat->disconnect(this);
+
+        if (old_dataType != dataType)
+            stat->deleteLater();
+
+    }
 
     if (old_dataType != dataType)
     {
-        if (stat)
-            stat->deleteLater();
-
         if (dataType == "CPU")
             stat = new SysStat::CpuStat(this);
         else if (dataType == "Memory")
@@ -179,43 +198,47 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
         else if (dataType == "Network")
             stat = new SysStat::NetStat(this);
     }
-    else if (stat)
-    {
-        stat->disconnect(this);
-    }
 
     if (stat)
     {
-        if (dataType == "CPU")
+        if (needReconnecting)
         {
-            if (useFrequency)
+            if (dataType == "CPU")
             {
-                qobject_cast<SysStat::CpuStat*>(stat)->setMonitoring(SysStat::CpuStat::LoadAndFrequency);
-                connect(qobject_cast<SysStat::CpuStat*>(stat), SIGNAL(update(float, float, float, float, float, uint)), this, SLOT(cpuUpdate(float, float, float, float, float, uint)));
+                if (useFrequency)
+                {
+                    qobject_cast<SysStat::CpuStat*>(stat)->setMonitoring(SysStat::CpuStat::LoadAndFrequency);
+                    connect(qobject_cast<SysStat::CpuStat*>(stat), SIGNAL(update(float, float, float, float, float, uint)), this, SLOT(cpuUpdate(float, float, float, float, float, uint)));
+                }
+                else
+                {
+                    qobject_cast<SysStat::CpuStat*>(stat)->setMonitoring(SysStat::CpuStat::LoadOnly);
+                    connect(qobject_cast<SysStat::CpuStat*>(stat), SIGNAL(update(float, float, float, float)), this, SLOT(cpuUpdate(float, float, float, float)));
+                }
             }
-            else
+            else if (dataType == "Memory")
             {
-                qobject_cast<SysStat::CpuStat*>(stat)->setMonitoring(SysStat::CpuStat::LoadOnly);
-                connect(qobject_cast<SysStat::CpuStat*>(stat), SIGNAL(update(float, float, float, float)), this, SLOT(cpuUpdate(float, float, float, float)));
+                if (dataSource == "memory")
+                    connect(qobject_cast<SysStat::MemStat*>(stat), SIGNAL(memoryUpdate(float, float, float)), this, SLOT(memoryUpdate(float, float, float)));
+                else
+                    connect(qobject_cast<SysStat::MemStat*>(stat), SIGNAL(swapUpdate(float)), this, SLOT(swapUpdate(float)));
             }
-        }
-        else if (dataType == "Memory")
-        {
-            if (dataSource == "memory")
-                connect(qobject_cast<SysStat::MemStat*>(stat), SIGNAL(memoryUpdate(float, float, float)), this, SLOT(memoryUpdate(float, float, float)));
-            else
-                connect(qobject_cast<SysStat::MemStat*>(stat), SIGNAL(swapUpdate(float)), this, SLOT(swapUpdate(float)));
-        }
-        else if (dataType == "Network")
-        {
-            connect(qobject_cast<SysStat::NetStat*>(stat), SIGNAL(update(unsigned, unsigned)), this, SLOT(networkUpdate(unsigned, unsigned)));
+            else if (dataType == "Network")
+            {
+                connect(qobject_cast<SysStat::NetStat*>(stat), SIGNAL(update(unsigned, unsigned)), this, SLOT(networkUpdate(unsigned, unsigned)));
+            }
+
+            stat->setMonitoredSource(dataSource);
         }
 
-        stat->setUpdateInterval(updateInterval * 1000.0);
-        stat->setMonitoredSource(dataSource);
+        if (needTimerRestarting)
+            stat->setUpdateInterval(updateInterval * 1000.0);
     }
 
-    reset();
+    if (needFullReset)
+        reset();
+    else
+        update();
 }
 
 void RazorSysStatContent::resizeEvent(QResizeEvent *event)
@@ -290,7 +313,7 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
 
     historyOffset = (historyOffset + 1) % historyLength;
 
-    update();
+    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
 }
 
 void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float other)
@@ -325,7 +348,7 @@ void RazorSysStatContent::cpuUpdate(float user, float nice, float system, float 
 
     historyOffset = (historyOffset + 1) % historyLength;
 
-    update();
+    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
 }
 
 void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
@@ -354,7 +377,7 @@ void RazorSysStatContent::memoryUpdate(float apps, float buffers, float cached)
 
     historyOffset = (historyOffset + 1) % historyLength;
 
-    update();
+    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
 }
 
 void RazorSysStatContent::swapUpdate(float used)
@@ -371,7 +394,7 @@ void RazorSysStatContent::swapUpdate(float used)
 
     historyOffset = (historyOffset + 1) % historyLength;
 
-    update();
+    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
 }
 
 void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
@@ -402,7 +425,7 @@ void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 
     historyOffset = (historyOffset + 1) % historyLength;
 
-    update();
+    update(0, titleFontPixelHeight, width(), height() - titleFontPixelHeight);
 }
 
 void RazorSysStatContent::paintEvent(QPaintEvent *event)
@@ -416,7 +439,7 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
 
     if (hasTitle)
     {
-        graphTop = titleFontPixelHeight - 1;
+        graphTop = titleFontPixelHeight;
         graphHeight -= graphTop;
 
         if (event->region().intersects(QRect(0, 0, width(), graphTop)))
@@ -429,15 +452,9 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
 
     p.scale(1.0, -1.0);
 
-    QRect targetRect(0, -height(), historyLength - historyOffset, graphHeight);
-    if (event->region().intersects(targetRect))
-        p.drawImage(targetRect, historyImage, QRect(historyOffset, 0, historyLength - historyOffset, 100));
+    p.drawImage(QRect(0, -height(), historyLength - historyOffset, graphHeight), historyImage, QRect(historyOffset, 0, historyLength - historyOffset, 100));
     if (historyOffset)
-    {
-        targetRect = QRect(historyLength - historyOffset, -height(), historyOffset, graphHeight);
-        if (event->region().intersects(targetRect))
-            p.drawImage(targetRect, historyImage, QRect(0, 0, historyOffset, 100));
-    }
+        p.drawImage(QRect(historyLength - historyOffset, -height(), historyOffset, graphHeight), historyImage, QRect(0, 0, historyOffset, 100));
 
     p.resetTransform();
 
