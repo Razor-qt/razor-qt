@@ -11,6 +11,10 @@
         <source>Show battery status icon in tray</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Use status icons from theme</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LidSettings</name>

@@ -20,11 +20,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Font</source>
+        <source>Use UTC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -32,59 +28,49 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show &amp;date</source>
+        <source>Date &amp;format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>D&amp;ate format</source>
+        <source>Do not show date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Fon&amp;t</source>
+        <source>Show date before time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show date in &amp;new line</source>
+        <source>Show date after time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Use theme fonts</source>
+        <source>Show date below time on new line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Time font</source>
+        <source>Input custom date format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Date font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ultra light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ultra black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Demi bold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Italic</source>
+        <source>Interpreted sequences of date format are:
+
+d	the day as number without a leading zero (1 to 31)
+dd	the day as number with a leading zero (01 to 31)
+ddd	the abbreviated localized day name (e.g. &apos;Mon&apos; to &apos;Sun&apos;).
+dddd	the long localized day name (e.g. &apos;Monday&apos; to &apos;Sunday&apos;).
+M	the month as number without a leading zero (1-12)
+MM	the month as number with a leading zero (01-12)
+MMM	the abbreviated localized month name (e.g. &apos;Jan&apos; to &apos;Dec&apos;).
+MMMM	the long localized month name (e.g. &apos;January&apos; to &apos;December&apos;).
+yy	the year as two digit number (00-99)
+yyyy	the year as four digit number
+
+All other input characters will be treated as text.
+Any sequence of characters that are enclosed in single quotes (&apos;)
+will also be treated as text and not be used as an expression.
+
+
+Custom date format:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

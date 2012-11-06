@@ -48,7 +48,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&quot;On&quot; means that razor-desktop will switch desktops (may conflict with selected window manager). &quot;Off&quot; means that mouse wheel events are ignored by razor-desktop.</source>
+        <source>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
