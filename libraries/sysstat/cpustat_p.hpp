@@ -68,7 +68,14 @@ private:
 
     typedef struct Values
     {
-        Values(void);
+        Values(void):
+            user(0),
+            nice(0),
+            system(0),
+            idle(0),
+            other(0),
+            total(0)
+        {}
 
         qulonglong user;
         qulonglong nice;
@@ -76,8 +83,10 @@ private:
         qulonglong idle;
         qulonglong other;
         qulonglong total;
+
         void sum(void);
     } Values;
+
     typedef QMap<QString, Values> NamedValues;
     NamedValues mPrevious;
 

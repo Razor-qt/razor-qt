@@ -119,7 +119,8 @@ void CpuStatPrivate::timeout(void)
             current.system = tokens[3].toULongLong();
             current.idle   = tokens[4].toULongLong();
             current.other  = 0;
-            for (int i = 5; i < tokens.size(); ++i)
+            int m = tokens.size();
+            for (int i = 5; i < m; ++i)
                 current.other += tokens[i].toULongLong();
             current.sum();
 
