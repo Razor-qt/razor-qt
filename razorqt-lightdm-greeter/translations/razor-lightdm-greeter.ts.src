@@ -2,24 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
-    <name>HelloWorld</name>
+    <name>LoginForm</name>
     <message>
-        <source>Hello World:</source>
+        <source>user id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Display Text Configuration</source>
+        <source>password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit HTML</source>
+        <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>QObject</name>
     <message>
-        <source>Display simple text. A debugging/sample widget.</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
