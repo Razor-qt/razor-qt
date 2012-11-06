@@ -57,15 +57,11 @@ private:
 
     typedef struct Values
     {
-        Values(void):
-            received(0),
-            transmitted(0)
-         {}
+        Values(void);
 
         qulonglong received;
         qulonglong transmitted;
     } Values;
-
     typedef QMap<QString, Values> NamedValues;
     NamedValues mPrevious;
 };
