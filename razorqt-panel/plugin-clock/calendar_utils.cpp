@@ -27,6 +27,7 @@
 
 
 #include "calendar_utils.h"
+#include "config.h"
 
 #include <QtCore/QtGlobal>
 
@@ -43,17 +44,21 @@ Qt::DayOfWeek firstDayOfWeek(void)
 
 #else // use C
 
+#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
 #include <langinfo.h>
+#endif
 
 Qt::DayOfWeek firstDayOfWeek(void)
 {
+    #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
     const char *const s = nl_langinfo(_NL_TIME_FIRST_WEEKDAY);
 
     if (s)
         if ((*s >= 1) && (*s <= 7))
             return static_cast<Qt::DayOfWeek>((*s + 6) % 7);
-
+    #else
     return Qt::Sunday;
+    #endif // HAVE__NL_TIME_FIRST_WEEKDAY
 }
 
 #endif
