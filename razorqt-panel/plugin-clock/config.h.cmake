@@ -1,0 +1,1 @@
+#cmakedefine   HAVE__NL_TIME_FIRST_WEEKDAY 1
