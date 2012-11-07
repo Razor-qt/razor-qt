@@ -40,8 +40,12 @@ public:
     /// Constructs a RazorMimeInfo with the mimeType type.
     explicit XdgMimeInfo(const QString& mimeType);
 
-    /// Constructs a new RazorMimeInfo that gives mime information about the given file.
-    explicit XdgMimeInfo(const QFileInfo& file);
+    /**
+    Constructs a new RazorMimeInfo that gives mime information about the given file.
+    If file is symlink and followSymLinks is true function gives information for the
+    file the link references rather than for the link itself.
+    **/
+    explicit XdgMimeInfo(const QFileInfo& file, bool followSymLinks=true);
 
     /// Returns the name of the mime type.
     QString mimeType() const;
