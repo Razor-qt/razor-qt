@@ -165,7 +165,7 @@
          </font>
         </property>
         <property name="text">
-         <string>&quot;On&quot; means that razor-desktop will switch desktops (may conflict with selected window manager). &quot;Off&quot; means that mouse wheel events are ignored by razor-desktop.</string>
+         <string>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</string>
         </property>
         <property name="textFormat">
          <enum>Qt::PlainText</enum>

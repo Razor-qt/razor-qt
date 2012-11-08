@@ -48,7 +48,7 @@ XdgMimeInfo::XdgMimeInfo(const QString& mimeType)
 /************************************************
 
  ************************************************/
-QString getFileMimeType(const QFileInfo& fileInfo)
+QString getFileMimeType(const QFileInfo& fileInfo, bool followSymLinks)
 {
 
     QString result("application/octet-stream");
@@ -68,6 +68,10 @@ QString getFileMimeType(const QFileInfo& fileInfo)
     }
 
     QByteArray ar = fileInfo.absoluteFilePath().toLocal8Bit();
+    if (followSymLinks && fileInfo.isSymLink())
+    {
+        ar = fileInfo.symLinkTarget().toLocal8Bit();
+    }
     char *file = ar.data();
 
     // getting mime-type ........................
@@ -85,9 +89,9 @@ QString getFileMimeType(const QFileInfo& fileInfo)
 /************************************************
 
  ************************************************/
-XdgMimeInfo::XdgMimeInfo(const QFileInfo& file)
+XdgMimeInfo::XdgMimeInfo(const QFileInfo& file, bool followSymLinks)
 {
-    QString mimeType = getFileMimeType(file);
+    QString mimeType = getFileMimeType(file, followSymLinks);
     mType = mimeType.section('/', 0, 0);
     mSubType = mimeType.section('/', 1);
 }

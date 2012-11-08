@@ -33,6 +33,7 @@
 
 
 class RazorSysStatContent;
+class RazorPanel;
 
 namespace SysStat {
     class BaseStat;
@@ -52,14 +53,14 @@ protected slots:
     virtual void showConfigureDialog();
 
 private:
-    RazorSysStatContent *content;
+    RazorSysStatContent *mContent;
 };
 
 class RazorSysStatContent : public QWidget
 {
     Q_OBJECT
 public:
-    RazorSysStatContent(RazorSysStat &plugin_, QWidget *parent = NULL);
+    RazorSysStatContent(RazorPanel *panel, QWidget *parent = NULL);
     ~RazorSysStatContent();
 
     void updateSettings(const QSettings&);
@@ -75,54 +76,53 @@ protected slots:
     void swapUpdate(float used);
     void networkUpdate(unsigned received, unsigned transmitted);
 
-private:
-    RazorSysStat &plugin;
-
-    SysStat::BaseStat *stat;
-
-    QColor bgColour;
-    double updateInterval;
-    int historyLength;
-
-    int gridLines;
-    QColor gridColour;
-
-    QString titleLabel;
-    QFont titleFont;
-    int titleFontPixelHeight;
-    QColor titleColour;
-
-    QString dataType;
-
-    QString dataSource;
-
-    QColor cpuSystemColour;
-    QColor cpuUserColour;
-    QColor cpuNiceColour;
-    QColor cpuOtherColour;
-    bool useFrequency;
-    QColor frequencyColour;
-
-    QColor memAppsColour;
-    QColor memBuffersColour;
-    QColor memCachedColour;
-    QColor swapUsedColour;
-
-    QColor netReceivedColour;
-    QColor netTransmittedColour;
-    QColor netBothColour;
-    int netMaximumSpeed;
-    qreal netRealMaximumSpeed;
-    bool logarithmicScale;
-    int logScaleSteps;
-    qreal logScaleMax;
-
-    int historyOffset;
-    QImage historyImage[2];
-
     void reset(void);
 
-    void drawLine(int index, int x, int y1, int y2, QColor clr);
+private:
+    RazorPanel *mPanel;
+
+    SysStat::BaseStat *mStat;
+
+    double mUpdateInterval;
+    int mMinimalSize;
+
+    int mGridLines;
+    QColor mGridColour;
+
+    QString mTitleLabel;
+    QFont mTitleFont;
+    int mTitleFontPixelHeight;
+    QColor mTitleColour;
+
+    QString mDataType;
+
+    QString mDataSource;
+
+    QColor mCpuSystemColour;
+    QColor mCpuUserColour;
+    QColor mCpuNiceColour;
+    QColor mCpuOtherColour;
+    bool mUseFrequency;
+    QColor mFrequencyColour;
+
+    QColor mMemAppsColour;
+    QColor mMemBuffersColour;
+    QColor mMemCachedColour;
+    QColor mSwapUsedColour;
+
+    QColor mNetReceivedColour;
+    QColor mNetTransmittedColour;
+    QColor mNetBothColour;
+    int mNetMaximumSpeed;
+    qreal mNetRealMaximumSpeed;
+    bool mLogarithmicScale;
+    int mLogScaleSteps;
+    qreal mLogScaleMax;
+
+    int mHistoryOffset;
+    QImage mHistoryImage;
+
+    void clearLine(void);
 };
 
 

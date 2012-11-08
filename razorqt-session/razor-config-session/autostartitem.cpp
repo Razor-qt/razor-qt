@@ -28,12 +28,12 @@
 #include <QtCore/QFileInfo>
 
 AutostartItem::AutostartItem() :
-    state(DEFAULT), system(false), local(false)
+    mLocalState(StateNone), mSystem(false)
 {
 }
 
 AutostartItem::AutostartItem(const XdgDesktopFile& systemFile) :
-    systemFile(systemFile), state(DEFAULT), system(true), local(false)
+    mSystemFile(systemFile), mLocalState(StateNone), mSystem(true)
 {
 }
 
@@ -41,47 +41,45 @@ AutostartItem::~AutostartItem()
 {
 }
 
-void AutostartItem::setLocal(const XdgDesktopFile& file, bool real)
+void AutostartItem::setLocal(const XdgDesktopFile& file)
 {
-    if (local)
+    bool local = isLocal();
+    if (mSystem && local && file == mSystemFile)
     {
-        state = MODIFIED;
-        if (system && file == systemFile)
-            removeLocal();
-        else
-            localFile = file;
+        removeLocal();
     }
     else
     {
-        localFile = file;
-        local = true;
-        if (!real)
-            state = TRANSIENT;
+        if (local)
+            mLocalState = StateModified;
+        else
+            mLocalState = StateTransient;
+        mLocalFile = file;
     }
+}
+
+void AutostartItem::setLocalFromFile(const XdgDesktopFile& file)
+{
+    mLocalFile = file;
+    mLocalState = StateExists;
 }
 
 bool AutostartItem::removeLocal()
 {
-    if (!local)
+    if (!isLocal())
         return false;
 
-    if (state == TRANSIENT)
-        state = DEFAULT;
+    if (mLocalState == StateTransient)
+        mLocalState = StateNone;
     else
-        state = DELETED;
+        mLocalState = StateDeleted;
 
-    local = false;
-    return !system;
+    return !mSystem;
 }
 
 const XdgDesktopFile& AutostartItem::file() const
 {
-    return local ? localFile : systemFile;
-}
-
-const XdgDesktopFile& AutostartItem::systemfile() const
-{
-    return systemFile;
+    return isLocal() ? mLocalFile : mSystemFile;
 }
 
 void AutostartItem::setEnabled(bool enable)
@@ -100,22 +98,17 @@ bool AutostartItem::isEnabled() const
     return !file().value("Hidden", false).toBool();
 }
 
-bool AutostartItem::isEmpty() const
-{
-    return !system && !local && (state == TRANSIENT || state != DELETED);
-}
-
 bool AutostartItem::commit()
 {
-    if (state == DELETED)
+    if (mLocalState == StateDeleted)
     {
-        state = DEFAULT;
-        return QFile::remove(localFile.fileName());
+        mLocalState = StateNone;
+        return QFile::remove(mLocalFile.fileName());
     }
-    else if (state == MODIFIED || state == TRANSIENT)
+    else if (mLocalState == StateModified || mLocalState == StateTransient)
     {
-        state = DEFAULT;
-        return localFile.save(XdgAutoStart::localPath(localFile));
+        mLocalState = StateExists;
+        return mLocalFile.save(XdgAutoStart::localPath(mLocalFile));
     }
     return true;
 }
@@ -137,12 +130,12 @@ QMap<QString,AutostartItem> AutostartItem::createItemMap()
         QString name = QFileInfo(file.fileName()).fileName();
         if (items.contains(name))
         {
-            items[name].setLocal(file, true);
+            items[name].setLocalFromFile(file);
         }
         else
         {
             AutostartItem item;
-            item.setLocal(file, true);
+            item.setLocalFromFile(file);
             items.insert(name, item);
         }
     }

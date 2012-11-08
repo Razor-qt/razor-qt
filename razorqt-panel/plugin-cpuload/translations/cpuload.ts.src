@@ -4,14 +4,14 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
+        <source>CPU load %1%</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
+        <source>Razor CPU Load settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

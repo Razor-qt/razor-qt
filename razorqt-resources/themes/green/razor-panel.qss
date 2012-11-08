@@ -193,3 +193,11 @@ MountButton {}
     background: transparent;
     color: gray;
 }
+
+
+/*
+ * #SysStat
+ */
+#SysStat {
+    padding: 1px 1px 1px 1px;
+}

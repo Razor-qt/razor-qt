@@ -2,135 +2,173 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="en_US">
 <context>
-    <name>Battery</name>
+    <name>RazorSysStatConfiguration</name>
     <message>
-        <source>No battery!</source>
+        <source>Razor SysStat Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
+        <source>Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Charging</source>
+        <source>Update interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Discharging</source>
+        <source>Minimal size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Empty</source>
+        <source> px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Fully charged</source>
+        <source> s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pending charge</source>
+        <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pending discharge</source>
+        <source>Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>BatteryInfo</name>
-    <message>
-        <source>Dialog</source>
+        <source>Colour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Battery info</source>
+        <source>Change ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy Now:</source>
+        <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Updated:</source>
+        <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Technology:</source>
+        <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Model:</source>
+        <source>Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy rate:</source>
+        <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Voltage:</source>
+        <source>CPU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy Full, Design:</source>
+        <source>Memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Energy Full:</source>
+        <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>State:</source>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lithium ion</source>
+        <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lithium polymer</source>
+        <source>User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lithium iron phosphate</source>
+        <source>Nice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Lead acid</source>
+        <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Nickel cadmium</source>
+        <source>Use Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Nickel metal hydride</source>
+        <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RazorAutosuspendd</name>
-    <message>
-        <source>Power low</source>
+        <source>Applications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sleeping in %1 seconds</source>
+        <source>Buffers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hibernating in %1 seconds</source>
+        <source>Cached</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Shutting down in %1 seconds</source>
+        <source>Used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transmitted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XXX KBs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logarithmic scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> steps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ultra light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ultra black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Demi bold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Italic</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
