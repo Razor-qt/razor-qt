@@ -253,7 +253,7 @@ void RazorSysStatContent::reset(void)
     mHistoryOffset = 0;
     mHistoryImage = QImage(width(), 100, QImage::Format_ARGB32);
 #if QT_VERSION < 0x040800
-    historyImage.fill(QColor(Qt::transparent).rgba());
+    mHistoryImage.fill(QColor(Qt::transparent).rgba());
 #else
     mHistoryImage.fill(Qt::transparent);
 #endif
