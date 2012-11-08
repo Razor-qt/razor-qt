@@ -44,6 +44,12 @@ source_lang = en
 source_file = razorqt-panel/plugin-cpuload/translations/cpuload.ts.src
 file_filter = razorqt-panel/plugin-cpuload/translations/cpuload_<lang>.ts
 
+[razor-qt.desktop-razor]
+type = QT
+source_lang = en
+source_file = razorqt-desktop/desktop-razor/translations/desktop-razor.ts.src
+file_filter = razorqt-desktop/desktop-razor/translations/desktop-razor_<lang>.ts
+
 [razor-qt.desktopswitch_desktop]
 type = DESKTOP
 source_lang = en
