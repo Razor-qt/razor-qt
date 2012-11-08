@@ -106,6 +106,7 @@ bool dbusCall(const QString &service,
 
     // If the method no returns value, we believe that it was successful.
     return msg.arguments().isEmpty() ||
+           msg.arguments().first().isNull() ||
            msg.arguments().first().toBool();
 }
 
@@ -153,7 +154,7 @@ bool dbusCallSystemd(const QString &service,
     }
 
     // If the method no returns value, we believe that it was successful.
-    if (msg.arguments().isEmpty())
+    if (msg.arguments().isEmpty() || msg.arguments().first().isNull())
         return true;
 
     QString response = msg.arguments().first().toString();
