@@ -27,6 +27,7 @@
 
 #include "teatimeplugin.h"
 #include <QtGui/QMessageBox>
+#include <qtxdg/xdgicon.h>
 
 Q_EXPORT_PLUGIN2(teatime, TeaTimePluginLibrary)
 
@@ -34,7 +35,7 @@ TeaTimePlugin::TeaTimePlugin(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
     IRazorPanelPlugin(startupInfo)
 {
-    mButton.setText("Tea");
+    mButton.setIcon(XdgIcon::fromTheme("preferences-plugin"));
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
 }
 
