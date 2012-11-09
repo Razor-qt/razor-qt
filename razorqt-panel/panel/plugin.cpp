@@ -41,6 +41,7 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QtCore/QCryptographicHash>
 
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgicon.h>
@@ -63,6 +64,8 @@ Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, 
     mSettings = new RazorSettings(settingsFile, QSettings::IniFormat, this);
     connect(mSettings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     mSettings->beginGroup(settingsGroup);
+
+    mSettingsHash = calcSettingsHash();
 
     setWindowTitle(desktopFile.name());
 
@@ -179,13 +182,33 @@ bool Plugin::loadLib(const QString &libraryName)
     return true;
 }
 
+/************************************************
+
+ ************************************************/
+QByteArray Plugin::calcSettingsHash()
+{
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    QStringList keys = mSettings->allKeys();
+    foreach (const QString &key, keys)
+    {
+        hash.addData(key.toUtf8());
+        hash.addData(mSettings->value(key).toByteArray());
+    }
+    return hash.result();
+}
+
 
 /************************************************
 
  ************************************************/
 void Plugin::settingsChanged()
 {
-    mPlugin->settingsChanged();
+    QByteArray hash = calcSettingsHash();
+    if (mSettingsHash != hash)
+    {
+        mSettingsHash = hash;
+        mPlugin->settingsChanged();
+    }
 }
 
 
@@ -294,6 +317,7 @@ void Plugin::showConfigureDialog()
     {
         dialog = mPlugin->configureDialog();
         dialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(this, SIGNAL(destroyed()), dialog, SLOT(close()));
     }
 
     if (!dialog)
@@ -322,3 +346,4 @@ void Plugin::requestRemove()
     emit remove();
     deleteLater();
 }
+

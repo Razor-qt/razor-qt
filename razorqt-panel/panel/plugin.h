@@ -76,6 +76,8 @@ private:
     bool loadLib(const QString &libraryName);
 
     const RazorPluginInfo mDesktopFile;
+    QByteArray calcSettingsHash();
+
     IRazorPanelPlugin *mPlugin;
     IRazorPanelPluginLibrary *mPluginLib;
     QWidget *mPluginWidget;
@@ -83,12 +85,14 @@ private:
     QSettings *mSettings;
     QString mSettingsGroup;
     RazorPanel *mPanel;
+    QByteArray mSettingsHash;
 
 private slots:
     void settingsChanged();
     void showConfigureDialog();
     void requestMove();
     void requestRemove();
+
 };
 
 
