@@ -207,7 +207,7 @@ MountButton {}
 }
 
 #SysStat_Graph {
-    qproperty-gridColor: rgba(0, 0, 0, 50%);
+    qproperty-gridColor: rgba(0, 0, 0, 25%);
     qproperty-titleColor: rgba(0, 0, 0, 75%);
     qproperty-cpuSystemColor: rgb(128, 0, 0);
     qproperty-cpuUserColor: rgb(0, 0, 128);

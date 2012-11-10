@@ -54,6 +54,7 @@ public:
 protected slots:
     virtual void lateInit();
     virtual void showConfigureDialog();
+    virtual void settingsChanged();
 
 private:
     RazorSysStatTitle *mFakeTitle;

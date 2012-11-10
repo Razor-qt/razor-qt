@@ -73,7 +73,7 @@ RazorSysStat::~RazorSysStat()
 
 void RazorSysStat::lateInit()
 {
-    mContent->updateSettings(settings());
+    settingsChanged();
     mContent->setTitleFont(mFakeTitle->font());
 }
 
@@ -87,6 +87,11 @@ void RazorSysStat::showConfigureDialog()
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+void RazorSysStat::settingsChanged()
+{
+    mContent->updateSettings(settings());
 }
 
 RazorSysStatTitle::RazorSysStatTitle(QWidget *parent):
@@ -213,12 +218,13 @@ void RazorSysStatContent::updateTitleFontPixelHeight(void)
 
 void RazorSysStatContent::updateSettings(const QSettings &settings)
 {
-    QString old_dataType = mDataType;
-
     double old_updateInterval = mUpdateInterval;
     int old_minimalSize = mMinimalSize;
+    QString old_dataType = mDataType;
     QString old_dataSource = mDataSource;
     bool old_useFrequency = mUseFrequency;
+    bool old_logarithmicScale = mLogarithmicScale;
+    int old_logScaleSteps = mLogScaleSteps;
 
     mUseThemeColours = settings.value("graph/useThemeColours", true).toBool();
     mUpdateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
@@ -248,17 +254,17 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     mSettingsColours.titleColour = QColor(settings.value("title/colour", "#ffffff").toString());
 
     mSettingsColours.cpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
-    mSettingsColours.cpuUserColour =   QColor(settings.value("cpu/userColour",      "#000080").toString());
-    mSettingsColours.cpuNiceColour =   QColor(settings.value("cpu/niceColour",      "#008000").toString());
-    mSettingsColours.cpuOtherColour =  QColor(settings.value("cpu/otherColour",     "#808000").toString());
+    mSettingsColours.cpuUserColour   = QColor(settings.value("cpu/userColour",      "#000080").toString());
+    mSettingsColours.cpuNiceColour   = QColor(settings.value("cpu/niceColour",      "#008000").toString());
+    mSettingsColours.cpuOtherColour  = QColor(settings.value("cpu/otherColour",     "#808000").toString());
     mSettingsColours.frequencyColour = QColor(settings.value("cpu/frequencyColour", "#808080").toString());
 
-    mSettingsColours.memAppsColour =    QColor(settings.value("mem/appsColour",    "#000080").toString());
+    mSettingsColours.memAppsColour    = QColor(settings.value("mem/appsColour",    "#000080").toString());
     mSettingsColours.memBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
-    mSettingsColours.memCachedColour =  QColor(settings.value("mem/cachedColour",  "#808000").toString());
-    mSettingsColours.swapUsedColour =   QColor(settings.value("mem/swapColour",    "#800000").toString());
+    mSettingsColours.memCachedColour  = QColor(settings.value("mem/cachedColour",  "#808000").toString());
+    mSettingsColours.swapUsedColour   = QColor(settings.value("mem/swapColour",    "#800000").toString());
 
-    mSettingsColours.netReceivedColour =    QColor(settings.value("net/receivedColour",    "#000080").toString());
+    mSettingsColours.netReceivedColour    = QColor(settings.value("net/receivedColour",    "#000080").toString());
     mSettingsColours.netTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
 
 
@@ -272,11 +278,18 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     updateTitleFontPixelHeight();
 
 
-    bool needReconnecting = (old_dataType != mDataType) || (old_dataSource != mDataSource) || (old_useFrequency != mUseFrequency);
+    bool minimalSizeChanged      = old_minimalSize      != mMinimalSize;
+    bool updateIntervalChanged   = old_updateInterval   != mUpdateInterval;
+    bool dataTypeChanged         = old_dataType         != mDataType;
+    bool dataSourceChanged       = old_dataSource       != mDataSource;
+    bool useFrequencyChanged     = old_useFrequency     != mUseFrequency;
+    bool logScaleStepsChanged    = old_logScaleSteps    != mLogScaleSteps;
+    bool logarithmicScaleChanged = old_logarithmicScale != mLogarithmicScale;
 
-    bool needTimerRestarting = (old_updateInterval != mUpdateInterval) || needReconnecting;
+    bool needReconnecting    = dataTypeChanged || dataSourceChanged || useFrequencyChanged;
+    bool needTimerRestarting = needReconnecting || updateIntervalChanged;
+    bool needFullReset       = needTimerRestarting || minimalSizeChanged || logScaleStepsChanged || logarithmicScaleChanged;
 
-    bool needFullReset = (old_minimalSize != mMinimalSize) || needTimerRestarting;
 
     if (mStat)
     {
@@ -285,14 +298,13 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
 
         if (needReconnecting)
             mStat->disconnect(this);
-
-        if (old_dataType != mDataType)
-            mStat->deleteLater();
-
     }
 
-    if (old_dataType != mDataType)
+    if (dataTypeChanged)
     {
+        if (mStat)
+            mStat->deleteLater();
+
         if (mDataType == "CPU")
             mStat = new SysStat::CpuStat(this);
         else if (mDataType == "Memory")
@@ -334,7 +346,7 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
         }
 
         if (needTimerRestarting)
-            mStat->setUpdateInterval(mUpdateInterval * 1000.0);
+            mStat->setUpdateInterval(static_cast<int>(mUpdateInterval * 1000.0));
     }
 
     if (needFullReset)
@@ -343,7 +355,7 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
         update();
 }
 
-void RazorSysStatContent::resizeEvent(QResizeEvent *event)
+void RazorSysStatContent::resizeEvent(QResizeEvent * /*event*/)
 {
     reset();
 }
@@ -369,7 +381,7 @@ T clamp(const T &value, const T &min, const T &max)
     return qMin(qMax(value, min), max);
 }
 
-// QPainter.drawLine with pen set to Qt::transparent doesn't clears anything
+// QPainter.drawLine with pen set to Qt::transparent doesn't clear anything
 void RazorSysStatContent::clearLine(void)
 {
     QRgb bg = QColor(Qt::transparent).rgba();

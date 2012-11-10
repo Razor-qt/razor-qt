@@ -26,59 +26,63 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORSYSSTATCONFIGURATION_H
-#define RAZORSYSSTATCONFIGURATION_H
-
-#include "razorqt/razorsettings.h"
+#ifndef RAZORSYSSTATCOLOURS_HPP
+#define RAZORSYSSTATCOLOURS_HPP
 
 #include <QtGui/QDialog>
-#include <QtGui/QAbstractButton>
+
 #include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtGui/QColor>
 
 
 namespace Ui {
-    class RazorSysStatConfiguration;
+    class RazorSysStatColours;
 }
 
-namespace SysStat {
-    class BaseStat;
-}
+class QSignalMapper;
+class QAbstractButton;
+class QPushButton;
 
-class RazorSysStatColours;
-
-class RazorSysStatConfiguration : public QDialog
+class RazorSysStatColours : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit RazorSysStatConfiguration(QSettings &settings, QWidget *parent = 0);
-    ~RazorSysStatConfiguration();
+    explicit RazorSysStatColours(QWidget *parent = NULL);
+    ~RazorSysStatColours();
 
-public slots:
-    void saveSettings();
+    typedef QMap<QString, QColor> Colours;
 
-    void on_typeCOB_currentIndexChanged(int);
-    void on_maximumHS_valueChanged(int);
-    void on_customColoursB_clicked(void);
-    void on_buttons_clicked(QAbstractButton *);
+    void setColours(const Colours&);
 
-    void coloursChanged(void);
+    Colours colours(void) const;
+
+    Colours defaultColours(void) const;
 
 signals:
-    void maximumNetSpeedChanged(QString);
+    void coloursChanged(void);
+
+public slots:
+    void on_buttons_clicked(QAbstractButton*);
+
+    void selectColour(const QString &);
+
+    void restoreDefaults(void);
+    void reset(void);
+    void apply(void);
 
 private:
-    Ui::RazorSysStatConfiguration *ui;
-    QSettings &mSettings;
-    RazorSettingsCache oldSettings;
+    Ui::RazorSysStatColours *ui;
 
-    void loadSettings();
+    QSignalMapper *mSelectColourMapper;
+    QMap<QString, QPushButton*> mShowColourMap;
 
-    SysStat::BaseStat *mStat;
+    Colours mDefaultColours;
+    Colours mInitialColours;
+    Colours mColours;
 
-    bool mLockSaving;
-
-    RazorSysStatColours *mColoursDialog;
+    void applyColoursToButtons(void);
 };
 
-#endif // RAZORSYSSTATCONFIGURATION_H
+#endif // RAZORSYSSTATCOLOURS_HPP

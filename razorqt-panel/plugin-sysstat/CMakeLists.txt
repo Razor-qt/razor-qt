@@ -6,22 +6,26 @@ set(PLUGIN "panelsysstat")
 set(HEADERS
     razorsysstat.h
     razorsysstatconfiguration.h
+    razorsysstatcolours.h
     razorsysstatutils.h
 )
 
 set(SOURCES
     razorsysstat.cpp
     razorsysstatconfiguration.cpp
+    razorsysstatcolours.cpp
     razorsysstatutils.cpp
 )
 
 set(MOCS
     razorsysstat.h
     razorsysstatconfiguration.h
+    razorsysstatcolours.h
 )
 
 set(UIS
     razorsysstatconfiguration.ui
+    razorsysstatcolours.ui
 )
 
 
