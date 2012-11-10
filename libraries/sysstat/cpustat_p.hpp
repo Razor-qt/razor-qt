@@ -63,6 +63,10 @@ signals:
 private slots:
     void timeout(void);
 
+protected:
+    void intervalChanged(void);
+    void sourceChanged(void);
+
 private:
     QString defaultSource(void);
 
@@ -76,17 +80,26 @@ private:
         qulonglong idle;
         qulonglong other;
         qulonglong total;
+
         void sum(void);
+
+        void clear(void);
     } Values;
-    typedef QMap<QString, Values> NamedValues;
-    NamedValues mPrevious;
+    Values mPrevious;
 
     CpuStat::Monitoring mMonitoring;
 
     typedef QMap<QString, QPair<uint, uint> > Bounds;
     Bounds mBounds;
 
+    int mUserHz;
+
     void addSource(const QString &source);
+
+    float mIntervalMin;
+    float mIntervalMax;
+
+    void recalculateMinMax(void);
 };
 
 }

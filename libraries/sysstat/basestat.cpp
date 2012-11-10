@@ -60,10 +60,19 @@ int BaseStatPrivate::updateInterval(void) const
     return mTimer->interval();
 }
 
+void BaseStatPrivate::intervalChanged(void)
+{
+}
+
+void BaseStatPrivate::sourceChanged(void)
+{
+}
+
 void BaseStatPrivate::setUpdateInterval(int msec)
 {
     mTimer->stop();
     mTimer->setInterval(msec);
+    this->intervalChanged();
     mSynchroTimer->setInterval(msec / 10);
     if (msec > 0)
     {
@@ -97,6 +106,7 @@ QString BaseStatPrivate::monitoredSource(void) const
 void BaseStatPrivate::setMonitoredSource(const QString &Source)
 {
     mSource = Source;
+    this->sourceChanged();
 }
 
 void BaseStatPrivate::monitorDefaultSource(void)
@@ -115,9 +125,9 @@ QString BaseStatPrivate::readAllFile(const char *filename)
     if (fd > 0)
     {
         ssize_t size = ::read(fd, buffer, bufferSize);
+        ::close(fd);
         if (size > 0)
             result = QString::fromAscii(buffer, size);
-        ::close(fd);
     }
 
     return result;

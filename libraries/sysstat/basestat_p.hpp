@@ -72,6 +72,9 @@ protected:
     QStringList mSources;
 
     int mLastSynchro;
+
+    virtual void intervalChanged(void);
+    virtual void sourceChanged(void);
 };
 
 }
