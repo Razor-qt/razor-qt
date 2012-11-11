@@ -15,7 +15,7 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
+        <source>Razor Autosuspend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
