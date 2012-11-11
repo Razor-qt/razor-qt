@@ -35,11 +35,11 @@
 #include <unicode/timezone.h>
 #include <unicode/uclean.h>
 
-#include <QtGui/QLabel>
 #include <QtCore/QLocale>
 #include <QtCore/QTimer>
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QDebug>
+#include <QtGui/QWheelEvent>
 
 #include <time.h>
 
@@ -86,7 +86,7 @@ static icu::TimeZone* createZone(const icu::UnicodeString &id)
 
 RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
-    mContent(new QLabel(this)),
+    mContent(new ActiveLabel(this)),
     mTimer(new QTimer(this)),
     mSynchroTimer(new QTimer(this)),
     mLastSynchro(0),
@@ -101,19 +101,16 @@ RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWi
 
 
     UErrorCode status = U_ZERO_ERROR;
-    mLocale = new icu::Locale(QLocale::languageToString(locale().language()).toAscii());
+    mLocale = new icu::Locale(QLocale::languageToString(locale().language()).toAscii().data());
     mCalendar = icu::Calendar::createInstance(status);
 
 
     settingsChanged();
 
-    mActiveTimeZone = mDefaultTimeZone;
-
-    updateFormat();
-    updateTimezone();
-
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
     connect(mSynchroTimer, SIGNAL(timeout()), SLOT(synchroTimeout()));
+
+    connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
 
     mTimer->setInterval(1000);
     mSynchroTimer->setInterval(10);
@@ -139,10 +136,13 @@ void RazorWorldClock::synchroTimeout(void)
 void RazorWorldClock::timeout(void)
 {
     UErrorCode status = U_ZERO_ERROR;
-
     UnicodeString str;
-    mFormat->format(Calendar::getNow(), str, status);
-    mContent->setText(ICU_to_Qt(str));
+
+    if (mFormat)
+    {
+        mFormat->format(Calendar::getNow(), str, status);
+        mContent->setText(ICU_to_Qt(str));
+    }
 }
 
 void RazorWorldClock::updateFormat(void)
@@ -182,8 +182,11 @@ void RazorWorldClock::updateFormat(void)
 
 void RazorWorldClock::updateTimezone(void)
 {
-    mCalendar->adoptTimeZone(createZone(mActiveTimeZone.toAscii().data()));
-    mFormat->setCalendar(*mCalendar);
+    if ((!mActiveTimeZone.isEmpty()) && mFormat)
+    {
+        mCalendar->adoptTimeZone(createZone(mActiveTimeZone.toAscii().data()));
+        mFormat->setCalendar(*mCalendar);
+    }
 }
 
 void RazorWorldClock::settingsChanged()
@@ -206,6 +209,8 @@ void RazorWorldClock::settingsChanged()
     mDefaultTimeZone = _settings.value("defaultTimeZone", QString()).toString();
     if (mDefaultTimeZone.isEmpty() && !mTimeZones.isEmpty())
         mDefaultTimeZone = mTimeZones[0];
+
+    mActiveTimeZone = mDefaultTimeZone;
 
     mCustomFormat = _settings.value("customFormat", QString()).toString();
 
@@ -237,4 +242,23 @@ void RazorWorldClock::showConfigureDialog()
     confWindow->show();
     confWindow->raise();
     confWindow->activateWindow();
+}
+
+void RazorWorldClock::wheelScrolled(int delta)
+{
+    mActiveTimeZone = mTimeZones[(mTimeZones.indexOf(mActiveTimeZone) + ((delta > 0) ? -1 : 1) + mTimeZones.size()) % mTimeZones.size()];
+
+    updateTimezone();
+    timeout(); // instantly!
+}
+
+
+ActiveLabel::ActiveLabel(QWidget * parent) :
+    QLabel(parent)
+{
+}
+
+void ActiveLabel::wheelEvent(QWheelEvent *event)
+{
+    emit wheelScrolled(event->delta());
 }

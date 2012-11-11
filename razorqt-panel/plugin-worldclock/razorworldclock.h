@@ -31,8 +31,10 @@
 #include "../panel/razorpanelplugin.h"
 #include "razorworldclockconfiguration.h"
 
+#include <QtGui/QLabel>
 
-class QLabel;
+
+class ActiveLabel;
 class QTimer;
 class RazorWorldClockEventFilter;
 namespace icu_48 {
@@ -57,9 +59,10 @@ protected slots:
 private slots:
     void synchroTimeout(void);
     void timeout(void);
+    void wheelScrolled(int);
 
 private:
-    QLabel *mContent;
+    ActiveLabel *mContent;
 
     typedef enum FormatType
     {
@@ -89,6 +92,20 @@ private:
     void updateTimezone(void);
 };
 
+
+class ActiveLabel : public QLabel
+{
+Q_OBJECT
+
+public:
+    explicit ActiveLabel(QWidget * = NULL);
+
+signals:
+    void wheelScrolled(int);
+
+protected:
+    void wheelEvent(QWheelEvent *);
+};
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
 
