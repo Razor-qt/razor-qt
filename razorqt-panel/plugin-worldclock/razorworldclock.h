@@ -33,7 +33,13 @@
 
 
 class QLabel;
+class QTimer;
 class RazorWorldClockEventFilter;
+namespace icu_48 {
+    class Locale;
+    class Calendar;
+    class DateFormat;
+}
 
 class RazorWorldClock : public RazorPanelPlugin
 {
@@ -48,8 +54,39 @@ protected slots:
     virtual void settingsChanged();
     virtual void showConfigureDialog();
 
+private slots:
+    void synchroTimeout(void);
+    void timeout(void);
+
 private:
-    QLabel *content;
+    QLabel *mContent;
+
+    typedef enum FormatType
+    {
+        FORMAT__INVALID = -1,
+        FORMAT_SHORT = 0,
+        FORMAT_MEDIUM,
+        FORMAT_LONG,
+        FORMAT_FULL,
+        FORMAT_CUSTOM
+    } FormatType;
+
+    QTimer *mTimer;
+    QTimer *mSynchroTimer;
+    time_t mLastSynchro;
+
+    QStringList mTimeZones;
+    QString mDefaultTimeZone;
+    QString mActiveTimeZone;
+    QString mCustomFormat;
+    FormatType mFormatType;
+
+    icu_48::Locale *mLocale;
+    icu_48::Calendar *mCalendar;
+    icu_48::DateFormat *mFormat;
+
+    void updateFormat(void);
+    void updateTimezone(void);
 };
 
 

@@ -72,21 +72,25 @@ void RazorWorldClockConfiguration::loadSettings()
 {
     mLockCascadeSettingChanges = true;
 
+    ui->timeZonesLW->clear();
+
     int size = mSettings.beginReadArray("timeZones");
     for (int i = 0; i < size; ++i)
     {
         mSettings.setArrayIndex(i);
-        ui->timeZonesLW->addItem(mSettings.value("timeZone", "").toString());
+        ui->timeZonesLW->addItem(mSettings.value("timeZone", QString()).toString());
     }
     mSettings.endArray();
 
-    mActiveTimeZone = mSettings.value("activeTimeZone", "").toString();
-    if (mActiveTimeZone.isEmpty() && ui->timeZonesLW->count())
-        mActiveTimeZone = ui->timeZonesLW->item(0)->text();
+    mDefaultTimeZone = mSettings.value("defaultTimeZone", QString()).toString();
+    if (mDefaultTimeZone.isEmpty() && ui->timeZonesLW->count())
+        mDefaultTimeZone = ui->timeZonesLW->item(0)->text();
 
-    ui->customFormatPTE->setPlainText(mSettings.value("customFormat", "").toString());
+    setBold(ui->timeZonesLW->findItems(mDefaultTimeZone, Qt::MatchExactly)[0], true);
 
-    QString formatType = mSettings.value("formatType", "").toString();
+    ui->customFormatPTE->setPlainText(mSettings.value("customFormat", QString()).toString());
+
+    QString formatType = mSettings.value("formatType", QString()).toString();
     if (formatType == "custom")
         ui->customFormatRB->setChecked(true);
     else if (formatType == "full")
@@ -115,7 +119,7 @@ void RazorWorldClockConfiguration::saveSettings()
     }
     mSettings.endArray();
 
-    mSettings.setValue("activeTimeZone", mActiveTimeZone);
+    mSettings.setValue("defaultTimeZone", mDefaultTimeZone);
 
     mSettings.setValue("customFormat", ui->customFormatPTE->toPlainText());
 
@@ -131,9 +135,9 @@ void RazorWorldClockConfiguration::saveSettings()
         mSettings.setValue("formatType", "short");
 }
 
-void RazorWorldClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
+void RazorWorldClockConfiguration::dialogButtonsAction(QAbstractButton *button)
 {
-    if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
+    if (ui->buttons->buttonRole(button) == QDialogButtonBox::ResetRole)
     {
         mOldSettings.loadToSettings();
         loadSettings();
@@ -199,8 +203,8 @@ void RazorWorldClockConfiguration::addTimeZone(void)
         {
             QListWidgetItem *item = new QListWidgetItem(mConfigurationTimeZones->timeZone());
             ui->timeZonesLW->addItem(item);
-            if (mActiveTimeZone.isEmpty())
-                setActive(item);
+            if (mDefaultTimeZone.isEmpty())
+                setDefault(item);
         }
     }
 
@@ -211,32 +215,37 @@ void RazorWorldClockConfiguration::removeTimeZone(void)
 {
     foreach (QListWidgetItem *item, ui->timeZonesLW->selectedItems())
     {
-        if (item->text() == mActiveTimeZone)
-            mActiveTimeZone.clear();
+        if (item->text() == mDefaultTimeZone)
+            mDefaultTimeZone.clear();
         delete item;
     }
-    if ((mActiveTimeZone.isEmpty()) && ui->timeZonesLW->count())
-        setActive(ui->timeZonesLW->item(0));
+    if ((mDefaultTimeZone.isEmpty()) && ui->timeZonesLW->count())
+        setDefault(ui->timeZonesLW->item(0));
 
     saveSettings();
 }
 
-void RazorWorldClockConfiguration::setActive(QListWidgetItem *item)
+void RazorWorldClockConfiguration::setBold(QListWidgetItem *item, bool value)
 {
-    QFont font = item->font();
-    font.setBold(true);
-    item->setFont(font);
-    mActiveTimeZone = item->text();
+    if (item)
+    {
+        QFont font = item->font();
+        font.setBold(value);
+        item->setFont(font);
+    }
+}
+
+void RazorWorldClockConfiguration::setDefault(QListWidgetItem *item)
+{
+    setBold(item, true);
+    mDefaultTimeZone = item->text();
 }
 
 void RazorWorldClockConfiguration::setTimeZoneAsDefault(void)
 {
-    QListWidgetItem *item = ui->timeZonesLW->findItems(mActiveTimeZone, Qt::MatchExactly)[0];
-    QFont font = item->font();
-    font.setBold(false);
-    item->setFont(font);
+    setBold(ui->timeZonesLW->findItems(mDefaultTimeZone, Qt::MatchExactly)[0], false);
 
-    setActive(ui->timeZonesLW->selectedItems()[0]);
+    setDefault(ui->timeZonesLW->selectedItems()[0]);
 
     saveSettings();
 }

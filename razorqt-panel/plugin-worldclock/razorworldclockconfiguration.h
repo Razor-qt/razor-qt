@@ -69,7 +69,7 @@ private slots:
     /*
       Saves settings in conf file.
     */
-    void dialogButtonsAction(QAbstractButton *btn);
+    void dialogButtonsAction(QAbstractButton *);
 
     void updateTimeZoneButtons(void);
     void addTimeZone(void);
@@ -79,13 +79,14 @@ private slots:
     void moveTimeZoneDown(void);
 
 private:
-    QString mActiveTimeZone;
+    QString mDefaultTimeZone;
 
     bool mLockCascadeSettingChanges;
 
     RazorWorldClockConfigurationTimeZones *mConfigurationTimeZones;
 
-    void setActive(QListWidgetItem *item);
+    void setDefault(QListWidgetItem *);
+    void setBold(QListWidgetItem *, bool);
 };
 
 #endif // RAZORWORLDCLOCKCONFIGURATION_H
