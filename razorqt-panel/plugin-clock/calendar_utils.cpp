@@ -59,7 +59,14 @@ Qt::DayOfWeek firstDayOfWeek(void)
 
     long weekFirstDayLong;
 
+    // firstWeekDay: Specifies the offset of the first day-of-week in the day
+
+    // weekFirstDay: Some date that corresponds to the beginning of a week.
+    // Specifies the base of the day list. It is (in glibc) either
+    // 19971130 (Sunday) or 19971201 (Monday)
+
     firstWeekDay = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
+
     weekFirstDayLong = (long) nl_langinfo(_NL_TIME_WEEK_1STDAY);
     if (weekFirstDayLong == 19971130L)  // Sunday
     {
