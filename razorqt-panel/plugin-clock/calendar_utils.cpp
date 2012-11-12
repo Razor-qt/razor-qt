@@ -53,18 +53,18 @@ Qt::DayOfWeek firstDayOfWeek(void)
 Qt::DayOfWeek firstDayOfWeek(void)
 {
     #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
-    int first_weekday, week_1stday, week_start;
-    long week_1stday_l;
+    int firstWeekDay, weekFirstDay, weekStart;
+    long weekFirstDayLong;
 
-    first_weekday = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
-    week_1stday_l = (long) nl_langinfo(_NL_TIME_WEEK_1STDAY);
-    if (week_1stday_l == 19971130L)  // Sunday
+    firstWeekDay = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
+    weekFirstDayLong = (long) nl_langinfo(_NL_TIME_WEEK_1STDAY);
+    if (weekFirstDayLong == 19971130L)  // Sunday
     {
-        week_1stday = 0;
+        weekFirstDay = 0;
     }
-    else if (week_1stday_l== 19971201L) // Monday
+    else if (weekFirstDayLong == 19971201L) // Monday
     {
-        week_1stday = 1;
+        weekFirstDay = 1;
     }
     else
     {
@@ -72,14 +72,14 @@ Qt::DayOfWeek firstDayOfWeek(void)
             "nl_langinfo(_NL_TIME_WEEK_1STDAY) returned an unknown value.";
     }
 
-    week_start = (week_1stday + first_weekday - 1) % 7;
-    if (week_start == 0)
+    weekStart = (weekFirstDay + firstWeekDay - 1) % 7;
+    if (weekStart == 0)
     {
         return Qt::Sunday;
     }
     else
     {
-        return static_cast<Qt::DayOfWeek>(week_start);
+        return static_cast<Qt::DayOfWeek>(weekStart);
     }
     #else
     return Qt::Sunday;
