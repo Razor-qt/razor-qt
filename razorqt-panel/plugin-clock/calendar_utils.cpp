@@ -53,7 +53,10 @@ Qt::DayOfWeek firstDayOfWeek(void)
 Qt::DayOfWeek firstDayOfWeek(void)
 {
     #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
-    int firstWeekDay, weekFirstDay, weekStart;
+    int firstWeekDay;
+    int weekFirstDay;
+    int weekStart;
+
     long weekFirstDayLong;
 
     firstWeekDay = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
