@@ -4,7 +4,7 @@
 <context>
     <name>PolicykitAgentGUI</name>
     <message>
-        <source>Authentization Required</source>
+        <source>Authentication Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
