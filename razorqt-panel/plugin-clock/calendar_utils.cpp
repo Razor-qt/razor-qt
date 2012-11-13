@@ -60,6 +60,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
     long weekFirstDayLong;
 
     // firstWeekDay: Specifies the offset of the first day-of-week in the day
+    // list.
 
     // weekFirstDay: Some date that corresponds to the beginning of a week.
     // Specifies the base of the day list. It is (in glibc) either
