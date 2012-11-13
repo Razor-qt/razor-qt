@@ -72,19 +72,6 @@ static icu::UnicodeString Qt_to_ICU(const QString &string)
     return icu::UnicodeString::fromUTF32(uch32.data(), len);
 }
 
-static icu::TimeZone* createZone(const icu::UnicodeString &id)
-{
-    icu::UnicodeString str;
-    icu::TimeZone* zone = icu::TimeZone::createTimeZone(id);
-    if (zone->getID(str) != id)
-    {
-        delete zone;
-        zone = NULL;
-        qDebug() << "Error: icu::TimeZone::createTimeZone(" << ICU_to_Qt(id) << ") returned zone with ID " << ICU_to_Qt(str);
-    }
-    return zone;
-}
-
 
 RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
@@ -131,11 +118,10 @@ RazorWorldClock::~RazorWorldClock()
 
 void RazorWorldClock::timeout(void)
 {
-    UErrorCode status = U_ZERO_ERROR;
-    UnicodeString str;
-
     if (mFormat)
     {
+        UErrorCode status = U_ZERO_ERROR;
+        UnicodeString str;
         mFormat->format(Calendar::getNow(), str, status);
         if (U_FAILURE(status))
             qDebug() << "timeout: status = " << status;
@@ -153,14 +139,16 @@ void RazorWorldClock::updateFormat(void)
     if (mFormat)
         delete mFormat;
 
-    UErrorCode status = U_ZERO_ERROR;
 
     switch (mFormatType)
     {
     case FORMAT_CUSTOM:
+    {
+        UErrorCode status = U_ZERO_ERROR;
         mFormat = new icu::SimpleDateFormat(Qt_to_ICU(mCustomFormat), *mLocale, status);
         if (U_FAILURE(status))
             qDebug() << "updateFormat: status = " << status;
+    }
         break;
 
     case FORMAT_FULL:
@@ -193,24 +181,27 @@ void RazorWorldClock::updateTimezone(void)
         if (mCalendar)
             delete mCalendar;
 
-        if ((!mActiveTimeZone.isEmpty()))
-        {
-            UErrorCode status = U_ZERO_ERROR;
+        UErrorCode status = U_ZERO_ERROR;
+        char region[3];
+        icu::TimeZone::getRegion(mActiveTimeZone.toAscii().data(), region, sizeof(region) / sizeof(char), status);
+        if (U_FAILURE(status))
+            qDebug() << "updateTimezone:getRegion: status = " << status;
 
-            char region[3];
-            TimeZone::getRegion(mActiveTimeZone.toAscii().data(), region, sizeof(region) / sizeof(char), status);
-            if (U_FAILURE(status))
-                qDebug() << "updateTimezone:getRegion: status = " << status;
+        if (mLocale)
+            delete mLocale;
+        mLocale = new icu::Locale(mDefaultLanguage.toAscii().data(), region);
 
-            if (mLocale)
-                delete mLocale;
-            mLocale = new icu::Locale(mDefaultLanguage.toAscii().data(), region);
+        icu::UnicodeString timeZoneName = Qt_to_ICU(mActiveTimeZone);
+        icu::TimeZone* timeZone = icu::TimeZone::createTimeZone(timeZoneName);
+        icu::UnicodeString control;
+        if (timeZone->getID(control) != timeZoneName)
+            qDebug() << "Error: icu::TimeZone::createTimeZone(" << mActiveTimeZone << ") returned zone with ID " << ICU_to_Qt(control);
 
-            mCalendar = icu::Calendar::createInstance(createZone(Qt_to_ICU(mActiveTimeZone)), *mLocale, status);
-            if (U_FAILURE(status))
-                qDebug() << "updateTimezone:Calendar: status = " << status;
-            mFormat->setCalendar(*mCalendar);
-        }
+        status = U_ZERO_ERROR;
+        mCalendar = icu::Calendar::createInstance(timeZone, *mLocale, status);
+        if (U_FAILURE(status))
+            qDebug() << "updateTimezone:Calendar: status = " << status;
+        mFormat->setCalendar(*mCalendar);
     }
 }
 
@@ -234,7 +225,15 @@ void RazorWorldClock::settingsChanged()
     mDefaultTimeZone = _settings.value("defaultTimeZone", QString()).toString();
     if (mDefaultTimeZone.isEmpty() && !mTimeZones.isEmpty())
         mDefaultTimeZone = mTimeZones[0];
+    if (mDefaultTimeZone.isEmpty())
+    {
+        icu::TimeZone *timeZone = icu::TimeZone::createDefault();
+        icu::UnicodeString timeZoneName;
+        timeZone->getID(timeZoneName);
+        mDefaultTimeZone = ICU_to_Qt(timeZoneName);
 
+        delete timeZone;
+    }
     mActiveTimeZone = mDefaultTimeZone;
 
     mCustomFormat = _settings.value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString();
@@ -271,10 +270,13 @@ void RazorWorldClock::showConfigureDialog()
 
 void RazorWorldClock::wheelScrolled(int delta)
 {
-    mActiveTimeZone = mTimeZones[(mTimeZones.indexOf(mActiveTimeZone) + ((delta > 0) ? -1 : 1) + mTimeZones.size()) % mTimeZones.size()];
+    if (mTimeZones.count() > 1)
+    {
+        mActiveTimeZone = mTimeZones[(mTimeZones.indexOf(mActiveTimeZone) + ((delta > 0) ? -1 : 1) + mTimeZones.size()) % mTimeZones.size()];
 
-    updateTimezone();
-    timeout(); // instantly!
+        updateTimezone();
+        timeout(); // instantly!
+    }
 }
 
 void RazorWorldClock::leftMouseButtonClicked(void)
@@ -295,6 +297,7 @@ void RazorWorldClock::leftMouseButtonClicked(void)
             qDebug() << "leftMouseButtonClicked:getFirstDayOfWeek: status = " << status;
         calendarWidget->setFirstDayOfWeek(static_cast<Qt::DayOfWeek>(((static_cast<int>(first) + 5) % 7) + 1));
 
+        status = U_ZERO_ERROR;
         calendarWidget->setSelectedDate(QDate(mCalendar->get(UCAL_YEAR, status), mCalendar->get(UCAL_MONTH, status) - UCAL_JANUARY + 1, mCalendar->get(UCAL_DATE, status)));
         if (U_FAILURE(status))
             qDebug() << "leftMouseButtonClicked:get: status = " << status;
