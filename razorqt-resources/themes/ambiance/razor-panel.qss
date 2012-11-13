@@ -247,7 +247,12 @@ MountButton:pressed {
 /*
  * WorldClock
  */
-#WorldClock > QLabel{
+#WorldClockContent{
     font-size: 10pt;
+    color: #cacaca;
+}
+
+#WorldClockPopup{
+    font-size: 12pt;
     color: #cacaca;
 }

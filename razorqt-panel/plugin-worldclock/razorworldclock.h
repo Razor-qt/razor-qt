@@ -68,7 +68,7 @@ private slots:
 
 private:
     ActiveLabel *mContent;
-    QDialog* mPopupCalendar;
+    QDialog* mPopup;
 
     typedef enum FormatType
     {
@@ -97,6 +97,8 @@ private:
 
     void updateFormat(void);
     void updateTimezone(void);
+
+    void popupDialog(bool);
 };
 
 
