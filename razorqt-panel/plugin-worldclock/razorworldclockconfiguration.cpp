@@ -86,9 +86,10 @@ void RazorWorldClockConfiguration::loadSettings()
     if (mDefaultTimeZone.isEmpty() && ui->timeZonesLW->count())
         mDefaultTimeZone = ui->timeZonesLW->item(0)->text();
 
-    setBold(ui->timeZonesLW->findItems(mDefaultTimeZone, Qt::MatchExactly)[0], true);
+    if (ui->timeZonesLW->count())
+        setBold(ui->timeZonesLW->findItems(mDefaultTimeZone, Qt::MatchExactly)[0], true);
 
-    ui->customFormatPTE->setPlainText(mSettings.value("customFormat", QString()).toString());
+    ui->customFormatPTE->setPlainText(mSettings.value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString());
 
     QString formatType = mSettings.value("formatType", QString()).toString();
     if (formatType == "custom")

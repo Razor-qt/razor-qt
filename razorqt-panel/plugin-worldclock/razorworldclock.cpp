@@ -27,7 +27,6 @@
 
 #include "razorworldclock.h"
 
-#include <unicode/unistr.h>
 #include <unicode/locid.h>
 #include <unicode/calendar.h>
 #include <unicode/datefmt.h>
@@ -38,8 +37,11 @@
 #include <QtCore/QLocale>
 #include <QtCore/QTimer>
 #include <QtCore/QScopedArrayPointer>
+#include <QtCore/QDate>
 #include <QtCore/QDebug>
 #include <QtGui/QWheelEvent>
+#include <QtGui/QCalendarWidget>
+#include <QtGui/QDesktopWidget>
 
 #include <time.h>
 
@@ -87,10 +89,10 @@ static icu::TimeZone* createZone(const icu::UnicodeString &id)
 RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
     RazorPanelPlugin(startInfo, parent),
     mContent(new ActiveLabel(this)),
+    mPopupCalendar(NULL),
     mTimer(new QTimer(this)),
-    mSynchroTimer(new QTimer(this)),
-    mLastSynchro(0),
     mFormatType(FORMAT__INVALID),
+    mCalendar(NULL),
     mFormat(NULL)
 {
     setObjectName("WorldClock");
@@ -100,37 +102,31 @@ RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWi
     addWidget(mContent);
 
 
-    UErrorCode status = U_ZERO_ERROR;
-    mLocale = new icu::Locale(QLocale::languageToString(locale().language()).toAscii().data());
-    mCalendar = icu::Calendar::createInstance(status);
+    mLocale = new icu::Locale();
+    mDefaultLanguage = QString(mLocale->getLanguage());
 
 
     settingsChanged();
 
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
-    connect(mSynchroTimer, SIGNAL(timeout()), SLOT(synchroTimeout()));
 
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
+    connect(mContent, SIGNAL(leftMouseButtonClicked()), SLOT(leftMouseButtonClicked()));
+    connect(mContent, SIGNAL(middleMouseButtonClicked()), SLOT(middleMouseButtonClicked()));
 
-    mTimer->setInterval(1000);
-    mSynchroTimer->setInterval(10);
-    mSynchroTimer->start();
+    mTimer->setInterval(100); // faster than 1 sec to support milliseconds at least partially
+    mTimer->start();
 }
 
 RazorWorldClock::~RazorWorldClock()
 {
+    if (mFormat)
+        delete mFormat;
+    if (mCalendar)
+        delete mCalendar;
+    if (mLocale)
+        delete mLocale;
     u_cleanup();
-}
-
-void RazorWorldClock::synchroTimeout(void)
-{
-    time_t synchro = time(NULL);
-    if ((mLastSynchro != 0) && (mLastSynchro != synchro))
-    {
-        mSynchroTimer->stop();
-        mTimer->start();
-    }
-    mLastSynchro = synchro;
 }
 
 void RazorWorldClock::timeout(void)
@@ -141,7 +137,14 @@ void RazorWorldClock::timeout(void)
     if (mFormat)
     {
         mFormat->format(Calendar::getNow(), str, status);
-        mContent->setText(ICU_to_Qt(str));
+        if (U_FAILURE(status))
+            qDebug() << "timeout: status = " << status;
+
+        if (str != mLastShownText)
+        {
+            mContent->setText(ICU_to_Qt(str));
+            mLastShownText = str;
+        }
     }
 }
 
@@ -156,6 +159,8 @@ void RazorWorldClock::updateFormat(void)
     {
     case FORMAT_CUSTOM:
         mFormat = new icu::SimpleDateFormat(Qt_to_ICU(mCustomFormat), *mLocale, status);
+        if (U_FAILURE(status))
+            qDebug() << "updateFormat: status = " << status;
         break;
 
     case FORMAT_FULL:
@@ -177,15 +182,35 @@ void RazorWorldClock::updateFormat(void)
     default:;
     }
 
-    mFormat->setCalendar(*mCalendar);
+    if (mCalendar)
+        mFormat->setCalendar(*mCalendar);
 }
 
 void RazorWorldClock::updateTimezone(void)
 {
-    if ((!mActiveTimeZone.isEmpty()) && mFormat)
+    if (mFormat)
     {
-        mCalendar->adoptTimeZone(createZone(mActiveTimeZone.toAscii().data()));
-        mFormat->setCalendar(*mCalendar);
+        if (mCalendar)
+            delete mCalendar;
+
+        if ((!mActiveTimeZone.isEmpty()))
+        {
+            UErrorCode status = U_ZERO_ERROR;
+
+            char region[3];
+            TimeZone::getRegion(mActiveTimeZone.toAscii().data(), region, sizeof(region) / sizeof(char), status);
+            if (U_FAILURE(status))
+                qDebug() << "updateTimezone:getRegion: status = " << status;
+
+            if (mLocale)
+                delete mLocale;
+            mLocale = new icu::Locale(mDefaultLanguage.toAscii().data(), region);
+
+            mCalendar = icu::Calendar::createInstance(createZone(Qt_to_ICU(mActiveTimeZone)), *mLocale, status);
+            if (U_FAILURE(status))
+                qDebug() << "updateTimezone:Calendar: status = " << status;
+            mFormat->setCalendar(*mCalendar);
+        }
     }
 }
 
@@ -212,7 +237,7 @@ void RazorWorldClock::settingsChanged()
 
     mActiveTimeZone = mDefaultTimeZone;
 
-    mCustomFormat = _settings.value("customFormat", QString()).toString();
+    mCustomFormat = _settings.value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString();
 
     QString formatType = _settings.value("formatType", QString()).toString();
     if (formatType == "custom")
@@ -252,6 +277,53 @@ void RazorWorldClock::wheelScrolled(int delta)
     timeout(); // instantly!
 }
 
+void RazorWorldClock::leftMouseButtonClicked(void)
+{
+    if (!mPopupCalendar)
+    {
+        mPopupCalendar = new QDialog(this);
+        mPopupCalendar->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        mPopupCalendar->setLayout(new QHBoxLayout(mPopupCalendar));
+        mPopupCalendar->layout()->setMargin(0);
+        QCalendarWidget *calendarWidget = new QCalendarWidget(mPopupCalendar);
+        mPopupCalendar->layout()->addWidget(calendarWidget);
+        mPopupCalendar->adjustSize();
+
+        UErrorCode status = U_ZERO_ERROR;
+        UCalendarDaysOfWeek first = mCalendar->getFirstDayOfWeek(status);
+        if (U_FAILURE(status))
+            qDebug() << "leftMouseButtonClicked:getFirstDayOfWeek: status = " << status;
+        calendarWidget->setFirstDayOfWeek(static_cast<Qt::DayOfWeek>(((static_cast<int>(first) + 5) % 7) + 1));
+
+        calendarWidget->setSelectedDate(QDate(mCalendar->get(UCAL_YEAR, status), mCalendar->get(UCAL_MONTH, status) - UCAL_JANUARY + 1, mCalendar->get(UCAL_DATE, status)));
+        if (U_FAILURE(status))
+            qDebug() << "leftMouseButtonClicked:get: status = " << status;
+
+        QSize calSize = mPopupCalendar->size();
+        QPoint center = panel()->mapToGlobal((this->geometry().topLeft() + this->geometry().bottomRight()) / 2);
+        QRect avail = QDesktopWidget().availableGeometry(center);
+        if (center.x() < avail.left())
+            center.setX(avail.left());
+        else if (center.x() > avail.right() - calSize.width())
+            center.setX(avail.right() - calSize.width());
+        if (center.y() < avail.top())
+            center.setY(avail.top());
+        else if (center.y() > avail.bottom() - calSize.height())
+            center.setY(avail.bottom() - calSize.height());
+
+        mPopupCalendar->move(center);
+        mPopupCalendar->show();
+    }
+    else
+    {
+        mPopupCalendar->deleteLater();
+        mPopupCalendar = NULL;
+    }
+}
+
+void RazorWorldClock::middleMouseButtonClicked(void)
+{
+}
 
 ActiveLabel::ActiveLabel(QWidget * parent) :
     QLabel(parent)
@@ -261,4 +333,24 @@ ActiveLabel::ActiveLabel(QWidget * parent) :
 void ActiveLabel::wheelEvent(QWheelEvent *event)
 {
     emit wheelScrolled(event->delta());
+
+    QLabel::wheelEvent(event);
+}
+
+void ActiveLabel::mouseReleaseEvent(QMouseEvent* event)
+{
+    switch (event->button())
+    {
+    case Qt::LeftButton:
+        emit leftMouseButtonClicked();
+        break;
+
+    case Qt::MidButton:
+        emit middleMouseButtonClicked();
+        break;
+
+    default:;
+    }
+
+    QLabel::mouseReleaseEvent(event);
 }

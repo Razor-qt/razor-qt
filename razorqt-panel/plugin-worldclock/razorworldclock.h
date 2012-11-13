@@ -28,16 +28,19 @@
 #ifndef RAZORPANELWORLDCLOCK_H
 #define RAZORPANELWORLDCLOCK_H
 
-#include "../panel/razorpanelplugin.h"
-#include "razorworldclockconfiguration.h"
+#include <unicode/unistr.h>
 
 #include <QtGui/QLabel>
+
+#include "../panel/razorpanelplugin.h"
+#include "razorworldclockconfiguration.h"
 
 
 class ActiveLabel;
 class QTimer;
+class QDialog;
 class RazorWorldClockEventFilter;
-namespace icu_48 {
+namespace U_ICU_NAMESPACE {
     class Locale;
     class Calendar;
     class DateFormat;
@@ -60,9 +63,12 @@ private slots:
     void synchroTimeout(void);
     void timeout(void);
     void wheelScrolled(int);
+    void leftMouseButtonClicked(void);
+    void middleMouseButtonClicked(void);
 
 private:
     ActiveLabel *mContent;
+    QDialog* mPopupCalendar;
 
     typedef enum FormatType
     {
@@ -75,8 +81,6 @@ private:
     } FormatType;
 
     QTimer *mTimer;
-    QTimer *mSynchroTimer;
-    time_t mLastSynchro;
 
     QStringList mTimeZones;
     QString mDefaultTimeZone;
@@ -84,9 +88,12 @@ private:
     QString mCustomFormat;
     FormatType mFormatType;
 
-    icu_48::Locale *mLocale;
-    icu_48::Calendar *mCalendar;
-    icu_48::DateFormat *mFormat;
+    QString mDefaultLanguage;
+
+    icu::Locale *mLocale;
+    icu::Calendar *mCalendar;
+    icu::DateFormat *mFormat;
+    icu::UnicodeString mLastShownText;
 
     void updateFormat(void);
     void updateTimezone(void);
@@ -102,9 +109,12 @@ public:
 
 signals:
     void wheelScrolled(int);
+    void leftMouseButtonClicked(void);
+    void middleMouseButtonClicked(void);
 
 protected:
     void wheelEvent(QWheelEvent *);
+    void mouseReleaseEvent(QMouseEvent* event);
 };
 
 EXPORT_RAZOR_PANEL_PLUGIN_H
