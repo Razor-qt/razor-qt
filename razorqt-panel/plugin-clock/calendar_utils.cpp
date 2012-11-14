@@ -56,8 +56,12 @@ Qt::DayOfWeek firstDayOfWeek(void)
     int firstWeekDay;
     int weekFirstDay = 0;
     int weekStart;
+    char *locale;
 
     long weekFirstDayLong;
+
+    Q_UNUSED(locale);
+    locale = setlocale(LC_TIME, "");
 
     // firstWeekDay: Specifies the offset of the first day-of-week in the day
     // list.
