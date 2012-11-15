@@ -45,7 +45,9 @@ public:
     QString authorsText() const;
     QString thanksText() const;
     QString translationsText() const;
-    QString technicalText() const;
+
+public slots:
+    void copyToCliboardTechInfo();
 };
 
 #endif // RAZORABOUTDLG_P_H
