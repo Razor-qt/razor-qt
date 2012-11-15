@@ -72,10 +72,17 @@ Popup::Popup(RazorMountManager *manager, QWidget* parent):
 
 MenuDiskItem *Popup::addItem(RazorMountDevice *device)
 {
-    MenuDiskItem  *item = new MenuDiskItem(device, this);
-    layout()->addWidget(item);
-    item->setVisible(true);
-    return item;
+    if (MenuDiskItem::isUsableDevice(device))
+    {
+        MenuDiskItem  *item   = new MenuDiskItem(device, this);
+        layout()->addWidget(item);
+        item->setVisible(true);
+        return item;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 

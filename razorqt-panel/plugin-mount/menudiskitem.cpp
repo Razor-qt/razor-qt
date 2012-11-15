@@ -82,9 +82,6 @@ void MenuDiskItem::update()
     diskButton->setText(label);
 
     setMountStatus(mDevice->isMounted());
-
-
-    this->setVisible(isUsableDevice(mDevice));
 }
 
 
