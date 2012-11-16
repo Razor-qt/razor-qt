@@ -33,6 +33,7 @@
 #include <QtCore/QUrl>
 #include <QtGui/QToolTip>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QLabel>
 
 #include <qtxdg/xdgicon.h>
 #include "mountbutton.h"
@@ -58,6 +59,10 @@ Popup::Popup(RazorMountManager *manager, QWidget* parent):
     connect(mManager, SIGNAL(deviceAdded(RazorMountDevice*)),
                 this, SLOT(addItem(RazorMountDevice*)));
 
+    mPlaceholder = new QLabel(tr("No devices connected"), this);
+    layout()->addWidget(mPlaceholder);
+    mPlaceholder->hide();
+
     foreach(RazorMountDevice *device, mManager->devices())
     {
         addItem(device);
@@ -67,8 +72,9 @@ Popup::Popup(RazorMountManager *manager, QWidget* parent):
 
 MenuDiskItem *Popup::addItem(RazorMountDevice *device)
 {
-    MenuDiskItem  *item   = new MenuDiskItem(device, this);
+    MenuDiskItem  *item = new MenuDiskItem(device, this);
     layout()->addWidget(item);
+    item->setVisible(true);
     return item;
 }
 
@@ -82,6 +88,9 @@ void Popup::resizeEvent(QResizeEvent *event)
 
 void Popup::showEvent(QShowEvent *event)
 {
+    if ( mManager->devices().count() == 0)
+        mPlaceholder->show();
+
     QWidget::showEvent(event);
     emit visibilityChanged(true);
 }
@@ -89,6 +98,8 @@ void Popup::showEvent(QShowEvent *event)
 
 void Popup::hideEvent(QHideEvent *event)
 {
+    mPlaceholder->hide();
+
     QWidget::hideEvent(event);
     emit visibilityChanged(false);
 }

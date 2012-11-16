@@ -38,6 +38,7 @@
 #include "menudiskitem.h"
 #include "../panel/razorpanel.h"
 
+class QLabel;
 class UdisksManager;
 
 class Popup: public QWidget
@@ -64,6 +65,7 @@ private:
     RazorMountManager *mManager;
     QPoint mPos;
     Qt::Corner mAnchor;
+    QLabel *mPlaceholder;
 };
 
 
