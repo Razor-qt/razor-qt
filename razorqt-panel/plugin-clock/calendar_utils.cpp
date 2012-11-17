@@ -58,13 +58,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
 
 Qt::DayOfWeek firstDayOfWeek(void)
 {
-    int firstWeekDay;
-    int weekFirstDay = 0;
-    int weekStart;
     static char *locale = NULL;
-
-    long weekFirstDayLong;
-
     if (!locale)
         locale = setlocale(LC_TIME, "");
 
@@ -75,9 +69,10 @@ Qt::DayOfWeek firstDayOfWeek(void)
     // Specifies the base of the day list. It is (in glibc) either
     // 19971130 (Sunday) or 19971201 (Monday)
 
-    firstWeekDay = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
+    int firstWeekDay = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
 
-    weekFirstDayLong = (long) nl_langinfo(_NL_TIME_WEEK_1STDAY);
+    int weekFirstDay = 0;
+    long weekFirstDayLong = (long) nl_langinfo(_NL_TIME_WEEK_1STDAY);
     if (weekFirstDayLong == 19971130L)  // Sunday
     {
         weekFirstDay = 0;
@@ -92,7 +87,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
             "nl_langinfo(_NL_TIME_WEEK_1STDAY) returned an unknown value.";
     }
 
-    weekStart = (weekFirstDay + firstWeekDay - 1) % 7;
+    int weekStart = (weekFirstDay + firstWeekDay - 1) % 7;
     if (weekStart == 0)
     {
         return Qt::Sunday;
