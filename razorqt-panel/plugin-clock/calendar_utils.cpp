@@ -88,6 +88,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
             "nl_langinfo(_NL_TIME_WEEK_1STDAY) returned an unknown value.";
     }
 
+    // conversion between C constants (Sunday = 1 .. Saturday = 7) and Qt (Monday = 1 .. Sunday = 7)
     int weekStart = ((weekFirstDay + firstWeekDay + 5) % 7) + 1;
 
     return static_cast<Qt::DayOfWeek>(weekStart);
