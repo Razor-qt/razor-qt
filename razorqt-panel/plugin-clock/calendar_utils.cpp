@@ -99,6 +99,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
 Qt::DayOfWeek firstDayOfWeek(void)
 {
     return Qt::Sunday;
+}
 
 #endif // HAVE__NL_TIME_FIRST_WEEKDAY
 
