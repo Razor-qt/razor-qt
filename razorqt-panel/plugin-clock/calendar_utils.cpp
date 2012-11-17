@@ -7,6 +7,7 @@
  * Copyright: 2012 Razor team
  * Authors:
  *   Kuzma Shapran <kuzma.shapran@gmail.com>
+ *   Luís Pereira <luis.artur.pereira@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -27,6 +28,7 @@
 
 
 #include "calendar_utils.h"
+#include "config.h"
 
 #include <QtCore/QtGlobal>
 
@@ -43,17 +45,60 @@ Qt::DayOfWeek firstDayOfWeek(void)
 
 #else // use C
 
+#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
 #include <langinfo.h>
+#include <QtCore/QDebug>
+#endif
 
 Qt::DayOfWeek firstDayOfWeek(void)
 {
-    const char *const s = nl_langinfo(_NL_TIME_FIRST_WEEKDAY);
+    #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
+    int firstWeekDay;
+    int weekFirstDay = 0;
+    int weekStart;
+    char *locale;
 
-    if (s)
-        if ((*s >= 1) && (*s <= 7))
-            return static_cast<Qt::DayOfWeek>((*s + 6) % 7);
+    long weekFirstDayLong;
 
+    Q_UNUSED(locale);
+    locale = setlocale(LC_TIME, "");
+
+    // firstWeekDay: Specifies the offset of the first day-of-week in the day
+    // list.
+
+    // weekFirstDay: Some date that corresponds to the beginning of a week.
+    // Specifies the base of the day list. It is (in glibc) either
+    // 19971130 (Sunday) or 19971201 (Monday)
+
+    firstWeekDay = nl_langinfo(_NL_TIME_FIRST_WEEKDAY)[0];
+
+    weekFirstDayLong = (long) nl_langinfo(_NL_TIME_WEEK_1STDAY);
+    if (weekFirstDayLong == 19971130L)  // Sunday
+    {
+        weekFirstDay = 0;
+    }
+    else if (weekFirstDayLong == 19971201L) // Monday
+    {
+        weekFirstDay = 1;
+    }
+    else
+    {
+        qDebug() << Q_FUNC_INFO <<
+            "nl_langinfo(_NL_TIME_WEEK_1STDAY) returned an unknown value.";
+    }
+
+    weekStart = (weekFirstDay + firstWeekDay - 1) % 7;
+    if (weekStart == 0)
+    {
+        return Qt::Sunday;
+    }
+    else
+    {
+        return static_cast<Qt::DayOfWeek>(weekStart);
+    }
+    #else
     return Qt::Sunday;
+    #endif // HAVE__NL_TIME_FIRST_WEEKDAY
 }
 
 #endif
