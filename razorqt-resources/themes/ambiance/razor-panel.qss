@@ -262,3 +262,17 @@ MountButton:pressed {
     qproperty-netReceivedColor: rgb(0, 0, 128);
     qproperty-netTransmittedColor: rgb(128, 128, 0);
 }
+
+
+/*
+ * WorldClock
+ */
+#WorldClockContent{
+    font-size: 10pt;
+    color: #cacaca;
+}
+
+#WorldClockPopup{
+    font-size: 12pt;
+    color: #cacaca;
+}

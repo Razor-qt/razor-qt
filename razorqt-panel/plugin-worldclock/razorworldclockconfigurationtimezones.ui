@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RazorWorldClockConfigurationTimeZones</class>
+ <widget class="QDialog" name="RazorWorldClockConfigurationTimeZones">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>440</width>
+    <height>280</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Razor World Clock Time Zones</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QTreeWidget" name="timeZonesTW">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <attribute name="headerDefaultSectionSize">
+      <number>200</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Time zone</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Offset</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttons">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>buttons</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttons</sender>
+   <signal>accepted()</signal>
+   <receiver>RazorWorldClockConfigurationTimeZones</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttons</sender>
+   <signal>rejected()</signal>
+   <receiver>RazorWorldClockConfigurationTimeZones</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>244</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>62</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>maximumNetSpeedChanged(QString)</signal>
+  <slot>on_typeCOB_currentIndexChanged(int)</slot>
+  <slot>on_sourceCOB_currentIndexChanged(int)</slot>
+  <slot>on_maximumHS_valueChanged(int)</slot>
+  <slot>saveSettings()</slot>
+ </slots>
+</ui>
