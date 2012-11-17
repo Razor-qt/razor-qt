@@ -40,8 +40,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
     return QLocale::system().firstDayOfWeek();
 }
 
-#else
-#ifdef CAN_USE_BOOST
+#elif defined CAN_USE_BOOST
 
 #include <boost/locale/date_time.hpp>
 
@@ -50,11 +49,9 @@ Qt::DayOfWeek firstDayOfWeek(void)
     return (boost::locale::calendar().first_day_of_week() + 6) % 7;
 }
 
-#else // use C
-#ifdef HAVE__NL_TIME_FIRST_WEEKDAY
+#elif defined HAVE__NL_TIME_FIRST_WEEKDAY
 
 #include <langinfo.h>
-#include <QtCore/QDebug>
 
 Qt::DayOfWeek firstDayOfWeek(void)
 {
@@ -100,9 +97,5 @@ Qt::DayOfWeek firstDayOfWeek(void)
 {
     return Qt::Sunday;
 }
-
-#endif // HAVE__NL_TIME_FIRST_WEEKDAY
-
-#endif // CAN_USE_BOOST
 
 #endif // QT_VERSION >= 0x040800
