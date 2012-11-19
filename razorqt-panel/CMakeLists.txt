@@ -207,9 +207,11 @@ if (SYSSTAT_PLUGIN)
 endif (SYSSTAT_PLUGIN)
 
 if (WORLDCLOCK_PLUGIN)
-  FIND_PACKAGE(ICU 2.8 COMPONENTS i18n data)
+  FIND_PACKAGE(ICU 4.2 COMPONENTS i18n data)
 
   if(ICU_I18N_FOUND)
+    message(STATUS "ICU version is ${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION}")
+    add_definitions(-DICU_VERSION=${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION})
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "WorldClock")
     add_subdirectory(plugin-worldclock)
   else ()

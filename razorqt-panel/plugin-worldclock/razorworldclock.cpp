@@ -183,6 +183,8 @@ void RazorWorldClock::updateTimezone(void)
             delete mCalendar;
 
         UErrorCode status = U_ZERO_ERROR;
+
+#if ICU_VERSION >= 48
         char region[3];
         icu::TimeZone::getRegion(mActiveTimeZone.toAscii().data(), region, sizeof(region) / sizeof(char), status);
         if (U_FAILURE(status))
@@ -191,6 +193,7 @@ void RazorWorldClock::updateTimezone(void)
         if (mLocale)
             delete mLocale;
         mLocale = new icu::Locale(mDefaultLanguage.toAscii().data(), region);
+#endif
 
         icu::UnicodeString timeZoneName = Qt_to_ICU(mActiveTimeZone);
         icu::TimeZone* timeZone = icu::TimeZone::createTimeZone(timeZoneName);
