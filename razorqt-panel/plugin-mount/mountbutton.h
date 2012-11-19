@@ -59,6 +59,7 @@ protected:
 
 private slots:
     MenuDiskItem *addItem(RazorMountDevice *device);
+    void removeItem(RazorMountDevice *device);
 
 private:
     void realign();
@@ -66,6 +67,7 @@ private:
     QPoint mPos;
     Qt::Corner mAnchor;
     QLabel *mPlaceholder;
+    int mDisplayCount;
 };
 
 

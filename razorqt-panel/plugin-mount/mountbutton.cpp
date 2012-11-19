@@ -45,7 +45,8 @@ Popup::Popup(RazorMountManager *manager, QWidget* parent):
     QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
     mManager(manager),
     mPos(0,0),
-    mAnchor(Qt::TopLeftCorner)
+    mAnchor(Qt::TopLeftCorner),
+    mDisplayCount(0)
 {
     setObjectName("RazorMountPopup");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -58,8 +59,10 @@ Popup::Popup(RazorMountManager *manager, QWidget* parent):
 
     connect(mManager, SIGNAL(deviceAdded(RazorMountDevice*)),
                 this, SLOT(addItem(RazorMountDevice*)));
+    connect(mManager, SIGNAL(deviceRemoved(RazorMountDevice*)),
+                this, SLOT(removeItem(RazorMountDevice*)));
 
-    mPlaceholder = new QLabel(tr("No devices connected"), this);
+    mPlaceholder = new QLabel(tr("No devices are available"), this);
     layout()->addWidget(mPlaceholder);
     mPlaceholder->hide();
 
@@ -77,11 +80,24 @@ MenuDiskItem *Popup::addItem(RazorMountDevice *device)
         MenuDiskItem  *item   = new MenuDiskItem(device, this);
         layout()->addWidget(item);
         item->setVisible(true);
+        mDisplayCount++;
+        if (mDisplayCount != 0)
+            mPlaceholder->hide();
         return item;
     }
     else
     {
         return 0;
+    }
+}
+
+void Popup::removeItem(RazorMountDevice *device)
+{
+    if (MenuDiskItem::isUsableDevice(device))
+    {
+        mDisplayCount--;
+        if (mDisplayCount == 0)
+            mPlaceholder->show();
     }
 }
 
@@ -95,7 +111,8 @@ void Popup::resizeEvent(QResizeEvent *event)
 
 void Popup::showEvent(QShowEvent *event)
 {
-    if ( mManager->devices().count() == 0)
+//    qDebug() << "DEV" << mDisplayCount <<  mManager->devices().count() << mManager->devices();
+    if (mDisplayCount == 0)
         mPlaceholder->show();
 
     QWidget::showEvent(event);
@@ -255,11 +272,7 @@ void MountButton::showHidePopup()
     else
     {
         mPopupHideTimer.stop();
-
-        if (mManager.devices().isEmpty())
-            showMessage(tr("No devices Available."));
-        else
-            showPopup();
+        showPopup();
     }
 }
 
