@@ -1,0 +1,68 @@
+<PISI>
+    <Source>
+        <Name>razor-qt</Name>
+        <Homepage>http://razor-qt.org/</Homepage>
+        <Packager>
+            <Name>Erdinç Gültekin</Name>
+            <Email>erdincgultekin@gmail.com</Email>
+        </Packager>
+        <License>Lgpl</License>
+        <License>Gpl</License>
+        <PartOf>desktop</PartOf>
+        <IsA>desktop</IsA>
+        <Summary>Razor-qt desktop</Summary>
+        <Description>Razor-qt is an advanced, easy-to-use, and fast desktop environment based on Qt technologies. Unlike desktop environments, Razor-qt also works fine with weak machines and low requirements software.
+        This metapackage provides all the components of Razor-qt</Description>
+        <Archive sha1sum="6e419782a0d1d54a2f6b40713fa32f3005311bea" type="tarbz2">https://github.com/downloads/Razor-qt/razor-qt/razorqt-0.5.1.tar.bz2</Archive>
+        <BuildDependencies>
+            <Dependency>qt-devel</Dependency>
+            <Dependency>libXcomposite-devel</Dependency>
+            <Dependency>libXcursor-devel</Dependency>
+            <Dependency>desktop-file-utils</Dependency>
+            <Dependency>file</Dependency>
+            <Dependency>doxygen</Dependency>
+            <Dependency>polkit-qt_1-devel</Dependency>
+        </BuildDependencies>
+    </Source>
+
+    <Package>
+        <Name>razor-qt</Name>
+        <RuntimeDependencies>
+            <Dependency>qt</Dependency>
+            <Dependency>libXcomposite</Dependency>
+            <Dependency>libXcursor</Dependency>
+            <Dependency>desktop-file-utils</Dependency>
+            <Dependency>file</Dependency>
+            <Dependency>doxygen</Dependency>
+            <Dependency>polkit-qt_1</Dependency>
+        </RuntimeDependencies>
+        <Files>
+            <Path fileType="executable">/usr/bin</Path>
+            <Path fileType="library">/usr/lib</Path>
+            <Path fileType="header">/usr/include</Path>
+            <Path fileType="config">/etc/razor</Path>
+            <Path fileType="config">/etc/xdg</Path>
+            <Path fileType="data">/usr/share/razor</Path>
+            <Path fileType="data">/usr/share/libqtxdg</Path>
+            <Path fileType="data">/usr/share/librazorqt</Path>
+            <Path fileType="data">/usr/share/applications</Path>
+            <Path fileType="data">/usr/share/desktop-directories</Path>
+            <Path fileType="data">/usr/share/apps</Path>
+            <Path fileType="data">/usr/share/icons</Path>
+            <Path fileType="data">/usr/share/xsessions</Path>
+            <Path fileType="doc">/usr/share/doc</Path>
+        </Files>
+    </Package>
+
+    <History>
+        <Update release="1">
+            <Date>2012-10-14</Date>
+            <Version>0.5.1</Version>
+            <Comment>new relase</Comment>
+            <Name>Erdinç Gültekin</Name>
+            <Email>erdincgultekin@gmail.com</Email>
+        </Update>
+    </History>
+</PISI>
+
+<!-- By PiSiDo 2.0.0 -->
