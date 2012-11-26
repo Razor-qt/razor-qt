@@ -247,6 +247,12 @@
                     </Or>
                 </And>
             </Include>
+            <Layout>
+                <Filename>razor-config.desktop</Filename>
+                <Separator/>
+                <Merge type="menus"/>
+                <Merge type="files"/>
+            </Layout>
         </Menu>
         <OnlyUnallocated/>
         <Include>
