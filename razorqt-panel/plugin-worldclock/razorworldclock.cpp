@@ -101,9 +101,6 @@ RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWi
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
     connect(mContent, SIGNAL(leftMouseButtonClicked()), SLOT(leftMouseButtonClicked()));
     connect(mContent, SIGNAL(middleMouseButtonClicked()), SLOT(middleMouseButtonClicked()));
-
-    mTimer->setInterval(100); // faster than 1 sec to support milliseconds at least partially
-    mTimer->start();
 }
 
 RazorWorldClock::~RazorWorldClock()
@@ -123,7 +120,13 @@ void RazorWorldClock::timeout(void)
     {
         UErrorCode status = U_ZERO_ERROR;
         UnicodeString str;
-        mFormat->format(Calendar::getNow(), str, status);
+
+        UDate now = Calendar::getNow();
+
+        if ((static_cast<long long>(now) % 1000) > 200)
+            restartTimer(mTimer->interval());
+
+        mFormat->format(now, str, status);
         if (U_FAILURE(status))
             qDebug() << "timeout: Calendar::getNow() status = " << status;
 
@@ -140,6 +143,7 @@ void RazorWorldClock::updateFormat(void)
     if (mFormat)
         delete mFormat;
 
+    int timerInterval = 0;
 
     switch (mFormatType)
     {
@@ -149,30 +153,73 @@ void RazorWorldClock::updateFormat(void)
         mFormat = new icu::SimpleDateFormat(Qt_to_ICU(mCustomFormat), *mLocale, status);
         if (U_FAILURE(status))
             qDebug() << "updateFormat: SimpleDateFormat() = " << status;
+
+        QString format = mCustomFormat;
+        format.replace(QRegExp(QLatin1String("'[^']*'")), QString());
+        if (format.contains(QString("SSS")))
+            timerInterval = 1;
+        else if (format.contains(QString("SS")))
+            timerInterval = 10;
+        else if (format.contains(QString("S")))
+            timerInterval = 100;
+        else if (format.contains(QString("s")))
+            timerInterval = 1000;
+        else
+            timerInterval = 60000;
     }
         break;
 
     case FORMAT_FULL:
         mFormat = icu::DateFormat::createDateTimeInstance(DateFormat::kFull, DateFormat::kFull, *mLocale);
+        timerInterval = 1000;
         break;
 
     case FORMAT_LONG:
         mFormat = icu::DateFormat::createDateTimeInstance(DateFormat::kLong, DateFormat::kLong, *mLocale);
+        timerInterval = 1000;
         break;
 
     case FORMAT_MEDIUM:
         mFormat = icu::DateFormat::createDateTimeInstance(DateFormat::kMedium, DateFormat::kMedium, *mLocale);
+        timerInterval = 1000;
         break;
 
     case FORMAT_SHORT:
         mFormat = icu::DateFormat::createDateTimeInstance(DateFormat::kShort, DateFormat::kShort, *mLocale);
+        timerInterval = 60000;
         break;
 
     default:;
     }
 
+    restartTimer(timerInterval);
+
     if (mCalendar)
         mFormat->setCalendar(*mCalendar);
+}
+
+void RazorWorldClock::restartTimer(int timerInterval)
+{
+    mTimer->stop();
+    mTimer->setInterval(timerInterval);
+
+    switch (timerInterval)
+    {
+    case 1:
+    case 10:
+    case 100:
+        mTimer->start();
+        break;
+
+    case 1000:
+    case 60000:
+    {
+        int delay = static_cast<int>((timerInterval + 100 - (static_cast<long long>(Calendar::getNow()) % timerInterval)) % timerInterval);
+        QTimer::singleShot(delay, this, SLOT(timeout()));
+        QTimer::singleShot(delay, mTimer, SLOT(start()));
+    }
+        break;
+    }
 }
 
 void RazorWorldClock::updateTimezone(void)
@@ -207,6 +254,8 @@ void RazorWorldClock::updateTimezone(void)
             qDebug() << "updateTimezone: Calendar::createInstance() status = " << status;
         mFormat->setCalendar(*mCalendar);
     }
+
+    timeout(); // instantly!
 }
 
 void RazorWorldClock::settingsChanged()
@@ -279,7 +328,6 @@ void RazorWorldClock::wheelScrolled(int delta)
         mActiveTimeZone = mTimeZones[(mTimeZones.indexOf(mActiveTimeZone) + ((delta > 0) ? -1 : 1) + mTimeZones.size()) % mTimeZones.size()];
 
         updateTimezone();
-        timeout(); // instantly!
     }
 }
 
