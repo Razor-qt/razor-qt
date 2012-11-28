@@ -201,3 +201,37 @@ MountButton {}
 #SysStat {
     padding: 1px 1px 1px 1px;
 }
+
+#SysStat > QLabel {
+    font-size: 6pt;
+}
+
+#SysStat_Graph {
+    qproperty-gridColor: rgba(0, 0, 0, 25%);
+    qproperty-titleColor: rgba(0, 0, 0, 75%);
+    qproperty-cpuSystemColor: rgb(128, 0, 0);
+    qproperty-cpuUserColor: rgb(0, 0, 128);
+    qproperty-cpuNiceColor: rgb(0, 128, 0);
+    qproperty-cpuOtherColor: rgb(128, 128, 0);
+    qproperty-frequencyColor: rgb(160, 160, 160);
+    qproperty-memAppsColor: rgb(0, 0, 128);
+    qproperty-memBuffersColor: rgb(0, 128, 0);
+    qproperty-memCachedColor: rgb(128, 128, 0);
+    qproperty-swapUsedColor: rgb(128, 0, 0);
+    qproperty-netReceivedColor: rgb(0, 0, 128);
+    qproperty-netTransmittedColor: rgb(128, 128, 0);
+}
+
+
+/*
+ * WorldClock
+ */
+#WorldClockContent{
+    font-size: 10pt;
+    color: #606060;
+}
+
+#WorldClockPopup{
+    font-size: 12pt;
+    color: #606060;
+}

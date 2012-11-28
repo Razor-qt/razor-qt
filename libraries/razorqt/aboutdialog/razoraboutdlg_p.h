@@ -25,17 +25,29 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#ifndef RAZORABOUTDLG_P_H
+#define RAZORABOUTDLG_P_H
 
-#include <razorqt/razorapplication.h>
-#include <razorqt/aboutdialog/razoraboutdlg.h>
-#include "razortranslate.h"
+#include <QtGui/QDialog>
+#include "ui_razoraboutdlg.h"
 
-
-int main(int argc, char *argv[])
+/**
+ * @brief prepares the data to show and fills the form, then shows.
+ */
+class RazorAboutDLGPrivate: public QDialog, public Ui_about
 {
-    RazorApplication app(argc, argv);
-    TRANSLATE_APP;
+    Q_OBJECT
 
-    RazorAboutDLG dlg;
-    return app.exec();
-}
+public:
+    RazorAboutDLGPrivate();
+    QString titleText() const;
+    QString aboutText() const;
+    QString authorsText() const;
+    QString thanksText() const;
+    QString translationsText() const;
+
+public slots:
+    void copyToCliboardTechInfo();
+};
+
+#endif // RAZORABOUTDLG_P_H

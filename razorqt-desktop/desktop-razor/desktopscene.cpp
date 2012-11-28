@@ -37,7 +37,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 #include <qtxdg/xdgmenuwidget.h>
-#include <razorqt/razoraboutdlg.h>
+#include <razorqt/aboutdialog/razoraboutdlg.h>
 #include <razorqt/addplugindialog/addplugindialog.h>
 
 #include "desktopscene.h"

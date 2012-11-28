@@ -26,59 +26,67 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORSYSSTATCONFIGURATION_H
-#define RAZORSYSSTATCONFIGURATION_H
+#ifndef RAZORWORLDCLOCKCONFIGURATION_H
+#define RAZORWORLDCLOCKCONFIGURATION_H
 
 #include "razorqt/razorsettings.h"
 
 #include <QtGui/QDialog>
 #include <QtGui/QAbstractButton>
+#include <QtGui/QFont>
 #include <QtCore/QMap>
 
 
 namespace Ui {
-    class RazorSysStatConfiguration;
+    class RazorWorldClockConfiguration;
 }
 
-namespace SysStat {
-    class BaseStat;
-}
+class RazorWorldClockConfigurationTimeZones;
+class QListWidgetItem;
 
-class RazorSysStatColours;
-
-class RazorSysStatConfiguration : public QDialog
+class RazorWorldClockConfiguration : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit RazorSysStatConfiguration(QSettings &settings, QWidget *parent = 0);
-    ~RazorSysStatConfiguration();
+    explicit RazorWorldClockConfiguration(QSettings &settings, QWidget *parent = NULL);
+    ~RazorWorldClockConfiguration();
 
 public slots:
     void saveSettings();
 
-    void on_typeCOB_currentIndexChanged(int);
-    void on_maximumHS_valueChanged(int);
-    void on_customColoursB_clicked(void);
-    void on_buttons_clicked(QAbstractButton *);
-
-    void coloursChanged(void);
-
-signals:
-    void maximumNetSpeedChanged(QString);
-
 private:
-    Ui::RazorSysStatConfiguration *ui;
+    Ui::RazorWorldClockConfiguration *ui;
     QSettings &mSettings;
-    RazorSettingsCache oldSettings;
+    RazorSettingsCache mOldSettings;
 
+    /*
+      Read settings from conf file and put data into controls.
+    */
     void loadSettings();
 
-    SysStat::BaseStat *mStat;
+private slots:
+    /*
+      Saves settings in conf file.
+    */
+    void dialogButtonsAction(QAbstractButton *);
 
-    bool mLockSaving;
+    void updateTimeZoneButtons(void);
+    void addTimeZone(void);
+    void removeTimeZone(void);
+    void setTimeZoneAsDefault(void);
+    void moveTimeZoneUp(void);
+    void moveTimeZoneDown(void);
 
-    RazorSysStatColours *mColoursDialog;
+private:
+    QString mDefaultTimeZone;
+
+    bool mLockCascadeSettingChanges;
+
+    RazorWorldClockConfigurationTimeZones *mConfigurationTimeZones;
+
+    void setDefault(QListWidgetItem *);
+    void setBold(QListWidgetItem *, bool);
 };
 
-#endif // RAZORSYSSTATCONFIGURATION_H
+#endif // RAZORWORLDCLOCKCONFIGURATION_H

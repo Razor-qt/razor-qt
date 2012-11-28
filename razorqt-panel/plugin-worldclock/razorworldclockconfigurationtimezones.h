@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,27 +25,40 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORABOUTDLG_P_H
-#define RAZORABOUTDLG_P_H
+
+#ifndef RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H
+#define RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H
 
 #include <QtGui/QDialog>
-#include "ui_razoraboutdlg.h"
+#include <QtGui/QAbstractButton>
 
-/**
- * @brief prepares the data to show and fills the form, then shows.
- */
-class RazorAboutDLGPrivate: public QDialog, public Ui_about
+
+namespace Ui {
+    class RazorWorldClockConfigurationTimeZones;
+}
+
+class QTreeWidgetItem;
+
+class RazorWorldClockConfigurationTimeZones : public QDialog
 {
     Q_OBJECT
 
 public:
-    RazorAboutDLGPrivate();
-    QString titleText() const;
-    QString aboutText() const;
-    QString authorsText() const;
-    QString thanksText() const;
-    QString translationsText() const;
-    QString technicalText() const;
+    explicit RazorWorldClockConfigurationTimeZones(QWidget *parent = NULL);
+    ~RazorWorldClockConfigurationTimeZones();
+
+    int updateAndExec(void);
+
+    QString timeZone(void);
+
+public slots:
+    void itemSelectionChanged(void);
+    void itemDoubleClicked(QTreeWidgetItem*,int);
+
+private:
+    Ui::RazorWorldClockConfigurationTimeZones *ui;
+
+    QString mTimeZone;
 };
 
-#endif // RAZORABOUTDLG_P_H
+#endif // RAZORWORLDCLOCKCONFIGURATIONTIMEZONES_H

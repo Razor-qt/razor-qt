@@ -93,6 +93,8 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     connect (mClockTimer, SIGNAL(timeout()), SLOT(updateTime()));
     mClockTimer->start(1000);
 
+    mFirstDayOfWeek = firstDayOfWeek();
+
     settingsChanged();
 }
 
@@ -146,8 +148,6 @@ void RazorClock::settingsChanged()
         mClockFormat = QString("%1 %2").arg(mTimeFormat).arg(mDateFormat);
     else
         mClockFormat = mTimeFormat;
-
-    mFirstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
     mDateLabel->setVisible(mDateOnNewLine);
 

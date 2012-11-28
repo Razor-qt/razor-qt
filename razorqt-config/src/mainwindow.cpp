@@ -36,7 +36,6 @@
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgmenu.h>
 #include <qtxdg/xmlhelper.h>
-#include <razorqt/razoraboutdlg.h>
 
 #include "qcategorizedview.h"
 #include "qcategorydrawer.h"

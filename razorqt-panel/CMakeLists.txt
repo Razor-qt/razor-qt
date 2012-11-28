@@ -39,8 +39,9 @@ setByDefault(VOLUME_PLUGIN Yes)
 setByDefault(VOLUME_USE_PULSEAUDIO Yes)
 setByDefault(VOLUME_USE_ALSA Yes)
 
-setByDefault(KBINDICATOR_PLUGIN Yes)
 setByDefault(SYSSTAT_PLUGIN Yes)
+setByDefault(KBINDICATOR_PLUGIN Yes)
+setByDefault(WORLDCLOCK_PLUGIN Yes)
 # *******************************************************************
 
 
@@ -204,6 +205,22 @@ if (SYSSTAT_PLUGIN)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "SysStat")
     add_subdirectory(plugin-sysstat)
 endif (SYSSTAT_PLUGIN)
+
+if (WORLDCLOCK_PLUGIN)
+  FIND_PACKAGE(ICU 4.2 COMPONENTS i18n data)
+
+  if(ICU_I18N_FOUND)
+    message(STATUS "ICU version is ${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION}")
+    add_definitions(-DICU_VERSION=${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION})
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "WorldClock")
+    add_subdirectory(plugin-worldclock)
+  else ()
+    message(STATUS "")
+    message(STATUS "WorldClock plugin requires ICU")
+    message(STATUS "")
+  endif (ICU_I18N_FOUND)
+
+endif (WORLDCLOCK_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
