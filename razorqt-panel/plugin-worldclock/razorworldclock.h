@@ -96,6 +96,7 @@ private:
     icu::UnicodeString mLastShownText;
 
     void updateFormat(void);
+    void restartTimer(int);
     void updateTimezone(void);
 
     void popupDialog(bool);
