@@ -123,7 +123,7 @@ void RazorWorldClock::timeout(void)
 
         UDate now = Calendar::getNow();
 
-        if ((static_cast<long long>(now) % 1000) > 200)
+        if ((mTimer->interval() >= 1000) && ((static_cast<long long>(now) % 1000) > 200))
             restartTimer(mTimer->interval());
 
         mFormat->format(now, str, status);
@@ -203,22 +203,13 @@ void RazorWorldClock::restartTimer(int timerInterval)
     mTimer->stop();
     mTimer->setInterval(timerInterval);
 
-    switch (timerInterval)
-    {
-    case 1:
-    case 10:
-    case 100:
+    if (timerInterval < 1000)
         mTimer->start();
-        break;
-
-    case 1000:
-    case 60000:
+    else
     {
         int delay = static_cast<int>((timerInterval + 100 - (static_cast<long long>(Calendar::getNow()) % timerInterval)) % timerInterval);
         QTimer::singleShot(delay, this, SLOT(timeout()));
         QTimer::singleShot(delay, mTimer, SLOT(start()));
-    }
-        break;
     }
 }
 
