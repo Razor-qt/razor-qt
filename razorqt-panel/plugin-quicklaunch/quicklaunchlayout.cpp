@@ -100,7 +100,7 @@ void QuickLaunchLayout::relayout()
         if (m_panel->isHorizontal())
         {
             ++row;
-            if (row == div)
+            if (row >= div)
             {
                 row = 0;
                 ++col;
@@ -109,7 +109,7 @@ void QuickLaunchLayout::relayout()
         else
         {
             ++col;
-            if (col == div)
+            if (col >= div)
             {
                 col = 0;
                 ++row;
