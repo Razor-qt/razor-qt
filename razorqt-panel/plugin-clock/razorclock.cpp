@@ -95,6 +95,8 @@ RazorClock::RazorClock(const RazorPanelPluginStartInfo* startInfo, QWidget* pare
     connect (clocktimer, SIGNAL(timeout()), this, SLOT(updateTime()));
     clocktimer->start(1000);
 
+    m_firstDayOfWeek = firstDayOfWeek();
+
     settingsChanged();
 }
 
@@ -147,8 +149,6 @@ void RazorClock::settingsChanged()
             clockFormat += dateFormat;
         }
     }
-
-    m_firstDayOfWeek = static_cast<Qt::DayOfWeek>(settings().value("firstDayOfWeek", firstDayOfWeek()).toInt());
 
     fontChanged();
 
