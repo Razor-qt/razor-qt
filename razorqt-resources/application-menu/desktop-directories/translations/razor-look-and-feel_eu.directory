@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Look and Feel
 Comment=Settings controlling the desktop appearance and behavior
-Icon=preferences-desktop
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[eu]=Itxura eta Izaera
+
+
+# Translations
 Comment[eu]=Mahaigainaren itxura eta portaera kontrolatzeko ezarpenak
+Name[eu]=Itxura eta Izaera

@@ -3,7 +3,7 @@
     <name>RazorModuleManager</name>
     <message>
         <source>Razor Session Crash Report</source>
-        <translation>Zpráva o pádu sezení Razoru</translation>
+        <translation>Zpráva o pádu sezení</translation>
     </message>
     <message>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Accessories
 Comment=Desktop accessories
-Icon=applications-accessories
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=보조 프로그램
+
+
+# Translations
 Comment[ko]=바탕환경의 보조 프로그램
+Name[ko]=보조 프로그램

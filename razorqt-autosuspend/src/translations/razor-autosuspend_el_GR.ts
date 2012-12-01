@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>Διάλογος</translation>
+        <source>Razor Autosuspend</source>
+        <translation>Αυτόματη αναστολή Razor</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -77,8 +77,8 @@
         <translation>Νικελίου καδμίου</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation>Νικελίου μετάλλων υβριδίου</translation>
+        <source>Nickel metal hydride</source>
+        <translation>Νικελίου μετάλλου υβριδίου</translation>
     </message>
     <message>
         <source>Unknown</source>

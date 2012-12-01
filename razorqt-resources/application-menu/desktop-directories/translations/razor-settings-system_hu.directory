@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[hu]=Adminisztráció
+
+
+# Translations
 Comment[hu]=Rendszerszintű beállítások módosítása (minden felhasználóra kihat)
+Name[hu]=Adminisztráció

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Personal
 Comment=Personal settings
-Icon=preferences-desktop-personal
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[it]=Personale
+
+
+# Translations
 Comment[it]=Impostazioni personali
+Name[it]=Personale

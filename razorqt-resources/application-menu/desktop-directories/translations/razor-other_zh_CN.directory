@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Other
 Comment=Applications that did not fit in other categories
-Icon=applications-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_CN]=其它
+
+
+# Translations
 Comment[zh_CN]=无法分入其它类别的应用程序
+Name[zh_CN]=其它

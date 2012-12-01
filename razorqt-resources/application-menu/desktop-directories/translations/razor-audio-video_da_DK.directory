@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[da_DK]=Multimediemenu
+Name[da_DK]=Lyd og video

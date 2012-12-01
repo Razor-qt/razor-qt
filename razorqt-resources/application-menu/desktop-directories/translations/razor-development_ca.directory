@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Programming
 Comment=Tools for software development
-Icon=applications-development
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ca]=Programació
+
+
+# Translations
 Comment[ca]=Eines per a desenvolupament de programari
+Name[ca]=Programació

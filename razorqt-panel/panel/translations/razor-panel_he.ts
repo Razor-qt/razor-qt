@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>px</source>
-        <translation>px</translation>
+        <translation>פיק׳</translation>
     </message>
     <message>
         <source>Use automatic sizing</source>

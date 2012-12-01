@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sr@latin]=Zvuk i pokretne slike
+
+
+# Translations
 Comment[sr@latin]=Meni za multimediju
+Name[sr@latin]=Zvuk i pokretne slike

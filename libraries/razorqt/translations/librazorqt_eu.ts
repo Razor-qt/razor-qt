@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Razor energia-kudeatzailearen errorea</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Hibernatzeak huts egin du.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

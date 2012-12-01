@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Internet and Network
 Comment=Network-related settings
-Icon=preferences-system-network
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[eu]=Internet eta sarea
+
+
+# Translations
 Comment[eu]=Sareko ezarpenak
+Name[eu]=Internet eta sarea

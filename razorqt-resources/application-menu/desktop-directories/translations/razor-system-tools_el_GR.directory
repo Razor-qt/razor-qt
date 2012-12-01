@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[el_GR]=Ρύθμιση και έλεγχος συστήματος
+Name[el_GR]=Εργαλεία συστήματος

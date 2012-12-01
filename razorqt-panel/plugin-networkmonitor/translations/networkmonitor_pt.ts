@@ -19,23 +19,23 @@
     </message>
     <message>
         <source>KiB</source>
-        <translation>Kb</translation>
+        <translation>KiB</translation>
     </message>
     <message>
         <source>MiB</source>
-        <translation>Mb</translation>
+        <translation>MiB</translation>
     </message>
     <message>
         <source>GiB</source>
-        <translation>Gb</translation>
+        <translation>GiB</translation>
     </message>
     <message>
         <source>TiB</source>
-        <translation>Tb</translation>
+        <translation>TiB</translation>
     </message>
     <message>
         <source>PiB</source>
-        <translation>Pb</translation>
+        <translation>PiB</translation>
     </message>
 </context>
 <context>
@@ -58,7 +58,7 @@
     </message>
     <message>
         <source>Monitor</source>
-        <translation>Monitorizar</translation>
+        <translation>Monitor</translation>
     </message>
     <message>
         <source>Network</source>

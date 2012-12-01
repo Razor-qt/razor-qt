@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=관리
+
+
+# Translations
 Comment[ko]=시스템 전체 설정을 바꿉니다 (모든 사용자에게 영향을 미칩니다)
+Name[ko]=관리

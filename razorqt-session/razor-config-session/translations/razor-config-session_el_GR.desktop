@@ -13,7 +13,7 @@ GenericName=Razor Session Configurator
 
 
 # Translations
-Comment[el_GR]=Άρθρωμα διαμόρφωσης συνεδρίας Razor-Qt
-GenericName[el_GR]=Διαμόρφωση συνεδρίας Razor
-Name[el_GR]=Διαμόρφωση συνεδρίας Razor
-Icon[el_GR]=preferences-system-session-services
+Comment[el_GR]=Άρθρωμα ρύθμισης συνεδρίας Razor-Qt
+GenericName[el_GR]=Ρύθμιση συνεδρίας Razor
+Name[el_GR]=Ρύθμιση συνεδρίας Razor
+Icon[el_GR]=προτιμήσεις υπηρεσιών συνεδρίας συστήματος

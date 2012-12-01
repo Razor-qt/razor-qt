@@ -2,10 +2,12 @@
 Name=Universal Access
 Comment=Universal Access Settings
 Type=Directory
-Icon=preferences-desktop-accessibility
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=보편적 접근성
+
+
+# Translations
 Comment[ko]=보편적 접근성 설정
+Name[ko]=보편적 접근성

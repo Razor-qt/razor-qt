@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Programming
 Comment=Tools for software development
-Icon=applications-development
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[lt]=Programavimas
+
+
+# Translations
 Comment[lt]=Programinės įrangos kūrimo įrankiai
+Name[lt]=Programavimas

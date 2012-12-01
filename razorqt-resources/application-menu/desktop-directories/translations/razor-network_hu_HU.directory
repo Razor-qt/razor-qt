@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Programok az internet használatához (pl. web és e-mail)
+Name[hu_HU]=Internet

@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ja]=システム管理
+
+
+# Translations
 Comment[ja]=システム規模の設定を変更します (全てのユーザに影響します)
+Name[ja]=システム管理

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[el_GR]=Ρυθμίσεις για διάφορες συσκευές υλικού
+Name[el_GR]=Υλικό

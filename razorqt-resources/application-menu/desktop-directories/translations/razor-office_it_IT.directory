@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[it_IT]=Applicazioni da ufficio
+Name[it_IT]=Ufficio

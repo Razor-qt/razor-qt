@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[cs_CZ]=Nabídka multimédií
+Name[cs_CZ]=Zvuk a video

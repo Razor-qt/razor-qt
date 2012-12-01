@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Błąd zarządzania energią</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Hibernacja nie powiodła się.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -196,7 +207,7 @@
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation>Xdg Katalogi Autostart</translation>
+        <translation>Xdg Katalogi Autouruchamiania</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>

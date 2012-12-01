@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Accessories
 Comment=Desktop accessories
-Icon=applications-accessories
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[cs]=Příslušenství
+
+
+# Translations
 Comment[cs]=Příslušenství prostředí pracovní plochy
+Name[cs]=Příslušenství

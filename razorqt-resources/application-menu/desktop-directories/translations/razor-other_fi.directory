@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Other
 Comment=Applications that did not fit in other categories
-Icon=applications-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[fi]=Muut
+
+
+# Translations
 Comment[fi]=Muihin luokkiin sopimattomat sovellukset
+Name[fi]=Muut

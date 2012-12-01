@@ -3,74 +3,74 @@
     <name>RazorNetworkMonitor</name>
     <message>
         <source>Network interface &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Interface réseau &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Transmitted %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 transmis</translation>
     </message>
     <message>
         <source>Received %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 reçu</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>o</translation>
     </message>
     <message>
         <source>KiB</source>
-        <translation type="unfinished"/>
+        <translation>Kio</translation>
     </message>
     <message>
         <source>MiB</source>
-        <translation type="unfinished"/>
+        <translation>Mio</translation>
     </message>
     <message>
         <source>GiB</source>
-        <translation type="unfinished"/>
+        <translation>Gio</translation>
     </message>
     <message>
         <source>TiB</source>
-        <translation type="unfinished"/>
+        <translation>Tio</translation>
     </message>
     <message>
         <source>PiB</source>
-        <translation type="unfinished"/>
+        <translation>Pio</translation>
     </message>
 </context>
 <context>
     <name>RazorNetworkMonitorConfiguration</name>
     <message>
         <source>Razor Network Monitor settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres du moniteur réseau Razor</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Généraux</translation>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Interface</source>
-        <translation type="unfinished"/>
+        <translation>Interface</translation>
     </message>
     <message>
         <source>Modem</source>
-        <translation type="unfinished"/>
+        <translation>Modem</translation>
     </message>
     <message>
         <source>Monitor</source>
-        <translation type="unfinished"/>
+        <translation>Moniteur</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Réseau</translation>
     </message>
     <message>
         <source>Wireless</source>
-        <translation type="unfinished"/>
+        <translation>Sans-fils</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Icône</translation>
     </message>
 </context>
 </TS>

@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Resetează modificările</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>Întrebare</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>Doriți să ștergeți grupul: %1 (va fi eliminat și întreg conținutul)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>Doriți să ștergeți %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>Asocierea pentru %1 există deja. Doriți să o înlocuiți?</translation>
+    </message>
 </context>
 </TS>

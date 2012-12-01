@@ -3,46 +3,46 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>コマンドの検索</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>Razorショートカットの編集</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>記述</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>ショートカット</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>コマンド</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>新規追加</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>グループの追加</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>リセット</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,18 +57,34 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>ショートカットの追加</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>新規グループ</translation>
     </message>
     <message>
         <source>Reset Changes</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>%1を削除しますか?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
         <translation type="unfinished"/>
     </message>
 </context>

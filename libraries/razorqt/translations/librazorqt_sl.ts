@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Napaka upravljanja z energijo</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Prehod v mirovanje ni uspel.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Preferences
 Comment=Personal preferences
-Icon=preferences-settings
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=기본 설정
+
+
+# Translations
 Comment[ko]=개인 기본 설정
+Name[ko]=기본 설정

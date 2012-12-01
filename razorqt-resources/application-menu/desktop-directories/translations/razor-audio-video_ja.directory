@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ja]=サウンドとビデオ
+
+
+# Translations
 Comment[ja]=マルチメディア関連のプログラムです
+Name[ja]=サウンドとビデオ

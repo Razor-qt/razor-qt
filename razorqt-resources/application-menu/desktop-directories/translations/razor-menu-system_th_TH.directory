@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[th_TH]=ปรับแต่งพื้นโต๊ะส่วนตัวและตั้งค่าระบบ
+Name[th_TH]=ระบบ

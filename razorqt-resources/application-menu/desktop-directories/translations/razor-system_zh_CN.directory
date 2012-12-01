@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=System settings
-Icon=preferences-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_CN]=系统
+
+
+# Translations
 Comment[zh_CN]=系统设置
+Name[zh_CN]=系统

@@ -18,7 +18,7 @@
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation>הצגת תמליל פשוט. ניפוי שגיאות/תוכנה דוגמית.</translation>
+        <translation>הצגת תמליל פשוט. תוכנית תרשימית לניפוי שגיאות/מדגמית.</translation>
     </message>
 </context>
 </TS>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>Ukázat ikonu se stavem baterie v oznamovací oblasti panelu</translation>
+        <translation>Ukázat stav baterie v panelu</translation>
     </message>
 </context>
 <context>

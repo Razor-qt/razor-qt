@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Hardware
 Comment=Settings for several hardware devices
-Icon=preferences-desktop-peripherals
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[uk]=Обладнання
+
+
+# Translations
 Comment[uk]=Налаштування для декількох апаратних пристроїв
+Name[uk]=Обладнання

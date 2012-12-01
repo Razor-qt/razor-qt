@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Internet
 Comment=Programs for Internet access such as web and email
-Icon=applications-internet
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[uk]=Інтернет
+
+
+# Translations
 Comment[uk]=Програми для роботи з Інтернет (пошта, веб-переглядач, тощо)
+Name[uk]=Інтернет

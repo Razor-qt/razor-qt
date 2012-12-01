@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>מכסה סגור</translation>
     </message>
     <message>
         <source>Action:</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>מכסה סגור</translation>
     </message>
     <message>
         <source>Power Low</source>

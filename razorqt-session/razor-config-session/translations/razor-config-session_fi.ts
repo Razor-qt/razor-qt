@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Wait for system tray</source>
-        <translation type="unfinished"/>
+        <translation>Odota ilmoitusaluetta</translation>
     </message>
     <message>
         <source>Select Application</source>

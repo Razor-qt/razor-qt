@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Clock:</source>
-        <translation type="unfinished"/>
+        <translation>Saat:</translation>
     </message>
 </context>
 </TS>

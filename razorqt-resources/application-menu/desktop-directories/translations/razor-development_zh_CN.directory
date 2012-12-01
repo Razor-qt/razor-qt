@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Programming
 Comment=Tools for software development
-Icon=applications-development
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_CN]=编程
+
+
+# Translations
 Comment[zh_CN]=软件开发工具
+Name[zh_CN]=编程

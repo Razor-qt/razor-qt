@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>Poista</translation>
+        <translation>הסרה</translation>
     </message>
     <message>
         <source>New Group</source>
@@ -70,6 +70,22 @@
     <message>
         <source>Reset Changes</source>
         <translation>איפוס שינויים</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>שאלה</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>מחיקת קבוצה: %1? (כל מה שמצוי בפנים יוסר יחדיו)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>למחוק את %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>כריכה עבור %1 כבר קיימת. להחליף קודמת?</translation>
     </message>
 </context>
 </TS>

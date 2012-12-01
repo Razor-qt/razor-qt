@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[th_TH]=โปรแกรมสำหรับเข้าอินเทอร์เน็ต เช่น เว็บและเมล
+Name[th_TH]=อินเทอร์เน็ต

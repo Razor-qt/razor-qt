@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Removable media
+Comment=Easy mounting and unmounting of USB and optical drives.
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[es_MX]=Adminitrador de medios extraibles (USB, CD, DVD, etc.)
+Name[es_MX]=Medios extraibles

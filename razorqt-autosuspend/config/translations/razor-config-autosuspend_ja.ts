@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation type="unfinished"/>
+        <translation>トレイにバッテリーアイコンの表示</translation>
     </message>
 </context>
 <context>
@@ -18,19 +18,19 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>ふたを閉じる</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>アクション</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>なし</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>休止</translation>
     </message>
     <message>
         <source>Hibernate</source>
@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation type="unfinished"/>
+        <translation>ふたを閉じる</translation>
     </message>
     <message>
         <source>Power Low</source>
-        <translation type="unfinished"/>
+        <translation>バッテリ残量 小</translation>
     </message>
 </context>
 <context>
@@ -68,35 +68,35 @@
     </message>
     <message>
         <source>Power low</source>
-        <translation type="unfinished"/>
+        <translation>バッテリ残量 小</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation type="unfinished"/>
+        <translation>アクション</translation>
     </message>
     <message>
         <source>Warning:</source>
-        <translation type="unfinished"/>
+        <translation>警告:</translation>
     </message>
     <message>
         <source> seconds</source>
-        <translation type="unfinished"/>
+        <translation>秒</translation>
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation type="unfinished"/>
+        <translation>ローレベル</translation>
     </message>
     <message>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <source>Nothing</source>
-        <translation type="unfinished"/>
+        <translation>なし</translation>
     </message>
     <message>
         <source>Sleep</source>
-        <translation type="unfinished"/>
+        <translation>休止</translation>
     </message>
     <message>
         <source>Hibernate</source>

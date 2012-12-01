@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[id_ID]=Penataan mengendalikan tampilan dan perilaku desktop
+Name[id_ID]=Tampilan dan Rasa

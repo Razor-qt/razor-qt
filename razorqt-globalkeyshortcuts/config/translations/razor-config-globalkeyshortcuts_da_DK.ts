@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Nulstil ændringer</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>Spørgsmål</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>Slet gruppe: %1? (alt indhold i gruppen vil blive fjernet)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>Slet %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>Binding for %1 findes allerede. Udskift den gamle?</translation>
+    </message>
 </context>
 </TS>

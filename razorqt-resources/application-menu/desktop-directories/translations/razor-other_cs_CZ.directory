@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Other
+Comment=Applications that did not fit in other categories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[cs_CZ]=Aplikace nepatřící do jiných kategorií
+Name[cs_CZ]=Ostatní

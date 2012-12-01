@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=A munkaasztal megjelenését és viselkedését vezérlő beállítások
+Name[hu_HU]=Megjelenés

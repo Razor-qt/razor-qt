@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Hardware
 Comment=Settings for several hardware devices
-Icon=preferences-desktop-peripherals
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_CN]=硬件
+
+
+# Translations
 Comment[zh_CN]=设置各种硬件设备
+Name[zh_CN]=硬件

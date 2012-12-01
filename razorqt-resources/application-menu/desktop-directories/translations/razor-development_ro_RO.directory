@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[ro_RO]=Unelte pentru dezvoltat programe
+Name[ro_RO]=Programare

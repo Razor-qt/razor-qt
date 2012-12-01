@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

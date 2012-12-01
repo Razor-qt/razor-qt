@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[cy]=Sain a Fideo
+
+
+# Translations
 Comment[cy]=Dewislen amlgyfrwng
+Name[cy]=Sain a Fideo

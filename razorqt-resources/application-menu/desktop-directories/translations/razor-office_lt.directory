@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Office
 Comment=Office Applications
-Icon=applications-office
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[lt]=Raštinė
+
+
+# Translations
 Comment[lt]=Raštinės programos
+Name[lt]=Raštinė

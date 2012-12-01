@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System Tools
 Comment=System configuration and monitoring
-Icon=applications-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sl]=Sistemska orodja
+
+
+# Translations
 Comment[sl]=Nastavitve in nadzor nad sistemom
+Name[sl]=Sistemska orodja

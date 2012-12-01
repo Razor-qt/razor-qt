@@ -16,3 +16,5 @@ GenericName=Razor Freedesktop Notifications Configuration
 # Translations
 GenericName[fr_FR]=Bloc-notes
 Name[fr_FR]=Paramétreur de session Razor
+Icon[fr_FR]=préférences-bureau-thème
+Comment[fr_FR]=Configurer les notifications « freedesktop » dans le bureau Razor

@@ -30,11 +30,11 @@
     <name>AutoStartItemModel</name>
     <message>
         <source>Global Autostart</source>
-        <translation>Celkové automatické spuštění</translation>
+        <translation>Automatické spuštění</translation>
     </message>
     <message>
         <source>Razor Autostart</source>
-        <translation>Automatické spuštění Razor</translation>
+        <translation>Automatické spuštění v Razoru</translation>
     </message>
     <message>
         <source>Location: %1</source>
@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Application Autostart</source>
-        <translation>Automatické spuštění programu</translation>
+        <translation>Automatické spouštění programů</translation>
     </message>
     <message>
         <source>Error</source>
@@ -145,7 +145,7 @@
     </message>
     <message>
         <source>Environment Variables (Advanced)</source>
-        <translation>Proměnné prostředí (pokročilé)</translation>
+        <translation>Proměnné prostředí</translation>
     </message>
     <message>
         <source>Variable Name</source>
@@ -183,7 +183,7 @@
     </message>
     <message>
         <source>Environment (Advanced)</source>
-        <translation>Prostředí (pokročilé)</translation>
+        <translation>Pokročilé</translation>
     </message>
     <message>
         <source>Session Restart Required</source>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Je třeba spustit sezení plochy znovu (razor-session) pro znovunahrání nastavení. Použijte odhlášení v hlavní nabídce.</translation>
+        <translation>Je třeba spustit sezení plochy znovu kvůli znovunahrání nastavení. Použijte odhlášení v hlavní nabídce.</translation>
     </message>
 </context>
 </TS>

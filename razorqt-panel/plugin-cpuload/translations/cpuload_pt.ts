@@ -2,15 +2,15 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
-        <translation>Carga do cpu %1%</translation>
+        <source>CPU load %1%</source>
+        <translation>Carga CPU %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
-        <translation>Definições da Carga do cpu</translation>
+        <source>Razor CPU Load settings</source>
+        <translation>Definições de Carga CPU</translation>
     </message>
     <message>
         <source>General</source>

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[th_TH]=เครื่องมือพัฒนาซอฟต์แวร์
+Name[th_TH]=เขียนโปรแกรม

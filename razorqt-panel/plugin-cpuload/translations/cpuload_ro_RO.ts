@@ -2,15 +2,15 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
-        <translation>Încărcare procesor %1%</translation>
+        <source>CPU load %1%</source>
+        <translation>Încărcare CPU %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
-        <translation>Setări încărcare procesor Razor</translation>
+        <source>Razor CPU Load settings</source>
+        <translation>Setări Razor de încărcare CPU</translation>
     </message>
     <message>
         <source>General</source>

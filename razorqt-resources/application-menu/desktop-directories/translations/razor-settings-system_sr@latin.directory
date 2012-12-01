@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sr@latin]=Administracija
+
+
+# Translations
 Comment[sr@latin]=Promenite sistemska podešavanja (utiče na sve korisnike)
+Name[sr@latin]=Administracija

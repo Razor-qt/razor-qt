@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[sk_SK]=Grafické aplikácie
+Name[sk_SK]=Grafika

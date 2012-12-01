@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=System settings
-Icon=preferences-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ja]=システム
+
+
+# Translations
 Comment[ja]=システム規模の設定を変更します
+Name[ja]=システム

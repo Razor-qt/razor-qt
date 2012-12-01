@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Graphics
 Comment=Graphics applications
-Icon=applications-graphics
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[gl]=Gráficas
+
+
+# Translations
 Comment[gl]=Aplicacións de gráficas
+Name[gl]=Gráficas

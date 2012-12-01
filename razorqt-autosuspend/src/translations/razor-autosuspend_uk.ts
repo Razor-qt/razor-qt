@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>Діалог</translation>
+        <source>Razor Autosuspend</source>
+        <translation>Автопризупинення Razor</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -77,7 +77,7 @@
         <translation>Нікель-кадмієвий</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
+        <source>Nickel metal hydride</source>
         <translation>Нікель-метал-гідридний</translation>
     </message>
     <message>

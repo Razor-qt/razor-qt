@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[sk_SK]=Osobné predvoľby a správcovské nastavenia
+Name[sk_SK]=Systém

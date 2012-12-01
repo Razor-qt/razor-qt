@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Programming
 Comment=Tools for software development
-Icon=applications-development
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[tr]=Programlama
+
+
+# Translations
 Comment[tr]=Yazılım geliştirme için araçlar
+Name[tr]=Programlama

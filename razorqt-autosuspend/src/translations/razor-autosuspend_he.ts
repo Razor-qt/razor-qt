@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>דו־שיח</translation>
+        <source>Razor Autosuspend</source>
+        <translation>השהייה אוטומטית ‫Razor</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -26,7 +26,7 @@
     </message>
     <message>
         <source>Updated:</source>
-        <translation type="unfinished"/>
+        <translation>עדכני:</translation>
     </message>
     <message>
         <source>Technology:</source>
@@ -70,15 +70,15 @@
     </message>
     <message>
         <source>Lead acid</source>
-        <translation type="unfinished"/>
+        <translation>חומצת עופרת</translation>
     </message>
     <message>
         <source>Nickel cadmium</source>
-        <translation type="unfinished"/>
+        <translation>ניקל קדמיום</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation type="unfinished"/>
+        <source>Nickel metal hydride</source>
+        <translation>ניקל הידריד מתכתי</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -102,11 +102,11 @@
     </message>
     <message>
         <source>Pending charge</source>
-        <translation type="unfinished"/>
+        <translation>בעת טעינה</translation>
     </message>
     <message>
         <source>Pending discharge</source>
-        <translation type="unfinished"/>
+        <translation>בעת פריקה</translation>
     </message>
 </context>
 <context>

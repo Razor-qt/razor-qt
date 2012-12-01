@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[id_ID]=Konfigurasi sistem dan pengawasan
+Name[id_ID]=Peralatan Sistem

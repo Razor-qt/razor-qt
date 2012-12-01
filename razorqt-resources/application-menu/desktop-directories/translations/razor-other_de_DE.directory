@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Other
+Comment=Applications that did not fit in other categories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[de_DE]=Anwendungen, die in keine andere Kategorie eingeordnet werden können
+Name[de_DE]=Sonstige

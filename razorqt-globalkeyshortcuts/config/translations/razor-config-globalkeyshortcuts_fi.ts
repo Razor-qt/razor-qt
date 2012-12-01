@@ -3,18 +3,18 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>Löydä komento</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>Razorin pikanäppäinmuokkain</translation>
     </message>
     <message>
         <source>Description</source>
@@ -22,15 +22,15 @@
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Pikanäppäin</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>Komento</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>Lisää uusi</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -38,11 +38,11 @@
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Lisää ryhmä</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Palauta oletus</translation>
     </message>
     <message>
         <source>Close</source>
@@ -53,11 +53,11 @@
     <name>ShortcutEditor</name>
     <message>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Ei mitään</translation>
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Lisää pikanäppäin</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -65,10 +65,26 @@
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>Uusi ryhmä</translation>
     </message>
     <message>
         <source>Reset Changes</source>
+        <translation>Hylkää muutokset</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>Kysymys</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>Poistetaanko %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
         <translation type="unfinished"/>
     </message>
 </context>

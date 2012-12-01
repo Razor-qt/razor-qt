@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[el_GR]=Εφαρμογές γραφικών
+Name[el_GR]=Γραφικά

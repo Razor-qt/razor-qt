@@ -9,5 +9,5 @@ Comment=Displays the current CPU load.
 
 
 # Translations
-Comment[zh_TW]=CPU使用監視器
-Name[zh_TW]=CPU使用
+Comment[zh_TW]=顯示現在CPU的使用情況。
+Name[zh_TW]=CPU使用監視器

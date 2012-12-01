@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Other
+Comment=Applications that did not fit in other categories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Más kategóriákba be nem sorolható alkalmazások
+Name[hu_HU]=Egyéb

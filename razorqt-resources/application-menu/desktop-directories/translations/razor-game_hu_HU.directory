@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Games
+Comment=Games and amusements
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Játék és szórakozás
+Name[hu_HU]=Játékok

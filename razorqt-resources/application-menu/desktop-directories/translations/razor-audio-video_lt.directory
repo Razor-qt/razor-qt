@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[lt]=Garsas ir vaizdas
+
+
+# Translations
 Comment[lt]=Daugialypės terpės meniu
+Name[lt]=Garsas ir vaizdas

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[da_DK]=Indstillinger for flere enheder af hardware
+Name[da_DK]=Hardware

@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Razorin virranhallintavirhe</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Lepotilaan siirtyminen epäonnistui.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -42,23 +53,23 @@
     </message>
     <message>
         <source>Razor Session Suspend</source>
-        <translation type="unfinished"/>
+        <translation>Razor-istunnon valmiustila</translation>
     </message>
     <message>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko asettaa järjestelmän valmiustilaan?&lt;p&gt;Valmiustilassa kone käyttää erittäin vähän virtaa. Avoinna olevat tiedot katoavat, jos koneen virta loppuu valmiustilassa.</translation>
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation type="unfinished"/>
+        <translation>Razor-istunnon lepotila</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
-        <translation type="unfinished"/>
+        <translation>Haluatko asettaa järjestelmän lepotilaan?&lt;p&gt;Lepotilassa kone käyttää erittäin vähän virtaa. Avoinna olevat tiedot säilyvät, jos koneen virta loppuu lepotilassa.</translation>
     </message>
     <message>
         <source>Razor Session Reboot</source>
-        <translation type="unfinished"/>
+        <translation>Razor-istunnon uudelleenkäynnistys</translation>
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
@@ -116,7 +127,7 @@
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>Kehittynyt, helppokäyttöinen ja nopea Qt-teknologioihin pohjautuva työpöytäympäristö.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
@@ -132,7 +143,7 @@
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt on käännetty useille eri kielille, kiitos siitä kääntäjäryhmille ympäri maailman.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -225,7 +236,7 @@
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Ei mitään</translation>
     </message>
 </context>
 <context>

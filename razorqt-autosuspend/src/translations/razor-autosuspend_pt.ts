@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>Caixa de diálogo</translation>
+        <source>Razor Autosuspend</source>
+        <translation>Suspensão automática do Razor</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -58,11 +58,11 @@
     </message>
     <message>
         <source>Lithium ion</source>
-        <translation>Ião lítio</translation>
+        <translation>Ião de lítio</translation>
     </message>
     <message>
         <source>Lithium polymer</source>
-        <translation>Polímero lítio</translation>
+        <translation>Polímero de lítio</translation>
     </message>
     <message>
         <source>Lithium iron phosphate</source>
@@ -77,8 +77,8 @@
         <translation>Níquel cádmio</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation>Níquel metal híbrido</translation>
+        <source>Nickel metal hydride</source>
+        <translation>Níquel metálico</translation>
     </message>
     <message>
         <source>Unknown</source>

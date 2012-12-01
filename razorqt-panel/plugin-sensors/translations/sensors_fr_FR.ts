@@ -3,39 +3,39 @@
     <name>RazorSensorsConfiguration</name>
     <message>
         <source>Razor Sensors Settings</source>
-        <translation type="unfinished"/>
+        <translation>Paramètres des capteurs Razor</translation>
     </message>
     <message>
         <source>Common</source>
-        <translation type="unfinished"/>
+        <translation>Commun</translation>
     </message>
     <message>
         <source>Update interval (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Intervalle de mise à jour (secondes)</translation>
     </message>
     <message>
         <source>Temperature bar width</source>
-        <translation type="unfinished"/>
+        <translation>Largeur de la barre des températures</translation>
     </message>
     <message>
         <source>Temperature scale</source>
-        <translation type="unfinished"/>
+        <translation>Échelle de température</translation>
     </message>
     <message>
         <source>Celsius</source>
-        <translation type="unfinished"/>
+        <translation>Celsius</translation>
     </message>
     <message>
         <source>Fahrenheit</source>
-        <translation type="unfinished"/>
+        <translation>Fahrenheit</translation>
     </message>
     <message>
         <source>Blink progress bars when the temperature is too high</source>
-        <translation type="unfinished"/>
+        <translation>Fait clignoter les barres de progression quand la température est trop élevée</translation>
     </message>
     <message>
         <source>Warning about high temperature</source>
-        <translation type="unfinished"/>
+        <translation>Avertissement de température élevée</translation>
     </message>
     <message>
         <source>Sensors</source>
@@ -43,23 +43,23 @@
     </message>
     <message>
         <source>Detected chips:</source>
-        <translation type="unfinished"/>
+        <translation>Puces détectées :</translation>
     </message>
     <message>
         <source>Chip features:</source>
-        <translation type="unfinished"/>
+        <translation>Caractéristiques de la puce :</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"/>
+        <translation>Activé</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Étiquette</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Couleur</translation>
     </message>
 </context>
 </TS>

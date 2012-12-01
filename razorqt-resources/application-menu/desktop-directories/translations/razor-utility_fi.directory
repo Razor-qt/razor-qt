@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Accessories
 Comment=Desktop accessories
-Icon=applications-accessories
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[fi]=Apuohjelmat
+
+
+# Translations
 Comment[fi]=Työpöydän apuohjelmat
+Name[fi]=Apuohjelmat

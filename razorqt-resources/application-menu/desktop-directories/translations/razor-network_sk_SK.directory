@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[sk_SK]=Programy pre prístup k internetu ako je www a e-mail
+Name[sk_SK]=Internet

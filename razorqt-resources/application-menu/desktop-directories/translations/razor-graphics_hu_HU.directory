@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Grafikai alkalmazások
+Name[hu_HU]=Grafika

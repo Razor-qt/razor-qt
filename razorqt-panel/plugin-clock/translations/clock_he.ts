@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation>גו&amp;פן</translation>
+        <translation>&amp;גופן</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>

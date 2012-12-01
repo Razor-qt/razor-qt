@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation>P&amp;isava</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show date in &amp;new line</source>

@@ -2,15 +2,15 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
-        <translation>Obciążenie CPU %1%</translation>
+        <source>CPU load %1%</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
-        <translation>Ustawienia Razor CPU Load</translation>
+        <source>Razor CPU Load settings</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[es_MX]=Herramientas de Desarrollo de Software
+Name[es_MX]=Programación

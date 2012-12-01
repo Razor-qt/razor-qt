@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Look and Feel
 Comment=Settings controlling the desktop appearance and behavior
-Icon=preferences-desktop
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=모양새
+
+
+# Translations
 Comment[ko]=바탕환경의 모양새와 행동을 설정합니다
+Name[ko]=모양새

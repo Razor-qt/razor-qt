@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>12 &amp;hour style</source>
-        <translation type="unfinished"/>
+        <translation>Horloge sur 12 &amp;heures</translation>
     </message>
     <message>
         <source>&amp;Font</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Police</translation>
     </message>
     <message>
         <source>Font</source>
@@ -31,47 +31,47 @@
     </message>
     <message>
         <source>Show &amp;date</source>
-        <translation type="unfinished"/>
+        <translation>Afficher la &amp;date</translation>
     </message>
     <message>
         <source>D&amp;ate format</source>
-        <translation type="unfinished"/>
+        <translation>Format de la d&amp;ate</translation>
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Police</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>
-        <translation type="unfinished"/>
+        <translation>Afficher la date sur une &amp;nouvelle ligne</translation>
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Utiliser les polices du thème</translation>
     </message>
     <message>
         <source>Time font</source>
-        <translation type="unfinished"/>
+        <translation>Police horaire</translation>
     </message>
     <message>
         <source>Date font</source>
-        <translation type="unfinished"/>
+        <translation>Police de date</translation>
     </message>
     <message>
         <source>Ultra light</source>
-        <translation type="unfinished"/>
+        <translation>Ultra léger</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Léger</translation>
     </message>
     <message>
         <source>Ultra black</source>
-        <translation type="unfinished"/>
+        <translation>Ultra noir</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished"/>
+        <translation>Noir</translation>
     </message>
     <message>
         <source>Bold</source>
@@ -79,7 +79,7 @@
     </message>
     <message>
         <source>Demi bold</source>
-        <translation type="unfinished"/>
+        <translation>Demi-gras</translation>
     </message>
     <message>
         <source>Italic</source>

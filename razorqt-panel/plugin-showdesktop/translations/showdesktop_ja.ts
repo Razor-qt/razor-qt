@@ -3,7 +3,7 @@
     <name>ShowDesktop</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>デスクトップの表示: 全体のショートカット&apos;%1&apos;は登録できません</translation>
     </message>
     <message>
         <source>Show Desktop</source>

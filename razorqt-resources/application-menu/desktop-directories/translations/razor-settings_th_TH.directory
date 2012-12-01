@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[th_TH]=ปรับแต่งพื้นโต๊ะส่วนตัว
+Name[th_TH]=ปรับแต่งพื้นโต๊ะ

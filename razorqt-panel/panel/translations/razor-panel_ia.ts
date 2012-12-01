@@ -3,7 +3,7 @@
     <name>ConfigPanelDialog</name>
     <message>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>Configurar un pannello</translation>
     </message>
     <message>
         <source>Panel size</source>
@@ -11,116 +11,116 @@
     </message>
     <message>
         <source>Size:</source>
-        <translation>Dimension</translation>
+        <translation>Dimension:</translation>
     </message>
     <message>
         <source>px</source>
-        <translation type="unfinished"/>
+        <translation>px</translation>
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation type="unfinished"/>
+        <translation>Usar dimensionamento automatic</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
-        <translation type="unfinished"/>
+        <translation>Longor e position de pannello</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"/>
+        <translation>Sinistre</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="unfinished"/>
+        <translation>Central</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"/>
+        <translation>Dextre</translation>
     </message>
     <message>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <source>Alignment:</source>
-        <translation type="unfinished"/>
+        <translation>Alineamento:</translation>
     </message>
     <message>
         <source>Length:</source>
-        <translation type="unfinished"/>
+        <translation>Longor:</translation>
     </message>
     <message>
         <source>Position:</source>
-        <translation type="unfinished"/>
+        <translation>Position:</translation>
     </message>
     <message>
         <source>Top of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Alto de scriptorio</translation>
     </message>
     <message>
         <source>Left of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Latere sinistre de scriptorio</translation>
     </message>
     <message>
         <source>Right of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Latere dextre de scriptorio</translation>
     </message>
     <message>
         <source>Bottom of desktop</source>
-        <translation type="unfinished"/>
+        <translation>Basso de scriptorio</translation>
     </message>
     <message>
         <source>Top of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Alto de scriptorio %1</translation>
     </message>
     <message>
         <source>Left of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Latere sinistre de scriptorio %1</translation>
     </message>
     <message>
         <source>Right of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Latere dextre de scriptorio %1</translation>
     </message>
     <message>
         <source>Bottom of desktop %1</source>
-        <translation type="unfinished"/>
+        <translation>Basso de scriptorio %1</translation>
     </message>
 </context>
 <context>
     <name>RazorPanel</name>
     <message>
         <source>Panel</source>
-        <translation type="unfinished"/>
+        <translation>Pannelo</translation>
     </message>
     <message>
         <source>Configure panel...</source>
-        <translation type="unfinished"/>
+        <translation>Configurar un pannello...</translation>
     </message>
     <message>
         <source>Add plugins ...</source>
-        <translation type="unfinished"/>
+        <translation>Adder plugines ...</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPlugin</name>
     <message>
         <source>Configure</source>
-        <translation type="unfinished"/>
+        <translation>Configurar</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished"/>
+        <translation>Mover</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPrivate</name>
     <message>
         <source>Configure panel</source>
-        <translation type="unfinished"/>
+        <translation>Configurar un pannello</translation>
     </message>
 </context>
 </TS>

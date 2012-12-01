@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>โปรแกรมจัดการพลังงานของ Razor ขัดข้อง</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>จำศีลเครื่องล้มเหลว</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Скинути зміни</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>Питання</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>Вилучити групу %1? (все в середині буде також вилучено)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>Вилучити %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>Зв&apos;язок для %1 вже існує. Замініти старий?</translation>
+    </message>
 </context>
 </TS>

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[th_TH]=ตั้งค่าและเฝ้าดูระบบ
+Name[th_TH]=เครื่องมือระบบ

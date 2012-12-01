@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik boyutlandırma kullan</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
@@ -113,7 +113,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Kaldır</translation>
     </message>
 </context>
 <context>

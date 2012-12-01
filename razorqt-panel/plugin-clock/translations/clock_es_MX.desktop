@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Date & time
+Comment=Displays the current time. Comes with a calendar.
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Comment[es_MX]=Mostrar la hora actual. Incluye un calendario
+Name[es_MX]=Fecha y hora

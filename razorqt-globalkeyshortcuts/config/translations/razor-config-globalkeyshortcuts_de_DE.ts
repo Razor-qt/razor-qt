@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Änderungen verwerfen</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 </TS>

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[sk_SK]=Osobné predvoľby
+Name[sk_SK]=Predvoľby

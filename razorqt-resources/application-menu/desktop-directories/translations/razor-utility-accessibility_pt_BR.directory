@@ -2,10 +2,12 @@
 Name=Universal Access
 Comment=Universal Access Settings
 Type=Directory
-Icon=preferences-desktop-accessibility
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[pt_BR]=Acessibilidade
+
+
+# Translations
 Comment[pt_BR]=Configurações de acessibilidade
+Name[pt_BR]=Acessibilidade

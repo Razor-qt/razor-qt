@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Personal
+Comment=Personal settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[th_TH]=ตั้งค่าส่วนบุคคล
+Name[th_TH]=ส่วนบุคคล

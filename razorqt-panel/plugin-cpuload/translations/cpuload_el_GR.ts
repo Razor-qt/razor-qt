@@ -2,15 +2,15 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
-        <translation>Φορτίο ΚΜΕ %1%</translation>
+        <source>CPU load %1%</source>
+        <translation>Φόρτος CPU %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
-        <translation>Ρυθμίσεις φορτίου ΚΜΕ</translation>
+        <source>Razor CPU Load settings</source>
+        <translation>Ρυθμίσεις Razor φόρτου CPU</translation>
     </message>
     <message>
         <source>General</source>

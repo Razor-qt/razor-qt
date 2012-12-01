@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=Personal preferences and administration settings
-Icon=preferences-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ar]=نظام
+
+
+# Translations
 Comment[ar]=التفضيلات الشخصيّة و إعدادات الإدارة
+Name[ar]=نظام

@@ -88,15 +88,15 @@
     </message>
     <message>
         <source>Razor Modules</source>
-        <translation type="unfinished"/>
+        <translation>Razorモジュール</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>スタート</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>ストップ</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -160,7 +160,7 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation type="unfinished"/>
+        <translation>実行中</translation>
     </message>
 </context>
 <context>

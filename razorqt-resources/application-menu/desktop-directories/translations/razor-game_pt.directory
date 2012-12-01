@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Games
 Comment=Games and amusements
-Icon=applications-games
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[pt]=Jogos
+
+
+# Translations
 Comment[pt]=Jogos e diversões
+Name[pt]=Jogos

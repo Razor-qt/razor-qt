@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[cs_CZ]=Programy pro přístup k Internetu, například WWW a e-mail
+Name[cs_CZ]=Internet

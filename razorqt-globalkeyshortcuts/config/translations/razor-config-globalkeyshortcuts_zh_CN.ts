@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>重置更改</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>问题</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>删除组：%1？（会同时删除里面的所有东西）</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>删除 %1？</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>%1 的捆绑已存在，是否替换？</translation>
+    </message>
 </context>
 </TS>

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Preferences
 Comment=Personal preferences
-Icon=preferences-settings
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[hu]=Beállítások
+
+
+# Translations
 Comment[hu]=Személyes beállítások
+Name[hu]=Beállítások

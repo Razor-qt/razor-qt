@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Eroare gestiune alimentare Razor</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Hibernarea a eșuat.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -112,27 +123,27 @@
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Versiune: %1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>Un mediu de lucru avansat, intuitiv și rapid bazat pe tehnologie Qt</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation type="unfinished"/>
+        <translation>Copyright: %1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
-        <translation type="unfinished"/>
+        <translation>Pagină de start: %1</translation>
     </message>
     <message>
         <source>License: %1</source>
-        <translation type="unfinished"/>
+        <translation>Licență: %1</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt a fost tradus în numeroase limbi prin contribuția echipelor de traducători din întreaga lume.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -148,31 +159,31 @@
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Versiune</translation>
     </message>
     <message>
         <source>Qt</source>
-        <translation type="unfinished"/>
+        <translation>Qt</translation>
     </message>
     <message>
         <source>Debug Build</source>
-        <translation type="unfinished"/>
+        <translation>Versiune pentru depanare</translation>
     </message>
     <message>
         <source>System Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurație sistem</translation>
     </message>
     <message>
         <source>Share Directory</source>
-        <translation type="unfinished"/>
+        <translation>Director partajat</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>Traduceri</translation>
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Directoare utilizator&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
@@ -184,7 +195,7 @@
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Directoare date Xdg</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
@@ -196,7 +207,7 @@
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Directoare pornire automată Xdg</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
@@ -214,7 +225,7 @@
     <name>RazorNotificationPrivate</name>
     <message>
         <source>Notifications Fallback</source>
-        <translation type="unfinished"/>
+        <translation>Alternativă pentru notificări</translation>
     </message>
 </context>
 <context>
@@ -264,7 +275,7 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation type="unfinished"/>
+        <translation>A apărut o eroare la pornirea protecției de ecran. Eroare necunoscută - valoare returnată nedocumentată de la xdg-screensaver=%1.</translation>
     </message>
 </context>
 <context>
@@ -279,15 +290,15 @@
     </message>
     <message>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>Autori</translation>
     </message>
     <message>
         <source>Thanks</source>
-        <translation type="unfinished"/>
+        <translation>Mulțumiri</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>Traduceri</translation>
     </message>
     <message>
         <source>Technical Info</source>

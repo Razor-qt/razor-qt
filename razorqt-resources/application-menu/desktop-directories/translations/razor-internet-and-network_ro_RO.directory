@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Internet and Network
+Comment=Network-related settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[ro_RO]=Setări legate de rețea
+Name[ro_RO]=Internet și rețea

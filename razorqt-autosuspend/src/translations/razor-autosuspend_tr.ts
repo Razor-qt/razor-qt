@@ -3,129 +3,130 @@
     <name>Battery</name>
     <message>
         <source>No battery!</source>
-        <translation type="unfinished"/>
+        <translation>Pil yok!</translation>
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation type="unfinished"/>
+        <translation>Razor oto-askıya-alma herhangi bir pil ile ilgili veriye ulaşamadı - düşük güç eylemleri çalışamaz</translation>
     </message>
 </context>
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>Etkileşim</translation>
+        <source>Razor Autosuspend</source>
+        <translation>Razor Oto-askıya-alma</translation>
     </message>
     <message>
         <source>Battery info</source>
-        <translation type="unfinished"/>
+        <translation>Batarya bilgileri
+</translation>
     </message>
     <message>
         <source>Energy Now:</source>
-        <translation type="unfinished"/>
+        <translation>Şimdiki Enerji:</translation>
     </message>
     <message>
         <source>Updated:</source>
-        <translation type="unfinished"/>
+        <translation>Güncellenme:</translation>
     </message>
     <message>
         <source>Technology:</source>
-        <translation type="unfinished"/>
+        <translation>Teknoloji:</translation>
     </message>
     <message>
         <source>Model:</source>
-        <translation type="unfinished"/>
+        <translation>Model:</translation>
     </message>
     <message>
         <source>Energy rate:</source>
-        <translation type="unfinished"/>
+        <translation>Enerji oranı:</translation>
     </message>
     <message>
         <source>Voltage:</source>
-        <translation type="unfinished"/>
+        <translation>Voltaj:</translation>
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation type="unfinished"/>
+        <translation>Enerji Tam, Tasarı:</translation>
     </message>
     <message>
         <source>Energy Full:</source>
-        <translation type="unfinished"/>
+        <translation>Enerji Tam:</translation>
     </message>
     <message>
         <source>State:</source>
-        <translation type="unfinished"/>
+        <translation>Durum:</translation>
     </message>
     <message>
         <source>Lithium ion</source>
-        <translation type="unfinished"/>
+        <translation>Lityum iyon</translation>
     </message>
     <message>
         <source>Lithium polymer</source>
-        <translation type="unfinished"/>
+        <translation>Lityum polimer</translation>
     </message>
     <message>
         <source>Lithium iron phosphate</source>
-        <translation type="unfinished"/>
+        <translation>Lityum demir fosfat</translation>
     </message>
     <message>
         <source>Lead acid</source>
-        <translation type="unfinished"/>
+        <translation>Asit Kurşun</translation>
     </message>
     <message>
         <source>Nickel cadmium</source>
-        <translation type="unfinished"/>
+        <translation>Nikel kadmiyum</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation type="unfinished"/>
+        <source>Nickel metal hydride</source>
+        <translation>Nikel metal hidrür</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen</translation>
     </message>
     <message>
         <source>Charging</source>
-        <translation type="unfinished"/>
+        <translation>Şarjda</translation>
     </message>
     <message>
         <source>Discharging</source>
-        <translation type="unfinished"/>
+        <translation>Deşarj</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation type="unfinished"/>
+        <translation>Boş</translation>
     </message>
     <message>
         <source>Fully charged</source>
-        <translation type="unfinished"/>
+        <translation>Tam Şarj</translation>
     </message>
     <message>
         <source>Pending charge</source>
-        <translation type="unfinished"/>
+        <translation>Şarj askıda</translation>
     </message>
     <message>
         <source>Pending discharge</source>
-        <translation type="unfinished"/>
+        <translation>Deşarj askıda</translation>
     </message>
 </context>
 <context>
     <name>RazorAutosuspendd</name>
     <message>
         <source>Power low</source>
-        <translation type="unfinished"/>
+        <translation>Düşük Güç</translation>
     </message>
     <message>
         <source>Sleeping in %1 seconds</source>
-        <translation type="unfinished"/>
+        <translation>Askıya almaya %1 saniye</translation>
     </message>
     <message>
         <source>Hibernating in %1 seconds</source>
-        <translation type="unfinished"/>
+        <translation>Uykuya geçmeye %1 saniye</translation>
     </message>
     <message>
         <source>Shutting down in %1 seconds</source>
-        <translation type="unfinished"/>
+        <translation>Kapanmaya %1 saniye</translation>
     </message>
 </context>
 </TS>

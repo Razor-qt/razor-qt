@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Internet
 Comment=Programs for Internet access such as web and email
-Icon=applications-internet
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[lt]=Internetas
+
+
+# Translations
 Comment[lt]=Programos interneto prieigai (žiniatinklis, el. paštas)
+Name[lt]=Internetas

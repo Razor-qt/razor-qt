@@ -2,9 +2,11 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
+
+# Translations
+
 
 # Translations
 Name[eo]=Administrado

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Games
 Comment=Games and amusements
-Icon=applications-games
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[nl]=Spelletjes
+
+
+# Translations
 Comment[nl]=Spelletjes en vermaak
+Name[nl]=Spelletjes

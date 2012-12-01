@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sl]=Skrbništvo
+
+
+# Translations
 Comment[sl]=Spremenite sistemske nastavitve (vpliva na vse uporabnike)
+Name[sl]=Skrbništvo

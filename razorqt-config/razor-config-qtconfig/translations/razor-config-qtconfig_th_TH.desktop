@@ -1,0 +1,18 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=qtconfig
+TryExec=qtconfig
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Name=Qt Configuration
+Comment=Configure Qt
+GenericName=Qt configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[th_TH]=ตั้งค่า Qt
+GenericName[th_TH]=การตั้งค่า Qt
+Name[th_TH]=การตั้งค่า Qt

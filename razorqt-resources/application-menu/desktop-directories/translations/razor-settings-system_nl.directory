@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[nl]=Beheer
+
+
+# Translations
 Comment[nl]=Systeembrede instellingen veranderen (voor alle gebruikers)
+Name[nl]=Beheer

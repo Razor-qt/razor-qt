@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Σφάλμα διαχείρισης ενέργειας Razor</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Απέτυχε η αδρανοποίηση.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

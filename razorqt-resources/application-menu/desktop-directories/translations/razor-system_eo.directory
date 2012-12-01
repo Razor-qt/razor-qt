@@ -1,10 +1,12 @@
 [Desktop Entry]
 Name=System
 Comment=System settings
-Icon=preferences-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
+
+# Translations
+
 
 # Translations
 Name[eo]=Sistemo

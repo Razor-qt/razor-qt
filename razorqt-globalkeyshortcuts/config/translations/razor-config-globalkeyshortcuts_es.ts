@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Reiniciar Cambios</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>Pregunta</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>¿Eliminar grupo: %1? (los elementos pertenecientes al grupo se eliminarán por completo)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>¿Eliminar %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>¿Unir %1 ya existente. Reemplazar el anterior?</translation>
+    </message>
 </context>
 </TS>

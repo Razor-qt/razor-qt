@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Multimédia menü
+Name[hu_HU]=Hang és videó

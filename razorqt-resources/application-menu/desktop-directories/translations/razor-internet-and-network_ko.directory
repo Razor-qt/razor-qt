@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Internet and Network
 Comment=Network-related settings
-Icon=preferences-system-network
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=인터넷과 네트워크
+
+
+# Translations
 Comment[ko]=네트워크와 관련된 설정을 합니다
+Name[ko]=인터넷과 네트워크

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Internet and Network
 Comment=Network-related settings
-Icon=preferences-system-network
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[de]=Internet und Netzwerk
+
+
+# Translations
 Comment[de]=Netzwerkbezogene Einstellungen
+Name[de]=Internet und Netzwerk

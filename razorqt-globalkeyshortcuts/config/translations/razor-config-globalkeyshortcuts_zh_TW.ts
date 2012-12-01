@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>重設更改</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>問題</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>刪除群組: %1?(任何包含的內容都會被移除)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>刪除 %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>%1的連結已經存在了。要取代舊的嗎?</translation>
+    </message>
 </context>
 </TS>

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[ro_RO]=Setări pentru diverse dispozitive hardware
+Name[ro_RO]=Hardware

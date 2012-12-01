@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>Pantalla</translation>
+        <source>Razor Autosuspend</source>
+        <translation>Razor Autosuspendido</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -77,8 +77,8 @@
         <translation>Níquel Cadmio</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation>Níquel híbrido metálico</translation>
+        <source>Nickel metal hydride</source>
+        <translation>Níquel de hidruro metálico</translation>
     </message>
     <message>
         <source>Unknown</source>

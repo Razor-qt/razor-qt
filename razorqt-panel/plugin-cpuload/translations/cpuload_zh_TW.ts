@@ -2,15 +2,15 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
-        <translation>CPU使用率 %1%</translation>
+        <source>CPU load %1%</source>
+        <translation>CPU已使用 %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
-        <translation>RazorCPU使用率提示設定</translation>
+        <source>Razor CPU Load settings</source>
+        <translation>Razor CPU使用監視器設定</translation>
     </message>
     <message>
         <source>General</source>

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Office
 Comment=Office Applications
-Icon=applications-office
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sr@latin]=Kancelarija
+
+
+# Translations
 Comment[sr@latin]=Programi za kancelariju
+Name[sr@latin]=Kancelarija

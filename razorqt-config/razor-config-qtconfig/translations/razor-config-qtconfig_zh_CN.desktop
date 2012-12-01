@@ -1,0 +1,18 @@
+[Desktop Entry]
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=qtconfig
+TryExec=qtconfig
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Name=Qt Configuration
+Comment=Configure Qt
+GenericName=Qt configuration
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Comment[zh_CN]=配置 Qt
+GenericName[zh_CN]=Qt 配置
+Name[zh_CN]=Qt 配置

@@ -7,14 +7,14 @@
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>Razor自動休眠從任何電池無法找到資料 - 低電量的動作將會無效</translation>
+        <translation>Razor自動暫停從任何電池無法找到資料 - 低電量的動作將會無效</translation>
     </message>
 </context>
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>對話</translation>
+        <source>Razor Autosuspend</source>
+        <translation>Razor自動暫停</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -77,8 +77,8 @@
         <translation>鎳鎘(Nickel cadmium)</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation>鎳金屬混合體 (Nickel metal hybride)</translation>
+        <source>Nickel metal hydride</source>
+        <translation>鎳金屬氫化物(Nickel metal hydride)</translation>
     </message>
     <message>
         <source>Unknown</source>

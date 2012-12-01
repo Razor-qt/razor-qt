@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>Dialog</translation>
+        <source>Razor Autosuspend</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Battery info</source>
@@ -77,7 +77,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
+        <source>Nickel metal hydride</source>
         <translation type="unfinished"/>
     </message>
     <message>

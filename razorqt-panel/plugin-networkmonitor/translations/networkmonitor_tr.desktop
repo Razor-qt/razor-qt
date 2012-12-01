@@ -9,5 +9,5 @@ Comment=Displays network status and activity.
 
 
 # Translations
-Comment[tr]=Not Defteri
-Name[tr]=Ekran not defteri
+Comment[tr]=Ağ durumu ve hareketlerini görüntüle
+Name[tr]=Ağ gözlemcisi

@@ -30,11 +30,11 @@
     <name>AutoStartItemModel</name>
     <message>
         <source>Global Autostart</source>
-        <translation>Ogólne</translation>
+        <translation>Globalne autouruchamianie</translation>
     </message>
     <message>
         <source>Razor Autostart</source>
-        <translation>Razor</translation>
+        <translation>Autouruchamianie Razor</translation>
     </message>
     <message>
         <source>Location: %1</source>
@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Overrides: %1</source>
-        <translation type="unfinished"/>
+        <translation>Zastąpienia: %1</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Application Autostart</source>
-        <translation>Automatyczne uruchamianie</translation>
+        <translation>Autouruchamianie</translation>
     </message>
     <message>
         <source>Error</source>

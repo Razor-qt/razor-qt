@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Look and Feel
 Comment=Settings controlling the desktop appearance and behavior
-Icon=preferences-desktop
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_TW]=外觀與感覺
+
+
+# Translations
 Comment[zh_TW]=控制桌面顯示方式及行為的設定
+Name[zh_TW]=外觀與感覺

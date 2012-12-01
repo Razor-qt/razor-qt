@@ -2,9 +2,11 @@
 Encoding=UTF-8
 Type=Directory
 Name=Arcade
-Icon=applications-games-arcade
 
 #TRANSLATIONS_DIR=translations
+
+# Translations
+
 
 # Translations
 Name[sl]=Arkade

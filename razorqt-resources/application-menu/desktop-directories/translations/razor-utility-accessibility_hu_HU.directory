@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Akadálymentesítés beállításai
+Name[hu_HU]=Akadálymentesítés

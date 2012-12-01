@@ -3,11 +3,11 @@
     <name>RazorSensorsConfiguration</name>
     <message>
         <source>Razor Sensors Settings</source>
-        <translation type="unfinished"/>
+        <translation>Razorin sensoriasetukset</translation>
     </message>
     <message>
         <source>Common</source>
-        <translation type="unfinished"/>
+        <translation>Yleiset</translation>
     </message>
     <message>
         <source>Update interval (seconds)</source>
@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>Temperature bar width</source>
-        <translation type="unfinished"/>
+        <translation>Lämpötilapalkin leveys</translation>
     </message>
     <message>
         <source>Temperature scale</source>
-        <translation type="unfinished"/>
+        <translation>Lämpötilan asteikko</translation>
     </message>
     <message>
         <source>Celsius</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Blink progress bars when the temperature is too high</source>
-        <translation type="unfinished"/>
+        <translation>Vilkuta edistymispalkkeja lämpötilan ollessa liian korkea</translation>
     </message>
     <message>
         <source>Warning about high temperature</source>
@@ -39,15 +39,15 @@
     </message>
     <message>
         <source>Sensors</source>
-        <translation type="unfinished"/>
+        <translation>Sensorit</translation>
     </message>
     <message>
         <source>Detected chips:</source>
-        <translation type="unfinished"/>
+        <translation>Havaitut sensorit:</translation>
     </message>
     <message>
         <source>Chip features:</source>
-        <translation type="unfinished"/>
+        <translation>Sensorin ominaisuudet:</translation>
     </message>
     <message>
         <source>Enabled</source>

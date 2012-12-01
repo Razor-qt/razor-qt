@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[pl_PL]=Programy graficzne
+Name[pl_PL]=Grafika

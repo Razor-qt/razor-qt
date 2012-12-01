@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>&amp;Show seconds</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Saniyeleri göster</translation>
     </message>
     <message>
         <source>12 &amp;hour style</source>
-        <translation type="unfinished"/>
+        <translation>12&amp; zaman sitili</translation>
     </message>
     <message>
         <source>&amp;Font</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yazı tipi</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Yazı tipi</translation>
     </message>
     <message>
         <source>Date</source>
@@ -31,59 +31,59 @@
     </message>
     <message>
         <source>Show &amp;date</source>
-        <translation type="unfinished"/>
+        <translation>Göster&amp;gün</translation>
     </message>
     <message>
         <source>D&amp;ate format</source>
-        <translation type="unfinished"/>
+        <translation>G&amp;ün formatı</translation>
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation type="unfinished"/>
+        <translation>yaz&amp;ı tipi</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>
-        <translation type="unfinished"/>
+        <translation>Göster gün &amp; yeni satır</translation>
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tema yazı tipini seç</translation>
     </message>
     <message>
         <source>Time font</source>
-        <translation type="unfinished"/>
+        <translation>Zaman yazı tipi</translation>
     </message>
     <message>
         <source>Date font</source>
-        <translation type="unfinished"/>
+        <translation>Tarih yazı tipi</translation>
     </message>
     <message>
         <source>Ultra light</source>
-        <translation type="unfinished"/>
+        <translation>Çok açık</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Açık</translation>
     </message>
     <message>
         <source>Ultra black</source>
-        <translation type="unfinished"/>
+        <translation>Çok koyu</translation>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished"/>
+        <translation>Koyu</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished"/>
+        <translation>Kalın</translation>
     </message>
     <message>
         <source>Demi bold</source>
-        <translation type="unfinished"/>
+        <translation>Çok kalın</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished"/>
+        <translation>İtalik</translation>
     </message>
 </context>
 </TS>

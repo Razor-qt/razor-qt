@@ -31,39 +31,39 @@
     </message>
     <message>
         <source>Show &amp;date</source>
-        <translation>Näytä &amp;päivä</translation>
+        <translation>Näytä pä&amp;ivä</translation>
     </message>
     <message>
         <source>D&amp;ate format</source>
-        <translation>Päiväyksen &amp;muoto</translation>
+        <translation>Päi&amp;vän muoto</translation>
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation>Ki&amp;rjasin</translation>
+        <translation>Kirja&amp;sin</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>
-        <translation>Näytä päivä &amp;omalla rivillä</translation>
+        <translation>Näytä päivä &amp;omalla rivillään</translation>
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation>Käytä &amp;teeman kirjasimia</translation>
+        <translation>Käy&amp;tä teeman kirjasimia</translation>
     </message>
     <message>
         <source>Time font</source>
-        <translation>Kirjasin aikaa varten</translation>
+        <translation>Ajan kirjasin</translation>
     </message>
     <message>
         <source>Date font</source>
-        <translation>Kirjasin päiväystä varten</translation>
+        <translation>Päivän kirjasin</translation>
     </message>
     <message>
         <source>Ultra light</source>
-        <translation>Todella vaalea</translation>
+        <translation>Erittäin kevyt</translation>
     </message>
     <message>
         <source>Light</source>
-        <translation>Vaalea</translation>
+        <translation>Kevyt</translation>
     </message>
     <message>
         <source>Ultra black</source>

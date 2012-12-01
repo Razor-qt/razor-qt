@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[sk_SK]=Nastavenia pre viacero hardvérových zariadení
+Name[sk_SK]=Hardvér

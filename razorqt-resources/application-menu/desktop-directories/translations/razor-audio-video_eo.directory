@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[eo]=Sono kaj video
+
+
+# Translations
 Comment[eo]=Spektada menuo
+Name[eo]=Sono kaj video

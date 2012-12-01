@@ -74,7 +74,7 @@
     <name>RazorTaskbarConfiguration</name>
     <message>
         <source>Razor Task Manager Settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor-tehtävähallinnan asetukset</translation>
     </message>
     <message>
         <source>Window List Content</source>

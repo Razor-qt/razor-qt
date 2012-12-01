@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Ошибка Razor Power Manager</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Ошибка перехода в спящий режим.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

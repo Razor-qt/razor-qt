@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=System settings
-Icon=preferences-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sv]=System
+
+
+# Translations
 Comment[sv]=Systeminställningar
+Name[sv]=System

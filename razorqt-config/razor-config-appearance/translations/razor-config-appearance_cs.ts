@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Téma ikon</translation>
+        <translation>Ikony</translation>
     </message>
 </context>
 <context>
@@ -22,14 +22,14 @@
     </message>
     <message>
         <source>Razor Theme</source>
-        <translation>Motiv Razor</translation>
+        <translation>Motiv</translation>
     </message>
 </context>
 <context>
     <name>RazorThemeConfig</name>
     <message>
         <source>Razor Theme</source>
-        <translation>Motiv Razor</translation>
+        <translation>Motiv prostředí Razor</translation>
     </message>
 </context>
 </TS>

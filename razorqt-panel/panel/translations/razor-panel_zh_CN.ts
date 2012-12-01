@@ -90,7 +90,7 @@
     <name>RazorPanel</name>
     <message>
         <source>Panel</source>
-        <translation>qxkb</translation>
+        <translation>面板</translation>
     </message>
     <message>
         <source>Configure panel...</source>

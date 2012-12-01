@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Look and Feel
 Comment=Settings controlling the desktop appearance and behavior
-Icon=preferences-desktop
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[cs]=Vzhled a chování
+
+
+# Translations
 Comment[cs]=Nastavení ovládající vzhled a chování pracovního prostředí
+Name[cs]=Vzhled a chování

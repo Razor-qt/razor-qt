@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Overrides: %1</source>
-        <translation type="unfinished"/>
+        <translation>Geçerlilik %1</translation>
     </message>
 </context>
 <context>
@@ -88,15 +88,15 @@
     </message>
     <message>
         <source>Razor Modules</source>
-        <translation type="unfinished"/>
+        <translation>Razor Modülleri</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Başlat</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>Durdur</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -160,7 +160,7 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation type="unfinished"/>
+        <translation>devam etmekte</translation>
     </message>
 </context>
 <context>

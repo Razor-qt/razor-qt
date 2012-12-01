@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[hu_HU]=Rendszerszintű beállítások módosítása (minden felhasználóra kihat)
+Name[hu_HU]=Adminisztráció

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Other
+Comment=Applications that did not fit in other categories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[da_DK]=Programmer som ikke passer i andre katagorier
+Name[da_DK]=Andre

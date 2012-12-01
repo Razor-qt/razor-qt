@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Chyba ve správě energie</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Hibernace se nezdařila.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -50,7 +61,7 @@
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation>Zazimování sezení Razoru</translation>
+        <translation>Hibernace sezení Razoru</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
@@ -62,7 +73,7 @@
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
-        <translation>Opravdu chcete spustit svůj počítač znovu?&lt;p&gt;Všechna neuložená práce bude ztracena...</translation>
+        <translation>Opravdu chcete spustit svůj počítač znovu?&lt;p&gt;Všechna neuložená práce bude ztracena.</translation>
     </message>
     <message>
         <source>Razor Session Shutdown</source>
@@ -70,7 +81,7 @@
     </message>
     <message>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
-        <translation>Opravdu chcete vypnout svůj počítač?&lt;p&gt;Všechna neuložená práce bude ztracena...</translation>
+        <translation>Opravdu chcete vypnout svůj počítač?&lt;p&gt;Všechna neuložená práce bude ztracena.</translation>
     </message>
     <message>
         <source>Razor Session Logout</source>
@@ -78,7 +89,7 @@
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
-        <translation>Opravdu se chcete odhlásit?&lt;p&gt;Všechna neuložená práce bude ztracena...</translation>
+        <translation>Opravdu se chcete odhlásit?&lt;p&gt;Všechna neuložená práce bude ztracena.</translation>
     </message>
     <message>
         <source>Razor Power Manager Error</source>
@@ -275,7 +286,7 @@
     </message>
     <message>
         <source>About</source>
-        <translation>O</translation>
+        <translation>Prostředí</translation>
     </message>
     <message>
         <source>Authors</source>

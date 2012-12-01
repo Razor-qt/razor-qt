@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Applications
+Comment=Applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[pl_PL]=Programy
+Name[pl_PL]=Programy

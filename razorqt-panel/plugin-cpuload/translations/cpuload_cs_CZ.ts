@@ -2,14 +2,14 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
+        <source>CPU load %1%</source>
         <translation>Vytížení procesoru %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
+        <source>Razor CPU Load settings</source>
         <translation>Nastavení vytížení procesoru v Razoru</translation>
     </message>
     <message>

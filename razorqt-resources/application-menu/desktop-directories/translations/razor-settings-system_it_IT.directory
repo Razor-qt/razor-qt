@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[it_IT]=Modifica impostazioni di sistema (influenzano tutti gli utenti)
+Name[it_IT]=Amministrazione

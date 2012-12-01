@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Razor Energiebeheer fout</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>SCHIJF-slaapstand mislukt.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

@@ -14,7 +14,7 @@ GenericName=Razor Freedesktop Notifications Configuration
 
 
 # Translations
-GenericName[es]=Administrador de tareas
-Name[es]=Configuración de sesiones Razor
+GenericName[es]=Configuración de Notificaciones Freedesktop en Razor
+Name[es]=Configuración de Notificaciones Freedesktop en Razor
 Icon[es]=Preferencias de tema de escritorio
-Comment[es]=Configure las notificacionde de freedesktop en el escritorio Razor
+Comment[es]=Configure las notificacionde de Freedesktop en el escritorio Razor

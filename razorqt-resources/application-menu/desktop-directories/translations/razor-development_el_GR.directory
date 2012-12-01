@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[el_GR]=Εργαλεία για ανάπτυξη λογισμικού
+Name[el_GR]=Προγραμματισμός

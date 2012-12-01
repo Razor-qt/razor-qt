@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Programming
 Comment=Tools for software development
-Icon=applications-development
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ko]=개발
+
+
+# Translations
 Comment[ko]=소프트웨어 개발을 위한 도구
+Name[ko]=개발

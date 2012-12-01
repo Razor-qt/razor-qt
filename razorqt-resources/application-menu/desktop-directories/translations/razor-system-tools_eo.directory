@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System Tools
 Comment=System configuration and monitoring
-Icon=applications-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[eo]=Sistemaj iloj
+
+
+# Translations
 Comment[eo]=Agordi kaj kontroli sistemon
+Name[eo]=Sistemaj iloj

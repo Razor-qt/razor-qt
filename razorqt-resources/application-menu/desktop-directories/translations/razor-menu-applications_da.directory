@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Applications
 Comment=Applications
-Icon=applications-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[da]=Programmer
+
+
+# Translations
 Comment[da]=Programmer
+Name[da]=Programmer

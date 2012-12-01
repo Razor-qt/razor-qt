@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[xh]=Isandi neVidiyo
+
+
+# Translations
 Comment[xh]=Imenu Yezixhobo eziphathekayo zokugcina ulwazi ngokuphinda-phindeneyo
+Name[xh]=Isandi neVidiyo

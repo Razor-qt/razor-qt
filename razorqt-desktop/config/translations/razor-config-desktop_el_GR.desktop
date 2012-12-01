@@ -13,7 +13,7 @@ GenericName=Razor Desktop Configurator
 
 
 # Translations
-Comment[el_GR]=Άρθρωμα διαμόρφωσης επιφάνειας εργασίας Razor-Qt
-GenericName[el_GR]=Διαμόρφωση επιφάνειας εργασίας Razor
-Name[el_GR]=Διαμόρφωση επιφάνειας εργασίας Razor
-Icon[el_GR]=preferences-desktop
+Comment[el_GR]=Άρθρωμα ρυθμίσεων επιφάνειας εργασίας Razor-Qt
+GenericName[el_GR]=Ρύθμιση επιφάνειας εργασίας Razor
+Name[el_GR]=Ρύθμιση επιφάνειας εργασίας Razor
+Icon[el_GR]=προτιμήσεις επιφάνειας εργασίας 

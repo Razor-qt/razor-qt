@@ -2,9 +2,11 @@
 Encoding=UTF-8
 Type=Directory
 Name=Board Games
-Icon=applications-games-board
 
 #TRANSLATIONS_DIR=translations
+
+# Translations
+
 
 # Translations
 Name[cs]=Deskové hry

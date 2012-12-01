@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Other
 Comment=Applications that did not fit in other categories
-Icon=applications-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ja]=その他
+
+
+# Translations
 Comment[ja]=他のカテゴリにあてはまらないアプリケーション
+Name[ja]=その他

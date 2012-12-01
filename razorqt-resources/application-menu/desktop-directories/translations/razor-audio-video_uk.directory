@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Sound & Video
 Comment=Multimedia menu
-Icon=applications-multimedia
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[uk]=Звук та відео
+
+
+# Translations
 Comment[uk]=Меню мультимедіа
+Name[uk]=Звук та відео

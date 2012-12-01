@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[sk_SK]=Nástroje na vývoj softvéru
+Name[sk_SK]=Programovanie

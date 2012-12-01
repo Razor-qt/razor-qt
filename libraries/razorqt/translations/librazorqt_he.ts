@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>שגיאת מנהל צריכת כֺח ‫Razor</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>הדממה נכשלה.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

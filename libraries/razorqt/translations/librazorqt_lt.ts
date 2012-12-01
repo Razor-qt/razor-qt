@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Razor Energijos Nustatymų Klaida</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Nepavyko užmigdymas į fizinę atmintį</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>

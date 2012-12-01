@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[id_ID]=Penataan untuk beberapa peralatan perangkat keras
+Name[id_ID]=Perangkat Keras

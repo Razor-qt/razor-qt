@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=Personal preferences and administration settings
-Icon=preferences-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sr@latin]=Sistemski alati
+
+
+# Translations
 Comment[sr@latin]=Lične postavke i administratorska podešavanja
+Name[sr@latin]=Sistemski alati

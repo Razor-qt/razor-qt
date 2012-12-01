@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_CN]=系统管理
+
+
+# Translations
 Comment[zh_CN]=更改系统级设置(影响全部用户)
+Name[zh_CN]=系统管理

@@ -2,9 +2,11 @@
 Encoding=UTF-8
 Type=Directory
 Name=Games for Kids
-Icon=applications-games-children
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[ia]=Joco pro pusillos
+
+
+# Translations
+Name[ia]=Jocos pro infantes

@@ -13,7 +13,7 @@ GenericName=Razor Configuration
 
 
 # Translations
-Comment[el_GR]=Διαμόρφωση αρθρωμάτων Razor-Qt
-GenericName[el_GR]=Διαμόρφωση Razor
-Name[el_GR]=Κέντρο διαμόρφωσης Razor
-Icon[el_GR]=preferences-system
+Comment[el_GR]=Αρθρώματα ρύθμισης Razor-Qt
+GenericName[el_GR]=Ρυθμίσεις Razor
+Name[el_GR]=Κέντρο Ρυθμίσεων Razor
+Icon[el_GR]=προτιμήσεις συστήματος

@@ -2,8 +2,8 @@
 
 
 translator_1_nameEnglish = Pavel Fric
-# translator_1_nameNative  = Translator 1. Your name in the native language.
-# translator_1_contact     = Translator 1. Contact information, email or web site address.
+translator_1_nameNative  = Pavel Fric
+translator_1_contact     = pavelfric@seznam.cz
 
 # translator_2_nameEnglish = Translator 2. Your name in English. 
 # translator_2_nameNative  = Translator 2. Your name in the native language.

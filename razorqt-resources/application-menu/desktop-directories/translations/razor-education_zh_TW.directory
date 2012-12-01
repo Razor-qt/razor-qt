@@ -1,9 +1,11 @@
 [Desktop Entry]
 Name=Education
-Icon=applications-science
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
+
+# Translations
+
 
 # Translations
 Name[zh_TW]=教育

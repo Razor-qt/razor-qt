@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Επαναφορά αλλαγών</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>Ερώτηση</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>Διαγραφή ομάδας %1; (θα διαγραφούν όλα τα περιεχόμενά της)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>Διαγραφή %1;</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>Ο δεσμός για %1 υπάρχει ήδη. Θέλετε αντικατάσταση του παλιού;</translation>
+    </message>
 </context>
 </TS>

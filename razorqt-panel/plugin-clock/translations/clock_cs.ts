@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation>Pí&amp;smo</translation>
+        <translation>&amp;Písmo</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>

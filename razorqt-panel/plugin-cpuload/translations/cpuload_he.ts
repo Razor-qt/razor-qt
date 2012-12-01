@@ -2,15 +2,15 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
-        <translation>טעינת Cpu %1%</translation>
+        <source>CPU load %1%</source>
+        <translation>טעינת CPU %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
-        <translation>הגדרות טעינת ‫Cpu ‫Razor</translation>
+        <source>Razor CPU Load settings</source>
+        <translation>הגדרות טעינת CPU ‫Razor</translation>
     </message>
     <message>
         <source>General</source>

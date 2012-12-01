@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System
+Comment=System settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[id_ID]=Penataan sistem
+Name[id_ID]=Sistem

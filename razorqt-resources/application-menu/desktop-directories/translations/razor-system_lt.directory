@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=System settings
-Icon=preferences-system
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[lt]=Sistema
+
+
+# Translations
 Comment[lt]=Sistemos nustatymai
+Name[lt]=Sistema

@@ -2,10 +2,12 @@
 Name=Universal Access
 Comment=Universal Access Settings
 Type=Directory
-Icon=preferences-desktop-accessibility
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[tr]=Evrensel Erişim
+
+
+# Translations
 Comment[tr]=Evrensel Erişim Ayarları
+Name[tr]=Evrensel Erişim

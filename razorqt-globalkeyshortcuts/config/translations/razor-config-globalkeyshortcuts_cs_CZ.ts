@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Add New</source>
-        <translation>Přidat novou</translation>
+        <translation>Přidat</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Reset</source>
-        <translation>Vynulovat</translation>
+        <translation>Nastavit znovu</translation>
     </message>
     <message>
         <source>Close</source>
@@ -70,6 +70,22 @@
     <message>
         <source>Reset Changes</source>
         <translation>Vynulovat změny</translation>
+    </message>
+    <message>
+        <source>Question</source>
+        <translation>Otázka</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>Smazat skupinu: %1? (vše uvnitř bude zcela odstraněno)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>Smazat %1?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation>Zkratka pro %1 již existuje. Nahradit starou?</translation>
     </message>
 </context>
 </TS>

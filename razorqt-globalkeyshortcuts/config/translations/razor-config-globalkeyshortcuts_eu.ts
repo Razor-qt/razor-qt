@@ -71,5 +71,21 @@
         <source>Reset Changes</source>
         <translation>Berrezarri aldaketak</translation>
     </message>
+    <message>
+        <source>Question</source>
+        <translation>Galdera</translation>
+    </message>
+    <message>
+        <source>Delete group: %1? (everything inside will be removed altogether)</source>
+        <translation>%1 taldea ezabatu? (barruan dagoen guztia ere ezabatuko da)</translation>
+    </message>
+    <message>
+        <source>Delete %1?</source>
+        <translation>%1 ezabatu?</translation>
+    </message>
+    <message>
+        <source>Binding for %1 already exists. Replace old one?</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 </TS>

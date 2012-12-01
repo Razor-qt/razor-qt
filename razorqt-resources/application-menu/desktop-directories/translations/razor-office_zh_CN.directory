@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Office
 Comment=Office Applications
-Icon=applications-office
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_CN]=办公
+
+
+# Translations
 Comment[zh_CN]=办公应用程序
+Name[zh_CN]=办公

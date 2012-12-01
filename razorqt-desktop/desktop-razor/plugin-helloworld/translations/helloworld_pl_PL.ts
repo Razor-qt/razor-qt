@@ -18,7 +18,7 @@
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation type="unfinished"/>
+        <translation>Wyświetl prosty tekst. Debugowanie/próbny widget.</translation>
     </message>
 </context>
 </TS>

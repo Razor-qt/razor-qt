@@ -2,10 +2,12 @@
 Type=Directory
 Name=Administration
 Comment=Change system-wide settings (affects all users)
-Icon=preferences-system
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[eu]=Sistema-konfigurazioa
+
+
+# Translations
 Comment[eu]=Aldatu sistema osoko ezarpenak (erabiltzaile guztiengan du eragina)
+Name[eu]=Sistema-konfigurazioa

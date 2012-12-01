@@ -3,7 +3,7 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Razorマウステーマの設定</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
@@ -11,15 +11,15 @@
     </message>
     <message>
         <source>&amp;Install New Theme...</source>
-        <translation type="unfinished"/>
+        <translation>新しいテーマのインストール(&amp;I)...</translation>
     </message>
     <message>
         <source>&amp;Set Theme</source>
-        <translation type="unfinished"/>
+        <translation>テーマの設定(&amp;S)</translation>
     </message>
     <message>
         <source>&amp;Remove Theme</source>
-        <translation type="unfinished"/>
+        <translation>テーマの削除(&amp;R)</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -31,18 +31,18 @@
     </message>
     <message>
         <source>You can&apos;t remove active theme!</source>
-        <translation type="unfinished"/>
+        <translation>アクティブなテーマは削除できません！</translation>
     </message>
 </context>
 <context>
     <name>XCursorThemeModel</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名前</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>記述</translation>
     </message>
 </context>
 </TS>

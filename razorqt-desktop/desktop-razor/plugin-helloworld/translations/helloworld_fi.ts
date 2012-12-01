@@ -18,7 +18,7 @@
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation type="unfinished"/>
+        <translation>Näytä esimerkkitekstiä. Vianetsintään ja esimerkkeihin tarkoitettu sovelma.</translation>
     </message>
 </context>
 </TS>

@@ -13,8 +13,8 @@
 <context>
     <name>BatteryInfo</name>
     <message>
-        <source>Dialog</source>
-        <translation>对话框</translation>
+        <source>Razor Autosuspend</source>
+        <translation>自动休眠</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation type="unfinished"/>
+        <translation>电量满，设计：</translation>
     </message>
     <message>
         <source>Energy Full:</source>
@@ -62,23 +62,23 @@
     </message>
     <message>
         <source>Lithium polymer</source>
-        <translation type="unfinished"/>
+        <translation>锂聚合物</translation>
     </message>
     <message>
         <source>Lithium iron phosphate</source>
-        <translation type="unfinished"/>
+        <translation>铁锂电池</translation>
     </message>
     <message>
         <source>Lead acid</source>
-        <translation type="unfinished"/>
+        <translation>铅蓄电池</translation>
     </message>
     <message>
         <source>Nickel cadmium</source>
-        <translation type="unfinished"/>
+        <translation>镍镉电池</translation>
     </message>
     <message>
-        <source>Nickel metal hybride</source>
-        <translation type="unfinished"/>
+        <source>Nickel metal hydride</source>
+        <translation>镍氢电池</translation>
     </message>
     <message>
         <source>Unknown</source>

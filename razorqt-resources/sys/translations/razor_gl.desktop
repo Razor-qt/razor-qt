@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Exec=razor-session
+#TryExec=razor-session
+Name=Razor Desktop
+Comment=Qt4 Desktop
+
+#TRANSLATIONS_DIR=translations
+
+
+# Translations
+Name[gl]=Escritorio Razor
+Comment[gl]=Escritorio Qt4

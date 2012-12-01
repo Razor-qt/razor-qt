@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation>Γρ&amp;αμματοσειρά</translation>
+        <translation>Γραμματο&amp;σειρά</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>

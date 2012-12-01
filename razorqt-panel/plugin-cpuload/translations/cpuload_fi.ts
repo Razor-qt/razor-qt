@@ -2,14 +2,14 @@
 <context>
     <name>RazorCpuLoad</name>
     <message>
-        <source>Cpu load %1%</source>
+        <source>CPU load %1%</source>
         <translation>Suoritinkuorma %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
-        <source>Razor Cpu Load settings</source>
+        <source>Razor CPU Load settings</source>
         <translation>Razorin suoritinkuorman asetukset</translation>
     </message>
     <message>
@@ -30,23 +30,23 @@
     </message>
     <message>
         <source>Bar orientation:</source>
-        <translation type="unfinished"/>
+        <translation>Palkin suunta:</translation>
     </message>
     <message>
         <source>Bottom up</source>
-        <translation type="unfinished"/>
+        <translation>Alhaalta ylös</translation>
     </message>
     <message>
         <source>Top down</source>
-        <translation type="unfinished"/>
+        <translation>Ylhäältä alas</translation>
     </message>
     <message>
         <source>Left to right</source>
-        <translation type="unfinished"/>
+        <translation>Vasemmalta oikealle</translation>
     </message>
     <message>
         <source>Right to left</source>
-        <translation type="unfinished"/>
+        <translation>Oikealta vasemmalle</translation>
     </message>
 </context>
 </TS>

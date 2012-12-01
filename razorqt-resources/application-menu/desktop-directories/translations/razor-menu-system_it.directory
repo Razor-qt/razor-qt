@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=System
 Comment=Personal preferences and administration settings
-Icon=preferences-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[it]=Sistema
+
+
+# Translations
 Comment[it]=Preferenze personali e impostazioni di amministrazione
+Name[it]=Sistema

@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Office
 Comment=Office Applications
-Icon=applications-office
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[it]=Ufficio
+
+
+# Translations
 Comment[it]=Applicazioni da ufficio
+Name[it]=Ufficio

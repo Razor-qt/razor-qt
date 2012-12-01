@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Applications
+Comment=Applications
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[cs_CZ]=Aplikace
+Name[cs_CZ]=Aplikace

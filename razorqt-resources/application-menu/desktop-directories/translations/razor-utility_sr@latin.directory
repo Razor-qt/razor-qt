@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Accessories
 Comment=Desktop accessories
-Icon=applications-accessories
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[sr@latin]=Alatke
+
+
+# Translations
 Comment[sr@latin]=Alatke okruženja
+Name[sr@latin]=Alatke

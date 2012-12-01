@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Accessories
 Comment=Desktop accessories
-Icon=applications-accessories
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[zh_TW]=附屬應用程式
+
+
+# Translations
 Comment[zh_TW]=桌面附屬應用程式
+Name[zh_TW]=附屬應用程式

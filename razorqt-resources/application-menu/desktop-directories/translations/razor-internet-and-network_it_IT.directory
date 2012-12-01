@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Internet and Network
+Comment=Network-related settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[it_IT]=Impostazioni relative alla rete
+Name[it_IT]=Internet e Rete

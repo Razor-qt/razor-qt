@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Other
 Comment=Applications that did not fit in other categories
-Icon=applications-other
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[hu]=Egyéb
+
+
+# Translations
 Comment[hu]=Más kategóriákba be nem sorolható alkalmazások
+Name[hu]=Egyéb

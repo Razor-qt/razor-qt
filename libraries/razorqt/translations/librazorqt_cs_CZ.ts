@@ -19,6 +19,17 @@
     </message>
 </context>
 <context>
+    <name>MessageBox</name>
+    <message>
+        <source>Razor Power Manager Error</source>
+        <translation>Chyba ve správě energie</translation>
+    </message>
+    <message>
+        <source>Hibernate failed.</source>
+        <translation>Hibernace se nezdařila.</translation>
+    </message>
+</context>
+<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -50,7 +61,7 @@
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation>Zazimování sezení Razoru</translation>
+        <translation>Hibernace sezení Razoru</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
@@ -275,7 +286,7 @@
     </message>
     <message>
         <source>About</source>
-        <translation>O prostředí</translation>
+        <translation>Prostředí</translation>
     </message>
     <message>
         <source>Authors</source>
