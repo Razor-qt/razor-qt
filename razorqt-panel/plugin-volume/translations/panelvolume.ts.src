@@ -51,4 +51,15 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>
