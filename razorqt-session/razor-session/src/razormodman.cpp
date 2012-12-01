@@ -98,7 +98,7 @@ void RazorModuleManager::startup()
         int waitCnt = 300;
         while (!xfitMan().isWindowManagerActive() && waitCnt)
         {
-            qDebug() << "******************** Wait until the WM loads" << waitCnt;
+//            qDebug() << "******************** Wait until the WM loads" << waitCnt;
             waitCnt--;
             usleep(100000);
         }
@@ -117,10 +117,10 @@ void RazorModuleManager::startup()
 
     if (!trayApps.isEmpty())
     {
-        int waitCnt = 200;
+        int waitCnt = 600;
         while (!QSystemTrayIcon::isSystemTrayAvailable())
         {
-            qDebug() << "******************** Wait for tray" << waitCnt;
+//            qDebug() << "******************** Wait for tray" << waitCnt;
             if (!waitCnt)
             {
                 qWarning() << "******************** No systray implementation started in session. Continuing.";
@@ -133,9 +133,6 @@ void RazorModuleManager::startup()
         foreach (XdgDesktopFile* f, trayApps)
             startProcess(*f);
     }
-
-    m_crashTimer.setInterval(60000);
-    connect(&m_crashTimer, SIGNAL(timeout()), this, SLOT(resetCrashReport()));
 }
 
 void RazorModuleManager::startProcess(const XdgDesktopFile& file)
@@ -212,14 +209,14 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
             case QProcess::CrashExit:
             {
                 qDebug() << "Process" << procName << "(" << proc << ") has to be restarted";
-                if (!m_crashReport.contains(proc))
-                    m_crashReport[proc] = 0;
-                int stat = m_crashReport[proc]++;
-                if (stat >= MAX_CRASHES_PER_APP)
+                time_t now = time(NULL);
+                mCrashReport[proc].prepend(now);
+                while (now - mCrashReport[proc].back() > 60)
+                    mCrashReport[proc].pop_back();
+                if (mCrashReport[proc].length() >= MAX_CRASHES_PER_APP)
                 {
                     QMessageBox::warning(0, tr("Razor Session Crash Report"),
                                         tr("Application '%1' crashed too many times. Its autorestart has been disabled for current session.").arg(procName));
-
                 }
                 else
                 {
@@ -290,7 +287,7 @@ QString RazorModuleManager::showWmSelectDialog()
 
 void RazorModuleManager::resetCrashReport()
 {
-    m_crashReport.clear();
+    mCrashReport.clear();
 }
 
 void razor_setenv(const char *env, const QByteArray &value)
