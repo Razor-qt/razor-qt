@@ -43,7 +43,7 @@ RazorAboutDLGPrivate::RazorAboutDLGPrivate()
     setupUi(this);
 
     QString css="<style TYPE='text/css'> "
-                    "body { font-family: Arial, Helvetica, sans-serif;} "
+                    "body { font-family: sans-serif;} "
                     ".name { font-size: 16pt; } "
                     "a { white-space: nowrap ;} "
                     "h2 { font-size: 10pt;} "
@@ -104,17 +104,19 @@ QString RazorAboutDLGPrivate::aboutText() const
 
 QString RazorAboutDLGPrivate::authorsText() const
 {
-    return  "We use <a href='https://github.com/Razor-qt/razor-qt'>Github</a> to development and serve our project."
-            "<p>"
-            "If you're interested in working with our development <a href='https://github.com/Razor-qt/razor-qt/graphs/contributors'>team</a>, "
-            "join us.";
+    return QString("%1<p>%2").arg(
+                tr("Razor-qt is developed by the <a %1>Razor-qt Team and contributors</a> on Github.")
+                    .arg(" href='https://github.com/Razor-qt/razor-qt/graphs/contributors'"),
+                tr("If you are interested in working with our development team, <a %1>join us</a>.")
+                    .arg(" href='https://github.com/Razor-qt/razor-qt'")
+                );
 }
 
 
 QString RazorAboutDLGPrivate::thanksText() const
 {
-    return  QString::fromUtf8(
-                "Special thanks to"
+    return QString(
+                "%1"
                 "<ul>"
                 "<li>Andy Fitzsimon (logo/icon)</li>"
                 "<li>Eugene Pivnev (QtDesktop)</li>"
@@ -123,7 +125,7 @@ QString RazorAboutDLGPrivate::thanksText() const
                 "<li>Alexander Zakher (for the name)</li>"
                 "<li>Alexey Nosov (for the A-MeGo theme)</li>"
                 "<li>and KDE (http://www.kde.org)</li>"
-                );
+                ).arg(tr("Special thanks to:"));
 }
 
 QString RazorAboutDLGPrivate::translationsText() const
