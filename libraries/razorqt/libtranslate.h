@@ -31,19 +31,22 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QLocale>
+#include <QtCore/QSet>
 
 inline void libTranslate(const QString &name)
 {
-    static bool alreadyLoaded = false;
-    if (alreadyLoaded)
+    static QSet<QString> loadedLibs;
+
+    if (loadedLibs.contains(name))
         return;
+
+    loadedLibs.insert(name);
 
     QString locale = QLocale::system().name();
     QTranslator *translator = new QTranslator(qApp);
     translator->load(QString("%1/%2_%3.qm").arg(TRANSLATIONS_DIR, name, locale));
 
     QCoreApplication::installTranslator(translator);
-    alreadyLoaded = true;
 }
 
 
