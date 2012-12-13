@@ -253,6 +253,7 @@ void RzUpdate::checkGotFile(const QString &_file, const QString &id)
         file = _file.mid(i + 1).trimmed();
     }
 
+    file=expandConfigFileName(file);
 //   qDebug("File %s, id %s", file.toLatin1().constData(), id.toLatin1().constData());
 
     QSettings cfg(file, QSettings::IniFormat);
@@ -317,7 +318,7 @@ bool RzUpdate::updateFile(const QString &filename)
     while (!ts.atEnd()) {
         m_line = ts.readLine().trimmed();
         m_lineCount++;
-        log() << m_line;
+        log() << m_line << "\n";
         if (m_line.isEmpty() || (m_line[0] == '#'))
         {
             continue;
@@ -461,7 +462,7 @@ void RzUpdate::gotFile(const QString &_file)
     // Reset group
     gotGroup(QString());
 
-    if (!m_oldFile.isEmpty())
+    if (!m_oldFile.isEmpty() && !m_skip && !m_skipFile)
     {
         QStringList ids = m_oldConfig->value(UPDATE_INFO_KEY).toStringList();
         QString cfg_id = m_currentFilename + ':' + m_id;
@@ -485,7 +486,7 @@ void RzUpdate::gotFile(const QString &_file)
         m_oldFile.clear();
     }
 
-    if (!m_newFile.isEmpty())
+    if (!m_newFile.isEmpty() && !m_skip && !m_skipFile)
     {
         // Close new file.
         QStringList ids = m_newConfig->value(UPDATE_INFO_KEY).toStringList();
@@ -527,7 +528,8 @@ void RzUpdate::gotFile(const QString &_file)
         {
             m_skip = true;
             m_newFile.clear();
-            log() << m_currentFilename << ": Skipping update '" << m_id << "'" << endl;
+            log() << m_currentFilename << ": Skipping update '" << m_id << "' old file "
+                  << m_oldConfig->fileName() << " already contains signature" << endl;
         }
 
         if (!m_newFile.isEmpty())
@@ -537,7 +539,9 @@ void RzUpdate::gotFile(const QString &_file)
             if (ids.contains(cfg_id))
             {
                 m_skip = true;
-                log() << m_currentFilename << ": Skipping update '" << m_id << "'" << endl;
+                log() << m_currentFilename << ": Skipping update '" << m_id << "' new file "
+                      << m_newConfig->fileName() << " already contains signature" << endl;
+
             }
         }
         else
