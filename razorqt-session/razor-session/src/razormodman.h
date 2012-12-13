@@ -37,6 +37,7 @@
 #include <time.h>
 
 class RazorModule;
+class RazorSettings;
 
 typedef QMap<QString,RazorModule*> ModulesMap;
 typedef QMapIterator<QString,RazorModule*> ModulesMapIterator;
@@ -92,6 +93,9 @@ signals:
     void moduleStateChanged(QString moduleName, bool state);
 
 private:
+    //! \brief Start Window Manager
+    void startWm(RazorSettings *settings);
+
     //! \brief Show Window Manager select dialog
     QString showWmSelectDialog();
 

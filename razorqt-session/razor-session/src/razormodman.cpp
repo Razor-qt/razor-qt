@@ -76,33 +76,8 @@ void RazorModuleManager::startup()
     // The razor-confupdate can update the settings of the WM, so run it first.
     startConfUpdate();
 
-    // window manager
-    // If the WM is active do not run WM.
-    if (!xfitMan().isWindowManagerActive())
-    {
-        if (mWindowManager.isEmpty())
-        {
-            mWindowManager = s.value("windowmanager").toString();
-            if (mWindowManager.isEmpty())
-            {
-                mWindowManager = showWmSelectDialog();
-                s.setValue("windowmanager", mWindowManager);
-                s.sync();
-            }
-            //qDebug() << "Using window manager from config file" << mWindowManager;
-        }
-
-        mWmProcess->start(mWindowManager);
-
-        // Wait until the WM loads
-        int waitCnt = 300;
-        while (!xfitMan().isWindowManagerActive() && waitCnt)
-        {
-//            qDebug() << "******************** Wait until the WM loads" << waitCnt;
-            waitCnt--;
-            usleep(100000);
-        }
-    }
+    // Start window manager
+    startWm(&s);
 
     // XDG autostart
     XdgDesktopFileList fileList = XdgAutoStart::desktopFileList();
@@ -132,6 +107,37 @@ void RazorModuleManager::startup()
 
         foreach (XdgDesktopFile* f, trayApps)
             startProcess(*f);
+    }
+}
+
+void RazorModuleManager::startWm(RazorSettings *settings)
+{
+    // If the WM is active do not run WM.
+    if (xfitMan().isWindowManagerActive())
+        return;
+
+    if (mWindowManager.isEmpty())
+    {
+        mWindowManager = settings->value("windowmanager").toString();
+    }
+
+
+    // If previuos WM was removed, we show dialog.
+    if (mWindowManager.isEmpty() || ! findProgram(mWindowManager))
+    {
+        mWindowManager = showWmSelectDialog();
+        settings->setValue("windowmanager", mWindowManager);
+        settings->sync();
+    }
+
+    mWmProcess->start(mWindowManager);
+
+    // Wait until the WM loads
+    int waitCnt = 300;
+    while (!xfitMan().isWindowManagerActive() && waitCnt)
+    {
+        waitCnt--;
+        usleep(100000);
     }
 }
 
