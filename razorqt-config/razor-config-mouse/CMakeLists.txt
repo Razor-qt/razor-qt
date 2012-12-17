@@ -24,6 +24,7 @@ set ( razor-config-mouse_HDRS
 #    main.h
 #    crtheme.h
     selectwnd.h
+    warninglabel.h
 	)
 
 set ( razor-config-mouse_SRCS
@@ -39,10 +40,12 @@ set ( razor-config-mouse_SRCS
     previewwidget.cpp
     itemdelegate.cpp
     thememodel.cpp
+    warninglabel.cpp
 	)
 
 set(razor-config-mouse_UIS
      ui/selectwnd.ui
+     ui/warninglabel.ui
 )
 
 find_package(ZLIB REQUIRED)
