@@ -6,8 +6,8 @@
         <translation>Kaixo mundua:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Bistaratu testu-konfigurazioa</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

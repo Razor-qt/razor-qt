@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Razor automatinio sustabdymo konfigūravimas</translation>
     </message>
     <message>
         <source>General</source>

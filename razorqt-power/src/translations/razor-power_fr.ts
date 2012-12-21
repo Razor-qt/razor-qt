@@ -11,27 +11,27 @@
     </message>
     <message>
         <source>Logout</source>
-        <translation>Se déconnecter</translation>
+        <translation>Déconnexion</translation>
     </message>
     <message>
         <source>Reboot</source>
-        <translation>Redémarrer</translation>
+        <translation>Redémarrage</translation>
     </message>
     <message>
         <source>Shutdown</source>
-        <translation>Éteindre</translation>
+        <translation>Extinction</translation>
     </message>
     <message>
         <source>Suspend</source>
-        <translation>Suspendre</translation>
+        <translation>Mise en veille</translation>
     </message>
     <message>
         <source>Hibernate</source>
-        <translation>Mettre en hibernation</translation>
+        <translation>Mise en hibernation</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation>Annulation</translation>
     </message>
 </context>
 </TS>

@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Dispozitivul &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; a fost eliminat.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>Nu este disponibil nici un dispozitiv.</translation>
+        <source>No devices are available</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>What do you want the computer to do?</source>
-        <translation>Ką norite padaryti?</translation>
+        <translation>Ką norite daryti?</translation>
     </message>
     <message>
         <source>Logout</source>
@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Reboot</source>
-        <translation>Perkrauti</translation>
+        <translation>Paleisti iš naujo</translation>
     </message>
     <message>
         <source>Shutdown</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Hibernate</source>
-        <translation>Sustabdyti į fizinę atmintį</translation>
+        <translation>Sustabdyti į diską</translation>
     </message>
     <message>
         <source>Cancel</source>

@@ -3,22 +3,22 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>CPU load %1%</source>
-        <translation>Charge du processeur %1%</translation>
+        <translation>Charge de L&apos;UCT %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor CPU Load settings</source>
-        <translation>Paramètres Razor de charge du processeur</translation>
+        <translation>Paramètres Razor de charge de l&apos;UCT</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Généraux</translation>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Show text</source>
-        <translation>Montrer le texte</translation>
+        <translation>Afficher le texte</translation>
     </message>
     <message>
         <source>Update interval:</source>

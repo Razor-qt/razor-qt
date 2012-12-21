@@ -3,39 +3,39 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>تعريف القائمة</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>مدة اﻹشعار</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>تعتمد مدة انتهاء اﻹشعار بالنسبة للبعض على إعدادات خادم الإشعارات.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>&quot;الخادم يقرر&quot; الوقت:</translation>
     </message>
     <message>
         <source> sec</source>
-        <translation type="unfinished"/>
+        <translation>ثا</translation>
     </message>
     <message>
         <source>Sizes</source>
-        <translation type="unfinished"/>
+        <translation>اﻷحجام</translation>
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation type="unfinished"/>
+        <translation>فسحة اﻹشعار:</translation>
     </message>
     <message>
         <source> px</source>
-        <translation type="unfinished"/>
+        <translation>نقطة ضوئية</translation>
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation type="unfinished"/>
+        <translation>عرض اﻹشعار:</translation>
     </message>
 </context>
 <context>
@@ -46,52 +46,54 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>إشعارات العرض</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation type="unfinished"/>
+        <translation>علوياً/يساراً</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation type="unfinished"/>
+        <translation>علوياً/يميناً</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation type="unfinished"/>
+        <translation>سفلياً/يساراً</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation type="unfinished"/>
+        <translation>سفلياً/يميناً</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation type="unfinished"/>
+        <translation>اختبار اﻹشعارات</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;تحذير:&lt;/b&gt; ﻻ يوجد خادم إشعاراتٍ قيد التنفيذ.
+سيتم استخدام الحل الاحتياطي</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;تحذير:&lt;/b&gt;خادم إشعاراتٍ جرقٍ ثالثٍ (%1) قيد التنفيذ.
+لن يكون لهذه اﻹعدادات تأثيراً عليه!</translation>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation type="unfinished"/>
+        <translation>ملخص اﻹشعارات</translation>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation type="unfinished"/>
+        <translation>جوهر اﻹشعارات</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>تعريف إشعارات بيئة ريزر</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +101,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation type="unfinished"/>
+        <translation>تعريفاتٌ متقدمة</translation>
     </message>
 </context>
 </TS>

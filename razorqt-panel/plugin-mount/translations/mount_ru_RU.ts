@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Устройство  &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; отключено.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>Нет доступных устройств.</translation>
+        <source>No devices are available</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

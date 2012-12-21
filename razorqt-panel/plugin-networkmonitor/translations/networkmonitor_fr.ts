@@ -42,7 +42,7 @@
     <name>RazorNetworkMonitorConfiguration</name>
     <message>
         <source>Razor Network Monitor settings</source>
-        <translation>Paramètres du moniteur réseau Razor</translation>
+        <translation>Paramètres de surveillance du réseau Razor</translation>
     </message>
     <message>
         <source>General</source>
@@ -58,7 +58,7 @@
     </message>
     <message>
         <source>Monitor</source>
-        <translation>Monitor</translation>
+        <translation>Surveillance</translation>
     </message>
     <message>
         <source>Network</source>

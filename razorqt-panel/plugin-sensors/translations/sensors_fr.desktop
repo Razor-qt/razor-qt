@@ -7,4 +7,4 @@ Comment=View readings from hardware sensors.
 
 # Translations
 Name[fr]=Capteurs
-Comment[fr]=Voir les mesures effectuées par les capteurs (actuellement lm_sensors)
+Comment[fr]=Voir les lectures des capteurs matériels.

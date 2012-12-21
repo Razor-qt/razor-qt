@@ -2,51 +2,62 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Rodyti darbalaukį: globalusis klavišas „%1“ negali būti registruojamas</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Garso reguliavimas: sparčiojo klavišo „%1“ užregistruoti negalima </translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor garsumo valdymo nuostatos</translation>
     </message>
     <message>
         <source>Device to control</source>
-        <translation type="unfinished"/>
+        <translation>Reguliuotinas įrenginys</translation>
     </message>
     <message>
         <source>Alsa</source>
-        <translation type="unfinished"/>
+        <translation>Alsa</translation>
     </message>
     <message>
         <source>PulseAudio</source>
-        <translation type="unfinished"/>
+        <translation>PulseAudio</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Elgsena</translation>
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation type="unfinished"/>
+        <translation>Nuspaudus vidurinį pels klavišą – nutildyti</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation type="unfinished"/>
+        <translation>Spustelėjus pele – parodyti</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation type="unfinished"/>
+        <translation>Leisti didesnį nei 100% garsumą (0dB)</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
-        <translation type="unfinished"/>
+        <translation>Garsumo keitimo žingsnelis</translation>
     </message>
     <message>
         <source>External Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Išorinis maišiklis</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>Paleisti maišiklį</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>Gargo maišiklis</translation>
     </message>
 </context>
 </TS>

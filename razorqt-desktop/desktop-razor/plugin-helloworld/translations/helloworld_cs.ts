@@ -6,7 +6,7 @@
         <translation>Nazdar lidi:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
+        <source>Display Text Configuration</source>
         <translation>Nastavení zobrazení textu</translation>
     </message>
     <message>

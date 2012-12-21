@@ -9,5 +9,5 @@ Type=Directory
 
 
 # Translations
-Comment[fr]=Configuration et surveillance système
-Name[fr]=Outils système
+Comment[fr]=Configuration et surveillance du système
+Name[fr]=Outils du système

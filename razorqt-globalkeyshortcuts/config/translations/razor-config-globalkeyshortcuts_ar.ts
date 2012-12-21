@@ -3,18 +3,18 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>البحث عن أمر تنفيذي</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>محرر اختصارات بيئة ريزر</translation>
     </message>
     <message>
         <source>Description</source>
@@ -22,15 +22,15 @@
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>اختصار</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>أمر تنفيذي</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>إضافة جديد</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -38,11 +38,11 @@
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>إضافة مجموعة</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>إعادة ضبط</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>إضافة اختصار</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -65,27 +65,27 @@
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>مجموعة جديدة</translation>
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation type="unfinished"/>
+        <translation>إعادة ضبط التغييرات</translation>
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"/>
+        <translation>سؤال</translation>
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation type="unfinished"/>
+        <translation>هل أحذف المجموعة: %1؟ (ستتم إزالة كل ما هو موجود غي الداخل بالكامل)</translation>
     </message>
     <message>
         <source>Delete %1?</source>
-        <translation type="unfinished"/>
+        <translation>هل أحذف %1؟</translation>
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>
-        <translation type="unfinished"/>
+        <translation>يوجد رابط لـ %1 سلفاً، هل أستبدل القديم؟</translation>
     </message>
 </context>
 </TS>

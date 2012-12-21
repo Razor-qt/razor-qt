@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>显示桌面：无法注册全局快捷键&apos;%1&apos;</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>声音控制：无法注册全局快捷键&quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>外部混音器</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>启动混音器</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>混音器</translation>
     </message>
 </context>
 </TS>

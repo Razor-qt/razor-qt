@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>Razor Energijos Nustatymų Klaida</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>Nepavyko užmigdymas į fizinę atmintį</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -123,7 +112,7 @@
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Versija: %1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
@@ -135,15 +124,27 @@
     </message>
     <message>
         <source>Homepage: %1</source>
-        <translation type="unfinished"/>
+        <translation>Namų puslapis: %1</translation>
     </message>
     <message>
         <source>License: %1</source>
+        <translation>Licenzija: %1</translation>
+    </message>
+    <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation>Jeigu jus domina prisijungimas prie mūsų kūrėjų komandos, &lt;a %1&gt;prisijunkite prie mūsų&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation>Labiausiai dėkojame:</translation>
+    </message>
+    <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt yra išversta į daugelį kalbų ačiū už darbą komandom iš viso pasaulio verčiant.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -155,51 +156,51 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Razor darbastalio įrankiai - Techninė informacija&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>Versija</translation>
     </message>
     <message>
         <source>Qt</source>
-        <translation type="unfinished"/>
+        <translation>Qt</translation>
     </message>
     <message>
         <source>Debug Build</source>
-        <translation type="unfinished"/>
+        <translation>Derinimo darinys</translation>
     </message>
     <message>
         <source>System Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Sistemos konfiguracija</translation>
     </message>
     <message>
         <source>Share Directory</source>
-        <translation type="unfinished"/>
+        <translation>Dalinimosi Aplankalas</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>Vertimai</translation>
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Vartotojo Aplankalai&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Duomenų namai</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Konfiguracijų namai</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation type="unfinished"/>
+        <translation>xdg Data Dirs</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg Podelio Namai</translation>
     </message>
     <message>
         <source>Xdg Runtime Home</source>
@@ -290,15 +291,15 @@
     </message>
     <message>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>Autoriai</translation>
     </message>
     <message>
         <source>Thanks</source>
-        <translation type="unfinished"/>
+        <translation>Ačiū</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>Vertimai</translation>
     </message>
     <message>
         <source>Technical Info</source>

@@ -6,8 +6,8 @@
         <translation>Hello World：</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>显示文本配置</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

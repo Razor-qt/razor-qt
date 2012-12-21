@@ -7,11 +7,11 @@
     </message>
     <message>
         <source>Transmitted %1</source>
-        <translation>ส่ง %1</translation>
+        <translation>ส่งแล้ว %1</translation>
     </message>
     <message>
         <source>Received %1</source>
-        <translation>รับ %1</translation>
+        <translation>รับมา %1</translation>
     </message>
     <message>
         <source>B</source>
@@ -42,7 +42,7 @@
     <name>RazorNetworkMonitorConfiguration</name>
     <message>
         <source>Razor Network Monitor settings</source>
-        <translation>ค่าตั้งการเฝ้าสังเกตเครือข่าย Razor</translation>
+        <translation>ค่าตั้งการเฝ้าสังเกตเครือข่ายเรเซอร์</translation>
     </message>
     <message>
         <source>General</source>

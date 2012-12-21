@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>设备 &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; 已移除。</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>没有可用设备。</translation>
+        <source>No devices are available</source>
+        <translation>无可用的设备</translation>
     </message>
 </context>
 <context>

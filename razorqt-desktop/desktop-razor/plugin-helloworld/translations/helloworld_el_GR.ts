@@ -6,8 +6,8 @@
         <translation>Γεια σου κόσμε:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Εμφάνιση διαμόρφωσης κειμένου</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

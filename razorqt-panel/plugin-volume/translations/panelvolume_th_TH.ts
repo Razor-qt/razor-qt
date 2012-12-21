@@ -2,15 +2,15 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>แสดงพื้นโต๊ะ: ไม่สามารถตั้ง &apos;%1&apos; เป็นปุ่มลัดส่วนกลางได้</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>การควบคุมระดับเสียง: ไม่สามารถตั้งปุ่มลัดส่วนกลาง &apos;%1&apos; ได้</translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation>ค่าตั้งควบคุมระดับเสียง Razor</translation>
+        <translation>ค่าตั้งควบคุมระดับเสียงเรเซอร์</translation>
     </message>
     <message>
         <source>Device to control</source>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>ตัวผสมภายนอก</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>เรียกใช้งานตัวผสม</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>ตััวผสม</translation>
     </message>
 </context>
 </TS>

@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>&lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; aygıtı çıkarıldı.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>Erişilebilir aygıt yok.</translation>
+        <source>No devices are available</source>
+        <translation>Kullanılabilir aygıt yok</translation>
     </message>
 </context>
 <context>

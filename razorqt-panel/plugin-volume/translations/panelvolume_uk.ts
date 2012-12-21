@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Показати стільницю: Не вдалося зареєструвати глобальне скорочення &apos;%1&apos;</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Зовнішній мікшер</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

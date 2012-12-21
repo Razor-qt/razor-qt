@@ -13,7 +13,7 @@ GenericName=Razor Session Configurator
 
 
 # Translations
-Comment[fr]=Configurer le module 'session' de Razor-Qt
+Comment[fr]=Configurer le module de session de Razor-Qt
 GenericName[fr]=Paramétreur de session Razor
 Name[fr]=Paramétreur de session Razor
 Icon[fr]=preferences-system-session-services

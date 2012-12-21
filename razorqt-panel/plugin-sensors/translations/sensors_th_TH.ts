@@ -3,7 +3,7 @@
     <name>RazorSensorsConfiguration</name>
     <message>
         <source>Razor Sensors Settings</source>
-        <translation>ค่าตั้งตัวตรวจจับ Razor</translation>
+        <translation>ค่าตั้งตัวตรวจจับเรเซอร์</translation>
     </message>
     <message>
         <source>Common</source>

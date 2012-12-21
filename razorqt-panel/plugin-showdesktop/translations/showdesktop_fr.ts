@@ -3,7 +3,7 @@
     <name>ShowDesktop</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Montrer le bureau : le raccourci global &apos;%1&apos; ne peut pas être défini</translation>
+        <translation>Montrer le bureau : le raccourci global &apos;%1&apos; ne peut être enregistré</translation>
     </message>
     <message>
         <source>Show Desktop</source>

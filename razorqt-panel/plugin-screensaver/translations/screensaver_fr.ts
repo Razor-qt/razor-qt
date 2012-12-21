@@ -3,7 +3,7 @@
     <name>PanelScreenSaver</name>
     <message>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>Le raccourci clavier global de l&apos;écran de veille : &apos;%1&apos; n&apos;a pas pu être enregistré</translation>
+        <translation>Raccourci global de l&apos;économiseur d&apos;écran : &apos;%1&apos; n&apos;a pu être enregistré</translation>
     </message>
 </context>
 </TS>

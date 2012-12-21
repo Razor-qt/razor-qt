@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Zeige Desktop: Globales Tastenkürzel &apos;%1&apos; kann nicht vergeben werden</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Externer Mixer</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

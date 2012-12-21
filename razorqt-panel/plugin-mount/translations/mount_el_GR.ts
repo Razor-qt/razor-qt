@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>Αφαιρέθηκε η συσκευή &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt;.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>Καμία διαθέσιμη συσκευή.</translation>
+        <source>No devices are available</source>
+        <translation>Μη διαθέσιμες συσκευές</translation>
     </message>
 </context>
 <context>

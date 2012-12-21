@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Tecla de atalho global: &quot;%1&quot; não pode ser registada</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>A tecla de atalho %1 não foi registada</translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Gestor de som externo</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>Iniciar gestor de som</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>Gestor de som</translation>
     </message>
 </context>
 </TS>

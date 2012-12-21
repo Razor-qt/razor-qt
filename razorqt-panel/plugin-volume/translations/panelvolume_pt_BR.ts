@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Mostrar Área De Trabalho: Atalho Global &apos;%1&apos;não pode se registrado</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Controle De Volume: Atalho global &apos;%1&apos; não pode ser registrado</translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Mixer Externo</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>Lançar mixer</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>Mixer</translation>
     </message>
 </context>
 </TS>

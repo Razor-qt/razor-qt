@@ -7,15 +7,15 @@
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>ระยะเวลาการเตือน</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>สำหรับการสิ้นสุดระยะเวลาของการเตือนบางตัว ซึ่งขึ้นอยู่กับค่าตั้งของเซิร์ฟเวอร์การเตือน</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>เวลาที่&quot;เซิร์ฟเวอร์ตัดสิน&quot;</translation>
     </message>
     <message>
         <source> sec</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation type="unfinished"/>
+        <translation>พื้นที่การเตือน:</translation>
     </message>
     <message>
         <source> px</source>
@@ -35,18 +35,18 @@
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation type="unfinished"/>
+        <translation>ความกว้างแสดงการเตือน:</translation>
     </message>
 </context>
 <context>
     <name>BasicSettings</name>
     <message>
         <source>Basic Settings</source>
-        <translation>การตั้งค่าพื้นฐาน</translation>
+        <translation>ค่าตั้งพื้นฐาน</translation>
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>แสดงการเตือนต่างๆ</translation>
     </message>
     <message>
         <source>Top/Left</source>
@@ -71,12 +71,14 @@
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;คำเตือน:&lt;/b&gt; ไม่มีดีมอนการเตือนทำงานเลย
+ค่ากันพลาดจะถูกใช้</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Wคำเตือน:&lt;/b&gt; ดีมอนการเตือนเจ้าอื่น (%1) กำลังทำงานอยู่
+ค่าตั้งเหล่านี้จะไม่มีผลกับมัน</translation>
     </message>
     <message>
         <source>Notification Summary</source>
@@ -84,18 +86,18 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation type="unfinished"/>
+        <translation>เนื้อหาการเตือน</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>การตั้งค่าการเตือนเรเซอร์</translation>
     </message>
     <message>
         <source>Basic Settings</source>
-        <translation>การตั้งค่าพื้นฐาน</translation>
+        <translation>ค่าตั้งพื้นฐาน</translation>
     </message>
     <message>
         <source>Advanced Settings</source>

@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>Erreur du gestionnaire d&apos;énergie de Razor</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>Échec de la mise en hibernation.</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -37,7 +26,7 @@
     </message>
     <message>
         <source>Suspend</source>
-        <translation>Suspendre</translation>
+        <translation>Mise en veille</translation>
     </message>
     <message>
         <source>Reboot</source>
@@ -53,11 +42,11 @@
     </message>
     <message>
         <source>Razor Session Suspend</source>
-        <translation>Suspendre la session Razor</translation>
+        <translation>Mise en veille de la session Razor</translation>
     </message>
     <message>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
-        <translation>Voulez-vous vraiment suspendre votre ordinateur?&lt;p&gt;Votre ordinateur consommera un peu d&apos;énergie. L&apos;état du système ne sera pas préservé si l&apos;énergie est perdue.</translation>
+        <translation>Voulez-vous vraiment mettre en veille votre ordinateur ? &lt;p&gt;Met votre ordinateur en veille avec consommation basse. L&apos;état du système ne sera pas préservé si le courant est perdu.</translation>
     </message>
     <message>
         <source>Razor Session Hibernate</source>
@@ -65,7 +54,7 @@
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
-        <translation>Voulez-vous vraiment mettre votre ordinateur en hibernation?&lt;p&gt;Votre ordinateur consommera un peu d&apos;énergie. L&apos;état du système sera préservé si l&apos;énergie est perdue.</translation>
+        <translation>Voulez-vous vraiment mettre votre ordinateur en hibernation ? &lt;p&gt;Met votre ordinateur en hibernation avec consommation basse. L&apos;état du système sera préservé si le courant est perdu.</translation>
     </message>
     <message>
         <source>Razor Session Reboot</source>
@@ -73,7 +62,7 @@
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
-        <translation>Voulez-vous vraiment redémarrer votre ordinateur? Tout travail non souvegardé sera perdu...</translation>
+        <translation>Voulez-vous vraiment redémarrer votre ordinateur ? Tout travail non sauvegardé sera perdu...</translation>
     </message>
     <message>
         <source>Razor Session Shutdown</source>
@@ -81,15 +70,15 @@
     </message>
     <message>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
-        <translation>Voulez-vous vraiment éteindre votre ordinateur? Tout travail non souvegardé sera perdu...</translation>
+        <translation>Voulez-vous vraiment éteindre votre ordinateur ? Tout travail non sauvegardé sera perdu...</translation>
     </message>
     <message>
         <source>Razor Session Logout</source>
-        <translation>Se déconnecter de la session Razor</translation>
+        <translation>Déconnexion de la session Razor</translation>
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
-        <translation>Voulez-vous vraiment vous déconnecter? Tout travail non souvegardé sera perdu...</translation>
+        <translation>Voulez-vous vraiment vous déconnecter ? Tout travail non sauvegardé sera perdu...</translation>
     </message>
     <message>
         <source>Razor Power Manager Error</source>
@@ -101,7 +90,7 @@
     </message>
     <message>
         <source>Suspend failed.</source>
-        <translation>Échec de la suspension.</translation>
+        <translation>Échec de la mise en veille.</translation>
     </message>
 </context>
 <context>
@@ -112,11 +101,11 @@
     </message>
     <message>
         <source>QDBusInterface is invalid</source>
-        <translation>QDBusInterface invalide</translation>
+        <translation>QDBusInterface n&apos;est pas valable</translation>
     </message>
     <message>
         <source>Power Manager Error (D-BUS call)</source>
-        <translation>Erreur du gestionnaire d&apos;énergie (appel D-BUS)</translation>
+        <translation>Erreur du gestionnaire d&apos;énergie (requête D-BUS)</translation>
     </message>
 </context>
 <context>
@@ -142,8 +131,20 @@
         <translation>License : %1</translation>
     </message>
     <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
+        <translation>Razor-qt est développé par &lt;a %1&gt;l&apos;équipe Razor et les contributeurs&lt;/a&gt; de Github.</translation>
+    </message>
+    <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation>Si vous êtes interessé à travailler avec notre équipe de développement, &lt;a %1&gt;joignez-vous à nous&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation>Remerciements spéciaux à :</translation>
+    </message>
+    <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation>Razor-qt est traduit en une multitude de langues grâce au travail d&apos;équipe de traductions dans le monde entier. </translation>
+        <translation>Razor-qt est traduit en une multitude de langues grâce au travail d&apos;équipes de traduction dans le monde entier. </translation>
     </message>
     <message>
         <source>Yes</source>
@@ -155,7 +156,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Boîte à outils du bureau Razor - Info technique&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Boîte à outils du bureau Razor - Infos techniques&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
@@ -247,31 +248,31 @@
     </message>
     <message>
         <source>Screen Saver Activation Error</source>
-        <translation>Erreur lors de la mise en veille</translation>
+        <translation>Erreur lors de l&apos;activation de l&apos;économiseur d&apos;écran</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started due its crash.</source>
-        <translation>Une erreur est survenue lors du démarrage de l&apos;écran de veille. xdg-screensaver n&apos;a pas pu démarrer.</translation>
+        <translation>Une erreur est survenue lors du démarrage de l&apos;économiseur d&apos;écran xdg-screensaver n&apos;a pas pu démarrer.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver is not installed correctly.</source>
-        <translation>Une erreur est survenue lors du démarrage de l&apos;écran de veille. xdg-screensaver n&apos;est pas installé correctement.</translation>
+        <translation>Une erreur est survenue lors du lancement de l&apos;économiseur d&apos;écran. xdg-screensaver n&apos;est pas installé correctement.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started.</source>
-        <translation>Une erreur est survenue lors du démarrage de l&apos;écran de veille. xdg-screensaver n&apos;a pas pu démarrer.</translation>
+        <translation>Une erreur est survenue lors du lancement de l&apos;économiseur d&apos;écran. xdg-screensaver n&apos;a pas pu démarrer.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Syntax error in xdg-screensaver arguments.</source>
-        <translation>Une erreur est survenue lors du démarrage de l&apos;écran de veille. Les arguments de xdg-screensaver contiennent des erreurs de syntaxe.</translation>
+        <translation>Une erreur est survenue lors du lancement de l&apos;économiseur d&apos;écran. Erreur de syntaxe dans les arguments de xdg-screensaver.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Ensure you have xscreensaver installed and running.</source>
-        <translation>Une erreur est survenue lors du démarrage de l&apos;écran de veille. Assurez-vous que screensaver est  installé et actif.</translation>
+        <translation>Une erreur est survenue lors du lancement de l&apos;économiseur d&apos;écran. Assurez-vous que xscreensaver est installé et actif.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Action &apos;activate&apos; failed. Ensure you have xscreensaver installed and running.</source>
-        <translation>Une erreur est survenue lors du démarrage de l&apos;écran de veille. L&apos;action &apos;activate&apos; a échoué. Assurez-vous que screensaver est  installé et actif.</translation>
+        <translation>Une erreur est survenue lors du lancement de l&apos;économiseur d&apos;écran. L&apos;action &apos;activate&apos; a échoué. Assurez-vous quexscreensaver est installé et actif.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>

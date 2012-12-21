@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>خطأٌ في إدارة الطَّاقة لنظام ريزر</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>فشل الانتقال إلى حالة السُّبات</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -123,27 +112,39 @@
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation type="unfinished"/>
+        <translation>النسخة: %1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>بيئة أسطح مكتبية متقدمة وسهلة الاستخدام وسريعة مبنية على تقنيات كيوت.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation type="unfinished"/>
+        <translation>حقوق الطبع: %1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
-        <translation type="unfinished"/>
+        <translation>الصفحة الرئيسية: %1</translation>
     </message>
     <message>
         <source>License: %1</source>
-        <translation type="unfinished"/>
+        <translation>الرخصة: %1</translation>
+    </message>
+    <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
+        <translation>يتم تطوير ريزر كيوت من قبل &lt;a %1&gt;فريق ريزر كيوت ومساهمون&lt;/a&gt; في موقع جيتهوب.</translation>
+    </message>
+    <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation>&lt;a %1&gt;انضم إلينا&lt;/a&gt; في حال كنت مهتماً بالعمل مع فريق مطورينا.</translation>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation>عرفانٌ خاصٌّ لـ:</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation type="unfinished"/>
+        <translation>تتم ترجمة بيئة كيوت ريزر إلى عدة لغات بفضل انجازات فرق ترجمة في كافة أنحاء العالم.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -155,63 +156,63 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;أدوات سطح مكتب ريزر - معلومات فنية&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation type="unfinished"/>
+        <translation>النسخة</translation>
     </message>
     <message>
         <source>Qt</source>
-        <translation type="unfinished"/>
+        <translation>كيوت</translation>
     </message>
     <message>
         <source>Debug Build</source>
-        <translation type="unfinished"/>
+        <translation>نسخة اختبارية</translation>
     </message>
     <message>
         <source>System Configuration</source>
-        <translation type="unfinished"/>
+        <translation>تعريفات النظام</translation>
     </message>
     <message>
         <source>Share Directory</source>
-        <translation type="unfinished"/>
+        <translation>مشاركة الحافظات</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>الترجمات</translation>
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;أدلة المستخدم&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation type="unfinished"/>
+        <translation>حافظة البيانات الرئيسية ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation type="unfinished"/>
+        <translation>حافظة التعريف الرئيسية ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation type="unfinished"/>
+        <translation>أدلة البيانات ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
-        <translation type="unfinished"/>
+        <translation>حافظة الحفظ المؤقت ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
     <message>
         <source>Xdg Runtime Home</source>
-        <translation type="unfinished"/>
+        <translation>حافظة العمل ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation type="unfinished"/>
+        <translation>أدلة التشغيل اﻵلي ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
-        <translation type="unfinished"/>
+        <translation>حافظة التشغيل اﻵلي الرئيسية ﻷداة تعريف التطبيقات الرئيسية</translation>
     </message>
 </context>
 <context>
@@ -290,15 +291,15 @@
     </message>
     <message>
         <source>Authors</source>
-        <translation type="unfinished"/>
+        <translation>المؤلفون</translation>
     </message>
     <message>
         <source>Thanks</source>
-        <translation type="unfinished"/>
+        <translation>الشكر والامتنان</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation type="unfinished"/>
+        <translation>الترجمات</translation>
     </message>
     <message>
         <source>Technical Info</source>

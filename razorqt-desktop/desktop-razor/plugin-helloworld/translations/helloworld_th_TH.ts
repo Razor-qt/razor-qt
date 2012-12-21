@@ -6,7 +6,7 @@
         <translation>สวัสดีชาวโลก:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
+        <source>Display Text Configuration</source>
         <translation>แสดงการตั้งค่าข้อความ</translation>
     </message>
     <message>

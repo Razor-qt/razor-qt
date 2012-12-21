@@ -9,5 +9,5 @@ Comment=Displays network status and activity.
 
 
 # Translations
-Comment[fr]=Bloc-notes
-Name[fr]=Bloc-notes de l'écran
+Comment[fr]=Affiche l'état et l'activité du réseau.
+Name[fr]=Surveillance du réseau

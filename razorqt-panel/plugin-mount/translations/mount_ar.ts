@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>الجهاز &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/b&gt; مفصول.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>ﻻ توجد أجهزة.</translation>
+        <source>No devices are available</source>
+        <translation>ﻻ توجد أجهزة متوفرة</translation>
     </message>
 </context>
 <context>

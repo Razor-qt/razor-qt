@@ -6,8 +6,8 @@
         <translation>Merhaba Dünya:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Metin Yapılandırılması Görüntüle</translation>
+        <source>Display Text Configuration</source>
+        <translation>Metin Yapılandırmasını Görüntüle</translation>
     </message>
     <message>
         <source>Edit HTML</source>

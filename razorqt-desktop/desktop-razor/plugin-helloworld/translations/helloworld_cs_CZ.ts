@@ -6,8 +6,8 @@
         <translation>Nazdar lidi:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Nastavení zobrazení textu</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

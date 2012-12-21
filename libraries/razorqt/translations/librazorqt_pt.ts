@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>Erro do gestor de energia do Razor</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>Falha ao hibernar.</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -140,6 +129,18 @@
     <message>
         <source>License: %1</source>
         <translation>Licença: %1</translation>
+    </message>
+    <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
+        <translation>O Razor-qt é desenvolvido no GitHub  pela &lt;a %1&gt;equipa e colaboradores do Razor-qt&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation>Se quiser integrar a equipa de desenvolvimento, &lt;a %1&gt;contacte-nos&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation>Um especial obrigado a:</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>

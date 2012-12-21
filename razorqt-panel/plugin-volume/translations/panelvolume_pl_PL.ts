@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Pokaż Pulpit: Globalny skrót &apos;%1&apos; nie może zostać zarejestrowany</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Kontrola głosnosci: Skrót głobalny &apos;%1&apos; nie może być zarejestrowany</translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Zewnętrzny mikser</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>Uruchom mikser</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>Mikser</translation>
     </message>
 </context>
 </TS>

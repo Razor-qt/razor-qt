@@ -3,7 +3,7 @@
     <name>RazorClockConfiguration</name>
     <message>
         <source>Razor Clock Settings</source>
-        <translation>ค่าตั้งนาฬิกา Razor</translation>
+        <translation>ค่าตั้งนาฬิกาเรเซอร์</translation>
     </message>
     <message>
         <source>Time</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Fon&amp;t</source>
-        <translation type="unfinished"/>
+        <translation>&amp;แบบอักษร</translation>
     </message>
     <message>
         <source>Show date in &amp;new line</source>

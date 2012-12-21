@@ -3,7 +3,7 @@
     <name>ConfigPanelDialog</name>
     <message>
         <source>Configure panel</source>
-        <translation>ปรับแต่งพาเนล</translation>
+        <translation>ตั้งค่าพาเนล</translation>
     </message>
     <message>
         <source>Panel size</source>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Configure panel...</source>
-        <translation>ปรับแต่งพาเนล...</translation>
+        <translation>ตั้งค่าพาเนล...</translation>
     </message>
     <message>
         <source>Add plugins ...</source>
@@ -105,7 +105,7 @@
     <name>RazorPanelPlugin</name>
     <message>
         <source>Configure</source>
-        <translation>ปรับแต่ง</translation>
+        <translation>ตั้งค่า</translation>
     </message>
     <message>
         <source>Move</source>
@@ -120,7 +120,7 @@
     <name>RazorPanelPrivate</name>
     <message>
         <source>Configure panel</source>
-        <translation>ปรับแต่งพาเนล</translation>
+        <translation>ตั้งค่าพาเนล</translation>
     </message>
 </context>
 </TS>

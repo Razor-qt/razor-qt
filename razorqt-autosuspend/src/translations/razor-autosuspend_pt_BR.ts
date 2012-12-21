@@ -14,7 +14,7 @@
     <name>BatteryInfo</name>
     <message>
         <source>Razor Autosuspend</source>
-        <translation type="unfinished"/>
+        <translation>Auto suspender</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation type="unfinished"/>
+        <translation>Níquel-hidreto metálico</translation>
     </message>
     <message>
         <source>Unknown</source>

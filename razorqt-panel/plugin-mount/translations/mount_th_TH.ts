@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>อุปกรณ์ &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; ถูกถอดออกแล้ว</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>ไม่มีอุปกรณ์ที่ใช้งานได้</translation>
+        <source>No devices are available</source>
+        <translation>ไม่มีอุปกรณ์ใดๆ อยู่เลย</translation>
     </message>
 </context>
 <context>

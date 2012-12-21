@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>โปรแกรมจัดการพลังงานของ Razor ขัดข้อง</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>จำศีลเครื่องล้มเหลว</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -53,7 +42,7 @@
     </message>
     <message>
         <source>Razor Session Suspend</source>
-        <translation>พักการทำงานของ Razor</translation>
+        <translation>พักวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
@@ -61,7 +50,7 @@
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation>จำศีลการทำงานของ Razor</translation>
+        <translation>จำศีลวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
@@ -69,7 +58,7 @@
     </message>
     <message>
         <source>Razor Session Reboot</source>
-        <translation> เริ่มการทำงานของ Razor ใหม่</translation>
+        <translation> เริ่มวาระงานเรเซอร์ใหม่</translation>
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
@@ -77,7 +66,7 @@
     </message>
     <message>
         <source>Razor Session Shutdown</source>
-        <translation>จบการทำงานของ razor</translation>
+        <translation>จบวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
@@ -85,7 +74,7 @@
     </message>
     <message>
         <source>Razor Session Logout</source>
-        <translation>ออกจากระบบ Razor</translation>
+        <translation>ออกจากวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
@@ -93,7 +82,7 @@
     </message>
     <message>
         <source>Razor Power Manager Error</source>
-        <translation>โปรแกรมจัดการพลังงานของ Razor ขัดข้อง</translation>
+        <translation>โปรแกรมจัดการพลังงานเรเซอร์ขัดข้อง</translation>
     </message>
     <message>
         <source>Hibernate failed.</source>
@@ -112,11 +101,11 @@
     </message>
     <message>
         <source>QDBusInterface is invalid</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ การเริ่มงานล้มเหลว ตรวจดูให้แน่ใจว่าคุณได้ติดตั้งและเริ่มงาน xscreensaver แล้ว</translation>
+        <translation>QDBusInterface ผิดพลาด</translation>
     </message>
     <message>
         <source>Power Manager Error (D-BUS call)</source>
-        <translation>ตัวจัดการพลังงาน Error (D-BUS call)</translation>
+        <translation>ตัวจัดการพลังงานขัดข้อง (เรียกใช้ D-BUS)</translation>
     </message>
 </context>
 <context>
@@ -127,11 +116,11 @@
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation>สภาพแวดล้อมเดสก์ท็อปที่เพียบพร้อม ใช้ง่าย รวดเร็ว โดยใช้เทคโลยีจาก Qt</translation>
+        <translation>ชุดโต๊ะงานที่เพียบพร้อม ใช้ง่าย รวดเร็ว โดยใช้เทคโลยีจาก Qt</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation>ลิขสิทธิ์สูกต้อง: %1-%2 %3</translation>
+        <translation>ลิขสิทธิ์ถูกต้อง: %1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
@@ -142,8 +131,20 @@
         <translation>สัญญาอนุญาต: %1</translation>
     </message>
     <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
+        <translation>Razor-qt ถูกพัฒนาโดย &lt;a %1&gt;ทีมงานผู้สนับสนุน Razor-qt&lt;/a&gt; ที่ Github.</translation>
+    </message>
+    <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation>ถ้าคุณสนใจทำงานกับทีมพัฒนาของพวกเรา &lt;a %1&gt;เข้าร่วมกับพวกเราสิ&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation>ขอขอบคุณเป็นพิเศษไปยัง:</translation>
+    </message>
+    <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation>Razor-qt ได้แปลเป็นภาษาต่างๆ มากมาย จึงขอขอบคุณไปยังทีมงานแปลต่าง ๆ จากทั่วโลก</translation>
+        <translation>Razor-qt ถูกแปลเป็นภาษาต่างๆ มากมาย จึงขอขอบคุณไปยังทีมงานแปลต่าง ๆ จากทั่วโลก</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -155,7 +156,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation>&lt;b&gt;กล่องเครื่องมือเดกส์ท็อป Razor - ข้อมูลทางเทคนิค&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;กล่องเครื่องมือพื้นโต๊ะเรเซอร์ - ข้อมูลทางเทคนิค&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
@@ -183,7 +184,7 @@
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation>&lt;b&gt;User Directories&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;ไดเรกทอรีต่างๆ ของผู้ใช้&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
@@ -225,7 +226,7 @@
     <name>RazorNotificationPrivate</name>
     <message>
         <source>Notifications Fallback</source>
-        <translation>การเตือนต่างๆ กรณีกันพลาด</translation>
+        <translation>การเตือนต่างๆ (กันพลาด)</translation>
     </message>
 </context>
 <context>
@@ -251,38 +252,38 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started due its crash.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ xdg-screensaver ไม่สามารถเริ่มงานได้เนื่องจากมันเสียหาย</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, xdg-screensaver ไม่สามารถเริ่มงานได้เนื่องจากมันเสียหาย</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver is not installed correctly.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ xdg-screensaver ไม่ได้ถูกติดตั้งอย่างถูกต้อง</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, xdg-screensaver ไม่ได้ถูกติดตั้งอย่างถูกต้อง</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ xdg-screensaver ไม่สามารถเริ่มงานได้</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, xdg-screensaver ไม่สามารถเริ่มงานได้</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Syntax error in xdg-screensaver arguments.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ เกิด syntax error ใน xdg-screensaver อาร์กิวเมนต์ </translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, เกิด syntax error ใน xdg-screensaver อาร์กิวเมนต์ </translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Ensure you have xscreensaver installed and running.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ ตรวจดูให้แน่ใจว่าคุณได้ติดตั้งและเริ่มงาน xdg-screensaver แล้ว</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, ตรวจดูให้แน่ใจว่าคุณได้ติดตั้งและเริ่มงาน xdg-screensaver แล้ว</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Action &apos;activate&apos; failed. Ensure you have xscreensaver installed and running.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ xdg-screensaver ไม่สามารถเริ่มงานได้</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, การเรียกงานล้มเหลว, ตรวจดูให้แน่ใจว่าคุณได้ติดตั้งและเริ่มงาน xdg-screensaver แล้ว</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ ไม่ทราบการขัดข้อง - undocumented กลับคืนค่าจาก xdg-screensaver=%1.</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, ไม่ทราบการขัดข้อง - undocumented กลับคืนค่าจาก xdg-screensaver=%1.</translation>
     </message>
 </context>
 <context>
     <name>about</name>
     <message>
         <source> About Razor</source>
-        <translation>เกี่ยวกับ Razor</translation>
+        <translation>เกี่ยวกับเรเซอร์</translation>
     </message>
     <message>
         <source>About</source>

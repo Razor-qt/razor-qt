@@ -3,14 +3,14 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>CPU load %1%</source>
-        <translation type="unfinished"/>
+        <translation>حمل وحدة المعالجة المركزية %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor CPU Load settings</source>
-        <translation type="unfinished"/>
+        <translation>إعدادات حمل وحدة المعالجة المركزية لبيئة ريزر</translation>
     </message>
     <message>
         <source>General</source>
@@ -22,31 +22,31 @@
     </message>
     <message>
         <source>Update interval:</source>
-        <translation type="unfinished"/>
+        <translation>فترة التحديث:</translation>
     </message>
     <message>
         <source>sec</source>
-        <translation type="unfinished"/>
+        <translation>ثا</translation>
     </message>
     <message>
         <source>Bar orientation:</source>
-        <translation type="unfinished"/>
+        <translation>اتجاه الشريط</translation>
     </message>
     <message>
         <source>Bottom up</source>
-        <translation type="unfinished"/>
+        <translation>من اﻷسفل إلى اﻷعلى</translation>
     </message>
     <message>
         <source>Top down</source>
-        <translation type="unfinished"/>
+        <translation>من اﻷعلى إلى اﻷسفل</translation>
     </message>
     <message>
         <source>Left to right</source>
-        <translation type="unfinished"/>
+        <translation>من اليسار إلى اليمين</translation>
     </message>
     <message>
         <source>Right to left</source>
-        <translation type="unfinished"/>
+        <translation>من اليمين إلى اليسار</translation>
     </message>
 </context>
 </TS>

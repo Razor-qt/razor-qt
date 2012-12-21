@@ -3,7 +3,7 @@
     <name>ConfigureDialog</name>
     <message>
         <source>Razor-runner Settings</source>
-        <translation>ค่าตั้งกล่องป้อนคำสั่ง-razor</translation>
+        <translation>ค่าตั้งกล่องป้อนคำสั่งเรเซอร์</translation>
     </message>
     <message>
         <source>Appearance</source>
@@ -46,11 +46,11 @@
     </message>
     <message>
         <source>Configure razor-runner</source>
-        <translation>ปรับแต่งกล่องป้อนคำสั่ง-razor</translation>
+        <translation>ปรับแต่งกล่องป้อนคำสั่งเรเซอร์</translation>
     </message>
     <message>
         <source>Clear razor-runner History</source>
-        <translation>ล้างประวัติกล่องป้อนคำสั่ง-razor</translation>
+        <translation>ล้างประวัติกล่องป้อนคำสั่งเรเซอร์</translation>
     </message>
     <message>
         <source>Press &quot;%1&quot; to see dialog.</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
         <source>Razor Power Management</source>
-        <translation>การจัดการพลังงานของ Razor</translation>
+        <translation>การจัดการพลังงานเรเซอร์</translation>
     </message>
 </context>
 </TS>

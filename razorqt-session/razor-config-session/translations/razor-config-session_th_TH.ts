@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Wait for system tray</source>
-        <translation>รอสำหรับถาดระบบ</translation>
+        <translation>รอถาดระบบ</translation>
     </message>
     <message>
         <source>Select Application</source>
@@ -30,11 +30,11 @@
     <name>AutoStartItemModel</name>
     <message>
         <source>Global Autostart</source>
-        <translation>การเริ่มโปรแกรมอัตโนมัติ (ส่วนกลาง)</translation>
+        <translation>เริ่มงานอัตโนมัติ (ส่วนกลาง)</translation>
     </message>
     <message>
         <source>Razor Autostart</source>
-        <translation>เริ่มโปรแกรมอัตโนมัติ Razor</translation>
+        <translation>เริ่มงานอัตโนมัติ (เรเซอร์)</translation>
     </message>
     <message>
         <source>Location: %1</source>
@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Application Autostart</source>
-        <translation>การเริ่มโปรแกรมอัตโนมัติ</translation>
+        <translation>เริ่มโปรแกรมอัตโนมัติ</translation>
     </message>
     <message>
         <source>Error</source>
@@ -84,11 +84,11 @@
     </message>
     <message>
         <source>Basic Settings</source>
-        <translation>การตั้งค่าพื้นฐาน</translation>
+        <translation>ค่าตั้งพื้นฐาน</translation>
     </message>
     <message>
         <source>Razor Modules</source>
-        <translation>มอดูลต่างๆ Razor</translation>
+        <translation>มอดูลของเรเซอร์</translation>
     </message>
     <message>
         <source>Start</source>
@@ -167,7 +167,7 @@
     <name>SessionConfigWindow</name>
     <message>
         <source>Razor Session Configuration</source>
-        <translation>การตั้งค่าวาระงาน Razor</translation>
+        <translation>การตั้งค่าวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -183,7 +183,7 @@
     </message>
     <message>
         <source>Environment (Advanced)</source>
-        <translation>สภวาดแวดล้อม (ขั้นสูง)</translation>
+        <translation>สภาพแวดล้อม (ขั้นสูง)</translation>
     </message>
     <message>
         <source>Session Restart Required</source>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>คุณจำเป็นต้องทำการเริ่มวาระงานพื้นโต๊ะ(วาระงาน-razor)ใหม่ เพื่อโหลดค่าตั้ง ใช้การออกระบบจากเมนูหลัก</translation>
+        <translation>คุณจำเป็นต้องทำการเริ่มวาระโต๊ะงานใหม่ (วาระงานเรเซอร์) เพื่อโหลดค่าตั้ง โปรดใช้เมนูหลักเพื่อออกระบบ</translation>
     </message>
 </context>
 </TS>

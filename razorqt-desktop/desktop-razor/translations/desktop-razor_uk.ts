@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation type="unfinished"/>
+        <translation>Отримати зображення для стільниці</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
@@ -39,26 +39,26 @@
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Вибрати зображення стільниці</translation>
     </message>
 </context>
 <context>
     <name>DesktopScene</name>
     <message>
         <source>Unlock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>Розблокувати стільницю</translation>
     </message>
     <message>
         <source>Add New Desktop Widget...</source>
-        <translation type="unfinished"/>
+        <translation>Додати новий віджет для стільниці</translation>
     </message>
     <message>
         <source>Remove Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>Видалити додаток</translation>
     </message>
     <message>
         <source>Configure Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>Сконфігурувати додаток</translation>
     </message>
     <message>
         <source>Set Desktop Background...</source>
@@ -70,15 +70,15 @@
     </message>
     <message>
         <source>New Desktop Widget</source>
-        <translation type="unfinished"/>
+        <translation>Новий віджет для стільниці</translation>
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
-        <translation type="unfinished"/>
+        <translation>Немає вільного місця для додання нового віджета </translation>
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
-        <translation type="unfinished"/>
+        <translation>Видалити віджет для стільниці?</translation>
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
@@ -86,7 +86,7 @@
     </message>
     <message>
         <source>Lock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>Заблокувати стільницю</translation>
     </message>
 </context>
 <context>

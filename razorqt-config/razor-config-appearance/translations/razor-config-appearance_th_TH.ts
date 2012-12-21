@@ -3,7 +3,7 @@
     <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>ปรับแต่งรูปโฉม Razor</translation>
+        <translation>ตั้งค่ารูปลักษณ์เรเซอร์</translation>
     </message>
     <message>
         <source>Icons Theme</source>
@@ -14,7 +14,7 @@
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>ปรับแต่งรูปโฉม Razor </translation>
+        <translation>ตั้งค่ารูปลักษณ์เรเซอร์</translation>
     </message>
     <message>
         <source>Icons Theme</source>
@@ -22,14 +22,14 @@
     </message>
     <message>
         <source>Razor Theme</source>
-        <translation>ชุดตกแต่ง Razor</translation>
+        <translation>ชุดตกแต่งเรเซอร์</translation>
     </message>
 </context>
 <context>
     <name>RazorThemeConfig</name>
     <message>
         <source>Razor Theme</source>
-        <translation>ชุดตกแต่ง Razor</translation>
+        <translation>ชุดตกแต่งเรเซอร์</translation>
     </message>
 </context>
 </TS>

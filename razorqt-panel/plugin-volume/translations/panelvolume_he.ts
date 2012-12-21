@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>הצג שולחן עבודה: קיצור דרך גלובלי &apos;%1&apos; לא ניתן להרשמה</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>בקרת שמע: קיצור דרך גלובלי &apos;%1&apos; לא ניתן לרישום</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation>עוצמה מעל 100% (0dB) מותרת</translation>
+        <translation>עוצמה מעל 100% (0 דציבל) מותרת</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>מערבל חיצוני</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>שיגור מערבל</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>מערבל</translation>
     </message>
 </context>
 </TS>

@@ -3,46 +3,46 @@
     <name>RazorNetworkMonitor</name>
     <message>
         <source>Network interface &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>واجهة الشبكة &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Transmitted %1</source>
-        <translation type="unfinished"/>
+        <translation>تم نقل %1</translation>
     </message>
     <message>
         <source>Received %1</source>
-        <translation type="unfinished"/>
+        <translation>تم استلام %1</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>ثُمانية</translation>
     </message>
     <message>
         <source>KiB</source>
-        <translation type="unfinished"/>
+        <translation>كث - كيلو ثمانية</translation>
     </message>
     <message>
         <source>MiB</source>
-        <translation type="unfinished"/>
+        <translation>مث  - ميغا ثمانية</translation>
     </message>
     <message>
         <source>GiB</source>
-        <translation type="unfinished"/>
+        <translation>غث - غيغا ثمانية</translation>
     </message>
     <message>
         <source>TiB</source>
-        <translation type="unfinished"/>
+        <translation>تث - تيرا ثمانية</translation>
     </message>
     <message>
         <source>PiB</source>
-        <translation type="unfinished"/>
+        <translation>بث - بيتا ثمانية</translation>
     </message>
 </context>
 <context>
     <name>RazorNetworkMonitorConfiguration</name>
     <message>
         <source>Razor Network Monitor settings</source>
-        <translation type="unfinished"/>
+        <translation>إعدادات مراقب الشبكة لبيئة ريزر</translation>
     </message>
     <message>
         <source>General</source>
@@ -50,27 +50,27 @@
     </message>
     <message>
         <source>Interface</source>
-        <translation type="unfinished"/>
+        <translation>الواجهة</translation>
     </message>
     <message>
         <source>Modem</source>
-        <translation type="unfinished"/>
+        <translation>المودم</translation>
     </message>
     <message>
         <source>Monitor</source>
-        <translation type="unfinished"/>
+        <translation>مراقبة</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>الشبكة</translation>
     </message>
     <message>
         <source>Wireless</source>
-        <translation type="unfinished"/>
+        <translation>ﻻسلكي</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>اﻷيقونة</translation>
     </message>
 </context>
 </TS>

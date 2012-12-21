@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation>การตั้งค่าการพักเครื่องอัตโนมัติ Razor</translation>
+        <translation>การตั้งค่าการพักเครื่องอัตโนมัติเรเซอร์</translation>
     </message>
     <message>
         <source>General</source>

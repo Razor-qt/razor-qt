@@ -6,8 +6,8 @@
         <translation>ハローワールド：</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>テキスト設定の表示</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

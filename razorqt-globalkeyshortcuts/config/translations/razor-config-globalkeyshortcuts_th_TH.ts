@@ -14,7 +14,7 @@
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation>ตัวแก้ไขปุ่มลัด Razor</translation>
+        <translation>ตัวแก้ไขปุ่มลัดเรเซอร์</translation>
     </message>
     <message>
         <source>Description</source>
@@ -73,19 +73,19 @@
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"/>
+        <translation>คำถาม</translation>
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation type="unfinished"/>
+        <translation>ลบกลุ่ม: %1? (ค่าที่อยู่ข้างในจะถูกลบไปด้วยทั้งหมด)</translation>
     </message>
     <message>
         <source>Delete %1?</source>
-        <translation type="unfinished"/>
+        <translation>ลบ %1หรือไม่</translation>
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>
-        <translation type="unfinished"/>
+        <translation> ค่าปุ่ม %1 มีอยู่ก่อนแล้ว, จะแทนที่อันเก่าหรือไม่</translation>
     </message>
 </context>
 </TS>

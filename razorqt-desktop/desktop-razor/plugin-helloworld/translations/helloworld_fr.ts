@@ -6,8 +6,8 @@
         <translation>Salut le monde :</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Affichage de la configuration du texte</translation>
+        <source>Display Text Configuration</source>
+        <translation>Afficher la configuration du texte</translation>
     </message>
     <message>
         <source>Edit HTML</source>
@@ -18,7 +18,7 @@
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation>Affichage du texte simple. Un gadget de déboguage, d&apos;exemple.</translation>
+        <translation>Affichage du texte simple. Un gadget de déboguage/d&apos;exemple.</translation>
     </message>
 </context>
 </TS>

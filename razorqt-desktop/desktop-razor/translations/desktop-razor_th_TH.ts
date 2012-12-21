@@ -3,27 +3,27 @@
     <name>DesktopBackgroundDialog</name>
     <message>
         <source>Desktop Background Settings</source>
-        <translation type="unfinished"/>
+        <translation>ค่าตั้งพื้นหลังโต๊ะงาน</translation>
     </message>
     <message>
         <source>Background &amp;Color...</source>
-        <translation type="unfinished"/>
+        <translation>สีพื้น&amp;หลัง...</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>ตัวอย่าง</translation>
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ภาพพื้นหลัง...</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ภาพพื้นหลังจากระบบแฟ้ม...</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
-        <translation type="unfinished"/>
+        <translation>รักษาอัตราส่วนภาพ</translation>
     </message>
     <message>
         <source>Select Background Color</source>
@@ -39,18 +39,18 @@
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation>เลือกภาพพื้นหลังระบบ</translation>
+        <translation>เลือกภาพพื้นหลังจากระบบแฟ้ม</translation>
     </message>
 </context>
 <context>
     <name>DesktopScene</name>
     <message>
         <source>Unlock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>ปลดล็อคโต๊ะงาน...</translation>
     </message>
     <message>
         <source>Add New Desktop Widget...</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่มวิดเจ็ตโต๊ะงาน...</translation>
     </message>
     <message>
         <source>Remove Plugin...</source>
@@ -58,35 +58,35 @@
     </message>
     <message>
         <source>Configure Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งค่าปลั๊กอิน...</translation>
     </message>
     <message>
         <source>Set Desktop Background...</source>
-        <translation type="unfinished"/>
+        <translation>ใช้เป็นพื้นหลัง...</translation>
     </message>
     <message>
         <source>About Razor...</source>
-        <translation type="unfinished"/>
+        <translation>เกี่ยวกับเรเซอร์...</translation>
     </message>
     <message>
         <source>New Desktop Widget</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่มวิดเจ็ตโต๊ะงาน</translation>
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีพื้นที่ว่างพอสำหรับที่จะเพิ่มวิดเจ็ตโต๊ะงาน</translation>
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
-        <translation type="unfinished"/>
+        <translation>ลบวิดเจ็ตโต๊ะงาน</translation>
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>แน่ใจนะว่าจะลบวิดเจ็ต &apos;%1&apos; ตัวนี้</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>ล็อกหน้าจอ...</translation>
     </message>
 </context>
 <context>
@@ -111,7 +111,7 @@
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่มประสิทธิภาพโต๊ะงานอย่างเต็มที่ด้วย พวงกระดิ่งและนกหวีดของเรเซอร์</translation>
     </message>
 </context>
 </TS>

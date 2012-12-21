@@ -3,7 +3,7 @@
     <name>RazorModuleManager</name>
     <message>
         <source>Razor Session Crash Report</source>
-        <translation>รายงานความเสียหายของวาระงาน Razor</translation>
+        <translation>รายงานความเสียหายของวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
@@ -26,7 +26,7 @@ Before starting to use the Razor-qt, you might want to select the Windows Manage
     </message>
     <message>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
-        <translation>คุณสามารถเปลี่ยนโปรแกรมจัดการหน้าต่างทีหลังในเวลาใดก็ได้ทางตัวตั้งค่าวาระงาน Razor</translation>
+        <translation>คุณสามารถเปลี่ยนโปรแกรมจัดการหน้าต่างทีหลังในเวลาใดก็ได้ทางตัวตั้งค่าวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Other ...</source>
@@ -34,7 +34,7 @@ Before starting to use the Razor-qt, you might want to select the Windows Manage
     </message>
     <message>
         <source>Choose your favorite one.</source>
-        <translation>เลื่อกที่คุณชอบมาหนึ่งอย่าง</translation>
+        <translation>เลื่อกที่คุณชอบมาสักอย่าง</translation>
     </message>
 </context>
 </TS>

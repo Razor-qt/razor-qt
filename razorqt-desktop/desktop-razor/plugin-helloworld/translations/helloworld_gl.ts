@@ -6,8 +6,8 @@
         <translation>Ola Mundo:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Mostrar a configuracion de texto</translation>
+        <source>Display Text Configuration</source>
+        <translation>Mostrar a configuración de texto</translation>
     </message>
     <message>
         <source>Edit HTML</source>

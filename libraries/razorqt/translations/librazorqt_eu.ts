@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>Razor energia-kudeatzailearen errorea</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>Hibernatzeak huts egin du.</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -140,6 +129,18 @@
     <message>
         <source>License: %1</source>
         <translation>Lizentzia: %1</translation>
+    </message>
+    <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>

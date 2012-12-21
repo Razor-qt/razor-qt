@@ -3,15 +3,15 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation type="unfinished"/>
+        <translation>ไอดีผู้ใช้</translation>
     </message>
     <message>
         <source>password</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่าน</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>เข้าระบบ</translation>
     </message>
     <message>
         <source>Cancel</source>

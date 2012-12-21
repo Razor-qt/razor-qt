@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Notepad:</source>
-        <translation>แผ่นบันทึก</translation>
+        <translation>แผ่นบันทึก:</translation>
     </message>
 </context>
 </TS>

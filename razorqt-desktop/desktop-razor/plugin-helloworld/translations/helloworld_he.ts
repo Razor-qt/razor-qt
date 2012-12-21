@@ -6,8 +6,8 @@
         <translation>שלום עולם</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>הצגת תצורת תמליל</translation>
+        <source>Display Text Configuration</source>
+        <translation>תצורת הצגה של תמליל</translation>
     </message>
     <message>
         <source>Edit HTML</source>

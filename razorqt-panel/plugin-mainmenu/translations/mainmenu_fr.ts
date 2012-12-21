@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Show text</source>
-        <translation>Montrer le texte</translation>
+        <translation>Afficher le texte</translation>
     </message>
     <message>
         <source>Button text</source>
@@ -34,7 +34,7 @@
     </message>
     <message>
         <source>Keyboard Shortcut</source>
-        <translation>Raccourcis clavier</translation>
+        <translation>Raccourci clavier</translation>
     </message>
     <message>
         <source>Click the button to record shortcut:</source>

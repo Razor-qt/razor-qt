@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>A(z) &lt;b&gt;&lt;nobr&gt;„%1”&lt;/nobr&gt;&lt;/b&gt; eszköz eltávolítva.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>Nem érhetők el eszközök.</translation>
+        <source>No devices are available</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

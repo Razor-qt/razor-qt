@@ -3,11 +3,11 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation>การตั้งค่าชุดตกแต่งเมาส์ Razor</translation>
+        <translation>การตั้งค่าชุดตกแต่งเมาส์เรเซอร์</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
-        <translation>เลือกชุดตกแต่งเคอร์เซอร์ที่คุณต้องการจะใช้ (วางเคอร์เซอร์ไว้บนตัวอย่างเพื่อทดสอบมัน). &lt;b&gt;วาระงาน Razor จำเป็นต้องเริ่มใหม่หลังการเปลี่ยนแปลงนี้&lt;/b&gt;:</translation>
+        <translation>เลือกชุดตกแต่งเคอร์เซอร์ที่คุณต้องการใช้ (วางเคอร์เซอร์ไว้บนรูปเพื่อดูตัวอย่าง) &lt;b&gt;เมื่อเปลี่ยนแล้ว จำเป็นต้องเริ่มวาระงานเรเซอร์ใหม่&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>&amp;Install New Theme...</source>

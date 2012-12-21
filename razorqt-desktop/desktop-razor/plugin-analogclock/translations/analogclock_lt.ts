@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Clock:</source>
-        <translation type="unfinished"/>
+        <translation>Laikrodis:</translation>
     </message>
 </context>
 </TS>

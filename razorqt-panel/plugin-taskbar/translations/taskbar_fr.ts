@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>To &amp;Desktop</source>
-        <translation>Vers &amp;le bureau</translation>
+        <translation>Vers le &amp;bureau</translation>
     </message>
     <message>
         <source>&amp;All Desktops</source>
@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Ma&amp;ximize</source>
-        <translation>Maximiser</translation>
+        <translation>Ma&amp;ximiser</translation>
     </message>
     <message>
         <source>Maximize vertically</source>
@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Roll down</source>
-        <translation>Enrouler vers le bas</translation>
+        <translation>Dérouler</translation>
     </message>
     <message>
         <source>Roll up</source>
-        <translation>Enrouler vers le haut</translation>
+        <translation>Enrouler</translation>
     </message>
     <message>
         <source>&amp;Layer</source>
@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Always on &amp;top</source>
-        <translation>Toujours au &amp;dessus</translation>
+        <translation>Toujours sur le &amp;dessus</translation>
     </message>
     <message>
         <source>&amp;Normal</source>
@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Button style</source>
-        <translation>Style de boutons</translation>
+        <translation>Style du bouton</translation>
     </message>
     <message>
         <source>Max button width</source>
@@ -106,11 +106,11 @@
     </message>
     <message>
         <source>Icon and text</source>
-        <translation>Icone et texte</translation>
+        <translation>Icône et texte</translation>
     </message>
     <message>
         <source>Only icon</source>
-        <translation>Icone seule</translation>
+        <translation>Icône seule</translation>
     </message>
     <message>
         <source>Only text</source>

@@ -24,9 +24,12 @@
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
         <translation>O dispositivo &lt;b&gt;&lt;nobr&gt;&quot;%1&lt;/nobr&gt;&lt;/b&gt; retirouse.</translation>
     </message>
+</context>
+<context>
+    <name>Popup</name>
     <message>
-        <source>No devices Available.</source>
-        <translation>Non hai dispositivos dispoñíbeis.</translation>
+        <source>No devices are available</source>
+        <translation>Non hai dispositivos dispoñíbeis</translation>
     </message>
 </context>
 <context>

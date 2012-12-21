@@ -6,7 +6,7 @@
         <translation>Hei maailma:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
+        <source>Display Text Configuration</source>
         <translation type="unfinished"/>
     </message>
     <message>

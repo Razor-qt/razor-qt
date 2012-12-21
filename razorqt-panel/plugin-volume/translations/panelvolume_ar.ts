@@ -2,51 +2,62 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>إظهار سطح المكتب: ﻻ يمكن تسجيل اختصار لوحة المفاتيح العامُّ `%1`</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>التحكم بالصوت: ﻻ يمكن تسجيل الاختصار الشامل &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation type="unfinished"/>
+        <translation>إعدادات التحكم بالصوت لبيئة ريزر</translation>
     </message>
     <message>
         <source>Device to control</source>
-        <translation type="unfinished"/>
+        <translation>الجاز الذي سيتم التحكم به</translation>
     </message>
     <message>
         <source>Alsa</source>
-        <translation type="unfinished"/>
+        <translation>بنية لينوكس المتقدمة للصوت</translation>
     </message>
     <message>
         <source>PulseAudio</source>
-        <translation type="unfinished"/>
+        <translation>بَلْس أوديو</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>السلوك</translation>
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation type="unfinished"/>
+        <translation>إخماد عند النقر على الزر اﻷوسط</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation type="unfinished"/>
+        <translation>إظهار عند النقر بالفأرة</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation type="unfinished"/>
+        <translation>السماح بصوت يتجاوز 100% (0ديسيبل)</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
-        <translation type="unfinished"/>
+        <translation>خطوة ضبط الصوت</translation>
     </message>
     <message>
         <source>External Mixer</source>
-        <translation type="unfinished"/>
+        <translation>المازج الخارجي</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>تشغيل المازج</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>المازج</translation>
     </message>
 </context>
 </TS>

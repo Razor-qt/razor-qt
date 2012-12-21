@@ -3,7 +3,7 @@
     <name>ConfigureDialog</name>
     <message>
         <source>Razor-runner Settings</source>
-        <translation>Paramètres du lanceur de commandes</translation>
+        <translation>Paramètres du lanceur de commandes Razor</translation>
     </message>
     <message>
         <source>Appearance</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Monitor where the mouse</source>
-        <translation>Moniteur où se trouve la souris</translation>
+        <translation>Surveille où se trouve la souris</translation>
     </message>
     <message>
         <source>Always on %1 monitor</source>
@@ -46,15 +46,15 @@
     </message>
     <message>
         <source>Configure razor-runner</source>
-        <translation>Configurer le lanceur de commandes</translation>
+        <translation>Configurer le lanceur de commandes Razor</translation>
     </message>
     <message>
         <source>Clear razor-runner History</source>
-        <translation>Effacer l&apos;historique du lanceur de commandes</translation>
+        <translation>Effacer l&apos;historique du lanceur de commandes Razor</translation>
     </message>
     <message>
         <source>Press &quot;%1&quot; to see dialog.</source>
-        <translation>Appuyer sur &quot;%1&quot; pour voir le dialogue</translation>
+        <translation>Appuyer sur &quot;%1&quot; pour voir le dialogue.</translation>
     </message>
 </context>
 <context>
@@ -69,7 +69,7 @@
     </message>
     <message>
         <source>Razor Power Management</source>
-        <translation>Gestion de l&apos;énergie</translation>
+        <translation>Gestion de l&apos;énergie Razor</translation>
     </message>
 </context>
 </TS>

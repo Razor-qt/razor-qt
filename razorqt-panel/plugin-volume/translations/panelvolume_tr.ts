@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Masaüstünü Göster: Evrensel kısayol &apos;%1&apos; kaydedilemez</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Ses Kontrolü : Evrensel kısayol &apos;%1&apos;  kayıt edilemiyor</translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Harici Karıştırıcı</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>Karıştırıcı&apos;yı başlat</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>Karıştırıcı</translation>
     </message>
 </context>
 </TS>

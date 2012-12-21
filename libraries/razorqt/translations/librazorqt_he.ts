@@ -19,17 +19,6 @@
     </message>
 </context>
 <context>
-    <name>MessageBox</name>
-    <message>
-        <source>Razor Power Manager Error</source>
-        <translation>שגיאת מנהל צריכת כֺח ‫Razor</translation>
-    </message>
-    <message>
-        <source>Hibernate failed.</source>
-        <translation>הדממה נכשלה.</translation>
-    </message>
-</context>
-<context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
@@ -85,7 +74,7 @@
     </message>
     <message>
         <source>Razor Session Logout</source>
-        <translation>יציאה מן סשן ‫Razor</translation>
+        <translation>ניתוק סשן ‫Razor</translation>
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
@@ -142,8 +131,20 @@
         <translation>רישיון: %1</translation>
     </message>
     <message>
+        <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
+        <translation>‫Razor-qt הינה מפותחת על ידי &lt;a %1&gt;נבחרת Razor-qt וגם תורמים&lt;/a&gt; אצל Github.</translation>
+    </message>
+    <message>
+        <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
+        <translation>אם הינך מעוניין לעבוד עם נבחרת הפיתוח שלנו, &lt;a %1&gt;הצטרף אלינו&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Special thanks to:</source>
+        <translation>תודה מיוחדת לאלו:</translation>
+    </message>
+    <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation>‫Razor-qt הינה מתורגמת אל שפות רבות הודות למלאכתן של קבוצות תרגום מכל העולם.</translation>
+        <translation>‫Razor-qt מתורגמת אל שפות רבות הודות למלאכתן של קבוצות תרגום מכל העולם.</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -247,7 +248,7 @@
     </message>
     <message>
         <source>Screen Saver Activation Error</source>
-        <translation>שגיאת הפעלת שומרר מסך</translation>
+        <translation>שגיאת הפעלת שומר מסך</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started due its crash.</source>

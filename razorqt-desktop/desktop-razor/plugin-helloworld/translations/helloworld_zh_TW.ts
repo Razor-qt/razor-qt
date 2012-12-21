@@ -6,8 +6,8 @@
         <translation>世界你好:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>顯示文字設定</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

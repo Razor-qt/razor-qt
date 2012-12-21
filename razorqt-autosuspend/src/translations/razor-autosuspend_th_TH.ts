@@ -7,14 +7,14 @@
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>การพักเครื่องโดยอัตโนมัติ Razor ไม่สามารถหาข้อมูลใดๆ ของแบตเตอรีได้เลย - ไม่สามารถใช้งานได้ขณะที่พลังงานต่ำ</translation>
+        <translation>การพักเครื่องอัตโนมัติเรเซอร์ ไม่สามารถหาข้อมูลใดๆ ของแบตเตอรีได้เลย - ไม่สามารถใช้งานได้ขณะที่พลังงานต่ำ</translation>
     </message>
 </context>
 <context>
     <name>BatteryInfo</name>
     <message>
         <source>Razor Autosuspend</source>
-        <translation type="unfinished"/>
+        <translation>การพักเครื่องอัตโนมัติเรเซอร์</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation type="unfinished"/>
+        <translation>Nickel metal hybride</translation>
     </message>
     <message>
         <source>Unknown</source>

@@ -90,7 +90,7 @@
     <name>RazorPanel</name>
     <message>
         <source>Panel</source>
-        <translation>Bloc-notes</translation>
+        <translation>Tableau de bord</translation>
     </message>
     <message>
         <source>Configure panel...</source>

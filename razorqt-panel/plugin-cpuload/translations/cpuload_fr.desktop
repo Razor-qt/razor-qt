@@ -9,5 +9,5 @@ Comment=Displays the current CPU load.
 
 
 # Translations
-Comment[fr]=Affichage la charge actuelle du processeur
-Name[fr]=Moniteur du processeur
+Comment[fr]=Affichage la charge actuelle de l'UCT
+Name[fr]=Moniteur de l'UCT

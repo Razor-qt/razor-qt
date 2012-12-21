@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>Preview</source>
-        <translation>Prévisualisation</translation>
+        <translation>Aperçu</translation>
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation>Obtenez l&apos;image de papier peint...</translation>
+        <translation>Obtenez l&apos;image du papier peint...</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>

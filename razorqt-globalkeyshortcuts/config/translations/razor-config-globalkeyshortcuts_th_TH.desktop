@@ -14,7 +14,7 @@ GenericName=Razor Global Shortcut Configuration
 
 
 # Translations
-Name[th_TH]=การตั้งค่าปุ่มลัด Razor
-Icon[th_TH]=การปรับแต่ง-เดสก์ท็อป-แป้นพิมพ์
-Comment[th_TH]=ตั้งค่าปุ่มลัดหลักของ Razor เดกส์ท็อป
-GenericName[th_TH]=การตั้งค่าปุ่มลัดหลัก Razor
+Name[th_TH]=ตั้งค่าปุ่มลัดเรเซอร์
+Icon[th_TH]=ค่าปรับแต่ง-โต๊ะงาน-แป้นพิมพ์
+Comment[th_TH]=ตั้งค่าปุ่มลัดหลักของโต๊ะงานเรเซอร์
+GenericName[th_TH]=ตั้งค่าปุ่มลัดหลักเรเซอร์

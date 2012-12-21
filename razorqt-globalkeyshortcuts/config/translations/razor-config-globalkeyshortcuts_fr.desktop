@@ -15,6 +15,6 @@ GenericName=Razor Global Shortcut Configuration
 
 # Translations
 Name[fr]=Configuration des raccourcis Razor
-Icon[fr]=préférences-bureau-clavier
+Icon[fr]=preferences-desktop-keyboard
 Comment[fr]=Configurer les raccourcis globaux du bureau Razor
 GenericName[fr]=Configuration des raccourcis globaux Razor

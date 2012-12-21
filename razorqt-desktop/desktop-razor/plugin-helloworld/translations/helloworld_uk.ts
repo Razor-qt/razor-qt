@@ -6,8 +6,8 @@
         <translation>Привіт, світ:</translation>
     </message>
     <message>
-        <source>Display Text Configuretion</source>
-        <translation>Показує налаштування тексту</translation>
+        <source>Display Text Configuration</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit HTML</source>

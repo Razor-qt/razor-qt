@@ -88,15 +88,15 @@
     </message>
     <message>
         <source>Razor Modules</source>
-        <translation type="unfinished"/>
+        <translation>Razor moduliai</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Pradėti</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"/>
+        <translation>Sustabdyti</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -160,7 +160,7 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation type="unfinished"/>
+        <translation>Paleistas</translation>
     </message>
 </context>
 <context>

@@ -2,8 +2,8 @@
 <context>
     <name>RazorVolume</name>
     <message>
-        <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Εμφάνιση επιφάνειας εργασίας: Δεν είναι δυνατή η καταχώριση της καθολικής συντόμευσης &quot;%1&quot;</translation>
+        <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
+        <translation>Έλεγχος Έντασης: Γενική συντόμευση &apos;%1&apos; δεν μπορεί να καταχωρηθεί</translation>
     </message>
 </context>
 <context>
@@ -47,6 +47,17 @@
     <message>
         <source>External Mixer</source>
         <translation>Εξωτερικός μίκτης</translation>
+    </message>
+</context>
+<context>
+    <name>VolumePopup</name>
+    <message>
+        <source>Launch mixer</source>
+        <translation>Εκκίνηση μίκτη</translation>
+    </message>
+    <message>
+        <source>Mixer</source>
+        <translation>Μίκτης</translation>
     </message>
 </context>
 </TS>
