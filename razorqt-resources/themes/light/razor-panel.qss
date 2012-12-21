@@ -37,6 +37,7 @@ RazorPanelPlugin > QToolButton {
     margin: 0;
     border: 2px solid transparent;
     border-radius: 3px;
+    color: black;
     qproperty-iconSize: 22px;
 }
 
@@ -146,6 +147,10 @@ MountButton {}
 #RazorMountPopup {
     background-color: #d7d3cc;
     border: 1px solid #a59f94;
+}
+
+#RazorMountPopup > QLabel {
+    color: black;
 }
 
 /*
