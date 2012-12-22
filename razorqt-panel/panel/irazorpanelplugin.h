@@ -160,11 +160,25 @@ public:
     /**
     This function is called when the user activates the plugin. reason specifies the reason for activation.
     IRazorPanelPlugin::ActivationReason enumerates the various reasons.
+
+    The default implementation do nothing.
      **/
     virtual void activated(ActivationReason reason) {}
 
+    /**
+    This function is called when the panel geometry or lines count are changed.
 
+    The default implementation do nothing.
+
+     **/
+    virtual void realign() {}
+
+    /**
+    Returns the panel object.
+     **/
     IRazorPanel *panel() const { return mPanel; }
+
+
     QSettings *settings() const { return mSettings; }
     const RazorPluginInfo *desktopFile() const { return mDesktopFile; }
 
@@ -177,6 +191,9 @@ public:
         return mPanel->calculatePopupWindowPos(this, windowSize);
     }
 
+
+    virtual bool isSeparate() const { return false;  }
+    virtual bool isExpandable() const { return false; }
 private:
     QSettings *mSettings;
     IRazorPanel *mPanel;

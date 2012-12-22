@@ -41,10 +41,12 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QtCore/QCryptographicHash>
 
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgicon.h>
 
+QColor Plugin::mMoveMarkerColor= QColor(255, 0, 0, 255);
 
 /************************************************
 
@@ -52,8 +54,8 @@
 Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, const QString &settingsGroup, RazorPanel *panel) :
     QFrame(panel),
     mDesktopFile(desktopFile),
+    mPluginLoader(0),
     mPlugin(0),
-    mPluginLib(0),
     mPluginWidget(0),
     mAlignment(AlignLeft),
     mSettingsGroup(settingsGroup),
@@ -63,6 +65,8 @@ Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, 
     mSettings = new RazorSettings(settingsFile, QSettings::IniFormat, this);
     connect(mSettings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     mSettings->beginGroup(settingsGroup);
+
+    mSettingsHash = calcSettingsHash();
 
     setWindowTitle(desktopFile.name());
 
@@ -92,7 +96,7 @@ Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, 
         return;
     }
 
-    setObjectName(mPlugin->themeId());
+    setObjectName(mPlugin->themeId() + "Plugin");
     QString s = mSettings->value("alignment").toString();
 
     // Retrun default value
@@ -119,6 +123,8 @@ Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, 
         setLayout(layout);
         layout->addWidget(mPluginWidget, 0, 0);
     }
+
+    saveSettings();
 }
 
 
@@ -128,7 +134,17 @@ Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, 
 Plugin::~Plugin()
 {
     delete mPlugin;
-    delete mPluginLib;
+    if (mPluginLoader)
+    {
+        mPluginLoader->unload();
+        delete mPluginLoader;
+    }
+}
+
+void Plugin::setAlignment(Plugin::Alignment alignment)
+{
+    mAlignment = alignment;
+    saveSettings();
 }
 
 
@@ -137,26 +153,25 @@ Plugin::~Plugin()
  ************************************************/
 bool Plugin::loadLib(const QString &libraryName)
 {
-    QPluginLoader loader(libraryName);
+    mPluginLoader = new QPluginLoader(libraryName);
 
-
-    if (!loader.load())
+    if (!mPluginLoader->load())
     {
-        qWarning() << loader.errorString();
+        qWarning() << mPluginLoader->errorString();
         return false;
     }
 
-    QObject *obj = loader.instance();
+    QObject *obj = mPluginLoader->instance();
     if (!obj)
     {
-        qWarning() << loader.errorString();
+        qWarning() << mPluginLoader->errorString();
         return false;
     }
 
-    mPluginLib= qobject_cast<IRazorPanelPluginLibrary*>(obj);
-    if (!mPluginLib)
+    IRazorPanelPluginLibrary* pluginLib= qobject_cast<IRazorPanelPluginLibrary*>(obj);
+    if (!pluginLib)
     {
-        qWarning() << QString("Can't load plugin \"%1\". Plugin is not a IRazorPanelPluginLibrary.").arg(loader.fileName());
+        qWarning() << QString("Can't load plugin \"%1\". Plugin is not a IRazorPanelPluginLibrary.").arg(mPluginLoader->fileName());
         delete obj;
         return false;
     }
@@ -166,17 +181,38 @@ bool Plugin::loadLib(const QString &libraryName)
     startupInfo.desktopFile = &mDesktopFile;
     startupInfo.razorPanel = mPanel;
 
-    mPlugin = mPluginLib->instance(startupInfo);
+    mPlugin = pluginLib->instance(startupInfo);
     if (!mPlugin)
     {
-        qWarning() << QString("Can't load plugin \"%1\". Plugin can't build IRazorPanelPlugin.").arg(loader.fileName());
+        qWarning() << QString("Can't load plugin \"%1\". Plugin can't build IRazorPanelPlugin.").arg(mPluginLoader->fileName());
         delete obj;
         return false;
     }
 
     mPluginWidget = mPlugin->widget();
-    this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    if (mPluginWidget)
+    {
+        mPluginWidget->setObjectName(mPlugin->themeId());
+    }
+    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
     return true;
+}
+
+
+/************************************************
+
+ ************************************************/
+QByteArray Plugin::calcSettingsHash()
+{
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    QStringList keys = mSettings->allKeys();
+    foreach (const QString &key, keys)
+    {
+        hash.addData(key.toUtf8());
+        hash.addData(mSettings->value(key).toByteArray());
+    }
+    return hash.result();
 }
 
 
@@ -185,7 +221,12 @@ bool Plugin::loadLib(const QString &libraryName)
  ************************************************/
 void Plugin::settingsChanged()
 {
-    mPlugin->settingsChanged();
+    QByteArray hash = calcSettingsHash();
+    if (mSettingsHash != hash)
+    {
+        mSettingsHash = hash;
+        mPlugin->settingsChanged();
+    }
 }
 
 
@@ -194,7 +235,6 @@ void Plugin::settingsChanged()
  ************************************************/
 void Plugin::saveSettings()
 {
-    qDebug() << mSettingsGroup;
     mSettings->setValue("alignment", (mAlignment == AlignLeft) ? "Left" : "Right");
     mSettings->setValue("type", mDesktopFile.id());
     mSettings->sync();
@@ -214,42 +254,39 @@ void Plugin::x11EventFilter(XEvent *event)
 /************************************************
 
  ************************************************/
-bool Plugin::event(QEvent *event)
+void Plugin::contextMenuEvent(QContextMenuEvent *event)
 {
-    switch (event->type())
+    mPanel->showPopupMenu(this);
+}
+
+
+/************************************************
+
+ ************************************************/
+void Plugin::mousePressEvent(QMouseEvent *event)
+{
+    switch (event->button())
     {
-    case QEvent::ContextMenu:
-        mPanel->showPopupMenu(this);
-        return true;
+    case Qt::LeftButton:
+        mPlugin->activated(IRazorPanelPlugin::Trigger);
+        break;
 
-    case QEvent::MouseButtonRelease:
-    {
-        QMouseEvent *e =  static_cast<QMouseEvent*>(event);
-        switch (e->button())
-        {
-        case Qt::LeftButton:
-            mPlugin->activated(IRazorPanelPlugin::Trigger);
-            break;
-
-        case Qt::MiddleButton:
-            mPlugin->activated(IRazorPanelPlugin::MiddleClick);
-            break;
-
-        default:
-            break;
-        }
-        return true;
-    }
-
-    case QEvent::MouseButtonDblClick:
-        mPlugin->activated(IRazorPanelPlugin::DoubleClick);
-        return true;
+    case Qt::MiddleButton:
+        mPlugin->activated(IRazorPanelPlugin::MiddleClick);
+        break;
 
     default:
-            break;
+        break;
     }
+}
 
-    return QFrame::event(event);
+
+/************************************************
+
+ ************************************************/
+void Plugin::mouseDoubleClickEvent(QMouseEvent*)
+{
+    mPlugin->activated(IRazorPanelPlugin::DoubleClick);
 }
 
 
@@ -270,7 +307,7 @@ QMenu *Plugin::popupMenu() const
 
     QAction* moveAction = new QAction(XdgIcon::fromTheme("transform-move"), tr("Move"), menu);
     menu->addAction(moveAction);
-    connect(moveAction, SIGNAL(triggered()), this, SLOT(requestMove()));
+    connect(moveAction, SIGNAL(triggered()), this, SIGNAL(startMove()));
 
     menu->addSeparator();
 
@@ -285,6 +322,34 @@ QMenu *Plugin::popupMenu() const
 /************************************************
 
  ************************************************/
+bool Plugin::isSeparate() const
+{
+   return mPlugin->isSeparate();
+}
+
+
+/************************************************
+
+ ************************************************/
+bool Plugin::isExpandable() const
+{
+    return mPlugin->isExpandable();
+}
+
+
+/************************************************
+
+ ************************************************/
+void Plugin::realign()
+{
+    if (mPlugin)
+        mPlugin->realign();
+}
+
+
+/************************************************
+
+ ************************************************/
 void Plugin::showConfigureDialog()
 {
     QDialog *dialog =
@@ -293,7 +358,9 @@ void Plugin::showConfigureDialog()
     if (!dialog)
     {
         dialog = mPlugin->configureDialog();
+        dialog->setParent(this, Qt::Dialog);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(this, SIGNAL(destroyed()), dialog, SLOT(close()));
     }
 
     if (!dialog)
@@ -302,15 +369,6 @@ void Plugin::showConfigureDialog()
     dialog->show();
     dialog->raise();
     dialog->activateWindow();
-}
-
-
-/************************************************
-
- ************************************************/
-void Plugin::requestMove()
-{
-    emit move(this);
 }
 
 

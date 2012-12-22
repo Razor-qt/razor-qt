@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
@@ -25,32 +25,25 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razorhelloworld.h"
-#include <QtGui/QMessageBox>
-#include <QDebug>
 
-Q_EXPORT_PLUGIN2(panelhelloworld, RazorHelloWorldPluginLibrary)
+#ifndef POPUPMENU_H
+#define POPUPMENU_H
 
+#include <QMenu>
 
-RazorHelloWorldPlugin::RazorHelloWorldPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
-    QObject(),
-    IRazorPanelPlugin(startupInfo)
+class PopupMenu: public QMenu
 {
-    setObjectName("HelloWorld");
+public:
+    explicit PopupMenu(QWidget *parent = 0): QMenu(parent) {}
+    explicit PopupMenu(const QString &title, QWidget *parent = 0): QMenu(title, parent) {}
 
-    mButton.setText(tr("HW"));
-    connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
-}
+    QAction* addTitle(const QIcon &icon, const QString &text);
+    QAction* addTitle(const QString &text);
 
+    bool eventFilter(QObject *object, QEvent *event);
 
-QWidget *RazorHelloWorldPlugin::widget()
-{
-    return &mButton;
-}
+protected:
+    virtual void keyPressEvent(QKeyEvent* e);
+};
 
-void RazorHelloWorldPlugin::showMessage()
-{
-    QMessageBox::information(&mButton, tr("Panel"), tr("Hello, World!"));
-}
-
-
+#endif // POPUPMENU_H

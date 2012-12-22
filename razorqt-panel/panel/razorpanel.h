@@ -31,14 +31,14 @@
 
 #include <QtGui/QFrame>
 #include <QtCore/QString>
-#include <QtGui/QBoxLayout>
-//#include <QMetaType>
+#include <QtCore/QTimer>
 #include "irazorpanel.h"
 
 class QMenu;
-class RazorPanelPrivate;
 class Plugin;
-
+class RazorSettings;
+class RazorPluginInfo;
+class RazorPanelLayout;
 
 /*! \brief The RazorPanel class provides a single razor-panel.
  */
@@ -46,8 +46,10 @@ class RazorPanel : public QFrame, public IRazorPanel
 {
     Q_OBJECT
 
-    //Q_ENUMS(Position)
-    //Q_PROPERTY(IRazorPanel::Position position READ position)// NOTIFY positionChanged)
+    Q_PROPERTY(QString position READ qssPosition)
+    Q_PROPERTY(int lineSize  READ qssLineSize  WRITE setQssLineSize)
+    Q_PROPERTY(int lineCount READ qssLineCount WRITE setQssLineCount)
+
 public:
     enum Alignment {
         AlignmentLeft   = -1,
@@ -55,33 +57,97 @@ public:
         AlignmentRight  =  1
     };
 
-    RazorPanel(QWidget *parent = 0);
+    RazorPanel(const QString &configFile, QWidget *parent = 0);
     virtual ~RazorPanel();
+
+    void readSettings();
 
     void showPopupMenu(Plugin *plugin = 0);
     void x11EventFilter(XEvent* event);
 
     // IRazorPanel .........................
-    Position position() const;
+    IRazorPanel::Position position() const { return mPosition; }
     QRect globalGometry() const;
     QRect calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const QSize &windowSize) const;
+
+    // For QSS properties ..................
+    QString qssPosition() const;
+    int qssLineSize() const { return mQssLineSize; }
+    void setQssLineSize(int value);
+
+    int qssLineCount() const { return mQssLineCount; }
+    void setQssLineCount(int value);
+
+    static bool canPlacedOn(int screenNum, RazorPanel::Position position);
+    static QString positionToStr(IRazorPanel::Position position);
+    static IRazorPanel::Position strToPosition(const QString &str, IRazorPanel::Position defaultValue);
+
+
+    // Settings
+    int lineSize() const { return mLineSize; }
+    int lineCount() const { return mLineCount; }
+    int length() const { return mLength; }
+    bool lengthInPercents() const { return mLengthInPercents; }
+    RazorPanel::Alignment alignment() const { return mAlignment; }
+    int screenNum() const { return mScreenNum; }
+
+    RazorSettings *settings() const { return mSettings; }
 
 public slots:
     void show();
 
+    // Settings
+    void setLineSize(int value);
+    void setLineCount(int value);
+    void setLength(int length, bool inPercents);
+    void setPosition(int screen, IRazorPanel::Position position);
+    void setAlignment(RazorPanel::Alignment value);
+
+    void saveSettings(bool later=false);
+
 signals:
-    void positionChanged();
-    void layoutDirectionChanged(QBoxLayout::Direction direction);
-    void panelRealigned();
+    void realigned();
     
 protected:
-    virtual bool event(QEvent* e);
+    bool event(QEvent *event);
+
+private slots:
+    void screensChangeds();
+    void addPlugin(const RazorPluginInfo &desktopFile);
+    void showConfigDialog();
+    void showAddPluginDialog();
+    void realign();
+    void removePlugin();
+    void pluginMoved();
 
 private:
-    RazorPanelPrivate* const d_ptr;
-    Q_DECLARE_PRIVATE(RazorPanel)
+    RazorPanelLayout* mLayout;
+    RazorSettings *mSettings;
+    QList<Plugin*> mPlugins;
+
+    int findAvailableScreen(RazorPanel::Position position);
+
+    void loadPlugins();
+    Plugin *loadPlugin(const RazorPluginInfo &desktopFile, const QString &settingsGroup);
+    Plugin *findPlugin(const IRazorPanelPlugin *iPlugin) const;
+
+    QString findNewPluginSettingsGroup(const QString &pluginType) const;
+    void updateStyleSheet();
+
+    int mQssLineSize;
+    int mQssLineCount;
+    int mLineSize;
+    int mLineCount;
+
+    int mLength;
+    bool mLengthInPercents;
+
+    RazorPanel::Alignment mAlignment;
+
+    IRazorPanel::Position mPosition;
+    int mScreenNum;
+    QTimer mDelaySave;
 };
 
-//Q_DECLARE_METATYPE(IRazorPanel::Position)
 
 #endif // RAZORPANEL_H

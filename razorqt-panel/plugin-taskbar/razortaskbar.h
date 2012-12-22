@@ -30,24 +30,27 @@
 #ifndef RAZORTASKBAR_H
 #define RAZORTASKBAR_H
 
-#include "../panel/razorpanelplugin.h"
 #include "razortaskbarconfiguration.h"
-#include <QtCore/QObject>
+#include <QtGui/QFrame>
+#include <QtGui/QBoxLayout>
 #include <QtCore/QHash>
 #include <X11/Xlib.h>
+#include "../panel/irazorpanel.h"
 
 class RazorTaskButton;
+class IRazorPanelPlugin;
 
-
-class RazorTaskBar : public RazorPanelPlugin
+class RazorTaskBar : public QFrame
 {
     Q_OBJECT
 public:
-    explicit RazorTaskBar(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    explicit RazorTaskBar(IRazorPanelPlugin *plugin, QWidget* parent = 0);
     virtual ~RazorTaskBar();
 
     virtual void x11EventFilter(XEvent* event);
-    virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
+    virtual void settingsChanged();
+
+    void realign();
 
 public slots:
     void activeWindowChanged();
@@ -55,16 +58,11 @@ public slots:
 protected:
     void updateSizePolicy();
 
-protected slots:
-    virtual void settingsChanged();
-    virtual void showConfigureDialog();
-    virtual void realign();
-
 private:
     void refreshTaskList();
     void refreshButtonVisibility();
     QHash<Window, RazorTaskButton*> mButtonsHash;
-    QBoxLayout*  mLayout;
+    QBoxLayout *mLayout;
     RazorTaskButton* buttonByWindow(Window window) const;
     bool windowOnActiveDesktop(Window window) const;
     Window mRootWindow;
@@ -76,7 +74,7 @@ private:
 
     void handlePropertyNotify(XPropertyEvent* event);
     void wheelEvent(QWheelEvent* event);
+    IRazorPanelPlugin *mPlugin;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
 #endif // RAZORTASKBAR_H

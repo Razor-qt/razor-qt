@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>RazorConfigDialog</class>
  <widget class="QWidget" name="RazorConfigDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>272</width>
+    <height>231</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -47,6 +55,10 @@
    <header location="global">razorqt/pageselectwidget.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>moduleList</tabstop>
+  <tabstop>buttons</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

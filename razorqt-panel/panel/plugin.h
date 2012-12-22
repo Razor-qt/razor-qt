@@ -32,17 +32,21 @@
 #include <QFrame>
 #include <QString>
 #include <razorqt/razorplugininfo.h>
+#include "irazorpanel.h"
 
+class QPluginLoader;
 class QSettings;
-class IRazorPanel;
 class IRazorPanelPlugin;
 class IRazorPanelPluginLibrary;
 class RazorPanel;
 class QMenu;
 
+
 class Plugin : public QFrame
 {
     Q_OBJECT
+
+    Q_PROPERTY(QColor moveMarkerColor READ moveMarkerColor WRITE setMoveMarkerColor)
 public:
     enum Alignment {
         AlignLeft,
@@ -55,7 +59,7 @@ public:
 
     bool isLoaded() const { return mPlugin != 0; }
     Alignment alignment() const { return mAlignment; }
-    void setAlignment(Alignment alignment) { mAlignment = alignment; }
+    void setAlignment(Alignment alignment);
 
     QString settingsGroup() const { return mSettingsGroup; }
 
@@ -65,29 +69,44 @@ public:
     QMenu* popupMenu() const;
     IRazorPanelPlugin * iPlugin() const { return mPlugin; }
 
+    bool isSeparate() const;
+    bool isExpandable() const;
+
+    // For QSS properties ..................
+    static QColor moveMarkerColor() { return mMoveMarkerColor; }
+    static void setMoveMarkerColor(QColor color) { mMoveMarkerColor = color; }
+
+public slots:
+    void realign();
+
 signals:
-    void move(QWidget *widget);
+    void startMove();
     void remove();
 
 protected:
-    virtual bool event(QEvent* event);
+    void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 
 private:
     bool loadLib(const QString &libraryName);
 
     const RazorPluginInfo mDesktopFile;
+    QByteArray calcSettingsHash();
+    QPluginLoader *mPluginLoader;
     IRazorPanelPlugin *mPlugin;
-    IRazorPanelPluginLibrary *mPluginLib;
     QWidget *mPluginWidget;
     Alignment mAlignment;
     QSettings *mSettings;
     QString mSettingsGroup;
     RazorPanel *mPanel;
+    QByteArray mSettingsHash;
+
+    static QColor mMoveMarkerColor;
 
 private slots:
     void settingsChanged();
     void showConfigureDialog();
-    void requestMove();
     void requestRemove();
 };
 

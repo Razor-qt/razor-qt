@@ -59,14 +59,9 @@ RazorMainMenu::RazorMainMenu(const IRazorPanelPluginStartupInfo &startupInfo):
     IRazorPanelPlugin(startupInfo),
     mMenu(0)
 {
-
-    setObjectName("MainMenu");
-
-    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mButton.setObjectName("Button");
+    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     connect(&mButton, SIGNAL(clicked()), this, SLOT(showMenu()));
-    //connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
 
     mPowerManager = new PowerManager(this);
     mScreenSaver = new ScreenSaver(this);
@@ -149,6 +144,7 @@ void RazorMainMenu::settingsChanged()
     }
     else
     {
+        mButton.setText("");
         mButton.setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 

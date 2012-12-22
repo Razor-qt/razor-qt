@@ -25,32 +25,33 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "razorhelloworld.h"
-#include <QtGui/QMessageBox>
-#include <QDebug>
 
-Q_EXPORT_PLUGIN2(panelhelloworld, RazorHelloWorldPluginLibrary)
+#include "razortaskbarplugin.h"
+
+Q_EXPORT_PLUGIN2(taskbar, RazorTaskBarPluginLibrary)
 
 
-RazorHelloWorldPlugin::RazorHelloWorldPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
+RazorTaskBarPlugin::RazorTaskBarPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
     IRazorPanelPlugin(startupInfo)
-{
-    setObjectName("HelloWorld");
 
-    mButton.setText(tr("HW"));
-    connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
+{
+    mTaskBar = new RazorTaskBar(this);
+
 }
 
 
-QWidget *RazorHelloWorldPlugin::widget()
+RazorTaskBarPlugin::~RazorTaskBarPlugin()
 {
-    return &mButton;
+    delete mTaskBar;
 }
 
-void RazorHelloWorldPlugin::showMessage()
+QDialog *RazorTaskBarPlugin::configureDialog()
 {
-    QMessageBox::information(&mButton, tr("Panel"), tr("Hello, World!"));
+    return new RazorTaskbarConfiguration(*(settings()));
 }
 
-
+void RazorTaskBarPlugin::realign()
+{
+    mTaskBar->realign();
+}

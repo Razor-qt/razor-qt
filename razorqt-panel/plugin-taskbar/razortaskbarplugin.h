@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2012 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
@@ -26,66 +26,44 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZOR_MAINMENU_H
-#define RAZOR_MAINMENU_H
+#ifndef RAZORTASKBARPLUGIN_H
+#define RAZORTASKBARPLUGIN_H
 
+#include "../panel/irazorpanel.h"
 #include "../panel/irazorpanelplugin.h"
-#include <qtxdg/xdgmenu.h>
+#include "razortaskbar.h"
+#include <QDebug>
+class RazorTaskBar;
 
-#include <QtGui/QLabel>
-#include <QToolButton>
-#include <QDomElement>
-#include <QAction>
-
-#include "menustyle.h"
-
-class QMenu;
-class RazorBar;
-class PowerManager;
-class ScreenSaver;
-class QxtGlobalShortcut;
-
-
-class RazorMainMenu : public QObject, public IRazorPanelPlugin
+class RazorTaskBarPlugin : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorMainMenu(const IRazorPanelPluginStartupInfo &startupInfo);
-    ~RazorMainMenu();
+    RazorTaskBarPlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+    ~RazorTaskBarPlugin();
 
-    QString themeId() const { return "MainMenu"; }
+    QString themeId() const { return "TaskBar"; }
     virtual IRazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
 
-    QWidget *widget() { return &mButton; }
+    QWidget *widget() { return mTaskBar; }
     QDialog *configureDialog();
 
+    void settingsChanged() { mTaskBar->settingsChanged(); }
+    void x11EventFilter(XEvent *event) { mTaskBar->x11EventFilter(event); }
+    void realign();
+
     bool isSeparate() const { return true; }
+    bool isExpandable() const { return true; }
 private:
-    QToolButton mButton;
-    QString mLogDir;
-    QMenu* mMenu;
-    QxtGlobalShortcut *mShortcut;
-    MenuStyle mTopMenuStyle;
-    MenuStyle mMenuStyle;
-    PowerManager* mPowerManager;
-    ScreenSaver* mScreenSaver;
-    XdgMenu mXdgMenu;
-protected slots:
-
-    virtual void settingsChanged();
-    void buildMenu();
-
-private slots:
-    void showMenu();
-    void showHideMenu();
+    RazorTaskBar *mTaskBar;
 };
 
-class RazorMainMenuPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+class RazorTaskBarPluginLibrary: public QObject, public IRazorPanelPluginLibrary
 {
     Q_OBJECT
     Q_INTERFACES(IRazorPanelPluginLibrary)
 public:
-    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new RazorMainMenu(startupInfo);}
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new RazorTaskBarPlugin(startupInfo);}
 };
 
-#endif
+#endif // RAZORTASKBARPLUGIN_H

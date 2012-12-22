@@ -34,6 +34,7 @@
 #include "razorclockconfiguration.h"
 
 #include <QtCore/QString>
+#include <QtGui/QFrame>
 
 class QLabel;
 class QDialog;
@@ -53,6 +54,7 @@ public:
     void settingsChanged();
 
     void activated(ActivationReason reason);
+    bool isSeparate() const { return true; }
 
 public slots:
     void updateTime();
@@ -62,7 +64,7 @@ protected:
 
 private:
     QTimer* mClockTimer;
-    QWidget* mContent;
+    QFrame* mContent;
     QLabel* mTimeLabel;
     QLabel* mDateLabel;
     QString mClockFormat;

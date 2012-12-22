@@ -8,12 +8,14 @@ set(QT_USE_QTDBUS 1)
 
 set(razor-panel_PRIV_H_FILES
     razorpanel.h
-    razorpanel_p.h
     razorpanelapplication.h
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
-    configpaneldialog.h
+    config/configpaneldialog.h
     plugin.h
+    razorpanellimits.h
+    popupmenu.h
+    pluginmoveprocessor.h
 )
 
 set(razor-panel_PUB_H_FILES
@@ -27,20 +29,20 @@ set(razor-panel_CPP_FILES
     razorpanelapplication.cpp
     razorpanellayout.cpp
     razorpanelpluginconfigdialog.cpp
-    configpaneldialog.cpp
+    config/configpaneldialog.cpp
     plugin.cpp
+    popupmenu.cpp
+    pluginmoveprocessor.cpp
 )
 
 set(MOCS
     razorpanel.h
-    razorpanel_p.h
     razorpanelapplication.h
     razorpanellayout.h
     razorpanelpluginconfigdialog.h
-    configpaneldialog.h
-    #irazorpanelplugin.h
-    #irazorpanel.h
+    config/configpaneldialog.h
     plugin.h
+    pluginmoveprocessor.h
 )
 
 set(LIBRARIES
@@ -54,7 +56,7 @@ set(RESOURCES
 )
 
 set (razor-panel_UI_FILES
-    configpaneldialog.ui
+    config/configpaneldialog.ui
 )
 
 QT4_WRAP_UI(UI_HEADERS ${razor-panel_UI_FILES})
