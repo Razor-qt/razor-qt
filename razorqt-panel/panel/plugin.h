@@ -101,13 +101,13 @@ private:
     QString mSettingsGroup;
     RazorPanel *mPanel;
     QByteArray mSettingsHash;
-
     static QColor mMoveMarkerColor;
 
 private slots:
     void settingsChanged();
     void showConfigureDialog();
     void requestRemove();
+
 };
 
 

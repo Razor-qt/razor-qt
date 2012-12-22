@@ -6,22 +6,22 @@ RazorPanel {
 }
 
 /* PositionBottom */
-RazorPanel[position="0"] {
+RazorPanel[position="Bottom"] {
     border-top: 1px solid #B0B0B0;
 }
 
 /* PositionTop */
-RazorPanel[position="1"] {
+RazorPanel[position="Top"] {
     border-bottom: 1px solid #B0B0B0;
 }
 
 /* PositionLeft */
-RazorPanel[position="2"] {
+RazorPanel[position="Left"] {
     border-right: 1px solid #B0B0B0;
 }
 
 /* PositionRight */
-RazorPanel[position="3"] {
+RazorPanel[position="Right"] {
     border-left: 1px solid #B0B0B0;
 }
 
