@@ -16,17 +16,24 @@ RazorPanel[position="Top"] {
     border-bottom: 1px solid #33322E;
 }
 
+
 /*
  * General plugins settings
  */
-Plugin {
+Plugin, 
+RazorPanelPlugin {
     margin: 2px 0 2px 0;
     padding: 0;
     spacing: 20px;
+    qproperty-moveMarkerColor: #C94C21;
 }
 
+Plugin  > QWidget > QWidget{
+}
 
-Plugin > QToolButton {
+Plugin > QToolButton,
+Plugin > QWidget > QToolButton,
+RazorPanelPlugin > QToolButton {
     margin: 0;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -34,10 +41,11 @@ Plugin > QToolButton {
     color: #aaaaaa;
 }
 
-
-Plugin > QToolButton:hover{
+Plugin > QToolButton:hover,
+Plugin > QWidget > QToolButton:hover,
+RazorPanelPlugin > QToolButton:hover {
     margin: 0;
-    border: 1px solid #33322E;
+    border: 1px solid #7f7f7f;
     color: #cacaca;
 }
 
@@ -76,11 +84,11 @@ Plugin > QToolButton:hover{
 #TaskBar {
      margin-right: 2px;
      margin-left: 2px;
+     padding: 0;
 }
 
 #TaskBar QToolButton{
      border: 1px solid #4a4a4a;
-     qproperty-iconSize: 16px;
 }
 
 #TaskBar QToolButton:on{
@@ -127,10 +135,6 @@ TrayIcon {
  * Main menu
  */
 #MainMenu {
-    border: 0;
-}
-
-#MainMenu > QToolButton {
     margin-left: 2px;
     margin-right: 2px;
     border: 1px solid #E0875A;
@@ -138,7 +142,6 @@ TrayIcon {
     background: qlineargradient(x1:1, y1:0, x2:0, y2:1, stop:0 #EB743D, stop:0.3 #E76C41, stop:1 #C94C21);
     qproperty-icon: url(mainmenu.svg);
     color: rgba(0, 0, 0, 80%);
-
 }
 
 #MainMenu  QMenu {
@@ -233,4 +236,46 @@ MountButton:pressed {
 #KbIndicator > QLabel:disabled {
     background: transparent;
     color: gray;
+}
+
+
+/*
+ * #SysStat
+ */
+#SysStat {
+    padding: 1px 1px 1px 1px;
+}
+
+#SysStat > QLabel {
+    font-size: 6pt;
+}
+
+#SysStat_Graph {
+    qproperty-gridColor: rgba(255, 255, 255, 25%);
+    qproperty-titleColor: rgba(255, 255, 255, 75%);
+    qproperty-cpuSystemColor: rgb(128, 0, 0);
+    qproperty-cpuUserColor: rgb(0, 0, 128);
+    qproperty-cpuNiceColor: rgb(0, 128, 0);
+    qproperty-cpuOtherColor: rgb(128, 128, 0);
+    qproperty-frequencyColor: rgb(96, 96, 96);
+    qproperty-memAppsColor: rgb(0, 0, 128);
+    qproperty-memBuffersColor: rgb(0, 128, 0);
+    qproperty-memCachedColor: rgb(128, 128, 0);
+    qproperty-swapUsedColor: rgb(128, 0, 0);
+    qproperty-netReceivedColor: rgb(0, 0, 128);
+    qproperty-netTransmittedColor: rgb(128, 128, 0);
+}
+
+
+/*
+ * WorldClock
+ */
+#WorldClockContent{
+    font-size: 10pt;
+    color: #cacaca;
+}
+
+#WorldClockPopup{
+    font-size: 12pt;
+    color: #cacaca;
 }
