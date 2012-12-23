@@ -131,6 +131,8 @@ public:
     int colCount() const { return mColCount; }
     void setColCount(int value);
 
+    int usedColCount() const { return mUsedColCount; }
+
     int rowCount() const { return mRowCount; }
 
     void invalidate() { mValid = false; }
@@ -152,6 +154,7 @@ public:
 private:
     QVector<LayoutItemInfo> mInfoItems;
     int mColCount;
+    int mUsedColCount;
     int mRowCount;
     bool mValid;
     int mExpandableSize;
@@ -189,6 +192,7 @@ void LayoutItemGrid::clear()
     mValid = false;
     mExpandable = false;
     mExpandableSize = 0;
+    mUsedColCount = 0;
 }
 
 
@@ -235,6 +239,7 @@ void LayoutItemGrid::doAddToGrid(QLayoutItem *item)
 
     int idx = mNextRow * mColCount + mNextCol;
     mInfoItems[idx] = info;
+    mUsedColCount = qMax(mUsedColCount, mNextCol + 1);
     mExpandable = mExpandable || info.expandable;
     mRowCount = qMax(mRowCount, mNextRow+1);
 
@@ -616,7 +621,7 @@ void RazorPanelLayout::setGeometryHoriz(const QRect &geometry)
     }
 
     // Calc baselines for button like plugins.
-    QVector<int> baseLines(lineCount());
+    QVector<int> baseLines(qMax(mLeftGrid->usedColCount(), mRightGrid->usedColCount()));
     {
         int bh = (geometry.height() / baseLines.count()) / 2;
         for (int i=0; i<baseLines.count(); ++i)
@@ -628,7 +633,7 @@ void RazorPanelLayout::setGeometryHoriz(const QRect &geometry)
     for (int r=0; r<mLeftGrid->rowCount(); ++r)
     {
         int rw = 0;
-        for (int c=0; c<mLeftGrid->colCount(); ++c)
+        for (int c=0; c<mLeftGrid->usedColCount(); ++c)
         {
             const LayoutItemInfo &info = mLeftGrid->itemInfo(r, c);
             if (info.item)
@@ -664,7 +669,7 @@ void RazorPanelLayout::setGeometryHoriz(const QRect &geometry)
     for (int r=mRightGrid->rowCount()-1; r>=0; --r)
     {
         int rw = 0;
-        for (int c=0; c<mRightGrid->colCount(); ++c)
+        for (int c=0; c<mRightGrid->usedColCount(); ++c)
         {
             const LayoutItemInfo &info = mRightGrid->itemInfo(r, c);
             if (info.item)
@@ -713,7 +718,7 @@ void RazorPanelLayout::setGeometryVert(const QRect &geometry)
     }
 
     // Calc baselines for button like plugins.
-    QVector<int> baseLines(lineCount());
+    QVector<int> baseLines(qMax(mLeftGrid->usedColCount(), mRightGrid->usedColCount()));
     {
         int bw = (geometry.width() / baseLines.count()) / 2;
         for (int i=0; i<baseLines.count(); ++i)
@@ -726,7 +731,7 @@ void RazorPanelLayout::setGeometryVert(const QRect &geometry)
     for (int r=0; r<mLeftGrid->rowCount(); ++r)
     {
         int rh = 0;
-        for (int c=0; c<mLeftGrid->colCount(); ++c)
+        for (int c=0; c<mLeftGrid->usedColCount(); ++c)
         {
             const LayoutItemInfo &info = mLeftGrid->itemInfo(r, c);
             if (info.item)
@@ -763,7 +768,7 @@ void RazorPanelLayout::setGeometryVert(const QRect &geometry)
     for (int r=mRightGrid->rowCount()-1; r>=0; --r)
     {
         int rh = 0;
-        for (int c=0; c<mRightGrid->colCount(); ++c)
+        for (int c=0; c<mRightGrid->usedColCount(); ++c)
         {
             const LayoutItemInfo &info = mRightGrid->itemInfo(r, c);
             if (info.item)
