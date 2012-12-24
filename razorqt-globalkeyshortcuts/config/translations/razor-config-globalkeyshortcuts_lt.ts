@@ -3,34 +3,34 @@
     <name>CommandFinder</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <source>Find a command</source>
-        <translation type="unfinished"/>
+        <translation>Parinkite komandą</translation>
     </message>
 </context>
 <context>
     <name>ShortcutConfigWindow</name>
     <message>
         <source>Razor Shortcut Editor</source>
-        <translation type="unfinished"/>
+        <translation>Razor klavišų susiejimas</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Aprašas</translation>
     </message>
     <message>
         <source>Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Klavišų kombinacija</translation>
     </message>
     <message>
         <source>Command</source>
-        <translation type="unfinished"/>
+        <translation>Komanda</translation>
     </message>
     <message>
         <source>Add New</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti komandą</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -38,11 +38,11 @@
     </message>
     <message>
         <source>Add Group</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti grupę</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Iš naujo</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti klavišų kombinaciją</translation>
     </message>
     <message>
         <source>Remove</source>
@@ -65,27 +65,27 @@
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"/>
+        <translation>Nauja grupė</translation>
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation type="unfinished"/>
+        <translation>Atmesti pakeitimus</translation>
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"/>
+        <translation>Klausimas</translation>
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation type="unfinished"/>
+        <translation>Pašalinti grupę „%1“? (pašalinsimi visi grupės elementai)</translation>
     </message>
     <message>
         <source>Delete %1?</source>
-        <translation type="unfinished"/>
+        <translation>Pašalinti %1?</translation>
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>
-        <translation type="unfinished"/>
+        <translation>%1 jau susietas. Pakeisti senąjį?</translation>
     </message>
 </context>
 </TS>

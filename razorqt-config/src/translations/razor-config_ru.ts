@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <source>Configuration Center</source>
-        <translation>Конфигурация центр</translation>
+        <translation>Центр настроек</translation>
     </message>
 </context>
 </TS>

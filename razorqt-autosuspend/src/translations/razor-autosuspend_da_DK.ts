@@ -14,7 +14,7 @@
     <name>BatteryInfo</name>
     <message>
         <source>Razor Autosuspend</source>
-        <translation type="unfinished"/>
+        <translation>Razor-Qt Automatisk slumrefunktion</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation type="unfinished"/>
+        <translation>Nikkel-metalhydrid</translation>
     </message>
     <message>
         <source>Unknown</source>

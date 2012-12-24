@@ -14,7 +14,7 @@ GenericName=Razor Global Shortcut Configuration
 
 
 # Translations
-Name[ru]=конфигурация сокращенных путей Pa3op
-Icon[ru]=предпочтениям-рабочий стол-клавиатура
-Comment[ru]=Глобальний конфигурация сокращенных путей для рабочий стол Pa3or
-GenericName[ru]=Глобальний конфигурация сокращенных путей Pa3op
+Name[ru]=Настройка Сочетаний Клавиш Razor
+Icon[ru]=preferences-desktop-keyboard
+Comment[ru]=Настроить глобальное сочетание клавиш рабочего стола Razor
+GenericName[ru]=Настройка Глобального Сочетание Клавиш Razor

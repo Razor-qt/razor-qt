@@ -3,7 +3,7 @@
     <name>PanelScreenSaver</name>
     <message>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>Глобальная Панель клавиш короткий путь Заставка: &apos;%1&apos; не могут быть зарегистрированы</translation>
+        <translation>Не получилось зарегистрировать глобальную кобинацию клавиш &apos;%1&apos;</translation>
     </message>
 </context>
 </TS>

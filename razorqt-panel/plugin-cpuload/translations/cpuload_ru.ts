@@ -3,22 +3,22 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>CPU load %1%</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка процессора %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor CPU Load settings</source>
-        <translation type="unfinished"/>
+        <translation>Настройки плагина загрузка процессора</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>общий</translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <source>Show text</source>
-        <translation>Показать текст</translation>
+        <translation>Показывать текст</translation>
     </message>
     <message>
         <source>Update interval:</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Bar orientation:</source>
-        <translation>Расположение панели:</translation>
+        <translation>Направление графика:</translation>
     </message>
     <message>
         <source>Bottom up</source>

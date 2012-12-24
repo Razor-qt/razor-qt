@@ -3,33 +3,33 @@
     <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Меню программ</translation>
+        <translation>Настройки внешнего вида Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Иконки темы</translation>
+        <translation>Тема иконок</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>Меню программ</translation>
+        <translation>Настройки внешнего вида Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>
-        <translation>Иконки темы</translation>
+        <translation>Тема иконок</translation>
     </message>
     <message>
         <source>Razor Theme</source>
-        <translation>Разop темы</translation>
+        <translation>Тема Razor</translation>
     </message>
 </context>
 <context>
     <name>RazorThemeConfig</name>
     <message>
         <source>Razor Theme</source>
-        <translation>Разop темы</translation>
+        <translation>Тема Razor</translation>
     </message>
 </context>
 </TS>

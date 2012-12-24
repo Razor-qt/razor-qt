@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>Показывать иконку состояния батареи в трее</translation>
+        <translation>Показывать значок состояния батареи в трее</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>Крышка закрыта</translation>
+        <translation>Закрытие крышки</translation>
     </message>
     <message>
         <source>Action:</source>
@@ -45,11 +45,11 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation>Настройки автоматического перехода в спящий режим Razor</translation>
+        <translation>Конфигурация автоматического выключения </translation>
     </message>
     <message>
         <source>General</source>
-        <translation>общий</translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <source>Lid closed</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation>Низкий уровень заряда при следующем значении:</translation>
+        <translation>Низкий уровень на:</translation>
     </message>
     <message>
         <source> %</source>

@@ -6,5 +6,5 @@ Comment=Get the color under the cursor. For web developers.
 
 
 # Translations
-Comment[ru]=Получить цвет под курсором мыши. Для веб-разработчиков
-Name[ru]=Цветовая палитра
+Comment[ru]=Получает цвет под курсором. Для веб-разработчиков.
+Name[ru]=Выбор цвета

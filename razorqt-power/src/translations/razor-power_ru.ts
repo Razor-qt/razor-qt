@@ -3,35 +3,38 @@
     <name>Dialog</name>
     <message>
         <source>Leave</source>
-        <translation>выход</translation>
-    </message>
-    <message>
-        <source>What do you want the computer to do?</source>
-        <translation>Что вы хотите, чтобы компьютер делать?</translation>
-    </message>
-    <message>
-        <source>Logout</source>
         <translation>Выход</translation>
     </message>
     <message>
+        <source>What do you want the computer to do?</source>
+        <translation>Что вы хотите сделать?</translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation>Завершить
+сеанс</translation>
+    </message>
+    <message>
         <source>Reboot</source>
-        <translation>перезагружать</translation>
+        <translation>Перезагрузить</translation>
     </message>
     <message>
         <source>Shutdown</source>
-        <translation>выключенит</translation>
+        <translation>Выключить</translation>
     </message>
     <message>
         <source>Suspend</source>
-        <translation>привесить</translation>
+        <translation>Ждущий
+режим</translation>
     </message>
     <message>
         <source>Hibernate</source>
-        <translation>зимовать</translation>
+        <translation>Спящий
+режим</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 </TS>

@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation type="unfinished"/>
+        <translation>Nikel-metal hibridoa</translation>
     </message>
     <message>
         <source>Unknown</source>

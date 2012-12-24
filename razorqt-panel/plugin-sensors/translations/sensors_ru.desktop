@@ -6,5 +6,5 @@ Comment=View readings from hardware sensors.
 
 
 # Translations
-Name[ru]=Датчики
-Comment[ru]=Посмотреть показания аппаратных датчиков (в настоящее время лm_датчики)
+Name[ru]=Сенсоры
+Comment[ru]=Посмотреть данные с аппаратных сенсоров.

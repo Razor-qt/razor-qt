@@ -3,7 +3,7 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation>Настройки оформления мыши Razor</translation>
+        <translation>Настройки мыши Razor</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
@@ -12,15 +12,15 @@
     </message>
     <message>
         <source>&amp;Install New Theme...</source>
-        <translation>&amp;Установить новую Тему...</translation>
+        <translation>&amp;Установить новую тему...</translation>
     </message>
     <message>
         <source>&amp;Set Theme</source>
-        <translation>&amp;Установить Тему</translation>
+        <translation>&amp;Установить тему</translation>
     </message>
     <message>
         <source>&amp;Remove Theme</source>
-        <translation>&amp;Удалить Тему</translation>
+        <translation>&amp;Удалить тему</translation>
     </message>
     <message>
         <source>&amp;Close</source>

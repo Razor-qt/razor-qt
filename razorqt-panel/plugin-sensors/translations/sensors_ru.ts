@@ -3,15 +3,15 @@
     <name>RazorSensorsConfiguration</name>
     <message>
         <source>Razor Sensors Settings</source>
-        <translation>Настройки сенсоров Razor</translation>
+        <translation>Настройки сенсоров</translation>
     </message>
     <message>
         <source>Common</source>
-        <translation>Общий</translation>
+        <translation>Общие</translation>
     </message>
     <message>
         <source>Update interval (seconds)</source>
-        <translation>Интервал обновления (секунды)</translation>
+        <translation>Интервал обновления (сек)</translation>
     </message>
     <message>
         <source>Temperature bar width</source>
@@ -27,11 +27,11 @@
     </message>
     <message>
         <source>Fahrenheit</source>
-        <translation>Фаренгейт</translation>
+        <translation>Фаренгейта</translation>
     </message>
     <message>
         <source>Blink progress bars when the temperature is too high</source>
-        <translation>Мигать индикатором состояния когда температура слишком высока</translation>
+        <translation>Мигать индикатором когда температура слишком высокая</translation>
     </message>
     <message>
         <source>Warning about high temperature</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Sensors</source>
-        <translation>Датчики</translation>
+        <translation>Сенсоры</translation>
     </message>
     <message>
         <source>Detected chips:</source>
@@ -47,11 +47,11 @@
     </message>
     <message>
         <source>Chip features:</source>
-        <translation>Возможности чипов:</translation>
+        <translation>Возможности чипа:</translation>
     </message>
     <message>
         <source>Enabled</source>
-        <translation>Включён</translation>
+        <translation>Включено</translation>
     </message>
     <message>
         <source>Label</source>

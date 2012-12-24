@@ -3,30 +3,30 @@
     <name>RazorMainMenu</name>
     <message>
         <source>Leave</source>
-        <translation>выход</translation>
+        <translation>Выход</translation>
     </message>
 </context>
 <context>
     <name>RazorMainMenuConfiguration</name>
     <message>
         <source>Razor Main Menu settings</source>
-        <translation>Paзор Основные настройки меню</translation>
+        <translation>Настройки меню программ</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>общий</translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <source>Show text</source>
-        <translation>Показать текст</translation>
+        <translation>Показывать текст</translation>
     </message>
     <message>
         <source>Button text</source>
-        <translation>текст кнопки</translation>
+        <translation>Текст на кнопке</translation>
     </message>
     <message>
         <source>Menu file</source>
-        <translation>меню файл</translation>
+        <translation>Файл меню</translation>
     </message>
     <message>
         <source>...</source>
@@ -34,19 +34,19 @@
     </message>
     <message>
         <source>Keyboard Shortcut</source>
-        <translation>сокращенный клавиш </translation>
+        <translation>Горячая клавиша</translation>
     </message>
     <message>
         <source>Click the button to record shortcut:</source>
-        <translation>Нажмите кнопку, чтобы записать сокращенный клавиш:</translation>
+        <translation>Нажмите для записи горячей клавиши:</translation>
     </message>
     <message>
         <source>Choose menu file</source>
-        <translation>Выберите  меню Файл</translation>
+        <translation>Укажите файл меню</translation>
     </message>
     <message>
         <source>Menu files (*.menu)</source>
-        <translation>Меню файлов (*. Меню)</translation>
+        <translation>Файлы меню (*.menu)</translation>
     </message>
 </context>
 </TS>

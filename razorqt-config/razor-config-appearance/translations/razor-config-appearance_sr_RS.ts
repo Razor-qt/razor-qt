@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="sr_RS">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sr_RS" version="2.0">
 <context>
-    <name>MainWindow</name>
+    <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
         <translation>Подешавање изгледа Рејзора</translation>
@@ -10,6 +8,28 @@
     <message>
         <source>Icons Theme</source>
         <translation>Тема икона</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Razor Appearance Configuration</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Icons Theme</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Razor Theme</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>RazorThemeConfig</name>
+    <message>
+        <source>Razor Theme</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

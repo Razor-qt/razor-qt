@@ -3,18 +3,18 @@
     <name>ConfigureDialog</name>
     <message>
         <source>Analog clock settings</source>
-        <translation>Аналоговые настройки часов</translation>
+        <translation>Настройки &quot;Часов с циферблатом&quot;</translation>
     </message>
     <message>
         <source>Show &amp;seconds hand</source>
-        <translation> Показать стрелка &amp;секунд </translation>
+        <translation>Показывать &amp;секундную стрелку</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Clock</source>
-        <translation>часы</translation>
+        <translation>Часы</translation>
     </message>
     <message>
         <source>Clock:</source>

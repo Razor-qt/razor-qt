@@ -8,5 +8,5 @@ Comment=Display content (as icons) of the specified directory
 
 
 # Translations
-Comment[ru]=Отображение контента (в виде значков) указанного каталога
-Name[ru]=Иконки посмотр
+Comment[ru]=Показать содержимое указанной папки (в виде значков)
+Name[ru]=Просмотр файлов

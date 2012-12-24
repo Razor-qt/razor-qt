@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>Предпросмотр</translation>
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
@@ -31,11 +31,11 @@
     </message>
     <message>
         <source>Select Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Укажите файл с обоями</translation>
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg *.jpeg *.svg)</source>
-        <translation type="unfinished"/>
+        <translation>Изображения (*.png *.xpm *.jpg *.jpeg *.svg)</translation>
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>About Razor...</source>
-        <translation type="unfinished"/>
+        <translation>О программе Razor...</translation>
     </message>
     <message>
         <source>New Desktop Widget</source>

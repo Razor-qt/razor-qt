@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione del menu</translation>
     </message>
     <message>
         <source>WM Native Desktop</source>
@@ -89,7 +89,7 @@
     </message>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione del menu</translation>
     </message>
     <message>
         <source>Menu file</source>
@@ -104,7 +104,7 @@
     <name>WMNativeConfig</name>
     <message>
         <source>Select Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona l&apos;immagine di sfondo</translation>
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg)</source>

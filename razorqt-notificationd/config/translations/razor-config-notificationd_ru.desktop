@@ -14,7 +14,7 @@ GenericName=Razor Freedesktop Notifications Configuration
 
 
 # Translations
-GenericName[ru]=Меню программ
-Name[ru]=Центр настроек Razor
-Icon[ru]=предпочтений-рабочий стол-тему
-Comment[ru]=Yстановка свободный рабочий стол объявления нa Paзop  рабочий стол
+GenericName[ru]=Настройка уведомлений Freedesktop
+Name[ru]=Настройка уведомлений Freedesktop
+Icon[ru]=preferences-desktop-theme
+Comment[ru]=Настроить уведомления freedesktop для рабочего стола Razor

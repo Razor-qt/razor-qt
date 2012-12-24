@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Wait for system tray</source>
-        <translation>Ожидание системного трея</translation>
+        <translation>Ожидать системный трей</translation>
     </message>
     <message>
         <source>Select Application</source>
@@ -34,7 +34,7 @@
     </message>
     <message>
         <source>Razor Autostart</source>
-        <translation>Paзор Автоматический запуск</translation>
+        <translation>Программы только для Razor</translation>
     </message>
     <message>
         <source>Location: %1</source>
@@ -88,15 +88,15 @@
     </message>
     <message>
         <source>Razor Modules</source>
-        <translation>Pa3op модули</translation>
+        <translation>Модули Razor</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation>начинать</translation>
+        <translation>Запустить</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>остановить</translation>
+        <translation>Остановить</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -160,14 +160,14 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation>текущий</translation>
+        <translation>Запущено</translation>
     </message>
 </context>
 <context>
     <name>SessionConfigWindow</name>
     <message>
         <source>Razor Session Configuration</source>
-        <translation>Настройки сессииPaзор</translation>
+        <translation>Настройки сессии Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Изменения вступят в силу только после перезапуска сессии (Paзор-сессии). Используйте пункт &quot;Завершить сеанс&quot; в главном меню.</translation>
+        <translation>Изменения вступят в силу только после перезапуска сессии (razor-session). Используйте пункт &quot;Завершить сеанс&quot; в главном меню.</translation>
     </message>
 </context>
 </TS>

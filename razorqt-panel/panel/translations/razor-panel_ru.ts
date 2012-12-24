@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>px</source>
-        <translation>пx</translation>
+        <translation>пикс</translation>
     </message>
     <message>
         <source>Use automatic sizing</source>
@@ -55,42 +55,42 @@
     </message>
     <message>
         <source>Top of desktop</source>
-        <translation>Вверху рабочий стол</translation>
+        <translation>Вверху</translation>
     </message>
     <message>
         <source>Left of desktop</source>
-        <translation>Слева рабочий стол</translation>
+        <translation>Слева</translation>
     </message>
     <message>
         <source>Right of desktop</source>
-        <translation>Справа рабочий стол</translation>
+        <translation>Справа</translation>
     </message>
     <message>
         <source>Bottom of desktop</source>
-        <translation>Внизу рабочий стол</translation>
+        <translation>Внизу</translation>
     </message>
     <message>
         <source>Top of desktop %1</source>
-        <translation>Вверху на %1 рабочий стол</translation>
+        <translation>Вверху на %1 экране</translation>
     </message>
     <message>
         <source>Left of desktop %1</source>
-        <translation>Слева на %1  рабочий стол</translation>
+        <translation>Слева на %1 экране</translation>
     </message>
     <message>
         <source>Right of desktop %1</source>
-        <translation>Справа на %1  рабочий стол</translation>
+        <translation>Справа на %1 экране</translation>
     </message>
     <message>
         <source>Bottom of desktop %1</source>
-        <translation>Внизу на %1  рабочий стол</translation>
+        <translation>Внизу на %1 экране</translation>
     </message>
 </context>
 <context>
     <name>RazorPanel</name>
     <message>
         <source>Panel</source>
-        <translation>Меню программ</translation>
+        <translation>Панель</translation>
     </message>
     <message>
         <source>Configure panel...</source>
@@ -113,7 +113,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>удалить</translation>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>

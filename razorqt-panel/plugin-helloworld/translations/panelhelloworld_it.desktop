@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Hello World
+Comment=A "hello world" plugin.
+
+#TRANSLATIONS_DIR=../translations
+
+
+# Translations
+Name[it]=Centro di Configurazione Razor

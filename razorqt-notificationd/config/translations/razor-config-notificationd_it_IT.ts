@@ -3,11 +3,11 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione del menu</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>Durata della notifica</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
@@ -19,11 +19,11 @@
     </message>
     <message>
         <source> sec</source>
-        <translation type="unfinished"/>
+        <translation>sec</translation>
     </message>
     <message>
         <source>Sizes</source>
-        <translation type="unfinished"/>
+        <translation>Dimensioni</translation>
     </message>
     <message>
         <source>Notification Spacing:</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source> px</source>
-        <translation type="unfinished"/>
+        <translation>px</translation>
     </message>
     <message>
         <source>Notification Width:</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Test Notification</source>
-        <translation type="unfinished"/>
+        <translation>Prova notifica</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
@@ -80,18 +80,18 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation type="unfinished"/>
+        <translation>Sommario della notifica</translation>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation type="unfinished"/>
+        <translation>Corpo della notifica</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione delle notifiche di Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +99,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni avanzate</translation>
     </message>
 </context>
 </TS>

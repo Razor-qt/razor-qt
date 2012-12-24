@@ -3,46 +3,46 @@
     <name>RazorNetworkMonitor</name>
     <message>
         <source>Network interface &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; tinklo sąsaja</translation>
     </message>
     <message>
         <source>Transmitted %1</source>
-        <translation type="unfinished"/>
+        <translation>Perduota: %1</translation>
     </message>
     <message>
         <source>Received %1</source>
-        <translation type="unfinished"/>
+        <translation>Gauta: %1</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished"/>
+        <translation>B</translation>
     </message>
     <message>
         <source>KiB</source>
-        <translation type="unfinished"/>
+        <translation>KiB</translation>
     </message>
     <message>
         <source>MiB</source>
-        <translation type="unfinished"/>
+        <translation>MiB</translation>
     </message>
     <message>
         <source>GiB</source>
-        <translation type="unfinished"/>
+        <translation>GiB</translation>
     </message>
     <message>
         <source>TiB</source>
-        <translation type="unfinished"/>
+        <translation>TiB</translation>
     </message>
     <message>
         <source>PiB</source>
-        <translation type="unfinished"/>
+        <translation>PiB</translation>
     </message>
 </context>
 <context>
     <name>RazorNetworkMonitorConfiguration</name>
     <message>
         <source>Razor Network Monitor settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor tinklo stebėjimo nuostatos</translation>
     </message>
     <message>
         <source>General</source>
@@ -50,11 +50,11 @@
     </message>
     <message>
         <source>Interface</source>
-        <translation type="unfinished"/>
+        <translation>Sąsaja</translation>
     </message>
     <message>
         <source>Modem</source>
-        <translation type="unfinished"/>
+        <translation>Modemas</translation>
     </message>
     <message>
         <source>Monitor</source>
@@ -62,15 +62,15 @@
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Tinklas</translation>
     </message>
     <message>
         <source>Wireless</source>
-        <translation type="unfinished"/>
+        <translation>Belaidis</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ženkliukas</translation>
     </message>
 </context>
 </TS>

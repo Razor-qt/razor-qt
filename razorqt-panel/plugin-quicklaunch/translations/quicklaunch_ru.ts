@@ -3,26 +3,26 @@
     <name>QuickLaunchButton</name>
     <message>
         <source>Move left</source>
-        <translation>Сдвинуть влево</translation>
+        <translation>Передвинуть влево</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation>Сдвинуть вправо</translation>
+        <translation>Передвинуть вправо</translation>
     </message>
     <message>
         <source>Remove from quicklaunch</source>
-        <translation>Удалить из быстрого запуска</translation>
+        <translation>Удалить с панели</translation>
     </message>
 </context>
 <context>
     <name>RazorQuickLaunch</name>
     <message>
         <source>Drop Error</source>
-        <translation>Бросьте ошибки</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
-        <translation>Файл/URL-адрес &apos;%1&apos;  не может быть встроена в быстрого запуска сейчас</translation>
+        <translation>Файл или URL %1 нельзя пристроить на панель</translation>
     </message>
 </context>
 </TS>

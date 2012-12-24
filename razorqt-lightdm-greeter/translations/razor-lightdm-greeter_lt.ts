@@ -3,15 +3,15 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation type="unfinished"/>
+        <translation>naudotojo identifikatorius</translation>
     </message>
     <message>
         <source>password</source>
-        <translation type="unfinished"/>
+        <translation>slaptažodis</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
     <message>
         <source>Cancel</source>

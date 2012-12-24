@@ -3,14 +3,14 @@
     <name>RazorVolume</name>
     <message>
         <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Регулятор громкости: Не удалось зарегистрировать глобальную кобинацию клавиш &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation>Настройки контроля громкости Razor</translation>
+        <translation>Настройки регулятора громкости Razor</translation>
     </message>
     <message>
         <source>Device to control</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation>Отключать звук при клике средней кнопкой мыши</translation>
+        <translation>Приглушать по клику средней кнопкой мыши</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
@@ -53,11 +53,11 @@
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation type="unfinished"/>
+        <translation>Запустить микшер</translation>
     </message>
     <message>
         <source>Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Микшер</translation>
     </message>
 </context>
 </TS>

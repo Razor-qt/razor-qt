@@ -1,10 +1,12 @@
 [Desktop Entry]
 Type=Service
 ServiceTypes=RazorPanel/Plugin
-Name=Hell World
+Name=Hello World
 Comment=A "hello world" plugin.
 
 #TRANSLATIONS_DIR=../translations
 
 
 # Translations
+Comment[zh_CN]=一个"hello world"插件
+Name[zh_CN]=Hell World

@@ -3,7 +3,7 @@
     <name>ShowDesktop</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>Показать рабочий стол:  Глобальное короткие клавиш &apos;%1&apos; не могут быть зарегистрированы</translation>
+        <translation>Показать рабочий стол:  не получилось зарегистрировать глобальную кобинацию клавиш &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Show Desktop</source>

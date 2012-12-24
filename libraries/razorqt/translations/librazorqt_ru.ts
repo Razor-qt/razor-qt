@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Razor Session Suspend</source>
-        <translation>Paзор Ждущий режим</translation>
+        <translation>Ждущий режим</translation>
     </message>
     <message>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation>Paзор Спящий режим</translation>
+        <translation>Спящий режим</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
@@ -58,7 +58,7 @@
     </message>
     <message>
         <source>Razor Session Reboot</source>
-        <translation>Paзор Перезагрузка</translation>
+        <translation>Перезагрузка</translation>
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
@@ -66,7 +66,7 @@
     </message>
     <message>
         <source>Razor Session Shutdown</source>
-        <translation>Paзор Выключение</translation>
+        <translation>Выключение</translation>
     </message>
     <message>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
@@ -74,7 +74,7 @@
     </message>
     <message>
         <source>Razor Session Logout</source>
-        <translation>Paзор Завершение сеанса</translation>
+        <translation>Завершение сеанса</translation>
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
@@ -82,7 +82,7 @@
     </message>
     <message>
         <source>Razor Power Manager Error</source>
-        <translation>Ошибка Paзор менеджер  электроэнергии  </translation>
+        <translation>Ошибка Razor Power Manager</translation>
     </message>
     <message>
         <source>Hibernate failed.</source>
@@ -116,11 +116,11 @@
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation>Передовая, простая в использовании и быстрая среда рабочего стола, базирующаяся на технологиях Qt.</translation>
+        <translation>Современная, быстрая, и простая в использовании среда рабочего стола на основе технологий Qt.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation>Лицензия: %1-%2 %3</translation>
+        <translation>Авторские права: %1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
@@ -132,15 +132,15 @@
     </message>
     <message>
         <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt разрабатывается &lt;a %1&gt;командой Razor-qt и помощниками &lt;/a&gt; на Github.</translation>
     </message>
     <message>
         <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Если есть желание работать вместе с нашей командой разработчиков - &lt;a %1&gt;присоединяйтесь&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Special thanks to:</source>
-        <translation type="unfinished"/>
+        <translation>Отдельное спасибо:</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
@@ -156,7 +156,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Инструментарий рабочего стола Razor - Техническая Информация&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Razor Desktop Toolbox - Техническая информация&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
@@ -176,7 +176,7 @@
     </message>
     <message>
         <source>Share Directory</source>
-        <translation>Открыть общий доступ к папке</translation>
+        <translation>Общие директории</translation>
     </message>
     <message>
         <source>Translations</source>
@@ -226,7 +226,7 @@
     <name>RazorNotificationPrivate</name>
     <message>
         <source>Notifications Fallback</source>
-        <translation>Уведомления отступление</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

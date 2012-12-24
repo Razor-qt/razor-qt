@@ -3,16 +3,17 @@
     <name>XdgMenuReader</name>
     <message>
         <source>Menu file not defined.</source>
-        <translation>Меню файл не определен.</translation>
+        <translation>Не задан файл меню.</translation>
     </message>
     <message>
         <source>%1 not loading: %2</source>
-        <translation>%1 не загружается: %2</translation>
+        <translation>%1 не загружен: %2</translation>
     </message>
     <message>
         <source>Parse error at line %1, column %2:
 %3</source>
-        <translation>ошибка парсера в строке %1, столбец%2⏎ %3</translation>
+        <translation>Ошибка разбора, сторка %1, столбец %2:
+%3</translation>
     </message>
 </context>
 </TS>

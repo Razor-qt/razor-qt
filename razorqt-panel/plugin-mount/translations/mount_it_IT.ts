@@ -29,7 +29,7 @@
     <name>Popup</name>
     <message>
         <source>No devices are available</source>
-        <translation type="unfinished"/>
+        <translation>Nessun dispositivo disponibile</translation>
     </message>
 </context>
 <context>

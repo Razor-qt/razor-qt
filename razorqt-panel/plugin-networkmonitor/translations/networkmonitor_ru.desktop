@@ -9,5 +9,5 @@ Comment=Displays network status and activity.
 
 
 # Translations
-Comment[ru]=Сеть монитор
-Name[ru]=Сеть монитор
+Comment[ru]=Показывает активность и статус сети
+Name[ru]=Сетевой Монитор

@@ -73,19 +73,19 @@
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"/>
+        <translation>Domanda</translation>
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation type="unfinished"/>
+        <translation>Cancellare il gruppo: %1? (Tutto il contenuto verrà rimosso insieme)</translation>
     </message>
     <message>
         <source>Delete %1?</source>
-        <translation type="unfinished"/>
+        <translation>Cancellare %1?</translation>
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>
-        <translation type="unfinished"/>
+        <translation>Il collegamento per %1 esiste già. Sostituirlo?</translation>
     </message>
 </context>
 </TS>

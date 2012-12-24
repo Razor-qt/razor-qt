@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Pasirinkite sistemos fono paveiksliuką</translation>
     </message>
 </context>
 <context>
@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>Set Desktop Background...</source>
-        <translation type="unfinished"/>
+        <translation>Parinkti darbalaukio foną...</translation>
     </message>
     <message>
         <source>About Razor...</source>
@@ -82,7 +82,7 @@
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Tikrai pašalinti valdiklį „%1“?</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>
@@ -100,18 +100,18 @@
     <name>RazorWorkSpace</name>
     <message>
         <source>Background Change</source>
-        <translation type="unfinished"/>
+        <translation>Fono keitimas</translation>
     </message>
     <message>
         <source>Do you want to change desktop background?</source>
-        <translation type="unfinished"/>
+        <translation>Pakeisti darbalaukio foną?</translation>
     </message>
 </context>
 <context>
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation type="unfinished"/>
+        <translation>Visapusiškai įgyvendintas Razor darbalaukis</translation>
     </message>
 </context>
 </TS>

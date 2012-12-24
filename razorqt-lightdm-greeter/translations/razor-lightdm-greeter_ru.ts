@@ -3,19 +3,19 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation type="unfinished"/>
+        <translation>ID пользователя</translation>
     </message>
     <message>
         <source>password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>Логин</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>отменить</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 </TS>

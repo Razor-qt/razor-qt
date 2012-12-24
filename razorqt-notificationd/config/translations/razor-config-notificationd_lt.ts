@@ -3,39 +3,39 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Meniu konfigūracija</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>Pranešimo rodymo trukmė</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Kai kurių pranešimų rodymo trukmė priklauso nuo pranešimų serverio nuostatų.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>„Serverio sprendimo“ laikas</translation>
     </message>
     <message>
         <source> sec</source>
-        <translation type="unfinished"/>
+        <translation>sek</translation>
     </message>
     <message>
         <source>Sizes</source>
-        <translation type="unfinished"/>
+        <translation>Dydžiai</translation>
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation type="unfinished"/>
+        <translation>Atstumas tarp pranešimų:</translation>
     </message>
     <message>
         <source> px</source>
-        <translation type="unfinished"/>
+        <translation>tšk</translation>
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation type="unfinished"/>
+        <translation>Pranešimo plotis:</translation>
     </message>
 </context>
 <context>
@@ -46,27 +46,27 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Pranešimų rodymas</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation type="unfinished"/>
+        <translation>Viršuje kairėje</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation type="unfinished"/>
+        <translation>Viršuje dešinėje</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation type="unfinished"/>
+        <translation>Apačioje kairėje</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation type="unfinished"/>
+        <translation>Apačioje dešinėje</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation type="unfinished"/>
+        <translation>Pažiūrėti, kaip atrodys!</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
@@ -80,18 +80,18 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation type="unfinished"/>
+        <translation>Pranešimo antraštė</translation>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation type="unfinished"/>
+        <translation>Pranešimo turinys</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Razor pranešimų konfigūravimas</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +99,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation type="unfinished"/>
+        <translation>Sudėtingesnės nuostatos</translation>
     </message>
 </context>
 </TS>

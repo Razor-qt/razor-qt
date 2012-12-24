@@ -3,40 +3,40 @@
     <name>MenuDiskItem</name>
     <message>
         <source>Click to access this device from other applications.</source>
-        <translation>Нажмите, чтобы получить доступ к этому устройству из других  прикладных программ</translation>
+        <translation>Сделать устройство доступным для приложений.</translation>
     </message>
     <message>
         <source>Click to eject this disc.</source>
-        <translation>Нажмите, чтобы извлечь этот диск.</translation>
+        <translation>Извлечь носитель.</translation>
     </message>
 </context>
 <context>
     <name>MountButton</name>
     <message>
         <source>Removable media/devices manager</source>
-        <translation>съёмный  средства/ устройство менеджер</translation>
+        <translation>Менеджер сменных носителей</translation>
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
-        <translation>Устройство &lt;b&gt;&lt;nobr&gt;&apos;%1&apos;&lt;/ NOBR&gt;&lt;/ B&gt; связано.</translation>
+        <translation>Устройство  &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; подключено.</translation>
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
-        <translation>Устройство &lt;b&gt;&lt;nobr&gt;&apos;%1&apos;&lt;/ NOBR&gt;&lt;/ B&gt; будет удален.</translation>
+        <translation>Устройство  &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; отключено.</translation>
     </message>
 </context>
 <context>
     <name>Popup</name>
     <message>
         <source>No devices are available</source>
-        <translation type="unfinished"/>
+        <translation>Нет доступных устройств</translation>
     </message>
 </context>
 <context>
     <name>RazorMountConfiguration</name>
     <message>
         <source>Razor Removable media manager settings</source>
-        <translation>Paзор съёмный  средства менеджер настройки</translation>
+        <translation>Настройки менеджера сменных носителей</translation>
     </message>
     <message>
         <source>Behaviour</source>
@@ -44,19 +44,19 @@
     </message>
     <message>
         <source>When a device is connected </source>
-        <translation>Когда устройство подключено</translation>
+        <translation>При подключении устройства</translation>
     </message>
     <message>
         <source>Popup menu</source>
-        <translation>Контекстное меню</translation>
+        <translation>Открывать меню</translation>
     </message>
     <message>
         <source>Show info</source>
-        <translation>Показать информацию</translation>
+        <translation>Показывать сообщение</translation>
     </message>
     <message>
         <source>Do nothing</source>
-        <translation>ничего не делать</translation>
+        <translation>Ничего не делать</translation>
     </message>
 </context>
 </TS>

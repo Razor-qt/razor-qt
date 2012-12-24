@@ -34,7 +34,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>удалениt</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <source>Add Group</source>
@@ -61,7 +61,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>удалениt</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <source>New Group</source>
@@ -69,23 +69,23 @@
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation>Убрать изменения</translation>
+        <translation>Отменить изменения</translation>
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"/>
+        <translation>Вопрос</translation>
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation type="unfinished"/>
+        <translation>Удалить группу %1? (все содержимое группы будет удалено)</translation>
     </message>
     <message>
         <source>Delete %1?</source>
-        <translation type="unfinished"/>
+        <translation>Удалить %1? </translation>
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>
-        <translation type="unfinished"/>
+        <translation>Привязка для %1 уже существует. Заменить ее?</translation>
     </message>
 </context>
 </TS>

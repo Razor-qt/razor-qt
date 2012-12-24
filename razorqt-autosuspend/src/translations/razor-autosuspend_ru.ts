@@ -3,18 +3,18 @@
     <name>Battery</name>
     <message>
         <source>No battery!</source>
-        <translation>Батареи нет!</translation>
+        <translation>Нет батареи!</translation>
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>Автоотключение Razor не может получить данные о батареях - действие при низком уровне заряда не будет выполнено</translation>
+        <translation>Razor autosuspend не смог найти данные о состоянии батареи - действия при низком уровне питания не будут работать</translation>
     </message>
 </context>
 <context>
     <name>BatteryInfo</name>
     <message>
         <source>Razor Autosuspend</source>
-        <translation type="unfinished"/>
+        <translation>Автовыключение Razor</translation>
     </message>
     <message>
         <source>Battery info</source>
@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>Energy Now:</source>
-        <translation>Текущий уровень заряда:</translation>
+        <translation>Заряд сейчас:</translation>
     </message>
     <message>
         <source>Updated:</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation type="unfinished"/>
+        <translation>Никель-металл-гидридная</translation>
     </message>
     <message>
         <source>Unknown</source>

@@ -21,7 +21,7 @@
     <name>QObject</name>
     <message>
         <source>Display content of the given directory/folder</source>
-        <translation>Показать содержимое выбранного каталога/папки</translation>
+        <translation>Отображает содержимое заданной директории</translation>
     </message>
     <message>
         <source>Icon View:</source>

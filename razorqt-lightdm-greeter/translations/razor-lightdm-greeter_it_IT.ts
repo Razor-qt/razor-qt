@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>password</source>
-        <translation type="unfinished"/>
+        <translation>password</translation>
     </message>
     <message>
         <source>Login</source>

@@ -116,11 +116,11 @@
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation type="unfinished"/>
+        <translation>Qt pagrindu sukurta patobulinta, paprastai valdoma ir greita darbalaukio aplinka.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation type="unfinished"/>
+        <translation>Autorinės teisės: %1-%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
@@ -132,7 +132,7 @@
     </message>
     <message>
         <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt sistemą sukūrė &lt;a %1&gt;Razor-qt komanda su pagalbininkais&lt;/a&gt; naudodami Github.</translation>
     </message>
     <message>
         <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
@@ -204,15 +204,15 @@
     </message>
     <message>
         <source>Xdg Runtime Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg paleidimo namai</translation>
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation type="unfinished"/>
+        <translation>Xdg automatinio paleidimo katalogas</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
-        <translation type="unfinished"/>
+        <translation>Xdg automatinio paleidimo namai</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation type="unfinished"/>
+        <translation>Klaida paleidžiant ekrano užsklandą. Nežinoma klaida xdg-screensaver=%1.</translation>
     </message>
 </context>
 <context>

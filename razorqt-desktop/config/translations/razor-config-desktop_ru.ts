@@ -3,11 +3,12 @@
     <name>BasicSettings</name>
     <message>
         <source>&lt;b&gt;Razor Desktop&lt;/b&gt;&lt;br&gt;Desktop is fully controlled by Razor. &lt;b&gt;Configuration is available in the desktop context menu.&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Razor Desktop&lt;/b&gt;&lt;br&gt;Рабочим столом управляет Razor.
+&lt;b&gt;Настройки доступны из контекстного меню рабочего стола.&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Window Manager Native Desktop&lt;/b&gt;&lt;br&gt;Desktop is handled by used window manager (including WM&apos;s own menus etc.). Only few things can be configured here.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Window Manager Native Desktop&lt;/b&gt;&lt;br&gt;Рабочим столом управляет Ваш WM. (включая меню WM и.т.д.). Только несколько опций можно настроить здесь.</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -15,46 +16,46 @@
     </message>
     <message>
         <source>Desktop Type</source>
-        <translation type="unfinished"/>
+        <translation>Тип рабочего стола</translation>
     </message>
     <message>
         <source>Icon Activation</source>
-        <translation type="unfinished"/>
+        <translation>Запуск программ и открытие файлов</translation>
     </message>
     <message>
         <source>Singleclick</source>
-        <translation type="unfinished"/>
+        <translation>Одинарный щелчок</translation>
     </message>
     <message>
         <source>Doubleclick</source>
-        <translation type="unfinished"/>
+        <translation>Двойной щелчок</translation>
     </message>
     <message>
         <source>Virtual Desktops</source>
-        <translation type="unfinished"/>
+        <translation>Виртуальные рабочие столы</translation>
     </message>
     <message>
         <source>Use different widgets and wallpapers for each virtual desktop</source>
-        <translation type="unfinished"/>
+        <translation>Использовать разные виджеты и обои на разных столах.</translation>
     </message>
     <message>
         <source>Please note that this setting is not supported by all window managers!</source>
-        <translation type="unfinished"/>
+        <translation>Учтите, не все WM поддерживают это!</translation>
     </message>
     <message>
         <source>Use mouse wheel for desktop changing</source>
-        <translation type="unfinished"/>
+        <translation>Использовать колесико мыши для переключения между столами.</translation>
     </message>
     <message>
         <source>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</source>
-        <translation type="unfinished"/>
+        <translation>Если включено, то колесо мыши будет переключать виртуальные рабочие столы (может конфликтовать с некоторыми WM). При выключении Razor игнорирует колесо мыши.</translation>
     </message>
 </context>
 <context>
     <name>DesktopConfigWindow</name>
     <message>
         <source>Razor Desktop Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Настройки рабочего стола Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -62,69 +63,69 @@
     </message>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Настройки меню</translation>
     </message>
     <message>
         <source>WM Native Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Стол управляемый WM</translation>
     </message>
     <message>
         <source>Restart Desktop Module?</source>
-        <translation type="unfinished"/>
+        <translation>Перезапустить модуль рабочего стола?</translation>
     </message>
     <message>
         <source>Razor Desktop module needs to be restarted to apply changes. Restart?</source>
-        <translation type="unfinished"/>
+        <translation>Нужно перезапустить модуль рабочего стола для применения изменений. Перезапустить?</translation>
     </message>
 </context>
 <context>
     <name>MenuConfig</name>
     <message>
         <source>Choose menu file</source>
-        <translation>Выберите  меню Файл</translation>
+        <translation>Укажите файл меню</translation>
     </message>
     <message>
         <source>Menu files (*.menu)</source>
-        <translation>Меню файлов (*. Меню)</translation>
+        <translation>Файлы меню (*.menu)</translation>
     </message>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Настройки меню</translation>
     </message>
     <message>
         <source>Menu file</source>
-        <translation>меню файл</translation>
+        <translation>Файл меню</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
 </context>
 <context>
     <name>WMNativeConfig</name>
     <message>
         <source>Select Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Укажите файл с обоями</translation>
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg)</source>
-        <translation type="unfinished"/>
+        <translation>Изображения (*.png *.xpm *.jpg)</translation>
     </message>
     <message>
         <source>Window Manager Native Desktop</source>
-        <translation type="unfinished"/>
+        <translation>Стол управляемый WM</translation>
     </message>
     <message>
         <source>Use Desktop Icons</source>
-        <translation type="unfinished"/>
+        <translation>Показать иконки на столе</translation>
     </message>
     <message>
         <source>Wallpaper:</source>
-        <translation type="unfinished"/>
+        <translation>Обои</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
 </context>
 </TS>

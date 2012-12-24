@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Button style</source>
-        <translation>Стиль кнопок</translation>
+        <translation>Стиль кнопок:</translation>
     </message>
     <message>
         <source>Max button width</source>
@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Close on middle-click</source>
-        <translation>Закрыть на средний щелчок мыши</translation>
+        <translation>Закрывать по клику средней кнопкой мыши</translation>
     </message>
     <message>
         <source>Icon and text</source>

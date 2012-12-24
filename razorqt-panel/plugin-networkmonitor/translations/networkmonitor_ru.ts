@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>General</source>
-        <translation>общий</translation>
+        <translation>Основные</translation>
     </message>
     <message>
         <source>Interface</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Icon</source>
-        <translation>Иконка</translation>
+        <translation>Значок</translation>
     </message>
 </context>
 </TS>

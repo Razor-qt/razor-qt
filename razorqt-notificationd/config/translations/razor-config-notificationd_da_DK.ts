@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>For nogle påmindelser er udløbstiden afhængig af påmindelse serverens indstillinger.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Server bestemmer&quot; Tid:</translation>
     </message>
     <message>
         <source> sec</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation type="unfinished"/>
+        <translation>Påmindelsesmellemrum:</translation>
     </message>
     <message>
         <source> px</source>
@@ -71,12 +71,14 @@
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Advarsel:&lt;/b&gt; Ingen påmindelsestjeneste kører.
+En reservetjeneste vil blive brugt.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Advarsel:&lt;/b&gt; En tredjeparts påmindelsestjeneste (%1) kører.
+Disse indstillinger vil ikke have nogen effekt på denne!</translation>
     </message>
     <message>
         <source>Notification Summary</source>

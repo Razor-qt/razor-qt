@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Identity:</source>
-        <translation type="unfinished"/>
+        <translation>Identitatea:</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -18,7 +18,7 @@
     <name>RazorPolicykit::PolicykitAgent</name>
     <message>
         <source>PolicyKit Information</source>
-        <translation type="unfinished"/>
+        <translation>PolicyKit informazioa</translation>
     </message>
     <message>
         <source>Authorization Failed</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>PolicyKit Error</source>
-        <translation type="unfinished"/>
+        <translation>PolicyKit errorea</translation>
     </message>
 </context>
 </TS>

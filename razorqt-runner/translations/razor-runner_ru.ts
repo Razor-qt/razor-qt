@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Positioning:</source>
-        <translation>Позиция:</translation>
+        <translation>Положение:</translation>
     </message>
     <message>
         <source>Show on:</source>
