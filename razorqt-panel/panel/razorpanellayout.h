@@ -31,7 +31,6 @@
 
 #include <QtGui/QLayout>
 #include <QtCore/QList>
-#include <QtCore/QList>
 #include <QtGui/QWidget>
 #include <QtGui/QLayoutItem>
 #include "irazorpanel.h"

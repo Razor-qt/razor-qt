@@ -53,6 +53,9 @@ public:
      **/
     virtual Position position() const = 0;
 
+    virtual int lineSize() const = 0;
+    virtual int lineCount() const = 0;
+
     /**
      Helper functions for eazy direction checking.
      Retuns true if panel on the top or bottom of the screen; otherwise returns false.

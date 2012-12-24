@@ -34,6 +34,7 @@
 #include <QSettings>
 
 #include "razortaskbar.h"
+#include "razortaskbarlayout.h"
 #include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
 #include <QtCore/QList>
@@ -61,16 +62,10 @@ RazorTaskBar::RazorTaskBar(IRazorPanelPlugin *plugin, QWidget *parent) :
     mShowOnlyCurrentDesktopTasks(false),
     mPlugin(plugin)
 {
-    if (plugin->panel()->isHorizontal())
-        mLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
-    else
-        mLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
-
+    mLayout = new RazorTaskBarLayout(this);
     setLayout(mLayout);
-
-    mLayout->addStretch();
-    mLayout->setAlignment(Qt::AlignCenter);
     mLayout->setMargin(0);
+    realign();
 
     mRootWindow = QX11Info::appRootWindow();
 
@@ -162,17 +157,12 @@ void RazorTaskBar::refreshTaskList()
             btn->setToolButtonStyle(mButtonStyle);
 
             mButtonsHash.insert(wnd, btn);
-            // -1 is here due the last stretchable item
-            mLayout->insertWidget(layout()->count()-1, btn);
-            // now I want to set higher stretchable priority for buttons
-            // to suppress stretchItem (last item) default value which
-            // will remove that anoying aggresive space at the end -- petr
-            mLayout->setStretch(layout()->count()-2, 1);
+            mLayout->addWidget(btn);
         }
     }
     setButtonMaxWidth();
     refreshButtonVisibility();
-
+    mLayout->invalidate();
     activeWindowChanged();
 }
 
@@ -366,10 +356,10 @@ void RazorTaskBar::settingsChanged()
 
 void RazorTaskBar::realign()
 {
-    mLayout->setDirection(mPlugin->panel()->isHorizontal() ?
-                              QBoxLayout::LeftToRight :
-                              QBoxLayout::TopToBottom );
+    IRazorPanel *panel = mPlugin->panel();
     setButtonMaxWidth();
+    mLayout->setIsHorizontal(panel->isHorizontal());
+    mLayout->setLineCount(panel->lineCount());
 }
 
 

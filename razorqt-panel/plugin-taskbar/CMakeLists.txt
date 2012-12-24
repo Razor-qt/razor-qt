@@ -8,6 +8,7 @@ set(HEADERS
     razortaskbutton.h
     razortaskbarconfiguration.h
     razortaskbarplugin.h
+    razortaskbarlayout.h
 )
 
 set(SOURCES
@@ -15,6 +16,7 @@ set(SOURCES
     razortaskbutton.cpp
     razortaskbarconfiguration.cpp
     razortaskbarplugin.cpp
+    razortaskbarlayout.cpp
 )
 
 set(MOCS
@@ -22,6 +24,7 @@ set(MOCS
     razortaskbutton.h
     razortaskbarconfiguration.h
     razortaskbarplugin.h
+    razortaskbarlayout.h
 )
 
 set(UIS
