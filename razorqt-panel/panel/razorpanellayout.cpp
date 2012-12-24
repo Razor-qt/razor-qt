@@ -576,10 +576,13 @@ void RazorPanelLayout::setGeometry(const QRect &geometry)
     if (!mRightGrid->isValid())
         mRightGrid->update();
 
-    if (isHorizontal())
-        setGeometryHoriz(geometry);
-    else
-        setGeometryVert(geometry);
+    if (count())
+    {
+        if (isHorizontal())
+            setGeometryHoriz(geometry);
+        else
+            setGeometryVert(geometry);
+    }
 
     mAnimate = false;
     QLayout::setGeometry(geometry);
@@ -617,7 +620,7 @@ void RazorPanelLayout::setGeometryHoriz(const QRect &geometry)
         int expWidth = mLeftGrid->expandableSize() + mRightGrid->expandableSize();
         int nonExpWidth = mLeftGrid->sizeHint().width()  - mLeftGrid->expandableSize() +
                       mRightGrid->sizeHint().width() - mRightGrid->expandableSize();
-        expFactor = (1.0 * geometry.width() - nonExpWidth) / expWidth;
+        expFactor = expWidth ? ((1.0 * geometry.width() - nonExpWidth) / expWidth) : 1;
     }
 
     // Calc baselines for button like plugins.
@@ -714,7 +717,7 @@ void RazorPanelLayout::setGeometryVert(const QRect &geometry)
         int expHeight = mLeftGrid->expandableSize() + mRightGrid->expandableSize();
         int nonExpHeight = mLeftGrid->sizeHint().height()  - mLeftGrid->expandableSize() +
                            mRightGrid->sizeHint().height() - mRightGrid->expandableSize();
-        expFactor = (1.0 * geometry.height() - nonExpHeight) / expHeight;
+        expFactor = expHeight ? ((1.0 * geometry.height() - nonExpHeight) / expHeight) : 1;
     }
 
     // Calc baselines for button like plugins.
