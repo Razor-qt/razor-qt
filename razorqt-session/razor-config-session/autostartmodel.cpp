@@ -82,7 +82,7 @@ bool AutoStartItemModel::setEntry(const QModelIndex& index, XdgDesktopFile entry
     if (parent == mRazorIndex)
         entry.setValue("OnlyShowIn", "Razor;");
 
-    mItemMap[fileName].setLocal(entry);
+    mItemMap[fileName].setFile(entry);
 
     if (replacing)
     {
