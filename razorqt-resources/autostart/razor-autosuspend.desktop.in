@@ -5,7 +5,6 @@ Name=Razor Autosuspend
 TryExec=razor-autosuspend
 Exec=razor-autosuspend
 OnlyShowIn=Razor;
-Hidden=true
 X-Razor-Need-Tray=true
 X-Razor-Module=true
 

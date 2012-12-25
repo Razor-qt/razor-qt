@@ -24,8 +24,10 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
-#include <QDebug>
-#include <QTimerEvent>
+#include <QtCore/QDebug>
+#include <QtCore/QTimer>
+#include <QtCore/QCoreApplication>
+#include <razorqt/razorautostartentry.h>
 
 #include "razorautosuspend.h"
 #include "../config/constants.h"
@@ -36,10 +38,36 @@ RazorAutosuspendd::RazorAutosuspendd(QObject *parent) :
     mActionTime(),
     mSettings("razor-autosuspend")
 {
+    bool performFirstRunCheck = mSettings.value(FIRSTRUNCHECK_KEY, false).toBool();
+    if (performFirstRunCheck)
+    {
+        mSettings.setValue(FIRSTRUNCHECK_KEY, false);
+    }
+
+    mBattery = new Battery(this);
+    if (!mBattery->haveBattery())
+    {
+        if (performFirstRunCheck)
+        {
+            qWarning() << "No battery detected - disabling Razor Autosuspend";
+            RazorAutostartEntry autostartEntry("razor-autosuspend.desktop");
+            autostartEntry.setEnabled(false);
+            autostartEntry.commit();
+
+            // We can't quit if the event loop did not start yet
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return;
+        }
+
+        RazorNotification::notify(tr("No battery!"),
+                                  tr("Razor autosuspend could not find data about any battery - actions on power low will not work"),
+                                  "razor-autosuspend");
+    }
+
     mRazorNotification.setIcon("razor-autosuspend");
     mRazorNotification.setUrgencyHint(RazorNotification::UrgencyCritical);
     mRazorNotification.setTimeout(2000);
-    mBattery = new Battery(this);
+
     new TrayIcon(mBattery, this);
     
     connect(&mLid, SIGNAL(changed(bool)), this, SLOT(lidChanged(bool)));

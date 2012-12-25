@@ -45,6 +45,7 @@ public:
     double  chargeLevel();
     bool    powerLow();
     bool    discharging();
+    bool    haveBattery();
     uint    state();
     QString stateAsString(); 
     QVariantMap properties();

@@ -33,6 +33,7 @@
 #define POWERLOWLEVEL_KEY "powerLowLevel"
 #define SHOWTRAYICON_KEY "showTrayIcon"
 #define USETHEMEICONS_KEY "useThemeIcons"
+#define FIRSTRUNCHECK_KEY "performFirstRunCheck"
 
 enum
 {

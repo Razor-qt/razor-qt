@@ -32,7 +32,6 @@
 #include <QDebug>
 #include <QMetaObject>
 #include <QMetaProperty>
-#include <razorqt/razornotification.h>
 #include <razorqt/razorsettings.h>
 #include "../config/constants.h"
 
@@ -68,12 +67,6 @@ Battery::Battery(QObject* parent)
             delete device;
         }
     }
-    if (mUPowerBatteryDeviceInterface == 0)
-    {
-        RazorNotification::notify(tr("No battery!"),
-                                  tr("Razor autosuspend could not find data about any battery - actions on power low will not work"),
-                                  "razor-autosuspend");
-    }
 }
 
 Battery::~Battery()
@@ -108,6 +101,11 @@ bool Battery::powerLow()
 bool Battery::discharging()
 {
     return 2 == state();
+}
+
+bool Battery::haveBattery()
+{
+    return mUPowerBatteryDeviceInterface != 0;
 }
 
 uint Battery::state()
