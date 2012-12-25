@@ -40,10 +40,10 @@ int main(int argc, char *argv[])
 
     // To ensure only one instance of razor-autosuspend is running we register as a DBus service and refuse to run
     // if not able to do so.
-    // We do not register any object as we don't have any dbus-operations to expose.g
-    if (! QDBusConnection::sessionBus().registerService("org.razor-qt.razor-autosuspend"))
+    // We do not register any object as we don't have any dbus-operations to expose.
+    if (! QDBusConnection::sessionBus().registerService("org.razorqt.razor-autosuspend"))
     {
-        qWarning() << "Unable to register 'org.razor-qt.razor-autosuspend' service - is another instance of razor-autosuspend running?";
+        qWarning() << "Unable to register 'org.razorqt.razor-autosuspend' service - is another instance of razor-autosuspend running?";
         return 1;
     }
     else
