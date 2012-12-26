@@ -60,11 +60,6 @@ set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT})
 
 #************************************************
 
-if (RUNNER_MATH)
-    add_definitions(-DMATH_ENABLED)
-endif (RUNNER_MATH)
-
-
 qt4_wrap_cpp(MOC_SOURCES ${MOC_FILES})
 qt4_wrap_ui(UI_HEADERS ${UI_FILES})
 qt4_add_resources(QRC_SOURCES ${QRC_FILES})
