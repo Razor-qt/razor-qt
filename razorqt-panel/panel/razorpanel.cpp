@@ -97,8 +97,8 @@ QString RazorPanel::positionToStr(IRazorPanel::Position position)
  ************************************************/
 RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     QFrame(parent),
-    mQssLineSize(16),
-    mQssLineCount(1)
+    mLineSize(22),
+    mLineCount(1)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
@@ -109,6 +109,7 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     mLayout = new RazorPanelLayout(this);
     connect(mLayout, SIGNAL(pluginMoved()), this, SLOT(pluginMoved()));
     setLayout(mLayout);
+    mLayout->setLineCount(mLineCount);
 
     mDelaySave.setSingleShot(true);
     mDelaySave.setInterval(SETTINGS_SAVE_DELAY);
@@ -121,7 +122,6 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
 
     mSettings = new RazorSettings("razor-panel/" + configFile, this);
     readSettings();
-    updateStyleSheet();
     loadPlugins();
 }
 
@@ -135,8 +135,8 @@ void RazorPanel::readSettings()
     mSettings->beginGroup(CFG_PANEL_GROUP);
 
     // By default we are using size & count from theme.
-    setLineSize(mSettings->value(CFG_KEY_LINESIZE, 0).toInt());
-    setLineCount(mSettings->value(CFG_KEY_LINECNT,  0).toInt());
+    setLineSize(mSettings->value(CFG_KEY_LINESIZE, mLineSize).toInt());
+    setLineCount(mSettings->value(CFG_KEY_LINECNT, mLineCount).toInt());
 
     setLength(mSettings->value(CFG_KEY_LENGTH, 100).toInt(),
               mSettings->value(CFG_KEY_PERCENT, true).toBool());
@@ -197,7 +197,7 @@ void RazorPanel::screensChangeds()
         setPosition(findAvailableScreen(mPosition), mPosition);
 }
 
-#include <QTime>
+
 /************************************************
 
  ************************************************/
@@ -302,7 +302,6 @@ void RazorPanel::realign()
 
 
     const QRect screen = QApplication::desktop()->screenGeometry(mScreenNum);
-    //mLayout->invalidate();
     QSize size = sizeHint();
     QRect rect;
 
@@ -311,7 +310,7 @@ void RazorPanel::realign()
         // Horiz panel ***************************
 
         // Size .......................
-        rect.setHeight(size.height());
+        rect.setHeight(qMax(PANEL_MINIMUM_SIZE, size.height()));
         if (mLengthInPercents)
             rect.setWidth(screen.width() * mLength / 100.0);
         else
@@ -346,7 +345,7 @@ void RazorPanel::realign()
         // Vert panel ***************************
 
         // Size .......................
-        rect.setWidth(size.width());
+        rect.setWidth(qMax(PANEL_MINIMUM_SIZE, size.width()));
         if (mLengthInPercents)
             rect.setHeight(screen.height() * mLength / 100.0);
         else
@@ -377,11 +376,6 @@ void RazorPanel::realign()
             rect.moveRight(screen.right());
     }
 
-
-    rect.setHeight(qMax(PANEL_MINIMUM_SIZE, rect.height()));
-    rect.setWidth(qMax(PANEL_MINIMUM_SIZE, rect.width()));
-
-
     if (rect == geometry())
         return;
 
@@ -398,43 +392,41 @@ void RazorPanel::realign()
     {
         case RazorPanel::PositionTop:
             xf.setStrut(wid, 0, 0, height(), 0,
-               /* Left   */   0, 0,
-               /* Right  */   0, 0,
-               /* Top    */   rect.left(), rect.right(),
-               /* Bottom */   0, 0
+               /* Left   */  0, 0,
+               /* Right  */  0, 0,
+               /* Top    */  rect.left(), rect.right(),
+               /* Bottom */  0, 0
                          );
         break;
 
         case RazorPanel::PositionBottom:
-            xf.setStrut(wid,  0, 0, 0, desktop.height() - rect.y(),
-               /* Left   */   0, 0,
-               /* Right  */   0, 0,
-               /* Top    */   0, 0,
-               /* Bottom */   rect.left(), rect.right()
+            xf.setStrut(wid, 0, 0, 0, desktop.height() - rect.y(),
+               /* Left   */  0, 0,
+               /* Right  */  0, 0,
+               /* Top    */  0, 0,
+               /* Bottom */  rect.left(), rect.right()
                          );
             break;
 
         case RazorPanel::PositionLeft:
             xf.setStrut(wid, width(), 0, 0, 0,
-               /* Left   */   rect.top(), rect.bottom(),
-               /* Right  */   0, 0,
-               /* Top    */   0, 0,
-               /* Bottom */   0, 0
+               /* Left   */  rect.top(), rect.bottom(),
+               /* Right  */  0, 0,
+               /* Top    */  0, 0,
+               /* Bottom */  0, 0
                          );
 
             break;
 
         case RazorPanel::PositionRight:
             xf.setStrut(wid, 0, desktop.width() - rect.x(), 0, 0,
-               /* Left   */   0, 0,
-               /* Right  */   rect.top(), rect.bottom(),
-               /* Top    */   0, 0,
-               /* Bottom */   0, 0
+               /* Left   */  0, 0,
+               /* Right  */  rect.top(), rect.bottom(),
+               /* Top    */  0, 0,
+               /* Bottom */  0, 0
                          );
             break;
     }
-
-//    emit q->panelRealigned();
 }
 
 
@@ -522,16 +514,22 @@ void RazorPanel::showConfigDialog()
  ************************************************/
 void RazorPanel::showAddPluginDialog()
 {
-    AddPluginDialog* dlg = findChild<AddPluginDialog*>();
+    AddPluginDialog* dialog = findChild<AddPluginDialog*>();
 
-    if (!dlg)
+    if (!dialog)
     {
-        dlg = new AddPluginDialog(pluginDesktopDirs(), "RazorPanel/Plugin", "*", this);
-        dlg->setAttribute(Qt::WA_DeleteOnClose);
-        connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
+        dialog = new AddPluginDialog(pluginDesktopDirs(), "RazorPanel/Plugin", "*", this);
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        connect(dialog, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
 
-    dlg->show();
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
+    xfitMan().raiseWindow(dialog->effectiveWinId());
+    xfitMan().moveWindowToDesktop(dialog->effectiveWinId(), qMax(xfitMan().getActiveDesktop(), 0));
+
+    dialog->show();
 }
 
 
@@ -549,27 +547,12 @@ void RazorPanel::addPlugin(const RazorPluginInfo &desktopFile)
 /************************************************
 
  ************************************************/
-void RazorPanel::updateStyleSheet()
-{
-    QString qss =
-            QString("Plugin * { qproperty-iconSize: %1px; }\n").arg(mLineSize);
-
-    setStyleSheet(qss);
-}
-
-
-/************************************************
-
- ************************************************/
 void RazorPanel::setLineSize(int value)
 {
-    mLineSize = value;
-
-    int v = mLineSize ? mLineSize : mQssLineSize;
-    if (v != mLayout->lineSize())
+    if (mLineSize != value)
     {
-        updateStyleSheet();
-        mLayout->setLineSize(v);
+        mLineSize = value;
+        mLayout->setLineSize(mLineSize);
         realign();
         emit realigned();
         saveSettings(true);
@@ -582,13 +565,13 @@ void RazorPanel::setLineSize(int value)
  ************************************************/
 void RazorPanel::setLineCount(int value)
 {
-    mLineCount = value;
-
-    int v = mLineCount ? mLineCount : mQssLineCount;
-    if (v != mLayout->lineCount())
+    if (mLineCount != value)
     {
-        mLayout->setLineCount(v);
+        mLineCount = value;
+        mLayout->setEnabled(false);
+        mLayout->setLineCount(mLineCount);
         realign();
+        mLayout->setEnabled(true);
         emit realigned();
         saveSettings(true);
     }
@@ -677,7 +660,6 @@ bool RazorPanel::event(QEvent *event)
         break;
 
     case QEvent::LayoutRequest:
-    //case QEvent::Resize:
         realign();
         break;
 
@@ -752,23 +734,6 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
 /************************************************
 
  ************************************************/
-//void RazorPanelPrivate::pluginRemoved()
-//{
-//    Plugin *p = qobject_cast<Plugin*>(sender());
-//    if (p)
-//    {
-//        mLayout->removeWidget(p);
-//        mPlugins.removeAll(p);
-//        saveSettings();
-//    }
-//}
-
-
-
-
-/************************************************
-
- ************************************************/
 Plugin *RazorPanel::findPlugin(const IRazorPanelPlugin *iPlugin) const
 {
     foreach(Plugin *plugin, mPlugins)
@@ -825,31 +790,6 @@ QRect RazorPanel::calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const
 QString RazorPanel::qssPosition() const
 {
     return positionToStr(position());
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanel::setQssLineSize(int value)
-{
-    bool changed = (mQssLineSize != value);
-    mQssLineSize = value;
-
-    if (changed && !mLineSize)
-        realign();
-}
-
-/************************************************
-
- ************************************************/
-void RazorPanel::setQssLineCount(int value)
-{
-    bool changed = (mQssLineCount != value);
-    mQssLineCount = value;
-
-    if (changed && !mLineCount)
-        realign();
 }
 
 

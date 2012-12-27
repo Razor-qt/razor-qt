@@ -58,7 +58,7 @@ struct IRazorPanelPluginStartupInfo
 };
 
 
-/*! \brief Base abstract class for Razor panel widgets/plugins.
+/** \brief Base abstract class for Razor panel widgets/plugins.
 All plugins *must* be inherited from this one.
 
 This class provides some basic API and inherited/implemented
@@ -66,7 +66,7 @@ plugins GUIs will be responsible on the functionality itself.
 
 See <a href=https://github.com/Razor-qt/razor-qt/wiki/How-to-write-the-panel-plugin>
 How to write the panel plugin</a> for more information about how to make your plugins.
-*/
+**/
 
 class IRazorPanelPlugin
 {
@@ -75,12 +75,12 @@ public:
       This enum describes the properties of an plugin.
      **/
     enum Flag {
-        NoFlags              = 0,   //! It does not have any properties set.
-        PreferRightAlignment = 1,   /*! The plugin is prefer right alignment (for example the clock plugin);
+        NoFlags              = 0,   ///< It does not have any properties set.
+        PreferRightAlignment = 1,   /**< The plugin is prefer right alignment (for example the clock plugin);
                                         otherwise plugin prefer left (like main menu).
                                         This flag is used only at the first start, later positions of all
                                         plugins saved in a config, and this saved information is used. */
-        HaveConfigDialog     = 2    //! The plugin have a configuration dialog.
+        HaveConfigDialog     = 2    ///< The plugin have a configuration dialog.
     };
 
     Q_DECLARE_FLAGS(Flags, Flag)
@@ -89,11 +89,10 @@ public:
       This enum describes the reason the plugin was activated.
      **/
     enum ActivationReason {
-        Unknown             = 0,    //! Unknown reason
-//        Context             = 1,    //!	The context menu for the plugin entry was requested
-        DoubleClick         = 2,    //!	The plugin entry was double clicked
-        Trigger             = 3,    //!	The plugin was clicked
-        MiddleClick         = 4     //! The plugin was clicked with the middle mouse button
+        Unknown             = 0,    ///< Unknown reason
+        DoubleClick         = 2,    ///<	The plugin entry was double clicked
+        Trigger             = 3,    ///<	The plugin was clicked
+        MiddleClick         = 4     ///< The plugin was clicked with the middle mouse button
     };
 
     /**

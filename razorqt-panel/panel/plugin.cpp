@@ -194,7 +194,7 @@ bool Plugin::loadLib(const QString &libraryName)
     {
         mPluginWidget->setObjectName(mPlugin->themeId());
     }
-    this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     return true;
 }

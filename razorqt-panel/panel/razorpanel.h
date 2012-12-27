@@ -47,8 +47,6 @@ class RazorPanel : public QFrame, public IRazorPanel
     Q_OBJECT
 
     Q_PROPERTY(QString position READ qssPosition)
-    Q_PROPERTY(int lineSize  READ qssLineSize  WRITE setQssLineSize)
-    Q_PROPERTY(int lineCount READ qssLineCount WRITE setQssLineCount)
 
 public:
     enum Alignment {
@@ -72,11 +70,6 @@ public:
 
     // For QSS properties ..................
     QString qssPosition() const;
-    int qssLineSize() const { return mQssLineSize; }
-    void setQssLineSize(int value);
-
-    int qssLineCount() const { return mQssLineCount; }
-    void setQssLineCount(int value);
 
     static bool canPlacedOn(int screenNum, RazorPanel::Position position);
     static QString positionToStr(IRazorPanel::Position position);
@@ -132,10 +125,7 @@ private:
     Plugin *findPlugin(const IRazorPanelPlugin *iPlugin) const;
 
     QString findNewPluginSettingsGroup(const QString &pluginType) const;
-    void updateStyleSheet();
 
-    int mQssLineSize;
-    int mQssLineCount;
     int mLineSize;
     int mLineCount;
 

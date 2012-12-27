@@ -34,7 +34,7 @@
 #include <QSettings>
 
 #include "razortaskbar.h"
-#include "razortaskbarlayout.h"
+#include <razorqt/razorgridlayout.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
 #include <QtCore/QList>
@@ -62,7 +62,8 @@ RazorTaskBar::RazorTaskBar(IRazorPanelPlugin *plugin, QWidget *parent) :
     mShowOnlyCurrentDesktopTasks(false),
     mPlugin(plugin)
 {
-    mLayout = new RazorTaskBarLayout(this);
+    setMinimumWidth(100);
+    mLayout = new RazorGridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);
     realign();
@@ -78,18 +79,6 @@ RazorTaskBar::RazorTaskBar(IRazorPanelPlugin *plugin, QWidget *parent) :
  ************************************************/
 RazorTaskBar::~RazorTaskBar()
 {
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorTaskBar::updateSizePolicy()
-{
-    QSizePolicy sp(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    sp.setHorizontalStretch(1);
-    sp.setVerticalStretch(1);
-    setSizePolicy(sp);
 }
 
 
@@ -160,10 +149,11 @@ void RazorTaskBar::refreshTaskList()
             mLayout->addWidget(btn);
         }
     }
-    setButtonMaxWidth();
+    setButtonSizeLimits();
     refreshButtonVisibility();
     mLayout->invalidate();
     activeWindowChanged();
+    realign();
 }
 
 /************************************************
@@ -288,38 +278,33 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
     }
 }
 
-void RazorTaskBar::setButtonMaxWidth()
-{
-   QHash<Window, RazorTaskButton*>::const_iterator i = mButtonsHash.constBegin();
 
-   while (i != mButtonsHash.constEnd())
-   {
-       QRect rect = mPlugin->panel()->globalGometry();
-       if (mPlugin->panel()->isHorizontal())
-       {
-           if (buttonMaxWidth == -1)
-           {
-               i.value()->setMaximumSize(rect.height(), rect.height());
-           }
-           else
-           {
-               i.value()->setMaximumWidth(buttonMaxWidth);
-           }
-       }
-       else
-       {
-           if (buttonMaxWidth == -1)
-           {
-               i.value()->setMaximumSize(rect.width(), rect.width());
-           }
-           else
-           {
-               i.value()->setMaximumWidth(buttonMaxWidth);
-               i.value()->setMaximumHeight(rect.width());
-           }
-       }
-       ++i;
-   }
+/************************************************
+
+ ************************************************/
+void RazorTaskBar::setButtonSizeLimits()
+{
+    QSize minSize = QSize(0, 0);
+    if (mPlugin->panel()->isHorizontal())
+    {
+        minSize.setHeight(mPlugin->panel()->lineSize());
+    }
+
+    QSize maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    if (mPlugin->panel()->isHorizontal() &&
+        mButtonMaxWidth > -1)
+    {
+        maxSize.setWidth(mButtonMaxWidth);
+    }
+
+    QHash<Window, RazorTaskButton*>::const_iterator i = mButtonsHash.constBegin();
+
+    while (i != mButtonsHash.constEnd())
+    {
+        i.value()->setMinimumSize(minSize);
+        i.value()->setMaximumSize(maxSize);
+        ++i;
+    }
 
 }
 
@@ -328,24 +313,24 @@ void RazorTaskBar::setButtonMaxWidth()
  ************************************************/
 void RazorTaskBar::settingsChanged()
 {
-    buttonMaxWidth = mPlugin->settings()->value("maxWidth", 400).toInt();
+    mButtonMaxWidth = mPlugin->settings()->value("maxWidth", 400).toInt();
     QString s = mPlugin->settings()->value("buttonStyle").toString().toUpper();
 
     if (s == "ICON")
     {
         setButtonStyle(Qt::ToolButtonIconOnly);
-        buttonMaxWidth = -1;
-        setButtonMaxWidth();
+        mButtonMaxWidth = -1;
+        setButtonSizeLimits();
     }
     else if (s == "TEXT")
     {
         setButtonStyle(Qt::ToolButtonTextOnly);
-        setButtonMaxWidth();
+        setButtonSizeLimits();
     }
     else
     {
         setButtonStyle(Qt::ToolButtonTextBesideIcon);
-        setButtonMaxWidth();
+        setButtonSizeLimits();
     }
 
     mShowOnlyCurrentDesktopTasks = mPlugin->settings()->value("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks).toBool();
@@ -354,15 +339,38 @@ void RazorTaskBar::settingsChanged()
     refreshTaskList();
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorTaskBar::realign()
 {
+    mLayout->setEnabled(false);
     IRazorPanel *panel = mPlugin->panel();
-    setButtonMaxWidth();
-    mLayout->setIsHorizontal(panel->isHorizontal());
-    mLayout->setLineCount(panel->lineCount());
+    setButtonSizeLimits();
+    if (panel->isHorizontal())
+    {
+        mLayout->setRowCount(panel->lineCount());
+        mLayout->setColumnCount(0);
+        mLayout->setStretch(RazorGridLayout::StretchHoriz | RazorGridLayout::StretchVert);
+    }
+    else
+    {
+        if (mButtonStyle == Qt::ToolButtonIconOnly)
+            mLayout->setColumnCount(panel->lineCount());
+        else
+            mLayout->setColumnCount(1);
+
+        mLayout->setRowCount(0);
+        mLayout->setStretch(RazorGridLayout::StretchHoriz);
+    }
+    mLayout->setEnabled(true);
 }
 
 
+/************************************************
+
+ ************************************************/
 void RazorTaskBar::wheelEvent(QWheelEvent* event)
 {
     XfitMan xf = xfitMan();

@@ -39,7 +39,7 @@
 
 class RazorTaskButton;
 class IRazorPanelPlugin;
-class RazorTaskBarLayout;
+class RazorGridLayout;
 
 class RazorTaskBar : public QFrame
 {
@@ -57,20 +57,19 @@ public slots:
     void activeWindowChanged();
 
 protected:
-    void updateSizePolicy();
 
 private:
     void refreshTaskList();
     void refreshButtonVisibility();
     QHash<Window, RazorTaskButton*> mButtonsHash;
-    RazorTaskBarLayout *mLayout;
+    RazorGridLayout *mLayout;
     RazorTaskButton* buttonByWindow(Window window) const;
     bool windowOnActiveDesktop(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;
-    int buttonMaxWidth;
+    int mButtonMaxWidth;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
-    void setButtonMaxWidth();
+    void setButtonSizeLimits();
     bool mShowOnlyCurrentDesktopTasks;
 
     void handlePropertyNotify(XPropertyEvent* event);

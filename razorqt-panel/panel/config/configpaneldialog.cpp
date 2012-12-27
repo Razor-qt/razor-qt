@@ -60,6 +60,7 @@ ConfigPanelDialog *ConfigPanelDialog::exec(RazorPanel *panel)
     dialog->raise();
     dialog->activateWindow();
     xfitMan().raiseWindow(dialog->effectiveWinId());
+    xfitMan().moveWindowToDesktop(dialog->effectiveWinId(), qMax(xfitMan().getActiveDesktop(), 0));
     return dialog;
 }
 

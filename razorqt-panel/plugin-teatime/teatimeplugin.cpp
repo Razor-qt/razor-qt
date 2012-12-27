@@ -35,6 +35,7 @@ TeaTimePlugin::TeaTimePlugin(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
     IRazorPanelPlugin(startupInfo)
 {
+    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mButton.setIcon(XdgIcon::fromTheme("preferences-plugin"));
     //connect(&mButton, SIGNAL(clicked()), this, SLOT(showMessage()));
 }

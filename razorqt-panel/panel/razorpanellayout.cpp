@@ -44,6 +44,8 @@
 #include "irazorpanelplugin.h"
 #include "razorpanel.h"
 #include "pluginmoveprocessor.h"
+#include <QToolButton>
+#include <QStyle>
 
 #define ANIMATION_DURATION 250
 
@@ -128,6 +130,9 @@ public:
 
     void update();
 
+    int lineSize() const { return mLineSize; }
+    void setLineSize(int value);
+
     int colCount() const { return mColCount; }
     void setColCount(int value);
 
@@ -143,14 +148,14 @@ public:
     bool horiz() const { return mHoriz; }
     void setHoriz(bool value);
 
-    bool isExpandable() const { return mExpandable; }
-
     void clear();
     void rebuild();
 
+    bool isExpandable() const { return mExpandable; }
     int expandableSize() const { return mExpandableSize; }
 
     void moveItem(int from, int to);
+
 private:
     QVector<LayoutItemInfo> mInfoItems;
     int mColCount;
@@ -158,8 +163,10 @@ private:
     int mRowCount;
     bool mValid;
     int mExpandableSize;
+    int mLineSize;
 
     QSize mSizeHint;
+    QSize mMinSize;
     bool mHoriz;
 
     int mNextRow;
@@ -176,6 +183,7 @@ private:
  ************************************************/
 LayoutItemGrid::LayoutItemGrid()
 {
+    mLineSize = 0;
     clear();
 }
 
@@ -193,6 +201,8 @@ void LayoutItemGrid::clear()
     mExpandable = false;
     mExpandableSize = 0;
     mUsedColCount = 0;
+    mSizeHint = QSize(0,0);
+    mMinSize = QSize(0,0);
 }
 
 
@@ -302,9 +312,11 @@ LayoutItemInfo &LayoutItemGrid::itemInfo(int row, int col)
 void LayoutItemGrid::update()
 {
     mExpandableSize = 0;
+    mSizeHint = QSize(0,0);
+
     if (mHoriz)
     {
-        mSizeHint = QSize(0, 0);
+        mSizeHint.setHeight(mLineSize * mColCount);
         int x = 0;
         for (int r=0; r<mRowCount; ++r)
         {
@@ -332,7 +344,7 @@ void LayoutItemGrid::update()
     }
     else
     {
-        mSizeHint = QSize(0, 0);
+        mSizeHint.setWidth(mLineSize * mColCount);
         int y = 0;
         for (int r=0; r<mRowCount; ++r)
         {
@@ -344,7 +356,7 @@ void LayoutItemGrid::update()
                 if (!info.item)
                     continue;
 
-                QSize sz = info.item->sizeHint();
+                QSize sz = info.item->minimumSize();
                 info.geometry = QRect(QPoint(x,y), sz);
                 x += sz.width();
                 rh = qMax(rh, sz.height());
@@ -366,9 +378,19 @@ void LayoutItemGrid::update()
 /************************************************
 
  ************************************************/
+void LayoutItemGrid::setLineSize(int value)
+{
+    mLineSize = qMax(1, value);
+    invalidate();
+}
+
+
+/************************************************
+
+ ************************************************/
 void LayoutItemGrid::setColCount(int value)
 {
-    mColCount = value;
+    mColCount = qMax(1, value);
     rebuild();
 }
 
@@ -388,7 +410,6 @@ void LayoutItemGrid::setHoriz(bool value)
  ************************************************/
 RazorPanelLayout::RazorPanelLayout(QWidget *parent) :
     QLayout(parent),
-    mLineSize(0),
     mLeftGrid(new LayoutItemGrid()),
     mRightGrid(new LayoutItemGrid()),
     mPosition(IRazorPanel::PositionBottom),
@@ -559,15 +580,6 @@ QSize RazorPanelLayout::sizeHint() const
 /************************************************
 
  ************************************************/
-QSize RazorPanelLayout::minimumSize() const
-{
-    return sizeHint();
-}
-
-
-/************************************************
-
- ************************************************/
 void RazorPanelLayout::setGeometry(const QRect &geometry)
 {
     if (!mLeftGrid->isValid())
@@ -623,13 +635,27 @@ void RazorPanelLayout::setGeometryHoriz(const QRect &geometry)
         expFactor = expWidth ? ((1.0 * geometry.width() - nonExpWidth) / expWidth) : 1;
     }
 
-    // Calc baselines for button like plugins.
-    QVector<int> baseLines(qMax(mLeftGrid->usedColCount(), mRightGrid->usedColCount()));
+    // Calc baselines for plugins like button.
+    QVector<int> baseLines(qMax(mLeftGrid->colCount(), mRightGrid->colCount()));
     {
         int bh = (geometry.height() / baseLines.count()) / 2;
         for (int i=0; i<baseLines.count(); ++i)
             baseLines[i] = geometry.top() + (i * 2 + 1) * bh;
     }
+
+#if 0
+    qDebug() << "** RazorPanelLayout::setGeometryHoriz **************";
+    qDebug() << "geometry: " << geometry;
+
+    qDebug() << "Left grid";
+    qDebug() << "  cols:" << mLeftGrid->colCount() << " rows:" << mLeftGrid->rowCount();
+    qDebug() << "  usedCols" << mLeftGrid->usedColCount();
+
+    qDebug() << "Right grid";
+    qDebug() << "  cols:" << mRightGrid->colCount() << " rows:" << mRightGrid->rowCount();
+    qDebug() << "  usedCols" << mRightGrid->usedColCount();
+#endif
+
 
     // Left aligned plugins.
     int left=geometry.left();
@@ -720,14 +746,26 @@ void RazorPanelLayout::setGeometryVert(const QRect &geometry)
         expFactor = expHeight ? ((1.0 * geometry.height() - nonExpHeight) / expHeight) : 1;
     }
 
-    // Calc baselines for button like plugins.
-    QVector<int> baseLines(qMax(mLeftGrid->usedColCount(), mRightGrid->usedColCount()));
+    // Calc baselines for plugins like button.
+    QVector<int> baseLines(qMax(mLeftGrid->colCount(), mRightGrid->colCount()));
     {
         int bw = (geometry.width() / baseLines.count()) / 2;
         for (int i=0; i<baseLines.count(); ++i)
             baseLines[i] = geometry.left() + (i * 2 + 1) * bw;
     }
 
+#if 0
+    qDebug() << "** RazorPanelLayout::setGeometryVert **************";
+    qDebug() << "geometry: " << geometry;
+
+    qDebug() << "Left grid";
+    qDebug() << "  cols:" << mLeftGrid->colCount() << " rows:" << mLeftGrid->rowCount();
+    qDebug() << "  usedCols" << mLeftGrid->usedColCount();
+
+    qDebug() << "Right grid";
+    qDebug() << "  cols:" << mRightGrid->colCount() << " rows:" << mRightGrid->rowCount();
+    qDebug() << "  usedCols" << mRightGrid->usedColCount();
+#endif
 
     // Top aligned plugins.
     int top=geometry.top();
@@ -811,17 +849,8 @@ void RazorPanelLayout::invalidate()
 {
     mLeftGrid->invalidate();
     mRightGrid->invalidate();
+    mMinPluginSize = QSize();
     QLayout::invalidate();
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelLayout::setLineSize(int value)
-{
-    mLineSize = value;
-    invalidate();
 }
 
 
@@ -841,6 +870,26 @@ void RazorPanelLayout::setLineCount(int value)
 {
     mLeftGrid->setColCount(value);
     mRightGrid->setColCount(value);
+    invalidate();
+}
+
+
+/************************************************
+
+ ************************************************/
+int RazorPanelLayout::lineSize() const
+{
+    return mLeftGrid->lineSize();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setLineSize(int value)
+{
+    mLeftGrid->setLineSize(value);
+    mRightGrid->setLineSize(value);
     invalidate();
 }
 
@@ -869,7 +918,7 @@ bool RazorPanelLayout::isHorizontal() const
 /************************************************
 
  ************************************************/
-bool RazorPanelLayout::itemIsSeparate(QLayoutItem *item) const
+bool RazorPanelLayout::itemIsSeparate(QLayoutItem *item)
 {
     if (!item)
         return true;

@@ -25,6 +25,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1" colspan="2">
        <widget class="QSpinBox" name="spinBox_lineCount">
+        <property name="minimum">
+         <number>1</number>
+        </property>
         <property name="maximum">
          <number>20</number>
         </property>
@@ -57,7 +60,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_lineSize">
         <property name="text">
-         <string>Icon size:</string>
+         <string>Line size:</string>
         </property>
        </widget>
       </item>

@@ -57,24 +57,23 @@ public:
     void moveItem(int from, int to, bool withAnimation=false);
 
     QSize sizeHint() const;
-    QSize minimumSize() const;
+    //QSize minimumSize() const;
     void setGeometry(const QRect &geometry);
 
     bool isHorizontal() const;
 
-    bool itemIsSeparate(QLayoutItem *item) const;
-
     void invalidate();
-
-    int lineSize() const { return mLineSize; }
-    void setLineSize(int value);
 
     int lineCount() const;
     void setLineCount(int value);
 
+    int lineSize() const;
+    void setLineSize(int value);
+
     IRazorPanel::Position position() const { return mPosition; }
     void setPosition(IRazorPanel::Position value);
 
+    static bool itemIsSeparate(QLayoutItem *item);
 signals:
     void pluginMoved();
 
@@ -83,13 +82,12 @@ public slots:
     void finishMovePlugin();
 
 private:
-    int mLineSize;
-
-    QSize mSizeHint;
+    mutable QSize mMinPluginSize;
     LayoutItemGrid *mLeftGrid;
     LayoutItemGrid *mRightGrid;
     IRazorPanel::Position mPosition;
     bool mAnimate;
+
 
     void setGeometryHoriz(const QRect &geometry);
     void setGeometryVert(const QRect &geometry);

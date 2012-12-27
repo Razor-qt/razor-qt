@@ -106,8 +106,8 @@ void PluginMoveProcessor::mouseMoveEvent(QMouseEvent *event)
     }
 
     bool plugSep = mPlugin->isSeparate();
-    bool prevSep = mLayout->itemIsSeparate(prevItem);
-    bool nextSep = mLayout->itemIsSeparate(nextItem);
+    bool prevSep = RazorPanelLayout::itemIsSeparate(prevItem);
+    bool nextSep = RazorPanelLayout::itemIsSeparate(nextItem);
 
     if (!nextItem)
     {
@@ -176,13 +176,13 @@ PluginMoveProcessor::MousePosInfo PluginMoveProcessor::itemByMousePos(const QPoi
             ret.item = item;
             if (mLayout->isHorizontal())
             {
-                ret.after = mLayout->itemIsSeparate(item) ?
+                ret.after = RazorPanelLayout::itemIsSeparate(item) ?
                         mouse.x() > itemRect.center().x() :
                         mouse.y() > itemRect.center().y() ;
             }
             else
             {
-                ret.after = mLayout->itemIsSeparate(item) ?
+                ret.after = RazorPanelLayout::itemIsSeparate(item) ?
                         mouse.y() > itemRect.center().y() :
                         mouse.x() > itemRect.center().x() ;
             }

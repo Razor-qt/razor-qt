@@ -45,7 +45,7 @@
 #include <X11/Xlib.h>
 
 #include <QtGui/QWidget>
-
+#include <QtGui/QIcon>
 /**
  * @file xfitman.cpp
  * @brief implements class Xfitman
@@ -241,7 +241,6 @@ bool XfitMan::getClientIcon(Window _wid, QPixmap& _pixreturn) const
                        (uchar**)&data);
     if (!data)
     {
-        qDebug() << "Cannot obtain pixmap info from the window";
         return false;
     }
 
@@ -252,6 +251,36 @@ bool XfitMan::getClientIcon(Window _wid, QPixmap& _pixreturn) const
     _pixreturn = QPixmap::fromImage(img);
     XFree(data);
 
+    return true;
+}
+
+bool XfitMan::getClientIcon(Window _wid, QIcon *icon) const
+{
+    int format;
+    ulong type, nitems, extra;
+    ulong* data = 0;
+
+    XGetWindowProperty(QX11Info::display(), _wid, atom("_NET_WM_ICON"),
+                       0, LONG_MAX, False, AnyPropertyType,
+                       &type, &format, &nitems, &extra,
+                       (uchar**)&data);
+    if (!data)
+    {
+        return false;
+    }
+
+    ulong* d = data;
+    while (d < data + nitems)
+    {
+        QImage img (d[0], d[1], QImage::Format_ARGB32);
+        d+=2;
+        for (int i=0; i<img.byteCount()/4; ++i, ++d)
+            ((uint*)img.bits())[i] = *d;
+
+        icon->addPixmap(QPixmap::fromImage(img));
+    }
+
+    XFree(data);
     return true;
 }
 

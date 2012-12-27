@@ -69,7 +69,7 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     updateIcon();
 
     connect(this, SIGNAL(clicked(bool)), this, SLOT(btnClicked(bool)));
-    connect(this, SIGNAL(toggled(bool)), this, SLOT(checkedChanged(bool)));    
+    connect(this, SIGNAL(toggled(bool)), this, SLOT(checkedChanged(bool)));
 
     XSelectInput(QX11Info::display(), mWindow, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 
@@ -107,9 +107,9 @@ void RazorTaskButton::updateText()
  ************************************************/
 void RazorTaskButton::updateIcon()
 {
-    QPixmap pix;
-    if (xfitMan().getClientIcon(mWindow, pix))
-        setIcon(QIcon(pix));
+    QIcon ico;
+    if (xfitMan().getClientIcon(mWindow, &ico))
+        setIcon(ico);
     else
         setIcon(XdgIcon::defaultApplicationIcon());
 }
@@ -237,6 +237,10 @@ void RazorTaskButton::btnClicked(bool checked)
         raiseApplication();
 }
 
+
+/************************************************
+
+ ************************************************/
 void RazorTaskButton::activateWithDraggable()
 {
     if (!mDraggableMimeData || mDraggableMimeData->text().isEmpty())
@@ -366,6 +370,13 @@ void RazorTaskButton::moveApplicationToDesktop()
  ************************************************/
 void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
 {
+    if (event->modifiers().testFlag(Qt::ControlModifier))
+    {
+        event->ignore();
+        return;
+    }
+
+
     XfitMan xf = xfitMan();
 
     WindowAllowedActions allow = xf.getAllowedActions(mWindow);
@@ -527,17 +538,6 @@ void RazorTaskButton::contextMenuEvent(QContextMenuEvent* event)
     a = menu.addAction(XdgIcon::fromTheme("process-stop"), tr("&Close"));
     connect(a, SIGNAL(triggered(bool)), this, SLOT(closeApplication()));
     menu.exec(mapToGlobal(event->pos()));
-}
-
-
-/************************************************
-
- ************************************************/
-QSize RazorTaskButton::sizeHint() const
-{
-    QSize r = QToolButton::sizeHint();
-    r.setWidth(40);
-    return r;
 }
 
 

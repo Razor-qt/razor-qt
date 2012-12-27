@@ -125,6 +125,7 @@ public:
                   ) const;
     WindowList getClientList() const;
     bool getClientIcon(Window _wid, QPixmap& _pixreturn) const;
+    bool getClientIcon(Window _wid, QIcon *icon) const;
     int getWindowDesktop(Window _wid) const;
     void moveWindowToDesktop(Window _wid, int _display) const;
 
