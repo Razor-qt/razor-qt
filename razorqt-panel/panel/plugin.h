@@ -87,6 +87,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void showEvent(QShowEvent *event);
 
 private:
     bool loadLib(const QString &libraryName);

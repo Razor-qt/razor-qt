@@ -58,8 +58,8 @@ public:
  ************************************************/
 void RazorGridLayoutPrivate::updateCache()
 {
-    mCellSizeHint = QSize();
-    mCellMaxSize = QSize();
+    mCellSizeHint = QSize(0, 0);
+    mCellMaxSize = QSize(0, 0);
     mVisibleCount = 0;
 
     for (int i=0; i<mItems.count(); ++i)
@@ -77,23 +77,27 @@ void RazorGridLayoutPrivate::updateCache()
                        item->sizeHint().width(),
                        item->maximumSize().width());
 
-#if 0
-        qDebug() << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-";
-        qDebug() << "min" << item->minimumSize().width();
-        qDebug() << "sz " << item->sizeHint().width();
-        qDebug() << "max" << item->maximumSize().width();
-        qDebug() << "w  " << w;
-        qDebug() << "wid" << item->widget()->sizeHint();
-        qDebug() << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-";
-#endif
         mCellSizeHint.rheight() = qMax(mCellSizeHint.height(), h);
         mCellSizeHint.rwidth()  = qMax(mCellSizeHint.width(), w);
 
         mCellMaxSize.rheight() = qMax(mCellMaxSize.height(), item->maximumSize().height());
         mCellMaxSize.rwidth()  = qMax(mCellMaxSize.width(), item->maximumSize().width());
         mVisibleCount++;
+
+#if 0
+        qDebug() << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-";
+        qDebug() << "item.min" << item->minimumSize().width();
+        qDebug() << "item.sz " << item->sizeHint().width();
+        qDebug() << "item.max" << item->maximumSize().width();
+        qDebug() << "w h" << w << h;
+        qDebug() << "wid.sizeHint" << item->widget()->sizeHint();
+        qDebug() << "mCellSizeHint:" << mCellSizeHint;
+        qDebug() << "mCellMaxSize: " << mCellMaxSize;
+        qDebug() << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-";
+#endif
+
     }
-    mIsValid = true;
+    mIsValid = !mCellSizeHint.isEmpty();
 }
 
 
@@ -362,6 +366,7 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
     qDebug() << "** RazorGridLayout::setGeometry *******************************";
     qDebug() << "Geometry" << geometry;
     qDebug() << "CellSize" << d->mCellSizeHint;
+    qDebug() << "Count" << count();
     qDebug() << "Cols:" << d->cols() << "(" << d->mColumnCount << ")";
     qDebug() << "Rows:" << d->rows() << "(" << d->mRowCount << ")";
     qDebug() << "Stretch:" << "h:" << (d->mStretch.testFlag(StretchHoriz)) << " v:" << (d->mStretch.testFlag(StretchVert));

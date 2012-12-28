@@ -293,6 +293,16 @@ void Plugin::mouseDoubleClickEvent(QMouseEvent*)
 /************************************************
 
  ************************************************/
+void Plugin::showEvent(QShowEvent *)
+{
+    if (mPluginWidget)
+        mPluginWidget->adjustSize();
+}
+
+
+/************************************************
+
+ ************************************************/
 QMenu *Plugin::popupMenu() const
 {
 

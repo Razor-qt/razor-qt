@@ -168,7 +168,7 @@ void RazorPanel::saveSettings(bool later)
         pluginsStr << plugin->settingsGroup();
     }
 
-    mSettings->setValue(CFG_FULLKEY_PLUGINS, pluginsStr);
+    mSettings->setValue(CFG_FULLKEY_PLUGINS, pluginsStr.join(","));
 
 
     mSettings->beginGroup(CFG_PANEL_GROUP);
@@ -277,6 +277,7 @@ Plugin *RazorPanel::loadPlugin(const RazorPluginInfo &desktopFile, const QString
         return plugin;
     }
 
+    delete plugin;
     return 0;
 }
 
@@ -290,8 +291,6 @@ void RazorPanel::realign()
         return;
 #if 0
     qDebug() << "** Realign *********************";
-    qDebug() << "QssLineSize: " << mQssLineSize;
-    qDebug() << "QssLineCount:" << mQssLineCount;
     qDebug() << "LineSize:    " << mLineSize;
     qDebug() << "LineCount:   " << mLineCount;
     qDebug() << "Length:      " << mLength << (mLengthInPercents ? "%" : "px");
