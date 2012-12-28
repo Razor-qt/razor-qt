@@ -513,8 +513,8 @@ void RazorSysStatContent::swapUpdate(float used)
 
 void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 {
-    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
-    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
+    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
+    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
     if (mLogarithmicScale)
     {
         min_value = qLn(min_value * (mLogScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(mLogScaleSteps);
