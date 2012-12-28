@@ -118,11 +118,11 @@ CommandProvider::CommandProvider():
  ************************************************/
 CommandProvider::~CommandProvider()
 {
-    qDebug() << "*****************************************";
-    qDebug() << hex << this;
-    qDebug() << "DESTROY";
+//    qDebug() << "*****************************************";
+//    qDebug() << hex << this;
+//    qDebug() << "DESTROY";
     qDeleteAll(*this);
-    qDebug() << "*****************************************";
+//    qDebug() << "*****************************************";
 }
 
 
@@ -148,12 +148,12 @@ AppLinkItem::AppLinkItem(const QDomElement &element):
  ************************************************/
 void AppLinkItem::updateIcon()
 {
-    qDebug() << "*****************************************";
-    qDebug() << hex << this;
-    qDebug() << Q_FUNC_INFO;
+//    qDebug() << "*****************************************";
+//    qDebug() << hex << this;
+//    qDebug() << Q_FUNC_INFO;
     if (mIcon.isNull())
         mIcon = XdgIcon::fromTheme(mIconName);
-    qDebug() << "*****************************************";
+//    qDebug() << "*****************************************";
 }
 
 

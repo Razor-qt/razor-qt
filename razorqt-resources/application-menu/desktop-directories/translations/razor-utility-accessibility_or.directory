@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+Icon=preferences-desktop-accessibility
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=ସାର୍ବଜନିକ ଅଭିଗମ୍ୟତା
+Comment[or]=ସାର୍ବଜନିକ ଅଭିଗମ୍ୟତା୍ଯତା ବିନ୍ଯାସ

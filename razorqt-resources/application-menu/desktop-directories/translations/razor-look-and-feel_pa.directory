@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Look and Feel
+Comment=Settings controlling the desktop appearance and behavior
+Icon=preferences-desktop
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[pa]=ਦਿੱਖ ਅਤੇ ਵਰਤੋਂ
+Comment[pa]=ਡੈਸਕਟਾਪ ਦਿੱਖ ਅਤੇ ਰਵੱਈਆ ਕੰਟਰੋਲ ਕਰਨ ਲਈ ਸੈਟਿੰਗ

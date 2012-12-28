@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Games
+Comment=Games and amusements
+Icon=applications-games
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=விளையாட்டுகள்
+Comment[ta]=விளையாட்டுகள் மற்றும் பொழுதுப்போக்குகள்

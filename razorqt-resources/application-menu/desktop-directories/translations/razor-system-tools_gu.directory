@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[gu]=સિસ્ટમ સાધનો
+Comment[gu]=સિસ્ટમ રૂપરેખાંકન અને મોનિટરીંગ

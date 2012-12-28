@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Icon=preferences-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[te]=వ్యవస్థ
+Comment[te]=వ్యక్తిగత ప్రాధాన్యతలు మరియు నిర్వాహణ అమరికలు

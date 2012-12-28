@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[gu]=સહાયક કાર્યક્રમો
+Comment[gu]=ડેસ્કટોપ સહાયક કાર્યક્રમો

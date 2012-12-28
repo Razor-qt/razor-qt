@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ne]=सहायक उपकरण
+Comment[ne]=डेस्कटप सहायक उपकरण

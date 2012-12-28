@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Icon=preferences-settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[lv]=Iestatījumi
+Comment[lv]=Personīgie iestatījumi

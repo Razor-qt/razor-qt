@@ -38,11 +38,12 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QMouseEvent>
 
-//#include <QtCore/QDebug>
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 #include <QtCore/QPoint>
 #include <QtCore/QRect>
+
+#include <QtCore/QDebug>
 
 /**
  * @file razorclock.cpp
@@ -86,10 +87,28 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
 
     mClockTimer = new QTimer(this);
     connect (mClockTimer, SIGNAL(timeout()), SLOT(updateTime()));
-    mClockTimer->start(1000);
+
+    mFirstDayOfWeek = firstDayOfWeek();
 
     mContent->installEventFilter(this);
     settingsChanged();
+}
+
+/**
+ * @brief destructor
+ */
+RazorClock::~RazorClock()
+{
+    delete mContent;
+}
+
+QDateTime RazorClock::currentDateTime(void)
+{
+#if QT_VERSION < 0x040700
+    return QDateTime(mUseUTC ? QDateTime::currentDateTime().toUTC() : QDateTime::currentDateTime());
+#else
+    return QDateTime(mUseUTC ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
+#endif
 }
 
 /**
@@ -98,12 +117,16 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
  */
 void RazorClock::updateTime()
 {
-#if QT_VERSION < 0x040700
-    QDateTime now(mUseUTC ? QDateTime::currentDateTime().toUTC() : QDateTime::currentDateTime());
-#else
-    QDateTime now(mUseUTC ? QDateTime::currentDateTimeUtc() : QDateTime::currentDateTime());
-#endif
+    QDateTime now = currentDateTime();
 
+    if (now.time().msec() > 500)
+        restartTimer(now);
+
+    showTime(now);
+}
+
+void RazorClock::showTime(const QDateTime &now)
+{
     if (mDateOnNewLine)
     {
         mTimeLabel->setText(QLocale::system().toString(now, mTimeFormat));
@@ -115,12 +138,14 @@ void RazorClock::updateTime()
     }
 }
 
-/**
- * @brief destructor
- */
-RazorClock::~RazorClock()
+void RazorClock::restartTimer(const QDateTime &now)
 {
-    delete mContent;
+    if (mClockTimer->isActive())
+        mClockTimer->stop();
+    int updateInterval = mClockTimer->interval();
+    int delay = static_cast<int>((updateInterval + 100 /* ms after time change */ - ((now.time().msec() + now.time().second() * 1000) % updateInterval)) % updateInterval);
+    QTimer::singleShot(delay, this, SLOT(updateTime()));
+    QTimer::singleShot(delay, mClockTimer, SLOT(start()));
 }
 
 void RazorClock::settingsChanged()
@@ -144,15 +169,24 @@ void RazorClock::settingsChanged()
     else
         mClockFormat = mTimeFormat;
 
-    mFirstDayOfWeek = static_cast<Qt::DayOfWeek>(settings()->value("firstDayOfWeek", firstDayOfWeek()).toInt());
-
     mDateLabel->setVisible(mDateOnNewLine);
 
     updateMinWidth();
 
-    updateTime();
-}
+    // mDateFormat usually does not contain time portion, but since it's possible to use custom date format - it has to be supported. [Kuzma Shapran]
+    int updateInterval = QString(mTimeFormat + " " + mDateFormat).replace(QRegExp("'[^']*'"),"").contains("s") ? 1000 : 60000;
 
+    QDateTime now = currentDateTime();
+
+    showTime(now);
+
+    if (mClockTimer->interval() != updateInterval)
+    {
+        mClockTimer->setInterval(updateInterval);
+
+        restartTimer(now);
+    }
+}
 
 static QDate getMaxDate(const QFontMetrics &metrics, const QString &format)
 {

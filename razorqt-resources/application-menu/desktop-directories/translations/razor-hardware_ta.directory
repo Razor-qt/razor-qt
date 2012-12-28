@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hardware
+Comment=Settings for several hardware devices
+Icon=preferences-desktop-peripherals
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ta]=வண் பொருட்கள்
+Comment[ta]=பல வண் பொருட்களுக்கான அமைப்புகள்

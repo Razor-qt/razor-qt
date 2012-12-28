@@ -40,10 +40,13 @@ private slots:
     void on_btInstall_clicked ();
     void on_btRemove_clicked ();
     void on_btSet_clicked ();
+    void handleWarning();
+    void showDirInfo();
 
 private:
     XCursorThemeModel *mModel;
     QPersistentModelIndex mAppliedIndex;
+
 };
 
 #endif

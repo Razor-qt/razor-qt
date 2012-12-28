@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Icon=applications-development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[fi]=Ohjelmointi
+Comment[fi]=Työkaluja sovelluskehitykseen

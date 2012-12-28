@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Icon=applications-development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[mg]=Famolavolavolana
+Comment[mg]=Fitaovana ho an'ny mpamolavola rindran'asa

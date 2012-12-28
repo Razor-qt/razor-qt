@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Icon=applications-graphics
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[zh_HK]=美工繪圖
+Comment[zh_HK]=繪圖工具

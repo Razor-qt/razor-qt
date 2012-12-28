@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ga]=Idirlíon
+Comment[ga]=Feidhmchláir do rochtain an Idirlín mar ghréasán agus ríomhphost

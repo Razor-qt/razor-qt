@@ -51,6 +51,7 @@ public slots:
 
 private slots:
     void selectFileDialog(const QModelIndex &index);
+    void changeBtnStatus(const QModelIndex &index);
 
 private:
     Ui::WmSelectDialog *ui;

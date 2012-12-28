@@ -45,7 +45,7 @@ public:
     ~TrayIcon();
 
 private:
-    void updateStatusIcon(); 
+    void updateStatusIcon(bool force=false);
     void updateToolTip();
     void updateStateAsString();
 

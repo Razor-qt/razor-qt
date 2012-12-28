@@ -39,6 +39,9 @@ set(DESKTOP_FILES_IN
 #    razor-autosuspend.desktop.in
 )
 
+set(CONFIG_FILES
+    razor-autosuspend.conf
+    )
 
 QT4_WRAP_CPP(MOCS ${razor-autosuspend_MOCS})
 
@@ -71,3 +74,4 @@ target_link_libraries ( razor-autosuspend  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTG
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES   ${DESKTOP_FILES}   DESTINATION share/applications)
 install(FILES   ${ICON_FILES}      DESTINATION share/icons/hicolor/scalable/apps)
+install(FILES   ${CONFIG_FILES}    DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor)

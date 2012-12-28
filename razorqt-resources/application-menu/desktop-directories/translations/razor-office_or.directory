@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Icon=applications-office
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=କାର୍ଯ୍ଯାଳୟ
+Comment[or]=କାର୍ଯ୍ଯାଳୟ ପ୍ରୟୋଗ

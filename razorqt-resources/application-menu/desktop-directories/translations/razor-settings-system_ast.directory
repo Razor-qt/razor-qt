@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Directory
+Name=Administration
+Comment=Change system-wide settings (affects all users)
+Icon=preferences-system
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ast]=Alministración
+Comment[ast]=Fai cambeos nes preferencies globales del sistema (afeuta a tolos usuarios)

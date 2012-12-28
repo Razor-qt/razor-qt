@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Accessories
+Comment=Desktop accessories
+Icon=applications-accessories
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[mr]=शिवाय उपकरणं
+Comment[mr]=डेस्कटॉपशी निगडित शिवाय उपकरणं

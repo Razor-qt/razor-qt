@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=System settings
+Icon=preferences-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[te]=వ్యవస్థ
+Comment[te]=వ్యవస్థ యొక్క అమరికలు

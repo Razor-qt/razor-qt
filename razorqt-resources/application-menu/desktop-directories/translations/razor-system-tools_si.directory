@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[si]=පද්දති මෙවලම්
+Comment[si]=පද්දති සුසර කිරිම සහ නිරික්ෂණය

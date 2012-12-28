@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Icon=applications-office
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ko]=오피스
+Comment[ko]=오피스 응용프로그램

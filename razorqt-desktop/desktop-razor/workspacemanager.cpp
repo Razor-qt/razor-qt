@@ -33,6 +33,7 @@
 
 #include "workspacemanager.h"
 #include "desktopscene.h"
+#include "razorqt/libtranslate.h"
 
 // this include must go last
 #include <razorqt/xfitman.h>
@@ -50,6 +51,7 @@ RazorWorkSpaceManager::RazorWorkSpaceManager(const QString & configId, RazorSett
     , m_scene(0)
     , m_desktopCount(1)
 {
+    libTranslate("desktop-razor");
     qDebug() << "RazorWorkSpaceManager::RazorWorkSpaceManager" << configId;
     DesktopConfig::instance()->config = config;
     DesktopConfig::instance()->configId = configId;

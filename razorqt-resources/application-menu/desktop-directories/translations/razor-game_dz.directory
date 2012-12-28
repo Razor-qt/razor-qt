@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Games
+Comment=Games and amusements
+Icon=applications-games
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=རྩེད་རིགས།
+Comment[dz]=རྩེད་རིགས་དང་ དགོད་བྲ་ཚུ།

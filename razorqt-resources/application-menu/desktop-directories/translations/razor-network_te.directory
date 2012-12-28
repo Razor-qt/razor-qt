@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[te]=అంతర్జాలం
+Comment[te]=ఇంటర్నెట్ తో  సాంగత్యం ఏర్పరుచు కార్యక్రమాలు

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Icon=preferences-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn]=সিস্টেম
+Comment[bn]=ব্যক্তিগত পছন্দতালিকা এবং অ্যাডমিনস্ট্রেশন সেটিং

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[kk]=Интернет
+Comment[kk]=Интернетті қолдануға арналған программалар (пошта, браузер, т.б.)

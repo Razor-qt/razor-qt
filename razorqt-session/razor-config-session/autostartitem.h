@@ -25,19 +25,19 @@
 #ifndef AUTOSTARTITEM_H
 #define AUTOSTARTITEM_H
 
-#include <qtxdg/xdgdesktopfile.h>
+#include <razorqt/razorautostartentry.h>
 
-/*! \brief The AutostartItem class provides an interface for staging configuration ofindividual
+/*! \brief The AutostartItem class provides an interface for staging configuration of individual
 autostart items. All changes are made in memory until commit() is called.
 
  - "system" file refers to a read-only file in /etc/xdg/autostart (or a directory in $XDG_CONFIG_DIRS)
- - "local" file refers to the file in user's ~/.config/autostart (or in $XDG_CONFIG_HOME)
+ - "local" file refers to the file in user's ~/.config/autostart (or in $XDG_CONFIG_HOME/autostart)
 
 When a "local" file has the same name as the "system" file, the local one overrides it. This class
 tries to ensure that the "local" file is deleted if it's the same as the "system" file.
 */
 
-class AutostartItem
+class AutostartItem : public RazorAutostartEntry
 {
 public:
     //! \brief Default constructor
@@ -48,66 +48,30 @@ public:
      */
     AutostartItem(const XdgDesktopFile& systemFile);
 
-    //! Destructor
-    ~AutostartItem();
-
-    //! Returns the "active" desktop file
-    const XdgDesktopFile& file() const;
-
     //! Returns the "system" file
-    const XdgDesktopFile& systemfile() const;
+    const XdgDesktopFile& systemfile() const { return mSystemFile; }
 
-    /*! Sets the local version to the specified desktop file. Use this to make modifications.
-     * \param file the desktop file
-     * \param real set to true when setting the local file from disk
+    /*! Sets the local version that exists on disk
+     * \param file the desktop file, must already exist in user's autostart directory
      */
-    void setLocal(const XdgDesktopFile& file, bool real=false);
-
-    /*! Sets whether the item auto-starts
-     * \param enable When false, sets the "Hidden" key which will prevent the item from starting
-     */
-    void setEnabled(bool enable);
+    void setLocalFromFile(const XdgDesktopFile &file);
 
     /*! Removes the "local" version of the file
-     * \return true if there is no "system" verion left
+     * \return true if there is no "system" version left (i.e. the item was entirely deleted)
      */
-    bool removeLocal();
-
-    //! Returns true if the item will auto-start
-    bool isEnabled() const;
+    bool removeLocal() { return RazorAutostartEntry::removeLocal(); }
 
     //! Returns true if both the "local" and "system" versions exist
-    bool overrides() const { return system && local; }
+    bool overrides() const { return mSystem && isLocal(); }
 
     //! Returns true if the local version exists
-    bool isLocal() const { return local; }
+    bool isLocal() const { return RazorAutostartEntry::isLocal(); }
 
     //! Returns true if the local file does not exist on disk
-    bool isTransient() const { return state == TRANSIENT; }
-
-    //! Returns true if this object carries no useful information and can be ignored/deleted
-    bool isEmpty() const;
-
-    /*! Write the changes to disk
-     * \return true on success
-     */
-    bool commit();
+    bool isTransient() const { return mLocalState == StateTransient; }
 
     //! Creates a mapping of file name (a unique ID) to AutostartItem for the running system
     static QMap<QString, AutostartItem> createItemMap();
-
-private:
-    XdgDesktopFile systemFile;
-    XdgDesktopFile localFile;
-    enum ItemState
-    {
-        DEFAULT,
-        MODIFIED,  // local file was modified
-        TRANSIENT, // local file does not exist on disk
-        DELETED    // local file needs to be deleted from disk
-    } state;
-    bool system;   // system file is set
-    bool local;    // local file is set
 };
 
 #endif // AUTOSTARTITEM_H

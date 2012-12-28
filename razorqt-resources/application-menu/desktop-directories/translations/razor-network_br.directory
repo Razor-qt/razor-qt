@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Internet
+Comment=Programs for Internet access such as web and email
+Icon=applications-internet
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[br]=Kenrouedad
+Comment[br]=Ar poelladoù da dizhout ar Genrouedad evel web ha postelerezh

@@ -76,6 +76,10 @@ private:
     bool mUseUTC;
     Qt::DayOfWeek mFirstDayOfWeek;
 
+    QDateTime currentDateTime(void);
+    void showTime(const QDateTime &);
+    void restartTimer(const QDateTime&);
+
 private slots:
     void updateMinWidth();
 };

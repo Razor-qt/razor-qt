@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Icon=applications-graphics
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[th]=รูปภาพ
+Comment[th]=โปรแกรมสำหรับรูปภาพ

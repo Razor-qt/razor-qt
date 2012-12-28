@@ -313,24 +313,38 @@ QString XfitMan::getWindowTitle(Window _wid) const
     }
 
     if (name.isEmpty())
+    {
         if (getWindowProperty(_wid, atom("_NET_WM_NAME"), utf8Atom, &length, &data))
         {
             name = QString::fromUtf8((char*) data);
             XFree(data);
         }
+    }
 
     if (name.isEmpty())
+    {
         if (getWindowProperty(_wid, atom("XA_WM_NAME"), XA_STRING, &length, &data))
         {
             name = (char*) data;
             XFree(data);
         }
+    }
 
     if (name.isEmpty())
     {
         Status ok = XFetchName(QX11Info::display(), _wid, (char**) &data);
         name = QString((char*) data);
         if (0 != ok) XFree(data);
+    }
+
+    if (name.isEmpty())
+    {
+        XTextProperty prop;
+        if (XGetWMName(QX11Info::display(), _wid, &prop))
+        {
+            name = QString::fromUtf8((char*) prop.value);
+            XFree(prop.value);
+        }
     }
 
     return name;

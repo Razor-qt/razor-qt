@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=World clock
+Comment=World clock plugin.
+
+#TRANSLATIONS_DIR=../translations

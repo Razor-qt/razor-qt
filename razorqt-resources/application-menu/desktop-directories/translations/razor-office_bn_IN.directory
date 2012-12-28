@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Office
+Comment=Office Applications
+Icon=applications-office
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=অফিস
+Comment[bn_IN]=অফিস অ্যাপলিকেশন

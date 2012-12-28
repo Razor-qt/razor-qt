@@ -33,9 +33,18 @@ setByDefault(HELLOWORLD_PLUGIN     Yes)
 setByDefault(CPULOAD_PLUGIN        No)
 setByDefault(NETWORKMONITOR_PLUGIN No)
 setByDefault(SENSORS_PLUGIN        No)
+
 setByDefault(VOLUME_PLUGIN         No)
+# Options for the volume plugin.
+setByDefault(VOLUME_USE_PULSEAUDIO Yes)
+setByDefault(VOLUME_USE_ALSA       Yes)
+
+setByDefault(SYSSTAT_PLUGIN        No)
 setByDefault(KBINDICATOR_PLUGIN    No)
+setByDefault(WORLDCLOCK_PLUGIN     No)
+
 setByDefault(TEATIME_PLUGIN        Yes)
+
 # *******************************************************************
 
 
@@ -164,8 +173,13 @@ if (SENSORS_PLUGIN)
 endif (SENSORS_PLUGIN)
 
 if (VOLUME_PLUGIN)
-  FIND_PACKAGE(PulseAudio)
-  FIND_PACKAGE(ALSA)
+  if (VOLUME_USE_PULSEAUDIO)
+    FIND_PACKAGE(PulseAudio)
+  endif (VOLUME_USE_PULSEAUDIO)
+
+  if (VOLUME_USE_ALSA)
+    FIND_PACKAGE(ALSA)
+  endif (VOLUME_USE_ALSA)
 
   if (PULSEAUDIO_FOUND OR ALSA_FOUND)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "Volume")
@@ -190,10 +204,33 @@ if (KBINDICATOR_PLUGIN)
     add_subdirectory(plugin-kbindicator)
 endif (KBINDICATOR_PLUGIN)
 
+
 if (TEATIME_PLUGIN)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "TeaTime")
     add_subdirectory(plugin-teatime)
 endif (TEATIME_PLUGIN)
+
+if (SYSSTAT_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "SysStat")
+    add_subdirectory(plugin-sysstat)
+endif (SYSSTAT_PLUGIN)
+
+if (WORLDCLOCK_PLUGIN)
+  FIND_PACKAGE(ICU 4.2 COMPONENTS i18n data)
+
+  if(ICU_I18N_FOUND)
+    message(STATUS "ICU version is ${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION}")
+    add_definitions(-DICU_VERSION=${ICU_MAJOR_VERSION}${ICU_MINOR_VERSION})
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "WorldClock")
+    add_subdirectory(plugin-worldclock)
+  else ()
+    message(STATUS "")
+    message(STATUS "WorldClock plugin requires ICU")
+    message(STATUS "")
+  endif (ICU_I18N_FOUND)
+
+endif (WORLDCLOCK_PLUGIN)
+
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})

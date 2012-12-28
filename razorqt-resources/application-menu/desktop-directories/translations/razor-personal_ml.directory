@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Personal
+Comment=Personal settings
+Icon=preferences-desktop-personal
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=സ്വകാര്യം
+Comment[ml]=സ്വകാര്യ സജ്ജീകരണങ്ങള്‍

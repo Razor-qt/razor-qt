@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System Tools
+Comment=System configuration and monitoring
+Icon=applications-system
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=സിസ്റ്റത്തിലെ പണിയായുധങ്ങള്‍
+Comment[ml]=സിസ്റ്റത്തിന്റെ ക്രമീകരണവും നിരീക്ഷണവും

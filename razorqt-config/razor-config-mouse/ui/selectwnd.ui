@@ -13,38 +13,9 @@
   <property name="windowTitle">
    <string>Razor Mouse Theme Configuration</string>
   </property>
-  <layout class="QGridLayout">
-   <item row="3" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>174</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="0" colspan="5">
-    <widget class="QListView" name="lbThemes">
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="showDropIndicator" stdset="0">
-      <bool>false</bool>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="verticalScrollMode">
-      <enum>QAbstractItemView::ScrollPerPixel</enum>
-     </property>
-    </widget>
-   </item>
+  <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="5">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="infoLabel">
      <property name="text">
       <string>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</string>
      </property>
@@ -54,6 +25,9 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="5">
+    <widget class="WarningLabel" name="warningLabel" native="true"/>
+   </item>
+   <item row="2" column="0" colspan="5">
     <widget class="PreviewWidget" name="preview" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -69,7 +43,36 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="3" column="0" colspan="5">
+    <widget class="QListView" name="lbThemes">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>174</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="1">
     <widget class="QPushButton" name="btInstall">
      <property name="enabled">
       <bool>false</bool>
@@ -79,21 +82,21 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="3">
-    <widget class="QPushButton" name="btSet">
-     <property name="text">
-      <string>&amp;Set Theme</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
+   <item row="4" column="2">
     <widget class="QPushButton" name="btRemove">
      <property name="text">
       <string>&amp;Remove Theme</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="4">
+   <item row="4" column="3">
+    <widget class="QPushButton" name="btSet">
+     <property name="text">
+      <string>&amp;Set Theme</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
     <widget class="QPushButton" name="closeButton">
      <property name="text">
       <string>&amp;Close</string>
@@ -107,6 +110,12 @@
    <class>PreviewWidget</class>
    <extends>QWidget</extends>
    <header>previewwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>WarningLabel</class>
+   <extends>QWidget</extends>
+   <header>warninglabel.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

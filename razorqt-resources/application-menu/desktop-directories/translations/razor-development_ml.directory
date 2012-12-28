@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Icon=applications-development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ml]=പ്രോഗ്രാമിങ്
+Comment[ml]=സോഫ്റ്റ്‌വെയര്‍ വികസനത്തിനു് ആവശ്യമുളള പണിയായുധങ്ങള്‍

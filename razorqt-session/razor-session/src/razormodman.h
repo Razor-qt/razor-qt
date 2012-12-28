@@ -29,15 +29,20 @@
 #define RAZORMODMAN_H
 
 #include <QtCore/QProcess>
+#include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QTimer>
 #include <qtxdg/xdgdesktopfile.h>
 
+#include <time.h>
+
 class RazorModule;
+class RazorSettings;
 
 typedef QMap<QString,RazorModule*> ModulesMap;
 typedef QMapIterator<QString,RazorModule*> ModulesMapIterator;
-typedef QMap<QProcess*,int> ModulesCrashReport;
+typedef QList<time_t> ModuleCrashReport;
+typedef QMap<QProcess*, ModuleCrashReport> ModulesCrashReport;
 
 /*! \brief RazorModuleManager manages the processes of the session
 and which modules of razor are about to load.
@@ -88,6 +93,9 @@ signals:
     void moduleStateChanged(QString moduleName, bool state);
 
 private:
+    //! \brief Start Window Manager
+    void startWm(RazorSettings *settings);
+
     //! \brief Show Window Manager select dialog
     QString showWmSelectDialog();
 
@@ -112,8 +120,7 @@ private:
     /*! \brief Keep creashes for given process to raise a message in the
         case of repeating crashes
      */
-    ModulesCrashReport m_crashReport;
-    QTimer m_crashTimer;
+    ModulesCrashReport mCrashReport;
 
 private slots:
 

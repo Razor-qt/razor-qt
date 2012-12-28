@@ -38,6 +38,7 @@
 #include "menudiskitem.h"
 #include "../panel/razorpanel.h"
 
+class QLabel;
 class UdisksManager;
 
 class Popup: public QWidget
@@ -58,12 +59,15 @@ protected:
 
 private slots:
     MenuDiskItem *addItem(RazorMountDevice *device);
+    void removeItem(RazorMountDevice *device);
 
 private:
     void realign();
     RazorMountManager *mManager;
     QPoint mPos;
     Qt::Corner mAnchor;
+    QLabel *mPlaceholder;
+    int mDisplayCount;
 };
 
 

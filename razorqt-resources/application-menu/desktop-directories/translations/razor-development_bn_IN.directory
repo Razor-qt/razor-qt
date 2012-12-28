@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Programming
+Comment=Tools for software development
+Icon=applications-development
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[bn_IN]=প্রোগ্রামিং
+Comment[bn_IN]=সফ্টওয়্যার ডিভেলপমেন্টের সামগ্রী

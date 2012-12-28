@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Icon=preferences-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[or]=ତନ୍ତ୍ର
+Comment[or]=ବ୍ଯକ୍ତିଗତ ପସନ୍ଦ ଏବଂ ପ୍ରଶାସନିକ ବିନ୍ଯାସ

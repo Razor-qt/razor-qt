@@ -599,7 +599,12 @@ GlobalRazorSettings::GlobalRazorSettings():
     {
         QStringList failback;
         failback << "oxygen";
+        failback << "Tango";
+        failback << "Prudence-icon";
         failback << "Humanity";
+        failback << "elementary";
+        failback << "gnome";
+
 
         QDir dir("/usr/share/icons/");
         foreach (QString s, failback)

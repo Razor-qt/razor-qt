@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Personal
+Comment=Personal settings
+Icon=preferences-desktop-personal
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[vi]=Cá nhân
+Comment[vi]=Thiết lập cá nhân

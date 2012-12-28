@@ -50,6 +50,7 @@ WmSelectDialog::WmSelectDialog(const WindowManagerList &availableWindowManagers,
     setModal(true);
     connect(ui->wmList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
     connect(ui->wmList, SIGNAL(clicked(QModelIndex)), this, SLOT(selectFileDialog(QModelIndex)));
+    connect(ui->wmList, SIGNAL(activated(QModelIndex)), this, SLOT(changeBtnStatus(QModelIndex)));
 
     foreach (WindowManager wm, availableWindowManagers)
     {
@@ -73,8 +74,10 @@ WmSelectDialog::~WmSelectDialog()
 }
 
 
-void WmSelectDialog::done( int r ) {
-    if (r==1 && findProgram(windowManager()))
+void WmSelectDialog::done( int r )
+{
+    QString wm = windowManager();
+    if (r==1 && !wm.isEmpty() && findProgram(wm))
     {
         QDialog::done( r );
         close();
@@ -125,4 +128,10 @@ void WmSelectDialog::selectFileDialog(const QModelIndex &index)
     wmItem->setData(0, Qt::UserRole, fi.absoluteFilePath());
     wmList->insertTopLevelItem(wmList->topLevelItemCount() -1, wmItem);
     ui->wmList->setCurrentItem(wmItem);
+}
+
+void WmSelectDialog::changeBtnStatus(const QModelIndex &index)
+{
+    QString wm = windowManager();
+    ui->buttonBox->setEnabled(!wm.isEmpty() && findProgram(wm));
 }

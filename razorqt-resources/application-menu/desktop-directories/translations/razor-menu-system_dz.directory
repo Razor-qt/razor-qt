@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=System
+Comment=Personal preferences and administration settings
+Icon=preferences-other
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[dz]=རིམ་ལུགས་
+Comment[dz]=རང་དོན་དགའ་གདམ་དང་ བདག་སྐྱོང་གི་གཞི་སྒྲིག་ཚུ།

@@ -76,33 +76,8 @@ void RazorModuleManager::startup()
     // The razor-confupdate can update the settings of the WM, so run it first.
     startConfUpdate();
 
-    // window manager
-    // If the WM is active do not run WM.
-    if (!xfitMan().isWindowManagerActive())
-    {
-        if (mWindowManager.isEmpty())
-        {
-            mWindowManager = s.value("windowmanager").toString();
-            if (mWindowManager.isEmpty())
-            {
-                mWindowManager = showWmSelectDialog();
-                s.setValue("windowmanager", mWindowManager);
-                s.sync();
-            }
-            //qDebug() << "Using window manager from config file" << mWindowManager;
-        }
-
-        mWmProcess->start(mWindowManager);
-
-        // Wait until the WM loads
-        int waitCnt = 300;
-        while (!xfitMan().isWindowManagerActive() && waitCnt)
-        {
-            qDebug() << "******************** Wait until the WM loads" << waitCnt;
-            waitCnt--;
-            usleep(100000);
-        }
-    }
+    // Start window manager
+    startWm(&s);
 
     // XDG autostart
     XdgDesktopFileList fileList = XdgAutoStart::desktopFileList();
@@ -117,10 +92,10 @@ void RazorModuleManager::startup()
 
     if (!trayApps.isEmpty())
     {
-        int waitCnt = 200;
+        int waitCnt = 600;
         while (!QSystemTrayIcon::isSystemTrayAvailable())
         {
-            qDebug() << "******************** Wait for tray" << waitCnt;
+//            qDebug() << "******************** Wait for tray" << waitCnt;
             if (!waitCnt)
             {
                 qWarning() << "******************** No systray implementation started in session. Continuing.";
@@ -133,9 +108,37 @@ void RazorModuleManager::startup()
         foreach (XdgDesktopFile* f, trayApps)
             startProcess(*f);
     }
+}
 
-    m_crashTimer.setInterval(60000);
-    connect(&m_crashTimer, SIGNAL(timeout()), this, SLOT(resetCrashReport()));
+void RazorModuleManager::startWm(RazorSettings *settings)
+{
+    // If the WM is active do not run WM.
+    if (xfitMan().isWindowManagerActive())
+        return;
+
+    if (mWindowManager.isEmpty())
+    {
+        mWindowManager = settings->value("windowmanager").toString();
+    }
+
+
+    // If previuos WM was removed, we show dialog.
+    if (mWindowManager.isEmpty() || ! findProgram(mWindowManager))
+    {
+        mWindowManager = showWmSelectDialog();
+        settings->setValue("windowmanager", mWindowManager);
+        settings->sync();
+    }
+
+    mWmProcess->start(mWindowManager);
+
+    // Wait until the WM loads
+    int waitCnt = 300;
+    while (!xfitMan().isWindowManagerActive() && waitCnt)
+    {
+        waitCnt--;
+        usleep(100000);
+    }
 }
 
 void RazorModuleManager::startProcess(const XdgDesktopFile& file)
@@ -212,14 +215,14 @@ void RazorModuleManager::restartModules(int exitCode, QProcess::ExitStatus exitS
             case QProcess::CrashExit:
             {
                 qDebug() << "Process" << procName << "(" << proc << ") has to be restarted";
-                if (!m_crashReport.contains(proc))
-                    m_crashReport[proc] = 0;
-                int stat = m_crashReport[proc]++;
-                if (stat >= MAX_CRASHES_PER_APP)
+                time_t now = time(NULL);
+                mCrashReport[proc].prepend(now);
+                while (now - mCrashReport[proc].back() > 60)
+                    mCrashReport[proc].pop_back();
+                if (mCrashReport[proc].length() >= MAX_CRASHES_PER_APP)
                 {
                     QMessageBox::warning(0, tr("Razor Session Crash Report"),
                                         tr("Application '%1' crashed too many times. Its autorestart has been disabled for current session.").arg(procName));
-
                 }
                 else
                 {
@@ -290,7 +293,7 @@ QString RazorModuleManager::showWmSelectDialog()
 
 void RazorModuleManager::resetCrashReport()
 {
-    m_crashReport.clear();
+    mCrashReport.clear();
 }
 
 void razor_setenv(const char *env, const QByteArray &value)

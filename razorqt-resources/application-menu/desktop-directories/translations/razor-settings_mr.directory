@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Preferences
+Comment=Personal preferences
+Icon=preferences-settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[mr]=प्राधान्ये
+Comment[mr]=व्यक्तिगत प्राधान्यता

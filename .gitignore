@@ -15,6 +15,7 @@ razorqt-appswitcher/razor-appswitcher
 razorqt-desktop/razor-desktop
 razorqt-panel/panel/razor-panel
 *~
+*.autosave
 CMakeLists.txt.user*
 /build
 nbproject/

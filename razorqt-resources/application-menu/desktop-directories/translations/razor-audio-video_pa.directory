@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Sound & Video
+Comment=Multimedia menu
+Icon=applications-multimedia
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[pa]=ਸਾਊਂਡ ਅਤੇ ਵੀਡਿਓ
+Comment[pa]=ਮਲਟੀਮੀਡਿਆ ਮੇਨੂ

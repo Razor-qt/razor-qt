@@ -35,7 +35,7 @@ MACRO(QT4_ADD_TRANSLATION_FIXED _qm_files)
 
     ADD_CUSTOM_COMMAND(OUTPUT ${qm}
        COMMAND ${QT_LRELEASE_EXECUTABLE}
-       ARGS ${_abs_FILE} -qm ${qm}
+       ARGS -silent -removeidentical ${_abs_FILE} -qm ${qm}
        DEPENDS ${_abs_FILE}
     )
     SET(${_qm_files} ${${_qm_files}} ${qm})
@@ -184,7 +184,7 @@ endfunction(razor_translate_ts)
 
 
 #**********************************************************
-# DESCTOP files
+# DESKTOP files
 #**********************************************************
 
 function(razor_translate_desktop _RESULT)
@@ -232,6 +232,7 @@ function(razor_translate_desktop _RESULT)
 
         file(GLOB _translations
             ${_translationDir}/${_fileName}_*${_fileExt}
+            ${_translationDir}/local/${_fileName}_*${_fileExt}
         )    
   
         set(_pattern "'\\[.*]\\s*='")
@@ -255,10 +256,11 @@ function(razor_translate_desktop _RESULT)
         set(_txFile "${CMAKE_BINARY_DIR}/tx/${_fileName}${_fileExt}.tx.sh")
         string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_translationDir ${_translationDir})
         string(REPLACE "${CMAKE_SOURCE_DIR}/" "" _tx_inFile ${_inFile})
+        string(REPLACE "." "" _fileType ${_fileExt})
     
         file(WRITE ${_txFile}
             "[ -f ${_inFile} ] || exit 0\n"
-            "echo '[razor-qt.${_fileName}_desktop]'\n"
+            "echo '[razor-qt.${_fileName}_${_fileType}]'\n"
             "echo 'type = DESKTOP'\n"
             "echo 'source_lang = en'\n"
             "echo 'source_file = ${_tx_inFile}'\n"

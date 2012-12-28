@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Graphics
+Comment=Graphics applications
+Icon=applications-graphics
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+Name[ko]=그래픽
+Comment[ko]=그래픽 응용프로그램
