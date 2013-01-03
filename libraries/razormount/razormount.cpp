@@ -41,15 +41,15 @@ RazorMountDevice::RazorMountDevice():
 QString RazorMountDevice::sizeToString(qulonglong size)
 {
     double n;
-    n = size / (1024 * 1024 * 1024);
+    n = size / (1024.0 * 1024 * 1024);
     if (n > 0)
         return QObject::tr("%1 GB").arg(n, 0, 'f', 1);
 
-    n = size / (1024 * 1024);
+    n = size / (1024.0 * 1024);
     if (n > 0)
         return QObject::tr("%1 MB").arg(n, 0, 'f', 1);
 
-    n = size / (1024);
+    n = size / (1024.0);
     if (n > 0)
         return QObject::tr("%1 KB").arg(n, 0, 'f', 1);
 
