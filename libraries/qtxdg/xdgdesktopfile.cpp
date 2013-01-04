@@ -1276,6 +1276,3 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
         return 0;
 }
 
-
-
-
