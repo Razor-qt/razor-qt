@@ -106,7 +106,7 @@ void DesktopWidgetPlugin::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
         painter->drawText(boundingRect(),
                           Qt::AlignCenter | Qt::TextWordWrap | Qt::TextWrapAnywhere | Qt::TextDontClip,
-                          instanceInfo());
+                          instanceInfo() + QString(" (%1x%2)").arg(qRound(boundingRect().width())).arg(qRound(boundingRect().height())));
 
     }
     else
