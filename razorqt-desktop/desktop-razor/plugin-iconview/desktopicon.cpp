@@ -223,10 +223,7 @@ FileIcon::FileIcon(const QString & file,
 
 void FileIcon::launchApp()
 {
-    qDebug() << "FileIcon::launchApp()" << m_file << m_mimeInfo->mimeType();
-
-    XdgDesktopFile* desktopFile = XdgDesktopFileCache::getDefaultApp(m_mimeInfo->mimeType());
-    if (desktopFile)
-        desktopFile->startDetached(m_file);
+    qDebug() << "FileIcon::launchApp()" << m_file;
+    QDesktopServices::openUrl(QUrl(m_file));
 }
 
