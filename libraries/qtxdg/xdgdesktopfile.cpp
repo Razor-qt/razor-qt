@@ -305,11 +305,6 @@ bool XdgDesktopFileData::read(const QString &prefix)
         if (key.isEmpty())
             continue;
 
-        // Remove quotes ........................
-        if ((value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith('\'') && value.endsWith('\'')))
-            value = value.mid(1, value.length()-2);
-
         mItems[section + "/" + key] = QVariant(value);
     }
 
