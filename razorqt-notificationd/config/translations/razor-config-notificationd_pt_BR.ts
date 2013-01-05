@@ -3,15 +3,15 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuração do menu</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>Duração da notificação</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Para alguns o tempo de expiração da notificação é dependente das configurações do servidor de notificações.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
@@ -19,23 +19,23 @@
     </message>
     <message>
         <source> sec</source>
-        <translation type="unfinished"/>
+        <translation>s</translation>
     </message>
     <message>
         <source>Sizes</source>
-        <translation type="unfinished"/>
+        <translation>Tamanhos</translation>
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation type="unfinished"/>
+        <translation>Espaçamento da notificação</translation>
     </message>
     <message>
         <source> px</source>
-        <translation type="unfinished"/>
+        <translation>px</translation>
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation type="unfinished"/>
+        <translation>Largura da notificação:</translation>
     </message>
 </context>
 <context>
@@ -46,27 +46,27 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar notificações</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation type="unfinished"/>
+        <translation>Superior/Esquerda</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation type="unfinished"/>
+        <translation>Superior/Direita</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation type="unfinished"/>
+        <translation>Inferior/Esquerda</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation type="unfinished"/>
+        <translation>Inferior/Direita</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation type="unfinished"/>
+        <translation>Testar notificação</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
@@ -80,18 +80,18 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation type="unfinished"/>
+        <translation>Resumo da notificação</translation>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation type="unfinished"/>
+        <translation>Corpo da notificação</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuração de notificações do Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +99,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation type="unfinished"/>
+        <translation>Configurações avançadas</translation>
     </message>
 </context>
 </TS>

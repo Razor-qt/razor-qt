@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Remove from quicklaunch</source>
-        <translation>הסרה מן שיגור מהיר</translation>
+        <translation>הסר מן שיגור מהיר</translation>
     </message>
 </context>
 <context>

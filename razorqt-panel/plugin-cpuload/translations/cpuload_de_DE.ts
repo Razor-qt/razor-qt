@@ -3,14 +3,14 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>CPU load %1%</source>
-        <translation type="unfinished"/>
+        <translation>CPU-Auslastung %1%</translation>
     </message>
 </context>
 <context>
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor CPU Load settings</source>
-        <translation type="unfinished"/>
+        <translation>Razor CPU-Last Einstellungen</translation>
     </message>
     <message>
         <source>General</source>

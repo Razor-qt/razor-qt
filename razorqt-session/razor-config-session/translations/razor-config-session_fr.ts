@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Wait for system tray</source>
-        <translation>En attente de la boîte à miniatures</translation>
+        <translation>En attente de la barre d&apos;état système</translation>
     </message>
     <message>
         <source>Select Application</source>

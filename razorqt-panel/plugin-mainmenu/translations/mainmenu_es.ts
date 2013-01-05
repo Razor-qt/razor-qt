@@ -30,19 +30,19 @@
     </message>
     <message>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
     <message>
         <source>Keyboard Shortcut</source>
-        <translation>Atajos del teclado</translation>
+        <translation>Atajo de teclado</translation>
     </message>
     <message>
         <source>Click the button to record shortcut:</source>
-        <translation>Presione el botón para registrar el atajo:</translation>
+        <translation>Oprima el botón para registrar el atajo:</translation>
     </message>
     <message>
         <source>Choose menu file</source>
-        <translation>Escoger un archivo de menú</translation>
+        <translation>Elija un archivo de menú</translation>
     </message>
     <message>
         <source>Menu files (*.menu)</source>

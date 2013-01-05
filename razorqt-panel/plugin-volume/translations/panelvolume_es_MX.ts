@@ -3,7 +3,7 @@
     <name>RazorVolume</name>
     <message>
         <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Control de Volumen: Atajo global &apos;%1&apos; no fue registrado</translation>
     </message>
 </context>
 <context>
@@ -53,11 +53,11 @@
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation type="unfinished"/>
+        <translation>Lanzar mezclador</translation>
     </message>
     <message>
         <source>Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Mezclador</translation>
     </message>
 </context>
 </TS>

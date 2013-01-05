@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Enter your SSH passphrase for request:</source>
-        <translation type="unfinished"/>
+        <translation>Sartu zure SSH pasaesaldia eskaerarako:</translation>
     </message>
 </context>
 <context>

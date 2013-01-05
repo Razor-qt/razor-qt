@@ -9,5 +9,5 @@ Comment=Displays the current CPU load.
 
 
 # Translations
-Comment[it_IT]=Monitor del carico del processore
-Name[it_IT]=Carico del processore
+Comment[it_IT]=Visualizza il carico attuale del processore
+Name[it_IT]=Monitor del processore

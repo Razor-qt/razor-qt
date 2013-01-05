@@ -3,15 +3,15 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation type="unfinished"/>
+        <translation>id użytkownika</translation>
     </message>
     <message>
         <source>password</source>
-        <translation type="unfinished"/>
+        <translation>hasło</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>Login</translation>
     </message>
     <message>
         <source>Cancel</source>

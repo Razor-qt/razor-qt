@@ -21,11 +21,11 @@
     <name>QObject</name>
     <message>
         <source>Display content of the given directory/folder</source>
-        <translation>הצגת תכולה של מדור/תיקייה נתונים</translation>
+        <translation>הצג תכולה של מדור/תיקייה נתונים</translation>
     </message>
     <message>
         <source>Icon View:</source>
-        <translation>מציג צלמיות:</translation>
+        <translation>תצוגת צלמיות:</translation>
     </message>
 </context>
 </TS>

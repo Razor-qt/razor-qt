@@ -3,7 +3,7 @@
     <name>PolicykitAgentGUI</name>
     <message>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Tunnistautuminen vaaditaan</translation>
     </message>
     <message>
         <source>Identity:</source>

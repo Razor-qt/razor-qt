@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Wait for system tray</source>
-        <translation>À espera da bandeja do sistema</translation>
+        <translation>À espera da bandeja do sistema...</translation>
     </message>
     <message>
         <source>Select Application</source>

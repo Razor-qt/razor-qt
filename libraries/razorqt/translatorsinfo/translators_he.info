@@ -11,15 +11,15 @@ translator_2_contact     =  eliz@gnu.org
 
 translator_3_nameEnglish = Rodensky
 # translator_3_nameNative  = Translator 3. Your name in the native language.
-translator_3_contact     = https://atheisms.wordpress.com
+translator_3_contact     = atheisms.wordpress.com
 
 translator_4_nameEnglish = GreenLunar
 # translator_4_nameNative  = Translator 4. Your name in the native language.
-translator_4_contact     = https://github.com/GreenLunar
+translator_4_contact     = github.com/GreenLunar
 
-# translator_5_nameEnglish = Translator 5. Your name in English. 
-# translator_5_nameNative  = Translator 5. Your name in the native language.
-# translator_5_contact     = Translator 5. Contact information, email or web site address.
+translator_5_nameEnglish = Salix OS Translation Team
+translator_5_nameNative  = נבחרת התרגום של סאליקס
+translator_5_contact     = www.salixos.org
 
 # translator_6_nameEnglish = Translator 6. Your name in English. 
 # translator_6_nameNative  = Translator 6. Your name in the native language.

@@ -15,27 +15,27 @@
     </message>
     <message>
         <source>B</source>
-        <translation>B</translation>
+        <translation>בתים</translation>
     </message>
     <message>
         <source>KiB</source>
-        <translation>KiB</translation>
+        <translation>קי״ב</translation>
     </message>
     <message>
         <source>MiB</source>
-        <translation>MiB</translation>
+        <translation>מי״ב</translation>
     </message>
     <message>
         <source>GiB</source>
-        <translation>GiB</translation>
+        <translation>גי״ב</translation>
     </message>
     <message>
         <source>TiB</source>
-        <translation>TiB</translation>
+        <translation>טי״ב</translation>
     </message>
     <message>
         <source>PiB</source>
-        <translation>PiB</translation>
+        <translation>פי״ב</translation>
     </message>
 </context>
 <context>

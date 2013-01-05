@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Roll down</source>
-        <translation type="unfinished"/>
+        <translation>Vieritä alas</translation>
     </message>
     <message>
         <source>Roll up</source>
-        <translation type="unfinished"/>
+        <translation>Vieritä ylös</translation>
     </message>
     <message>
         <source>&amp;Layer</source>

@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Always on &amp;top</source>
-        <translation>Sempre no &amp;topo</translation>
+        <translation>Sempre na &amp;frente</translation>
     </message>
     <message>
         <source>&amp;Normal</source>
@@ -63,7 +63,7 @@
     </message>
     <message>
         <source>Always on &amp;bottom</source>
-        <translation>Sempre na &amp;base</translation>
+        <translation>Sempre por &amp;trás</translation>
     </message>
     <message>
         <source>&amp;Close</source>

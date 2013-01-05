@@ -23,31 +23,31 @@
     </message>
     <message>
         <source>Ma&amp;ximize</source>
-        <translation>ה&amp;גדלה</translation>
+        <translation>ה&amp;גדל</translation>
     </message>
     <message>
         <source>Maximize vertically</source>
-        <translation>הגדלה אנכית</translation>
+        <translation>הגדל אנכית</translation>
     </message>
     <message>
         <source>Maximize horizontally</source>
-        <translation>הגדלה אופקית</translation>
+        <translation>הגדל אופקית</translation>
     </message>
     <message>
         <source>&amp;Restore</source>
-        <translation>&amp;שחזור</translation>
+        <translation>&amp;שחזר</translation>
     </message>
     <message>
         <source>Mi&amp;nimize</source>
-        <translation>מ&amp;זעור</translation>
+        <translation>מ&amp;זער</translation>
     </message>
     <message>
         <source>Roll down</source>
-        <translation>גלילה מטה</translation>
+        <translation>גלול מטה</translation>
     </message>
     <message>
         <source>Roll up</source>
-        <translation>גלילה מעלה</translation>
+        <translation>גלול מעלה</translation>
     </message>
     <message>
         <source>&amp;Layer</source>
@@ -67,7 +67,7 @@
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;סגירה</translation>
+        <translation>&amp;סגור</translation>
     </message>
 </context>
 <context>
@@ -82,11 +82,11 @@
     </message>
     <message>
         <source>Show windows from current desktop</source>
-        <translation>הצגת חלונות משלוחן נוכחי</translation>
+        <translation>הצג חלונות משלוחן נוכחי</translation>
     </message>
     <message>
         <source>Show windows from all desktops</source>
-        <translation>הצגת חלונות מכל השלוחנות</translation>
+        <translation>הצג חלונות מכל השולחנות</translation>
     </message>
     <message>
         <source>Window List Appearance</source>
@@ -102,7 +102,7 @@
     </message>
     <message>
         <source>Close on middle-click</source>
-        <translation>סגירה בהקלקה אמצעית</translation>
+        <translation>סגור בקליק-אמצעי</translation>
     </message>
     <message>
         <source>Icon and text</source>

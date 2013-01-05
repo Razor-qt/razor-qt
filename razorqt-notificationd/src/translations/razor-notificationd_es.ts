@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation>Ok</translation>
+        <translation>Aceptar</translation>
     </message>
 </context>
 </TS>

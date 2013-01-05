@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>O Razor não conseguiu encontrar os dados da bateria. As ações de energia não vão funcionar.</translation>
+        <translation>O Razor não conseguiu encontrar os dados sobre a bateria. As ações de energia não irão funcionar.</translation>
     </message>
 </context>
 <context>
@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>Energy Now:</source>
-        <translation>Carga disponível:</translation>
+        <translation>Carga atual:</translation>
     </message>
     <message>
         <source>Updated:</source>
@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation>Carga completa, teórica:</translation>
+        <translation>Carga, definições de fábrica:</translation>
     </message>
     <message>
         <source>Energy Full:</source>

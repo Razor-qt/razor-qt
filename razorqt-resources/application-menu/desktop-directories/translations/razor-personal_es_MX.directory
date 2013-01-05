@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Personal
+Comment=Personal settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[es_MX]=Configuración personal
+Name[es_MX]=Personal

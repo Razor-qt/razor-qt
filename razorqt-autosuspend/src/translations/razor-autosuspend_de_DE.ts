@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>Razor autosuspend konnte keine Batterieinformationen finden - Aktionen bei niedrigem Energiestand werden nicht funktionieren </translation>
+        <translation>Razor Autosuspend konnte keine Batterieinformationen finden - Aktionen bei niedrigem Energiestand werden nicht funktionieren </translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation>Akku Voll geladen, Design:</translation>
+        <translation>Akku voll geladen, Design:</translation>
     </message>
     <message>
         <source>Energy Full:</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation type="unfinished"/>
+        <translation>Nickel-Metallhydrid</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -86,11 +86,11 @@
     </message>
     <message>
         <source>Charging</source>
-        <translation>Läd</translation>
+        <translation>Lädt</translation>
     </message>
     <message>
         <source>Discharging</source>
-        <translation>Entläd</translation>
+        <translation>Entlädt</translation>
     </message>
     <message>
         <source>Empty</source>

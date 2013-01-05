@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>Mathematics</source>
-        <translation>การคำนวณเลข</translation>
+        <translation>คำนวณเลข</translation>
     </message>
     <message>
         <source>Razor Power Management</source>
-        <translation>การจัดการพลังงานเรเซอร์</translation>
+        <translation>จัดการพลังงานเรเซอร์</translation>
     </message>
 </context>
 </TS>

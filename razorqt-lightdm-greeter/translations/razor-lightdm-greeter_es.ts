@@ -3,15 +3,15 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation>Nombre de usuario</translation>
+        <translation>id. de usuario</translation>
     </message>
     <message>
         <source>password</source>
-        <translation>Constraseña</translation>
+        <translation>contraseña</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation>Inicio de sesión</translation>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <source>Cancel</source>

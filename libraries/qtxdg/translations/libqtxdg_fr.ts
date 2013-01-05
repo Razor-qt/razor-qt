@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>%1 not loading: %2</source>
-        <translation>%1 ne charge pas %2</translation>
+        <translation>%1 ne charge pas : %2</translation>
     </message>
     <message>
         <source>Parse error at line %1, column %2:

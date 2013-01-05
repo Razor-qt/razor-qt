@@ -7,19 +7,19 @@
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>
-        <translation>נא לבחור את מוטיב הסמן בו ברצונך לעשות שימוש (ניתן לבחון סמנים על ידי ריחוף על תצוגות מקדימות). &lt;b&gt;קיים הכרח לאתחל את סשן Razor לאחר שינוי זה&lt;/b&gt;:</translation>
+        <translation>בחר/י את מוטיב הסמן בו ברצונך לעשות שימוש (ניתן לבחון סמנים על ידי ריחוף על תצוגות מקדימות). &lt;b&gt;קיים הכרח לאתחל את סשן Razor לאחר שינוי זה&lt;/b&gt;:</translation>
     </message>
     <message>
         <source>&amp;Install New Theme...</source>
-        <translation>ה&amp;תקנת מוטיב חדש...</translation>
+        <translation>ה&amp;תקן מוטיב חדש...</translation>
     </message>
     <message>
         <source>&amp;Set Theme</source>
-        <translation>ה&amp;גדרת מוטיב</translation>
+        <translation>&amp;קבע מוטיב</translation>
     </message>
     <message>
         <source>&amp;Remove Theme</source>
-        <translation>ה&amp;סרת מוטיב</translation>
+        <translation>ה&amp;סר מוטיב</translation>
     </message>
     <message>
         <source>&amp;Close</source>

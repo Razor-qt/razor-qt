@@ -3,7 +3,7 @@
     <name>RazorVolume</name>
     <message>
         <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Controllo de volumine: le accelerator global &apos;%1&apos; non pote esser registrate</translation>
     </message>
 </context>
 <context>
@@ -26,38 +26,38 @@
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Comportamento</translation>
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation type="unfinished"/>
+        <translation>Silentiar con clic central</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation type="unfinished"/>
+        <translation>Monstrar con un clic</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
-        <translation type="unfinished"/>
+        <translation>Permitter le volumine ultra 100% (0dB)</translation>
     </message>
     <message>
         <source>Volume adjust step</source>
-        <translation type="unfinished"/>
+        <translation>Passo de adjustamento de volumine</translation>
     </message>
     <message>
         <source>External Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Miscitor externe</translation>
     </message>
 </context>
 <context>
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation type="unfinished"/>
+        <translation>Lancear le miscitor</translation>
     </message>
     <message>
         <source>Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Miscitor</translation>
     </message>
 </context>
 </TS>

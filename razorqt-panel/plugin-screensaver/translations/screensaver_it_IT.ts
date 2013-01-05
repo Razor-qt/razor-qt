@@ -3,7 +3,7 @@
     <name>PanelScreenSaver</name>
     <message>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>La scorciatoia globale per lo screensaver: &apos;%1&apos; non può essere registrata</translation>
+        <translation>La scorciatoia globale per il salvaschermo &apos;%1&apos; non può essere registrata</translation>
     </message>
 </context>
 </TS>

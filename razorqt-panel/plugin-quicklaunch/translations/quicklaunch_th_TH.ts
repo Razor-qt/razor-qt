@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>
-        <translation>แฟ้ม/URL &apos;%1&apos; ไม่สามารถฝังตัวไปยังตัวเรียกโปรแกรมด่วนได้ในตอนนี้</translation>
+        <translation>แฟ้ม/URL &apos;%1&apos; ไม่สามารถฝังตัวไปยังตัวเรียกใช้งานด่วนได้ในตอนนี้</translation>
     </message>
 </context>
 </TS>

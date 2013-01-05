@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Positioning:</source>
-        <translation>מקומיות:</translation>
+        <translation>מיקומיות:</translation>
     </message>
     <message>
         <source>Show on:</source>
@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Top edge of screen</source>
-        <translation>קצה המרקע</translation>
+        <translation>קצה מרקע</translation>
     </message>
     <message>
         <source>Center of screen</source>
@@ -46,15 +46,15 @@
     </message>
     <message>
         <source>Configure razor-runner</source>
-        <translation>תצורת razor-runner</translation>
+        <translation>הגדר את razor-runner</translation>
     </message>
     <message>
         <source>Clear razor-runner History</source>
-        <translation>טיהר היסטוריית razor-runner</translation>
+        <translation>טהר היסטוריית razor-runner</translation>
     </message>
     <message>
         <source>Press &quot;%1&quot; to see dialog.</source>
-        <translation>לחץ &quot;%1&quot; כדי לראות דו־שיח.</translation>
+        <translation>לחץ &quot;%1&quot; כדי לראות דו שיח.</translation>
     </message>
 </context>
 <context>

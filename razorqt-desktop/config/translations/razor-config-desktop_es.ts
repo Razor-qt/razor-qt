@@ -3,11 +3,11 @@
     <name>BasicSettings</name>
     <message>
         <source>&lt;b&gt;Razor Desktop&lt;/b&gt;&lt;br&gt;Desktop is fully controlled by Razor. &lt;b&gt;Configuration is available in the desktop context menu.&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Escritorio de Razor&lt;/b&gt;&lt;br&gt;El escritorio es controlado completamente por Razor. &lt;b&gt;La configuración esta disponible en el menu de contexto del Escritorio.&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Escritorio de Razor&lt;/b&gt;&lt;br&gt;El escritorio está controlado completamente por Razor. &lt;b&gt;La configuración está disponible en el menu contextual del escritorio.&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&lt;b&gt;Window Manager Native Desktop&lt;/b&gt;&lt;br&gt;Desktop is handled by used window manager (including WM&apos;s own menus etc.). Only few things can be configured here.</source>
-        <translation>&lt;b&gt;Administrador de Ventanas nativo en el Escritorio&lt;/b&gt;&lt;br&gt;El escritorio es manejado por el Administrador de Ventanas (incluyendo nuestros menus WM&apos;S, etc.). Solo algunas cosas se pueden configurar aquí.</translation>
+        <translation>&lt;b&gt;Escritorio nativo del gestor de ventanas&lt;/b&gt;&lt;br&gt;El escritorio está manejado por el gestor de ventanas (incluyendo los menús propios del gestor, etc.). Solo se pueden configurar algunas cosas aquí.</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>Desktop Type</source>
-        <translation>Tipo de Escritorio</translation>
+        <translation>Tipo de escritorio</translation>
     </message>
     <message>
         <source>Icon Activation</source>
-        <translation>Icono de Activación</translation>
+        <translation>Activación de iconos</translation>
     </message>
     <message>
         <source>Singleclick</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Virtual Desktops</source>
-        <translation>Escritorios Virtuales</translation>
+        <translation>Escritorios virtuales</translation>
     </message>
     <message>
         <source>Use different widgets and wallpapers for each virtual desktop</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Please note that this setting is not supported by all window managers!</source>
-        <translation>¡Por favor considere que esta opción no esta soportada por todos los Administradores de Ventanas</translation>
+        <translation>Note que esta configuración no es compatible con todos los gestores de ventanas.</translation>
     </message>
     <message>
         <source>Use mouse wheel for desktop changing</source>
@@ -47,14 +47,14 @@
     </message>
     <message>
         <source>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</source>
-        <translation>Cuando esté habilitado razor-desktop este cambiara escritorios (Podría entrar en conflicto con el manejador de ventanas seleccionado). Cuando esté deshabilitado, los eventos de la rueda del ratón (mouse) serán ignorados.</translation>
+        <translation>Cuando se active, razor-desktop cambiará lo escritorios (podría conflictuar con el gestor de ventanas seleccionado). Cuando se desactive, razor-desktop ignorará los eventos de la rueda del ratón.</translation>
     </message>
 </context>
 <context>
     <name>DesktopConfigWindow</name>
     <message>
         <source>Razor Desktop Configuration</source>
-        <translation>Configuración del Escritorio de Razor</translation>
+        <translation>Configuración del escritorio de Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -62,26 +62,26 @@
     </message>
     <message>
         <source>Menu Configuration</source>
-        <translation>Menú de Configuración</translation>
+        <translation>Configuración de menús</translation>
     </message>
     <message>
         <source>WM Native Desktop</source>
-        <translation>Escritorio del Administrador de Ventanas nativo</translation>
+        <translation>Escritorio nativo del gestor de ventanas</translation>
     </message>
     <message>
         <source>Restart Desktop Module?</source>
-        <translation>¿Reiniciar el módulo de Escritorio?</translation>
+        <translation>¿Reiniciar el módulo Escritorio?</translation>
     </message>
     <message>
         <source>Razor Desktop module needs to be restarted to apply changes. Restart?</source>
-        <translation>El módulo de Escritorio de Razor necesita ser reiniciado para aplicar los cambios. ¿Reiniciar?</translation>
+        <translation>Necesita reiniciar el módulo Escritorio de Razor para aplicar los cambios. ¿Reiniciar?</translation>
     </message>
 </context>
 <context>
     <name>MenuConfig</name>
     <message>
         <source>Choose menu file</source>
-        <translation>Escoger un archivo de menú</translation>
+        <translation>Elija un archivo de menú</translation>
     </message>
     <message>
         <source>Menu files (*.menu)</source>
@@ -89,7 +89,7 @@
     </message>
     <message>
         <source>Menu Configuration</source>
-        <translation>Menú de Configuración</translation>
+        <translation>Configuración de menús</translation>
     </message>
     <message>
         <source>Menu file</source>
@@ -97,7 +97,7 @@
     </message>
     <message>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
 </context>
 <context>
@@ -112,11 +112,11 @@
     </message>
     <message>
         <source>Window Manager Native Desktop</source>
-        <translation>Escritorio del Administrador de Ventanas nativo</translation>
+        <translation>Escritorio nativo del gestor de ventanas</translation>
     </message>
     <message>
         <source>Use Desktop Icons</source>
-        <translation>Usar los Iconos del Escritorio</translation>
+        <translation>Usar iconos en el escritorio</translation>
     </message>
     <message>
         <source>Wallpaper:</source>
@@ -124,7 +124,7 @@
     </message>
     <message>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
 </context>
 </TS>

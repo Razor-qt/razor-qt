@@ -3,7 +3,7 @@
     <name>QObject</name>
     <message>
         <source>Display a notepad</source>
-        <translation>הצגת פנקס כתיבה</translation>
+        <translation>הצג פנקס כתיבה</translation>
     </message>
     <message>
         <source>Notepad:</source>

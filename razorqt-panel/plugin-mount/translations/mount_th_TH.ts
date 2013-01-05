@@ -36,7 +36,7 @@
     <name>RazorMountConfiguration</name>
     <message>
         <source>Razor Removable media manager settings</source>
-        <translation>ค่าตั้งตัวจัดการสื่อแบบถอดเสียบได้ Razor</translation>
+        <translation>ค่าตั้งตัวจัดการสื่อแบบถอดเสียบได้เรเซอร์</translation>
     </message>
     <message>
         <source>Behaviour</source>

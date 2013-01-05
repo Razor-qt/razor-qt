@@ -30,11 +30,11 @@
     <name>AutoStartItemModel</name>
     <message>
         <source>Global Autostart</source>
-        <translation>เริ่มงานอัตโนมัติ (ส่วนกลาง)</translation>
+        <translation>เริ่มงานอัตโนมัติส่วนหลัก</translation>
     </message>
     <message>
         <source>Razor Autostart</source>
-        <translation>เริ่มงานอัตโนมัติ (เรเซอร์)</translation>
+        <translation>เริ่มงานอัตโนมัติส่วนเรเซอร์</translation>
     </message>
     <message>
         <source>Location: %1</source>
@@ -167,7 +167,7 @@
     <name>SessionConfigWindow</name>
     <message>
         <source>Razor Session Configuration</source>
-        <translation>การตั้งค่าวาระงานเรเซอร์</translation>
+        <translation>ตั้งค่าวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -179,7 +179,7 @@
     </message>
     <message>
         <source>Autostart</source>
-        <translation>การเริ่มโปรแกรมอัตโนมัติ</translation>
+        <translation>เริ่มโปรแกรมอัตโนมัติ</translation>
     </message>
     <message>
         <source>Environment (Advanced)</source>

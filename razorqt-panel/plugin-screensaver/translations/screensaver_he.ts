@@ -3,7 +3,7 @@
     <name>PanelScreenSaver</name>
     <message>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>לוח שומר מסך: קיצור דרך גלובלי &apos;%1&apos; לא ניתן להרשמה</translation>
+        <translation>לוח שומר מסך: קיצור דרך גלובלי &apos;%1&apos; לא ניתן לרישום</translation>
     </message>
 </context>
 </TS>

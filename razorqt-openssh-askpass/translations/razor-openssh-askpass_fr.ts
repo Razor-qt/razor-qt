@@ -7,14 +7,14 @@
     </message>
     <message>
         <source>Enter your SSH passphrase for request:</source>
-        <translation>Saisir votre </translation>
+        <translation>Saisir votre phrase de passe SSH :</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>unknown request</source>
-        <translation>Demande inconnu</translation>
+        <translation>demande inconnue</translation>
     </message>
 </context>
 </TS>

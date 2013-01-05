@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>XCurTheme error</source>
-        <translation type="unfinished"/>
+        <translation>XCurTheme エラー</translation>
     </message>
     <message>
         <source>You can&apos;t remove active theme!</source>

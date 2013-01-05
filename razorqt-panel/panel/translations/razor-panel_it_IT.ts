@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation>Utilizza il dimensionamento automatico</translation>
+        <translation>Utilizza il ridimensionamento automatico</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
@@ -90,7 +90,7 @@
     <name>RazorPanel</name>
     <message>
         <source>Panel</source>
-        <translation>Esci</translation>
+        <translation>Pannello</translation>
     </message>
     <message>
         <source>Configure panel...</source>

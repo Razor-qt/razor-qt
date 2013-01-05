@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Application &apos;%1&apos; crashed too many times. Its autorestart has been disabled for current session.</source>
-        <translation>โปรแกรม &apos;%1&apos; เสียหายหลายครั้งมาก การเริ่มงานอัตโนมัติของมันจะถูกปิดใช้งาานสำหรับวาระงานปัจจุบัน</translation>
+        <translation>โปรแกรม &apos;%1&apos; เสียหายหลายครั้งมาก การเริ่มงานอัตโนมัติของมันจะถูกปิดใช้งานในวาระงานปัจจุบัน</translation>
     </message>
 </context>
 <context>
@@ -26,7 +26,7 @@ Before starting to use the Razor-qt, you might want to select the Windows Manage
     </message>
     <message>
         <source>You can change the Window Manager later at any time via Razor Session Configurator.</source>
-        <translation>คุณสามารถเปลี่ยนโปรแกรมจัดการหน้าต่างทีหลังในเวลาใดก็ได้ทางตัวตั้งค่าวาระงานเรเซอร์</translation>
+        <translation>คุณสามารถเปลี่ยนโปรแกรมจัดการหน้าต่างทีหลังในเวลาใดก็ได้ทางเมนูตั้งค่าวาระงานเรเซอร์</translation>
     </message>
     <message>
         <source>Other ...</source>

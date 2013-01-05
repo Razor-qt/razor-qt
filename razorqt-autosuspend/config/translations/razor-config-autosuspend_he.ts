@@ -3,18 +3,18 @@
     <name>GeneralSettings</name>
     <message>
         <source>Dialog</source>
-        <translation>דו־שיח</translation>
+        <translation>דו שיח</translation>
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>הצגת צלמית מצב סוללה במגש</translation>
+        <translation>הצג צלמית מצב סוללה במגש</translation>
     </message>
 </context>
 <context>
     <name>LidSettings</name>
     <message>
         <source>Dialog</source>
-        <translation>דו־שיח</translation>
+        <translation>דו שיח</translation>
     </message>
     <message>
         <source>Lid closed</source>
@@ -64,7 +64,7 @@
     <name>PowerLowSettings</name>
     <message>
         <source>Dialog</source>
-        <translation>דו־שיח</translation>
+        <translation>דו שיח</translation>
     </message>
     <message>
         <source>Power low</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation>רמה נמוכה מתי:</translation>
+        <translation>רמה נמוכה כאשר נותרים:</translation>
     </message>
     <message>
         <source> %</source>

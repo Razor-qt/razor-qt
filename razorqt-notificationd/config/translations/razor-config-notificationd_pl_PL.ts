@@ -3,11 +3,11 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguracja Menu</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>Czas wyświetlania Powiadomienia</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
@@ -19,11 +19,11 @@
     </message>
     <message>
         <source> sec</source>
-        <translation type="unfinished"/>
+        <translation>sek</translation>
     </message>
     <message>
         <source>Sizes</source>
-        <translation type="unfinished"/>
+        <translation>Rozmiary</translation>
     </message>
     <message>
         <source>Notification Spacing:</source>
@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation type="unfinished"/>
+        <translation>Szerokość Powiadomień</translation>
     </message>
 </context>
 <context>
@@ -46,52 +46,52 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Wyświetlaj Powiadomienia</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation type="unfinished"/>
+        <translation>Góra/Lewo</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation type="unfinished"/>
+        <translation>Góra/Prawo</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation type="unfinished"/>
+        <translation>Dół/Lewo</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation type="unfinished"/>
+        <translation>Dół/Prawo</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation type="unfinished"/>
+        <translation>Próba Powiadomienia</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Uwaga:&lt;/b&gt; Brak uruchomionego daemona powiadomień.⏎ </translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Uwaga:&lt;/b&gt; Inny daemon powiadomień (%1) jest uruchomiony.⏎ Te ustawienia nie będą mieć żadnego wpływu !</translation>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation type="unfinished"/>
+        <translation>Streszczenie Powiadomienia</translation>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation type="unfinished"/>
+        <translation>Ciało Powiadomień</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguracja Powiadomień Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +99,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation type="unfinished"/>
+        <translation>Ustawienia Zaawansowane</translation>
     </message>
 </context>
 </TS>

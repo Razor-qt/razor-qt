@@ -3,7 +3,7 @@
     <name>RazorVolume</name>
     <message>
         <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>音量控制: 無法註冊全域快捷鍵 &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -53,11 +53,11 @@
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation type="unfinished"/>
+        <translation>開啟混音器</translation>
     </message>
     <message>
         <source>Mixer</source>
-        <translation type="unfinished"/>
+        <translation>混音器</translation>
     </message>
 </context>
 </TS>

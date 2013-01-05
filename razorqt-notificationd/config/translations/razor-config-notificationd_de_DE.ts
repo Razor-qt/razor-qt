@@ -3,27 +3,27 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Menü-Konfiguration</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation type="unfinished"/>
+        <translation>Anzeigedauer für Meldungen</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Für einige Meldungen ist die Anzeigedauer von den Einstellungen des Meldungs-Servers abhängig.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Serverbestimmte&quot; Zeit:</translation>
     </message>
     <message>
         <source> sec</source>
-        <translation type="unfinished"/>
+        <translation>sek</translation>
     </message>
     <message>
         <source>Sizes</source>
-        <translation type="unfinished"/>
+        <translation>Größen</translation>
     </message>
     <message>
         <source>Notification Spacing:</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source> px</source>
-        <translation type="unfinished"/>
+        <translation>px</translation>
     </message>
     <message>
         <source>Notification Width:</source>
@@ -46,41 +46,41 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Meldungen anzeigen</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation type="unfinished"/>
+        <translation>Oben/Links</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation type="unfinished"/>
+        <translation>Oben/Rechts</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation type="unfinished"/>
+        <translation>Unten/Links</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation type="unfinished"/>
+        <translation>Unten/Rechts</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation type="unfinished"/>
+        <translation>Test-Meldung</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Achtung:&lt;/b&gt; Kein Meldungs-Daemon ist in Betrieb.⏎ Eine Ausweichlösung wird benutzt.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Achtung:&lt;/b&gt; Ein fremder Meldungs-Daemon (%1) ist in Betrieb.⏎ Die vorgenommenen Einstellungen werden keinen Effekt zeigen.</translation>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation type="unfinished"/>
+        <translation>Meldungs-Zusammenfassung</translation>
     </message>
     <message>
         <source>Notification Body</source>
@@ -91,7 +91,7 @@ These settings won&apos;t have an effect on it!</source>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Razor Meldungs-Einstellungen</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +99,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation type="unfinished"/>
+        <translation>Erweiterte Einstellungen</translation>
     </message>
 </context>
 </TS>

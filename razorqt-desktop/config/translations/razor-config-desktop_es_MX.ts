@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</source>
-        <translation type="unfinished"/>
+        <translation>Cuando está activado, Razor-Desktop cambiará de escritorio (puede entrar en conflicto con el gestor de ventanas seleccionado). Cuando está desactivado, los eventos de la rueda del ratón son ignorados por Razor-Desktop.</translation>
     </message>
 </context>
 <context>

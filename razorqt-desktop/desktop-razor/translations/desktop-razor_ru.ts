@@ -15,15 +15,15 @@
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation type="unfinished"/>
+        <translation>Открыть рисунок рабочего стола...</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation type="unfinished"/>
+        <translation>Открыть Системный рисунок рабочего стола</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять пропорции</translation>
     </message>
     <message>
         <source>Select Background Color</source>
@@ -39,26 +39,26 @@
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Выбрать Системный рисунок рабочего стола</translation>
     </message>
 </context>
 <context>
     <name>DesktopScene</name>
     <message>
         <source>Unlock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>Разблокировать рабочий стол...</translation>
     </message>
     <message>
         <source>Add New Desktop Widget...</source>
-        <translation type="unfinished"/>
+        <translation>Добавить новый виджет рабочего стола...</translation>
     </message>
     <message>
         <source>Remove Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>Удалить плагин...</translation>
     </message>
     <message>
         <source>Configure Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>Настроить плагин...</translation>
     </message>
     <message>
         <source>Set Desktop Background...</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>New Desktop Widget</source>
-        <translation type="unfinished"/>
+        <translation>Новый виджет рабочего стола</translation>
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
@@ -78,40 +78,40 @@
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
-        <translation type="unfinished"/>
+        <translation>Удалить виджет рабочего стола?</translation>
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Действительно удалить этот виджет: &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>Заблокировать рабочий стол...</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>No info available</source>
-        <translation type="unfinished"/>
+        <translation>Нет доступной информации</translation>
     </message>
 </context>
 <context>
     <name>RazorWorkSpace</name>
     <message>
         <source>Background Change</source>
-        <translation type="unfinished"/>
+        <translation>Изменение фона</translation>
     </message>
     <message>
         <source>Do you want to change desktop background?</source>
-        <translation type="unfinished"/>
+        <translation>Вы хотите изменить фон рабочего стола?</translation>
     </message>
 </context>
 <context>
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation type="unfinished"/>
+        <translation>Полнофункциональная реализация рабочего стола со всеми свистками и колокольчиками</translation>
     </message>
 </context>
 </TS>

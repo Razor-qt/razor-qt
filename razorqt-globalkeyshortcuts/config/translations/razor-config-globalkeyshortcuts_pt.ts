@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Find a command</source>
-        <translation>Encontrar um comando</translation>
+        <translation>Localizar um comando</translation>
     </message>
 </context>
 <context>

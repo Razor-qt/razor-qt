@@ -35,14 +35,14 @@
     </message>
     <message>
         <source>Always on %1 monitor</source>
-        <translation>Sempre sul monitor %1</translation>
+        <translation>Sempre sullo schermo %1</translation>
     </message>
 </context>
 <context>
     <name>Dialog</name>
     <message>
         <source>Application launcher </source>
-        <translation>Lanciatore di applicazioni</translation>
+        <translation>Avviatore di applicazioni</translation>
     </message>
     <message>
         <source>Configure razor-runner</source>

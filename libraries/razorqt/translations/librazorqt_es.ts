@@ -3,7 +3,7 @@
     <name>AddPluginDialog</name>
     <message>
         <source>Add plugins</source>
-        <translation>Añadir extensiones</translation>
+        <translation>Añadir complementos</translation>
     </message>
     <message>
         <source>Search:</source>
@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Add plugin</source>
-        <translation>Añadir extensión</translation>
+        <translation>Añadir complemento</translation>
     </message>
     <message>
         <source>Close</source>
@@ -42,43 +42,43 @@
     </message>
     <message>
         <source>Razor Session Suspend</source>
-        <translation>Suspender sesión Razor</translation>
+        <translation>Suspender la sesión de Razor</translation>
     </message>
     <message>
         <source>Do you want to really suspend your computer?&lt;p&gt;Suspends the computer into a low power state. System state is not preserved if the power is lost.</source>
-        <translation>¿Realmente desdea suspender su PC?&lt;p&gt;Suspende la PC a un estado de bajo consumo. El estado del sistema no se preserva si se agota la energía.</translation>
+        <translation>¿Realmente quiere suspender su equipo?&lt;p&gt;Pone el equipo en un modo de bajo consumo de energía. El estado del sistema no se preserva si se agota la energía.</translation>
     </message>
     <message>
         <source>Razor Session Hibernate</source>
-        <translation>Hibernar la sesión Razor</translation>
+        <translation>Hibernar la sesión de Razor</translation>
     </message>
     <message>
         <source>Do you want to really hibernate your computer?&lt;p&gt;Hibernates the computer into a low power state. System state is preserved if the power is lost.</source>
-        <translation>¿Realmente desea hibernar su PC?&lt;p&gt;Hiberna la PC a un estado de bajo consumo. El estado del sistema se preserva si se agota la energía.</translation>
+        <translation>¿Realmente quiere poner su equipo en hibrnación?&lt;p&gt;Pone el equipo a un estado de bajo consumo. El estado del sistema se preserva si se agota la energía.</translation>
     </message>
     <message>
         <source>Razor Session Reboot</source>
-        <translation>Reiniciar la sesión Razor</translation>
+        <translation>Reiniciar la sesión de Razor</translation>
     </message>
     <message>
         <source>Do you want to really restart your computer? All unsaved work will be lost...</source>
-        <translation>¿Realmente desea reiniciar su PC? Todo el trabajo sin guardar se perderá...</translation>
+        <translation>¿Realmente quiere reiniciar su equipo? Se perderá todo el trabajo sin guardar…</translation>
     </message>
     <message>
         <source>Razor Session Shutdown</source>
-        <translation>Apagar la sesión Razor</translation>
+        <translation>Apagar la sesión de Razor</translation>
     </message>
     <message>
         <source>Do you want to really switch off your computer? All unsaved work will be lost...</source>
-        <translation>¿Realmente desea apagar su PC? Todo el trabajo sin guardar se perderá...</translation>
+        <translation>¿Realmente quiere apagar su equipo? Se perderá todo el trabajo sin guardar…</translation>
     </message>
     <message>
         <source>Razor Session Logout</source>
-        <translation>Cerrar la sesión Razor</translation>
+        <translation>Cerrar la sesión de Razor</translation>
     </message>
     <message>
         <source>Do you want to really logout? All unsaved work will be lost...</source>
-        <translation>¿Realmente desea cerrar la sesión? Todo el trabajo sin guardar se perderá...</translation>
+        <translation>¿Realmente quiere cerrar la sesión? Se perderá todo el trabajo sin guardar…</translation>
     </message>
     <message>
         <source>Razor Power Manager Error</source>
@@ -86,33 +86,33 @@
     </message>
     <message>
         <source>Hibernate failed.</source>
-        <translation>Hibernación fallida.</translation>
+        <translation>Falló la hibernación.</translation>
     </message>
     <message>
         <source>Suspend failed.</source>
-        <translation>Suspensión fallida.</translation>
+        <translation>Falló la suspensión.</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Power Manager Error</source>
-        <translation>Error del administrador de energía</translation>
+        <translation>Error del gestor de energía</translation>
     </message>
     <message>
         <source>QDBusInterface is invalid</source>
-        <translation>QDBusInterface es inválido</translation>
+        <translation>QDBusInterface no es válida</translation>
     </message>
     <message>
         <source>Power Manager Error (D-BUS call)</source>
-        <translation>Error en el adminstrador de energía (llamado D-BUS)</translation>
+        <translation>Error del gestor de energía (llamada a D-BUS)</translation>
     </message>
 </context>
 <context>
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation>Versión %1</translation>
+        <translation>Versión: %1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
@@ -120,7 +120,7 @@
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>
-        <translation>Copyright: %1-%2 %3</translation>
+        <translation>Copyright: %1–%2 %3</translation>
     </message>
     <message>
         <source>Homepage: %1</source>
@@ -132,15 +132,15 @@
     </message>
     <message>
         <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt lo desarrolla el &lt;a %1&gt;equipo de Razor-qt y colaboradores&lt;/a&gt; en Github.</translation>
     </message>
     <message>
         <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Si tiene interés en trabajar con nuestro equipo de desarrollo, &lt;a %1&gt;únase a nosotros&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Special thanks to:</source>
-        <translation type="unfinished"/>
+        <translation>Agradecimientos especiales a:</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
@@ -148,7 +148,7 @@
     </message>
     <message>
         <source>Yes</source>
-        <translation>Si</translation>
+        <translation>Sí</translation>
     </message>
     <message>
         <source>No</source>
@@ -156,7 +156,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Caja de herramientas del Escritorio Razor - Información técnica&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Caja de herramientas del escritorio Razor - Información técnica&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
@@ -168,11 +168,11 @@
     </message>
     <message>
         <source>Debug Build</source>
-        <translation>Construcción con símbolos de depuración</translation>
+        <translation>Compilación de depuración</translation>
     </message>
     <message>
         <source>System Configuration</source>
-        <translation>Configuración del Sistema</translation>
+        <translation>Configuración del sistema</translation>
     </message>
     <message>
         <source>Share Directory</source>
@@ -184,7 +184,7 @@
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Directorios de usuario&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Carpetas del usuario&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
@@ -196,7 +196,7 @@
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation>Xdg Directorios de datos</translation>
+        <translation>Carpetas de datos de xdg</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
@@ -208,7 +208,7 @@
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation>Xdg Directorio de inicio automático</translation>
+        <translation>Carpetas de inicio automático de xdg</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
@@ -219,14 +219,14 @@
     <name>RazorConfigDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>Dialogo</translation>
+        <translation>Diálogo</translation>
     </message>
 </context>
 <context>
     <name>RazorNotificationPrivate</name>
     <message>
         <source>Notifications Fallback</source>
-        <translation>Notificaciones de retorno</translation>
+        <translation>Alternativa de notificaciones</translation>
     </message>
 </context>
 <context>
@@ -244,39 +244,39 @@
     <name>ScreenSaver</name>
     <message>
         <source>Lock Screen</source>
-        <translation>Bloquear pantalla</translation>
+        <translation>Bloquear la pantalla</translation>
     </message>
     <message>
         <source>Screen Saver Activation Error</source>
-        <translation>Error de activación del protector de pantalla</translation>
+        <translation>Error de activación del salvapantallas</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started due its crash.</source>
-        <translation>Ocurrió un error al iniciar el protector de pantalla. xdg-screensaver no puede iniciar debido a un error.</translation>
+        <translation>Ocurrió un error al iniciar el salvapantallas. xdg-screensaver no puede iniciar debido a un error.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver is not installed correctly.</source>
-        <translation>Ocurrió un error al iniciar el protector de pantalla. xdg-screensaver no está correctamente instalado.</translation>
+        <translation>Ocurrió un error al iniciar el salvapantallas. xdg-screensaver no está instalado correctamente.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started.</source>
-        <translation>Ocurrió un error al iniciar el protector de pantalla. xdg-screensaver no puede iniciar.</translation>
+        <translation>Ocurrió un error al iniciar el salvapantallas. xdg-screensaver no puede iniciar.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Syntax error in xdg-screensaver arguments.</source>
-        <translation>Ocurrió un error al iniciar el protector de pantalla. Error de sintaxis en los argumentos de xdg-screensaver.</translation>
+        <translation>Ocurrió un error al iniciar el salvapantallas. Error de sintaxis en los argumentos de xdg-screensaver.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Ensure you have xscreensaver installed and running.</source>
-        <translation>Ocurrió un error al iniciar el protector de pantalla. Asegúrese de tener xdg-screensaver instalado y ejecutándose.</translation>
+        <translation>Ocurrió un error al iniciar el salvapantallas. Asegúrese de tener xdg-screensaver instalado y en ejecución.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Action &apos;activate&apos; failed. Ensure you have xscreensaver installed and running.</source>
-        <translation>Ocurrió un error al iniciar el protector de pantalla. La acción &apos;activate&apos; falló. Asegúrese de tener xdg-screensaver instalado y ejecutándose.</translation>
+        <translation>Ocurrió un error al iniciar el salvapantallas. Falló la acción «activate». Asegúrese de tener xdg-screensaver instalado y en ejecución.</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. Unknown error - undocumented return value from xdg-screensaver=%1.</source>
-        <translation>Ocurrio un error al inicio el protector de pantalla. Error desconocido - valor de retorno de xdg-screensaver no documentado=%1</translation>
+        <translation>Ocurrio un error al iniciar el salvapantallas. Error desconocido: valor de retorno de xdg-screensaver no documentado=%1</translation>
     </message>
 </context>
 <context>
@@ -287,7 +287,7 @@
     </message>
     <message>
         <source>About</source>
-        <translation>Acerca</translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <source>Authors</source>
@@ -303,7 +303,7 @@
     </message>
     <message>
         <source>Technical Info</source>
-        <translation>Información Técnica</translation>
+        <translation>Información técnica</translation>
     </message>
 </context>
 </TS>

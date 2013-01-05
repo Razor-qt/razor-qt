@@ -3,7 +3,7 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation>זהות משתמש</translation>
+        <translation>‏ID משתמש</translation>
     </message>
     <message>
         <source>password</source>
@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Login</source>
-        <translation>התחברות</translation>
+        <translation>התחבר</translation>
     </message>
     <message>
         <source>Cancel</source>

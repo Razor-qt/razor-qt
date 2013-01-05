@@ -14,7 +14,7 @@
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Подешавање изгледа Рејзора</translation>
     </message>
     <message>
         <source>Icons Theme</source>

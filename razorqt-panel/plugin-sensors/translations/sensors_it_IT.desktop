@@ -7,4 +7,4 @@ Comment=View readings from hardware sensors.
 
 # Translations
 Name[it_IT]=Sensori
-Comment[it_IT]=Visualizza i valori rilevati dai sensori hardware (attualmente lm_sensors)
+Comment[it_IT]=Visualizza i valori rilevati dai sensori hardware

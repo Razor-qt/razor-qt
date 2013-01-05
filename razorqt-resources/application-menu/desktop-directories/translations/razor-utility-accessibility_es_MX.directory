@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Universal Access
+Comment=Universal Access Settings
+Type=Directory
+
+#TRANSLATIONS_DIR=translations
+
+# Translations
+
+
+# Translations
+Comment[es_MX]=Configuración de Acceso Universal
+Name[es_MX]=Acceso Universal

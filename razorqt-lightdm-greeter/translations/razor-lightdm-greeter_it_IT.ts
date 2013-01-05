@@ -3,7 +3,7 @@
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation type="unfinished"/>
+        <translation>user id</translation>
     </message>
     <message>
         <source>password</source>
@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>Login</translation>
     </message>
     <message>
         <source>Cancel</source>

@@ -10,7 +10,7 @@
     <name>RazorCpuLoadConfiguration</name>
     <message>
         <source>Razor CPU Load settings</source>
-        <translation>ตั้งค่าการใช้งานเรเซอร์ CPU</translation>
+        <translation>ค่าตั้งการใช้งาน CPU เรเซอร์</translation>
     </message>
     <message>
         <source>General</source>

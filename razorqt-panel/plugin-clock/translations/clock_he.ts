@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>&amp;Show seconds</source>
-        <translation>&amp;הצגת שניות</translation>
+        <translation>&amp;הצג שניות</translation>
     </message>
     <message>
         <source>12 &amp;hour style</source>
@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Show &amp;date</source>
-        <translation>הצגת &amp;תאריך</translation>
+        <translation>הצג &amp;תאריך</translation>
     </message>
     <message>
         <source>D&amp;ate format</source>
@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Show date in &amp;new line</source>
-        <translation>הצגת תאריך בשורה &amp;חדשה</translation>
+        <translation>הצג תאריך בשורה &amp;חדשה</translation>
     </message>
     <message>
         <source>&amp;Use theme fonts</source>
-        <translation>&amp;שימוש בגופני מוטיב</translation>
+        <translation>ה&amp;שתמש בגופני מוטיב</translation>
     </message>
     <message>
         <source>Time font</source>

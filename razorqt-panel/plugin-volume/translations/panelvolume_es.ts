@@ -3,18 +3,18 @@
     <name>RazorVolume</name>
     <message>
         <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Control de volumen: No se puede registrar el atajo de teclado global «%1»</translation>
     </message>
 </context>
 <context>
     <name>RazorVolumeConfiguration</name>
     <message>
         <source>Razor Volume Control Settings</source>
-        <translation>Opciones del Control de Volumen de Razor</translation>
+        <translation>Configuración del Control de volumen de Razor</translation>
     </message>
     <message>
         <source>Device to control</source>
-        <translation>Dispositivo de control</translation>
+        <translation>Dispositivo a controlar</translation>
     </message>
     <message>
         <source>Alsa</source>
@@ -30,11 +30,11 @@
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation>Silenciar con click central</translation>
+        <translation>Silenciar al pulsar con el botón central</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation>Mostrar con un click</translation>
+        <translation>Mostrar al pulsar</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
@@ -53,11 +53,11 @@
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation type="unfinished"/>
+        <translation>Abrir el mezclador</translation>
     </message>
     <message>
         <source>Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Mezclador</translation>
     </message>
 </context>
 </TS>

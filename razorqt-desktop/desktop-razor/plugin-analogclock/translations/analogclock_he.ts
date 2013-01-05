@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show &amp;seconds hand</source>
-        <translation>הצגת &amp;מחוג שניות</translation>
+        <translation>הצג &amp;מחוג שניות</translation>
     </message>
 </context>
 <context>

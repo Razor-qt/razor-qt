@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>Lithium polymer</source>
-        <translation> Litio-polimero</translation>
+        <translation>Litio-polimero</translation>
     </message>
     <message>
         <source>Lithium iron phosphate</source>

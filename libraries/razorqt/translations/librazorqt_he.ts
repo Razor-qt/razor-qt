@@ -3,38 +3,38 @@
     <name>AddPluginDialog</name>
     <message>
         <source>Add plugins</source>
-        <translation>הוספת תוספות</translation>
+        <translation>הוסף תוספות</translation>
     </message>
     <message>
         <source>Search:</source>
-        <translation>חיפוש:</translation>
+        <translation>חפש:</translation>
     </message>
     <message>
         <source>Add plugin</source>
-        <translation>הוספת תוספת</translation>
+        <translation>הוסף תוספת</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>סגירה</translation>
+        <translation>סגור</translation>
     </message>
 </context>
 <context>
     <name>PowerManager</name>
     <message>
         <source>Hibernate</source>
-        <translation>מצב שינה</translation>
+        <translation>דומם</translation>
     </message>
     <message>
         <source>Suspend</source>
-        <translation>שמירת אנרגיה</translation>
+        <translation>השהה</translation>
     </message>
     <message>
         <source>Reboot</source>
-        <translation>אתחול מחדש</translation>
+        <translation>אתחל מחדש</translation>
     </message>
     <message>
         <source>Shutdown</source>
-        <translation>כיבוי</translation>
+        <translation>כבה</translation>
     </message>
     <message>
         <source>Logout</source>
@@ -112,7 +112,7 @@
     <name>RazorAboutDLGPrivate</name>
     <message>
         <source>Version: %1</source>
-        <translation>גרסה: %1</translation>
+        <translation>גרסא: %1</translation>
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
@@ -128,7 +128,7 @@
     </message>
     <message>
         <source>License: %1</source>
-        <translation>רישיון: %1</translation>
+        <translation>רשיון: %1</translation>
     </message>
     <message>
         <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
@@ -148,19 +148,19 @@
     </message>
     <message>
         <source>Yes</source>
-        <translation>כן</translation>
+        <translation>Yes</translation>
     </message>
     <message>
         <source>No</source>
-        <translation>לא</translation>
+        <translation>No</translation>
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation>&lt;b&gt;ארגז כלים של שולחן העבודה ‫Razor - מידע טכני&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;ארגז כלים של שולחן עבודה ‫Razor - מידע טכני&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
-        <translation>גרסה</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <source>Qt</source>
@@ -172,54 +172,54 @@
     </message>
     <message>
         <source>System Configuration</source>
-        <translation>תצורת מערכת</translation>
+        <translation>System Configuration</translation>
     </message>
     <message>
         <source>Share Directory</source>
-        <translation>מדור שיתופי</translation>
+        <translation>Share Directory</translation>
     </message>
     <message>
         <source>Translations</source>
-        <translation>תרגומים</translation>
+        <translation>Translations</translation>
     </message>
     <message>
         <source>&lt;b&gt;User Directories&lt;/b&gt;</source>
-        <translation>&lt;b&gt;מדורי משתמש&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;User Directories&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Xdg Data Home</source>
-        <translation>מידע בית ‫Xdg</translation>
+        <translation>Xdg Data Home</translation>
     </message>
     <message>
         <source>Xdg Config Home</source>
-        <translation>תצורת בית ‫Xdg</translation>
+        <translation>Xdg Config Home</translation>
     </message>
     <message>
         <source>Xdg Data Dirs</source>
-        <translation>מדורי מידע ‫Xdg</translation>
+        <translation>Xdg Data Dirs</translation>
     </message>
     <message>
         <source>Xdg Cache Home</source>
-        <translation>מטמון בית ‫Xdg</translation>
+        <translation>Xdg Cache Home</translation>
     </message>
     <message>
         <source>Xdg Runtime Home</source>
-        <translation>זמן פעולה בית ‫Xdg</translation>
+        <translation>Xdg Runtime Home</translation>
     </message>
     <message>
         <source>Xdg Autostart Dirs</source>
-        <translation>מדורי הפעלה אוטומטית ‫Xdg</translation>
+        <translation>Xdg Autostart Dirs</translation>
     </message>
     <message>
         <source>Xdg Autostart Home</source>
-        <translation>הפעלה אוטומטית בית ‫Xdg</translation>
+        <translation>Xdg Autostart Home</translation>
     </message>
 </context>
 <context>
     <name>RazorConfigDialog</name>
     <message>
         <source>Dialog</source>
-        <translation>דו־שיח</translation>
+        <translation>דו שיח</translation>
     </message>
 </context>
 <context>
@@ -233,7 +233,7 @@
     <name>RazorShortcutButton</name>
     <message>
         <source>Clear</source>
-        <translation>טיהור</translation>
+        <translation>טהר</translation>
     </message>
     <message>
         <source>None</source>
@@ -244,7 +244,7 @@
     <name>ScreenSaver</name>
     <message>
         <source>Lock Screen</source>
-        <translation>נעילת מרקע</translation>
+        <translation>נעל מרקע</translation>
     </message>
     <message>
         <source>Screen Saver Activation Error</source>

@@ -3,23 +3,23 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation>Menú de Configuración</translation>
+        <translation>Configuración de menús</translation>
     </message>
     <message>
         <source>Notification Duration</source>
-        <translation>Duración de la Notificación</translation>
+        <translation>Duración de la notificación</translation>
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation>Para algunas notificaciones el tiempo de expiración depende se las opciones del servidor de notificaciones.</translation>
+        <translation>Para algunas notificaciones, el tiempo de expiración depende de la configuración del servidor de notificaciones.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation>Tiempo &quot;Servidor decide&quot;: </translation>
+        <translation>Tiempo «el servidor decide»:</translation>
     </message>
     <message>
         <source> sec</source>
-        <translation>segundos</translation>
+        <translation>seg</translation>
     </message>
     <message>
         <source>Sizes</source>
@@ -27,15 +27,15 @@
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation>Separación de la Notificación:</translation>
+        <translation>Espaciado de la notificación:</translation>
     </message>
     <message>
         <source> px</source>
-        <translation>pixeles</translation>
+        <translation>px</translation>
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation>Ancho de la Notificación:</translation>
+        <translation>Anchura de la notificación:</translation>
     </message>
 </context>
 <context>
@@ -46,52 +46,52 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation>Mostrar Notificaciones</translation>
+        <translation>Mostrar notificaciones</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation>Arriba/Izquierda</translation>
+        <translation>Arriba/izquierda</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation>Arriba/Derecha</translation>
+        <translation>Arriba/derecha</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation>Abajo/Izquierda</translation>
+        <translation>Abajo/izquierda</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation>Abajo/Derecha</translation>
+        <translation>Abajo/derecha</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation>Probar Notificación</translation>
+        <translation>Probar la notificación</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation>&lt;b&gt;Advertencia:&lt;/b&gt; El demonio de notificaciones no esta ejecutandose. Un retorno será usado.</translation>
+        <translation>&lt;b&gt;Aviso:&lt;/b&gt; El demonio de notificaciones no está en ejecución. Se usará una alternativa.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation>&lt;b&gt;Advertencia:&lt;/b&gt; Un demonio de notificaciones externo (%1) está ejecutandose. ¡Estas opciones mo tendrán efecto!</translation>
+        <translation>&lt;b&gt;Aviso:&lt;/b&gt; Un demonio de notificaciones externo (%1) está en ejecución. Estas configuraciones no tendrán efecto en él.</translation>
     </message>
     <message>
         <source>Notification Summary</source>
-        <translation>Resumen de la Notificación</translation>
+        <translation>Resumen de la notificación</translation>
     </message>
     <message>
         <source>Notification Body</source>
-        <translation>Cuerpo de la Notificación</translation>
+        <translation>Cuerpo de la notificación</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
         <source>Razor Notifications Configuration</source>
-        <translation>Configuración de las Notificaciones de Razor</translation>
+        <translation>Configuración de notificaciones de Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -99,7 +99,7 @@ These settings won&apos;t have an effect on it!</source>
     </message>
     <message>
         <source>Advanced Settings</source>
-        <translation>Ociones Avanzadas</translation>
+        <translation>Configuración avanzada</translation>
     </message>
 </context>
 </TS>

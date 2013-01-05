@@ -156,7 +156,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Razor Desktop - Informacje Techniczne&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>

@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation>זמן תפוגה עבור התראות מסוימות הינו תלוי על הגדרות שרת התראות.</translation>
+        <translation>לחלק, זמן תפוגה עבור התראה הינו תלוי על ההגדרות של שרת ההתראה.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>זמן &quot;שרת מחליט&quot;:</translation>
     </message>
     <message>
         <source> sec</source>
@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation>הצגת התראות</translation>
+        <translation>הצג התראות</translation>
     </message>
     <message>
         <source>Top/Left</source>
@@ -58,25 +58,26 @@
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation>תחתון/שמאל</translation>
+        <translation>תחת/שמאל</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation>תחתון/ימין</translation>
+        <translation>תחת/ימין</translation>
     </message>
     <message>
         <source>Test Notification</source>
-        <translation>בחינת התראה</translation>
+        <translation>בחן התראה</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;אזהרה:&lt;/b&gt; אין שדון התראות שמורץ כעת.
+עושה שימוש במפלט.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation>&lt;b&gt;אזהרה:&lt;/b&gt; שדון התראות צד שלישי (%1) מורץ כעת.
+        <translation>&lt;b&gt;אזהרה:&lt;/b&gt; שדון התראות צד-שלישי (%1) מורץ כעת.
 להגדרות אלו לא תהיה השפעה עליו!</translation>
     </message>
     <message>

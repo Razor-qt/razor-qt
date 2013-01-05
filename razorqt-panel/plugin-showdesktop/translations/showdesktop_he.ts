@@ -3,7 +3,7 @@
     <name>ShowDesktop</name>
     <message>
         <source>Show Desktop: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation>הצג שולחן עבודה: קיצור דרך גלובלי &apos;%1&apos; לא ניתן להרשמה</translation>
+        <translation>הצג שולחן עבודה: קיצור דרך גלובלי &apos;%1&apos; לא ניתן לרישום</translation>
     </message>
     <message>
         <source>Show Desktop</source>

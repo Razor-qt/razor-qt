@@ -3,7 +3,7 @@
     <name>AddPluginDialog</name>
     <message>
         <source>Add plugins</source>
-        <translation>Adicionar extras</translation>
+        <translation>Adicionar plugins</translation>
     </message>
     <message>
         <source>Search:</source>
@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Add plugin</source>
-        <translation>Adicionar extra</translation>
+        <translation>Adicionar plugin</translation>
     </message>
     <message>
         <source>Close</source>
@@ -101,7 +101,7 @@
     </message>
     <message>
         <source>QDBusInterface is invalid</source>
-        <translation>A interface QDBus não é válida.</translation>
+        <translation>A interface QDBus não é válida</translation>
     </message>
     <message>
         <source>Power Manager Error (D-BUS call)</source>
@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>Advanced, easy-to-use, and fast desktop environment based on Qt technologies.</source>
-        <translation>Ambiente de trabalho rápido, simples e fácil de utilizar baseado na tecnologia Qt.</translation>
+        <translation>Área de trabalho rápida, simples e fácil de utilizar baseada na tecnologia Qt.</translation>
     </message>
     <message>
         <source>Copyright: %1-%2 %3</source>

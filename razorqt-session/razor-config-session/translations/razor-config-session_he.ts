@@ -3,7 +3,7 @@
     <name>AutoStartEdit</name>
     <message>
         <source>Edit</source>
-        <translation>עריכה</translation>
+        <translation>ערוך</translation>
     </message>
     <message>
         <source>Name:</source>
@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Search...</source>
-        <translation>חיפוש...</translation>
+        <translation>חפש...</translation>
     </message>
     <message>
         <source>Command:</source>
@@ -49,15 +49,15 @@
     <name>AutoStartPage</name>
     <message>
         <source>Delete</source>
-        <translation>מחיקה</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>הוספה</translation>
+        <translation>הוסף</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>עריכה</translation>
+        <translation>ערוך</translation>
     </message>
     <message>
         <source>Application Autostart</source>
@@ -80,7 +80,7 @@
     </message>
     <message>
         <source>Search...</source>
-        <translation>חיפוש...</translation>
+        <translation>חפש...</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -92,11 +92,11 @@
     </message>
     <message>
         <source>Start</source>
-        <translation>התחלה</translation>
+        <translation>התחל</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>הפסקה</translation>
+        <translation>הפסק</translation>
     </message>
     <message>
         <source>Select a window manager</source>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <source>Search...</source>
-        <translation>חיפוש...</translation>
+        <translation>חפש...</translation>
     </message>
     <message>
         <source>Web Browser:</source>
@@ -137,11 +137,11 @@
     <name>EnvironmentPage</name>
     <message>
         <source>Add</source>
-        <translation>הוספה</translation>
+        <translation>הוסף</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>מחיקה</translation>
+        <translation>מחק</translation>
     </message>
     <message>
         <source>Environment Variables (Advanced)</source>
@@ -160,7 +160,7 @@
     <name>ModuleModel</name>
     <message>
         <source>Running</source>
-        <translation>עובדים כעת</translation>
+        <translation>עובד כעת</translation>
     </message>
 </context>
 <context>
@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>עליך ךאתחל מחדש את סשן שולחן העבודה (razor-session) כדי להטעין הגדרות מחדש. ניתן לעשות שימוש ב-ניתוק מהתפריט הראשי.</translation>
+        <translation>עליך לאתחל מחדש סשן שולחן עבודה (razor-session) כדי להטעין הגדרות מחדש. ניתן לעשות שימוש בתפריט ניתוק מן התפריט הראשי.</translation>
     </message>
 </context>
 </TS>

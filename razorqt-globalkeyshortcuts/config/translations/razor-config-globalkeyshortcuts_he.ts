@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Find a command</source>
-        <translation>מציאת פקודה</translation>
+        <translation>מצא פקודה</translation>
     </message>
 </context>
 <context>
@@ -30,19 +30,19 @@
     </message>
     <message>
         <source>Add New</source>
-        <translation>הוספת חדשה</translation>
+        <translation>הוסף חדש</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>הסרה</translation>
+        <translation>הסר</translation>
     </message>
     <message>
         <source>Add Group</source>
-        <translation>הוספת קבוצה</translation>
+        <translation>הוסף קבוצה</translation>
     </message>
     <message>
         <source>Reset</source>
-        <translation>איפוס</translation>
+        <translation>אפס</translation>
     </message>
     <message>
         <source>Close</source>
@@ -57,11 +57,11 @@
     </message>
     <message>
         <source>Add Shortcut</source>
-        <translation>הוספת קיצור דרך</translation>
+        <translation>הוסף קיצור דרך</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>הסרה</translation>
+        <translation>הסר</translation>
     </message>
     <message>
         <source>New Group</source>
@@ -69,7 +69,7 @@
     </message>
     <message>
         <source>Reset Changes</source>
-        <translation>איפוס שינויים</translation>
+        <translation>אפס שינויים</translation>
     </message>
     <message>
         <source>Question</source>
@@ -77,7 +77,7 @@
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation>מחיקת קבוצה: %1? (כל מה שמצוי בפנים יוסר יחדיו)</translation>
+        <translation>למחוק קבוצה: %1? (כל מה שמצוי בפנים יוסר יחדיו)</translation>
     </message>
     <message>
         <source>Delete %1?</source>

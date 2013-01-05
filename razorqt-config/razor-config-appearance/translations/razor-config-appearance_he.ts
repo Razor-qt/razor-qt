@@ -3,7 +3,7 @@
     <name>IconThemeConfig</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>תצורת הופעת ‫Razor</translation>
+        <translation>תצורת הופעה ‫Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>
@@ -14,7 +14,7 @@
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation>תצורת הופעת ‫Razor</translation>
+        <translation>תצורת הופעה ‫Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>

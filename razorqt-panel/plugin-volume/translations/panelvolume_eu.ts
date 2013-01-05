@@ -3,7 +3,7 @@
     <name>RazorVolume</name>
     <message>
         <source>Volume Control: Global shortcut &apos;%1&apos; cannot be registered</source>
-        <translation type="unfinished"/>
+        <translation>Bolumen-kontrola: Ezin da &apos;%1&apos; lasterbide globala erregistratu</translation>
     </message>
 </context>
 <context>

@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>השהייה אוטומטית ‫Razor לא יכול היה למצוא מידע אודות שום סוללה - פעולות של אנרגיה נמוכה לא יעבדו</translation>
+        <translation>השהייה אוטומטית ‫Razor לא היה מסוגל למצוא מידע אודות שום סוללה - פעולות של אנרגיה נמוכה לא יעבדו</translation>
     </message>
 </context>
 <context>
@@ -46,7 +46,7 @@
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation type="unfinished"/>
+        <translation>אנרגיה מלאה, תכנון:</translation>
     </message>
     <message>
         <source>Energy Full:</source>
@@ -125,7 +125,7 @@
     </message>
     <message>
         <source>Shutting down in %1 seconds</source>
-        <translation>כיבוי בעוד %1 שניות</translation>
+        <translation>מכבה בעוד %1 שניות</translation>
     </message>
 </context>
 </TS>

@@ -3,7 +3,7 @@
     <name>XdgMenuReader</name>
     <message>
         <source>Menu file not defined.</source>
-        <translation>קובץ תפריט לא הוגדר.</translation>
+        <translation>קובץ תפריט לא מוגדר.</translation>
     </message>
     <message>
         <source>%1 not loading: %2</source>

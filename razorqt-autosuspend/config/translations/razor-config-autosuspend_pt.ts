@@ -26,7 +26,7 @@
     </message>
     <message>
         <source>Nothing</source>
-        <translation>Nada fazer</translation>
+        <translation>Nenhuma</translation>
     </message>
     <message>
         <source>Sleep</source>
@@ -92,7 +92,7 @@
     </message>
     <message>
         <source>Nothing</source>
-        <translation>Nada fazer</translation>
+        <translation>Nenhuma</translation>
     </message>
     <message>
         <source>Sleep</source>

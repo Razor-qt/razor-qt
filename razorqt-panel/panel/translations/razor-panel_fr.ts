@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
-        <translation>Longueur et position du tableau de bord</translation>
+        <translation>Longueur &amp;&amp; position du tableau de bord</translation>
     </message>
     <message>
         <source>Left</source>

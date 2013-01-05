@@ -14,7 +14,7 @@
     <name>BatteryInfo</name>
     <message>
         <source>Razor Autosuspend</source>
-        <translation type="unfinished"/>
+        <translation>Razor Auto Usypianie</translation>
     </message>
     <message>
         <source>Battery info</source>

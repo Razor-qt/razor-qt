@@ -53,11 +53,11 @@
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation type="unfinished"/>
+        <translation>Mixer starten</translation>
     </message>
     <message>
         <source>Mixer</source>
-        <translation type="unfinished"/>
+        <translation>Mixer</translation>
     </message>
 </context>
 </TS>

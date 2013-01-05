@@ -14,7 +14,7 @@
     <name>QObject</name>
     <message>
         <source>Razor Appearance Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Nastavenie vzhľadu prostredia Razor</translation>
     </message>
     <message>
         <source>Icons Theme</source>

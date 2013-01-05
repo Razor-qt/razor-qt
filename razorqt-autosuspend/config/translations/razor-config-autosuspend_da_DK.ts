@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>Skærm lukket</translation>
+        <translation>Låg lukket</translation>
     </message>
     <message>
         <source>Action:</source>
@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation>Razor Strømstyringskonfiguration</translation>
+        <translation>Razor Strømstyringsindstillinger</translation>
     </message>
     <message>
         <source>General</source>
@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>Skærm lukket</translation>
+        <translation>Låg lukket</translation>
     </message>
     <message>
         <source>Power Low</source>

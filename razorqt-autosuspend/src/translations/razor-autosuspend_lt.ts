@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation type="unfinished"/>
+        <translation>Razor autosuspend neranda informacijos apie baterijas – nebus atliekami veiksmai, kurie turėtų būti atliekami bebaigiant išsikrauti baterijai</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Energy rate:</source>
-        <translation type="unfinished"/>
+        <translation>Dažnis:</translation>
     </message>
     <message>
         <source>Voltage:</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Energy Full:</source>
-        <translation type="unfinished"/>
+        <translation>Pilnai įkrauta:</translation>
     </message>
     <message>
         <source>State:</source>
@@ -117,15 +117,15 @@
     </message>
     <message>
         <source>Sleeping in %1 seconds</source>
-        <translation type="unfinished"/>
+        <translation>Užmigs po %1 sek.</translation>
     </message>
     <message>
         <source>Hibernating in %1 seconds</source>
-        <translation type="unfinished"/>
+        <translation>Sustabdys į diską po %1 sek.</translation>
     </message>
     <message>
         <source>Shutting down in %1 seconds</source>
-        <translation type="unfinished"/>
+        <translation>Išsijungs po %1 sek.</translation>
     </message>
 </context>
 </TS>

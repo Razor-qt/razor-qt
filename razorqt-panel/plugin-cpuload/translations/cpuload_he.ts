@@ -3,7 +3,7 @@
     <name>RazorCpuLoad</name>
     <message>
         <source>CPU load %1%</source>
-        <translation>טעינת CPU %1%</translation>
+        <translation>מטען CPU‏ %1%</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     </message>
     <message>
         <source>Show text</source>
-        <translation>הצגת תמליל</translation>
+        <translation>הצג תמליל</translation>
     </message>
     <message>
         <source>Update interval:</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Bar orientation:</source>
-        <translation>כיוון שורה</translation>
+        <translation>כיוון סרגל:</translation>
     </message>
     <message>
         <source>Bottom up</source>

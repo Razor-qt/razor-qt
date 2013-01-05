@@ -226,7 +226,7 @@
     <name>RazorNotificationPrivate</name>
     <message>
         <source>Notifications Fallback</source>
-        <translation type="unfinished"/>
+        <translation>Уведомления отступление</translation>
     </message>
 </context>
 <context>

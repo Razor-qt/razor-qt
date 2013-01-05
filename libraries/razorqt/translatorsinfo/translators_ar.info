@@ -1,13 +1,13 @@
-_help = ﻻ تترجم هذا النص فهو مساعدة فقط. أريد أن أشكركم في نافذة "النبذة" ولذلك أرجو أن تملؤوا المعلومات التالية الخاصة بكم. الرقم غير هامٍّ حيث سيتم عرض اﻷسماء حسب الترتيب الهجائي.
+_help = ﻻ تترجم هذا النص فهو مساعدة فقط. أريد أن أشكركم في حوار "حول" ولذلك أرجو أن تملؤوا المعلومات التالية الخاصة بكم. الرقم غير هامٍّ حيث سيتم عرض اﻷسماء حسب الترتيب الهجائي.
 
 
 translator_1_nameEnglish = Muhammad Tailounie
 translator_1_nameNative  = محمّد طيلوني
 translator_1_contact     = http://mtailounie.net
 
-# translator_2_nameEnglish = Translator 2. Your name in English. 
-# translator_2_nameNative  = Translator 2. Your name in the native language.
-# translator_2_contact     = Translator 2. Contact information, email or web site address.
+translator_2_nameEnglish = Karim Oulad Chalha
+translator_2_nameNative  = كريم أولاد الشلحة
+translator_2_contact     = http://ubuntu-sla.blogspot.com/
 
 # translator_3_nameEnglish = Translator 3. Your name in English. 
 # translator_3_nameNative  = Translator 3. Your name in the native language.

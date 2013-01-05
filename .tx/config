@@ -146,6 +146,12 @@ source_lang = en
 source_file = razorqt-desktop/desktop-razor/plugin-notepad/translations/notepad.ts.src
 file_filter = razorqt-desktop/desktop-razor/plugin-notepad/translations/notepad_<lang>.ts
 
+[razor-qt.panelhelloworld_desktop]
+type = DESKTOP
+source_lang = en
+source_file = razorqt-panel/plugin-helloworld/resources/panelhelloworld.desktop.in
+file_filter = razorqt-panel/plugin-helloworld/translations/panelhelloworld_<lang>.desktop
+
 [razor-qt.panelvolume_desktop]
 type = DESKTOP
 source_lang = en

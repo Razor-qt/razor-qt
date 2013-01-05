@@ -14,7 +14,7 @@
     <name>IconView</name>
     <message>
         <source>Icon View Configuration</source>
-        <translation>การตั้งค่ามุมมองไอคอน</translation>
+        <translation>ตั้งค่ามุมมองไอคอน</translation>
     </message>
 </context>
 <context>

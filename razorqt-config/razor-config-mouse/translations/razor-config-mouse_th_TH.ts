@@ -3,7 +3,7 @@
     <name>SelectWnd</name>
     <message>
         <source>Razor Mouse Theme Configuration</source>
-        <translation>การตั้งค่าชุดตกแต่งเมาส์เรเซอร์</translation>
+        <translation>ตั้งค่าชุดตกแต่งเมาส์เรเซอร์</translation>
     </message>
     <message>
         <source>Select the cursor theme you want to use (hover preview to test cursor). &lt;b&gt;Razor session needs restart after this change&lt;/b&gt;:</source>

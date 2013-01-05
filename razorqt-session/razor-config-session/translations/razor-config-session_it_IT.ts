@@ -49,7 +49,7 @@
     <name>AutoStartPage</name>
     <message>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Add</source>
@@ -141,7 +141,7 @@
     </message>
     <message>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <source>Environment Variables (Advanced)</source>

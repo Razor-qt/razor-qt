@@ -3,11 +3,11 @@
     <name>MainWindow</name>
     <message>
         <source>OpenSSH Authentication Passphrase request</source>
-        <translation type="unfinished"/>
+        <translation>Richiesta password di autenticazione OpenSSH</translation>
     </message>
     <message>
         <source>Enter your SSH passphrase for request:</source>
-        <translation type="unfinished"/>
+        <translation>Inserisci la tua password SSH per la richiesta:</translation>
     </message>
 </context>
 <context>

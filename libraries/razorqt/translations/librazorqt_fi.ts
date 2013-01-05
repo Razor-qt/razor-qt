@@ -132,15 +132,15 @@
     </message>
     <message>
         <source>Razor-qt is developed by the &lt;a %1&gt;Razor-qt Team and contributors&lt;/a&gt; on Github.</source>
-        <translation type="unfinished"/>
+        <translation>Razor-qt:n kehitys tapahtuu Githubissa &lt;a %1&gt;Razor-qt-tiimin ja avustajien&lt;/a&gt; toimesta.</translation>
     </message>
     <message>
         <source>If you are interested in working with our development team, &lt;a %1&gt;join us&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Jos olet kiinnostunut työskentelemään kehitystiimin kanssa, &lt;a %1&gt;tule mukaan&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Special thanks to:</source>
-        <translation type="unfinished"/>
+        <translation>Erikoiskiitokset:</translation>
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>

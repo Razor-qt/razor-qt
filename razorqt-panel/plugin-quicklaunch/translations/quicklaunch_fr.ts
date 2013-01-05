@@ -18,7 +18,7 @@
     <name>RazorQuickLaunch</name>
     <message>
         <source>Drop Error</source>
-        <translation>Ne pas tenir compte de l&apos;erreur</translation>
+        <translation>Erreur de création du raccourci</translation>
     </message>
     <message>
         <source>File/URL &apos;%1&apos; cannot be embedded into QuickLaunch for now</source>

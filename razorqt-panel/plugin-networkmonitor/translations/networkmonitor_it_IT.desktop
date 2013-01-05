@@ -9,5 +9,5 @@ Comment=Displays network status and activity.
 
 
 # Translations
-Comment[it_IT]=Esci
-Name[it_IT]=Permette di passare ad altri desktop virtuali
+Comment[it_IT]=Visualizza lo stato e l'attività della rete.
+Name[it_IT]=Monitor di rete

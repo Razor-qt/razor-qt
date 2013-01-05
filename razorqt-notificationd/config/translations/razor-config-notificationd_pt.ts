@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation>Para algumas notificações, a sua duração depende das definições do seu servidor.</translation>
+        <translation>Para algumas notificações, a duração depende das definições do servidor.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation>Largura da notificação</translation>
+        <translation>Largura da notificação:</translation>
     </message>
 </context>
 <context>
@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation>Baixo/direita</translation>
+        <translation>Baixo/Direita</translation>
     </message>
     <message>
         <source>Test Notification</source>

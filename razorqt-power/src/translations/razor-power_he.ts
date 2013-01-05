@@ -7,27 +7,27 @@
     </message>
     <message>
         <source>What do you want the computer to do?</source>
-        <translation>מה ברצונך מן המחשב לעשות?</translation>
+        <translation>מה ברצונך לעשות?</translation>
     </message>
     <message>
         <source>Logout</source>
-        <translation>ניתוק</translation>
+        <translation>להתנתק מן מערכת</translation>
     </message>
     <message>
         <source>Reboot</source>
-        <translation>אתחול מחדש</translation>
+        <translation>לאתחל מערכת מחדש</translation>
     </message>
     <message>
         <source>Shutdown</source>
-        <translation>כיבוי</translation>
+        <translation>לכבות מערכת</translation>
     </message>
     <message>
         <source>Suspend</source>
-        <translation>השהיה</translation>
+        <translation>להשהות מערכת</translation>
     </message>
     <message>
         <source>Hibernate</source>
-        <translation>שינה</translation>
+        <translation>לדומם מערכת</translation>
     </message>
     <message>
         <source>Cancel</source>

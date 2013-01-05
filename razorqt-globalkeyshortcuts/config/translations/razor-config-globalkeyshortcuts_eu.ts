@@ -85,7 +85,7 @@
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>
-        <translation type="unfinished"/>
+        <translation>%1(r)entzako lotura dagoeneko existitzen da. Zaharra ordezkatu nahi duzu?</translation>
     </message>
 </context>
 </TS>

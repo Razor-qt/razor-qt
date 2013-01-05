@@ -30,11 +30,11 @@
     </message>
     <message>
         <source>Mute on middle click</source>
-        <translation>השתקה בקליק אמצעי</translation>
+        <translation>השתק בקליק אמצעי</translation>
     </message>
     <message>
         <source>Show on mouse click</source>
-        <translation>הצגה בלחיצת עכבר</translation>
+        <translation>הצג בלחיצת עכבר</translation>
     </message>
     <message>
         <source>Allow volume beyond 100% (0dB)</source>
@@ -53,7 +53,7 @@
     <name>VolumePopup</name>
     <message>
         <source>Launch mixer</source>
-        <translation>שיגור מערבל</translation>
+        <translation>שגר מערבל</translation>
     </message>
     <message>
         <source>Mixer</source>

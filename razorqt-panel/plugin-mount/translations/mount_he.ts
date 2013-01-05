@@ -36,7 +36,7 @@
     <name>RazorMountConfiguration</name>
     <message>
         <source>Razor Removable media manager settings</source>
-        <translation>הגדרות ניהול מדיב סרת הזזה ‫Razor</translation>
+        <translation>הגדרות ניהול מדיה ברת הזזה ‫Razor</translation>
     </message>
     <message>
         <source>Behaviour</source>
@@ -52,11 +52,11 @@
     </message>
     <message>
         <source>Show info</source>
-        <translation>הצגת מידע</translation>
+        <translation>הצג מידע</translation>
     </message>
     <message>
         <source>Do nothing</source>
-        <translation>לא לעשות דבר</translation>
+        <translation>אל תעשה דבר</translation>
     </message>
 </context>
 </TS>

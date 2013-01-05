@@ -31,11 +31,11 @@
     </message>
     <message>
         <source>Blink progress bars when the temperature is too high</source>
-        <translation>מצמוץ שורת התקדמות כאשר הטמפרטורה גבוהה מדי</translation>
+        <translation>מצמץ שורות התקדמות כאשר הטמפרטורה גבוהה מדי</translation>
     </message>
     <message>
         <source>Warning about high temperature</source>
-        <translation>אזהרה אודות טמפרטורה גבוהה</translation>
+        <translation>הזהר אודות טמפרטורה גבוהה</translation>
     </message>
     <message>
         <source>Sensors</source>

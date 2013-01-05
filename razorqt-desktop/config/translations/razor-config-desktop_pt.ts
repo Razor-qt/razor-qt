@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Window Manager Native Desktop&lt;/b&gt;&lt;br&gt;Desktop is handled by used window manager (including WM&apos;s own menus etc.). Only few things can be configured here.</source>
-        <translation>&lt;b&gt;Gestor de janelas da área de trabalho&lt;/b&gt;&lt;br&gt;A área de trabalho é manipulada pelo gestor de janelas (por exemplo, os menus do gestor de janelas.). Nesta área, poucos itens podem ser configurados.</translation>
+        <translation>&lt;b&gt;Gestor de janelas nativo&lt;/b&gt;&lt;br&gt;A área de trabalho é controlada pelo gestor de janelas (por exemplo, os menus do gestor de janelas). Neste método, poucos itens podem ser configurados.</translation>
     </message>
     <message>
         <source>Basic Settings</source>
@@ -35,11 +35,11 @@
     </message>
     <message>
         <source>Use different widgets and wallpapers for each virtual desktop</source>
-        <translation>Utilizar &lt;i&gt;widgets&lt;/i&gt; e papel de parede distintos por área de trabalho</translation>
+        <translation>Utilizar widgets e papel de parede distintos por área de trabalho</translation>
     </message>
     <message>
         <source>Please note that this setting is not supported by all window managers!</source>
-        <translation>Tenha em atenção que nem todos os gestores de janelas permitem esta opção!</translation>
+        <translation>Nem todos os gestores de janelas permitem esta opção!</translation>
     </message>
     <message>
         <source>Use mouse wheel for desktop changing</source>
@@ -54,7 +54,7 @@
     <name>DesktopConfigWindow</name>
     <message>
         <source>Razor Desktop Configuration</source>
-        <translation>Configuração do Razor</translation>
+        <translation>Configuração da área de trabalho Razor</translation>
     </message>
     <message>
         <source>Basic Settings</source>

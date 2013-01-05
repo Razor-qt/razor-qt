@@ -62,7 +62,7 @@
     </message>
     <message>
         <source>Set Desktop Background...</source>
-        <translation>Definir imagem da área de trbalho</translation>
+        <translation>Definir imagem da área de trabalho</translation>
     </message>
     <message>
         <source>About Razor...</source>
@@ -111,7 +111,7 @@
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation>Implementação da área de trabalho do Razor-qt com todas as suas funcionalidades</translation>
+        <translation>Área de trabalho do Razor-qt com todas as suas funcionalidades</translation>
     </message>
 </context>
 </TS>

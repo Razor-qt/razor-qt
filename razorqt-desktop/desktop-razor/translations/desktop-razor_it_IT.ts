@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation type="unfinished"/>
+        <translation>Ottieni sfondo</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation type="unfinished"/>
+        <translation>Ottieni sfondo del sistema</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
@@ -70,11 +70,11 @@
     </message>
     <message>
         <source>New Desktop Widget</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo oggetto del desktop</translation>
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
-        <translation type="unfinished"/>
+        <translation>Non c&apos;è abbastanza spazio per aggiungere un nuovo oggetto sul desktop</translation>
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
@@ -82,7 +82,7 @@
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovere davvero questo oggetto &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>
@@ -100,7 +100,7 @@
     <name>RazorWorkSpace</name>
     <message>
         <source>Background Change</source>
-        <translation type="unfinished"/>
+        <translation>Cambia sfondo</translation>
     </message>
     <message>
         <source>Do you want to change desktop background?</source>
@@ -111,7 +111,7 @@
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation type="unfinished"/>
+        <translation>Implementazione completa del desktop con tutte le funzionalità di Razor</translation>
     </message>
 </context>
 </TS>

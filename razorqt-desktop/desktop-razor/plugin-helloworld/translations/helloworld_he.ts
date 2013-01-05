@@ -11,14 +11,14 @@
     </message>
     <message>
         <source>Edit HTML</source>
-        <translation>עריכת HTML</translation>
+        <translation>ערוך HTML</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation>הצגת תמליל פשוט. תוכנית תרשימית לניפוי שגיאות/מדגמית.</translation>
+        <translation>הצג תמליל פשוט. תוכנית תרשימית קטנה (וידג׳ט) לניפוי שגיאות/מדגמית.</translation>
     </message>
 </context>
 </TS>

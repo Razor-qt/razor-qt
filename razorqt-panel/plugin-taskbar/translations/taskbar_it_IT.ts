@@ -43,11 +43,11 @@
     </message>
     <message>
         <source>Roll down</source>
-        <translation>Minimizza</translation>
+        <translation>Srotola</translation>
     </message>
     <message>
         <source>Roll up</source>
-        <translation>Ripristina</translation>
+        <translation>Arrotola</translation>
     </message>
     <message>
         <source>&amp;Layer</source>
@@ -74,11 +74,11 @@
     <name>RazorTaskbarConfiguration</name>
     <message>
         <source>Razor Task Manager Settings</source>
-        <translation>Impostazioni del Task Manager di Razor</translation>
+        <translation>Impostazioni del Gestore dei processi di Razor</translation>
     </message>
     <message>
         <source>Window List Content</source>
-        <translation>Mostra finestre</translation>
+        <translation>Contenuto dell&apos;elenco delle finestre</translation>
     </message>
     <message>
         <source>Show windows from current desktop</source>
@@ -90,7 +90,7 @@
     </message>
     <message>
         <source>Window List Appearance</source>
-        <translation>Aspetto delle finestre</translation>
+        <translation>Aspetto dell&apos;elenco delle finestre</translation>
     </message>
     <message>
         <source>Button style</source>

@@ -14,7 +14,7 @@ GenericName=Razor Freedesktop Notifications Configuration
 
 
 # Translations
-GenericName[it_IT]=Esci
-Name[it_IT]=Esci dal sistema
+GenericName[it_IT]=Configurazione delle notifiche Freedesktop di Razor
+Name[it_IT]=Configurazione delle notifiche Freedesktop di Razor
 Icon[it_IT]=preferences-desktop-theme
-Comment[it_IT]=Configura le notifiche freedesktop nel desktop Razor
+Comment[it_IT]=Configura le notifiche Freedesktop nel desktop Razor

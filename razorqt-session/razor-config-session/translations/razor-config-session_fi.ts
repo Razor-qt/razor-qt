@@ -42,7 +42,7 @@
     </message>
     <message>
         <source>Overrides: %1</source>
-        <translation type="unfinished"/>
+        <translation>Syrjäyttää: %1</translation>
     </message>
 </context>
 <context>

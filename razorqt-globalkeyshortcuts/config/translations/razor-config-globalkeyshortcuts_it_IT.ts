@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>Shortcut</source>
-        <translation>Scorciatoie</translation>
+        <translation>Scorciatoia</translation>
     </message>
     <message>
         <source>Command</source>

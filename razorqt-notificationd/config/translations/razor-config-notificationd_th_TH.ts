@@ -3,7 +3,7 @@
     <name>AdvancedSettings</name>
     <message>
         <source>Menu Configuration</source>
-        <translation>การตั้งค่าเมนู</translation>
+        <translation>ตั้งค่าเมนู</translation>
     </message>
     <message>
         <source>Notification Duration</source>

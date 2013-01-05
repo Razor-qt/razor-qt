@@ -14,7 +14,7 @@ GenericName=Razor Mouse Configurator
 
 
 # Translations
-Comment[he]=הגדרת עכבר ‫X11
-GenericName[he]=תצורת עכבר ‫Razor
-Name[he]=תצורת עכבר ‫Razor
+Comment[he]=הגדר עכבר ‫X11
+GenericName[he]=מגדיר עכבר ‫Razor
+Name[he]=מגדיר עכבר ‫Razor
 Icon[he]=preferences-desktop-mouse

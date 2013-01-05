@@ -9,5 +9,5 @@ Comment=Change system-wide settings (affects all users)
 
 
 # Translations
-Comment[it_IT]=Modifica impostazioni di sistema (influenzano tutti gli utenti)
+Comment[it_IT]=Modifica le impostazioni di sistema (influenzano tutti gli utenti)
 Name[it_IT]=Amministrazione

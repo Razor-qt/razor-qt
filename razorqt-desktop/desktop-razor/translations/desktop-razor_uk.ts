@@ -19,11 +19,11 @@
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation type="unfinished"/>
+        <translation>Отримати сістемні шпалери …</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
-        <translation type="unfinished"/>
+        <translation>Утримувати співвідношення сторін зображення</translation>
     </message>
     <message>
         <source>Select Background Color</source>
@@ -82,7 +82,7 @@
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Насправді видалити віджет &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>

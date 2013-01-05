@@ -98,7 +98,7 @@
     </message>
     <message>
         <source>Add plugins ...</source>
-        <translation>Adicionar extras...</translation>
+        <translation>Adicionar plugins...</translation>
     </message>
 </context>
 <context>

@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Monitor where the mouse</source>
-        <translation>Surveille où se trouve la souris</translation>
+        <translation>Sur l&apos;écran où se trouve la souris</translation>
     </message>
     <message>
         <source>Always on %1 monitor</source>

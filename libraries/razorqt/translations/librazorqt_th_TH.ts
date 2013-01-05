@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>Razor-qt is translated into many languages thanks to the work of the translation teams all over the world.</source>
-        <translation>Razor-qt ถูกแปลเป็นภาษาต่างๆ มากมาย จึงขอขอบคุณไปยังทีมงานแปลต่าง ๆ จากทั่วโลก</translation>
+        <translation>Razor-qt ถูกแปลเป็นภาษาต่างๆ มากมาย จึงขอขอบคุณไปยังทีมงานแปลต่างๆ จากทั่วโลก</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -156,7 +156,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Razor Desktop Toolbox - Technical Info&lt;/b&gt;</source>
-        <translation>&lt;b&gt;กล่องเครื่องมือพื้นโต๊ะเรเซอร์ - ข้อมูลทางเทคนิค&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;กล่องเครื่องมือโต๊ะงานเรเซอร์ - ข้อมูลทางเทคนิค&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Version</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
         <source>System Configuration</source>
-        <translation>การตั้งค่าระบบ</translation>
+        <translation>ตั้งค่าระบบ</translation>
     </message>
     <message>
         <source>Share Directory</source>
@@ -252,7 +252,7 @@
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver cannot be started due its crash.</source>
-        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, xdg-screensaver ไม่สามารถเริ่มงานได้เนื่องจากมันเสียหาย</translation>
+        <translation>เกิดการขัดข้องขณะเริ่มงานโปรแกรมรักษาหน้าจอ, xdg-screensaver ไม่สามารถเริ่มงานได้เนื่องจากความเสียหาย</translation>
     </message>
     <message>
         <source>An error occurred starting screensaver. xdg-screensaver is not installed correctly.</source>

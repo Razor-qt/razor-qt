@@ -3,7 +3,7 @@
     <name>ConfigureDialog</name>
     <message>
         <source>Razor-runner Settings</source>
-        <translation>Definições</translation>
+        <translation>Definições do Razor-runner</translation>
     </message>
     <message>
         <source>Appearance</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Clear razor-runner History</source>
-        <translation>Apagar histórico</translation>
+        <translation>Limpar histórico</translation>
     </message>
     <message>
         <source>Press &quot;%1&quot; to see dialog.</source>

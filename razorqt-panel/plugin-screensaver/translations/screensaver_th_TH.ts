@@ -3,7 +3,7 @@
     <name>PanelScreenSaver</name>
     <message>
         <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
-        <translation>โปรแกรมรักษาหน้าจอ: ไม่สารมารถตั้ง &apos;%1&apos; เป็นปุ่มลัดส่วนกลางได้</translation>
+        <translation>โปรแกรมรักษาหน้าจอ: ไม่สารมารถตั้ง &apos;%1&apos; เป็นปุ่มลัดหลักได้</translation>
     </message>
 </context>
 </TS>

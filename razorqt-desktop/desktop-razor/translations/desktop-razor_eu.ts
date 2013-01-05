@@ -15,15 +15,15 @@
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation type="unfinished"/>
+        <translation>Eskuratu horma-paperaren irudia...</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation type="unfinished"/>
+        <translation>Eskuratu sistemaren horma-papera...</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
-        <translation type="unfinished"/>
+        <translation>Mantendu irudiaren aspektu-erlazioa</translation>
     </message>
     <message>
         <source>Select Background Color</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Hautatu sistemaren horma-paperaren irudia</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Add New Desktop Widget...</source>
-        <translation type="unfinished"/>
+        <translation>Gehitu mahaigaineko trepeta berria...</translation>
     </message>
     <message>
         <source>Remove Plugin...</source>
@@ -70,19 +70,19 @@
     </message>
     <message>
         <source>New Desktop Widget</source>
-        <translation type="unfinished"/>
+        <translation>Mahaigaineko trepeta berria</translation>
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago leku librerik mahaigaineko trepeta berria gehitzeko</translation>
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
-        <translation type="unfinished"/>
+        <translation>Mahaigaineko trepeta kendu?</translation>
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Ziur zaude mahaigaineko &apos;%1&apos; trepeta kendu nahi duzula?</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>

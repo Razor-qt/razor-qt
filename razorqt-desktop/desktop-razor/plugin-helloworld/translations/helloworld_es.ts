@@ -3,11 +3,11 @@
     <name>HelloWorld</name>
     <message>
         <source>Hello World:</source>
-        <translation>Hola Mundo:</translation>
+        <translation>Hola mundo:</translation>
     </message>
     <message>
         <source>Display Text Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuración de visualización de texto</translation>
     </message>
     <message>
         <source>Edit HTML</source>
@@ -18,7 +18,7 @@
     <name>QObject</name>
     <message>
         <source>Display simple text. A debugging/sample widget.</source>
-        <translation>Muestra un text simple. Un widget de depuración/ejemplo</translation>
+        <translation>Muestra un texto sencillo. Un widget de depuración/ejemplo.</translation>
     </message>
 </context>
 </TS>

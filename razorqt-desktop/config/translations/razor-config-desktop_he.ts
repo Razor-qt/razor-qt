@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>Desktop Type</source>
-        <translation>סוג שולחן</translation>
+        <translation>טיפוס שולחן</translation>
     </message>
     <message>
         <source>Icon Activation</source>
@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Use different widgets and wallpapers for each virtual desktop</source>
-        <translation>שימוש בתכניות תרשימיות וטפטים שונים עבור כל שולחן וירטואלי</translation>
+        <translation>השתמש בתכניות תרשימיות קטנות (וידג׳ט) וטפטים שונים עבור כל שולחן וירטואלי</translation>
     </message>
     <message>
         <source>Please note that this setting is not supported by all window managers!</source>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Use mouse wheel for desktop changing</source>
-        <translation>שימוש בגלגל עכבר להחלפת שולחן</translation>
+        <translation>השתמש בגלגל עכבר להחלפת שולחן</translation>
     </message>
     <message>
         <source>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</source>
@@ -117,7 +117,7 @@
     </message>
     <message>
         <source>Use Desktop Icons</source>
-        <translation>שימוש בצלמיות שולחן</translation>
+        <translation>השתמש בצלמיות שולחן</translation>
     </message>
     <message>
         <source>Wallpaper:</source>

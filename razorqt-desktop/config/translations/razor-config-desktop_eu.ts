@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>When enabled, razor-desktop will switch desktops (may conflict with selected window manager). When disabled, mouse wheel events are ignored by razor-desktop.</source>
-        <translation type="unfinished"/>
+        <translation>Gaituz gero razor-desktop-ek mahaigainak aldatuko ditu (gatazka sor dezake hautatutako leiho-kudeatzailearekin). Desgaituz gero saguaren gurpilaren gertaerei ez ikusia egingo die razor-desktop-ek.</translation>
     </message>
 </context>
 <context>

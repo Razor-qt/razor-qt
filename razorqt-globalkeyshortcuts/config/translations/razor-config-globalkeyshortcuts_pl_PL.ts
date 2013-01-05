@@ -73,15 +73,15 @@
     </message>
     <message>
         <source>Question</source>
-        <translation type="unfinished"/>
+        <translation>Pytanie</translation>
     </message>
     <message>
         <source>Delete group: %1? (everything inside will be removed altogether)</source>
-        <translation type="unfinished"/>
+        <translation>Usunąć grupę: %1? (wszystko wewnątrz zostanie usunięte)</translation>
     </message>
     <message>
         <source>Delete %1?</source>
-        <translation type="unfinished"/>
+        <translation>Usunąć %1?</translation>
     </message>
     <message>
         <source>Binding for %1 already exists. Replace old one?</source>

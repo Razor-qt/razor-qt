@@ -11,11 +11,11 @@
     </message>
     <message>
         <source>For some the notification&apos;s expiration time is dependent on the notification server&apos;s settings.</source>
-        <translation type="unfinished"/>
+        <translation>Per alcune notifiche la durata dipende dalle impostazioni del server delle notifiche.</translation>
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>Durata &quot;decisa dal server&quot;:</translation>
     </message>
     <message>
         <source> sec</source>
@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Notification Spacing:</source>
-        <translation type="unfinished"/>
+        <translation>Spaziatura notifiche:</translation>
     </message>
     <message>
         <source> px</source>
@@ -35,7 +35,7 @@
     </message>
     <message>
         <source>Notification Width:</source>
-        <translation type="unfinished"/>
+        <translation>Larghezza notifiche:</translation>
     </message>
 </context>
 <context>
@@ -46,23 +46,23 @@
     </message>
     <message>
         <source>Display Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostra notifiche</translation>
     </message>
     <message>
         <source>Top/Left</source>
-        <translation type="unfinished"/>
+        <translation>Alto/sinistra</translation>
     </message>
     <message>
         <source>Top/Right</source>
-        <translation type="unfinished"/>
+        <translation>Alto/destra</translation>
     </message>
     <message>
         <source>Bottom/Left</source>
-        <translation type="unfinished"/>
+        <translation>Basso/sinistra</translation>
     </message>
     <message>
         <source>Bottom/Right</source>
-        <translation type="unfinished"/>
+        <translation>Basso/destra</translation>
     </message>
     <message>
         <source>Test Notification</source>
@@ -71,12 +71,14 @@
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Attenzione:&lt;/b&gt; nessun demone delle notifiche è in esecuzione.
+Sarà utilizzato un sistema alternativo.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Attenzione:&lt;/b&gt; un demone delle notifiche di terze parti (%1) è in esecuzione.
+Queste impostazioni non avranno effetto su di esso!</translation>
     </message>
     <message>
         <source>Notification Summary</source>

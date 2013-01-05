@@ -3,7 +3,7 @@
     <name>DesktopBackgroundDialog</name>
     <message>
         <source>Desktop Background Settings</source>
-        <translation>מחיקת הגדרות רקע אחורי של שולחן</translation>
+        <translation>הגדרות רקע אחורי של שולחן</translation>
     </message>
     <message>
         <source>Background &amp;Color...</source>
@@ -15,23 +15,23 @@
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation>השגת תמונת טפט...</translation>
+        <translation>השג תמונת טפט...</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation>השגת טפט מערכת...</translation>
+        <translation>השג טפט מערכת...</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
-        <translation>שמירת יחס תצוגה של תמונה</translation>
+        <translation>שמור על יחס תצוגה של תמונה</translation>
     </message>
     <message>
         <source>Select Background Color</source>
-        <translation>בחירת צבע רקע אחורי</translation>
+        <translation>בחר צבע רקע אחורי</translation>
     </message>
     <message>
         <source>Select Wallpaper Image</source>
-        <translation>בחירת תמונת טפט</translation>
+        <translation>בחר תמונת טפט</translation>
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg *.jpeg *.svg)</source>
@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation>בחירת תמונת טפט מערכת</translation>
+        <translation>בחר תמונת טפט מערכת</translation>
     </message>
 </context>
 <context>
@@ -50,19 +50,19 @@
     </message>
     <message>
         <source>Add New Desktop Widget...</source>
-        <translation>הוספת תוכנית תרשימית...</translation>
+        <translation>הוסף תוכנית תרשימית חדשה...</translation>
     </message>
     <message>
         <source>Remove Plugin...</source>
-        <translation>הסרת תוספת...</translation>
+        <translation>הסר תוספת...</translation>
     </message>
     <message>
         <source>Configure Plugin...</source>
-        <translation>הגדרת תוספת...</translation>
+        <translation>הגדר תוספת...</translation>
     </message>
     <message>
         <source>Set Desktop Background...</source>
-        <translation>הגדרת רקע אחורי של שולחן...</translation>
+        <translation>קבע רקע אחורי של שולחן...</translation>
     </message>
     <message>
         <source>About Razor...</source>
@@ -78,7 +78,7 @@
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
-        <translation>הסרת תוכנית תרשימית?</translation>
+        <translation>להסיר תוכנית תרשימית?</translation>
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
@@ -86,7 +86,7 @@
     </message>
     <message>
         <source>Lock Desktop...</source>
-        <translation>נעילת שולחן...</translation>
+        <translation>נעל שולחן...</translation>
     </message>
 </context>
 <context>
@@ -100,7 +100,7 @@
     <name>RazorWorkSpace</name>
     <message>
         <source>Background Change</source>
-        <translation type="unfinished"/>
+        <translation>שינוי רקע אחורי</translation>
     </message>
     <message>
         <source>Do you want to change desktop background?</source>
@@ -111,7 +111,7 @@
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation type="unfinished"/>
+        <translation>מימוש מלא ורב תכליתי של שולחן עבודה עם כל הפעמונים  והצפצפות של Razor</translation>
     </message>
 </context>
 </TS>

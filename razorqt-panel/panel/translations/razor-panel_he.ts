@@ -3,7 +3,7 @@
     <name>ConfigPanelDialog</name>
     <message>
         <source>Configure panel</source>
-        <translation>תצורת לוח</translation>
+        <translation>הגדר לוח</translation>
     </message>
     <message>
         <source>Panel size</source>
@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation>שימוש בקביעת ממדים אוטומטית</translation>
+        <translation>השתמש בקביעת מידה אוטומטית</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
@@ -55,35 +55,35 @@
     </message>
     <message>
         <source>Top of desktop</source>
-        <translation>ראש שולחן העבודה</translation>
+        <translation>ראש שולחן עבודה</translation>
     </message>
     <message>
         <source>Left of desktop</source>
-        <translation>שמאל לשולחן העבודה</translation>
+        <translation>שמאל לשולחן עבודה</translation>
     </message>
     <message>
         <source>Right of desktop</source>
-        <translation>ימין לשולחן העבודה</translation>
+        <translation>ימין לשולחן עבודה</translation>
     </message>
     <message>
         <source>Bottom of desktop</source>
-        <translation>תחתית שולחן העבודה</translation>
+        <translation>תחתית שולחן עבודה</translation>
     </message>
     <message>
         <source>Top of desktop %1</source>
-        <translation>ראש שולחן העבודה %1</translation>
+        <translation>ראש שולחן עבודה %1</translation>
     </message>
     <message>
         <source>Left of desktop %1</source>
-        <translation>שמאל לשולחן העבודה %1</translation>
+        <translation>שמאל לשולחן עבודה %1</translation>
     </message>
     <message>
         <source>Right of desktop %1</source>
-        <translation>ימין לשולחן העבודה %1</translation>
+        <translation>ימין לשולחן עבודה %1</translation>
     </message>
     <message>
         <source>Bottom of desktop %1</source>
-        <translation>תחתית שולחן העבודה %1</translation>
+        <translation>תחתית שולחן עבודה %1</translation>
     </message>
 </context>
 <context>
@@ -94,33 +94,33 @@
     </message>
     <message>
         <source>Configure panel...</source>
-        <translation>תצורת לוח...</translation>
+        <translation>הגדר לוח...</translation>
     </message>
     <message>
         <source>Add plugins ...</source>
-        <translation>הוספת תוספות ...</translation>
+        <translation>הוסף תוספות ...</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPlugin</name>
     <message>
         <source>Configure</source>
-        <translation>תצורה</translation>
+        <translation>הגדר</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>הזזה</translation>
+        <translation>הזז</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation>הסרה</translation>
+        <translation>הסר</translation>
     </message>
 </context>
 <context>
     <name>RazorPanelPrivate</name>
     <message>
         <source>Configure panel</source>
-        <translation>תצורת לוח</translation>
+        <translation>הגדר לוח</translation>
     </message>
 </context>
 </TS>

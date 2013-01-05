@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Display Text Configuration</source>
-        <translation type="unfinished"/>
+        <translation>文字顯示設定</translation>
     </message>
     <message>
         <source>Edit HTML</source>
