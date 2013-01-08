@@ -83,7 +83,7 @@
            <string> px</string>
           </property>
           <property name="minimum">
-           <number>1</number>
+           <number>2</number>
           </property>
           <property name="maximum">
            <number>120</number>
@@ -155,6 +155,12 @@
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
              </spacer>
             </item>
            </layout>
@@ -171,6 +177,12 @@
              <spacer name="verticalSpacer_4">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
               </property>
              </spacer>
             </item>
@@ -252,6 +264,12 @@
              <spacer name="verticalSpacer_6">
               <property name="orientation">
                <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
               </property>
              </spacer>
             </item>
@@ -356,6 +374,12 @@
       <spacer name="verticalSpacer_2">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
       </spacer>
      </item>

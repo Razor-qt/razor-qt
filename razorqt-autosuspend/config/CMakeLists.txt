@@ -75,6 +75,7 @@ target_link_libraries ( razor-config-autosuspend
                         razorqt 
                         ${QT_QTCORE_LIBRARY} 
                         ${QT_QTGUI_LIBRARY}  
+                        ${QT_QTDBUS_LIBRARY}
                       )
 
 

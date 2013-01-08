@@ -28,89 +28,21 @@
 #include <QtCore/QFileInfo>
 
 AutostartItem::AutostartItem() :
-    mLocalState(StateNone), mSystem(false)
+    RazorAutostartEntry()
 {
 }
 
 AutostartItem::AutostartItem(const XdgDesktopFile& systemFile) :
-    mSystemFile(systemFile), mLocalState(StateNone), mSystem(true)
+    RazorAutostartEntry()
 {
-}
-
-AutostartItem::~AutostartItem()
-{
-}
-
-void AutostartItem::setLocal(const XdgDesktopFile& file)
-{
-    bool local = isLocal();
-    if (mSystem && local && file == mSystemFile)
-    {
-        removeLocal();
-    }
-    else
-    {
-        if (local)
-            mLocalState = StateModified;
-        else
-            mLocalState = StateTransient;
-        mLocalFile = file;
-    }
+    mSystemFile = systemFile;
+    mSystem = true;
 }
 
 void AutostartItem::setLocalFromFile(const XdgDesktopFile& file)
 {
     mLocalFile = file;
     mLocalState = StateExists;
-}
-
-bool AutostartItem::removeLocal()
-{
-    if (!isLocal())
-        return false;
-
-    if (mLocalState == StateTransient)
-        mLocalState = StateNone;
-    else
-        mLocalState = StateDeleted;
-
-    return !mSystem;
-}
-
-const XdgDesktopFile& AutostartItem::file() const
-{
-    return isLocal() ? mLocalFile : mSystemFile;
-}
-
-void AutostartItem::setEnabled(bool enable)
-{
-    XdgDesktopFile f = file();
-    if (enable)
-        f.removeEntry("Hidden");
-    else
-        f.setValue("Hidden", true);
-
-    setLocal(f);
-}
-
-bool AutostartItem::isEnabled() const
-{
-    return !file().value("Hidden", false).toBool();
-}
-
-bool AutostartItem::commit()
-{
-    if (mLocalState == StateDeleted)
-    {
-        mLocalState = StateNone;
-        return QFile::remove(mLocalFile.fileName());
-    }
-    else if (mLocalState == StateModified || mLocalState == StateTransient)
-    {
-        mLocalState = StateExists;
-        return mLocalFile.save(XdgAutoStart::localPath(mLocalFile));
-    }
-    return true;
 }
 
 QMap<QString,AutostartItem> AutostartItem::createItemMap()

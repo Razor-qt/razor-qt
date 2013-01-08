@@ -24,21 +24,27 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
-#include <QtGui/qabstractbutton.h>
+#include <QtGui/QAbstractButton>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusConnectionInterface>
 
 #include "generalsettings.h"
 #include "ui_generalsettings.h"
 
-GeneralSettings::GeneralSettings(RazorSettings *settings, QWidget *parent) :
+GeneralSettings::GeneralSettings(RazorSettings *settings, RazorConfigDialog *parent) :
     QWidget(parent),
     mUi(new Ui::GeneralSettings),
-    mLoading(false)
+    mAutostart("razor-autosuspend.desktop"),
+    mLoading(false),
+    mModuleRunning(false)
 {
     this->mSettings = settings;
     mUi->setupUi(this);
 
+    connect(mUi->startupCheckBox, SIGNAL(toggled(bool)), this, SLOT(startModule(bool)));
     connect(mUi->showTrayIconCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
     connect(mUi->useThemeStatusIconsCheckBox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
+    connect(parent, SIGNAL(save()), SLOT(onClose()));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -58,9 +64,51 @@ void GeneralSettings::saveSettings()
 
 void GeneralSettings::loadSettings()
 {
-    mLoading = true; 
+    mLoading = true;
+    mAutostart = RazorAutostartEntry("razor-autosuspend.desktop");
+    mUi->startupCheckBox->setChecked(mAutostart.isEnabled());
     mUi->showTrayIconCheckBox->setChecked(mSettings->value(SHOWTRAYICON_KEY, true).toBool());
     mUi->useThemeStatusIconsCheckBox->setChecked(mSettings->value(USETHEMEICONS_KEY, true).toBool());
     mUi->useThemeStatusIconsCheckBox->setEnabled(mUi->showTrayIconCheckBox->isChecked());
     mLoading = false;
+}
+
+void GeneralSettings::startModule(bool enable)
+{
+    mAutostart.setEnabled(enable);
+
+    if (!enable || mModuleRunning)
+        return;
+
+    QDBusReply<QStringList> reply = QDBusConnection::sessionBus().interface()->registeredServiceNames();
+    QStringList services = reply.value();
+    if (!services.contains("org.razorqt.razor-autosuspend"))
+    {
+        if (services.contains("org.razorqt.session"))
+        {
+            QDBusInterface interface("org.razorqt.session", "/RazorSession", "",
+                                     QDBusConnection::sessionBus(), this);
+            QList<QVariant> arg;
+            arg.append(mAutostart.name());
+            interface.callWithArgumentList(QDBus::NoBlock, "startModule", arg);
+        }
+        else // in case razor-session is not being used
+        {
+            mAutostart.file().startDetached();
+        }
+    }
+    mModuleRunning = true;
+}
+
+void GeneralSettings::onClose()
+{
+    if (!mAutostart.isEnabled())
+    {
+        QDBusInterface interface("org.razorqt.session", "/RazorSession", "",
+                                 QDBusConnection::sessionBus(), this);
+        QList<QVariant> arg;
+        arg.append(mAutostart.name());
+        interface.callWithArgumentList(QDBus::NoBlock, "stopModule", arg);
+    }
+    mAutostart.commit();
 }

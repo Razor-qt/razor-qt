@@ -60,6 +60,8 @@ RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *
     this->layout()->setContentsMargins(0, 0, 0, 0);
     this->layout()->setSpacing(0);
 
+    mContent->setMinimumSize(2, 2);
+
     // qproperty of font type doesn't work with qss, so fake QLabel is used instead
     connect(mFakeTitle, SIGNAL(fontChanged(QFont)), mContent, SLOT(setTitleFont(QFont)));
 
@@ -362,7 +364,7 @@ void RazorSysStatContent::resizeEvent(QResizeEvent * /*event*/)
 
 void RazorSysStatContent::reset(void)
 {
-    setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 0, mPanel->isHorizontal() ? 0 : mMinimalSize);
+    setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 2, mPanel->isHorizontal() ? 2 : mMinimalSize);
 
     mHistoryOffset = 0;
     mHistoryImage = QImage(width(), 100, QImage::Format_ARGB32);
@@ -513,8 +515,8 @@ void RazorSysStatContent::swapUpdate(float used)
 
 void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 {
-    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
-    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
+    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
+    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
     if (mLogarithmicScale)
     {
         min_value = qLn(min_value * (mLogScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(mLogScaleSteps);
@@ -563,6 +565,9 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
             p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, mTitleLabel);
         }
     }
+
+    if (graphHeight < 1)
+        graphHeight = 1;
 
     p.scale(1.0, -1.0);
 

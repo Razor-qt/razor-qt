@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012 Razor team
+ * Copyright: 2010-2012 Razor team
  * Authors:
- *   Christian Surlykke <christian@surlykke.dk>
+ *   Petr Vanek <petr@scribus.info>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -24,23 +24,20 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
 
-#define LIDCLOSEDACTION_KEY "lidClosedAction"
-#define POWERLOWACTION_KEY "powerLowAction"
-#define POWERLOWWARNING_KEY "powerLowWarning"
-#define POWERLOWLEVEL_KEY "powerLowLevel"
-#define SHOWTRAYICON_KEY "showTrayIcon"
-#define USETHEMEICONS_KEY "useThemeIcons"
-#define FIRSTRUNCHECK_KEY "performFirstRunCheck"
+#include <qtxdg/xdgicon.h>
 
-enum
+#include "warninglabel.h"
+
+
+
+WarningLabel::WarningLabel(QWidget *parent)
+	: QWidget(parent)
 {
-    NOTHING,
-    SLEEP,
-    HIBERNATE,
-    POWEROFF
-};
+	setupUi(this);
 
-#endif // CONSTANTS_H
+	iconLabel->setPixmap(XdgIcon::fromTheme("dialog-warning").pixmap(64, 64));
+
+	connect(showDirButton, SIGNAL(pressed()),
+			this, SIGNAL(showDirInfo()));
+}

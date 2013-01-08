@@ -16,6 +16,7 @@
 #include <QtCore/QTimer>
 #include <QtGui/QWidget>
 #include <QtGui/QPushButton>
+#include <QtGui/QToolTip>
 
 #include "cfgfile.h"
 #include "crtheme.h"
@@ -36,6 +37,8 @@ SelectWnd::SelectWnd(QWidget *parent) : QWidget(parent)
     setupUi(this);
     closeButton->setIcon(XdgIcon::fromTheme("dialog-close"));
 
+    warningLabel->hide();
+
     mModel = new XCursorThemeModel(this);
 
     int size = style()->pixelMetric(QStyle::PM_LargeIconSize);
@@ -47,6 +50,16 @@ SelectWnd::SelectWnd(QWidget *parent) : QWidget(parent)
     // Make sure we find out about selection changes
     connect(lbThemes->selectionModel(), SIGNAL(currentChanged(const QModelIndex &, const QModelIndex &)),
             SLOT(currentChanged(const QModelIndex &, const QModelIndex &)));
+    // display/hide warning label
+    connect(mModel, SIGNAL(modelReset()),
+    		this, SLOT(handleWarning()));
+    connect(mModel, SIGNAL(rowsInserted(const QModelIndex&, int, int)),
+    		this, SLOT(handleWarning()));
+    connect(mModel, SIGNAL(rowsRemoved(const QModelIndex&, int, int)),
+    		this, SLOT(handleWarning()));
+
+    connect(warningLabel, SIGNAL(showDirInfo()),
+    		this, SLOT(showDirInfo()));
 
     // Disable the install button if we can't install new themes to ~/.icons,
     // or Xcursor isn't set up to look for cursor themes there
@@ -56,6 +69,8 @@ SelectWnd::SelectWnd(QWidget *parent) : QWidget(parent)
     btRemove->hide();
 
     //QTimer::singleShot(0, this, SLOT(setCurrent()));
+
+    handleWarning();
 }
 
 
@@ -155,4 +170,17 @@ void SelectWnd::on_btRemove_clicked()
     preview->clearTheme();
     mModel->removeTheme(lbThemes->currentIndex());
     removeXCursorTheme(d);
+}
+
+void SelectWnd::handleWarning()
+{
+	bool empty = mModel->rowCount();
+	warningLabel->setVisible(!empty);
+	preview->setVisible(empty);
+	infoLabel->setVisible(empty);
+}
+
+void SelectWnd::showDirInfo()
+{
+	QToolTip::showText(mapToGlobal(warningLabel->buttonPos()), mModel->searchPaths().join("\n"));
 }

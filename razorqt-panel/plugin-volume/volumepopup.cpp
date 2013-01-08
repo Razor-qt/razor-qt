@@ -47,9 +47,9 @@ VolumePopup::VolumePopup(QWidget* parent):
 {
     m_mixerButton = new QLabel(this);
     m_mixerButton->setMargin(5);
-    m_mixerButton->setToolTip("Launch mixer");
+    m_mixerButton->setToolTip(tr("Launch mixer"));
     m_mixerButton->setTextFormat(Qt::RichText);
-    m_mixerButton->setText("<a href=\"#\">Mixer</a>");
+    m_mixerButton->setText(QString("<a href=\"#\">%1</a>").arg(tr("Mixer")));
 
     m_volumeSlider = new QSlider(Qt::Vertical, this);
     m_volumeSlider->setTickPosition(QSlider::TicksBothSides);

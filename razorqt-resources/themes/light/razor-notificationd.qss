@@ -4,6 +4,14 @@ Notification {
     margin: 0px;
 }
 
+QLabel {
+    color: black;
+}
+
+#appLabel {
+    color: #838581;
+}
+
 #closeButton {
     qproperty-icon: url(razor-runner/close-48x48.png);
 }

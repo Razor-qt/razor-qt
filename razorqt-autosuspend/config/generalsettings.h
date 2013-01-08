@@ -29,6 +29,8 @@
 
 #include <QWidget>
 #include <razorqt/razorsettings.h>
+#include <razorqt/razorconfigdialog.h>
+#include <razorqt/razorautostartentry.h>
 #include "constants.h"
 
 namespace Ui {
@@ -40,7 +42,7 @@ class GeneralSettings : public QWidget
     Q_OBJECT
     
 public:
-    explicit GeneralSettings(RazorSettings *settings, QWidget *parent = 0);
+    explicit GeneralSettings(RazorSettings *settings, RazorConfigDialog *parent = 0);
     ~GeneralSettings();
 
 public slots:
@@ -48,11 +50,15 @@ public slots:
 
 private slots:
     void saveSettings();
+    void startModule(bool enable);
+    void onClose();
 
 private:
     RazorSettings *mSettings;
     Ui::GeneralSettings *mUi;
+    RazorAutostartEntry mAutostart;
     bool mLoading;
+    bool mModuleRunning;
 };
 
 #endif // GENERALSETTINGS_H

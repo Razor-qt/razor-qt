@@ -35,7 +35,7 @@ MACRO(QT4_ADD_TRANSLATION_FIXED _qm_files)
 
     ADD_CUSTOM_COMMAND(OUTPUT ${qm}
        COMMAND ${QT_LRELEASE_EXECUTABLE}
-       ARGS ${_abs_FILE} -qm ${qm}
+       ARGS -silent -removeidentical ${_abs_FILE} -qm ${qm}
        DEPENDS ${_abs_FILE}
     )
     SET(${_qm_files} ${${_qm_files}} ${qm})

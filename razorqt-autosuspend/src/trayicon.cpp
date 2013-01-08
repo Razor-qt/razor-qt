@@ -60,12 +60,12 @@ void TrayIcon::update()
 }
 
 
-void TrayIcon::updateStatusIcon()
+void TrayIcon::updateStatusIcon(bool force)
 {
     static double chargeLevel = -1;
     static bool   discharging = false;
 
-    if (fabs(mBattery->chargeLevel() - chargeLevel) < 0.1 && (mBattery->discharging() == discharging))
+    if (!force && fabs(mBattery->chargeLevel() - chargeLevel) < 0.1 && (mBattery->discharging() == discharging))
     {
         qDebug() << "No significant change - not updating icon";
         return;
@@ -151,12 +151,12 @@ void TrayIcon::checkThemeStatusIcons()
 void TrayIcon::iconThemeChanged()
 {
     checkThemeStatusIcons();
-    updateStatusIcon();
+    updateStatusIcon(true);
 }
 
 void TrayIcon::settingsChanged()
 {
-    updateStatusIcon();
+    updateStatusIcon(true);
     setVisible(mSettings.value(SHOWTRAYICON_KEY, true).toBool()); 
 }
 
