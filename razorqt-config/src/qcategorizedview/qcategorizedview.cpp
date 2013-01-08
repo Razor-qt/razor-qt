@@ -812,6 +812,7 @@ void QCategorizedView::paintEvent(QPaintEvent *event)
         option.rect.setWidth(d->viewportWidth() + d->categoryDrawer->leftMargin() + d->categoryDrawer->rightMargin());
         option.rect.setHeight(height + d->blockHeight(it.key()));
         option.rect = d->mapToViewport(option.rect);
+        option.decorationPosition = QStyleOptionViewItem::Bottom;
         if (!option.rect.intersects(viewport()->rect())) {
             ++it;
             continue;
@@ -1353,6 +1354,29 @@ void QCategorizedView::rowsAboutToBeRemoved(const QModelIndex &parent,
 void QCategorizedView::updateGeometries()
 {
     const int oldVerticalOffset = verticalOffset();
+    const Qt::ScrollBarPolicy verticalP = verticalScrollBarPolicy(), horizontalP = horizontalScrollBarPolicy();
+
+    //BEGIN bugs 213068, 287847 ------------------------------------------------------------
+    /*
+     * QListView::updateGeometries() has it's own opinion on whether the scrollbars should be visible (valid range) or not
+     * and triggers a (sometimes additionally timered) resize through ::layoutChildren()
+     * http://qt.gitorious.org/qt/qt/blobs/4.7/src/gui/itemviews/qlistview.cpp#line1499
+     * (the comment above the main block isn't all accurate, layoutChldren is called regardless of the policy)
+     *
+     * As a result QListView and KCategorizedView occasionally started a race on the scrollbar visibility, effectively blocking the UI
+     * So we prevent QListView from having an own opinion on the scrollbar visibility by
+     * fixing it before calling the baseclass QListView::updateGeometries()
+     *
+     * Since the implicit show/hide by the followin range setting will cause further resizes if the policy is Qt::ScrollBarAsNeeded
+     * we keep it static until we're done, then restore the original value and ultimately change the scrollbar visibility ourself.
+     */
+    if (d->isCategorized()) { // important! - otherwise we'd pollute the setting if the view is initially not categorized
+        setVerticalScrollBarPolicy((verticalP == Qt::ScrollBarAlwaysOn || verticalScrollBar()->isVisibleTo(this)) ?
+                                                                            Qt::ScrollBarAlwaysOn : Qt::ScrollBarAlwaysOff);
+        setHorizontalScrollBarPolicy((horizontalP == Qt::ScrollBarAlwaysOn || horizontalScrollBar()->isVisibleTo(this)) ?
+                                                                            Qt::ScrollBarAlwaysOn : Qt::ScrollBarAlwaysOff);
+    }
+    //END bugs 213068, 287847 --------------------------------------------------------------
 
     QListView::updateGeometries();
 
@@ -1363,6 +1387,8 @@ void QCategorizedView::updateGeometries()
     const int rowCount = d->proxyModel->rowCount();
     if (!rowCount) {
         verticalScrollBar()->setRange(0, 0);
+        // unconditional, see function end todo
+        horizontalScrollBar()->setRange(0, 0);
         return;
     }
 
@@ -1401,6 +1427,19 @@ void QCategorizedView::updateGeometries()
     //      (think how to draw categories), we would have to take care of the horizontal scroll bar too.
     //      In theory, as QCategorizedView has been designed, there is no need of horizontal scroll bar.
     horizontalScrollBar()->setRange(0, 0);
+
+    //BEGIN bugs 213068, 287847 ------------------------------------------------------------
+    // restoring values from above ...
+    setVerticalScrollBarPolicy(verticalP);
+    setHorizontalScrollBarPolicy(horizontalP);
+    // ... and correct the visibility
+    bool validRange = verticalScrollBar()->maximum() != verticalScrollBar()->minimum();
+    if (verticalP == Qt::ScrollBarAsNeeded && (verticalScrollBar()->isVisibleTo(this) != validRange))
+        verticalScrollBar()->setVisible(validRange);
+    validRange = horizontalScrollBar()->maximum() > horizontalScrollBar()->minimum();
+    if (horizontalP == Qt::ScrollBarAsNeeded && (horizontalScrollBar()->isVisibleTo(this) != validRange))
+        horizontalScrollBar()->setVisible(validRange);
+    //END bugs 213068, 287847 --------------------------------------------------------------
 }
 
 void QCategorizedView::currentChanged(const QModelIndex &current,
