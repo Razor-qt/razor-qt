@@ -43,12 +43,14 @@ Notepad::Notepad(DesktopScene *scene, const QString &configId, RazorSettings *co
     int pos = m_config->value("pos", 0).toInt();
     m_config->endGroup();
 
-    m_proxy = new QGraphicsProxyWidget(this);
-    win = new NotepadWin(this, &Notepad::save);
-    win->setTextAndPos(text, pos);
+    mProxy = new QGraphicsProxyWidget(this);
+    mWin = new NotepadWin(this, &Notepad::save);
+    mWin->setTextAndPos(text, pos);
 
-    m_proxy->setWidget(win);
-    m_proxy->show();
+    mProxy->setWidget(mWin);
+    mProxy->show();
+
+    connect(this, SIGNAL(pluginResized(QSizeF)), SLOT(setSize(QSizeF)));
 }
 
 Notepad::~Notepad()
@@ -65,10 +67,16 @@ QString Notepad::instanceInfo()
     return QObject::tr("Notepad:") + " " + m_configId;
 }
 
+void Notepad::setSize(const QSizeF &size)
+{
+    mWin->resize(size.width(), size.height());
+    mProxy->resize(size);
+}
+
 void Notepad::setSizeAndPosition(const QPointF &position, const QSizeF &size)
 {
     DesktopWidgetPlugin::setSizeAndPosition(position, size);
-    m_proxy->resize(size);
+    setSize(size);
 }
 
 void Notepad::save()
@@ -79,8 +87,8 @@ void Notepad::save()
     m_config->setValue("y", pos().y());
     m_config->setValue("w", m_boundingRect.width());
     m_config->setValue("h", m_boundingRect.height());
-    m_config->setValue("text", win->text());
-    m_config->setValue("pos", win->pos());
+    m_config->setValue("text", mWin->text());
+    m_config->setValue("pos", mWin->pos());
     m_config->endGroup();
 }
 
