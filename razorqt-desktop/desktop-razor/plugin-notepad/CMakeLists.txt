@@ -14,6 +14,7 @@ set(HW_SOURCES
 )
 
 set(HW_MOCS
+  notepad.h
   notepadwin.h
 )
 

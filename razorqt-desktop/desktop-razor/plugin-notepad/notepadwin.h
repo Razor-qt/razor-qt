@@ -85,7 +85,6 @@ private:
 private slots:
     void save();
 
-public slots:
     void onSelectionChanged();
     void setBold();
     void setItalic();
