@@ -73,7 +73,13 @@ LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
     for (int row = 0; row < ui->sessionCombo->model()->rowCount(); row++)
     {
         QModelIndex index = ui->sessionCombo->model()->index(row, 0);
-        if (QString("razor") ==  ui->sessionCombo->model()->data(index, QLightDM::SessionsModel::KeyRole).toString())
+        bool isRazorSession;
+#ifdef USING_LIGHTDM_QT_1
+        isRazorSession = (QString("razor") == ui->sessionCombo->model()->data(index, QLightDM::SessionsModel::IdRole).toString());
+#else
+        isRazorSession = (QString("razor") == ui->sessionCombo->model()->data(index, QLightDM::SessionsModel::KeyRole).toString());
+#endif
+        if (isRazorSession)
         {
             ui->sessionCombo->setCurrentIndex(row);
             break;
