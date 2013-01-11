@@ -1,62 +1,62 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_VE" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="bg" version="2.0">
 <context>
     <name>MenuDiskItem</name>
     <message>
         <source>Click to access this device from other applications.</source>
-        <translation>Presione para acceder a este dispositivo desde la palicacion por defecto.</translation>
+        <translation>Натиснете, за да достъпите това устройство от други приложения.</translation>
     </message>
     <message>
         <source>Click to eject this disc.</source>
-        <translation>Presione para expulsar este disco.</translation>
+        <translation>Натиснете, за да извадите диск.</translation>
     </message>
 </context>
 <context>
     <name>MountButton</name>
     <message>
         <source>Removable media/devices manager</source>
-        <translation>Administrador de medios y dispositivos</translation>
+        <translation>Мениджър на преносими устройства/носители</translation>
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is connected.</source>
-        <translation>El dispositivo &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; está conectado.</translation>
+        <translation>Устройството &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; е свързано.</translation>
     </message>
     <message>
         <source>The device &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; is removed.</source>
-        <translation>El dispositivo &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; fue quitado.</translation>
+        <translation>Устройството &lt;b&gt;&lt;nobr&gt;&quot;%1&quot;&lt;/nobr&gt;&lt;/b&gt; е премахнато.</translation>
     </message>
 </context>
 <context>
     <name>Popup</name>
     <message>
         <source>No devices are available</source>
-        <translation>No hay dispositivos aun</translation>
+        <translation>Не са налични устройства</translation>
     </message>
 </context>
 <context>
     <name>RazorMountConfiguration</name>
     <message>
         <source>Razor Removable media manager settings</source>
-        <translation>Configuración de manejador de dispositivos Razor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation>Comportamiento</translation>
+        <translation>Поведение</translation>
     </message>
     <message>
         <source>When a device is connected </source>
-        <translation>Cuando un dispositivo es conectado</translation>
+        <translation>Когато устройството е свързано</translation>
     </message>
     <message>
         <source>Popup menu</source>
-        <translation>Menú emergente</translation>
+        <translation>Изскачащо меню</translation>
     </message>
     <message>
         <source>Show info</source>
-        <translation>Mostrar información</translation>
+        <translation>Показване на информация</translation>
     </message>
     <message>
         <source>Do nothing</source>
-        <translation>No hacer nada</translation>
+        <translation>Не прави нищо</translation>
     </message>
 </context>
 </TS>

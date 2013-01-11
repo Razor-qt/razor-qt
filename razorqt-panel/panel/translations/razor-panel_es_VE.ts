@@ -19,7 +19,7 @@
     </message>
     <message>
         <source>Use automatic sizing</source>
-        <translation>Tamaño automatico</translation>
+        <translation>Usar tamaño automático</translation>
     </message>
     <message>
         <source>Panel length &amp;&amp; position</source>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>Alignment:</source>
-        <translation>Alineacion:</translation>
+        <translation>Alineación:</translation>
     </message>
     <message>
         <source>Length:</source>
@@ -98,7 +98,7 @@
     </message>
     <message>
         <source>Add plugins ...</source>
-        <translation>Agregar plugins</translation>
+        <translation>Agregar complementos..</translation>
     </message>
 </context>
 <context>

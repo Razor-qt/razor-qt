@@ -74,7 +74,7 @@
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
-        <translation>Нет места что бы добавить еще один виджет</translation>
+        <translation>Нет места чтобы добавить еще один виджет</translation>
     </message>
     <message>
         <source>Remove Desktop Widget?</source>

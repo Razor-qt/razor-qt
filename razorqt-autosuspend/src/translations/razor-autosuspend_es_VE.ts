@@ -3,22 +3,22 @@
     <name>Battery</name>
     <message>
         <source>No battery!</source>
-        <translation>Falta la bateria!</translation>
+        <translation>No se detecto bateria!</translation>
     </message>
     <message>
         <source>Razor autosuspend could not find data about any battery - actions on power low will not work</source>
-        <translation>Razor autosuspension no puede encontrar informacion de ninguna bateria - acciones de ahorro de energia no estaran habilitadas.</translation>
+        <translation>Razor autosuspension no puede encontrar información de ninguna bateria - acciones de ahorro de energia no estaran funcionales</translation>
     </message>
 </context>
 <context>
     <name>BatteryInfo</name>
     <message>
         <source>Razor Autosuspend</source>
-        <translation type="unfinished"/>
+        <translation>Razor AutoSuspension</translation>
     </message>
     <message>
         <source>Battery info</source>
-        <translation>Informacion:</translation>
+        <translation>Información:</translation>
     </message>
     <message>
         <source>Energy Now:</source>
@@ -26,11 +26,11 @@
     </message>
     <message>
         <source>Updated:</source>
-        <translation>Actualizado:</translation>
+        <translation>Actualizada:</translation>
     </message>
     <message>
         <source>Technology:</source>
-        <translation>Tecnologia:</translation>
+        <translation>Tecnología:</translation>
     </message>
     <message>
         <source>Model:</source>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Energy rate:</source>
-        <translation>Nivel de energia:</translation>
+        <translation>Disponibilidad:</translation>
     </message>
     <message>
         <source>Voltage:</source>
@@ -46,11 +46,11 @@
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation>Diseño:</translation>
+        <translation>Nivel maximo original:</translation>
     </message>
     <message>
         <source>Energy Full:</source>
-        <translation>Nivel maximo:</translation>
+        <translation>Nivel maximo actual:</translation>
     </message>
     <message>
         <source>State:</source>
@@ -62,11 +62,11 @@
     </message>
     <message>
         <source>Lithium polymer</source>
-        <translation>Lito polimero</translation>
+        <translation>Lito polímero</translation>
     </message>
     <message>
         <source>Lithium iron phosphate</source>
-        <translation>Litio ion fosforo</translation>
+        <translation>Litio ion fósforo</translation>
     </message>
     <message>
         <source>Lead acid</source>
@@ -74,15 +74,15 @@
     </message>
     <message>
         <source>Nickel cadmium</source>
-        <translation>Nikel cadmio.</translation>
+        <translation>Niquel cadmio.</translation>
     </message>
     <message>
         <source>Nickel metal hydride</source>
-        <translation>Hibrido metal nikel</translation>
+        <translation>Hibrido metal niquel</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation>Desconocido</translation>
+        <translation>Material desconocido</translation>
     </message>
     <message>
         <source>Charging</source>
@@ -90,11 +90,11 @@
     </message>
     <message>
         <source>Discharging</source>
-        <translation>Consumiendose</translation>
+        <translation>Consumiéndose</translation>
     </message>
     <message>
         <source>Empty</source>
-        <translation>Vacia</translation>
+        <translation>Descargada</translation>
     </message>
     <message>
         <source>Fully charged</source>
@@ -106,7 +106,7 @@
     </message>
     <message>
         <source>Pending discharge</source>
-        <translation>Consumo pendiente</translation>
+        <translation>Para consumo</translation>
     </message>
 </context>
 <context>

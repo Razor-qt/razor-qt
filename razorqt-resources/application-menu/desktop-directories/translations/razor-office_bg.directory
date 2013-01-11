@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Office
 Comment=Office Applications
-Icon=applications-office
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
+
+
+# Translations
+Comment[bg]=Офис Приложения
 Name[bg]=Офис
-Comment[bg]=Офисни програми

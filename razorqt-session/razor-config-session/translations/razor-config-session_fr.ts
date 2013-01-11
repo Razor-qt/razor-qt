@@ -191,7 +191,7 @@
     </message>
     <message>
         <source>You need to restart desktop session (razor-session) to reload settings. Use logout from the main menu.</source>
-        <translation>Vous devez redémarrer votre session de bureau (razor-session) pour recharger les paramètres. Déconnectez-vous depuis le menu principal.</translation>
+        <translation>Vous devez redémarrer votre session pour recharger les paramètres. Déconnectez-vous depuis le menu principal.</translation>
     </message>
 </context>
 </TS>

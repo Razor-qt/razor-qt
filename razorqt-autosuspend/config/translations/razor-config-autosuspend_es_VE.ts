@@ -7,7 +7,7 @@
     </message>
     <message>
         <source>Show battery status icon in tray</source>
-        <translation>Mostrar estado de la bateria en la barra de sistema</translation>
+        <translation>Mostrar estado de la batería en icono de sistema</translation>
     </message>
 </context>
 <context>
@@ -18,11 +18,11 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>pantalla cerrada</translation>
+        <translation>Cerrar pantalla</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation>Accion:</translation>
+        <translation>Acción:</translation>
     </message>
     <message>
         <source>Nothing</source>
@@ -45,7 +45,7 @@
     <name>MainWindow</name>
     <message>
         <source>Razor Autosuspend Configuration</source>
-        <translation>Configuracion de Razor Autosuspend</translation>
+        <translation>Configuración de Razor Autosuspend</translation>
     </message>
     <message>
         <source>General</source>
@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Lid closed</source>
-        <translation>pantalla cerrada</translation>
+        <translation>Cerrar pantalla</translation>
     </message>
     <message>
         <source>Power Low</source>
-        <translation>Poca Energia</translation>
+        <translation>Baja energía</translation>
     </message>
 </context>
 <context>
@@ -68,11 +68,11 @@
     </message>
     <message>
         <source>Power low</source>
-        <translation>Baja energia</translation>
+        <translation>Baja energía</translation>
     </message>
     <message>
         <source>Action:</source>
-        <translation>Accion:</translation>
+        <translation>Acción:</translation>
     </message>
     <message>
         <source>Warning:</source>
@@ -84,7 +84,7 @@
     </message>
     <message>
         <source>Level is low at:</source>
-        <translation>Nivel bajo en:</translation>
+        <translation>Nivel es bajo, en:</translation>
     </message>
     <message>
         <source> %</source>
@@ -92,7 +92,7 @@
     </message>
     <message>
         <source>Nothing</source>
-        <translation>NAda</translation>
+        <translation>Nada</translation>
     </message>
     <message>
         <source>Sleep</source>

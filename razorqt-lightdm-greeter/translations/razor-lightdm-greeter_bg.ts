@@ -1,21 +1,21 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="bg" version="2.0">
 <context>
     <name>LoginForm</name>
     <message>
         <source>user id</source>
-        <translation>Compte d&apos;utilisateur</translation>
+        <translation>идентификация</translation>
     </message>
     <message>
         <source>password</source>
-        <translation>Mot de passe</translation>
+        <translation>парола</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation>Ouverture de session</translation>
+        <translation>Вписване</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation>Отказ</translation>
     </message>
 </context>
 </TS>

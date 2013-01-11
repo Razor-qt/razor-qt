@@ -15,7 +15,7 @@
     </message>
     <message>
         <source>&quot;Server Decides&quot; Time:</source>
-        <translation type="unfinished"/>
+        <translation>&quot;O Servidor Decide&quot; a vez:</translation>
     </message>
     <message>
         <source> sec</source>
@@ -71,12 +71,14 @@
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; No notifications daemon is running.
 A fallback will be used.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Aviso:&lt;/b&gt; Nenhum daemon de notificações está em execução.
+Um fallback será usado.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Warning:&lt;/b&gt; A third-party notifications daemon (%1) is running.
 These settings won&apos;t have an effect on it!</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Aviso:&lt;/b&gt; Uma parte do daemon (%1) de notificações está em execução. 
+Essas configurações não terão um efeito sobre ele!</translation>
     </message>
     <message>
         <source>Notification Summary</source>

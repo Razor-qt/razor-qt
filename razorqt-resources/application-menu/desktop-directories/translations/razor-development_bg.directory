@@ -1,11 +1,13 @@
 [Desktop Entry]
 Name=Programming
 Comment=Tools for software development
-Icon=applications-development
 Type=Directory
 
 #TRANSLATIONS_DIR=translations
 
 # Translations
-Name[bg]=Разработка
+
+
+# Translations
 Comment[bg]=Инструменти за разработка на софтуер
+Name[bg]=Програмиране

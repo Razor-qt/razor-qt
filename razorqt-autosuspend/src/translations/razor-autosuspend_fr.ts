@@ -46,11 +46,11 @@
     </message>
     <message>
         <source>Energy Full, Design:</source>
-        <translation type="unfinished"/>
+        <translation>Tension initiale à neuf :</translation>
     </message>
     <message>
         <source>Energy Full:</source>
-        <translation>Plein d&apos;énergie</translation>
+        <translation>Tension maximale actuelle :</translation>
     </message>
     <message>
         <source>State:</source>

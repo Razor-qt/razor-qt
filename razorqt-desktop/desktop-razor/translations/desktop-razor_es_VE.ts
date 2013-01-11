@@ -3,31 +3,31 @@
     <name>DesktopBackgroundDialog</name>
     <message>
         <source>Desktop Background Settings</source>
-        <translation type="unfinished"/>
+        <translation>Preferencias de fondo de escritorio</translation>
     </message>
     <message>
         <source>Background &amp;Color...</source>
-        <translation type="unfinished"/>
+        <translation>Color y fondo...</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>Previsualizar</translation>
     </message>
     <message>
         <source>Get Wallpaper Image...</source>
-        <translation type="unfinished"/>
+        <translation>Obtener imagen de mis documentos..</translation>
     </message>
     <message>
         <source>Get System Wallpaper...</source>
-        <translation type="unfinished"/>
+        <translation>Obtener imagen del sistema..</translation>
     </message>
     <message>
         <source>Keep Image Aspect Ratio</source>
-        <translation type="unfinished"/>
+        <translation>Mantener relación de aspecto</translation>
     </message>
     <message>
         <source>Select Background Color</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar color de fondo</translation>
     </message>
     <message>
         <source>Select Wallpaper Image</source>
@@ -35,83 +35,83 @@
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg *.jpeg *.svg)</source>
-        <translation type="unfinished"/>
+        <translation>Imágenes (*.png *xpm *jpg *jpeg *svg)</translation>
     </message>
     <message>
         <source>Select Sytem Wallpaper Image</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar imagen de fondo de sistema</translation>
     </message>
 </context>
 <context>
     <name>DesktopScene</name>
     <message>
         <source>Unlock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>Desbloquear escritorio..</translation>
     </message>
     <message>
         <source>Add New Desktop Widget...</source>
-        <translation type="unfinished"/>
+        <translation>Agregar nuevo complemento de escritorio..</translation>
     </message>
     <message>
         <source>Remove Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>Remover complemento...</translation>
     </message>
     <message>
         <source>Configure Plugin...</source>
-        <translation type="unfinished"/>
+        <translation>Configurar complemento..</translation>
     </message>
     <message>
         <source>Set Desktop Background...</source>
-        <translation type="unfinished"/>
+        <translation>Asignar fondo de escritorio..</translation>
     </message>
     <message>
         <source>About Razor...</source>
-        <translation type="unfinished"/>
+        <translation>Acerca de Razor...</translation>
     </message>
     <message>
         <source>New Desktop Widget</source>
-        <translation type="unfinished"/>
+        <translation>Nuevo complemento de escritorio..</translation>
     </message>
     <message>
         <source>There is no free space to add new desktop widget</source>
-        <translation type="unfinished"/>
+        <translation>No hay suficiente espacio para otro complemento</translation>
     </message>
     <message>
         <source>Remove Desktop Widget?</source>
-        <translation type="unfinished"/>
+        <translation>Remover complemento de escritorio?</translation>
     </message>
     <message>
         <source>Really remove this widget &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Realmente remover este complemento &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Lock Desktop...</source>
-        <translation type="unfinished"/>
+        <translation>Bloquear escritorio..</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>No info available</source>
-        <translation type="unfinished"/>
+        <translation>Ninguna informacion disponible</translation>
     </message>
 </context>
 <context>
     <name>RazorWorkSpace</name>
     <message>
         <source>Background Change</source>
-        <translation type="unfinished"/>
+        <translation>Cambio de imagen de fondo</translation>
     </message>
     <message>
         <source>Do you want to change desktop background?</source>
-        <translation type="unfinished"/>
+        <translation>Quiere cambiar la imagen de fondo de escritorio?</translation>
     </message>
 </context>
 <context>
     <name>RazorWorkSpaceManager</name>
     <message>
         <source>Fully featured desktop implementation with all Razor&apos;s bells and whistles</source>
-        <translation type="unfinished"/>
+        <translation>Completo e imponente implementación de escritorio con todos los lujos de Razor.</translation>
     </message>
 </context>
 </TS>
