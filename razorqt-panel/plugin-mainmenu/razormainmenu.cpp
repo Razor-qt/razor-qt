@@ -132,8 +132,15 @@ void RazorMainMenu::showMenu()
 
     }
 
-    QPoint pos(x, y);
-    mMenu->exec(pos);
+    menuPos = QPoint(x, y);
+
+    activateWindow();
+    QTimer::singleShot(1, this, SLOT(afterMenuActivated()));
+}
+
+void RazorMainMenu::afterMenuActivated()
+{
+    mMenu->exec(menuPos);
 }
 
 
