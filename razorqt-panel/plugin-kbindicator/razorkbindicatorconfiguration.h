@@ -54,7 +54,7 @@ public slots:
     void on_typeCOB_currentIndexChanged(int);
     void on_sourceCOB_currentIndexChanged(int);
     void on_maximumHS_valueChanged(int);
-    void on_fontB_clicked(void);
+    void on_fontB_clicked();
 
 
 private:

@@ -25,29 +25,29 @@
 
 
 #include <QtCore/QString>
-#include "version_p.hpp"
+#include "version_p.h"
 
 
 namespace SysStat {
 
 namespace version {
 
-QString verbose(void)
+QString verbose()
 {
     return QString("%1.%2.%3").arg(MAJOR_VERSION_STR).arg(MINOR_VERSION_STR).arg(PATCH_VERSION_STR);
 }
 
-int major_number(void)
+int majorNumber()
 {
     return MAJOR_VERSION;
 }
 
-int minor_number(void)
+int minorNumber()
 {
     return MINOR_VERSION;
 }
 
-int patch_number(void)
+int patchNumber()
 {
     return PATCH_VERSION;
 }

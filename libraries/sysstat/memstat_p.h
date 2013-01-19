@@ -24,48 +24,38 @@
 ** END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef LIBSYSSTAT__NET_STAT__PRIVATE__INCLUDED
-#define LIBSYSSTAT__NET_STAT__PRIVATE__INCLUDED
+#ifndef LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
+#define LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
 
 
 #include <QtCore/QObject>
 #include <QtCore/QtGlobal>
-#include <QtCore/QMap>
 
-#include "basestat_p.hpp"
-#include "netstat.hpp"
+#include "basestat_p.h"
+#include "memstat.h"
 
 
 namespace SysStat {
 
-class NetStatPrivate : public BaseStatPrivate
+class MemStatPrivate : public BaseStatPrivate
 {
     Q_OBJECT
 
 public:
-    NetStatPrivate(NetStat *parent = NULL);
-    ~NetStatPrivate();
+    MemStatPrivate(MemStat *parent = NULL);
+    ~MemStatPrivate();
 
 signals:
-    void update(unsigned received, unsigned transmitted);
+    void memoryUpdate(float apps, float buffers, float cached);
+    void swapUpdate(float used);
 
 private slots:
-    void timeout(void);
+    void timeout();
 
 private:
-    QString defaultSource(void);
-
-    typedef struct Values
-    {
-        Values(void);
-
-        qulonglong received;
-        qulonglong transmitted;
-    } Values;
-    typedef QMap<QString, Values> NamedValues;
-    NamedValues mPrevious;
+    QString defaultSource();
 };
 
 }
 
-#endif //LIBSYSSTAT__NET_STAT__PRIVATE__INCLUDED
+#endif //LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED

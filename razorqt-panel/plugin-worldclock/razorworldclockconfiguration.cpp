@@ -147,7 +147,7 @@ void RazorWorldClockConfiguration::dialogButtonsAction(QAbstractButton *button)
         close();
 }
 
-void RazorWorldClockConfiguration::updateTimeZoneButtons(void)
+void RazorWorldClockConfiguration::updateTimeZoneButtons()
 {
     int selectedCount = ui->timeZonesLW->selectedItems().count();
     int allCount = ui->timeZonesLW->count();
@@ -193,7 +193,7 @@ void RazorWorldClockConfiguration::updateTimeZoneButtons(void)
     ui->moveDownPB->setEnabled(canMoveDown);
 }
 
-void RazorWorldClockConfiguration::addTimeZone(void)
+void RazorWorldClockConfiguration::addTimeZone()
 {
     if (!mConfigurationTimeZones)
         mConfigurationTimeZones = new RazorWorldClockConfigurationTimeZones(this);
@@ -212,7 +212,7 @@ void RazorWorldClockConfiguration::addTimeZone(void)
     saveSettings();
 }
 
-void RazorWorldClockConfiguration::removeTimeZone(void)
+void RazorWorldClockConfiguration::removeTimeZone()
 {
     foreach (QListWidgetItem *item, ui->timeZonesLW->selectedItems())
     {
@@ -242,7 +242,7 @@ void RazorWorldClockConfiguration::setDefault(QListWidgetItem *item)
     mDefaultTimeZone = item->text();
 }
 
-void RazorWorldClockConfiguration::setTimeZoneAsDefault(void)
+void RazorWorldClockConfiguration::setTimeZoneAsDefault()
 {
     setBold(ui->timeZonesLW->findItems(mDefaultTimeZone, Qt::MatchExactly)[0], false);
 
@@ -251,7 +251,7 @@ void RazorWorldClockConfiguration::setTimeZoneAsDefault(void)
     saveSettings();
 }
 
-void RazorWorldClockConfiguration::moveTimeZoneUp(void)
+void RazorWorldClockConfiguration::moveTimeZoneUp()
 {
     int m = ui->timeZonesLW->count();
     bool skipTop = true;
@@ -272,7 +272,7 @@ void RazorWorldClockConfiguration::moveTimeZoneUp(void)
     saveSettings();
 }
 
-void RazorWorldClockConfiguration::moveTimeZoneDown(void)
+void RazorWorldClockConfiguration::moveTimeZoneDown()
 {
     int m = ui->timeZonesLW->count();
     bool skipBottom = true;

@@ -109,7 +109,7 @@ void RazorSysStatColours::setColours(const Colours &colours)
     ui->buttons->button(QDialogButtonBox::Apply)->setEnabled(false);
 }
 
-void RazorSysStatColours::applyColoursToButtons(void)
+void RazorSysStatColours::applyColoursToButtons()
 {
     Colours::ConstIterator M = mColours.constEnd();
     for (Colours::ConstIterator I = mColours.constBegin(); I != M; ++I)
@@ -149,7 +149,7 @@ void RazorSysStatColours::on_buttons_clicked(QAbstractButton *button)
     }
 }
 
-void RazorSysStatColours::restoreDefaults(void)
+void RazorSysStatColours::restoreDefaults()
 {
     bool wereTheSame = mColours == mDefaultColours;
 
@@ -159,7 +159,7 @@ void RazorSysStatColours::restoreDefaults(void)
     ui->buttons->button(QDialogButtonBox::Apply)->setEnabled(!wereTheSame);
 }
 
-void RazorSysStatColours::reset(void)
+void RazorSysStatColours::reset()
 {
     bool wereTheSame = mColours == mInitialColours;
 
@@ -169,19 +169,19 @@ void RazorSysStatColours::reset(void)
     ui->buttons->button(QDialogButtonBox::Apply)->setEnabled(!wereTheSame);
 }
 
-void RazorSysStatColours::apply(void)
+void RazorSysStatColours::apply()
 {
     emit coloursChanged();
 
     ui->buttons->button(QDialogButtonBox::Apply)->setEnabled(false);
 }
 
-RazorSysStatColours::Colours RazorSysStatColours::colours(void) const
+RazorSysStatColours::Colours RazorSysStatColours::colours() const
 {
     return mColours;
 }
 
-RazorSysStatColours::Colours RazorSysStatColours::defaultColours(void) const
+RazorSysStatColours::Colours RazorSysStatColours::defaultColours() const
 {
     return mDefaultColours;
 }

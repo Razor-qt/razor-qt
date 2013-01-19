@@ -32,7 +32,7 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-#include <sysstat/sysstat_global.hpp>
+#include <sysstat/sysstat_global.h>
 
 
 namespace SysStat {
@@ -47,7 +47,7 @@ public:
     BaseStat(QObject *parent = NULL);
     ~BaseStat();
 
-    QStringList sources(void) const;
+    QStringList sources() const;
 
 signals:
     void updateIntervalChanged(int);
@@ -58,13 +58,13 @@ public:
     Q_PROPERTY(QString monitoredSource READ monitoredSource WRITE setMonitoredSource RESET monitorDefaultSource NOTIFY monitoredSourceChanged)
 
 public slots:
-    int updateInterval(void) const;
+    int updateInterval() const;
     void setUpdateInterval(int msec);
-    void stopUpdating(void);
+    void stopUpdating();
 
-    QString monitoredSource(void) const;
+    QString monitoredSource() const;
     void setMonitoredSource(const QString &Source);
-    void monitorDefaultSource(void);
+    void monitorDefaultSource();
 
 protected:
     BaseStatPrivate* baseimpl;

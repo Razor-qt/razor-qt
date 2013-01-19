@@ -41,7 +41,7 @@ public:
 
     bool getLockStatus(int bit);
 
-    static RazorKbIndicatorEventFilter* instance(void);
+    static RazorKbIndicatorEventFilter* instance();
 
 signals:
     void indicatorsChanged(unsigned int, unsigned int);
@@ -53,7 +53,7 @@ private:
     int XkbEventBase;
     QAbstractEventDispatcher::EventFilter oldEventFilter;
 
-    bool initXkbExtension(void);
+    bool initXkbExtension();
     bool X11_eventFilter(void *message);
 };
 

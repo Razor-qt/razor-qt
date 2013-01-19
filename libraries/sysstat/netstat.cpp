@@ -24,8 +24,8 @@
 ** END_COMMON_COPYRIGHT_HEADER */
 
 
-#include "netstat.hpp"
-#include "netstat_p.hpp"
+#include "netstat.h"
+#include "netstat_p.h"
 
 
 namespace SysStat {
@@ -56,7 +56,7 @@ NetStatPrivate::~NetStatPrivate()
 {
 }
 
-void NetStatPrivate::timeout(void)
+void NetStatPrivate::timeout()
 {
     QStringList rows(readAllFile("/proc/net/dev").split(QChar('\n'), QString::SkipEmptyParts));
 
@@ -101,12 +101,12 @@ void NetStatPrivate::timeout(void)
     }
 }
 
-QString NetStatPrivate::defaultSource(void)
+QString NetStatPrivate::defaultSource()
 {
     return "lo";
 }
 
-NetStatPrivate::Values::Values(void)
+NetStatPrivate::Values::Values()
     : received(0)
     , transmitted(0)
 {

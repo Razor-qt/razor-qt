@@ -114,7 +114,7 @@ RazorWorldClock::~RazorWorldClock()
     u_cleanup();
 }
 
-void RazorWorldClock::timeout(void)
+void RazorWorldClock::timeout()
 {
     if (mFormat)
     {
@@ -138,7 +138,7 @@ void RazorWorldClock::timeout(void)
     }
 }
 
-void RazorWorldClock::updateFormat(void)
+void RazorWorldClock::updateFormat()
 {
     if (mFormat)
         delete mFormat;
@@ -213,7 +213,7 @@ void RazorWorldClock::restartTimer(int timerInterval)
     }
 }
 
-void RazorWorldClock::updateTimezone(void)
+void RazorWorldClock::updateTimezone()
 {
     if (mFormat)
     {
@@ -413,12 +413,12 @@ void RazorWorldClock::popupDialog(bool withCalendar)
     }
 }
 
-void RazorWorldClock::leftMouseButtonClicked(void)
+void RazorWorldClock::leftMouseButtonClicked()
 {
     popupDialog(true);
 }
 
-void RazorWorldClock::middleMouseButtonClicked(void)
+void RazorWorldClock::middleMouseButtonClicked()
 {
     popupDialog(false);
 }

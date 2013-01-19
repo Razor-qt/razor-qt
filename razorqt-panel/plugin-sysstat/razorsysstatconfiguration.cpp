@@ -155,7 +155,7 @@ void RazorSysStatConfiguration::on_maximumHS_valueChanged(int value)
     saveSettings();
 }
 
-void RazorSysStatConfiguration::coloursChanged(void)
+void RazorSysStatConfiguration::coloursChanged()
 {
     const RazorSysStatColours::Colours &colours = mColoursDialog->colours();
 
@@ -177,7 +177,7 @@ void RazorSysStatConfiguration::coloursChanged(void)
     mSettings.setValue("net/transmittedColour", colours["netTransmitted"].name());
 }
 
-void RazorSysStatConfiguration::on_customColoursB_clicked(void)
+void RazorSysStatConfiguration::on_customColoursB_clicked()
 {
     if (!mColoursDialog)
     {

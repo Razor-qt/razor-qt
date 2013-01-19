@@ -24,34 +24,59 @@
 ** END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef LIBSYSSTAT__NET_STAT__INCLUDED
-#define LIBSYSSTAT__NET_STAT__INCLUDED
+#ifndef LIBSYSSTAT__BASE_STAT__PRIVATE__INCLUDED
+#define LIBSYSSTAT__BASE_STAT__PRIVATE__INCLUDED
 
 
 #include <QtCore/QObject>
+#include <QtCore/QtGlobal>
+#include <QtCore/QTimer>
+#include <QtCore/QTime>
+#include <QtCore/QStringList>
 
-#include <sysstat/basestat.hpp>
+#include "cpustat.h"
 
 
 namespace SysStat {
 
-class NetStatPrivate;
-
-class SYSSTATSHARED_EXPORT NetStat : public BaseStat
+class BaseStatPrivate : public QObject
 {
     Q_OBJECT
 
 public:
-    NetStat(QObject *parent = NULL);
-    ~NetStat();
+    BaseStatPrivate(BaseStat *parent = NULL);
+    ~BaseStatPrivate();
 
-signals:
-    void update(unsigned received, unsigned transmitted);
+    QStringList sources() const;
+
+    bool timerIsActive() const;
+    int updateInterval() const;
+    void setUpdateInterval(int msec);
+    void stopUpdating();
+
+    QString monitoredSource() const;
+    void setMonitoredSource(const QString &Source);
+    void monitorDefaultSource();
+
+private slots:
+    void synchroTimeout();
 
 protected:
-    NetStatPrivate* impl;
+    virtual QString defaultSource() = 0;
+
+    QString readAllFile(const char *filename);
+
+    QTimer *mTimer;
+    QTimer *mSynchroTimer;
+    QString mSource;
+    QStringList mSources;
+
+    int mLastSynchro;
+
+    virtual void intervalChanged();
+    virtual void sourceChanged();
 };
 
 }
 
-#endif //LIBSYSSTAT__NET_STAT__INCLUDED
+#endif //LIBSYSSTAT__BASE_STAT__PRIVATE__INCLUDED

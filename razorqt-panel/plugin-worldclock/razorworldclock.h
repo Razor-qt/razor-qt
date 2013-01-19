@@ -60,11 +60,11 @@ protected slots:
     virtual void showConfigureDialog();
 
 private slots:
-    void synchroTimeout(void);
-    void timeout(void);
+    void synchroTimeout();
+    void timeout();
     void wheelScrolled(int);
-    void leftMouseButtonClicked(void);
-    void middleMouseButtonClicked(void);
+    void leftMouseButtonClicked();
+    void middleMouseButtonClicked();
 
 private:
     ActiveLabel *mContent;
@@ -95,9 +95,9 @@ private:
     icu::DateFormat *mFormat;
     icu::UnicodeString mLastShownText;
 
-    void updateFormat(void);
+    void updateFormat();
     void restartTimer(int);
-    void updateTimezone(void);
+    void updateTimezone();
 
     void popupDialog(bool);
 };
@@ -112,8 +112,8 @@ public:
 
 signals:
     void wheelScrolled(int);
-    void leftMouseButtonClicked(void);
-    void middleMouseButtonClicked(void);
+    void leftMouseButtonClicked();
+    void middleMouseButtonClicked();
 
 protected:
     void wheelEvent(QWheelEvent *);

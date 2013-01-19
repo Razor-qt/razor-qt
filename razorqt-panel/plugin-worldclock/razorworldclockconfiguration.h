@@ -71,12 +71,12 @@ private slots:
     */
     void dialogButtonsAction(QAbstractButton *);
 
-    void updateTimeZoneButtons(void);
-    void addTimeZone(void);
-    void removeTimeZone(void);
-    void setTimeZoneAsDefault(void);
-    void moveTimeZoneUp(void);
-    void moveTimeZoneDown(void);
+    void updateTimeZoneButtons();
+    void addTimeZone();
+    void removeTimeZone();
+    void setTimeZoneAsDefault();
+    void moveTimeZoneUp();
+    void moveTimeZoneDown();
 
 private:
     QString mDefaultTimeZone;

@@ -33,8 +33,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QPair>
 
-#include "basestat_p.hpp"
-#include "cpustat.hpp"
+#include "basestat_p.h"
+#include "cpustat.h"
 
 
 namespace SysStat {
@@ -47,9 +47,9 @@ public:
     CpuStatPrivate(CpuStat *parent = NULL);
     ~CpuStatPrivate();
 
-    void updateSources(void);
+    void updateSources();
 
-    CpuStat::Monitoring monitoring(void) const;
+    CpuStat::Monitoring monitoring() const;
     void setMonitoring(CpuStat::Monitoring value);
 
     uint minFreq(const QString &source) const;
@@ -61,18 +61,18 @@ signals:
     void update(float user, float nice, float system, float other, float frequencyRate, uint frequency);
 
 private slots:
-    void timeout(void);
+    void timeout();
 
 protected:
-    void intervalChanged(void);
-    void sourceChanged(void);
+    void intervalChanged();
+    void sourceChanged();
 
 private:
-    QString defaultSource(void);
+    QString defaultSource();
 
     typedef struct Values
     {
-        Values(void);
+        Values();
 
         qulonglong user;
         qulonglong nice;
@@ -81,9 +81,9 @@ private:
         qulonglong other;
         qulonglong total;
 
-        void sum(void);
+        void sum();
 
-        void clear(void);
+        void clear();
     } Values;
     Values mPrevious;
 
@@ -99,7 +99,7 @@ private:
     float mIntervalMin;
     float mIntervalMax;
 
-    void recalculateMinMax(void);
+    void recalculateMinMax();
 };
 
 }
