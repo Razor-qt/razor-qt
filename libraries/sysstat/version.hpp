@@ -32,9 +32,9 @@ namespace SysStat {
 
     namespace version {
         QString verbose(void);
-        int major(void);
-        int minor(void);
-        int patch(void);
+        int major_number(void);
+        int minor_number(void);
+        int patch_number(void);
     }
 }
 

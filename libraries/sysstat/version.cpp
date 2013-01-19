@@ -37,17 +37,17 @@ QString verbose(void)
     return QString("%1.%2.%3").arg(MAJOR_VERSION_STR).arg(MINOR_VERSION_STR).arg(PATCH_VERSION_STR);
 }
 
-int major(void)
+int major_number(void)
 {
     return MAJOR_VERSION;
 }
 
-int minor(void)
+int minor_number(void)
 {
     return MINOR_VERSION;
 }
 
-int patch(void)
+int patch_number(void)
 {
     return PATCH_VERSION;
 }
