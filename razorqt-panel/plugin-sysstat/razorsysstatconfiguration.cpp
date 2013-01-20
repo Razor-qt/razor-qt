@@ -31,9 +31,9 @@
 #include "razorsysstatutils.h"
 #include "razorsysstatcolours.h"
 
-#include <sysstat/cpustat.hpp>
-#include <sysstat/memstat.hpp>
-#include <sysstat/netstat.hpp>
+#include <sysstat/cpustat.h>
+#include <sysstat/memstat.h>
+#include <sysstat/netstat.h>
 
 
 RazorSysStatConfiguration::RazorSysStatConfiguration(QSettings &settings, QWidget *parent) :
