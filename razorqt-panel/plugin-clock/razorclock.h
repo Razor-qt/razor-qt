@@ -76,7 +76,7 @@ private:
     bool mUseUTC;
     Qt::DayOfWeek mFirstDayOfWeek;
 
-    QDateTime currentDateTime(void);
+    QDateTime currentDateTime();
     void showTime(const QDateTime &);
     void restartTimer(const QDateTime&);
 

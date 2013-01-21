@@ -102,7 +102,7 @@ RazorClock::~RazorClock()
     delete mContent;
 }
 
-QDateTime RazorClock::currentDateTime(void)
+QDateTime RazorClock::currentDateTime()
 {
 #if QT_VERSION < 0x040700
     return QDateTime(mUseUTC ? QDateTime::currentDateTime().toUTC() : QDateTime::currentDateTime());

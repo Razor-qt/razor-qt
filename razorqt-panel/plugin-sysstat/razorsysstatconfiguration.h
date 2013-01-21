@@ -59,10 +59,10 @@ public slots:
 
     void on_typeCOB_currentIndexChanged(int);
     void on_maximumHS_valueChanged(int);
-    void on_customColoursB_clicked(void);
+    void on_customColoursB_clicked();
     void on_buttons_clicked(QAbstractButton *);
 
-    void coloursChanged(void);
+    void coloursChanged();
 
 signals:
     void maximumNetSpeedChanged(QString);

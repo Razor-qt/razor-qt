@@ -33,7 +33,7 @@
 #include <QtCore/QLocale>
 
 
-Qt::DayOfWeek firstDayOfWeek(void);
+Qt::DayOfWeek firstDayOfWeek();
 
 
 #endif // RAZORCLOCK_CALENDAR_UTILS_H

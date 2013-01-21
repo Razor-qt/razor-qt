@@ -30,6 +30,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QStringList>
 #include <QtCore/QTextCodec>
+#include <QtGui/QTextDocument>
 
 void fillLangguages(QMap<QString, QString> *languages)
 {
@@ -400,8 +401,6 @@ Translator::Translator(const QString &englishName, const QString &nativeName, co
         mNativeName = nativeName;
 
     mContact = contact;
-    mContact = mContact.remove("mailto:");
-    mContact = mContact.remove("http:");
 
     if (mNativeName.isEmpty())
         mInfo = QString("%1").arg(mEnglishName);
@@ -410,10 +409,12 @@ Translator::Translator(const QString &englishName, const QString &nativeName, co
 
     if (!mContact.isEmpty())
     {
-        if (contact.contains("@"))
-            mInfo = QString(" <a href='mailto:%1'>%2</a>").arg(contact, mInfo);
+        if (mContact.contains(QRegExp("^(https?|mailto):")))
+            mInfo = QString(" <a href='%1'>%2</a>").arg(contact, Qt::escape(mInfo));
+        else if (contact.contains("@") || contact.contains("<"))
+            mInfo = QString(" <a href='mailto:%1'>%2</a>").arg(contact, Qt::escape(mInfo));
         else
-            mInfo = QString(" <a href='http:%1'>%2</a>").arg(contact, mInfo);
+            mInfo = QString(" <a href='http://%1'>%2</a>").arg(contact, Qt::escape(mInfo));
     }
 }
 

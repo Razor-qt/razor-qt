@@ -2,3 +2,5 @@
 /usr/bin/razor-config-notificationd
 /usr/share/applications/razor-config-notificationd.desktop
 /etc/xdg/autostart/razor-notifications.desktop
+/usr/share/razor/razor-notificationd/razor-notificationd_*.qm
+/usr/share/razor/razor-config-notificationd/razor-config-notificationd_*.qm

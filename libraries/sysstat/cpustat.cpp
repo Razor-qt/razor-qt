@@ -26,8 +26,8 @@
 
 #include <unistd.h>
 
-#include "cpustat.hpp"
-#include "cpustat_p.hpp"
+#include "cpustat.h"
+#include "cpustat_p.h"
 
 
 namespace SysStat {
@@ -58,7 +58,7 @@ void CpuStatPrivate::addSource(const QString &source)
     }
 }
 
-void CpuStatPrivate::updateSources(void)
+void CpuStatPrivate::updateSources()
 {
     mSources.clear();
 
@@ -103,17 +103,17 @@ CpuStatPrivate::~CpuStatPrivate()
 {
 }
 
-void CpuStatPrivate::intervalChanged(void)
+void CpuStatPrivate::intervalChanged()
 {
     recalculateMinMax();
 }
 
-void CpuStatPrivate::sourceChanged(void)
+void CpuStatPrivate::sourceChanged()
 {
     recalculateMinMax();
 }
 
-void CpuStatPrivate::recalculateMinMax(void)
+void CpuStatPrivate::recalculateMinMax()
 {
     int cores = 1;
     if (mSource == "cpu")
@@ -123,7 +123,7 @@ void CpuStatPrivate::recalculateMinMax(void)
     mIntervalMax = static_cast<float>(mTimer->interval()) / 1000 * static_cast<float>(mUserHz) * static_cast<float>(cores) * 1.25; // +25%
 }
 
-void CpuStatPrivate::timeout(void)
+void CpuStatPrivate::timeout()
 {
     if ( (mMonitoring == CpuStat::LoadOnly)
       || (mMonitoring == CpuStat::LoadAndFrequency) )
@@ -260,12 +260,12 @@ void CpuStatPrivate::timeout(void)
     }
 }
 
-QString CpuStatPrivate::defaultSource(void)
+QString CpuStatPrivate::defaultSource()
 {
     return "cpu";
 }
 
-CpuStatPrivate::Values::Values(void)
+CpuStatPrivate::Values::Values()
     : user(0)
     , nice(0)
     , system(0)
@@ -275,17 +275,17 @@ CpuStatPrivate::Values::Values(void)
 {
 }
 
-void CpuStatPrivate::Values::sum(void)
+void CpuStatPrivate::Values::sum()
 {
     total = user + nice + system + idle + other;
 }
 
-void CpuStatPrivate::Values::clear(void)
+void CpuStatPrivate::Values::clear()
 {
     total = user = nice = system = idle = other = 0;
 }
 
-CpuStat::Monitoring CpuStatPrivate::monitoring(void) const
+CpuStat::Monitoring CpuStatPrivate::monitoring() const
 {
     return mMonitoring;
 }
@@ -311,12 +311,12 @@ CpuStat::~CpuStat()
 {
 }
 
-void CpuStat::updateSources(void)
+void CpuStat::updateSources()
 {
     dynamic_cast<CpuStatPrivate*>(impl)->updateSources();
 }
 
-CpuStat::Monitoring CpuStat::monitoring(void) const
+CpuStat::Monitoring CpuStat::monitoring() const
 {
     return impl->monitoring();
 }

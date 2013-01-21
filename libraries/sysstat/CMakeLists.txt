@@ -13,20 +13,20 @@ find_package(Qt4 REQUIRED)
 
 
 set(SYSSTAT_PUBLIC_HDRS
-    version.hpp
-    sysstat_global.hpp
-    basestat.hpp
-    cpustat.hpp
-    memstat.hpp
-    netstat.hpp
+    version.h
+    sysstat_global.h
+    basestat.h
+    cpustat.h
+    memstat.h
+    netstat.h
 )
 
 set(SYSSTAT_PRIVATE_HDRS
-    version_p.hpp
-    basestat_p.hpp
-    cpustat_p.hpp
-    memstat_p.hpp
-    netstat_p.hpp
+    version_p.h
+    basestat_p.h
+    cpustat_p.h
+    memstat_p.h
+    netstat_p.h
 )
 
 set(SYSSTAT_SRCS
@@ -38,14 +38,14 @@ set(SYSSTAT_SRCS
 )
 
 set(SYSSTAT_MOCS
-    basestat.hpp
-    cpustat.hpp
-    memstat.hpp
-    netstat.hpp
-    basestat_p.hpp
-    cpustat_p.hpp
-    memstat_p.hpp
-    netstat_p.hpp
+    basestat.h
+    cpustat.h
+    memstat.h
+    netstat.h
+    basestat_p.h
+    cpustat_p.h
+    memstat_p.h
+    netstat_p.h
 )
 
 

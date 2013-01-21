@@ -28,9 +28,9 @@
 #include "razorsysstat.h"
 #include "razorsysstatutils.h"
 
-#include <sysstat/cpustat.hpp>
-#include <sysstat/memstat.hpp>
-#include <sysstat/netstat.hpp>
+#include <sysstat/cpustat.h>
+#include <sysstat/memstat.h>
+#include <sysstat/netstat.h>
 
 #include <QtCore/QTimer>
 #include <QtCore/qmath.h>
@@ -59,6 +59,8 @@ RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *
 
     this->layout()->setContentsMargins(0, 0, 0, 0);
     this->layout()->setSpacing(0);
+
+    mContent->setMinimumSize(2, 2);
 
     // qproperty of font type doesn't work with qss, so fake QLabel is used instead
     connect(mFakeTitle, SIGNAL(fontChanged(QFont)), mContent, SLOT(setTitleFont(QFont)));
@@ -137,7 +139,7 @@ RazorSysStatContent::~RazorSysStatContent()
 
 #undef QSS_GET_COLOUR
 #define QSS_GET_COLOUR(GETNAME) \
-QColor RazorSysStatContent::GETNAME##Colour(void) const \
+QColor RazorSysStatContent::GETNAME##Colour() const \
 { \
     return mThemeColours.GETNAME##Colour; \
 }
@@ -184,7 +186,7 @@ QSS_NET_COLOUR(netTransmitted, setNetTransmitted)
 #undef QSS_COLOUR
 #undef QSS_GET_COLOUR
 
-void RazorSysStatContent::mixNetColours(void)
+void RazorSysStatContent::mixNetColours()
 {
     QColor netReceivedColour_hsv = mColours.netReceivedColour.toHsv();
     QColor netTransmittedColour_hsv = mColours.netTransmittedColour.toHsv();
@@ -205,7 +207,7 @@ void RazorSysStatContent::setTitleFont(QFont value)
     update();
 }
 
-void RazorSysStatContent::updateTitleFontPixelHeight(void)
+void RazorSysStatContent::updateTitleFontPixelHeight()
 {
     if (mTitleLabel.isEmpty())
         mTitleFontPixelHeight = 0;
@@ -360,9 +362,9 @@ void RazorSysStatContent::resizeEvent(QResizeEvent * /*event*/)
     reset();
 }
 
-void RazorSysStatContent::reset(void)
+void RazorSysStatContent::reset()
 {
-    setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 0, mPanel->isHorizontal() ? 0 : mMinimalSize);
+    setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 2, mPanel->isHorizontal() ? 2 : mMinimalSize);
 
     mHistoryOffset = 0;
     mHistoryImage = QImage(width(), 100, QImage::Format_ARGB32);
@@ -382,7 +384,7 @@ T clamp(const T &value, const T &min, const T &max)
 }
 
 // QPainter.drawLine with pen set to Qt::transparent doesn't clear anything
-void RazorSysStatContent::clearLine(void)
+void RazorSysStatContent::clearLine()
 {
     QRgb bg = QColor(Qt::transparent).rgba();
     for (int i = 0; i < 100; ++i)
@@ -513,8 +515,8 @@ void RazorSysStatContent::swapUpdate(float used)
 
 void RazorSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 {
-    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
-    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, 0.0), 1.0);
+    qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
+    qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
     if (mLogarithmicScale)
     {
         min_value = qLn(min_value * (mLogScaleMax - 1.0) + 1.0) / qLn(2.0) / static_cast<qreal>(mLogScaleSteps);
@@ -563,6 +565,9 @@ void RazorSysStatContent::paintEvent(QPaintEvent *event)
             p.drawText(QRectF(0, 0, width(), graphTop), Qt::AlignHCenter | Qt::AlignVCenter, mTitleLabel);
         }
     }
+
+    if (graphHeight < 1)
+        graphHeight = 1;
 
     p.scale(1.0, -1.0);
 

@@ -35,7 +35,7 @@
 
 #if QT_VERSION >= 0x040800
 
-Qt::DayOfWeek firstDayOfWeek(void)
+Qt::DayOfWeek firstDayOfWeek()
 {
     return QLocale::system().firstDayOfWeek();
 }
@@ -44,7 +44,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
 
 #include <boost/locale/date_time.hpp>
 
-Qt::DayOfWeek firstDayOfWeek(void)
+Qt::DayOfWeek firstDayOfWeek()
 {
     return (boost::locale::calendar().first_day_of_week() + 6) % 7;
 }
@@ -54,7 +54,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
 #include <langinfo.h>
 #include <QtCore/QDebug>
 
-Qt::DayOfWeek firstDayOfWeek(void)
+Qt::DayOfWeek firstDayOfWeek()
 {
     static char *locale = NULL;
     if (!locale)
@@ -94,7 +94,7 @@ Qt::DayOfWeek firstDayOfWeek(void)
 
 #else
 
-Qt::DayOfWeek firstDayOfWeek(void)
+Qt::DayOfWeek firstDayOfWeek()
 {
     return Qt::Sunday;
 }
