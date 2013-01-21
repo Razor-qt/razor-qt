@@ -161,14 +161,21 @@ void RazorPanel::saveSettings(bool later)
         return;
     }
 
-    QStringList pluginsStr;
+    QStringList pluginsList;
 
     foreach (const Plugin *plugin, mPlugins)
     {
-        pluginsStr << plugin->settingsGroup();
+        pluginsList << plugin->settingsGroup();
     }
 
-    mSettings->setValue(CFG_FULLKEY_PLUGINS, pluginsStr.join(","));
+    if (pluginsList.isEmpty())
+    {
+        mSettings->setValue(CFG_FULLKEY_PLUGINS, "");
+    }
+    else
+    {
+        mSettings->setValue(CFG_FULLKEY_PLUGINS, pluginsList);
+    }
 
 
     mSettings->beginGroup(CFG_PANEL_GROUP);
