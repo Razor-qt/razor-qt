@@ -69,9 +69,6 @@ public:
     RazorModuleManager(const QString & config, const QString & windowManager, QObject * parent = 0);
     virtual ~RazorModuleManager();
 
-    //! \brief Read configuration and start processes
-    void startup();
-
     //! \brief Start a module given its file name (e.g. "razor-panel.desktop")
     void startProcess(const QString& name);
 
@@ -123,6 +120,8 @@ private:
     ModulesCrashReport mCrashReport;
 
 private slots:
+    //! \brief Read configuration and start processes
+    void startup();
 
     /*! \brief this slot is called by the QProcesses if they end.
     \warning The slot *has* to be called as a slot only due sender() cast.
