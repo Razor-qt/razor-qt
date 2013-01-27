@@ -23,7 +23,7 @@ and not enabled by default, so u must added a env in razor-settings SSH_ASKPASS=
 with razor-openssh-askpass value, openssl and openssh-client packages must be required.
 
 %ifnot RELEASE lucid maverick lenny etch squeeze
-Now razorqt are multiarch capable. Since new release 0.5.0 builds are automaticaly.
+Now razorqt are multiarch capable. Since new release 0.5.0 builds are automatically.
 For multiarch info see wiki info debian multiarch http://wiki.debian.org/Multiarch/
 %endif
 
