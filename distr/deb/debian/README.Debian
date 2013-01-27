@@ -32,7 +32,7 @@ installed both if wish to use pulseaudio backend.
 Here its a new razor-update program, due 0.5.X next changes this program will 
 convert and update your config files to new format used by this newer versions; 
 you can run from command line or menu if you have older configs that wan to preserv.
-the config files will be updated automaticaly.
+the config files will be updated automatically.
 
 Theres a new item, razor-about, this binary its part of razor library so you can 
 invoke from desktop menu or manualy from command line, it display about info of 
@@ -43,7 +43,7 @@ and not enabled by default, so u must added a env in razor-settings SSH_ASKPASS=
 with razor-openssh-askpass value, openssl and openssh-client packages must be required.
 
 %ifnot RELEASE lucid maverick lenny etch squeeze
-Now Razor-qt are multiarch capable. Since new release 0.5.0 builds are automaticaly.
+Now Razor-qt are multiarch capable. Since new release 0.5.0 builds are automatically.
 For multiarch info see wiki info debian multiarch http://wiki.debian.org/Multiarch/
 %endif
 
