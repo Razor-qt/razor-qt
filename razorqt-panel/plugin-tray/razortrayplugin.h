@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
@@ -25,64 +25,44 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RAZORTRAY_H
-#define RAZORTRAY_H
 
-#include <QFrame>
+#ifndef RAZORTRAYPLUGIN_H
+#define RAZORTRAYPLUGIN_H
 
-#include <X11/X.h>
-#include <X11/Xlib.h>
+#include "../panel/irazorpanelplugin.h"
+#include <QObject>
 
-class TrayIcon;
-class QSize;
-class RazorGridLayout;
-
-/**
- * @brief This makes our trayplugin
- */
-class IRazorPanelPlugin;
-
-class RazorTray: public QFrame
+class RazorTray;
+class RazorTrayPlugin : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
-    Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
-    RazorTray(IRazorPanelPlugin *plugin, QWidget* parent = 0);
-    ~RazorTray();
+    explicit RazorTrayPlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+    ~RazorTrayPlugin();
 
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "Tray"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return  PreferRightAlignment; }
 
-    QSize iconSize() const { return mIconSize; }
-    void setIconSize(QSize iconSize);
-
-    /// This handles the events we get from the Razorplugin subsystem
     virtual void x11EventFilter(XEvent* event);
-
     void realign();
 
-signals:
-    void iconSizeChanged(int iconSize);
-
-private slots:
-    void startTray();
-    void stopTray();
+    bool isSeparate() const { return true; }
 
 private:
-    VisualID getVisual();
-
-    void clientMessageEvent(XClientMessageEvent* e);
-
-    void addIcon(Window id);
-    TrayIcon* findIcon(Window trayId);
-
-    bool mValid;
-    Window mTrayId;
-    QList<TrayIcon*> mIcons;
-    int mDamageEvent;
-    int mDamageError;
-    QSize mIconSize;
-    RazorGridLayout *mLayout;
-    IRazorPanelPlugin *mPlugin;
+    RazorTray *mWidget;
+    
 };
 
+class RazorTrayPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new RazorTrayPlugin(startupInfo);
+    }
+};
 
-#endif
+#endif // RAZORTRAYPLUGIN_H

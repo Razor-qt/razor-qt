@@ -50,22 +50,22 @@ void termSignalHandler(int)
 
 int main(int argc, char *argv[])
 {
-    RazorPanelApplication app(argc, argv);
+    RazorPanelApplication *app = new RazorPanelApplication(argc, argv);
 
     TRANSLATE_APP;
 
     // Read command line arguments .......................
     // The first argument is config file name.
     QString configFile = "panel";
-    if (app.arguments().count() > 1)
+    if (app->arguments().count() > 1)
     {
-        configFile = app.arguments().at(1);
+        configFile = app->arguments().at(1);
         if (configFile.endsWith(".conf"))
             configFile.chop(5);
     }
 
-    RazorPanel panel(configFile);
-    app.setPanel(&panel);
+    RazorPanel *panel = new RazorPanel(configFile);
+    app->setPanel(panel);
 
     //Setup Unix signal handlers
     struct sigaction term;
@@ -75,7 +75,11 @@ int main(int argc, char *argv[])
     sigaction(SIGTERM, &term, 0);
     sigaction(SIGINT,  &term, 0);
 
-    panel.show();
-    return app.exec();
+    panel->show();
+    bool res = app->exec();
 
+    app->setPanel(0);
+    delete panel;
+    app->deleteLater();
+    return res;
 }
