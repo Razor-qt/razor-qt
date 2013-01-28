@@ -65,8 +65,7 @@ void RazorGridLayoutPrivate::updateCache()
     for (int i=0; i<mItems.count(); ++i)
     {
         QLayoutItem *item = mItems.at(i);
-        if (!item->widget() ||
-            !item->widget()->isVisible())
+        if (!item->widget() || item->widget()->isHidden())
             continue;
 
         int h = qBound(item->minimumSize().height(),
@@ -377,7 +376,7 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
     {       
         foreach(QLayoutItem *item, d->mItems)
         {
-            if (!item->widget() || !item->widget()->isVisible())
+            if (!item->widget() || item->widget()->isHidden())
                 continue;
 ;
             if (x + itemWidth > geometry.right())
@@ -398,7 +397,7 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
     {
         foreach(QLayoutItem *item, d->mItems)
         {
-            if (!item->widget() || !item->widget()->isVisible())
+            if (!item->widget() || item->widget()->isHidden())
                 continue;
 
             if (y + itemHeight > geometry.height())
