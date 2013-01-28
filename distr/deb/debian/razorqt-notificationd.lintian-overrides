@@ -1,0 +1,3 @@
+razorqt-notificationd: binary-without-manpage usr/bin/razor-config-notificationd
+razorqt-notificationd: binary-without-manpage usr/bin/razor-notificationd
+

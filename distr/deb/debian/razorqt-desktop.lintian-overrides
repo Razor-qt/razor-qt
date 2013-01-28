@@ -1,0 +1,3 @@
+razorqt-desktop: binary-without-manpage usr/bin/razor-config-desktop
+razorqt-desktop: binary-without-manpage usr/bin/razor-desktop
+

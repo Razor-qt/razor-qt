@@ -1,0 +1,4 @@
+razorqt-config: binary-without-manpage usr/bin/razor-config
+razorqt-config: binary-without-manpage usr/bin/razor-config-appearance
+razorqt-config: binary-without-manpage usr/bin/razor-config-mouse
+
