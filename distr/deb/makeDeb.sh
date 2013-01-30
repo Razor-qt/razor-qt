@@ -11,7 +11,7 @@ Options
   -o|--outdirt=DIR      write result to DIR, home directory by default
   -r|--release=RELEASE  release name (sid, squeeze, testing, maveric, natty etc.), autodetect if ommited
   -d|--distrib=DISTRIB  distib type (Debian or Ubuntu), autodetect if ommited
-  --ver=VERSION         razor version
+  --ver=VERSION         program version
   -S|--sign             sign a result files
   -s|--source           build a source package, if ommited build a binary package
   --debug               debug mode not build package only create debian directory
@@ -88,7 +88,7 @@ token=''
 line=''
 function nextToken
 {
-    while  IFS='' read "line"; do
+    while  IFS='' read -r "line"; do
         token=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
         case $token in
             %IF|%IFNOT|%ELSIF|%ELSEIF|%ELSE|%ENDIF|%SET)
@@ -116,7 +116,7 @@ function nextToken
 function skipBlock
 {
     local level=0
-    while  IFS='' read "line"; do
+    while  IFS='' read -r "line"; do
         token=`echo $line | awk '{print $1 }' | tr '[:lower:]' '[:upper:]'`
         case $token in
             %IF|%IFNOT)
@@ -142,7 +142,6 @@ function skipBlock
 function processBlock
 {
     nextToken
-
     while [ "$token" != "" ]; do
         case $token in
             %IF|%IFNOT)
