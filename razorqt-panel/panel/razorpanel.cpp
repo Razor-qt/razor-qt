@@ -127,9 +127,9 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
     mLayout = new RazorPanelLayout(QBoxLayout::LeftToRight, parent);
     connect(mLayout, SIGNAL(widgetMoved(QWidget*)), this, SLOT(pluginMoved(QWidget*)));
 
-    connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(screensChangeds()));
-    connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChangeds()));
-    //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChangeds()));
+    connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(screensChanged()));
+    connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChanged()));
+    //connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), this, SLOT(screensChanged()));
 
     connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), q_ptr, SLOT(update()));
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
@@ -139,7 +139,7 @@ RazorPanelPrivate::RazorPanelPrivate(RazorPanel* parent):
 /************************************************
 
  ************************************************/
-void RazorPanelPrivate::screensChangeds()
+void RazorPanelPrivate::screensChanged()
 {
     if (! canPlacedOn(mScreenNum, mPosition))
         mScreenNum = findAvailableScreen(mPosition);
