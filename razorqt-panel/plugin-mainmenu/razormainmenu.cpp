@@ -39,6 +39,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 #include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/xfitman.h>
 
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgdesktopfile.h>
@@ -106,40 +107,41 @@ void RazorMainMenu::showMenu()
     if (!mMenu)
         return;
 
-    int x, y;
+    QPoint menuPos;
 
     switch (panel()->position())
     {
         case RazorPanel::PositionTop:
-            x = mButton.mapToGlobal(QPoint(0, 0)).x();
-            y = panel()->mapToGlobal(QPoint(0, panel()->height())).y();
+            menuPos = QPoint(
+                mButton.mapToGlobal(QPoint(0, 0)).x(),
+                panel()->mapToGlobal(QPoint(0, panel()->height())).y());
             break;
 
         case RazorPanel::PositionBottom:
-            x = mButton.mapToGlobal(QPoint(0, 0)).x();
-            y = panel()->mapToGlobal(QPoint(0, 0)).y() - mMenu->sizeHint().height();
+            menuPos = QPoint(
+                mButton.mapToGlobal(QPoint(0, 0)).x(),
+                panel()->mapToGlobal(QPoint(0, 0)).y() - mMenu->sizeHint().height());
             break;
 
         case RazorPanel::PositionLeft:
-            x = panel()->mapToGlobal(QPoint(panel()->width(), 0)).x();
-            y = mButton.mapToGlobal(QPoint(0, 0)).y();
+            menuPos = QPoint(
+                panel()->mapToGlobal(QPoint(panel()->width(), 0)).x(),
+                mButton.mapToGlobal(QPoint(0, 0)).y());
             break;
 
         case RazorPanel::PositionRight:
-            x = panel()->mapToGlobal(QPoint(0, 0)).x() - mMenu->sizeHint().width();
-            y = mButton.mapToGlobal(QPoint(0, 0)).y();
+            menuPos = QPoint(
+                panel()->mapToGlobal(QPoint(0, 0)).x() - mMenu->sizeHint().width(),
+                mButton.mapToGlobal(QPoint(0, 0)).y());
             break;
 
     }
 
-    menuPos = QPoint(x, y);
-
-    activateWindow();
-    QTimer::singleShot(1, this, SLOT(afterMenuActivated()));
-}
-
-void RazorMainMenu::afterMenuActivated()
-{
+    // Just using Qt`s activateWindow() won't work on some WMs like Kwin.
+    // There are two solutions:
+    //  activate window with Qt call and then execute menu 1ms later using timer,
+    //  or use native X11 API calls:
+    xfitMan().raiseWindow(this->effectiveWinId());
     mMenu->exec(menuPos);
 }
 
