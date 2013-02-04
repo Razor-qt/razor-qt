@@ -8,7 +8,15 @@ Priority: optional
 Maintainer: %DEBFULLNAME% <%DEBEMAIL%>
 Build-Depends: pkg-config,
 %if MULTIARCH yes
+    %if DISTRIB Debian  
+    debhelper (>= 9),
+    %elseif DISTRIB Ubuntu
+        %if RELEASE precise quantal
+    debhelper (>= 9),
+        %elsif RELEASE oneiric
     debhelper (>= 8),
+        %endif
+    %endif 
     dpkg-dev (>= 1.16.0~),
 %else
     debhelper (>= 7.0.50~),
