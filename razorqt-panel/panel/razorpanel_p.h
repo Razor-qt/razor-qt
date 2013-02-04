@@ -66,7 +66,7 @@ public slots:
     void reposition();
     void switchPosition(int screenNum, RazorPanel::Position position);
     void pluginMoved(QWidget* pluginWidget);
-    void screensChangeds();
+    void screensChanged();
     void showAddPluginDialog();
     void showConfigPanelDialog();
     void addPlugin(const RazorPluginInfo &pluginInfo);
