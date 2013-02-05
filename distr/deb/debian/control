@@ -8,7 +8,15 @@ Priority: optional
 Maintainer: %DEBFULLNAME% <%DEBEMAIL%>
 Build-Depends: pkg-config,
 %if MULTIARCH yes
-    debhelper (>= 8.0.0~),
+    %if DISTRIB Debian  
+    debhelper (>= 9),
+    %elseif DISTRIB Ubuntu
+        %if RELEASE precise quantal
+    debhelper (>= 9),
+        %elsif RELEASE oneiric
+    debhelper (>= 8),
+        %endif
+    %endif 
     dpkg-dev (>= 1.16.0~),
 %else
     debhelper (>= 7.0.50~),
@@ -47,25 +55,26 @@ Build-Depends: pkg-config,
 %endif
     zlib1g-dev,
     libstatgrab-dev,
-    libsensors4-dev
-Standards-Version: 3.9.1
+    libsensors4-dev,
+Standards-Version: 3.9.4
 Homepage: http://razor-qt.org/
 #Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/razorqt.git
 #Vcs-Git: git://anonscm.debian.org/collab-maint/razorqt.git
 
 Package: razorqt
 Architecture: all
-Depends: razorqt-appswitcher (>= ${binary:Version}),
-    razorqt-autosuspend (>= ${binary:Version}),
-        razorqt-config (>= ${binary:Version}),
-        razorqt-data (>= ${binary:Version}),
-        razorqt-desktop (>= ${binary:Version}),
-        razorqt-globalkeyshortcuts (>= ${binary:Version}),
-        razorqt-notificationd (>= ${binary:Version}),
-        razorqt-panel (>= ${binary:Version}),
-        razorqt-power (>= ${binary:Version}),
-        razorqt-runner (>= ${binary:Version}),
-        razorqt-session (>= ${binary:Version}),
+Depends: ${misc:Depends},
+         razorqt-appswitcher (>= ${binary:Version}),
+         razorqt-autosuspend (>= ${binary:Version}),
+         razorqt-config (>= ${binary:Version}),
+         razorqt-data (>= ${binary:Version}),
+         razorqt-desktop (>= ${binary:Version}),
+         razorqt-globalkeyshortcuts (>= ${binary:Version}),
+         razorqt-notificationd (>= ${binary:Version}),
+         razorqt-panel (>= ${binary:Version}),
+         razorqt-power (>= ${binary:Version}),
+         razorqt-runner (>= ${binary:Version}),
+         razorqt-session (>= ${binary:Version}),
 %if LIGHTDM yes
         lightdm-razorqt-greeter (>= ${binary:Version}),
 %endif
@@ -116,7 +125,8 @@ Description: Razor-qt resources and shared data
 
 Package: razorqt-dev
 Architecture: any
-Depends: librazorqt-dev
+Depends: ${misc:Depends},
+   librazorqt-dev,
 Conflicts: razor-qt
 Description: Razor-qt development dummy package upgrade
  This package provides the development files for the libraries that are
@@ -153,7 +163,9 @@ Description: Qt implementation of the XDG Specifications, development package
 Package: librazorqt-dev
 Architecture: any
 Section: libdevel
-Depends: ${shlibs:Depends}, libqtxdg-dev (= ${binary:Version})
+Depends: ${misc:Depends},
+ ${shlibs:Depends},
+ libqtxdg-dev (= ${binary:Version}),
 Replaces: razor-qt, razorqt-dev, librazorqt0-dev
 Conflicts: razor-qt, razorqt-dev (<< ${binary:Version}), librazorqt0-dev
 Description: Razor-qt development package
