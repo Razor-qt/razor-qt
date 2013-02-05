@@ -32,5 +32,7 @@ export DEB_CXXFLAGS_MAINT_APPEND := -pipe -Wall $(shell dpkg-buildflags --get CP
 %ifnot RELEASE lucid maverick lenny etch squeeze
 override_dh_auto_configure:
 	dh_auto_configure -- -DLIB_SUFFIX="/$(DEB_HOST_MULTIARCH)"
+override_dh_makeshlibs:
+	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/razor-desktop
 %endif
 
