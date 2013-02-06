@@ -9,3 +9,5 @@
 /etc/xdg/razor/desktop.conf
 /usr/share/razor/razor-desktop/
 /etc/xdg/autostart/razor-desktop.desktop
+/usr/bin/razor-about
+/usr/share/applications/razor-about.desktop

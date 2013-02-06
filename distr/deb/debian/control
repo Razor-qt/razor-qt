@@ -192,9 +192,6 @@ Description: Common libraries and binaries for the Razor-qt
  This package provides the libraries and binaries that are shared amongst
  the various components of Razor-qt.
  .
- Theres a razor-about application that display information about
- the Razor-qt dekstop, including technical info.
- .
  This package is part of the Razor-qt.
 
 Package: razorqt-appswitcher
@@ -231,6 +228,9 @@ Replaces: razor-qt, razor-desktop
 Conflicts: razor-qt, razor-desktop
 Description: Razor-qt desktop component
  Desktop manager for Razor-qt.
+ .
+ Theres a razor-about application that display information about
+ the Razor-qt dekstop, including technical info.
  .
  This package is part of the Razor-qt.
 
