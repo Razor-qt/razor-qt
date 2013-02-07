@@ -159,6 +159,10 @@ build_module(MODULE_CONFUPDATE
     "Configuration updater"
     razorqt-confupdate On)
 
+build_module(MODULE_SCREENLOCKER
+    "Screen Locker"
+    razorqt-screenlocker Off)
+
 message(STATUS  "**************** The following modules will be built ****************")
 foreach (MODULE_NAME ${ENABLED_MODULES})
     message(STATUS   "  ${MODULE_NAME}")

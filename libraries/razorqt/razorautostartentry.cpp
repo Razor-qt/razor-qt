@@ -107,7 +107,7 @@ void RazorAutostartEntry::setEnabled(bool enable)
 
 bool RazorAutostartEntry::isEnabled() const
 {
-    return !file().value("Hidden", false).toBool();
+    return !isEmpty() && !file().value("Hidden", false).toBool();
 }
 
 bool RazorAutostartEntry::commit()
