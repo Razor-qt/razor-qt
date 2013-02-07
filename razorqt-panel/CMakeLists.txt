@@ -34,7 +34,7 @@ setByDefault(CPULOAD_PLUGIN        No)
 setByDefault(NETWORKMONITOR_PLUGIN No)
 setByDefault(SENSORS_PLUGIN        No)
 
-setByDefault(VOLUME_PLUGIN         No)
+setByDefault(VOLUME_PLUGIN         Yes)
 # Options for the volume plugin.
 setByDefault(VOLUME_USE_PULSEAUDIO Yes)
 setByDefault(VOLUME_USE_ALSA       Yes)

@@ -35,12 +35,13 @@
 #include <QtCore/QProcess>
 
 #include <qtxdg/xdgicon.h>
-#include "../panel/razorpanel.h"
+#include "../panel/irazorpanel.h"
+#include "../panel/irazorpanelplugin.h"
 
-VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
+VolumeButton::VolumeButton(IRazorPanelPlugin *plugin, QWidget* parent):
         QToolButton(parent),
-        m_panel(panel),
-        m_popupHideTimerDuration(1000),
+        mPlugin(plugin),
+        m_panel(plugin->panel()),
         m_showOnClick(true),
         m_muteOnMiddleClick(true)
 {
@@ -50,12 +51,12 @@ VolumeButton::VolumeButton(RazorPanel *panel, QWidget* parent):
     handleStockIconChanged("dialog-error");
     m_volumePopup = new VolumePopup();
 
+    m_popupHideTimer.setInterval(1000);
     connect(this, SIGNAL(clicked()), this, SLOT(toggleVolumeSlider()));
-    connect(m_panel, SIGNAL(positionChanged()), this, SLOT(hideVolumeSlider()));
-    connect(&m_popupHideTimer, SIGNAL(timeout()), this, SLOT(handlePopupHideTimeout()));
+    connect(&m_popupHideTimer, SIGNAL(timeout()), this, SLOT(hideVolumeSlider()));
 
-    connect(m_volumePopup, SIGNAL(mouseEntered()), this, SLOT(popupHideTimerStop()));
-    connect(m_volumePopup, SIGNAL(mouseLeft()), this, SLOT(popupHideTimerStart()));
+    connect(m_volumePopup, SIGNAL(mouseEntered()), &m_popupHideTimer, SLOT(stop()));
+    connect(m_volumePopup, SIGNAL(mouseLeft()), &m_popupHideTimer, SLOT(start()));
 
     connect(m_volumePopup, SIGNAL(launchMixer()), this, SLOT(handleMixerLaunch()));
     connect(m_volumePopup, SIGNAL(stockIconChanged(QString)), this, SLOT(handleStockIconChanged(QString)));
@@ -90,12 +91,12 @@ void VolumeButton::enterEvent(QEvent *event)
     if (!m_showOnClick)
         showVolumeSlider();
 
-    popupHideTimerStop();
+    m_popupHideTimer.stop();
 }
 
 void VolumeButton::leaveEvent(QEvent *event)
 {
-    popupHideTimerStart();
+    m_popupHideTimer.stop();
 }
 
 void VolumeButton::wheelEvent(QWheelEvent *event)
@@ -118,8 +119,7 @@ void VolumeButton::mouseReleaseEvent(QMouseEvent *event)
 void VolumeButton::toggleVolumeSlider()
 {
     if (m_volumePopup->isVisible()) {
-        popupHideTimerStop();
-        handlePopupHideTimeout();
+        hideVolumeSlider();
     } else {
         showVolumeSlider();
     }
@@ -127,74 +127,21 @@ void VolumeButton::toggleVolumeSlider()
 
 void VolumeButton::showVolumeSlider()
 {
+
     if (m_volumePopup->isVisible())
         return;
 
-    popupHideTimerStop();
+    m_popupHideTimer.stop();
     m_volumePopup->updateGeometry();
-
-    if (isLeftToRight())
-    {
-        switch (m_panel->position())
-        {
-        case RazorPanel::PositionTop:
-            m_volumePopup->open(mapToGlobal(geometry().bottomLeft()), Qt::TopLeftCorner);
-            break;
-
-        case RazorPanel::PositionBottom:
-            m_volumePopup->open(mapToGlobal(geometry().topLeft()), Qt::BottomLeftCorner);
-            break;
-
-        case RazorPanel::PositionLeft:
-            m_volumePopup->open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
-            break;
-
-        case RazorPanel::PositionRight:
-            m_volumePopup->open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
-            break;
-        }
-    }
-    else
-    {
-        switch (m_panel->position())
-        {
-        case RazorPanel::PositionTop:
-            m_volumePopup->open(mapToGlobal(geometry().bottomRight()), Qt::TopRightCorner);
-            break;
-
-        case RazorPanel::PositionBottom:
-            m_volumePopup->open(mapToGlobal(geometry().topRight()), Qt::BottomRightCorner);
-            break;
-
-        case RazorPanel::PositionLeft:
-            m_volumePopup->open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
-            break;
-
-        case RazorPanel::PositionRight:
-            m_volumePopup->open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
-            break;
-        }
-    }
+    m_volumePopup->adjustSize();
+    QRect pos = mPlugin->calculatePopupWindowPos(m_volumePopup->size());
+    m_volumePopup->open(pos.topLeft(), Qt::TopLeftCorner);
 }
 
 void VolumeButton::hideVolumeSlider()
 {
-    popupHideTimerStart();
-}
-
-void VolumeButton::handlePopupHideTimeout()
-{
-    m_volumePopup->hide();
-}
-
-void VolumeButton::popupHideTimerStart()
-{
-    m_popupHideTimer.start(m_popupHideTimerDuration);
-}
-
-void VolumeButton::popupHideTimerStop()
-{
     m_popupHideTimer.stop();
+    m_volumePopup->hide();
 }
 
 void VolumeButton::handleMixerLaunch()

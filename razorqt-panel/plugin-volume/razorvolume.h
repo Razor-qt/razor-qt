@@ -28,29 +28,32 @@
 #ifndef RAZORVOLUME_H
 #define RAZORVOLUME_H
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
+#include <QtGui/QToolButton>
 
 #include <QtGui/QSlider>
 
 class VolumeButton;
 class AudioEngine;
 class AudioDevice;
-class RazorVolumeConfiguration;
 class RazorNotification;
 class QxtGlobalShortcut;
 
-class RazorVolume : public RazorPanelPlugin
+class RazorVolume : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo);
+    ~RazorVolume();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "Volume"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    void realign();
+    QDialog *configureDialog();
 
     void setAudioEngine(AudioEngine *engine);
-
 protected slots:
-    virtual void showConfigureDialog();
     virtual void settingsChanged();
     void updateConfigurationSinkList();
     void handleShortcutVolumeUp();
@@ -62,13 +65,22 @@ private:
     VolumeButton *m_volumeButton;
     int m_defaultSinkIndex;
     AudioDevice *m_defaultSink;
-    RazorVolumeConfiguration *m_configWindow;
     QxtGlobalShortcut *m_keyVolumeUp;
     QxtGlobalShortcut *m_keyVolumeDown;
     QxtGlobalShortcut *m_keyMuteToggle;
     RazorNotification *m_notification;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+
+class RazorVolumePluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new RazorVolume(startupInfo);
+    }
+};
 
 #endif // RAZORVOLUME_H
