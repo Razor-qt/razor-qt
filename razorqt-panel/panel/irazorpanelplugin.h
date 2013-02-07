@@ -139,7 +139,8 @@ public:
 
     /**
     Returns the plugin settings dialog. Reimplement this function if your plugin has it.
-    The panel takes ownership of the dialog; i.e., it will automatically delete.
+    The panel does not take ownership of the dialog, it would probably a good idea to set Qt::WA_DeleteOnClose
+    attribute for the dialog.
     The default implementation returns 0, no dialog;
 
     Note that the flags method has to return HaveConfigDialog flag.

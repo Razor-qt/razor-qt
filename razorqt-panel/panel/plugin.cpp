@@ -362,14 +362,13 @@ void Plugin::realign()
  ************************************************/
 void Plugin::showConfigureDialog()
 {
-    QDialog *dialog =
-            this->findChild<QDialog*>();
+    static QWeakPointer<QDialog> ref;
+    QDialog *dialog = ref.data();
 
     if (!dialog)
     {
         dialog = mPlugin->configureDialog();
-        dialog->setParent(this, Qt::Dialog);
-        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        ref = dialog;
         connect(this, SIGNAL(destroyed()), dialog, SLOT(close()));
     }
 
