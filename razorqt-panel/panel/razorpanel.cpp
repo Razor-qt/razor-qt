@@ -698,8 +698,6 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
             menu.addActions(m->actions());
             pluginsMenus << m;
         }
-
-        menu.addAction(QString("Size: %1x%2").arg(plugin->width()).arg(plugin->height()));
     }
 
     // Panel menu ...............................
