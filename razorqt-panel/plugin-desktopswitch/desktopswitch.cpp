@@ -34,26 +34,24 @@
 #include <razorqt/xfitman.h>
 #include <razorqxt/qxtglobalshortcut.h>
 
+#include <QHBoxLayout>
 #include "desktopswitch.h"
 #include "desktopswitchbutton.h"
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(DesktopSwitch)
+Q_EXPORT_PLUGIN2(DesktopSwitch, DesktopSwitchPluginLibrary)
 
 
-DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent),
-      m_pSignalMapper(new QSignalMapper(this)),
-      m_desktopCount(1)
+DesktopSwitch::DesktopSwitch(const IRazorPanelPluginStartupInfo &startupInfo) :
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    m_pSignalMapper(new QSignalMapper(this)),
+    m_desktopCount(1)
 {
-    setObjectName("DesktopSwitch");
-    connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
-
     m_buttons = new QButtonGroup(this);
-    
     connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));
 
-    layout()->setAlignment(Qt::AlignCenter);
+    mWidget.setLayout(new QHBoxLayout(&mWidget));
     setup();
 }
 
@@ -80,10 +78,10 @@ void DesktopSwitch::setup()
             sequence = QKeySequence(Qt::CTRL + firstKey++);
         }
 
-        DesktopSwitchButton * m = new DesktopSwitchButton(this, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
+        DesktopSwitchButton * m = new DesktopSwitchButton(&mWidget, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
         m_pSignalMapper->setMapping(m, i);
         connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ;
-        addWidget(m);
+        mWidget.layout()->addWidget(m);
         m_buttons->addButton(m, i);
     }
 
