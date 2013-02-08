@@ -64,7 +64,6 @@ private:
     QToolButton mButton;
     QString mLogDir;
     QMenu* mMenu;
-    QPoint menuPos;
     QxtGlobalShortcut *mShortcut;
     MenuStyle mTopMenuStyle;
     MenuStyle mMenuStyle;
@@ -78,7 +77,6 @@ protected slots:
 
 private slots:
     void showMenu();
-    void afterMenuActivated();
     void showHideMenu();
 };
 

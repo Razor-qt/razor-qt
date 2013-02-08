@@ -1,0 +1,5 @@
+razorqt-session: binary-without-manpage usr/bin/razor-config-session
+razorqt-session: binary-without-manpage usr/bin/razor-confupdate
+razorqt-session: binary-without-manpage usr/bin/razor-session
+razorqt-session: binary-without-manpage usr/bin/startrazor
+

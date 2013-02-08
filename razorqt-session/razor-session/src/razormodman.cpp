@@ -53,6 +53,9 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
 {
     if (mConfig.isEmpty())
         mConfig = "session";
+
+    // Wait until the event loop starts
+    QTimer::singleShot(0, this, SLOT(startup()));
 }
 
 void RazorModuleManager::startup()
@@ -102,6 +105,7 @@ void RazorModuleManager::startup()
                 break;
             }
             waitCnt--;
+            QCoreApplication::processEvents();
             usleep(100000);
         }
 
@@ -137,6 +141,7 @@ void RazorModuleManager::startWm(RazorSettings *settings)
     while (!xfitMan().isWindowManagerActive() && waitCnt)
     {
         waitCnt--;
+        QCoreApplication::processEvents();
         usleep(100000);
     }
 }

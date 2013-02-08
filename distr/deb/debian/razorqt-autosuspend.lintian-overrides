@@ -1,0 +1,3 @@
+razorqt-autosuspend: binary-without-manpage usr/bin/razor-autosuspend
+razorqt-autosuspend: binary-without-manpage usr/bin/razor-config-autosuspend
+

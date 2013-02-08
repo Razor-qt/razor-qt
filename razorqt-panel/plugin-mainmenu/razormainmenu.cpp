@@ -39,6 +39,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 #include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/xfitman.h>
 
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgdesktopfile.h>
@@ -126,19 +127,12 @@ void RazorMainMenu::showMenu()
             break;
     }
 
-    menuPos = QPoint(x, y);
-
-    mButton.activateWindow();
-    QTimer::singleShot(1, this, SLOT(afterMenuActivated()));
-}
-
-
-/************************************************
-
- ************************************************/
-void RazorMainMenu::afterMenuActivated()
-{
-    mMenu->exec(menuPos);
+    // Just using Qt`s activateWindow() won't work on some WMs like Kwin.
+    // There are two solutions:
+    //  activate window with Qt call and then execute menu 1ms later using timer,
+    //  or use native X11 API calls:
+    xfitMan().raiseWindow(mButton.effectiveWinId());
+    mMenu->exec(QPoint(x, y));
 }
 
 

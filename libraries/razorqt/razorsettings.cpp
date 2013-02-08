@@ -526,7 +526,8 @@ QList<RazorTheme> RazorTheme::allThemes()
 
         foreach(QFileInfo dir, dirs)
         {
-            if (!processed.contains(dir.fileName()))
+            if (!processed.contains(dir.fileName()) &&
+                 QDir(dir.absoluteFilePath()).exists("razor-panel.qss"))
             {
                 processed << dir.fileName();
                 ret << RazorTheme(dir.absoluteFilePath());
