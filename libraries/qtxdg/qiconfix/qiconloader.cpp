@@ -351,22 +351,23 @@ QThemeIconEntries QIconLoader::findIconHelper(const QString &themeName,
         const QString pixmaps(QLatin1String("/usr/share/pixmaps"));
 
         QDir currentDir(pixmaps);
+        QIconDirInfo dirInfo(pixmaps);
         if (currentDir.exists(iconName + pngext)) {
             PixmapEntry *iconEntry = new PixmapEntry;
-            iconEntry->dir = pixmaps;
+            iconEntry->dir = dirInfo;
             iconEntry->filename = currentDir.filePath(iconName + pngext);
-            // Notice we ensure that pixmap entries allways come before
+            // Notice we ensure that pixmap entries always come before
             // scalable to preserve search order afterwards
             entries.prepend(iconEntry);
         } else if (m_supportsSvg &&
                    currentDir.exists(iconName + svgext)) {
             ScalableEntry *iconEntry = new ScalableEntry;
-            iconEntry->dir = pixmaps;
+            iconEntry->dir = dirInfo;
             iconEntry->filename = currentDir.filePath(iconName + svgext);
             entries.append(iconEntry);
         } else if (currentDir.exists(iconName + xpmext)) {
             PixmapEntry *iconEntry = new PixmapEntry;
-            iconEntry->dir = pixmaps;
+            iconEntry->dir = dirInfo;
             iconEntry->filename = currentDir.filePath(iconName + xpmext);
             // Notice we ensure that pixmap entries always come before
             // scalable to preserve search order afterwards
