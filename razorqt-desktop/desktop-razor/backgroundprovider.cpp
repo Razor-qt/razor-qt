@@ -81,12 +81,31 @@ void BackgroundProvider::setColor(const QColor &color)
         delete m_pixmap;
     m_pixmap = new QPixmap(1, 1);
     m_pixmap->fill(color);
+    // colors fill the full screen = IgnoreAspectRatio
+    m_ratio = Qt::IgnoreAspectRatio;
 }
 
 QPixmap BackgroundProvider::pixmap(const QRect &rect)
 {
     Q_ASSERT(m_pixmap);
-    return m_pixmap->scaled(rect.size(), m_ratio, Qt::SmoothTransformation);
+
+    // scaled pxmap
+    QPixmap sc(m_pixmap->scaled(rect.size(), m_ratio, Qt::SmoothTransformation));
+    if (m_ratio == Qt::IgnoreAspectRatio)
+        return sc;
+
+    // center the content for KeepAspectRatio
+
+    // the full screen pixmap with black background
+    QPixmap full(rect.size());
+    full.fill(Qt::black);
+    QPainter p(&full);
+    // draw the pixmap in the center of the main pixmap
+    int x = full.width()/2 - sc.width()/2;
+    int y = full.height()/2 - sc.height()/2;
+    p.drawPixmap(x, y, sc.width(), sc.height(), sc);
+
+    return full;
 }
 
 bool BackgroundProvider::gui()
