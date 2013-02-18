@@ -29,6 +29,8 @@
 #include <QtGui/QWidget>
 #include <QLightDM/Greeter>
 
+#include "loginform.h"
+
 namespace Ui {
     class MainWindow;
 }
@@ -42,9 +44,10 @@ public:
     ~MainWindow();
 
     bool isMain() { return m_main; };
-
+    LoginForm* loginForm() { return m_LoginForm; };
 private:
     bool m_main;
+    LoginForm* m_LoginForm;
 };
 
 #endif // MAINWINDOW_H

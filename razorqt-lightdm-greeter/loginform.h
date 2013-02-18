@@ -27,17 +27,11 @@
 #define LOGINFORM_H
 
 #include <QtGui/QWidget>
-#include <QLightDM/Greeter>
-#ifdef USING_LIGHTDM_QT_1
-  #include <QLightDM/User>
-  #include <QLightDM/Session>
-#else
-  #include <QLightDM/UsersModel>
-  #include <QLightDM/SessionsModel>
-#endif
 #include <QtCore/QProcess>
 #include <QtGui/QDialog>
 #include <QtGui/QKeyEvent>
+#include <QGraphicsOpacityEffect>
+#include "logindata.h"
 
 namespace Ui {
 class LoginForm;
@@ -51,28 +45,40 @@ public:
     explicit LoginForm(QWidget *parent = 0);
     ~LoginForm();
 
-public slots:
-    void doLogin();
-    void doCancel();
-    void doLeave();
-    void razorPowerDone();
+    QWidget* initialFocus() { return m_initialFocus; };
 
+public slots:
+    void userComboCurrentIndexChanged();
+    void otherUserEditingFinished(); 
+    void loginClicked();
+    void clearAll();
+    void leaveClicked();
+    void razorPowerFinished();
+   
 #ifdef USING_LIGHTDM_QT_1
     void onPrompt(QString prompt, QLightDM::PromptType prompType);
 #else
     void onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType);
 #endif
-    void authenticationDone();
+    
+    void authenticationComplete();
 
 private:
+    void setupAppearence();
+    void fillUserAndSessionCombos();
+    void setupConnections();
+    void initializeControls();
+    void setSessionCombo(int session_index);
+    void setUser(QString user);
+
     Ui::LoginForm *ui;
-
-    QLightDM::Greeter m_Greeter;
-
+    QLightDM::Greeter m_Greeter; 
+    LoginData m_LoginData;
     QProcess m_razorPowerProcess;
 
-    QLightDM::UsersModel *m_UsersModel;
-    QLightDM::SessionsModel *m_SessionsModel;
+    int m_otherUserComboIndex;
+    QString m_user;
+    QWidget* m_initialFocus;
 };
 
 #endif // LOGINFORM_H

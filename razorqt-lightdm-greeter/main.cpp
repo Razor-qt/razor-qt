@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
     // are more screens
     if (focusWindow)
     {
-        focusWindow->setFocus(Qt::OtherFocusReason);
-        focusWindow->activateWindow();
+        focusWindow->loginForm()->initialFocus()->setFocus(Qt::OtherFocusReason);
+        focusWindow->loginForm()->initialFocus()->activateWindow();
     }
 
     return a.exec();

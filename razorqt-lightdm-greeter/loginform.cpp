@@ -37,127 +37,239 @@
 #include <QtGui/QMenu>
 #include <QtCore/QProcess>
 #include <razorqt/razorsettings.h>
+#include <QtCore/qdatetime.h>
+#include <QTime>
+#include <QGraphicsDropShadowEffect>
+#include <QToolTip>
+#include <lightdm-qt-2/QLightDM/greeter.h>
 
 #ifdef USING_LIGHTDM_QT_1
   #include <QLightDM/System>
 #endif
 
-LoginForm::LoginForm(QWidget *parent) : QWidget(parent), ui(new Ui::LoginForm)
+LoginForm::LoginForm(QWidget *parent) : 
+    QWidget(parent), 
+        ui(new Ui::LoginForm), 
+        m_Greeter(),
+        m_LoginData(&m_Greeter),
+        m_razorPowerProcess(),
+        m_otherUserComboIndex(-1),
+        m_initialFocus(0)
 {
-    if (!m_Greeter.connectSync())
+    if (! m_Greeter.connectSync())
     {
-        close();
+        // Not much we can do, then.. 
+        //exit(1);
     }
-
+   
     ui->setupUi(this);
-    setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
-    ui->hostnameLabel->setFocus();
 
-    // Setup users
-    m_UsersModel = new QLightDM::UsersModel();
-    QStringList userIds;
-    for (int i = 0; i < m_UsersModel->rowCount(QModelIndex()); i++)
-    {
-        QModelIndex index = m_UsersModel->index(i);
-        QString userId =  m_UsersModel->data(index, Qt::UserRole).toString();
-        userIds << userId;
-    }
-    QCompleter *completer = new QCompleter(userIds);
-    completer->setCompletionMode(QCompleter::InlineCompletion);
-    ui->userIdInput->setCompleter(completer);
+    setupAppearence(); 
+    fillUserAndSessionCombos();
+    setupConnections();
+    initializeControls();
 
-
-    // Setup sessions
-    m_SessionsModel = new QLightDM::SessionsModel();
-    ui->sessionCombo->setModel(m_SessionsModel);
-    for (int row = 0; row < ui->sessionCombo->model()->rowCount(); row++)
-    {
-        QModelIndex index = ui->sessionCombo->model()->index(row, 0);
-        if (QString("razor") ==  ui->sessionCombo->model()->data(index, QLightDM::SessionsModel::KeyRole).toString())
-        {
-            ui->sessionCombo->setCurrentIndex(row);
-            break;
-        }
-    }
-
-    QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
-    ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
-
-#ifdef USING_LIGHTDM_QT_1
-    ui->hostnameLabel->setText(QLightDM::hostname());
-    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::PromptType)),
-            this,       SLOT(onPrompt(QString,QLightDM::PromptType)));
-#else
-    ui->hostnameLabel->setText(m_Greeter.hostname());
-    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::Greeter::PromptType)),
-            this,       SLOT(onPrompt(QString,QLightDM::Greeter::PromptType)));
-#endif
-
-    connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(doLogin()));
-
-    connect(ui->cancelButton, SIGNAL(clicked()), SLOT(doCancel()));
-
-    connect(&m_Greeter, SIGNAL(authenticationComplete()), this, SLOT(authenticationDone()));
-
-    connect(ui->leaveButton, SIGNAL(clicked()), SLOT(doLeave()));
-    connect(&m_razorPowerProcess, SIGNAL(finished(int)), this, SLOT(razorPowerDone()));
 }
-
-
-
 
 LoginForm::~LoginForm()
 {
     delete ui;
 }
 
-void LoginForm::doLogin()
+void LoginForm::setupAppearence()
 {
-    m_Greeter.authenticate(ui->userIdInput->text());
+    setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
+    QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
+    ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    
+    ui->hostnameLabel->setText(m_Greeter.hostname());
 }
+
+void LoginForm::fillUserAndSessionCombos()
+{
+    ui->userCombo->clear(); 
+    for (int i = 0; i < m_LoginData.numberOfUsers(); i++)
+    {
+        qDebug() << "Adding user" << m_LoginData.userFullName(i);
+        ui->userCombo->addItem(m_LoginData.userFullName(i));
+    }
+    ui->userCombo->addItem(tr("other..."));
+    m_otherUserComboIndex = ui->userCombo->count() - 1;
+
+    ui->sessionCombo->clear();
+    for (int i = 0; i < m_LoginData.numberOfSessions(); i++)
+    {
+        qDebug() << "Adding session" << m_LoginData.sessionFullName(i);
+        ui->sessionCombo->addItem(m_LoginData.sessionFullName(i));
+    }
+}
+
+void LoginForm::setupConnections()
+{
+    ui->userCombo->setCurrentIndex(-1);
+    connect(ui->userCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(userComboCurrentIndexChanged()));
+    connect(ui->otherUserInput, SIGNAL(editingFinished()), this, SLOT(otherUserEditingFinished()));
+    connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(loginClicked()));
+    connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(clearAll()));
+    connect(ui->leaveButton, SIGNAL(clicked()), this, SLOT(leaveClicked()));
+    connect(&m_razorPowerProcess, SIGNAL(finished(int)), this, SLOT(razorPowerFinished())); 
+
 
 #ifdef USING_LIGHTDM_QT_1
-    void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
-    {
-        // We only handle password prompt
-        m_Greeter.respond(ui->passwordInput->text());
-    }
+    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::PromptType)),
+            this,       SLOT(onPrompt(QString,QLightDM::PromptType)));
 #else
-    void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)
-    {
-        // We only handle password prompt
-        m_Greeter.respond(ui->passwordInput->text());
-    }
+    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::Greeter::PromptType)),
+            this,       SLOT(onPrompt(QString,QLightDM::Greeter::PromptType)));
 #endif
+    
+    connect(&m_Greeter, SIGNAL(authenticationComplete()), this, SLOT(authenticationComplete()));
+}
 
-void LoginForm::authenticationDone()
+void LoginForm::initializeControls()
 {
-    if (m_Greeter.isAuthenticated())
+    qDebug() << "showManualLoginHint:" << m_Greeter.showManualLoginHint();
+
+    if (m_Greeter.showManualLoginHint()) 
     {
-        QString session = ui->sessionCombo->itemData(ui->sessionCombo->currentIndex(), QLightDM::SessionsModel::IdRole).toString();
-        m_Greeter.startSessionSync(session);
+        ui->userCombo->setCurrentIndex(m_otherUserComboIndex);
     }
-    else
+    else 
     {
-        doCancel();
+        ui->userCombo->setCurrentIndex(m_LoginData.suggestedUser());
+    }
+
+    ui->sessionCombo->setCurrentIndex(m_LoginData.suggestedSession());
+
+    ui->userCombo->setVisible(! m_Greeter.hideUsersHint());
+    ui->otherUserInput->setVisible(ui->userCombo->currentIndex() == m_otherUserComboIndex);
+    ui->otherUserInput->clear(); 
+    ui->passwordInput->setEnabled(false);
+    ui->passwordInput->clear();
+
+    if (ui->userCombo->currentIndex() == -1)
+    {
+        m_initialFocus = ui->userCombo;
+    }
+    else if (ui->userCombo->currentIndex() == m_otherUserComboIndex)
+    {
+        m_initialFocus = ui->otherUserInput;
+    }
+    else 
+    {
+        m_initialFocus = ui->passwordInput;
     }
 }
 
 
-void LoginForm::doCancel()
+void LoginForm::setSessionCombo(int session_index)
 {
-    ui->hostnameLabel->setFocus();
-    ui->userIdInput->setText("");
-    ui->passwordInput->setText("");
+    if (0 <= session_index && session_index < ui->sessionCombo->count())
+    {
+        ui->sessionCombo->setCurrentIndex(session_index);
+    }
 }
 
-void LoginForm::doLeave()
+void LoginForm::userComboCurrentIndexChanged()
 {
+
+    qDebug() << "userComboCurrentIndexChanged:" << ui->userCombo->currentIndex();
+    qDebug() << "setVisible...";
+    if (ui->userCombo->currentIndex() == m_otherUserComboIndex)
+    {
+        ui->otherUserInput->show();
+        ui->otherUserInput->setFocus();
+    }
+    else 
+    {
+        ui->otherUserInput->hide(); 
+        qDebug() << "Start authentication..";
+        setUser(m_LoginData.userName(ui->userCombo->currentIndex()));
+        
+        qDebug() << "setSessionCombo";
+        setSessionCombo(m_LoginData.userSession(ui->userCombo->currentIndex()));
+    }
+}
+
+void LoginForm::otherUserEditingFinished()
+{
+    if (ui->otherUserInput->text().isNull() || ui->otherUserInput->text().isEmpty())
+    {
+        return;
+    }
+    
+    qDebug() << "Authenticating with otherUser...";
+
+    m_user = ui->otherUserInput->text();
+    m_Greeter.authenticate(m_user);
+    setSessionCombo(m_LoginData.userSession(ui->otherUserInput->text()));
+    ui->passwordInput->clear();
+    ui->passwordInput->setFocus(Qt::OtherFocusReason);
+}
+
+void LoginForm::loginClicked()
+{
+    qDebug() << "loginClicked";
+    m_Greeter.respond(ui->passwordInput->text().trimmed());
+    ui->passwordInput->setEnabled(false);
+}
+
+void LoginForm::clearAll()
+{
+/*    qDebug() << "Clear all";
+    ui->userCombo->setCurrentIndex(-1);
+    ui->otherUserInput->clear();
+    ui->passwordInput->clear();*/
+    initializeControls();
+}
+
+void LoginForm::leaveClicked()
+{
+    qDebug() << "leave";
     m_razorPowerProcess.start("razor-power");
     setEnabled(false);
 }
 
-void LoginForm::razorPowerDone() {
+void LoginForm::razorPowerFinished() 
+{
     setEnabled(true);
 }
+
+#ifdef USING_LIGHTDM_QT_1
+    void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
+#else
+    void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)
+#endif
+    {
+        qDebug() << "onPrompt";
+        ui->passwordInput->setEnabled(true);
+        ui->passwordInput->setFocus();
+    }
+
+void LoginForm::setUser(QString user)
+{
+    m_user = user;
+    if (m_Greeter.inAuthentication()) 
+    {
+        m_Greeter.cancelAuthentication();
+    }
+    m_Greeter.authenticate(m_user);
+    setSessionCombo(m_LoginData.userSession(m_user));
+}
+
+void LoginForm::authenticationComplete()
+{
+    if (m_Greeter.isAuthenticated())
+    {
+        qDebug() << "Authenticated... starting session" << m_LoginData.sessionName(ui->sessionCombo->currentIndex());
+        QSettings(LAST_USER_FILE, QSettings::NativeFormat).setValue(LAST_USER_KEY, m_user);
+        m_Greeter.startSessionSync(m_LoginData.sessionName(ui->sessionCombo->currentIndex()));
+        initializeControls(); // We should not arrive here...
+    }
+    else 
+    {
+        qDebug() << "Not authenticated";
+        initializeControls();
+    }
+}
+

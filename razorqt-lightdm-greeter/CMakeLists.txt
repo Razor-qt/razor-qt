@@ -77,6 +77,7 @@ else()
           main.cpp
           mainwindow.cpp
           loginform.cpp
+          logindata.cpp
         )
 
     set ( razor-lightdm-greeter_UIS
@@ -87,11 +88,13 @@ else()
     set ( razor-lightdm-greeter_HDRS
           mainwindow.h
           loginform.h
+          logindata.h
         )
 
     set ( razor-lightdm-greeter_MOCS
           mainwindow.h
           loginform.h
+          logindata.h
         )
 
     QT4_WRAP_CPP(MOCS ${razor-lightdm-greeter_MOCS})
