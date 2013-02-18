@@ -291,6 +291,7 @@ void RazorTaskButton::maximizeApplication()
  ************************************************/
 void RazorTaskButton::deMaximizeApplication()
 {
+    XfitMan().raiseWindow(mWindow);
     xfitMan().deMaximizeWindow(mWindow);
 }
 
