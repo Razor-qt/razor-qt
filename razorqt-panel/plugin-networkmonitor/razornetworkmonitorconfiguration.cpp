@@ -29,6 +29,10 @@
 #include "razornetworkmonitorconfiguration.h"
 #include "ui_razornetworkmonitorconfiguration.h"
 
+extern "C" {
+#include <statgrab.h>
+}
+
 RazorNetworkMonitorConfiguration::RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorNetworkMonitorConfiguration),
@@ -40,6 +44,8 @@ RazorNetworkMonitorConfiguration::RazorNetworkMonitorConfiguration(QSettings &se
     ui->setupUi(this);
 
     connect(ui->buttons, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonsAction(QAbstractButton*)));
+    connect(ui->iconCB, SIGNAL(currentIndexChanged(int)), SLOT(saveSettings()));
+    connect(ui->interfaceCB, SIGNAL(currentIndexChanged(int)), SLOT(saveSettings()));
 
     loadSettings();
 }
@@ -49,12 +55,23 @@ RazorNetworkMonitorConfiguration::~RazorNetworkMonitorConfiguration()
     delete ui;
 }
 
+void RazorNetworkMonitorConfiguration::saveSettings()
+{
+    mSettings.setValue("icon", ui->iconCB->currentIndex());
+    mSettings.setValue("interface", ui->interfaceCB->currentText());
+}
+
 void RazorNetworkMonitorConfiguration::loadSettings()
 {
     ui->iconCB->setCurrentIndex(mSettings.value("icon", 1).toInt());
 
-    // TODO: use iface list from libstatgrab with editable combobox
-    ui->interfaceLE->setText(mSettings.value("interface", "eth0").toString());
+    int count;
+    sg_network_iface_stats* stats = sg_get_network_iface_stats(&count);
+    for (int ix = 0; ix < count; ix++)
+        ui->interfaceCB->addItem(stats[ix].interface_name);
+
+    QString interface = mSettings.value("interface").toString();
+    ui->interfaceCB->setCurrentIndex(qMax(qMin(0, count - 1), ui->interfaceCB->findText(interface)));
 }
 
 void RazorNetworkMonitorConfiguration::dialogButtonsAction(QAbstractButton *btn)
@@ -66,9 +83,6 @@ void RazorNetworkMonitorConfiguration::dialogButtonsAction(QAbstractButton *btn)
     }
     else
     {
-        mSettings.setValue("icon", ui->iconCB->currentIndex());
-        mSettings.setValue("interface", ui->interfaceLE->text());
-
         close();
     }
 }

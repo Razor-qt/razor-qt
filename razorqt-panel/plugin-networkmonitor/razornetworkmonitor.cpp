@@ -164,7 +164,14 @@ void RazorNetworkMonitor::showConfigureDialog()
 void RazorNetworkMonitor::settingsChanged()
 {
     m_iconIndex = settings().value("icon", 1).toInt();
-    m_interface = settings().value("interface", "eth0").toString();
+    m_interface = settings().value("interface").toString();
+    if (m_interface.isEmpty())
+    {
+        int count;
+        sg_network_iface_stats* stats = sg_get_network_iface_stats(&count);
+        if (count > 0)
+            m_interface = QString(stats[0].interface_name);
+    }
 
     m_pic.load(iconName("error"));
 }

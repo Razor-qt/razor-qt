@@ -125,13 +125,13 @@ void RazorModuleManager::startWm(RazorSettings *settings)
         mWindowManager = settings->value("windowmanager").toString();
     }
 
-
     // If previuos WM was removed, we show dialog.
-    if (mWindowManager.isEmpty() || ! findProgram(mWindowManager))
+    if (mWindowManager.isEmpty() || ! findProgram(mWindowManager.split(' ')[0]))
     {
         mWindowManager = showWmSelectDialog();
         settings->setValue("windowmanager", mWindowManager);
         settings->sync();
+
     }
 
     mWmProcess->start(mWindowManager);
