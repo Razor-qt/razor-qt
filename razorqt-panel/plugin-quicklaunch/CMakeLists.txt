@@ -8,23 +8,23 @@ set(PLUGIN "quicklaunch")
 #   install(TARGETS razorpanel_quicklaunch DESTINATION ${PLUGIN_DIR})
 # endif (QUICKLAUNCH_PLUGIN)
 set(HEADERS
+  razorquicklaunchplugin.h
   razorquicklaunch.h
   quicklaunchbutton.h
-  quicklaunchlayout.h
   quicklaunchaction.h
 )
 
 set(SOURCES
+  razorquicklaunchplugin.cpp
   razorquicklaunch.cpp
   quicklaunchbutton.cpp
-  quicklaunchlayout.cpp
   quicklaunchaction.cpp
 )
 
 set(MOCS
+  razorquicklaunchplugin.h
   razorquicklaunch.h
   quicklaunchbutton.h
-  quicklaunchlayout.h
   quicklaunchaction.h
 )
 

@@ -31,7 +31,7 @@
 #define RAZORQUICKLAUNCHBUTTON_H
 
 #include <QtGui/QToolButton>
-
+#include <QMimeData>
 #include "quicklaunchaction.h"
 
 #define QUICKLAUNCH_BUTTON_SIZE 30
@@ -41,15 +41,14 @@ class QuickLaunchButton : public QToolButton
     Q_OBJECT
 
 public:
-    QuickLaunchButton(int id, QuickLaunchAction * act, QWidget* parent = 0);
+    QuickLaunchButton(QuickLaunchAction * act, QWidget* parent = 0);
     ~QuickLaunchButton();
 
     QHash<QString,QString> settingsMap();
-    int id() { return m_id; }
 
 signals:
-    void buttonDeleted(int index);
-    void switchButtons(int first, int second);
+    void buttonDeleted();
+    void switchButtons(QuickLaunchButton *from, QuickLaunchButton *to);
     void movedLeft();
     void movedRight();
 
@@ -62,17 +61,33 @@ protected:
     void dragMoveEvent(QDragMoveEvent * e);
 
 private:
-    QuickLaunchAction *m_act;
-    QAction *m_deleteAct;
-    QAction *m_moveLeftAct;
-    QAction *m_moveRightAct;
-    QMenu *m_menu;
-    QPoint m_dragStart;
-    int m_id;
+    QuickLaunchAction *mAct;
+    QAction *mDeleteAct;
+    QAction *mMoveLeftAct;
+    QAction *mMoveRightAct;
+    QMenu *mMenu;
+    QPoint mDragStart;
 
 private slots:
     void this_customContextMenuRequested(const QPoint & pos);
     void selfRemove();
+};
+
+
+class ButtonMimeData: public QMimeData
+{
+    Q_OBJECT
+public:
+    ButtonMimeData():
+        QMimeData(),
+        mButton(0)
+    {
+    }
+
+    QuickLaunchButton *button() const { return mButton; }
+    void setButton(QuickLaunchButton *button) { mButton = button; }
+private:
+    QuickLaunchButton *mButton;
 };
 
 #endif

@@ -39,37 +39,35 @@
 #define MIMETYPE "x-razor/quicklaunch-button"
 
 
-QuickLaunchButton::QuickLaunchButton(int id, QuickLaunchAction * act, QWidget * parent)
+QuickLaunchButton::QuickLaunchButton(QuickLaunchAction * act, QWidget * parent)
     : QToolButton(parent),
-      m_act(act),
-      m_id(id)
+      mAct(act)
 {
     setAcceptDrops(true);
 
-    setDefaultAction(m_act);
-    m_act->setParent(this);
-//    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setDefaultAction(mAct);
+    mAct->setParent(this);
     setIconSize(QSize(22, 22));
     setMaximumSize(QUICKLAUNCH_BUTTON_SIZE, QUICKLAUNCH_BUTTON_SIZE);
     setMinimumSize(QUICKLAUNCH_BUTTON_SIZE, QUICKLAUNCH_BUTTON_SIZE);
 
-    m_moveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("Move left"), this);
-    connect(m_moveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
+    mMoveLeftAct = new QAction(XdgIcon::fromTheme("go-previous"), tr("Move left"), this);
+    connect(mMoveLeftAct, SIGNAL(triggered()), this, SIGNAL(movedLeft()));
 
-    m_moveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("Move right"), this);
-    connect(m_moveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
+    mMoveRightAct = new QAction(XdgIcon::fromTheme("go-next"), tr("Move right"), this);
+    connect(mMoveRightAct, SIGNAL(triggered()), this, SIGNAL(movedRight()));
 
 
-    m_deleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Remove from quicklaunch"), this);
-    connect(m_deleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
-    addAction(m_deleteAct);
-    m_menu = new QMenu(this);
-    m_menu->addAction(m_act);
-    m_menu->addSeparator();
-    m_menu->addAction(m_moveLeftAct);
-    m_menu->addAction(m_moveRightAct);
-    m_menu->addSeparator();
-    m_menu->addAction(m_deleteAct);
+    mDeleteAct = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Remove from quicklaunch"), this);
+    connect(mDeleteAct, SIGNAL(triggered()), this, SLOT(selfRemove()));
+    addAction(mDeleteAct);
+    mMenu = new QMenu(this);
+    mMenu->addAction(mAct);
+    mMenu->addSeparator();
+    mMenu->addAction(mMoveLeftAct);
+    mMenu->addAction(mMoveRightAct);
+    mMenu->addSeparator();
+    mMenu->addAction(mDeleteAct);
 
 
     setContextMenuPolicy(Qt::CustomContextMenu);
@@ -84,23 +82,23 @@ QuickLaunchButton::~QuickLaunchButton()
 
 QHash<QString,QString> QuickLaunchButton::settingsMap()
 {
-    Q_ASSERT(m_act);
-    return m_act->settingsMap();
-};
+    Q_ASSERT(mAct);
+    return mAct->settingsMap();
+}
 
 
 void QuickLaunchButton::this_customContextMenuRequested(const QPoint & pos)
 {
     RazorQuickLaunch *panel = qobject_cast<RazorQuickLaunch*>(parent());
 
-    m_moveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
-    m_moveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
-    m_menu->popup(mapToGlobal(pos));
+    mMoveLeftAct->setEnabled( panel && panel->indexOfButton(this) > 0);
+    mMoveRightAct->setEnabled(panel && panel->indexOfButton(this) < panel->countOfButtons() - 1);
+    mMenu->popup(mapToGlobal(pos));
 }
 
 void QuickLaunchButton::selfRemove()
 {
-    emit buttonDeleted(m_id);
+    emit buttonDeleted();
 }
 
 void QuickLaunchButton::paintEvent(QPaintEvent *)
@@ -117,7 +115,7 @@ void QuickLaunchButton::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton && e->modifiers() == Qt::ControlModifier)
     {
-        m_dragStart = e->pos();
+        mDragStart = e->pos();
         return;
     }
 
@@ -131,7 +129,7 @@ void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
         return;
     }
 
-    if ((e->pos() - m_dragStart).manhattanLength() < QApplication::startDragDistance())
+    if ((e->pos() - mDragStart).manhattanLength() < QApplication::startDragDistance())
     {
         return;
     }
@@ -142,10 +140,8 @@ void QuickLaunchButton::mouseMoveEvent(QMouseEvent *e)
     }
 
     QDrag *drag = new QDrag(this);
-    QMimeData *mimeData = new QMimeData();
-    QByteArray ba;
-    ba.setNum(m_id);
-    mimeData->setData(MIMETYPE, ba);
+    ButtonMimeData *mimeData = new ButtonMimeData();
+    mimeData->setButton(this);
     drag->setMimeData(mimeData);
 
     drag->exec(Qt::MoveAction);
@@ -167,14 +163,10 @@ void QuickLaunchButton::dragMoveEvent(QDragMoveEvent * e)
 
 void QuickLaunchButton::dragEnterEvent(QDragEnterEvent *e)
 {
-    if (e->mimeData()->hasFormat(MIMETYPE))
+    const ButtonMimeData *mimeData = qobject_cast<const ButtonMimeData*>(e->mimeData());
+    if (mimeData && mimeData->button())
     {
-        int other = e->mimeData()->data(MIMETYPE).toInt();
-        // do not replace self with self
-        if (other == m_id)
-            return;
-
-        emit switchButtons(m_id, other);
+        emit switchButtons(mimeData->button(), this);
     }
 }
 

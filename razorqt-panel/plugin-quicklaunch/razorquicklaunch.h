@@ -30,7 +30,6 @@
 #ifndef RAZORQUICKLAUNCH_H
 #define RAZORQUICKLAUNCH_H
 
-#include "../panel/razorpanelplugin.h"
 #include "../panel/razorpanel.h"
 #include <QtCore/QHash>
 #include <QtCore/QString>
@@ -38,27 +37,29 @@
 class XdgDesktopFile;
 class QuickLaunchAction;
 class QDragEnterEvent;
-class QuickLaunchLayout;
+class RazorGridLayout;
 class QuickLaunchButton;
-
+class QSettings;
 
 /*! \brief Loader for "quick launcher" icons in the panel.
 \author Petr Vanek <petr@scribus.info>
 */
-class RazorQuickLaunch : public RazorPanelPlugin
+class RazorQuickLaunch : public QFrame
 {
     Q_OBJECT
 
 public:
-    RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorQuickLaunch(IRazorPanelPlugin *plugin, QWidget* parent = 0);
     ~RazorQuickLaunch();
 
     int indexOfButton(QuickLaunchButton* button) const;
     int countOfButtons() const;
+
+    void realign();
+
 private:
-    QHash<QString,XdgDesktopFile*> m_xdgFiles;
-    QuickLaunchLayout *m_layout;
-    QHash<int,QuickLaunchButton*> m_buttons;
+    RazorGridLayout *mLayout;
+    IRazorPanelPlugin *mPlugin;
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
@@ -67,13 +68,11 @@ private:
 
 private slots:
     void addButton(QuickLaunchAction* action);
-    void switchButtons(int,int);
-    void buttonDeleted(int);
+    void switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2);
+    void buttonDeleted();
     void buttonMoveLeft();
     void buttonMoveRight();
 };
 
-
-EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif

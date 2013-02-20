@@ -21,7 +21,7 @@ endmacro()
 
 setByDefault(CLOCK_PLUGIN          Yes)
 setByDefault(DESKTOPSWITCH_PLUGIN  Yes)
-setByDefault(QUICKLAUNCH_PLUGIN    No)
+setByDefault(QUICKLAUNCH_PLUGIN    Yes)
 setByDefault(TRAY_PLUGIN           Yes)
 setByDefault(MAINMENU_PLUGIN       Yes)
 setByDefault(TASKBAR_PLUGIN        Yes)

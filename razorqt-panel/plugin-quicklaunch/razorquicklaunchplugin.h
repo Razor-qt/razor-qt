@@ -4,10 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2012 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
- *   Kuzma Shapran <kuzma.shapran@gmail.com>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,36 +24,42 @@
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
- 
-#ifndef QUICKLAUNCHLAYOUT_H
-#define QUICKLAUNCHLAYOUT_H
 
-#include <QGridLayout>
-#include "razorpanel.h"
 
-class QuickLaunchButton;
+#ifndef RAZORQUICKLAUNCHPLUGIN_H
+#define RAZORQUICKLAUNCHPLUGIN_H
 
-class QuickLaunchLayout : public QGridLayout
+#include "../panel/irazorpanelplugin.h"
+#include <QObject>
+class RazorQuickLaunch;
+
+class RazorQuickLaunchPlugin: public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    QuickLaunchLayout(QWidget *parent, RazorPanel *panel);
+    explicit RazorQuickLaunchPlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+    ~RazorQuickLaunchPlugin();
 
-    void addWidget(QuickLaunchButton *b);
-    void removeWidget(QuickLaunchButton *b);
-    void swapButtons(QuickLaunchButton * b1, QuickLaunchButton *b2);
-    QuickLaunchButton* buttonAt(int index);
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "QuickLaunch"; }
 
-    QList<QuickLaunchButton*> buttons() { return m_buttons; }
+    void realign();
 
-    Qt::Orientations expandingDirections() const;
+    bool isSeparate() const { return true; }
 
 private:
-    RazorPanel *m_panel;
-    QList<QuickLaunchButton*> m_buttons;
-
-private slots:
-    void relayout();
+    RazorQuickLaunch *mWidget;
 };
 
-#endif // QUICKLAUNCHLAYOUT_H
+
+class RazorQuickLaunchPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new RazorQuickLaunchPlugin(startupInfo);
+    }
+};
+#endif // RAZORQUICKLAUNCHPLUGIN_H
