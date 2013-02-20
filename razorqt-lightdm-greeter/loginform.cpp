@@ -39,6 +39,7 @@
 #include <razorqt/razorsettings.h>
 #include <QtCore/qdatetime.h>
 #include <QTime>
+#include <QTimer>
 #include <QGraphicsDropShadowEffect>
 #include <QToolTip>
 #include <lightdm-qt-2/QLightDM/greeter.h>
@@ -58,8 +59,7 @@ LoginForm::LoginForm(QWidget *parent) :
 {
     if (! m_Greeter.connectSync())
     {
-        // Not much we can do, then.. 
-        //exit(1);
+        close(); 
     }
    
     ui->setupUi(this);
@@ -130,6 +130,8 @@ void LoginForm::initializeControls()
 {
     qDebug() << "showManualLoginHint:" << m_Greeter.showManualLoginHint();
 
+    ui->sessionCombo->setCurrentIndex(m_LoginData.suggestedSession());
+
     if (m_Greeter.showManualLoginHint()) 
     {
         ui->userCombo->setCurrentIndex(m_otherUserComboIndex);
@@ -139,11 +141,19 @@ void LoginForm::initializeControls()
         ui->userCombo->setCurrentIndex(m_LoginData.suggestedUser());
     }
 
-    ui->sessionCombo->setCurrentIndex(m_LoginData.suggestedSession());
-
     ui->userCombo->setVisible(! m_Greeter.hideUsersHint());
+    
     ui->otherUserInput->setVisible(ui->userCombo->currentIndex() == m_otherUserComboIndex);
     ui->otherUserInput->clear(); 
+    QStringList completions;
+    for (int i = 0; i < m_LoginData.numberOfUsers(); i++) 
+    {
+        completions << m_LoginData.userName(i);
+    }
+    QCompleter *completer = new QCompleter(completions, ui->otherUserInput);
+    completer->setCompletionMode(QCompleter::InlineCompletion);
+    ui->otherUserInput->setCompleter(completer);
+
     ui->passwordInput->setEnabled(false);
     ui->passwordInput->clear();
 
@@ -160,7 +170,6 @@ void LoginForm::initializeControls()
         m_initialFocus = ui->passwordInput;
     }
 }
-
 
 void LoginForm::setSessionCombo(int session_index)
 {
@@ -185,9 +194,6 @@ void LoginForm::userComboCurrentIndexChanged()
         ui->otherUserInput->hide(); 
         qDebug() << "Start authentication..";
         setUser(m_LoginData.userName(ui->userCombo->currentIndex()));
-        
-        qDebug() << "setSessionCombo";
-        setSessionCombo(m_LoginData.userSession(ui->userCombo->currentIndex()));
     }
 }
 
@@ -200,11 +206,7 @@ void LoginForm::otherUserEditingFinished()
     
     qDebug() << "Authenticating with otherUser...";
 
-    m_user = ui->otherUserInput->text();
-    m_Greeter.authenticate(m_user);
-    setSessionCombo(m_LoginData.userSession(ui->otherUserInput->text()));
-    ui->passwordInput->clear();
-    ui->passwordInput->setFocus(Qt::OtherFocusReason);
+    setUser(ui->otherUserInput->text()) ;
 }
 
 void LoginForm::loginClicked()
@@ -249,12 +251,13 @@ void LoginForm::razorPowerFinished()
 void LoginForm::setUser(QString user)
 {
     m_user = user;
+    setSessionCombo(m_LoginData.userSession(m_user));
+
     if (m_Greeter.inAuthentication()) 
     {
         m_Greeter.cancelAuthentication();
     }
     m_Greeter.authenticate(m_user);
-    setSessionCombo(m_LoginData.userSession(m_user));
 }
 
 void LoginForm::authenticationComplete()
@@ -269,7 +272,8 @@ void LoginForm::authenticationComplete()
     else 
     {
         qDebug() << "Not authenticated";
-        initializeControls();
+        ui->passwordInput->clear();
+        setUser(m_user);
     }
 }
 
