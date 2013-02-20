@@ -312,6 +312,17 @@ void RazorGridLayout::setStretch(Stretch value)
 /************************************************
 
  ************************************************/
+void RazorGridLayout::moveItem(int from, int to)
+{
+    Q_D(RazorGridLayout);
+    d->mItems.move(from, to);
+    invalidate();
+}
+
+
+/************************************************
+
+ ************************************************/
 QSize RazorGridLayout::sizeHint() const
 {
     Q_D(const RazorGridLayout);

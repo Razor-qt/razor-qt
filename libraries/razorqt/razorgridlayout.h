@@ -147,6 +147,11 @@ public:
      **/
     void setStretch(Stretch value);
 
+    /**
+      Moves the item at index position from to index position to.
+     **/
+    void moveItem(int from, int to);
+
 private:
     RazorGridLayoutPrivate* const d_ptr;
     Q_DECLARE_PRIVATE(RazorGridLayout)
