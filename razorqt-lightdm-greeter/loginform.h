@@ -44,8 +44,8 @@ class LoginForm : public QWidget
 public:
     explicit LoginForm(QWidget *parent = 0);
     ~LoginForm();
-
-    QWidget* initialFocus() { return m_initialFocus; };
+    
+    virtual void setFocus(Qt::FocusReason reason);
 
 public slots:
     void userComboCurrentIndexChanged();
@@ -78,7 +78,6 @@ private:
 
     int m_otherUserComboIndex;
     QString m_user;
-    QWidget* m_initialFocus;
 };
 
 #endif // LOGINFORM_H

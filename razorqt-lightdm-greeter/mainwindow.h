@@ -43,6 +43,8 @@ public:
     explicit MainWindow(int screen, QWidget *parent = 0);
     ~MainWindow();
 
+    void setFocus(Qt::FocusReason reason);
+
     bool isMain() { return m_main; };
     LoginForm* loginForm() { return m_LoginForm; };
 private:

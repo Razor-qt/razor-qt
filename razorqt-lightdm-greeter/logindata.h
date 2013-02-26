@@ -15,8 +15,8 @@
   #include <QLightDM/User>
   #include <QLightDM/Session>
 #else
-  #include <QLightDM/UsersModel>
-  #include <QLightDM/SessionsModel>
+#include <QLightDM/UsersModel>
+#include <QLightDM/SessionsModel>
 #endif
 
 #include <QLightDM/Greeter>
@@ -47,12 +47,15 @@ public:
     int suggestedUser();
     int suggestedSession();
 
+    QString getLastUser();
+    void setLastUser(QString user);
+ 
 private:
     QString data(int index, QAbstractListModel& model, int role);
-    QLightDM::Greeter *m_Greeter; 
+   QLightDM::Greeter *m_Greeter; 
     QLightDM::UsersModel m_UsersModel;
     QLightDM::SessionsModel m_SessionsModel;
-    
+    QString m_StatefilePath; 
 };
 
 class Msg

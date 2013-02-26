@@ -54,8 +54,7 @@ LoginForm::LoginForm(QWidget *parent) :
         m_Greeter(),
         m_LoginData(&m_Greeter),
         m_razorPowerProcess(),
-        m_otherUserComboIndex(-1),
-        m_initialFocus(0)
+        m_otherUserComboIndex(-1)
 {
     if (! m_Greeter.connectSync())
     {
@@ -75,6 +74,23 @@ LoginForm::~LoginForm()
 {
     delete ui;
 }
+
+void LoginForm::setFocus(Qt::FocusReason reason)
+{
+    if (ui->userCombo->currentIndex() == -1)
+    {
+        ui->userCombo->setFocus(reason);
+    }
+    else if (ui->userCombo->currentIndex() == m_otherUserComboIndex)
+    {
+        ui->otherUserInput->setFocus(reason);
+    }
+    else 
+    {
+        ui->passwordInput->setFocus(reason);
+    }
+}
+
 
 void LoginForm::setupAppearence()
 {
@@ -156,19 +172,6 @@ void LoginForm::initializeControls()
 
     ui->passwordInput->setEnabled(false);
     ui->passwordInput->clear();
-
-    if (ui->userCombo->currentIndex() == -1)
-    {
-        m_initialFocus = ui->userCombo;
-    }
-    else if (ui->userCombo->currentIndex() == m_otherUserComboIndex)
-    {
-        m_initialFocus = ui->otherUserInput;
-    }
-    else 
-    {
-        m_initialFocus = ui->passwordInput;
-    }
 }
 
 void LoginForm::setSessionCombo(int session_index)
@@ -193,7 +196,10 @@ void LoginForm::userComboCurrentIndexChanged()
     {
         ui->otherUserInput->hide(); 
         qDebug() << "Start authentication..";
-        setUser(m_LoginData.userName(ui->userCombo->currentIndex()));
+        if (ui->userCombo->currentIndex() > -1)
+        {
+            setUser(m_LoginData.userName(ui->userCombo->currentIndex()));
+        }
     }
 }
 
@@ -213,15 +219,13 @@ void LoginForm::loginClicked()
 {
     qDebug() << "loginClicked";
     m_Greeter.respond(ui->passwordInput->text().trimmed());
+    ui->passwordInput->clear();
     ui->passwordInput->setEnabled(false);
 }
 
 void LoginForm::clearAll()
 {
-/*    qDebug() << "Clear all";
-    ui->userCombo->setCurrentIndex(-1);
-    ui->otherUserInput->clear();
-    ui->passwordInput->clear();*/
+	ui->userCombo->setCurrentIndex(-1);
     initializeControls();
 }
 
@@ -240,13 +244,13 @@ void LoginForm::razorPowerFinished()
 #ifdef USING_LIGHTDM_QT_1
     void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
 #else
-    void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)
+void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)
 #endif
-    {
-        qDebug() << "onPrompt";
-        ui->passwordInput->setEnabled(true);
-        ui->passwordInput->setFocus();
-    }
+{
+    qDebug() << "onPrompt";
+    ui->passwordInput->setEnabled(true);
+    ui->passwordInput->setFocus();
+}
 
 void LoginForm::setUser(QString user)
 {
@@ -265,7 +269,7 @@ void LoginForm::authenticationComplete()
     if (m_Greeter.isAuthenticated())
     {
         qDebug() << "Authenticated... starting session" << m_LoginData.sessionName(ui->sessionCombo->currentIndex());
-        QSettings(LAST_USER_FILE, QSettings::NativeFormat).setValue(LAST_USER_KEY, m_user);
+        m_LoginData.setLastUser(m_user);
         m_Greeter.startSessionSync(m_LoginData.sessionName(ui->sessionCombo->currentIndex()));
         initializeControls(); // We should not arrive here...
     }

@@ -8,8 +8,15 @@
 #include <QDir>
 #include <QSettings>
 #include <lightdm-qt-2/QLightDM/greeter.h>
+#include <qtxdg/xdgdirs.h>
 
 #include "logindata.h"
+
+#define DATA_DIR "razor-lightdm-greeter"
+#define LAST_USER_KEY "last-user"
+#define CONFIG_FILE "/etc/lightdm/lightdm-razor-greeter.conf"
+
+
 
 LoginData::LoginData(QLightDM::Greeter *greeter) : 
     QObject(), 
@@ -17,6 +24,7 @@ LoginData::LoginData(QLightDM::Greeter *greeter) :
         m_UsersModel(this), 
         m_SessionsModel(this)
 {
+    m_StatefilePath = XdgDirs::cacheHome(true) + "/" + DATA_DIR + "/state";
 }
 
 LoginData::~LoginData() {
@@ -84,7 +92,7 @@ int LoginData::suggestedUser()
 
     if (user.isEmpty()) 
     {
-        user = QSettings(LAST_USER_FILE, QSettings::NativeFormat).value(LAST_USER_KEY).toString();
+		user = getLastUser(); 
     }
 
     if (! user.isEmpty()) 
@@ -119,6 +127,15 @@ int LoginData::suggestedSession()
     return suggestedSessionIndex;
 }
 
+QString LoginData::getLastUser()
+{
+    return QSettings(m_StatefilePath, QSettings::NativeFormat).value(LAST_USER_KEY).toString();
+}
+
+void LoginData::setLastUser(QString user)
+{
+    QSettings(m_StatefilePath, QSettings::NativeFormat).setValue(LAST_USER_KEY, user);
+}
 
 QString LoginData::data(int index, QAbstractListModel& model, int role)
 {

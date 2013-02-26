@@ -74,3 +74,15 @@ MainWindow::MainWindow(int screen, QWidget *parent)
 MainWindow::~MainWindow()
 {
 }
+
+void MainWindow::setFocus(Qt::FocusReason reason)
+{
+    if (m_LoginForm)
+    {
+        m_LoginForm->setFocus(reason);
+    }
+    else 
+    {
+        QWidget::setFocus(reason);
+    }
+}
