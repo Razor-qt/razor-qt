@@ -44,10 +44,6 @@
 #include <QToolTip>
 #include <lightdm-qt-2/QLightDM/greeter.h>
 
-#ifdef USING_LIGHTDM_QT_1
-  #include <QLightDM/System>
-#endif
-
 LoginForm::LoginForm(QWidget *parent) : 
     QWidget(parent), 
         ui(new Ui::LoginForm), 
@@ -131,13 +127,8 @@ void LoginForm::setupConnections()
     connect(&m_razorPowerProcess, SIGNAL(finished(int)), this, SLOT(razorPowerFinished())); 
 
 
-#ifdef USING_LIGHTDM_QT_1
-    connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::PromptType)),
-            this,       SLOT(onPrompt(QString,QLightDM::PromptType)));
-#else
     connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::Greeter::PromptType)),
             this,       SLOT(onPrompt(QString,QLightDM::Greeter::PromptType)));
-#endif
     
     connect(&m_Greeter, SIGNAL(authenticationComplete()), this, SLOT(authenticationComplete()));
 }
@@ -241,11 +232,7 @@ void LoginForm::razorPowerFinished()
     setEnabled(true);
 }
 
-#ifdef USING_LIGHTDM_QT_1
-    void LoginForm::onPrompt(QString prompt, QLightDM::PromptType promptType)
-#else
 void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)
-#endif
 {
     qDebug() << "onPrompt";
     ui->passwordInput->setEnabled(true);

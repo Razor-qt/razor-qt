@@ -55,11 +55,7 @@ public slots:
     void leaveClicked();
     void razorPowerFinished();
    
-#ifdef USING_LIGHTDM_QT_1
-    void onPrompt(QString prompt, QLightDM::PromptType prompType);
-#else
     void onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType);
-#endif
     
     void authenticationComplete();
 

@@ -10,14 +10,8 @@
 
 #include <QtCore/QObject>
 #include <QDebug>
-
-#ifdef USING_LIGHTDM_QT_1
-  #include <QLightDM/User>
-  #include <QLightDM/Session>
-#else
 #include <QLightDM/UsersModel>
 #include <QLightDM/SessionsModel>
-#endif
 
 #include <QLightDM/Greeter>
 
