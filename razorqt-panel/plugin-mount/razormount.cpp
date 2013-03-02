@@ -35,46 +35,49 @@
 #define ACT_SHOW_INFO "showInfo"
 #define ACT_NOTHING   "nothing"
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorMount)
+Q_EXPORT_PLUGIN2(volume, RazorMountPluginLibrary)
 
 
-RazorMount::RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent)
+RazorMount::RazorMount(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
 {
-    setObjectName("RazorMount");
-    m_button = new MountButton(parent, panel());
-    addWidget(m_button);
+    mButton = new MountButton(this);
     settingsChanged();
 }
 
 RazorMount::~RazorMount()
 {
+    delete mButton;
 }
 
-
-void RazorMount::showConfigureDialog()
+QWidget *RazorMount::widget()
 {
-    RazorMountConfiguration *confWindow = this->findChild<RazorMountConfiguration*>("ClockConfigurationWindow");
+    return mButton;
+}
 
-    if (!confWindow)
-    {
-        confWindow = new RazorMountConfiguration(settings(), this);
-    }
+void RazorMount::realign()
+{
+    mButton->realign();
+}
 
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+QDialog *RazorMount::configureDialog()
+{
+    mButton->hidePopup();
+    RazorMountConfiguration *configWindow = new RazorMountConfiguration(*settings());
+    configWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+    return configWindow;
 }
 
 
 void RazorMount::settingsChanged()
 {
-    QString s = settings().value("newDeviceAction", MountButton::DevActionInfo).toString();
+    QString s = settings()->value("newDeviceAction", MountButton::DevActionInfo).toString();
 
     if (s == ACT_SHOW_MENU)
-        m_button->setDevAction(MountButton::DevActionMenu);
+        mButton->setDevAction(MountButton::DevActionMenu);
     else if(s == ACT_NOTHING)
-        m_button->setDevAction(MountButton::DevActionNothing);
+        mButton->setDevAction(MountButton::DevActionNothing);
     else
-        m_button->setDevAction(MountButton::DevActionInfo);
+        mButton->setDevAction(MountButton::DevActionInfo);
 }

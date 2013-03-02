@@ -29,7 +29,7 @@
 #ifndef RAZORMOUNT_H
 #define RAZORMOUNT_H
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
 #include "../panel/razorpanel.h"
 
 #include "mountbutton.h"
@@ -37,28 +37,40 @@
 /*! 
 \author Petr Vanek <petr@scribus.info>
 */
-class RazorMount : public RazorPanelPlugin
+class RazorMount : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 
 public:
-    RazorMount(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorMount(const IRazorPanelPluginStartupInfo &startupInfo);
     ~RazorMount();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "RazorMount"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    void realign();
+    QDialog *configureDialog();
 
 protected slots:
-    virtual void showConfigureDialog();
     virtual void settingsChanged();
 
 private:
-    MountButton *m_button;
+    MountButton *mButton;
 
 private slots:
 
 };
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class RazorMountPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new RazorMount(startupInfo);
+    }
+};
 
 #endif

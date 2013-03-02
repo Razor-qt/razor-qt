@@ -36,7 +36,7 @@
 #include <razormount/razormount.h>
 
 #include "menudiskitem.h"
-#include "../panel/razorpanel.h"
+#include "../panel/irazorpanelplugin.h"
 
 class QLabel;
 class UdisksManager;
@@ -76,7 +76,7 @@ class MountButton : public QToolButton
 {
     Q_OBJECT
 public:
-    MountButton(QWidget * parent, RazorPanel * panel);
+    MountButton(IRazorPanelPlugin *plugin, QWidget *parent = 0);
     ~MountButton();
 
     enum DevAction {
@@ -87,13 +87,17 @@ public:
     DevAction devAction() const { return mDevAction; }
     void setDevAction(DevAction devAction) { mDevAction = devAction; }
 
+    void realign();
+
+public slots:
+    void showHidePopup();
+    void showPopup();
+    void hidePopup();
+
 private slots:
     void onDeviceAdded(RazorMountDevice *device);
     void onDeviceRemoved(RazorMountDevice *device);
 
-    void showHidePopup();
-    void showPopup();
-    void hidePopup();
     void setDown(bool down);
 
 private:
@@ -103,7 +107,7 @@ private:
 
     RazorMountManager mManager;
 
-    RazorPanel *mPanel;
+    IRazorPanelPlugin *mPlugin;
     DevAction mDevAction;
     QTimer  mPopupHideTimer;
     int mPopupHideDelay;

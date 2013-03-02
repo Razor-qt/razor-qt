@@ -111,7 +111,6 @@ void Popup::resizeEvent(QResizeEvent *event)
 
 void Popup::showEvent(QShowEvent *event)
 {
-//    qDebug() << "DEV" << mDisplayCount <<  mManager->devices().count() << mManager->devices();
     if (mDisplayCount == 0)
         mPlaceholder->show();
 
@@ -174,10 +173,10 @@ void Popup::open(QPoint pos, Qt::Corner anchor)
 }
 
 
-MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
+MountButton::MountButton(IRazorPanelPlugin *plugin, QWidget * parent) :
     QToolButton(parent),
     mPopup(0),
-    mPanel(panel),
+    mPlugin(plugin),
     mDevAction(DevActionInfo),
     mPopupHideDelay(5000)
 {
@@ -189,8 +188,6 @@ MountButton::MountButton(QWidget * parent, RazorPanel *panel) :
     mPopup = new Popup(&mManager, this);
 
     connect(mPopup, SIGNAL(visibilityChanged(bool)), this, SLOT(setDown(bool)));
-
-    connect(mPanel, SIGNAL(positionChanged()), mPopup, SLOT(hide()));
 
     connect(this, SIGNAL(clicked()), this, SLOT(showHidePopup()));
 
@@ -208,11 +205,15 @@ MountButton::~MountButton()
 {
 }
 
+void MountButton::realign()
+{
+    mPopup->hide();
+}
+
 
 
 void MountButton::showMessage(const QString &text)
 {
-//    QToolTip::showText(mapToGlobal(QPoint(0, 0)), QString("<nobr>%1</nobr>").arg(text));
     RazorNotification::notify(toolTip(), text
 #if QT_VERSION >= 0x040700
                               , icon().name()
@@ -279,7 +280,6 @@ void MountButton::showHidePopup()
 
 void MountButton::showPopup()
 {
-
     if (mPopup->isVisible())
         return;
 
@@ -287,50 +287,9 @@ void MountButton::showPopup()
         return;
 
     mPopup->updateGeometry();
-
-    QPoint p;
-    if (isLeftToRight())
-    {
-        switch (mPanel->position())
-        {
-        case RazorPanel::PositionTop:
-            mPopup->open(mapToGlobal(geometry().bottomLeft()), Qt::TopLeftCorner);
-            break;
-
-        case RazorPanel::PositionBottom:
-            mPopup->open(mapToGlobal(geometry().topLeft()), Qt::BottomLeftCorner);
-            break;
-
-        case RazorPanel::PositionLeft:
-            mPopup->open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
-            break;
-
-        case RazorPanel::PositionRight:
-            mPopup->open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
-            break;
-        }
-    }
-    else
-    {
-        switch (mPanel->position())
-        {
-        case RazorPanel::PositionTop:
-            mPopup->open(mapToGlobal(geometry().bottomRight()), Qt::TopRightCorner);
-            break;
-
-        case RazorPanel::PositionBottom:
-            mPopup->open(mapToGlobal(geometry().topRight()), Qt::BottomRightCorner);
-            break;
-
-        case RazorPanel::PositionLeft:
-            mPopup->open(mapToGlobal(geometry().topRight()), Qt::TopLeftCorner);
-            break;
-
-        case RazorPanel::PositionRight:
-            mPopup->open(mapToGlobal(geometry().topLeft()), Qt::TopLeftCorner);
-            break;
-        }
-    }
+    mPopup->adjustSize();
+    QRect pos = mPlugin->calculatePopupWindowPos(mPopup->size());
+    mPopup->open(pos.topLeft(), Qt::TopLeftCorner);
 }
 
 
