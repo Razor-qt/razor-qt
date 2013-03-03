@@ -784,7 +784,23 @@ QRect RazorPanel::calculatePopupWindowPos(const IRazorPanelPlugin *plugin, const
             break;
     }
 
-    return QRect(QPoint(x, y), windowSize);
+    QRect res(QPoint(x, y), windowSize);
+
+    QRect screen = QApplication::desktop()->availableGeometry(this);
+
+    if (res.right() > screen.right())
+        res.moveRight(screen.right());
+
+    if (res.bottom() > screen.bottom())
+        res.moveBottom(screen.bottom());
+
+    if (res.left() < screen.left())
+        res.moveLeft(screen.left());
+
+    if (res.top() < screen.top())
+        res.moveTop(screen.top());
+
+    return res;
 }
 
 
