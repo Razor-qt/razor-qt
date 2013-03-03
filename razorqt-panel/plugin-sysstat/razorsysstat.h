@@ -101,7 +101,7 @@ public:
 
 #undef QSS_COLOUR
 #define QSS_COLOUR(GETNAME, SETNAME) \
-    QColor GETNAME##Colour(void) const; \
+    QColor GETNAME##Colour() const; \
     void SETNAME##Colour(QColor value);
 
     QSS_COLOUR(grid,           setGrid)
@@ -134,7 +134,7 @@ protected slots:
     void swapUpdate(float used);
     void networkUpdate(unsigned received, unsigned transmitted);
 
-    void reset(void);
+    void reset();
 
 private:
     RazorPanel *mPanel;
@@ -195,10 +195,10 @@ private:
     QImage mHistoryImage;
 
 
-    void clearLine(void);
+    void clearLine();
 
-    void mixNetColours(void);
-    void updateTitleFontPixelHeight(void);
+    void mixNetColours();
+    void updateTitleFontPixelHeight();
 };
 
 

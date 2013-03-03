@@ -58,6 +58,7 @@ private slots:
     /*
       Saves settings in conf file.
     */
+    void saveSettings();
     void loadSettings();
     void dialogButtonsAction(QAbstractButton *btn);
 };

@@ -47,12 +47,12 @@ public:
     explicit RazorWorldClockConfigurationTimeZones(QWidget *parent = NULL);
     ~RazorWorldClockConfigurationTimeZones();
 
-    int updateAndExec(void);
+    int updateAndExec();
 
-    QString timeZone(void);
+    QString timeZone();
 
 public slots:
-    void itemSelectionChanged(void);
+    void itemSelectionChanged();
     void itemDoubleClicked(QTreeWidgetItem*,int);
 
 private:

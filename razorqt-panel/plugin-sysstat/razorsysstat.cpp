@@ -28,9 +28,9 @@
 #include "razorsysstat.h"
 #include "razorsysstatutils.h"
 
-#include <sysstat/cpustat.hpp>
-#include <sysstat/memstat.hpp>
-#include <sysstat/netstat.hpp>
+#include <sysstat/cpustat.h>
+#include <sysstat/memstat.h>
+#include <sysstat/netstat.h>
 
 #include <QtCore/QTimer>
 #include <QtCore/qmath.h>
@@ -139,7 +139,7 @@ RazorSysStatContent::~RazorSysStatContent()
 
 #undef QSS_GET_COLOUR
 #define QSS_GET_COLOUR(GETNAME) \
-QColor RazorSysStatContent::GETNAME##Colour(void) const \
+QColor RazorSysStatContent::GETNAME##Colour() const \
 { \
     return mThemeColours.GETNAME##Colour; \
 }
@@ -186,7 +186,7 @@ QSS_NET_COLOUR(netTransmitted, setNetTransmitted)
 #undef QSS_COLOUR
 #undef QSS_GET_COLOUR
 
-void RazorSysStatContent::mixNetColours(void)
+void RazorSysStatContent::mixNetColours()
 {
     QColor netReceivedColour_hsv = mColours.netReceivedColour.toHsv();
     QColor netTransmittedColour_hsv = mColours.netTransmittedColour.toHsv();
@@ -207,7 +207,7 @@ void RazorSysStatContent::setTitleFont(QFont value)
     update();
 }
 
-void RazorSysStatContent::updateTitleFontPixelHeight(void)
+void RazorSysStatContent::updateTitleFontPixelHeight()
 {
     if (mTitleLabel.isEmpty())
         mTitleFontPixelHeight = 0;
@@ -362,7 +362,7 @@ void RazorSysStatContent::resizeEvent(QResizeEvent * /*event*/)
     reset();
 }
 
-void RazorSysStatContent::reset(void)
+void RazorSysStatContent::reset()
 {
     setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 2, mPanel->isHorizontal() ? 2 : mMinimalSize);
 
@@ -384,7 +384,7 @@ T clamp(const T &value, const T &min, const T &max)
 }
 
 // QPainter.drawLine with pen set to Qt::transparent doesn't clear anything
-void RazorSysStatContent::clearLine(void)
+void RazorSysStatContent::clearLine()
 {
     QRgb bg = QColor(Qt::transparent).rgba();
     for (int i = 0; i < 100; ++i)

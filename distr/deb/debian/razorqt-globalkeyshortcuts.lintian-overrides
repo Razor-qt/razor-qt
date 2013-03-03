@@ -1,0 +1,3 @@
+razorqt-globalkeyshortcuts: binary-without-manpage usr/bin/razor-config-globalkeyshortcuts
+razorqt-globalkeyshortcuts: binary-without-manpage usr/bin/razor-globalkeyshortcuts
+

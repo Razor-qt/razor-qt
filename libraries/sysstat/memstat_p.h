@@ -24,18 +24,38 @@
 ** END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef LIBSYSSTAT__VERSION__INCLUDED
-#define LIBSYSSTAT__VERSION__INCLUDED
+#ifndef LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
+#define LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
+
+
+#include <QtCore/QObject>
+#include <QtCore/QtGlobal>
+
+#include "basestat_p.h"
+#include "memstat.h"
 
 
 namespace SysStat {
 
-    namespace version {
-        QString verbose(void);
-        int major(void);
-        int minor(void);
-        int patch(void);
-    }
+class MemStatPrivate : public BaseStatPrivate
+{
+    Q_OBJECT
+
+public:
+    MemStatPrivate(MemStat *parent = NULL);
+    ~MemStatPrivate();
+
+signals:
+    void memoryUpdate(float apps, float buffers, float cached);
+    void swapUpdate(float used);
+
+private slots:
+    void timeout();
+
+private:
+    QString defaultSource();
+};
+
 }
 
-#endif // LIBSYSSTAT__VERSION__INCLUDED
+#endif //LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED

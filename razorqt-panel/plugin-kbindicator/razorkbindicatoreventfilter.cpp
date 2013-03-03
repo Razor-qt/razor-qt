@@ -38,7 +38,7 @@ bool X11_eventFilter(void *message)
     return filterObject ? filterObject->X11_eventFilter(message) : false;
 }
 
-RazorKbIndicatorEventFilter* RazorKbIndicatorEventFilter::instance(void)
+RazorKbIndicatorEventFilter* RazorKbIndicatorEventFilter::instance()
 {
     if (!filterObject)
         new RazorKbIndicatorEventFilter();
@@ -61,7 +61,7 @@ RazorKbIndicatorEventFilter::RazorKbIndicatorEventFilter(QObject *parent):
     }
 }
 
-bool RazorKbIndicatorEventFilter::initXkbExtension(void)
+bool RazorKbIndicatorEventFilter::initXkbExtension()
 {
     int code;
     int major = XkbMajorVersion;

@@ -24,38 +24,55 @@
 ** END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
-#define LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
+#ifndef LIBSYSSTAT__CPU_STAT__INCLUDED
+#define LIBSYSSTAT__CPU_STAT__INCLUDED
 
 
 #include <QtCore/QObject>
-#include <QtCore/QtGlobal>
 
-#include "basestat_p.hpp"
-#include "memstat.hpp"
+#include <sysstat/basestat.h>
 
 
 namespace SysStat {
 
-class MemStatPrivate : public BaseStatPrivate
+class CpuStatPrivate;
+
+class SYSSTATSHARED_EXPORT CpuStat : public BaseStat
 {
     Q_OBJECT
 
+    Q_ENUMS(Monitoring)
+
 public:
-    MemStatPrivate(MemStat *parent = NULL);
-    ~MemStatPrivate();
+    enum Monitoring { LoadAndFrequency, LoadOnly, FrequencyOnly };
+
+public:
+    CpuStat(QObject *parent = NULL);
+    ~CpuStat();
+
+    void updateSources();
+
+    uint minFreq(const QString &source) const;
+    uint maxFreq(const QString &source) const;
 
 signals:
-    void memoryUpdate(float apps, float buffers, float cached);
-    void swapUpdate(float used);
+    void update(float user, float nice, float system, float other, float frequencyRate, uint frequency);
+    void update(float user, float nice, float system, float other);
+    void update(uint frequency);
 
-private slots:
-    void timeout(void);
+    void monitoringChanged(Monitoring);
 
-private:
-    QString defaultSource(void);
+public:
+    Q_PROPERTY(Monitoring monitoring READ monitoring WRITE setMonitoring NOTIFY monitoringChanged)
+
+public slots:
+    Monitoring monitoring() const;
+    void setMonitoring(Monitoring value);
+
+protected:
+    CpuStatPrivate* impl;
 };
 
 }
 
-#endif //LIBSYSSTAT__MEM_STAT__PRIVATE__INCLUDED
+#endif //LIBSYSSTAT__CPU_STAT__INCLUDED

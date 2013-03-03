@@ -31,9 +31,9 @@
 #include "razorsysstatutils.h"
 #include "razorsysstatcolours.h"
 
-#include <sysstat/cpustat.hpp>
-#include <sysstat/memstat.hpp>
-#include <sysstat/netstat.hpp>
+#include <sysstat/cpustat.h>
+#include <sysstat/memstat.h>
+#include <sysstat/netstat.h>
 
 
 RazorSysStatConfiguration::RazorSysStatConfiguration(QSettings &settings, QWidget *parent) :
@@ -155,7 +155,7 @@ void RazorSysStatConfiguration::on_maximumHS_valueChanged(int value)
     saveSettings();
 }
 
-void RazorSysStatConfiguration::coloursChanged(void)
+void RazorSysStatConfiguration::coloursChanged()
 {
     const RazorSysStatColours::Colours &colours = mColoursDialog->colours();
 
@@ -177,7 +177,7 @@ void RazorSysStatConfiguration::coloursChanged(void)
     mSettings.setValue("net/transmittedColour", colours["netTransmitted"].name());
 }
 
-void RazorSysStatConfiguration::on_customColoursB_clicked(void)
+void RazorSysStatConfiguration::on_customColoursB_clicked()
 {
     if (!mColoursDialog)
     {

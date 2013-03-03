@@ -380,8 +380,21 @@ HistoryProvider::~HistoryProvider()
  ************************************************/
 void HistoryProvider::AddCommand(const QString &command)
 {
-    HistoryItem *item = new HistoryItem(command);
-    insert(0, item);
+    bool commandExists = false;
+    for (int i=0; !commandExists && i<length(); ++i)
+    {
+        if (command == static_cast<HistoryItem*>(at(i))->command())
+        {
+            move(i, 0);
+            commandExists = true;
+        }
+    }
+
+    if (!commandExists)
+    {
+        HistoryItem *item = new HistoryItem(command);
+        insert(0, item);
+    }
 
     mHistoryFile->clear();
     for (int i=0; i<qMin(length(), MAX_HISTORY); ++i)

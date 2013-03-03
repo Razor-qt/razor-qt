@@ -53,6 +53,9 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
 {
     if (mConfig.isEmpty())
         mConfig = "session";
+
+    // Wait until the event loop starts
+    QTimer::singleShot(0, this, SLOT(startup()));
 }
 
 void RazorModuleManager::startup()
@@ -102,6 +105,7 @@ void RazorModuleManager::startup()
                 break;
             }
             waitCnt--;
+            QCoreApplication::processEvents();
             usleep(100000);
         }
 
@@ -121,13 +125,13 @@ void RazorModuleManager::startWm(RazorSettings *settings)
         mWindowManager = settings->value("windowmanager").toString();
     }
 
-
     // If previuos WM was removed, we show dialog.
-    if (mWindowManager.isEmpty() || ! findProgram(mWindowManager))
+    if (mWindowManager.isEmpty() || ! findProgram(mWindowManager.split(' ')[0]))
     {
         mWindowManager = showWmSelectDialog();
         settings->setValue("windowmanager", mWindowManager);
         settings->sync();
+
     }
 
     mWmProcess->start(mWindowManager);
@@ -137,6 +141,7 @@ void RazorModuleManager::startWm(RazorSettings *settings)
     while (!xfitMan().isWindowManagerActive() && waitCnt)
     {
         waitCnt--;
+        QCoreApplication::processEvents();
         usleep(100000);
     }
 }

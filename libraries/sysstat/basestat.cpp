@@ -29,8 +29,8 @@
 
 #include <cstddef>
 
-#include "basestat.hpp"
-#include "basestat_p.hpp"
+#include "basestat.h"
+#include "basestat_p.h"
 
 
 namespace SysStat {
@@ -50,21 +50,21 @@ BaseStatPrivate::~BaseStatPrivate()
 {
 }
 
-bool BaseStatPrivate::timerIsActive(void) const
+bool BaseStatPrivate::timerIsActive() const
 {
     return mTimer->isActive();
 }
 
-int BaseStatPrivate::updateInterval(void) const
+int BaseStatPrivate::updateInterval() const
 {
     return mTimer->interval();
 }
 
-void BaseStatPrivate::intervalChanged(void)
+void BaseStatPrivate::intervalChanged()
 {
 }
 
-void BaseStatPrivate::sourceChanged(void)
+void BaseStatPrivate::sourceChanged()
 {
 }
 
@@ -81,7 +81,7 @@ void BaseStatPrivate::setUpdateInterval(int msec)
     }
 }
 
-void BaseStatPrivate::synchroTimeout(void)
+void BaseStatPrivate::synchroTimeout()
 {
     QTime now(QTime::currentTime());
     int synchro = ((now.minute() * 60 + now.second()) * 1000 + now.msec() ) / mTimer->interval();
@@ -93,12 +93,12 @@ void BaseStatPrivate::synchroTimeout(void)
     mLastSynchro = synchro;
 }
 
-void BaseStatPrivate::stopUpdating(void)
+void BaseStatPrivate::stopUpdating()
 {
     mTimer->stop();
 }
 
-QString BaseStatPrivate::monitoredSource(void) const
+QString BaseStatPrivate::monitoredSource() const
 {
     return mSource;
 }
@@ -109,7 +109,7 @@ void BaseStatPrivate::setMonitoredSource(const QString &Source)
     this->sourceChanged();
 }
 
-void BaseStatPrivate::monitorDefaultSource(void)
+void BaseStatPrivate::monitorDefaultSource()
 {
     mSource = defaultSource();
 }
@@ -133,7 +133,7 @@ QString BaseStatPrivate::readAllFile(const char *filename)
     return result;
 }
 
-QStringList BaseStatPrivate::sources(void) const
+QStringList BaseStatPrivate::sources() const
 {
     return mSources;
 }
@@ -147,12 +147,12 @@ BaseStat::~BaseStat()
 {
 }
 
-QStringList BaseStat::sources(void) const
+QStringList BaseStat::sources() const
 {
     return baseimpl->sources();
 }
 
-int BaseStat::updateInterval(void) const
+int BaseStat::updateInterval() const
 {
     return baseimpl->updateInterval();
 }
@@ -166,7 +166,7 @@ void BaseStat::setUpdateInterval(int msec)
     }
 }
 
-void BaseStat::stopUpdating(void)
+void BaseStat::stopUpdating()
 {
     if (updateInterval() != 0)
     {
@@ -175,7 +175,7 @@ void BaseStat::stopUpdating(void)
     }
 }
 
-QString BaseStat::monitoredSource(void) const
+QString BaseStat::monitoredSource() const
 {
     return baseimpl->monitoredSource();
 }
@@ -189,7 +189,7 @@ void BaseStat::setMonitoredSource(const QString &source)
     }
 }
 
-void BaseStat::monitorDefaultSource(void)
+void BaseStat::monitorDefaultSource()
 {
     QString oldSource = monitoredSource();
     baseimpl->monitorDefaultSource();

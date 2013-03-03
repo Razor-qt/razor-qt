@@ -24,8 +24,8 @@
 ** END_COMMON_COPYRIGHT_HEADER */
 
 
-#include "memstat.hpp"
-#include "memstat_p.hpp"
+#include "memstat.h"
+#include "memstat_p.h"
 
 
 namespace SysStat {
@@ -44,7 +44,7 @@ MemStatPrivate::~MemStatPrivate()
 {
 }
 
-void MemStatPrivate::timeout(void)
+void MemStatPrivate::timeout()
 {
     qulonglong memTotal;
     qulonglong memFree;
@@ -96,7 +96,7 @@ void MemStatPrivate::timeout(void)
     }
 }
 
-QString MemStatPrivate::defaultSource(void)
+QString MemStatPrivate::defaultSource()
 {
     return "memory";
 }

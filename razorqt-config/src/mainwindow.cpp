@@ -31,6 +31,7 @@
 #include "mainwindow.h"
 #include <QtDebug>
 #include <QtGui/QMessageBox>
+#include <QtGui/QStyledItemDelegate>
 
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
@@ -161,6 +162,37 @@ private:
 }
 
 
+class ConfigItemDelegate : public QStyledItemDelegate
+{
+public:
+    ConfigItemDelegate(QCategorizedView* view) : mView(view) { }
+    ~ConfigItemDelegate() { }
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+    {
+        int height = QStyledItemDelegate::sizeHint(option, index).height();
+        return QSize(mView->gridSize().width(), qMin(height, mView->gridSize().height()));
+    }
+
+protected:
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+    {
+        QStyleOptionViewItemV4 opt = option;
+        initStyleOption(&opt, index);
+
+        QSize size(mView->gridSize().width(), mView->iconSize().height());
+        QPixmap pixmap = opt.icon.pixmap(mView->iconSize());
+        opt.icon = QIcon(pixmap.copy(QRect(QPoint(0, 0), size)));
+        opt.decorationSize = size;
+
+        QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter);
+    }
+
+private:
+    QCategorizedView *mView;
+};
+
+
 RazorConfig::MainWindow::MainWindow() : QMainWindow()
 {
     setupUi(this);
@@ -179,6 +211,7 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     proxyModel->setSourceModel(model);
 
     view->setModel(proxyModel);
+    view->setItemDelegate(new ConfigItemDelegate(view));
 
     connect(view, SIGNAL(activated(const QModelIndex&)),
             this, SLOT(activateItem(const QModelIndex&)));

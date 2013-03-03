@@ -38,8 +38,7 @@
 
 class Notepad : public DesktopWidgetPlugin
 {
-    NotepadWin *win;
-    QGraphicsProxyWidget * m_proxy;
+    Q_OBJECT
 public:
     Notepad(DesktopScene *scene, const QString &configId, RazorSettings *config);
     ~Notepad();
@@ -50,6 +49,13 @@ public:
     void setSizeAndPosition(const QPointF &position, const QSizeF &size);
     void save();
     void configure();
+
+private slots:
+    void setSize(const QSizeF &size);
+
+private:
+    NotepadWin *mWin;
+    QGraphicsProxyWidget *mProxy;
 };
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H

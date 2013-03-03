@@ -1,5 +1,14 @@
 %if MULTIARCH yes
+    %if DISTRIB Debian
+9
+    %endif
+    %if DISTRIB Ubuntu
+        %if RELEASE precise quantal
+9
+        %elsif RELEASE oneiric
 8
+        %endif
+    %endif
 %else
 7
 %endif

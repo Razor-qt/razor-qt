@@ -49,12 +49,12 @@ RazorWorldClockConfigurationTimeZones::~RazorWorldClockConfigurationTimeZones()
     delete ui;
 }
 
-QString RazorWorldClockConfigurationTimeZones::timeZone(void)
+QString RazorWorldClockConfigurationTimeZones::timeZone()
 {
     return mTimeZone;
 }
 
-void RazorWorldClockConfigurationTimeZones::itemSelectionChanged(void)
+void RazorWorldClockConfigurationTimeZones::itemSelectionChanged()
 {
     QList<QTreeWidgetItem*> items = ui->timeZonesTW->selectedItems();
     if (!items.empty())
@@ -69,7 +69,7 @@ void RazorWorldClockConfigurationTimeZones::itemDoubleClicked(QTreeWidgetItem* /
         accept();
 }
 
-int RazorWorldClockConfigurationTimeZones::updateAndExec(void)
+int RazorWorldClockConfigurationTimeZones::updateAndExec()
 {
     ui->timeZonesTW->clear();
 

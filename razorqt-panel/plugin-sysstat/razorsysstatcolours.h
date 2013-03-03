@@ -56,21 +56,21 @@ public:
 
     void setColours(const Colours&);
 
-    Colours colours(void) const;
+    Colours colours() const;
 
-    Colours defaultColours(void) const;
+    Colours defaultColours() const;
 
 signals:
-    void coloursChanged(void);
+    void coloursChanged();
 
 public slots:
     void on_buttons_clicked(QAbstractButton*);
 
     void selectColour(const QString &);
 
-    void restoreDefaults(void);
-    void reset(void);
-    void apply(void);
+    void restoreDefaults();
+    void reset();
+    void apply();
 
 private:
     Ui::RazorSysStatColours *ui;
@@ -82,7 +82,7 @@ private:
     Colours mInitialColours;
     Colours mColours;
 
-    void applyColoursToButtons(void);
+    void applyColoursToButtons();
 };
 
 #endif // RAZORSYSSTATCOLOURS_HPP
