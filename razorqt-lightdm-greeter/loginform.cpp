@@ -186,8 +186,8 @@ void LoginForm::userComboCurrentIndexChanged()
         if (ui->userCombo->currentIndex() > -1)
         {
             setUser(m_LoginData.userName(ui->userCombo->currentIndex()));
+        }
     }
-}
 }
 
 void LoginForm::otherUserEditingFinished()
