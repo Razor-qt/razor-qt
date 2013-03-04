@@ -4,9 +4,8 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -26,27 +25,33 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QtDebug>
 
-#include <qtxdg/xdgicon.h>
-#include "mountbutton.h"
+#include "deviceaction_menu.h"
+#include "../razormountplugin.h"
+#include "../popup.h"
 
-MountButton::MountButton(QWidget * parent) :
-    QToolButton(parent)
+#include <QDebug>
+
+DeviceActionMenu::DeviceActionMenu(RazorMountPlugin *plugin, QObject *parent):
+    DeviceAction(plugin, parent)
 {
-    setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb" << "drive-removable-media"));
+    mPopup = plugin->popup();
 
-    setToolTip(tr("Removable media/devices manager"));
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mHideTimer.setSingleShot(true);
+    mHideTimer.setInterval(5000);
+    connect(&mHideTimer, SIGNAL(timeout()), mPopup, SLOT(hide()));
 }
 
 
-MountButton::~MountButton()
+void DeviceActionMenu::doDeviceAdded(RazorMountDevice *device)
 {
+    mHideTimer.start();
+    mPopup->show();
 }
 
 
-void MountButton::setDown(bool down)
+void DeviceActionMenu::doDeviceRemoved(RazorMountDevice *device)
 {
-    QToolButton::setDown(down);
+
 }
+

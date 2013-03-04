@@ -26,24 +26,28 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORMOUNT_H
-#define RAZORMOUNT_H
+#ifndef RAZORMOUNTPLUGIN_H
+#define RAZORMOUNTPLUGIN_H
 
 #include "../panel/irazorpanelplugin.h"
 #include "../panel/razorpanel.h"
 
-#include "mountbutton.h"
+class RazorMountManager;
+class Popup;
+class MountButton;
+class DeviceAction;
+class QIcon;
 
 /*! 
 \author Petr Vanek <petr@scribus.info>
 */
-class RazorMount : public QObject, public IRazorPanelPlugin
+class RazorMountPlugin : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 
 public:
-    RazorMount(const IRazorPanelPluginStartupInfo &startupInfo);
-    ~RazorMount();
+    RazorMountPlugin(const IRazorPanelPluginStartupInfo &startupInfo);
+    ~RazorMountPlugin();
 
     virtual QWidget *widget();
     virtual QString themeId() const { return "RazorMount"; }
@@ -51,14 +55,19 @@ public:
     void realign();
     QDialog *configureDialog();
 
+    RazorMountManager *mountManager() const { return mMountManager; }
+    Popup *popup() { return mPopup; }
+
+    QIcon icon() const;
+
 protected slots:
     virtual void settingsChanged();
 
 private:
     MountButton *mButton;
-
-private slots:
-
+    Popup *mPopup;
+    RazorMountManager *mMountManager;
+    DeviceAction *mDeviceAction;
 };
 
 
@@ -69,7 +78,7 @@ class RazorMountPluginLibrary: public QObject, public IRazorPanelPluginLibrary
 public:
     IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
     {
-        return new RazorMount(startupInfo);
+        return new RazorMountPlugin(startupInfo);
     }
 };
 

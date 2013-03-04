@@ -4,9 +4,8 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -26,20 +25,44 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef MOUNTBUTTON_H
-#define MOUNTBUTTON_H
 
-#include <QtGui/QToolButton>
+#ifndef DEVICEACTION_H
+#define DEVICEACTION_H
 
-class MountButton : public QToolButton
+#include <QObject>
+#include <QSettings>
+#include <razormount/razormount.h>
+
+class RazorMountDevice;
+class RazorMountManager;
+class RazorMountPlugin;
+
+class DeviceAction: public QObject
 {
     Q_OBJECT
 public:
-    MountButton(QWidget *parent = 0);
-    ~MountButton();
+    enum ActionId {
+        ActionNothing,
+        ActionInfo,
+        ActionMenu
+    };
+
+    virtual ~DeviceAction();
+
+    static DeviceAction *create(ActionId id, RazorMountPlugin *plugin, QObject *parent=0);
+    static ActionId stringToActionId(const QString &string, ActionId defaultValue);
+    static QString actionIdToString(ActionId id);
 
 public slots:
-    void setDown(bool down);
+    void deviceAdded(RazorMountDevice *device);
+    void deviceRemoved(RazorMountDevice *device);
+
+protected:
+    explicit DeviceAction(RazorMountPlugin *plugin, QObject *parent=0);
+    virtual void doDeviceAdded(RazorMountDevice *device) = 0;
+    virtual void doDeviceRemoved(RazorMountDevice *device) = 0;
+
+    RazorMountPlugin *mPlugin;
 };
 
-#endif
+#endif // DEVICEACTION_H

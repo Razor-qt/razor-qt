@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2011-2013 Razor team
  * Authors:
  *   Petr Vanek <petr@scribus.info>
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
@@ -26,27 +26,45 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QtDebug>
 
-#include <qtxdg/xdgicon.h>
-#include "mountbutton.h"
+#ifndef POPUP_H
+#define POPUP_H
 
-MountButton::MountButton(QWidget * parent) :
-    QToolButton(parent)
+#include <QWidget>
+#include "../panel/irazorpanelplugin.h"
+
+class RazorMountManager;
+class RazorMountDevice;
+class MenuDiskItem;
+class QLabel;
+
+class Popup: public QWidget
 {
-    setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb" << "drive-removable-media"));
+    Q_OBJECT
+public:
+    explicit Popup(RazorMountManager *manager, IRazorPanelPlugin *plugin, QWidget* parent = 0);
 
-    setToolTip(tr("Removable media/devices manager"));
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
+public slots:
+    void showHide();
 
+signals:
+    void visibilityChanged(bool visible);
 
-MountButton::~MountButton()
-{
-}
+protected:
+    void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
+    void hideEvent(QHideEvent *event);
 
+private slots:
+    MenuDiskItem *addItem(RazorMountDevice *device);
+    void removeItem(RazorMountDevice *device);
 
-void MountButton::setDown(bool down)
-{
-    QToolButton::setDown(down);
-}
+private:
+    void realign();
+    RazorMountManager *mManager;
+    IRazorPanelPlugin *mPlugin;
+    QLabel *mPlaceholder;
+    int mDisplayCount;
+};
+
+#endif // POPUP_H

@@ -4,9 +4,8 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
- *   Petr Vanek <petr@scribus.info>
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -26,27 +25,21 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QtDebug>
 
-#include <qtxdg/xdgicon.h>
-#include "mountbutton.h"
+#include "deviceaction_nothing.h"
 
-MountButton::MountButton(QWidget * parent) :
-    QToolButton(parent)
-{
-    setIcon(XdgIcon::fromTheme(QStringList() << "device-notifier" << "drive-removable-media-usb" << "drive-removable-media"));
-
-    setToolTip(tr("Removable media/devices manager"));
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-}
-
-
-MountButton::~MountButton()
+DeviceActionNothing::DeviceActionNothing(RazorMountPlugin *plugin, QObject *parent):
+    DeviceAction(plugin, parent)
 {
 }
 
 
-void MountButton::setDown(bool down)
+void DeviceActionNothing::doDeviceAdded(RazorMountDevice *device)
 {
-    QToolButton::setDown(down);
 }
+
+
+void DeviceActionNothing::doDeviceRemoved(RazorMountDevice *device)
+{
+}
+
