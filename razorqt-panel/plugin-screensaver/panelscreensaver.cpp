@@ -27,6 +27,7 @@
 
 #include <QtGui/QToolButton>
 #include <QtGui/QMessageBox>
+#include <QHBoxLayout>
 #include <razorqt/screensaver.h>
 #include <razorqt/razornotification.h>
 #include <razorqxt/qxtglobalshortcut.h>
@@ -34,33 +35,29 @@
 #include "panelscreensaver.h"
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(PanelScreenSaver)
+Q_EXPORT_PLUGIN2(screensaver, PanelScreenSaverLibrary)
 
 
-PanelScreenSaver::PanelScreenSaver(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent)
+PanelScreenSaver::PanelScreenSaver(const IRazorPanelPluginStartupInfo &startupInfo) :
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
 {
-    setObjectName("PanelScreenSaver");
-    m_saver = new ScreenSaver(this);
+    mSaver = new ScreenSaver(this);
 
-    //addActions(m_saver->availableActions());
-    foreach (QAction *i, m_saver->availableActions())
-    {
-        QToolButton * button = new QToolButton(this);
-        button->setDefaultAction(i);
-        button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        addWidget(button);
-    }
+    QList<QAction*> actions = mSaver->availableActions();
+    if (!actions.empty())
+        mButton.setDefaultAction(actions.first());
+    //mButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     
-    m_key = new QxtGlobalShortcut(this);
+    mShortcutKey = new QxtGlobalShortcut(this);
 
     QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_L);
-    if (! m_key->setShortcut(ks))
+    if (! mShortcutKey->setShortcut(ks))
     {
         RazorNotification::notify(tr("Panel Screensaver Global shorcut: '%1' cannot be registered").arg(ks.toString()));
     }
     
-    connect(m_key, SIGNAL(activated()), m_saver, SLOT(lockScreen()));
-    this->layout()->setAlignment(Qt::AlignCenter);
+    connect(mShortcutKey, SIGNAL(activated()), mSaver, SLOT(lockScreen()));
 }
 
