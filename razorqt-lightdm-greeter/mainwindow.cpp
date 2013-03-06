@@ -44,22 +44,22 @@ MainWindow::MainWindow(int screen, QWidget *parent)
     QImage image(razorTheme.desktopBackground(screen));
 
     QPalette palette;
-    palette.setBrush(this->backgroundRole(), QBrush(image.scaled(screenRect.width(), screenRect.right())));
+    palette.setBrush(this->backgroundRole(), QBrush(image.scaled(screenRect.width(), screenRect.height())));
     this->setPalette(palette);
 
     // display login dialog only in the main screen
     m_main = screen == QApplication::desktop()->primaryScreen();
     if (m_main)
     {
-        LoginForm *loginForm = new LoginForm(this);
-        int offsetX = 2*screenRect.width()/5 - loginForm->width()/2;
+        m_LoginForm = new LoginForm(this);
+        int offsetX = 2*screenRect.width()/5 - m_LoginForm->width()/2;
         if (offsetX < 40)
         {
             offsetX = 40;
         }
-        int offsetY = screenRect.height()/2 - loginForm->height()/2;
-        loginForm->move(offsetX, offsetY);
-        loginForm->show();
+        int offsetY = screenRect.height()/2 - m_LoginForm->height()/2;
+        m_LoginForm->move(offsetX, offsetY);
+        m_LoginForm->show();
 
         // This hack ensures that the primary screen will have focus
         // if there are more screens (move the mouse cursor in the center
@@ -73,4 +73,16 @@ MainWindow::MainWindow(int screen, QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::setFocus(Qt::FocusReason reason)
+{
+    if (m_LoginForm)
+    {
+        m_LoginForm->setFocus(reason);
+    }
+    else 
+    {
+        QWidget::setFocus(reason);
+    }
 }
