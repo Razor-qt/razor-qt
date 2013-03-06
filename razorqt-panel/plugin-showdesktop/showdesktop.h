@@ -30,7 +30,6 @@
 #define SHOWDESKTOP_H
 
 #include "../panel/irazorpanelplugin.h"
-//#include "../panel/razorpanel.h"
 #include <QToolButton>
 
 class QxtGlobalShortcut;
