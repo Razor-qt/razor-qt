@@ -33,16 +33,18 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QLineEdit>
 #include <QtGui/QToolButton>
+#include <QFrame>
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
 #include <qtxdg/xdgicon.h>
 
-class ColorPicker : public RazorPanelPlugin
+
+class ColorPickerWidget: public QFrame
 {
     Q_OBJECT
 public:
-    ColorPicker(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
-    ~ColorPicker();
+    ColorPickerWidget(QWidget* parent = 0);
+    ~ColorPickerWidget();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
@@ -51,11 +53,37 @@ private slots:
     void captureMouse();
 
 private:
-    QLineEdit lineEdit;
-    QToolButton button;
+    QLineEdit mLineEdit;
+    QToolButton mButton;
     bool mCapturing;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+
+class ColorPicker : public QObject, public IRazorPanelPlugin
+{
+    Q_OBJECT
+public:
+    ColorPicker(const IRazorPanelPluginStartupInfo &startupInfo);
+    ~ColorPicker();
+
+    virtual QWidget *widget() { return &mWidget; }
+    virtual QString themeId() const { return "ColorPicker"; }
+
+    bool isSeparate() const { return true; }
+
+private:
+    ColorPickerWidget mWidget;
+};
+
+class ColorPickerLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new ColorPicker(startupInfo);
+    }
+};
 
 #endif
