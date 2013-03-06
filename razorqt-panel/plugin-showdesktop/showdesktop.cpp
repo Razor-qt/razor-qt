@@ -39,14 +39,13 @@
 #include "showdesktop.h"
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(ShowDesktop)
+Q_EXPORT_PLUGIN2(showdesktop, ShowDesktopLibrary)
 
 
-ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent)
+ShowDesktop::ShowDesktop(const IRazorPanelPluginStartupInfo &startupInfo) :
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
 {
-    setObjectName("ShowDesktop");
-
     m_key = new QxtGlobalShortcut(this);
 
     QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_D);
@@ -60,11 +59,8 @@ ShowDesktop::ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     QAction * act = new QAction(XdgIcon::fromTheme("user-desktop"), tr("Show Desktop"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(showDesktop()));
 
-    QToolButton * button = new QToolButton(this);
-    button->setDefaultAction(act);
-    button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->layout()->setAlignment(Qt::AlignCenter);
-    addWidget(button);
+    mButton.setDefaultAction(act);
+    mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void ShowDesktop::showDesktop()
