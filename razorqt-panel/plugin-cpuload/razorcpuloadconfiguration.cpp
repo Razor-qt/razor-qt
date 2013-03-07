@@ -33,7 +33,7 @@
 #define BAR_ORIENT_LEFTRIGHT "leftRight"
 #define BAR_ORIENT_RIGHTLEFT "rightLeft"
 
-RazorCpuLoadConfiguration::RazorCpuLoadConfiguration(QSettings &settings, QWidget *parent) :
+RazorCpuLoadConfiguration::RazorCpuLoadConfiguration(QSettings *settings, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RazorCpuLoadConfiguration),
 	mSettings(settings),
@@ -73,37 +73,37 @@ void RazorCpuLoadConfiguration::fillBarOrientations()
 
 void RazorCpuLoadConfiguration::loadSettings()
 {
-	ui->showTextCB->setChecked(mSettings.value("showText", false).toBool());
-    ui->updateIntervalSpinBox->setValue(mSettings.value("updateInterval", 1000).toInt() / 1000.0);
+    ui->showTextCB->setChecked(mSettings->value("showText", false).toBool());
+    ui->updateIntervalSpinBox->setValue(mSettings->value("updateInterval", 1000).toInt() / 1000.0);
 
     int boIndex = ui->barOrientationCOB->findData(
-            mSettings.value("barOrientation", BAR_ORIENT_BOTTOMUP));
+            mSettings->value("barOrientation", BAR_ORIENT_BOTTOMUP));
     boIndex = (boIndex < 0) ? 1 : boIndex;
     ui->barOrientationCOB->setCurrentIndex(boIndex);
 
-//	QString menuFile = mSettings.value("menu_file", "").toString();
+//	QString menuFile = mSettings->value("menu_file", "").toString();
 //	if (menuFile.isEmpty())
 //	{
 //		menuFile = XdgMenu::getMenuFileName();
 //	}
 //	ui->menuFilePathLE->setText(menuFile);
-//	ui->shortcutEd->setKeySequence(mSettings.value("shortcut", "Alt+F1").toString());
+//	ui->shortcutEd->setKeySequence(mSettings->value("shortcut", "Alt+F1").toString());
 }
 
 void RazorCpuLoadConfiguration::showTextChanged(bool value)
 {
-	mSettings.setValue("showText", value);
+    mSettings->setValue("showText", value);
 }
 
 
 void RazorCpuLoadConfiguration::updateIntervalChanged(double value)
 {
-	mSettings.setValue("updateInterval", value*1000);
+    mSettings->setValue("updateInterval", value*1000);
 }
 
 void RazorCpuLoadConfiguration::barOrientationChanged(int index)
 {
-    mSettings.setValue("barOrientation", ui->barOrientationCOB->itemData(index).toString());
+    mSettings->setValue("barOrientation", ui->barOrientationCOB->itemData(index).toString());
 }
 
 void RazorCpuLoadConfiguration::dialogButtonsAction(QAbstractButton *btn)

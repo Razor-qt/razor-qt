@@ -45,12 +45,12 @@ class RazorCpuLoadConfiguration : public QDialog
 	Q_OBJECT
 
 public:
-	explicit RazorCpuLoadConfiguration(QSettings &settings, QWidget *parent = 0);
+    explicit RazorCpuLoadConfiguration(QSettings *settings, QWidget *parent = 0);
 	~RazorCpuLoadConfiguration();
 
 private:
 	Ui::RazorCpuLoadConfiguration *ui;
-	QSettings &mSettings;
+    QSettings *mSettings;
 	RazorSettingsCache mOldSettings;
 
     /*

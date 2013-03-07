@@ -4,16 +4,19 @@ set(PLUGIN "cpuload")
 
 
 set(HEADERS
+        razorcpuloadplugin.h
 	razorcpuload.h
 	razorcpuloadconfiguration.h
 )
 
 set(SOURCES
+        razorcpuloadplugin.cpp
 	razorcpuload.cpp
 	razorcpuloadconfiguration.cpp
 )
 
 set(MOCS
+        razorcpuloadplugin.h
 	razorcpuload.h
 	razorcpuloadconfiguration.h
 )

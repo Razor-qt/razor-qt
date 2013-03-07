@@ -26,10 +26,11 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "razorcpuload.h"
-#include "razorcpuloadconfiguration.h"
+#include "../panel/irazorpanelplugin.h"
 #include <QtCore>
 #include <QPainter>
 #include <QLinearGradient>
+#include <QHBoxLayout>
 
 extern "C" {
 #include <statgrab.h>
@@ -40,16 +41,16 @@ extern "C" {
 #define BAR_ORIENT_LEFTRIGHT "leftRight"
 #define BAR_ORIENT_RIGHTLEFT "rightLeft"
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorCpuLoad)
 
-RazorCpuLoad::RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-	RazorPanelPlugin(startInfo, parent),
+RazorCpuLoad::RazorCpuLoad(IRazorPanelPlugin* plugin, QWidget* parent):
+    QFrame(parent),
+    mPlugin(plugin),
 	m_showText(false),
     m_barOrientation(TopDownBar),
     m_timerID(-1)
 {
-	setObjectName("CpuLoad");
-	addWidget(&m_stuff);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(&m_stuff);
 
 	/* Initialise statgrab */
 	sg_init();
@@ -160,30 +161,16 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 		p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
 }
 
-void RazorCpuLoad::showConfigureDialog()
-{
-	RazorCpuLoadConfiguration *confWindow =
-			this->findChild<RazorCpuLoadConfiguration*>("RazorCpuLoadConfigurationWindow");
-
-	if (!confWindow)
-	{
-		confWindow = new RazorCpuLoadConfiguration(settings(), this);
-	}
-
-	confWindow->show();
-	confWindow->raise();
-	confWindow->activateWindow();
-}
 
 void RazorCpuLoad::settingsChanged()
 {
     if (m_timerID != -1)
         killTimer(m_timerID);
 
-	m_showText = settings().value("showText", false).toBool();
-    m_updateInterval = settings().value("updateInterval", 1000).toInt();
+    m_showText = mPlugin->settings()->value("showText", false).toBool();
+    m_updateInterval = mPlugin->settings()->value("updateInterval", 1000).toInt();
 
-    QString barOrientation = settings().value("barOrientation", BAR_ORIENT_BOTTOMUP).toString();
+    QString barOrientation = mPlugin->settings()->value("barOrientation", BAR_ORIENT_BOTTOMUP).toString();
     if (barOrientation == BAR_ORIENT_RIGHTLEFT)
         m_barOrientation = RightToLeftBar;
     else if (barOrientation == BAR_ORIENT_LEFTRIGHT)
