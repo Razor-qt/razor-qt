@@ -4,6 +4,7 @@ set(PLUGIN "sensors")
 
 
 set(HEADERS
+    razorsensorsplugin.h
     chip.h
     feature.h
     razorsensors.h
@@ -12,6 +13,7 @@ set(HEADERS
 )
 
 set(SOURCES
+    razorsensorsplugin.cpp
     chip.cpp
     feature.cpp
     razorsensors.cpp
@@ -20,6 +22,7 @@ set(SOURCES
 )
 
 set(MOCS
+    razorsensorsplugin.h
     razorsensors.h
     razorsensorsconfiguration.h
 )

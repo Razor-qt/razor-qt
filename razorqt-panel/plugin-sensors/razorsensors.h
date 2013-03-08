@@ -28,45 +28,56 @@
 #ifndef RAZORSENSORS_H
 #define RAZORSENSORS_H
 
-#include "../panel/razorpanelplugin.h"
 #include "sensors.h"
+#include <QFrame>
 #include <QtCore/QTimer>
-#include <QtGui/QProgressBar>
+#include <QProgressBar>
 #include <sensors/sensors.h>
 #include <set>
 
-class RazorSensors : public RazorPanelPlugin
+class ProgressBar: public QProgressBar
 {
     Q_OBJECT
 public:
-    RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    ProgressBar(QWidget *parent = 0);
+
+    QSize sizeHint() const;
+};
+
+
+class QSettings;
+class IRazorPanelPlugin;
+class QBoxLayout;
+
+class RazorSensors : public QFrame
+{
+    Q_OBJECT
+public:
+    RazorSensors(IRazorPanelPlugin *plugin, QWidget* parent = 0);
     ~RazorSensors();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment  | HaveConfigDialog ; }
-
+    void settingsChanged();
+    void realign();
 public slots:
     void updateSensorReadings();
     void warningAboutHighTemperature();
 
-private slots:
-    virtual void showConfigureDialog();
-    virtual void settingsChanged();
-    virtual void realign();
-
 private:
+    IRazorPanelPlugin *mPlugin;
+    QBoxLayout *mLayout;
     QTimer mUpdateSensorReadingsTimer;
     QTimer mWarningAboutHighTemperatureTimer;
     // How often warning time should fire in ms
     int mWarningAboutHighTemperatureTimerFreq;
     Sensors mSensors;
     std::vector<Chip> mDetectedChips;
-    std::vector<QProgressBar*> mTemperatureProgressBars;
+    std::vector<ProgressBar*> mTemperatureProgressBars;
     // With set we can handle updates in very easy way :)
-    std::set<QProgressBar*> mHighTemperatureProgressBars;
+    std::set<ProgressBar*> mHighTemperatureProgressBars;
     double celsiusToFahrenheit(double celsius);
     void initDefaultSettings();
+    QSettings *mSettings;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif // RAZORSENSORS_H

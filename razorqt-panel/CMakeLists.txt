@@ -32,7 +32,7 @@ setByDefault(MOUNT_PLUGIN          Yes)
 setByDefault(HELLOWORLD_PLUGIN     Yes)
 setByDefault(CPULOAD_PLUGIN        Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
-setByDefault(SENSORS_PLUGIN        No)
+setByDefault(SENSORS_PLUGIN        Yes)
 
 setByDefault(VOLUME_PLUGIN         Yes)
 # Options for the volume plugin.
