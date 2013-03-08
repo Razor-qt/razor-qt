@@ -27,23 +27,27 @@
 
 #include "razornetworkmonitor.h"
 #include "razornetworkmonitorconfiguration.h"
+#include "../panel/irazorpanelplugin.h"
+
 #include <QtCore/QEvent>
 #include <QtGui/QPainter>
 #include <QtGui/QPixmap>
 #include <QtGui/QLinearGradient>
+#include <QHBoxLayout>
 
 extern "C" {
 #include <statgrab.h>
 }
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorNetworkMonitor)
 
-RazorNetworkMonitor::RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-    RazorPanelPlugin(startInfo, parent)
+
+RazorNetworkMonitor::RazorNetworkMonitor(IRazorPanelPlugin *plugin, QWidget* parent):
+    QFrame(parent),
+    mPlugin(plugin)
 {
-    setObjectName("NetworkMonitor");
-    addWidget(&m_stuff);
-
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(&m_stuff);
+    setLayout(layout);
     /* Initialise statgrab */
     sg_init();
 
@@ -143,28 +147,28 @@ bool RazorNetworkMonitor::event(QEvent *event)
             network_stats++;
         }
     }
-    return RazorPanelPlugin::event(event);
+    return QFrame::event(event);
 }
 
-void RazorNetworkMonitor::showConfigureDialog()
-{
-    RazorNetworkMonitorConfiguration *confWindow =
-        this->findChild<RazorNetworkMonitorConfiguration*>("RazorNetworkMonitorConfigurationWindow");
+//void RazorNetworkMonitor::showConfigureDialog()
+//{
+//    RazorNetworkMonitorConfiguration *confWindow =
+//        this->findChild<RazorNetworkMonitorConfiguration*>("RazorNetworkMonitorConfigurationWindow");
 
-    if (!confWindow)
-    {
-        confWindow = new RazorNetworkMonitorConfiguration(settings(), this);
-    }
+//    if (!confWindow)
+//    {
+//        confWindow = new RazorNetworkMonitorConfiguration(settings(), this);
+//    }
 
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
-}
+//    confWindow->show();
+//    confWindow->raise();
+//    confWindow->activateWindow();
+//}
 
 void RazorNetworkMonitor::settingsChanged()
 {
-    m_iconIndex = settings().value("icon", 1).toInt();
-    m_interface = settings().value("interface").toString();
+    m_iconIndex = mPlugin->settings()->value("icon", 1).toInt();
+    m_interface = mPlugin->settings()->value("interface").toString();
     if (m_interface.isEmpty())
     {
         int count;

@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2011 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
- *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -26,41 +26,35 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#ifndef RAZORNETWORKMONITORCONFIGURATION_H
-#define RAZORNETWORKMONITORCONFIGURATION_H
+#include "razornetworkmonitorplugin.h"
+#include "razornetworkmonitor.h"
+#include "razornetworkmonitorconfiguration.h"
 
-#include <razorqt/razorsettings.h>
+Q_EXPORT_PLUGIN2(networkmonitor, RazorNetworkMonitorPluginLibrary)
 
-#include <QtGui/QDialog>
-
-class QSettings;
-class QAbstractButton;
-
-namespace Ui
+RazorNetworkMonitorPlugin::RazorNetworkMonitorPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    mWidget(new RazorNetworkMonitor(this))
 {
-class RazorNetworkMonitorConfiguration;
 }
 
-class RazorNetworkMonitorConfiguration : public QDialog
+RazorNetworkMonitorPlugin::~RazorNetworkMonitorPlugin()
 {
-    Q_OBJECT
+    delete mWidget;
+}
 
-public:
-    explicit RazorNetworkMonitorConfiguration(QSettings *settings, QWidget *parent = 0);
-    ~RazorNetworkMonitorConfiguration();
+QWidget *RazorNetworkMonitorPlugin::widget()
+{
+    return mWidget;
+}
 
-private:
-    Ui::RazorNetworkMonitorConfiguration *ui;
-    QSettings *mSettings;
-    RazorSettingsCache mOldSettings;
+QDialog *RazorNetworkMonitorPlugin::configureDialog()
+{
+    return new RazorNetworkMonitorConfiguration(settings(), mWidget);
+}
 
-private slots:
-    /*
-      Saves settings in conf file.
-    */
-    void saveSettings();
-    void loadSettings();
-    void dialogButtonsAction(QAbstractButton *btn);
-};
-
-#endif // RAZORNETWORKMONITORCONFIGURATION_H
+void RazorNetworkMonitorPlugin::settingsChanged()
+{
+    mWidget->settingsChanged();
+}

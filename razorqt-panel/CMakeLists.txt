@@ -31,7 +31,7 @@ setByDefault(COLORPICKER_PLUGIN    Yes)
 setByDefault(MOUNT_PLUGIN          Yes)
 setByDefault(HELLOWORLD_PLUGIN     Yes)
 setByDefault(CPULOAD_PLUGIN        Yes)
-setByDefault(NETWORKMONITOR_PLUGIN No)
+setByDefault(NETWORKMONITOR_PLUGIN Yes)
 setByDefault(SENSORS_PLUGIN        No)
 
 setByDefault(VOLUME_PLUGIN         Yes)

@@ -27,20 +27,20 @@
 
 #ifndef RAZORNETWORKMONITOR_H
 #define RAZORNETWORKMONITOR_H
-#include "../panel/razorpanelplugin.h"
-#include <QtGui/QWidget>
+#include <QFrame>
+
+class IRazorPanelPlugin;
 
 /*!
   TODO: How to define cable is not connected?
   */
-class RazorNetworkMonitor: public RazorPanelPlugin
+class RazorNetworkMonitor: public QFrame
 {
     Q_OBJECT
 public:
-    RazorNetworkMonitor(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorNetworkMonitor(IRazorPanelPlugin *plugin, QWidget* parent = 0);
     ~RazorNetworkMonitor();
-
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+    virtual void settingsChanged();
 
 protected:
     void virtual timerEvent(QTimerEvent *event);
@@ -48,9 +48,6 @@ protected:
     void virtual resizeEvent(QResizeEvent *);
     bool virtual event(QEvent *event);
 
-protected slots:
-    virtual void showConfigureDialog();
-    virtual void settingsChanged();
 
 private:
     static QString convertUnits(double num);
@@ -68,10 +65,9 @@ private:
 
     QString m_interface;
     QPixmap m_pic;
-
+    IRazorPanelPlugin *mPlugin;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif // RAZORNETWORKMONITOR_H
 
