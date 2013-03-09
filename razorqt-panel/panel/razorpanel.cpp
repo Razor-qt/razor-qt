@@ -818,7 +818,9 @@ QString RazorPanel::qssPosition() const
  ************************************************/
 QString RazorPanel::findNewPluginSettingsGroup(const QString &pluginType) const
 {
-    QSet<QString> loadedPlugins = QSet<QString>::fromList(mSettings->value(CFG_FULLKEY_PLUGINS).toStringList());
+    QSet<QString> loadedPlugins;
+    foreach(Plugin* plugin, mPlugins)
+        loadedPlugins << plugin->settingsGroup();
 
     QStringList groups = mSettings->childGroups();
     groups.sort();
@@ -826,10 +828,10 @@ QString RazorPanel::findNewPluginSettingsGroup(const QString &pluginType) const
     // Search free section name .................
     foreach(const QString &group, groups)
     {
-        if (!loadedPlugins.contains(group))
+        if (!loadedPlugins.contains(group) &&
+            mSettings->value(group + "/type") == pluginType)
         {
-            if (mSettings->value(group + "/type") == pluginType)
-                return group;
+            return group;
         }
     }
 
@@ -837,7 +839,9 @@ QString RazorPanel::findNewPluginSettingsGroup(const QString &pluginType) const
     for (int i=2; true; ++i)
     {
         if (!groups.contains(QString("%1%2").arg(pluginType).arg(i)))
+        {
             return QString("%1%2").arg(pluginType).arg(i);
+        }
     }
 }
 
