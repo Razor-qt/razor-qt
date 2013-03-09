@@ -363,12 +363,12 @@ void RazorSensors::realign()
 
         if (mPlugin->panel()->isHorizontal())
         {
-            mTemperatureProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedWidth(mPlugin->settings()->value("tempBarWidth").toInt());
             mTemperatureProgressBars[i]->setFixedHeight(QWIDGETSIZE_MAX);
         }
         else
         {
-            mTemperatureProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedHeight(mPlugin->settings()->value("tempBarWidth").toInt());
             mTemperatureProgressBars[i]->setFixedWidth(QWIDGETSIZE_MAX);
         }
     }
