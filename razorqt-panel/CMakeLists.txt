@@ -39,7 +39,7 @@ setByDefault(VOLUME_PLUGIN         Yes)
 setByDefault(VOLUME_USE_PULSEAUDIO Yes)
 setByDefault(VOLUME_USE_ALSA       Yes)
 
-setByDefault(SYSSTAT_PLUGIN        No)
+setByDefault(SYSSTAT_PLUGIN        Yes)
 setByDefault(KBINDICATOR_PLUGIN    No)
 setByDefault(WORLDCLOCK_PLUGIN     No)
 
