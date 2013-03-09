@@ -41,7 +41,7 @@ setByDefault(VOLUME_USE_ALSA       Yes)
 
 setByDefault(SYSSTAT_PLUGIN        Yes)
 setByDefault(KBINDICATOR_PLUGIN    Yes)
-setByDefault(WORLDCLOCK_PLUGIN     No)
+setByDefault(WORLDCLOCK_PLUGIN     Yes)
 
 setByDefault(TEATIME_PLUGIN        Yes)
 

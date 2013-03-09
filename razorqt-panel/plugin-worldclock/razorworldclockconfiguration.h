@@ -49,7 +49,7 @@ class RazorWorldClockConfiguration : public QDialog
     Q_OBJECT
 
 public:
-    explicit RazorWorldClockConfiguration(QSettings &settings, QWidget *parent = NULL);
+    explicit RazorWorldClockConfiguration(QSettings *settings, QWidget *parent = NULL);
     ~RazorWorldClockConfiguration();
 
 public slots:
@@ -57,7 +57,7 @@ public slots:
 
 private:
     Ui::RazorWorldClockConfiguration *ui;
-    QSettings &mSettings;
+    QSettings *mSettings;
     RazorSettingsCache mOldSettings;
 
     /*
