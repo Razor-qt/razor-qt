@@ -32,45 +32,48 @@
 #include "razorkbindicatoreventfilter.h"
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorKbIndicator)
+Q_EXPORT_PLUGIN2(panelkbindicator, RazorKbIndicatorLibrary)
 
 
-RazorKbIndicator::RazorKbIndicator(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
-    RazorPanelPlugin(startInfo, parent),
-    content(new QLabel(this)),
+RazorKbIndicator::RazorKbIndicator(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    content(new QLabel()),
     eventFilter(RazorKbIndicatorEventFilter::instance())
 {
-    setObjectName("KbIndicator");
-
     connect(eventFilter, SIGNAL(indicatorsChanged(uint,uint)), this, SLOT(setIndicators(uint,uint)));
-
-    addWidget(content);
+    content->setAlignment(Qt::AlignCenter);
 
     settingsChanged();
     content->setEnabled(eventFilter->getLockStatus(bit));
+    realign();
 }
 
 RazorKbIndicator::~RazorKbIndicator()
 {
+    delete content;
+}
+
+QWidget *RazorKbIndicator::widget()
+{
+    return content;
 }
 
 void RazorKbIndicator::settingsChanged()
 {
-    bit = settings().value("bit", 0).toInt();
-    content->setText(settings().value("text", QString("C")).toString());
+    bit = settings()->value("bit", 0).toInt();
+    content->setText(settings()->value("text", QString("C")).toString());
     content->setEnabled(eventFilter->getLockStatus(bit));
 }
 
-void RazorKbIndicator::showConfigureDialog()
+QDialog *RazorKbIndicator::configureDialog()
 {
-    RazorKbIndicatorConfiguration *confWindow = this->findChild<RazorKbIndicatorConfiguration*>("KbIndicatorConfigurationWindow");
+    return new RazorKbIndicatorConfiguration(settings());
+}
 
-    if (!confWindow)
-        confWindow = new RazorKbIndicatorConfiguration(settings(), this);
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+void RazorKbIndicator::realign()
+{
+    content->setMinimumSize(panel()->lineSize(), panel()->lineSize());
 }
 
 void RazorKbIndicator::setIndicators(unsigned int changed, unsigned int state)

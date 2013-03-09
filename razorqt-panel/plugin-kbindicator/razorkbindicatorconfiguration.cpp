@@ -30,7 +30,7 @@
 #include "ui_razorkbindicatorconfiguration.h"
 
 
-RazorKbIndicatorConfiguration::RazorKbIndicatorConfiguration(QSettings &settings, QWidget *parent) :
+RazorKbIndicatorConfiguration::RazorKbIndicatorConfiguration(QSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorKbIndicatorConfiguration),
     mSettings(settings),
@@ -62,8 +62,8 @@ void RazorKbIndicatorConfiguration::loadSettings()
 {
     lockSaving = true;
 
-    ui->bitSB->setValue( mSettings.value("bit", 0).toInt() );
-    ui->textLE->setText( mSettings.value("text", QString("C")).toString() );
+    ui->bitSB->setValue( mSettings->value("bit", 0).toInt() );
+    ui->textLE->setText( mSettings->value("text", QString("C")).toString() );
 
     if ((ui->bitSB->value() == 0) && (ui->textLE->text() == QString("C")))
         ui->capsLockRB->setChecked(true);
@@ -100,8 +100,8 @@ void RazorKbIndicatorConfiguration::saveSettings()
         ui->textLE->setText(QString("S"));
     }
 
-    mSettings.setValue("bit", ui->bitSB->value());
-    mSettings.setValue("text", ui->textLE->text());
+    mSettings->setValue("bit", ui->bitSB->value());
+    mSettings->setValue("text", ui->textLE->text());
 }
 
 void RazorKbIndicatorConfiguration::dialogButtonsAction(QAbstractButton *btn)
