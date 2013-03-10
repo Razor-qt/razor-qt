@@ -155,7 +155,7 @@ bool DaemonAdaptor::setMultipleActionsBehaviour(uint behaviour)
 {
     if (behaviour >= MULTIPLE_ACTIONS_BEHAVIOUR__COUNT)
         return false;
-    emit onSetMultipleActionsBehaviour(static_cast<DaemonAdaptor::MultipleActionsBehaviour>(behaviour));
+    emit onSetMultipleActionsBehaviour(static_cast<MultipleActionsBehaviour>(behaviour));
     emit multipleActionsBehaviourChanged(behaviour);
     return true;
 }
@@ -187,6 +187,13 @@ bool DaemonAdaptor::getActionById(qulonglong id, QString &shortcut, QString &typ
         description = result.second.description;
     }
     return success;
+}
+
+QMap<qulonglong,GeneralActionInfo> DaemonAdaptor::getAllActionsById()
+{
+    QMap<qulonglong,GeneralActionInfo> result;
+    emit onGetAllActionsById(result);
+    return result;
 }
 
 bool DaemonAdaptor::getDBusActionInfoById(qulonglong id, QString &service, QDBusObjectPath &path)

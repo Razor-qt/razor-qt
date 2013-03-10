@@ -36,21 +36,14 @@
 #include <QDBusObjectPath>
 #include <QPair>
 
+#include "meta_types.hpp"
+
 
 class DaemonAdaptor : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
     DaemonAdaptor(QObject * parent = 0);
-
-    typedef enum MultipleActionsBehaviour
-    {
-        MULTIPLE_ACTIONS_BEHAVIOUR_FIRST = 0, // queue
-        MULTIPLE_ACTIONS_BEHAVIOUR_LAST,      // stack
-        MULTIPLE_ACTIONS_BEHAVIOUR_NONE,      // qtcreator style
-        MULTIPLE_ACTIONS_BEHAVIOUR_ALL,       // permissive behaviour
-        MULTIPLE_ACTIONS_BEHAVIOUR__COUNT
-    } MultipleActionsBehaviour;
 
 public slots:
     QString addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id);
@@ -74,6 +67,7 @@ public slots:
     uint getMultipleActionsBehaviour();
 
     QList<qulonglong> getAllActionIds();
+    QMap<qulonglong,GeneralActionInfo> getAllActionsById();
     bool getActionById(qulonglong id, QString &shortcut, QString &type, QString &info, QString &description);
     bool getDBusActionInfoById(qulonglong id, QString &service, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
@@ -90,31 +84,6 @@ signals:
     void actionShortcutChanged(qulonglong id);
     void actionsSwapped(qulonglong id1, qulonglong id2);
     void multipleActionsBehaviourChanged(uint behaviour);
-
-public:
-    typedef struct GeneralActionInfo {
-        QString shortcut;
-        QString type;
-        QString info;
-        QString description;
-    } GeneralActionInfo;
-
-    typedef struct DBusActionInfo {
-        QString service;
-        QDBusObjectPath path;
-    } DBusActionInfo;
-
-    typedef struct MethodActionInfo {
-        QString service;
-        QDBusObjectPath path;
-        QString interface;
-        QString method;
-    } MethodActionInfo;
-
-    typedef struct CommandActionInfo {
-        QString command;
-        QStringList arguments;
-    } CommandActionInfo;
 
 signals:
     void onAddDBusAction(QPair<QString, qulonglong> &, const QString &, const QDBusObjectPath &, const QString &, const QString &);
@@ -134,15 +103,16 @@ signals:
     void onRemoveDBusAction(qulonglong &, const QDBusObjectPath &, const QString &);
     void onRemoveAction(bool &, qulonglong);
 
-    void onSetMultipleActionsBehaviour(const DaemonAdaptor::MultipleActionsBehaviour &);
-    void onGetMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour &);
+    void onSetMultipleActionsBehaviour(const MultipleActionsBehaviour &);
+    void onGetMultipleActionsBehaviour(MultipleActionsBehaviour &);
 
     void onGetAllActionIds(QList<qulonglong> &);
+    void onGetActionById(QPair<bool, GeneralActionInfo> &, qulonglong);
+    void onGetAllActionsById(QMap<qulonglong,GeneralActionInfo> &);
 
-    void onGetActionById(QPair<bool, DaemonAdaptor::GeneralActionInfo> &, qulonglong);
-    void onGetDBusActionInfoById(QPair<bool, DaemonAdaptor::DBusActionInfo> &, qulonglong);
-    void onGetMethodActionInfoById(QPair<bool, DaemonAdaptor::MethodActionInfo> &, qulonglong);
-    void onGetCommandActionInfoById(QPair<bool, DaemonAdaptor::CommandActionInfo> &, qulonglong);
+    void onGetDBusActionInfoById(QPair<bool, DBusActionInfo> &, qulonglong);
+    void onGetMethodActionInfoById(QPair<bool, MethodActionInfo> &, qulonglong);
+    void onGetCommandActionInfoById(QPair<bool, CommandActionInfo> &, qulonglong);
 
     void onGrabShortcut(uint, QString &, bool &, bool &, bool &, const QDBusMessage &);
 

@@ -39,22 +39,24 @@
 #include <QPair>
 #include <QDBusConnection>
 #include <QDBusMessage>
+#include <QDBusObjectPath>
 
+#include "meta_types.hpp"
 #include "log_target.hpp"
-#include "daemon_adaptor.hpp"
-#include "daemon_native_adaptor.hpp"
-#include "dbus_proxy.hpp"
-#include "base_action.hpp"
 #include "x11.hpp"
 
 
 class QTimer;
+class DaemonAdaptor;
+class DaemonNativeAdaptor;
+class DBusProxy;
+class BaseAction;
 
 class Core : public QThread, public LogTarget
 {
     Q_OBJECT
 public:
-    Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringList &configFiles, bool multipleActionsBehaviourSet, DaemonAdaptor::MultipleActionsBehaviour multipleActionsBehaviour, QObject * parent = 0);
+    Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringList &configFiles, bool multipleActionsBehaviourSet, MultipleActionsBehaviour multipleActionsBehaviour, QObject * parent = 0);
     ~Core();
 
     bool ready() const { return mReady; }
@@ -106,14 +108,16 @@ private slots:
     void removeDBusAction(qulonglong &result, const QDBusObjectPath &path, const QString &sender);
     void removeAction(bool &result, const qulonglong &id);
 
-    void setMultipleActionsBehaviour(const DaemonAdaptor::MultipleActionsBehaviour &behaviour);
-    void getMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour &result) const;
+    void setMultipleActionsBehaviour(const MultipleActionsBehaviour &behaviour);
+    void getMultipleActionsBehaviour(MultipleActionsBehaviour &result) const;
 
     void getAllActionIds(QList<qulonglong> &result) const;
-    void getActionById(QPair<bool, DaemonAdaptor::GeneralActionInfo> &result, const qulonglong &id) const;
-    void getDBusActionInfoById(QPair<bool, DaemonAdaptor::DBusActionInfo> &result, const qulonglong &id) const;
-    void getMethodActionInfoById(QPair<bool, DaemonAdaptor::MethodActionInfo> &result, const qulonglong &id) const;
-    void getCommandActionInfoById(QPair<bool, DaemonAdaptor::CommandActionInfo> &result, const qulonglong &id) const;
+    void getActionById(QPair<bool, GeneralActionInfo> &result, const qulonglong &id) const;
+    void getAllActionsById(QMap<qulonglong,GeneralActionInfo> &result) const;
+
+    void getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulonglong &id) const;
+    void getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const qulonglong &id) const;
+    void getCommandActionInfoById(QPair<bool, CommandActionInfo> &result, const qulonglong &id) const;
 
     void grabShortcut(const uint &timeout, QString &shortcut, bool &failed, bool &cancelled, bool &timedout, const QDBusMessage &message);
 
@@ -125,6 +129,8 @@ private:
     qulonglong registerDBusAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &description);
     qulonglong registerMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     qulonglong registerCommandAction(const QString &shortcut, const QString &command, const QStringList &arguments, const QString &description);
+
+    GeneralActionInfo actionInfo(const ShortcutAndAction &shortcutAndAction) const;
 
     friend void unixSignalHandler(int signalNumber);
     void unixSignalHandler(int signalNumber);
@@ -199,7 +205,7 @@ private:
     unsigned int Level3Mask;
     unsigned int Level5Mask;
 
-    DaemonAdaptor::MultipleActionsBehaviour mMultipleActionsBehaviour;
+    MultipleActionsBehaviour mMultipleActionsBehaviour;
 
     bool mAllowGrabLocks;
     bool mAllowGrabBaseSpecial;

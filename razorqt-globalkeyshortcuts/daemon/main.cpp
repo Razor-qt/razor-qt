@@ -30,7 +30,7 @@
 #include <QString>
 #include <QStringList>
 
-#include "daemon_adaptor.hpp"
+#include "meta_types.hpp"
 #include "core.hpp"
 
 #include <errno.h>
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     bool minLogLevelSet = false;
     int minLogLevel = LOG_NOTICE;
     bool multipleActionsBehaviourSet = false;
-    DaemonAdaptor::MultipleActionsBehaviour multipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
+    MultipleActionsBehaviour multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
     QStringList configFiles;
 
     static struct option longOptions[] = {
@@ -98,13 +98,13 @@ int main(int argc, char *argv[])
 
         case 'm':
             if (!strcmp(optarg, "first"))
-                multipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
+                multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
             else if (!strcmp(optarg, "last"))
-                multipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_LAST;
+                multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_LAST;
             else if (!strcmp(optarg, "all"))
-                multipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_ALL;
+                multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_ALL;
             else if (!strcmp(optarg, "none"))
-                multipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_NONE;
+                multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_NONE;
             else
             {
                 fprintf(stderr, "Invalid multiple actions behaviour: %s\n", optarg);

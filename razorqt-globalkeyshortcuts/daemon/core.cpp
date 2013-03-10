@@ -43,10 +43,13 @@
 #include <stdio.h>
 
 #include <stdexcept>
-//#include <algorithm>
 
 #include "pipe_utils.hpp"
 #include "string_utils.hpp"
+#include "daemon_adaptor.hpp"
+#include "daemon_native_adaptor.hpp"
+#include "dbus_proxy.hpp"
+#include "base_action.hpp"
 #include "method_action.hpp"
 #include "dbus_action.hpp"
 #include "command_action.hpp"
@@ -112,7 +115,7 @@ static const char* strLevel(int level)
 }
 
 
-Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringList &configFiles, bool multipleActionsBehaviourSet, DaemonAdaptor::MultipleActionsBehaviour multipleActionsBehaviour, QObject * parent)
+Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringList &configFiles, bool multipleActionsBehaviourSet, MultipleActionsBehaviour multipleActionsBehaviour, QObject * parent)
     : QThread(parent)
     , LogTarget()
     , mReady(false)
@@ -223,13 +226,13 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
                     if (!iniValue.isEmpty())
                     {
                         if (iniValue == "first")
-                            mMultipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
+                            mMultipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
                         else if (iniValue == "last")
-                            mMultipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_LAST;
+                            mMultipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_LAST;
                         else if (iniValue == "all")
-                            mMultipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_ALL;
+                            mMultipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_ALL;
                         else if (iniValue == "none")
-                            mMultipleActionsBehaviour = DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_NONE;
+                            mMultipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_NONE;
                     }
                 }
 
@@ -305,19 +308,19 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         log(LOG_DEBUG, "MinLogLevel: %s", strLevel(mMinLogLevel));
         switch (mMultipleActionsBehaviour)
         {
-        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
+        case MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
             log(LOG_DEBUG, "MultipleActionsBehaviour: first");
             break;
 
-        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
+        case MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
             log(LOG_DEBUG, "MultipleActionsBehaviour: last");
             break;
 
-        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
+        case MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
             log(LOG_DEBUG, "MultipleActionsBehaviour: all");
             break;
 
-        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
+        case MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
             log(LOG_DEBUG, "MultipleActionsBehaviour: none");
             break;
 
@@ -356,13 +359,14 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         connect(mDaemonAdaptor, SIGNAL(onChangeShortcut(QString&,qulonglong,QString)), this, SLOT(changeShortcut(QString&,qulonglong,QString)));
         connect(mDaemonAdaptor, SIGNAL(onSwapActions(bool&,qulonglong,qulonglong)), this, SLOT(swapActions(bool&,qulonglong,qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onRemoveAction(bool&,qulonglong)), this, SLOT(removeAction(bool&,qulonglong)));
-        connect(mDaemonAdaptor, SIGNAL(onSetMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour)), this, SLOT(setMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour)));
-        connect(mDaemonAdaptor, SIGNAL(onGetMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour&)), this, SLOT(getMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour&)));
+        connect(mDaemonAdaptor, SIGNAL(onSetMultipleActionsBehaviour(MultipleActionsBehaviour)), this, SLOT(setMultipleActionsBehaviour(MultipleActionsBehaviour)));
+        connect(mDaemonAdaptor, SIGNAL(onGetMultipleActionsBehaviour(MultipleActionsBehaviour&)), this, SLOT(getMultipleActionsBehaviour(MultipleActionsBehaviour&)));
         connect(mDaemonAdaptor, SIGNAL(onGetAllActionIds(QList<qulonglong>&)), this, SLOT(getAllActionIds(QList<qulonglong>&)));
-        connect(mDaemonAdaptor, SIGNAL(onGetActionById(QPair<bool,DaemonAdaptor::GeneralActionInfo>&,qulonglong)), this, SLOT(getActionById(QPair<bool,DaemonAdaptor::GeneralActionInfo>&,qulonglong)));
-        connect(mDaemonAdaptor, SIGNAL(onGetDBusActionInfoById(QPair<bool,DaemonAdaptor::DBusActionInfo>&,qulonglong)), this, SLOT(getDBusActionInfoById(QPair<bool,DaemonAdaptor::DBusActionInfo>&,qulonglong)));
-        connect(mDaemonAdaptor, SIGNAL(onGetMethodActionInfoById(QPair<bool,DaemonAdaptor::MethodActionInfo>&,qulonglong)), this, SLOT(getMethodActionInfoById(QPair<bool,DaemonAdaptor::MethodActionInfo>&,qulonglong)));
-        connect(mDaemonAdaptor, SIGNAL(onGetCommandActionInfoById(QPair<bool,DaemonAdaptor::CommandActionInfo>&,qulonglong)), this, SLOT(getCommandActionInfoById(QPair<bool,DaemonAdaptor::CommandActionInfo>&,qulonglong)));
+        connect(mDaemonAdaptor, SIGNAL(onGetActionById(QPair<bool,GeneralActionInfo>&,qulonglong)), this, SLOT(getActionById(QPair<bool,GeneralActionInfo>&,qulonglong)));
+        connect(mDaemonAdaptor, SIGNAL(onGetAllActionsById(QMap<qulonglong,GeneralActionInfo>&)), this, SLOT(getAllActionsById(QMap<qulonglong,GeneralActionInfo>&)));
+        connect(mDaemonAdaptor, SIGNAL(onGetDBusActionInfoById(QPair<bool,DBusActionInfo>&,qulonglong)), this, SLOT(getDBusActionInfoById(QPair<bool,DBusActionInfo>&,qulonglong)));
+        connect(mDaemonAdaptor, SIGNAL(onGetMethodActionInfoById(QPair<bool,MethodActionInfo>&,qulonglong)), this, SLOT(getMethodActionInfoById(QPair<bool,MethodActionInfo>&,qulonglong)));
+        connect(mDaemonAdaptor, SIGNAL(onGetCommandActionInfoById(QPair<bool,CommandActionInfo>&,qulonglong)), this, SLOT(getCommandActionInfoById(QPair<bool,CommandActionInfo>&,qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGrabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)), this, SLOT(grabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)));
         connect(mDaemonAdaptor, SIGNAL(onQuit()), qApp, SLOT(quit()));
 
@@ -420,19 +424,19 @@ void Core::saveConfig()
 
     switch (mMultipleActionsBehaviour)
     {
-    case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
+    case MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
         settings.setValue("General/MultipleActionsBehaviour", "first");
         break;
 
-    case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
+    case MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
         settings.setValue("General/MultipleActionsBehaviour", "last");
         break;
 
-    case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
+    case MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
         settings.setValue("General/MultipleActionsBehaviour", "all");
         break;
 
-    case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
+    case MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
         settings.setValue("General/MultipleActionsBehaviour", "none");
         break;
 
@@ -895,7 +899,7 @@ void Core::run()
                         Ids &ids = idsByShortcut.value();
                         switch (mMultipleActionsBehaviour)
                         {
-                        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
+                        case MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
                         {
                             Ids::iterator lastIds = ids.end();
                             for (Ids::iterator idi = ids.begin(); idi != lastIds; ++idi)
@@ -904,7 +908,7 @@ void Core::run()
                         }
                             break;
 
-                        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
+                        case MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
                         {
                             Ids::iterator firstIds = ids.begin();
                             for (Ids::iterator idi = ids.end(); idi != firstIds; )
@@ -916,12 +920,12 @@ void Core::run()
                         }
                             break;
 
-                        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
+                        case MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
                             if (ids.size() == 1)
                                 mShortcutAndActionById[*(ids.begin())].second->call();
                             break;
 
-                        case DaemonAdaptor::MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
+                        case MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
                         {
                             Ids::iterator lastIds = ids.end();
                             for (Ids::iterator idi = ids.begin(); idi != lastIds; ++idi)
@@ -2083,7 +2087,7 @@ void Core::removeAction(bool &result, const qulonglong &id)
     result = true;
 }
 
-void Core::setMultipleActionsBehaviour(const DaemonAdaptor::MultipleActionsBehaviour &behaviour)
+void Core::setMultipleActionsBehaviour(const MultipleActionsBehaviour &behaviour)
 {
     QMutexLocker lock(&mDataMutex);
 
@@ -2092,7 +2096,7 @@ void Core::setMultipleActionsBehaviour(const DaemonAdaptor::MultipleActionsBehav
     saveConfig();
 }
 
-void Core::getMultipleActionsBehaviour(DaemonAdaptor::MultipleActionsBehaviour &result) const
+void Core::getMultipleActionsBehaviour(MultipleActionsBehaviour &result) const
 {
     QMutexLocker lock(&mDataMutex);
 
@@ -2111,9 +2115,46 @@ void Core::getAllActionIds(QList<qulonglong> &result) const
         result.push_back(shortcutAndActionById.key());
 }
 
-void Core::getActionById(QPair<bool, DaemonAdaptor::GeneralActionInfo> &result, const qulonglong &id) const
+GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) const
 {
-    DaemonAdaptor::GeneralActionInfo info;
+    GeneralActionInfo result;
+
+    result.shortcut = shortcutAndAction.first;
+
+    const BaseAction* action = shortcutAndAction.second;
+
+    result.type = action->type();
+    result.description = action->description();
+
+    if (result.type == "dbus")
+    {
+        const DBusAction *dBusAction = dynamic_cast<const DBusAction*>(action);
+        QString service = dBusAction->service();
+        PreferredServiceNameByServiceId::const_iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(service);
+        if (preferredServiceNameByServiceId != mPreferredServiceNameByServiceId.end())
+            service = preferredServiceNameByServiceId.value();
+        result.info = service + " " + dBusAction->path().path();
+    }
+    else if (result.type == "method")
+    {
+        const MethodAction *methodAction = dynamic_cast<const MethodAction*>(action);
+        result.info = methodAction->service() + " "
+            + methodAction->path().path() + " "
+            + methodAction->interface() + " "
+            + methodAction->method();
+    }
+    else if (result.type == "command")
+    {
+        const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
+        result.info = QString("\"") + commandAction->command() + joinToString(commandAction->args(), "\" \"", "\" \"", "\"");
+    }
+
+    return result;
+}
+
+void Core::getActionById(QPair<bool, GeneralActionInfo> &result, const qulonglong &id) const
+{
+    log(LOG_INFO, "getActionById id:%llu", id);
 
     QMutexLocker lock(&mDataMutex);
 
@@ -2121,46 +2162,29 @@ void Core::getActionById(QPair<bool, DaemonAdaptor::GeneralActionInfo> &result, 
     if (shortcutAndActionById == mShortcutAndActionById.end())
     {
         log(LOG_WARNING, "No action registered with id #%llu", id);
-        result = qMakePair(false, info);
+        result = qMakePair(false, GeneralActionInfo());
         return;
     }
 
-    info.shortcut = shortcutAndActionById.value().first;
-
-    const BaseAction *action = shortcutAndActionById.value().second;
-
-    info.type = action->type();
-    info.description = action->description();
-
-    if (info.type == "dbus")
-    {
-        const DBusAction *dBusAction = dynamic_cast<const DBusAction*>(action);
-        QString service = dBusAction->service();
-        PreferredServiceNameByServiceId::const_iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(service);
-        if (preferredServiceNameByServiceId != mPreferredServiceNameByServiceId.end())
-            service = preferredServiceNameByServiceId.value();
-        info.info = service + " " + dBusAction->path().path();
-    }
-    else if (info.type == "method")
-    {
-        const MethodAction *methodAction = dynamic_cast<const MethodAction*>(action);
-        info.info = methodAction->service() + " "
-            + methodAction->path().path() + " "
-            + methodAction->interface() + " "
-            + methodAction->method();
-    }
-    else if (info.type == "command")
-    {
-        const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
-        info.info = QString("\"") + commandAction->command() + joinToString(commandAction->args(), "\" \"", "\" \"", "\"");
-    }
-
-    result = qMakePair(true, info);
+    result = qMakePair(true, actionInfo(shortcutAndActionById.value()));
 }
 
-void Core::getDBusActionInfoById(QPair<bool, DaemonAdaptor::DBusActionInfo> &result, const qulonglong &id) const
+void Core::getAllActionsById(QMap<qulonglong,GeneralActionInfo> &result) const
 {
-    DaemonAdaptor::DBusActionInfo info;
+    QMutexLocker lock(&mDataMutex);
+
+    result.clear();
+
+    ShortcutAndActionById::const_iterator lastShortcutAndActionById = mShortcutAndActionById.end();
+    for (ShortcutAndActionById::const_iterator shortcutAndActionById = mShortcutAndActionById.begin(); shortcutAndActionById != lastShortcutAndActionById; ++shortcutAndActionById)
+        result[shortcutAndActionById.key()] = actionInfo(shortcutAndActionById.value());
+}
+
+void Core::getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulonglong &id) const
+{
+    log(LOG_INFO, "getDBusActionInfoById id:%llu", id);
+
+    DBusActionInfo info;
 
     QMutexLocker lock(&mDataMutex);
 
@@ -2191,9 +2215,11 @@ void Core::getDBusActionInfoById(QPair<bool, DaemonAdaptor::DBusActionInfo> &res
     result = qMakePair(true, info);
 }
 
-void Core::getMethodActionInfoById(QPair<bool, DaemonAdaptor::MethodActionInfo> &result, const qulonglong &id) const
+void Core::getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const qulonglong &id) const
 {
-    DaemonAdaptor::MethodActionInfo info;
+    log(LOG_INFO, "getMethodActionInfoById id:%llu", id);
+
+    MethodActionInfo info;
 
     QMutexLocker lock(&mDataMutex);
 
@@ -2223,9 +2249,11 @@ void Core::getMethodActionInfoById(QPair<bool, DaemonAdaptor::MethodActionInfo> 
     result = qMakePair(true, info);
 }
 
-void Core::getCommandActionInfoById(QPair<bool, DaemonAdaptor::CommandActionInfo> &result, const qulonglong &id) const
+void Core::getCommandActionInfoById(QPair<bool, CommandActionInfo> &result, const qulonglong &id) const
 {
-    DaemonAdaptor::CommandActionInfo info;
+    log(LOG_INFO, "getCommandActionInfoById id:%llu", id);
+
+    CommandActionInfo info;
 
     QMutexLocker lock(&mDataMutex);
 
@@ -2253,7 +2281,7 @@ void Core::getCommandActionInfoById(QPair<bool, DaemonAdaptor::CommandActionInfo
     result = qMakePair(true, info);
 }
 
-void Core::grabShortcut(const uint &timeout, QString &shortcut, bool &failed, bool &cancelled, bool &timedout, const QDBusMessage &message)
+void Core::grabShortcut(const uint &timeout, QString &/*shortcut*/, bool &failed, bool &cancelled, bool &timedout, const QDBusMessage &message)
 {
     log(LOG_INFO, "grabShortcut timeout:%u", timeout);
 
@@ -2266,14 +2294,14 @@ void Core::grabShortcut(const uint &timeout, QString &shortcut, bool &failed, bo
     if (mGrabbingShortcut)
     {
         failed = true;
-        log(LOG_INFO, "grabShortcut failed: already grabbing");
+        log(LOG_DEBUG, "grabShortcut failed: already grabbing");
         return;
     }
 
     if ((timeout > 60000) || (timeout < 1000))
     {
         timedout = true;
-        log(LOG_INFO, "grabShortcut wrong timedout");
+        log(LOG_DEBUG, "grabShortcut wrong timedout");
         return;
     }
 
@@ -2306,7 +2334,7 @@ void Core::grabShortcut(const uint &timeout, QString &shortcut, bool &failed, bo
     message.setDelayedReply(true);
     mShortcutGrabRequest = message.createReply();
 
-    log(LOG_INFO, "grabShortcut delayed");
+    log(LOG_DEBUG, "grabShortcut delayed");
 }
 
 void Core::shortcutGrabbed()
@@ -2357,9 +2385,9 @@ void Core::shortcutGrabbed()
     }
 
     if (cancelled)
-        log(LOG_INFO, "grabShortcut: cancelled");
+        log(LOG_DEBUG, "grabShortcut: cancelled");
     else
-        log(LOG_INFO, "grabShortcut: shortcut:%s", qPrintable(shortcut));
+        log(LOG_DEBUG, "grabShortcut: shortcut:%s", qPrintable(shortcut));
 
     mShortcutGrabRequest << shortcut << failed << cancelled << timedout;
     QDBusConnection::sessionBus().send(mShortcutGrabRequest);
@@ -2400,7 +2428,7 @@ void Core::shortcutGrabTimedout()
 
     timedout = true;
 
-    log(LOG_INFO, "shortcutGrabTimedout: failed:%s", failed ? "true" : "false");
+    log(LOG_DEBUG, "shortcutGrabTimedout: failed:%s", failed ? "true" : "false");
 
     mShortcutGrabRequest << shortcut << failed << cancelled << timedout;
     QDBusConnection::sessionBus().send(mShortcutGrabRequest);

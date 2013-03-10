@@ -99,6 +99,10 @@
 			<arg name="info" type="s" direction="out"/>
 			<arg name="description" type="s" direction="out"/>
 		</method>
+		<method name="getAllActionsById">
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QMap&lt;qulonglong,GeneralActionInfo&gt;"/>
+			<arg name="info" type="a{t(ssss)}" direction="out"/>
+		</method>
 		<method name="getDBusActionInfoById">
 			<arg name="id" type="t" direction="in"/>
 			<arg type="b" direction="out"/>
