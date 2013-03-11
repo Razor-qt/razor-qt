@@ -44,6 +44,7 @@ setByDefault(WORLDCLOCK_PLUGIN     Yes)
 
 setByDefault(TEATIME_PLUGIN        Yes)
 
+setByDefault(DOM_PLUGIN            Yes)
 # *******************************************************************
 
 
@@ -230,6 +231,10 @@ if (WORLDCLOCK_PLUGIN)
 
 endif (WORLDCLOCK_PLUGIN)
 
+if (DOM_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "DOM")
+    add_subdirectory(plugin-dom)
+endif (DOM_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})
