@@ -125,7 +125,6 @@ RazorPanelPlugin > QToolButton:hover {
     padding-right: 2px;
     margin-left: 4px;
     margin-right: 4px;
-    qproperty-iconSize: 24px;
 }
 
 TrayIcon {
@@ -163,26 +162,28 @@ TrayIcon {
  * Mount plugin
  */
 
-MountButton {
-    qproperty-iconSize: 24px;
-}
+#RazorMount {
 
-MountButton:hover {
-    margin: 0;
-    border: 2px solid transparent;
-}
-
-MountButton:pressed {
-    border: 2px solid transparent;
 }
 
 #RazorMountPopup {
-    background-color: #5c5b56;
+    background-color: #4E4D48;
+    padding: 1px;
 }
 
-#RazorMountPopup > QLabel {
-    color: #ffffff;
+#RazorMountPopup > MenuDiskItem:hover {
+    color: #EEEEEE;
+    background: rgba(0, 0, 0, 40%);
 }
+
+#RazorMountPopup > QLabel,
+#RazorMountPopup > MenuDiskItem > #diskButton {
+    color: #EEEEEE;
+    background-color: transparent;
+    border: none;
+}
+
+
 
 /*
  * Screensaver
@@ -274,12 +275,16 @@ MountButton:pressed {
 /*
  * WorldClock
  */
-#WorldClockContent{
+#WorldClock{
     font-size: 10pt;
     color: #cacaca;
 }
 
+#WorldClock *{
+    background-color: #4E4D48;
+    color: #cacaca;  
+}
+
 #WorldClockPopup{
     font-size: 12pt;
-    color: #cacaca;
 }
