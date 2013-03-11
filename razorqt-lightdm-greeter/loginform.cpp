@@ -36,6 +36,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QMenu>
 #include <QtCore/QProcess>
+#include <QGraphicsOpacityEffect>
 #include <razorqt/razorsettings.h>
 
 LoginForm::LoginForm(QWidget *parent) : 
@@ -52,8 +53,6 @@ LoginForm::LoginForm(QWidget *parent) :
     }
 
     ui->setupUi(this);
-    setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
-    ui->hostnameLabel->setFocus();
 
     setupAppearence(); 
     fillUserAndSessionCombos();
@@ -83,13 +82,11 @@ void LoginForm::setFocus(Qt::FocusReason reason)
     }
 }
 
-
 void LoginForm::setupAppearence()
-    {
+{
     setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
     QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
     ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    
     ui->hostnameLabel->setText(m_Greeter.hostname());
 }
 
@@ -181,13 +178,14 @@ void LoginForm::userComboCurrentIndexChanged()
     }
     else
     {
-        ui->otherUserInput->hide(); 
+        ui->otherUserInput->hide();
         qDebug() << "Start authentication..";
         if (ui->userCombo->currentIndex() > -1)
         {
             setUser(m_LoginData.userName(ui->userCombo->currentIndex()));
         }
     }
+    ui->formFrame->adjustSize();
 }
 
 void LoginForm::otherUserEditingFinished()

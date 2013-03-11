@@ -2,6 +2,11 @@ QWidget {
     border-radius: 5px;
 }
 
+#formFrame { 
+    background-color: rgba(255,255,255,128); 
+    border-radius: 10px;
+}
+
 QComboBox,
 QPushButton {
     border: 1px solid silver;
