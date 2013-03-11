@@ -56,6 +56,7 @@ public:
     virtual QWidget *widget();
     virtual QString themeId() const { return "WorldClock"; }
     virtual IRazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    bool isSeparate() const { return true; }
 
     virtual void settingsChanged();
     QDialog *configureDialog();
