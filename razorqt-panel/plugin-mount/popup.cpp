@@ -54,6 +54,7 @@ Popup::Popup(RazorMountManager *manager, IRazorPanelPlugin *plugin, QWidget* par
                 this, SLOT(removeItem(RazorMountDevice*)));
 
     mPlaceholder = new QLabel(tr("No devices are available"), this);
+    mPlaceholder->setObjectName("NoDiskLabel");
     layout()->addWidget(mPlaceholder);
     mPlaceholder->hide();
 

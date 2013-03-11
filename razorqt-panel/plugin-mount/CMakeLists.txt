@@ -38,7 +38,6 @@ set(MOCS
 )
 
 set(UIS
-    menudiskitem.ui
     razormountconfiguration.ui
 )
 
