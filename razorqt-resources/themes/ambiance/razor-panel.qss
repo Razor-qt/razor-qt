@@ -116,6 +116,12 @@ RazorPanelPlugin > QToolButton:hover {
      color: #cacaca;
  }
 
+#Clock QCalendarWidget #qt_calendar_navigationbar,
+#Clock QCalendarWidget #qt_calendar_navigationbar * {
+    background-color: #4E4D48;
+    color: #cacaca;
+}
+
 /*
  * Tray
  */
@@ -161,28 +167,28 @@ TrayIcon {
 /*
  * Mount plugin
  */
-
-#RazorMount {
-
-}
-
 #RazorMountPopup {
     background-color: #4E4D48;
-    padding: 1px;
+    padding: 4px;
 }
 
 #RazorMountPopup > MenuDiskItem:hover {
-    color: #EEEEEE;
     background: rgba(0, 0, 0, 40%);
 }
 
-#RazorMountPopup > QLabel,
-#RazorMountPopup > MenuDiskItem > #diskButton {
-    color: #EEEEEE;
+
+#RazorMountPopup #EjectButton,
+#RazorMountPopup #DiskButton {
+    qproperty-iconSize: 22px;
     background-color: transparent;
     border: none;
+    color: #EEEEEE;
+    padding: 4px;
 }
 
+#RazorMountPopup #NoDiskLabel {
+    margin: 6px;
+}
 
 
 /*
