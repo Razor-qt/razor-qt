@@ -19,8 +19,8 @@
 #define LAST_USER_KEY "last-user"
 #define CONFIG_FILE "/etc/lightdm/lightdm-razor-greeter.conf"
 
-class LoginData : public QObject {
-
+class LoginData : public QObject
+{
     Q_OBJECT
 
 public:
@@ -43,7 +43,7 @@ public:
 
     QString getLastUser();
     void setLastUser(QString user);
- 
+
 private:
     QString data(int index, QAbstractListModel& model, int role);
    QLightDM::Greeter *m_Greeter; 
@@ -59,5 +59,5 @@ public:
     static void show(const QString msg);
 };
 
-#endif	/* STATE_H */
+#endif	/* LOGIN_DATA_H */
 

@@ -36,7 +36,6 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QMenu>
 #include <QtCore/QProcess>
-#include <QGraphicsOpacityEffect>
 #include <razorqt/razorsettings.h>
 
 LoginForm::LoginForm(QWidget *parent) : 
@@ -62,9 +61,9 @@ LoginForm::LoginForm(QWidget *parent) :
 }
 
 LoginForm::~LoginForm()
-    {
+{
     delete ui;
-    }
+}
 
 void LoginForm::setFocus(Qt::FocusReason reason)
 {
@@ -135,7 +134,7 @@ void LoginForm::initializeControls()
     if (m_Greeter.showManualLoginHint()) 
     {
         ui->userCombo->setCurrentIndex(m_otherUserComboIndex);
-}
+    }
     else 
     {
         ui->userCombo->setCurrentIndex(m_LoginData.suggestedUser());
@@ -147,9 +146,9 @@ void LoginForm::initializeControls()
     ui->otherUserInput->clear(); 
     QStringList completions;
     for (int i = 0; i < m_LoginData.numberOfUsers(); i++) 
-{
+    {
         completions << m_LoginData.userName(i);
-}
+    }
     QCompleter *completer = new QCompleter(completions, ui->otherUserInput);
     completer->setCompletionMode(QCompleter::InlineCompletion);
     ui->otherUserInput->setCompleter(completer);
@@ -159,7 +158,7 @@ void LoginForm::initializeControls()
 }
 
 void LoginForm::setSessionCombo(int session_index)
-    {
+{
     if (0 <= session_index && session_index < ui->sessionCombo->count())
     {
         ui->sessionCombo->setCurrentIndex(session_index);

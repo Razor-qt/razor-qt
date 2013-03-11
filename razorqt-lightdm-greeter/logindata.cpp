@@ -27,7 +27,8 @@ LoginData::LoginData(QLightDM::Greeter *greeter) :
     m_StatefilePath = XdgDirs::cacheHome(true) + "/" + DATA_DIR + "/state";
 }
 
-LoginData::~LoginData() {
+LoginData::~LoginData()
+{
 }
 
 int LoginData::numberOfUsers()
@@ -42,7 +43,6 @@ int LoginData::numberOfSessions()
 
 QString LoginData::userFullName(int user_index)
 {
-   
     return data(user_index, m_UsersModel, Qt::DisplayRole);
 }
 
@@ -63,7 +63,8 @@ QString LoginData::sessionName(int session_index)
 
 int LoginData::userSession(QString user_name)
 {
-    for (int i = 0; i < numberOfUsers(); i++) {
+    for (int i = 0; i < numberOfUsers(); i++)
+    {
         if (userName(i) == user_name)
         {
             return userSession(i);
@@ -141,7 +142,7 @@ QString LoginData::data(int index, QAbstractListModel& model, int role)
 {
     if (0 <= index && index < model.rowCount(QModelIndex())) 
     {
-        QModelIndex modelIndex = m_UsersModel.index(index, 0);
+        QModelIndex modelIndex = model.index(index, 0);
         return model.data(modelIndex, role).toString();
     }
     else 

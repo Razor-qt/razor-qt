@@ -71,11 +71,13 @@ RazorTaskButton::RazorTaskButton(const Window window, QWidget *parent) :
     connect(this, SIGNAL(clicked(bool)), this, SLOT(btnClicked(bool)));
     connect(this, SIGNAL(toggled(bool)), this, SLOT(checkedChanged(bool)));    
 
-    XSelectInput(QX11Info::display(), mWindow, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 
-    XSetWindowAttributes attr;
-    attr.event_mask = PropertyChangeMask;
-    XChangeWindowAttributes(QX11Info::display(), QX11Info::appRootWindow(), CWEventMask, &attr);
+    XWindowAttributes oldAttr;
+    XGetWindowAttributes(QX11Info::display(), mWindow, &oldAttr);
+
+    XSetWindowAttributes newAttr;
+    newAttr.event_mask = oldAttr.your_event_mask | PropertyChangeMask;
+    XChangeWindowAttributes(QX11Info::display(), mWindow, CWEventMask, &newAttr);
 
     setStyle(&mStyle);
 }

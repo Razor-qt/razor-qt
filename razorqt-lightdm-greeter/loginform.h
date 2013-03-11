@@ -44,7 +44,7 @@ class LoginForm : public QWidget
 public:
     explicit LoginForm(QWidget *parent = 0);
     ~LoginForm();
-    
+
     virtual void setFocus(Qt::FocusReason reason);
 
 public slots:
@@ -54,9 +54,9 @@ public slots:
     void clearAll();
     void leaveClicked();
     void razorPowerFinished();
-   
+
     void onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType);
-    
+
     void authenticationComplete();
 
 private:
