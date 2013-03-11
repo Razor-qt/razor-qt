@@ -33,7 +33,6 @@
 
 
 class QLabel;
-class RazorKbIndicatorEventFilter;
 
 class RazorKbIndicator : public RazorPanelPlugin
 {
@@ -44,18 +43,26 @@ public:
 
     virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
 
+signals:
+    void indicatorsChanged(unsigned int, unsigned int);
+
 protected slots:
     virtual void settingsChanged();
     virtual void showConfigureDialog();
 
     void setIndicators(unsigned int, unsigned int);
 
+protected:
+    bool getLockStatus(int mBit);
+    virtual void x11EventFilter(XEvent* event);
+
 private:
-    QLabel *content;
+    QLabel *mContent;
 
-    int bit;
+    int mBit;
 
-    RazorKbIndicatorEventFilter *eventFilter;
+    Display *mDisplay;
+    int mXkbEventBase;
 };
 
 
