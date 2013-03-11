@@ -35,9 +35,9 @@
 /************************************************
 
  ************************************************/
-MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent)
-    : QWidget(parent),
-      mDevice(device)
+MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent):
+    QFrame(parent),
+    mDevice(device)
 {
     setupUi(this);
     eject->setIcon(XdgIcon::fromTheme("media-eject"));

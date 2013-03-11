@@ -35,17 +35,16 @@
 
 
 Popup::Popup(RazorMountManager *manager, IRazorPanelPlugin *plugin, QWidget* parent):
-    QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
+    QFrame(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
     mManager(manager),
     mPlugin(plugin),
     mDisplayCount(0)
 {
+
     setObjectName("RazorMountPopup");
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //setMinimumSize(5, 5);
-    setLayout(new QGridLayout(this));
-    //layout()->setMargin(0);
-    layout()->setSizeConstraint(QLayout::SetFixedSize);
+    setLayout(new QVBoxLayout(this));
+    layout()->setMargin(0);
 
     setAttribute(Qt::WA_AlwaysShowToolTips);
 

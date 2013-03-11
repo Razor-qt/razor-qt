@@ -32,7 +32,7 @@
 class RazorMountDevice;
 
 
-class MenuDiskItem : public QWidget, private Ui::MenuDiskItem
+class MenuDiskItem : public QFrame, private Ui::MenuDiskItem
 {
     Q_OBJECT
 
