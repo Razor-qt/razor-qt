@@ -42,7 +42,7 @@ setByDefault(SYSSTAT_PLUGIN        Yes)
 setByDefault(KBINDICATOR_PLUGIN    Yes)
 setByDefault(WORLDCLOCK_PLUGIN     Yes)
 
-setByDefault(TEATIME_PLUGIN        Yes)
+setByDefault(TEATIME_PLUGIN        No)
 
 setByDefault(DOM_PLUGIN            Yes)
 # *******************************************************************
