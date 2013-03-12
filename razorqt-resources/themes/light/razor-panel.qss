@@ -33,7 +33,8 @@ Plugin {
     spacing: 20px;
 }
 
-Plugin > QToolButton {
+Plugin > QToolButton, 
+Plugin > QWidget > QToolButton {
     margin: 0;
     border: 2px solid transparent;
     border-radius: 3px;
@@ -141,11 +142,6 @@ TrayIcon {
     color: rgba(0, 0, 0, 80%);
 }
 
-#MainMenu > QToolButton {
-    border: none;
-    qproperty-icon: url(mainmenu.png);
-    qproperty-iconSize: 30px;
-}
 
 /*
  * Mount plugin
@@ -161,6 +157,9 @@ TrayIcon {
  padding: 0;
 }
 
+#RazorMountPopup > MenuDiskItem {
+  padding: 2px;
+}
 
 #RazorMountPopup > MenuDiskItem:hover {
     border-radius: 4px;
