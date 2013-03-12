@@ -209,12 +209,12 @@ TrayIcon {
     padding-right: 3px;
 }
 
-#KbIndicator > QLabel:enabled {
+#KbIndicator:enabled {
     background: qradialgradient(cx:0.5, cy:0.5, radius: 0.5, fx:0.5, fy:0.5, stop:0 lightskyblue, stop:1 transparent);
     color: black;
 }
 
-#KbIndicator > QLabel:disabled {
+#KbIndicator:disabled {
     background: transparent;
     color: gray;
 }
