@@ -33,7 +33,6 @@
 
 
 class QLabel;
-class RazorKbIndicatorEventFilter;
 
 class RazorKbIndicator : public QObject, public IRazorPanelPlugin
 {
@@ -50,17 +49,25 @@ public:
     QDialog *configureDialog();
     virtual void realign();
 
+signals:
+    void indicatorsChanged(unsigned int, unsigned int);
+
 protected slots:
     virtual void settingsChanged();
 
     void setIndicators(unsigned int, unsigned int);
 
+protected:
+    bool getLockStatus(int mBit);
+    virtual void x11EventFilter(XEvent* event);
+
 private:
-    QLabel *content;
+    QLabel *mContent;
 
-    int bit;
+    int mBit;
 
-    RazorKbIndicatorEventFilter *eventFilter;
+    Display *mDisplay;
+    int mXkbEventBase;
 };
 
 

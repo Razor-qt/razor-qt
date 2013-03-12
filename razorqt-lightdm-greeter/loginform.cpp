@@ -63,9 +63,9 @@ LoginForm::LoginForm(QWidget *parent) :
 }
 
 LoginForm::~LoginForm()
-    {
+{
     delete ui;
-    }
+}
 
 void LoginForm::setFocus(Qt::FocusReason reason)
 {
@@ -89,7 +89,7 @@ void LoginForm::setupAppearence()
     setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
     QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
     ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    
+
     ui->hostnameLabel->setText(m_Greeter.hostname());
 }
 
@@ -138,7 +138,7 @@ void LoginForm::initializeControls()
     if (m_Greeter.showManualLoginHint()) 
     {
         ui->userCombo->setCurrentIndex(m_otherUserComboIndex);
-}
+    }
     else 
     {
         ui->userCombo->setCurrentIndex(m_LoginData.suggestedUser());
@@ -150,9 +150,9 @@ void LoginForm::initializeControls()
     ui->otherUserInput->clear(); 
     QStringList completions;
     for (int i = 0; i < m_LoginData.numberOfUsers(); i++) 
-{
+    {
         completions << m_LoginData.userName(i);
-}
+    }
     QCompleter *completer = new QCompleter(completions, ui->otherUserInput);
     completer->setCompletionMode(QCompleter::InlineCompletion);
     ui->otherUserInput->setCompleter(completer);
@@ -162,7 +162,7 @@ void LoginForm::initializeControls()
 }
 
 void LoginForm::setSessionCombo(int session_index)
-    {
+{
     if (0 <= session_index && session_index < ui->sessionCombo->count())
     {
         ui->sessionCombo->setCurrentIndex(session_index);
