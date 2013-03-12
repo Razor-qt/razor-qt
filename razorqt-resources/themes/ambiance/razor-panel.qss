@@ -172,10 +172,13 @@ TrayIcon {
     padding: 4px;
 }
 
+#RazorMountPopup > MenuDiskItem {
+    border-radius: 4px;
+}
+
 #RazorMountPopup > MenuDiskItem:hover {
     background: rgba(0, 0, 0, 40%);
 }
-
 
 #RazorMountPopup #EjectButton,
 #RazorMountPopup #DiskButton {
