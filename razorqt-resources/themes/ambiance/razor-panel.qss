@@ -28,8 +28,11 @@ RazorPanelPlugin {
     qproperty-moveMarkerColor: #C94C21;
 }
 
+Plugin  > QWidget,
 Plugin  > QWidget > QWidget{
+    color: #cacaca;
 }
+
 
 Plugin > QToolButton,
 Plugin > QWidget > QToolButton,
@@ -78,6 +81,10 @@ RazorPanelPlugin > QToolButton:hover {
     margin-right: 2px;
 }
 
+#QuckLaunchPlaceHolder {
+    color: #AAAAAA;
+}
+
 /*
  * TaskBar
  */
@@ -109,11 +116,9 @@ RazorPanelPlugin > QToolButton:hover {
  }
  #Clock #TimeLabel{
      font-size: 10pt;
-     color: #cacaca;
  }
  #Clock #DateLabel{
      font-size: 8pt;
-     color: #cacaca;
  }
 
 #Clock QCalendarWidget #qt_calendar_navigationbar,
@@ -286,7 +291,6 @@ TrayIcon {
  */
 #WorldClock{
     font-size: 10pt;
-    color: #cacaca;
 }
 
 #WorldClock *{

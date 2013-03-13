@@ -40,6 +40,7 @@ class QDragEnterEvent;
 class RazorGridLayout;
 class QuickLaunchButton;
 class QSettings;
+class QLabel;
 
 /*! \brief Loader for "quick launcher" icons in the panel.
 \author Petr Vanek <petr@scribus.info>
@@ -60,11 +61,13 @@ public:
 private:
     RazorGridLayout *mLayout;
     IRazorPanelPlugin *mPlugin;
+    QLabel *mPlaceHolder;
 
     void dragEnterEvent(QDragEnterEvent *e);
     void dropEvent(QDropEvent *e);
 
     void saveSettings();
+    void showPlaceHolder();
 
 private slots:
     void addButton(QuickLaunchAction* action);

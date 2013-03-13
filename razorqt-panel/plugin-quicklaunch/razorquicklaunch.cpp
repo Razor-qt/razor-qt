@@ -46,10 +46,12 @@
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileIconProvider>
 #include <QSettings>
+#include <QLabel>
 
 RazorQuickLaunch::RazorQuickLaunch(IRazorPanelPlugin *plugin, QWidget* parent) :
     QFrame(parent),
-    mPlugin(plugin)
+    mPlugin(plugin),
+    mPlaceHolder(0)
 {
     setAcceptDrops(true);
 
@@ -98,6 +100,10 @@ RazorQuickLaunch::RazorQuickLaunch(IRazorPanelPlugin *plugin, QWidget* parent) :
     } // for
 
     settings->endArray();
+
+    if (mLayout->isEmpty())
+        showPlaceHolder();
+
     realign();
 }
 
@@ -135,6 +141,7 @@ void RazorQuickLaunch::realign()
 
 void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 {
+    mLayout->setEnabled(false);
     QuickLaunchButton* btn = new QuickLaunchButton(action, this);
     mLayout->addWidget(btn);
 
@@ -142,6 +149,10 @@ void RazorQuickLaunch::addButton(QuickLaunchAction* action)
     connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
     connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
+
+    delete mPlaceHolder;
+    mPlaceHolder = 0;
+    mLayout->setEnabled(true);
 }
 
 void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
@@ -224,6 +235,9 @@ void RazorQuickLaunch::buttonDeleted()
     mLayout->removeWidget(btn);
     btn->deleteLater();
     saveSettings();
+
+    if (mLayout->isEmpty())
+        showPlaceHolder();
 }
 
 void RazorQuickLaunch::buttonMoveLeft()
@@ -282,4 +296,16 @@ void RazorQuickLaunch::saveSettings()
     }
 
     settings->endArray();
+}
+
+void RazorQuickLaunch::showPlaceHolder()
+{
+    if (!mPlaceHolder)
+    {
+        mPlaceHolder = new QLabel(this);
+        mPlaceHolder->setObjectName("QuckLaunchPlaceHolder");
+        mPlaceHolder->setText(tr("Drop application\nicons here"));
+    }
+
+    mLayout->addWidget(mPlaceHolder);
 }
