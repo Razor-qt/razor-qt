@@ -55,8 +55,11 @@ RazorQuickLaunch::RazorQuickLaunch(IRazorPanelPlugin *plugin, QWidget* parent) :
 {
     setAcceptDrops(true);
 
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    setLayout(layout);
+
     mLayout = new RazorGridLayout(this);
-    setLayout(mLayout);
+    layout->addLayout(mLayout);
 
     QSettings *settings = mPlugin->settings();
     int count = settings->beginReadArray("apps");
@@ -141,7 +144,6 @@ void RazorQuickLaunch::realign()
 
 void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 {
-    mLayout->setEnabled(false);
     QuickLaunchButton* btn = new QuickLaunchButton(action, this);
     mLayout->addWidget(btn);
 
@@ -152,7 +154,6 @@ void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 
     delete mPlaceHolder;
     mPlaceHolder = 0;
-    mLayout->setEnabled(true);
 }
 
 void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
@@ -307,5 +308,5 @@ void RazorQuickLaunch::showPlaceHolder()
         mPlaceHolder->setText(tr("Drop application\nicons here"));
     }
 
-    mLayout->addWidget(mPlaceHolder);
+    layout()->addWidget(mPlaceHolder);
 }
