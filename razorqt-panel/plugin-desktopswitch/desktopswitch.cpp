@@ -137,12 +137,12 @@ void DesktopSwitch::realign()
 
     if (panel()->isHorizontal())
     {
-        mLayout->setRowCount(panel()->lineCount());
+        mLayout->setRowCount(qMin(panel()->lineCount(), mLayout->count()));
         mLayout->setColumnCount(0);
     }
     else
     {
-        mLayout->setColumnCount(panel()->lineCount());
+        mLayout->setColumnCount(qMin(panel()->lineCount(), mLayout->count()));
         mLayout->setRowCount(0);
     }
     mLayout->setEnabled(true);
