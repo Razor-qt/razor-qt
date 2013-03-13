@@ -36,11 +36,6 @@ include_directories(
 	"${CMAKE_CURRENT_BINARY_DIR}"
 )
 
-find_package(PkgConfig)
-
-pkg_check_modules(SIGNAL_CPP REQUIRED sigc++-2.0)
-include_directories(${SIGNAL_CPP_INCLUDE_DIRS})
-
 find_package(X11)
 include_directories(${X11_INCLUDE_DIR})
 
@@ -69,6 +64,10 @@ message(STATUS "Using Qt version ${QTVERSION}")
 
 if(QT_VERSION_MAJOR EQUAL 4)
 	include(${QT_USE_FILE})
+else()
+	if(CMAKE_CXX_COMPILER MATCHES "^(.*/)?clang\\+\\+$")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+	endif()
 endif()
 
 
@@ -76,7 +75,7 @@ set(${PROJECT_NAME}_SOURCES
 	main.cpp
 	core.cpp
 	daemon_adaptor.cpp
-	daemon_native_adaptor.cpp
+	native_adaptor.cpp
 	dbus_proxy.cpp
 	client_proxy.cpp
 	log_target.cpp
@@ -105,7 +104,7 @@ set(${PROJECT_NAME}_QT_HEADERS
 	dbus_proxy.hpp
 	client_proxy.hpp
 	daemon_adaptor.hpp
-	daemon_native_adaptor.hpp
+	native_adaptor.hpp
 )
 
 set(${PROJECT_NAME}_FORMS
@@ -119,7 +118,7 @@ set(${PROJECT_NAME}_TRANSLATIONS
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS
 	org.razorqt.global_action.daemon.xml
-	org.razorqt.global_action.daemon_native.xml
+	org.razorqt.global_action.native.xml
 )
 
 set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES PARENT daemon_adaptor.hpp)
@@ -127,10 +126,10 @@ set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES PARE
 set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES BASENAME org.razorqt.global_action.daemon)
 set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionDaemonAdaptor)
 
-set_source_files_properties(org.razorqt.global_action.daemon_native.xml PROPERTIES PARENT daemon_native_adaptor.hpp)
-set_source_files_properties(org.razorqt.global_action.daemon_native.xml PROPERTIES PARENT_CLASSNAME DaemonNativeAdaptor)
-set_source_files_properties(org.razorqt.global_action.daemon_native.xml PROPERTIES BASENAME org.razorqt.global_action.daemon_native)
-set_source_files_properties(org.razorqt.global_action.daemon_native.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionDaemonNativeAdaptor)
+set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES PARENT native_adaptor.hpp)
+set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES PARENT_CLASSNAME NativeAdaptor)
+set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES BASENAME org.razorqt.global_action.native)
+set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionNativeAdaptor)
 
 set(${PROJECT_NAME}_DBUS_PROXYS
 	org.freedesktop.DBus.xml
@@ -234,10 +233,23 @@ set(${PROJECT_NAME}_ALL_FILES
 )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_ALL_FILES})
-target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES} ${SIGNAL_CPP_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES})
 
 if(${QT_VERSION_MAJOR} EQUAL 4)
 	target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES})
 elseif(${QT_VERSION_MAJOR} EQUAL 5)
 	qt5_use_modules(${PROJECT_NAME} Core DBus)
 endif()
+
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin COMPONENT runtime)
+
+
+# uninstall target
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+	IMMEDIATE @ONLY)
+
+add_custom_target(uninstall
+	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)

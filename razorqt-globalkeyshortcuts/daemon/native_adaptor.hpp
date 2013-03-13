@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_DAEMON__DAEMON_NATIVE_ADAPTOR__INCLUDED
-#define GLOBAL_ACTION_DAEMON__DAEMON_NATIVE_ADAPTOR__INCLUDED
+#ifndef GLOBAL_ACTION_DAEMON__NATIVE_ADAPTOR__INCLUDED
+#define GLOBAL_ACTION_DAEMON__NATIVE_ADAPTOR__INCLUDED
 
 
 #include <QObject>
@@ -35,23 +35,26 @@
 #include <QPair>
 
 
-class DaemonNativeAdaptor : public QObject, protected QDBusContext
+class NativeAdaptor : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
-    DaemonNativeAdaptor(QObject * parent = 0);
+    NativeAdaptor(QObject * parent = 0);
 
     QString addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id);
     bool modifyDBusAction(const QDBusObjectPath &path, const QString &description);
     QString changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut);
     bool removeDBusAction(const QDBusObjectPath &path);
 
+    QString grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout);
+
 signals:
     void onAddDBusAction(QPair<QString, qulonglong> &, const QString &, const QDBusObjectPath &, const QString &, const QString &);
     void onModifyDBusAction(qulonglong &, const QDBusObjectPath &, const QString &, const QString &);
     void onChangeDBusShortcut(QPair<QString, qulonglong> &, const QDBusObjectPath &, const QString &, const QString &);
     void onRemoveDBusAction(qulonglong &, const QDBusObjectPath &, const QString &);
+    void onGrabShortcut(uint, QString &, bool &, bool &, bool &, const QDBusMessage &);
 
 };
 
-#endif // GLOBAL_ACTION_DAEMON__DAEMON_NATIVE_ADAPTOR__INCLUDED
+#endif // GLOBAL_ACTION_DAEMON__NATIVE_ADAPTOR__INCLUDED

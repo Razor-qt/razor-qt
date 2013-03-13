@@ -25,19 +25,19 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "daemon_native_adaptor.hpp"
+#include "native_adaptor.hpp"
 
-#include "org.razorqt.global_action.daemon_native.h"
+#include "org.razorqt.global_action.native.h"
 
 
-DaemonNativeAdaptor::DaemonNativeAdaptor(QObject * parent)
+NativeAdaptor::NativeAdaptor(QObject * parent)
     : QObject(parent)
     , QDBusContext()
 {
-    new OrgRazorqtGlobalActionDaemonNativeAdaptor(this);
+    new OrgRazorqtGlobalActionNativeAdaptor(this);
 }
 
-QString DaemonNativeAdaptor::addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id)
+QString NativeAdaptor::addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id)
 {
     QPair<QString, qulonglong> result;
     emit onAddDBusAction(result, shortcut, path, description, calledFromDBus() ? message().service() : QString());
@@ -46,14 +46,14 @@ QString DaemonNativeAdaptor::addDBusAction(const QString &shortcut, const QDBusO
     return usedShortcut;
 }
 
-bool DaemonNativeAdaptor::modifyDBusAction(const QDBusObjectPath &path, const QString &description)
+bool NativeAdaptor::modifyDBusAction(const QDBusObjectPath &path, const QString &description)
 {
     qulonglong result;
     emit onModifyDBusAction(result, path, description, calledFromDBus() ? message().service() : QString());
     return result;
 }
 
-QString DaemonNativeAdaptor::changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut)
+QString NativeAdaptor::changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut)
 {
     QPair<QString, qulonglong> result;
     emit onChangeDBusShortcut(result, path, shortcut, calledFromDBus() ? message().service() : QString());
@@ -61,9 +61,16 @@ QString DaemonNativeAdaptor::changeDBusShortcut(const QDBusObjectPath &path, con
     return usedShortcut;
 }
 
-bool DaemonNativeAdaptor::removeDBusAction(const QDBusObjectPath &path)
+bool NativeAdaptor::removeDBusAction(const QDBusObjectPath &path)
 {
     qulonglong result;
     emit onRemoveDBusAction(result, path, calledFromDBus() ? message().service() : QString());
     return result;
+}
+
+QString NativeAdaptor::grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout)
+{
+    QString shortcut;
+    emit onGrabShortcut(timeout, shortcut, failed, cancelled, timedout, message());
+    return shortcut;
 }

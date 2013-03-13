@@ -48,7 +48,7 @@
 
 class QTimer;
 class DaemonAdaptor;
-class DaemonNativeAdaptor;
+class NativeAdaptor;
 class DBusProxy;
 class BaseAction;
 
@@ -177,7 +177,7 @@ private:
 
     QDBusConnection      *mSessionConnection;
     DaemonAdaptor        *mDaemonAdaptor;
-    DaemonNativeAdaptor  *mDaemonNativeAdaptor;
+    NativeAdaptor  *mNativeAdaptor;
     DBusProxy            *mDBusProxy;
 
     mutable QMutex mDataMutex;

@@ -1,7 +1,7 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-	<interface name="org.razorqt.global_action.daemon_native">
+	<interface name="org.razorqt.global_action.native">
 		<method name="addDBusAction">
 			<arg name="shortcut" type="s" direction="in"/>
 			<arg name="path" type="o" direction="in"/>
@@ -25,6 +25,14 @@
 		<method name="removeDBusAction">
 			<arg name="path" type="o" direction="in"/>
 			<arg type="b" direction="out"/>
+		</method>
+
+		<method name="grabShortcut">
+			<arg name="timeout" type="u" direction="in"/>
+			<arg name="shortcut" type="s" direction="out"/>
+			<arg name="failed" type="b" direction="out"/>
+			<arg name="cancelled" type="b" direction="out"/>
+			<arg name="timedout" type="b" direction="out"/>
 		</method>
 	</interface>
 </node>

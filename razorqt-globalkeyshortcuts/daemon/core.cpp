@@ -47,7 +47,7 @@
 #include "pipe_utils.hpp"
 #include "string_utils.hpp"
 #include "daemon_adaptor.hpp"
-#include "daemon_native_adaptor.hpp"
+#include "native_adaptor.hpp"
 #include "dbus_proxy.hpp"
 #include "base_action.hpp"
 #include "method_action.hpp"
@@ -124,7 +124,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
     , mDisplay(0)
     , mInterClientCommunicationWindow(0)
     , mDaemonAdaptor(0)
-    , mDaemonNativeAdaptor(0)
+    , mNativeAdaptor(0)
     , mDBusProxy(0)
     , mLastId(0ull)
     , mGrabbingShortcut(false)
@@ -341,8 +341,8 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         if (!QDBusConnection::sessionBus().registerObject("/daemon", mDaemonAdaptor))
             throw std::runtime_error(std::string("Cannot create daemon adaptor"));
 
-        mDaemonNativeAdaptor = new DaemonNativeAdaptor(this);
-        if (!QDBusConnection::sessionBus().registerObject("/native", mDaemonNativeAdaptor))
+        mNativeAdaptor = new NativeAdaptor(this);
+        if (!QDBusConnection::sessionBus().registerObject("/native", mNativeAdaptor))
             throw std::runtime_error(std::string("Cannot create daemon native adaptor"));
 
         mDBusProxy = new DBusProxy(QDBusConnection::sessionBus(), QString("org.freedesktop.DBus"), QDBusObjectPath("/org/freedesktop/DBus"), this);
@@ -370,10 +370,11 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         connect(mDaemonAdaptor, SIGNAL(onGrabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)), this, SLOT(grabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)));
         connect(mDaemonAdaptor, SIGNAL(onQuit()), qApp, SLOT(quit()));
 
-        connect(mDaemonAdaptor, SIGNAL(onAddDBusAction(QPair<QString,qulonglong>&,QString,QDBusObjectPath,QString,QString)), this, SLOT(addDBusAction(QPair<QString,qulonglong>&,QString,QDBusObjectPath,QString,QString)));
-        connect(mDaemonAdaptor, SIGNAL(onModifyDBusAction(qulonglong&,QDBusObjectPath,QString,QString)), this, SLOT(modifyDBusAction(qulonglong&,QDBusObjectPath,QString,QString)));
-        connect(mDaemonAdaptor, SIGNAL(onChangeDBusShortcut(QPair<QString,qulonglong>&,QDBusObjectPath,QString,QString)), this, SLOT(changeDBusShortcut(QPair<QString,qulonglong>&,QDBusObjectPath,QString,QString)));
-        connect(mDaemonAdaptor, SIGNAL(onRemoveDBusAction(qulonglong&,QDBusObjectPath,QString)), this, SLOT(removeDBusAction(qulonglong&,QDBusObjectPath,QString)));
+        connect(mNativeAdaptor, SIGNAL(onAddDBusAction(QPair<QString,qulonglong>&,QString,QDBusObjectPath,QString,QString)), this, SLOT(addDBusAction(QPair<QString,qulonglong>&,QString,QDBusObjectPath,QString,QString)));
+        connect(mNativeAdaptor, SIGNAL(onModifyDBusAction(qulonglong&,QDBusObjectPath,QString,QString)), this, SLOT(modifyDBusAction(qulonglong&,QDBusObjectPath,QString,QString)));
+        connect(mNativeAdaptor, SIGNAL(onChangeDBusShortcut(QPair<QString,qulonglong>&,QDBusObjectPath,QString,QString)), this, SLOT(changeDBusShortcut(QPair<QString,qulonglong>&,QDBusObjectPath,QString,QString)));
+        connect(mNativeAdaptor, SIGNAL(onRemoveDBusAction(qulonglong&,QDBusObjectPath,QString)), this, SLOT(removeDBusAction(qulonglong&,QDBusObjectPath,QString)));
+        connect(mNativeAdaptor, SIGNAL(onGrabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)), this, SLOT(grabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)));
 
         mShortcutGrabTimeout->setSingleShot(true);
 
