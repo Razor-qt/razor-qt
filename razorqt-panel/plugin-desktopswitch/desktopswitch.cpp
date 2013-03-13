@@ -33,6 +33,7 @@
 #include <QSignalMapper>
 #include <razorqt/xfitman.h>
 #include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/razorgridlayout.h>
 
 #include <QHBoxLayout>
 #include "desktopswitch.h"
@@ -51,7 +52,8 @@ DesktopSwitch::DesktopSwitch(const IRazorPanelPluginStartupInfo &startupInfo) :
     m_buttons = new QButtonGroup(this);
     connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));
 
-    mWidget.setLayout(new QHBoxLayout(&mWidget));
+    mLayout = new RazorGridLayout(&mWidget);
+    mWidget.setLayout(mLayout);
     setup();
 }
 
@@ -128,37 +130,39 @@ void DesktopSwitch::setDesktop(int desktop)
     xfitMan().setActiveDesktop(desktop);
 }
 
-void DesktopSwitch::wheelEvent(QWheelEvent* e)
+
+void DesktopSwitch::realign()
+{
+    mLayout->setEnabled(false);
+
+    if (panel()->isHorizontal())
+    {
+        mLayout->setRowCount(panel()->lineCount());
+        mLayout->setColumnCount(0);
+    }
+    else
+    {
+        mLayout->setColumnCount(panel()->lineCount());
+        mLayout->setRowCount(0);
+    }
+    mLayout->setEnabled(true);
+}
+
+DesktopSwitchWidget::DesktopSwitchWidget():
+    QFrame()
+{
+}
+
+void DesktopSwitchWidget::wheelEvent(QWheelEvent *e)
 {
     int max = xfitMan().getNumDesktop() - 1;
     int delta = e->delta() < 0 ? 1 : -1;
     int current = xfitMan().getActiveDesktop() + delta;
-    
+
     if (current > max)
         current = 0;
     else if (current < 0)
         current = max;
 
     xfitMan().setActiveDesktop(current);
-}
-
-void DesktopSwitch::realign()
-{
-    int max = 0;
-    bool isHorizontal = panel()->isHorizontal();
-    foreach (QAbstractButton *btn, m_buttons->buttons())
-    {
-        if (isHorizontal)
-            max = qMax(max, btn->sizeHint().width());
-        else
-            max = qMax(max, btn->sizeHint().height());
-    }
-
-    foreach (QAbstractButton *btn, m_buttons->buttons())
-    {
-        if (isHorizontal)
-            btn->setMinimumWidth(max);
-        else
-            btn->setMinimumHeight(max);
-    }
 }

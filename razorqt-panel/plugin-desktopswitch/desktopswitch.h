@@ -34,7 +34,17 @@
 
 class QSignalMapper;
 class QButtonGroup;
+class RazorGridLayout;
 
+class DesktopSwitchWidget: public QFrame
+{
+    Q_OBJECT
+public:
+    DesktopSwitchWidget();
+
+protected:
+    void wheelEvent(QWheelEvent* e);
+};
 
 /**
  * @brief Desktop switcher. A very simple one...
@@ -57,9 +67,9 @@ private:
     QSignalMapper* m_pSignalMapper;
     int m_desktopCount;
     QStringList m_desktopNames;
-    QFrame mWidget;
+    DesktopSwitchWidget mWidget;
+    RazorGridLayout *mLayout;
 
-    void wheelEvent(QWheelEvent* e);
     void setup();
 
 private slots:
