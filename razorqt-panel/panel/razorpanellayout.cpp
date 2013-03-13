@@ -356,7 +356,7 @@ void LayoutItemGrid::update()
                 if (!info.item)
                     continue;
 
-                QSize sz = info.item->minimumSize();
+                QSize sz = info.item->sizeHint();
                 info.geometry = QRect(QPoint(x,y), sz);
                 x += sz.width();
                 rh = qMax(rh, sz.height());
