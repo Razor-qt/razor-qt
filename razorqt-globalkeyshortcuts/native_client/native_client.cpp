@@ -25,47 +25,58 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "global_action_native_client_export.hpp"
-#include "global_action_native_client_p.hpp"
-#include "client_adaptor.hpp"
+#include "native_client_export.hpp"
+#include "native_client_p.hpp"
+#include "global_action_p.hpp"
+
+#include <QDBusConnection>
 
 
-GlobalActionNativeClientImpl::GlobalActionNativeClientImpl(QObject *parent)
+
+GlobalActionNativeClientImpl::GlobalActionNativeClientImpl(GlobalActionNativeClient *interface, QObject *parent)
     : QObject(parent)
+    , mInterface(interface)
+    , mDestructing(false)
 {
     mProxy = new org::razorqt::global_action::native("org.razorqt.global_action", "/native", QDBusConnection::sessionBus(), this);
 }
 
 GlobalActionNativeClientImpl::~GlobalActionNativeClientImpl()
 {
+    mDestructing = true;
 }
 
-QString GlobalActionNativeClientImpl::addDBusAction(const QString &shortcut, const QString &path, const QString &description)
+GlobalAction* GlobalActionNativeClientImpl::addDBusAction(const QString &shortcut, const QString &path, const QString &description)
 {
     if (!QRegExp("[A-Za-z0-9_]+").exactMatch(path))
-        return QString();
+        return 0;
 
     if (mActions.contains(path))
-        return QString();
+        return 0;
 
-    QSharedPointer<ClientAdaptor> clientAdaptor(new ClientAdaptor(path, this));
-    if (!QDBusConnection::sessionBus().registerObject(path, clientAdaptor.data()))
-        return QString();
+    QDBusObjectPath dBusPath(QString("/global_action/") + path);
 
-    QDBusPendingReply<QString, qulonglong> reply = mProxy->addDBusAction(shortcut, QDBusObjectPath(QString("/global_action/") + path), description);
+    QSharedPointer<GlobalAction> globalAction(new GlobalAction(this));
+
+    GlobalActionImpl *globalActionImpl = new GlobalActionImpl(this, globalAction.data(), path, description, this);
+    globalAction->impl = globalActionImpl;
+
+    if (!QDBusConnection::sessionBus().registerObject(dBusPath.path(), globalActionImpl))
+        return 0;
+
+    QDBusPendingReply<QString, qulonglong> reply = mProxy->addDBusAction(shortcut, dBusPath, description);
     reply.waitForFinished();
     if (reply.isError())
-        return QString();
+        return 0;
 
     if (!reply.argumentAt<1>())
-        return QString();
+        return 0;
 
-    connect(clientAdaptor.data(), SIGNAL(on_activated(QString)), iface, SIGNAL(activated(QString)));
-    connect(clientAdaptor.data(), SIGNAL(on_shortcutChanged(QString,QString,QString)), iface, SIGNAL(shortcutChanged(QString,QString,QString)));
+    mActions[path] = globalAction;
 
-    mActions[path] = clientAdaptor;
+    globalActionImpl->setShortcut(reply.argumentAt<0>());
 
-    return reply.argumentAt<0>();
+    return globalAction.data();
 }
 
 QString GlobalActionNativeClientImpl::changeDBusShortcut(const QString &path, const QString &shortcut)
@@ -73,7 +84,7 @@ QString GlobalActionNativeClientImpl::changeDBusShortcut(const QString &path, co
     if (!mActions.contains(path))
         return QString();
 
-    QDBusPendingReply<QString> reply = mProxy->changeDBusShortcut(QDBusObjectPath(path), shortcut);
+    QDBusPendingReply<QString> reply = mProxy->changeDBusShortcut(QDBusObjectPath(QString("/global_action/") + path), shortcut);
     reply.waitForFinished();
     if (reply.isError())
         return QString();
@@ -86,7 +97,7 @@ bool GlobalActionNativeClientImpl::modifyDBusAction(const QString &path, const Q
     if (!mActions.contains(path))
         return false;
 
-    QDBusPendingReply<bool> reply = mProxy->modifyDBusAction(QDBusObjectPath(path), description);
+    QDBusPendingReply<bool> reply = mProxy->modifyDBusAction(QDBusObjectPath(QString("/global_action/") + path), description);
     reply.waitForFinished();
     if (reply.isError())
         return false;
@@ -96,10 +107,13 @@ bool GlobalActionNativeClientImpl::modifyDBusAction(const QString &path, const Q
 
 bool GlobalActionNativeClientImpl::removeDBusAction(const QString &path)
 {
+    if (mDestructing)
+        return true;
+
     if (!mActions.contains(path))
         return false;
 
-    QDBusPendingReply<bool> reply = mProxy->removeDBusAction(QDBusObjectPath(path));
+    QDBusPendingReply<bool> reply = mProxy->removeDBusAction(QDBusObjectPath(QString("/global_action/") + path));
     reply.waitForFinished();
     if (reply.isError())
         return false;
@@ -117,27 +131,32 @@ void GlobalActionNativeClientImpl::grabShortcut(uint timeout)
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(grabShortcutFinished(QDBusPendingCallWatcher*)));
 }
 
+void GlobalActionNativeClientImpl::cancelShortutGrab()
+{
+    mProxy->cancelShortcutGrab();
+}
+
 void GlobalActionNativeClientImpl::grabShortcutFinished(QDBusPendingCallWatcher *call)
 {
     QDBusPendingReply<QString, bool, bool, bool> reply = *call;
     if (reply.isError())
     {
-        emit iface->grabShortcutFailed();
+        emit mInterface->grabShortcutFailed();
     }
     else
     {
         if (reply.argumentAt<1>())
-            emit iface->grabShortcutFailed();
+            emit mInterface->grabShortcutFailed();
         else
         {
             if (reply.argumentAt<2>())
-                emit iface->grabShortcutCancelled();
+                emit mInterface->grabShortcutCancelled();
             else
             {
                 if (reply.argumentAt<3>())
-                    emit iface->grabShortcutTimedout();
+                    emit mInterface->grabShortcutTimedout();
                 else
-                    emit iface->shortcutGrabbed(reply.argumentAt<0>());
+                    emit mInterface->shortcutGrabbed(reply.argumentAt<0>());
             }
         }
     }
@@ -146,19 +165,28 @@ void GlobalActionNativeClientImpl::grabShortcutFinished(QDBusPendingCallWatcher 
 }
 
 
-GlobalActionNativeClient::GlobalActionNativeClient(QObject *parent)
-    : QObject(parent)
-    , impl(new GlobalActionNativeClientImpl(this))
+static GlobalActionNativeClient *globalActionNativeClient = 0;
+
+GlobalActionNativeClient* GlobalActionNativeClient::instance()
+{
+    if (!globalActionNativeClient)
+        globalActionNativeClient = new GlobalActionNativeClient();
+
+    return globalActionNativeClient;
+}
+
+GlobalActionNativeClient::GlobalActionNativeClient()
+    : QObject(0)
+    , impl(new GlobalActionNativeClientImpl(this, this))
 {
 }
 
 GlobalActionNativeClient::~GlobalActionNativeClient()
 {
     delete impl;
+    globalActionNativeClient = 0;
 }
 
-QString GlobalActionNativeClient::addDBusAction(const QString &shortcut, const QString &path, const QString &description) { return impl->addDBusAction(shortcut, path, description); }
-QString GlobalActionNativeClient::changeDBusShortcut(const QString &path, const QString &shortcut) { return impl->changeDBusShortcut(path, shortcut); }
-bool GlobalActionNativeClient::modifyDBusAction(const QString &path, const QString &description) { return impl->modifyDBusAction(path, description); }
-bool GlobalActionNativeClient::removeDBusAction(const QString &path) { return impl->removeDBusAction(path); }
+GlobalAction* GlobalActionNativeClient::addAction(const QString &shortcut, const QString &path, const QString &description) { return impl->addDBusAction(shortcut, path, description); }
 void GlobalActionNativeClient::grabShortcut(uint timeout) { impl->grabShortcut(timeout); }
+void GlobalActionNativeClient::cancelShortutGrab() { impl->cancelShortutGrab(); }

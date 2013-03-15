@@ -27,6 +27,8 @@
 
 #include "client_adaptor.hpp"
 
+#include "org.razorqt.global_action.client.h"
+
 
 ClientAdaptor::ClientAdaptor(const QString &path, QObject *parent)
     : QObject(parent)

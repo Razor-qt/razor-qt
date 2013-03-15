@@ -25,10 +25,42 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_NATIVE_CLIENT__INCLUDED
-#define GLOBAL_ACTION_NATIVE_CLIENT__INCLUDED
+#ifndef GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__INCLUDED
+#define GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__INCLUDED
 
-#include <@PROJECT_NAME@/global_action.hpp>
-#include <@PROJECT_NAME@/native_client.hpp>
+#include <QtCore/qglobal.h>
 
-#endif // GLOBAL_ACTION_NATIVE_CLIENT__INCLUDED
+#include <QObject>
+#include <QString>
+
+
+class GlobalAction;
+class GlobalActionNativeClientImpl;
+
+class @SHARED_EXPORT@ GlobalActionNativeClient : public QObject
+{
+Q_OBJECT
+
+public:
+    static GlobalActionNativeClient* instance();
+    ~GlobalActionNativeClient();
+
+    GlobalAction* addAction(const QString &shortcut, const QString &path, const QString &description);
+
+public slots:
+    void grabShortcut(uint timeout);
+    void cancelShortutGrab();
+
+signals:
+    void shortcutGrabbed(const QString &);
+    void grabShortcutFailed();
+    void grabShortcutCancelled();
+    void grabShortcutTimedout();
+
+private:
+    GlobalActionNativeClient();
+
+    GlobalActionNativeClientImpl *impl;
+};
+
+#endif // GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__INCLUDED

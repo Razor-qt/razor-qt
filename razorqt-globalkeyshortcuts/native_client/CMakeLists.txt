@@ -74,25 +74,42 @@ endif()
 
 set(SHARED_EXPORT Q_DECL_EXPORT)
 configure_file(
-	"${CMAKE_CURRENT_SOURCE_DIR}/global_action_native_client.hpp.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/global_action_native_client_export.hpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/native_client.hpp.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/native_client_export.hpp"
+	IMMEDIATE @ONLY)
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/global_action.hpp.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/global_action_export.hpp"
 	IMMEDIATE @ONLY)
 set(SHARED_EXPORT Q_DECL_IMPORT)
 configure_file(
-	"${CMAKE_CURRENT_SOURCE_DIR}/global_action_native_client.hpp.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/global_action_native_client.hpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/native_client.hpp.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/native_client.hpp"
+	IMMEDIATE @ONLY)
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/global_action.hpp.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/global_action.hpp"
+	IMMEDIATE @ONLY)
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.hpp.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.hpp"
 	IMMEDIATE @ONLY)
 unset(SHARED_EXPORT)
 
 
 
 set(${PROJECT_NAME}_SOURCES
-	global_action_native_client.cpp
-	client_adaptor.cpp
+	native_client.cpp
+	global_action.cpp
+)
+
+set(${PROJECT_NAME}_MAIN_HEADER
+	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.hpp"
 )
 
 set(${PROJECT_NAME}_PUBLIC_CPP_HEADERS
-	"${CMAKE_CURRENT_BINARY_DIR}/global_action_native_client.hpp" # it's not used, just generated, so it isn't a QT header
+	"${CMAKE_CURRENT_BINARY_DIR}/native_client.hpp" # it's not used, just generated, so it isn't a QT header
+	"${CMAKE_CURRENT_BINARY_DIR}/global_action.hpp" # it's not used, just generated, so it isn't a QT header
 )
 
 set(${PROJECT_NAME}_PRIVATE_CPP_HEADERS
@@ -102,9 +119,10 @@ set(${PROJECT_NAME}_PUBLIC_QT_HEADERS
 )
 
 set(${PROJECT_NAME}_PRIVATE_QT_HEADERS
-	"${CMAKE_CURRENT_BINARY_DIR}/global_action_native_client_export.hpp"
-	global_action_native_client_p.hpp
-	client_adaptor.hpp
+	"${CMAKE_CURRENT_BINARY_DIR}/native_client_export.hpp"
+	"${CMAKE_CURRENT_BINARY_DIR}/global_action_export.hpp"
+	native_client_p.hpp
+	global_action_p.hpp
 )
 
 set(${PROJECT_NAME}_FORMS
@@ -120,8 +138,8 @@ set(${PROJECT_NAME}_DBUS_ADAPTERS
 	../daemon/org.razorqt.global_action.client.xml
 )
 
-set_source_files_properties(../daemon/org.razorqt.global_action.client.xml PROPERTIES PARENT client_adaptor.hpp)
-set_source_files_properties(../daemon/org.razorqt.global_action.client.xml PROPERTIES PARENT_CLASSNAME ClientAdaptor)
+set_source_files_properties(../daemon/org.razorqt.global_action.client.xml PROPERTIES PARENT global_action_p.hpp)
+set_source_files_properties(../daemon/org.razorqt.global_action.client.xml PROPERTIES PARENT_CLASSNAME GlobalActionImpl)
 set_source_files_properties(../daemon/org.razorqt.global_action.client.xml PROPERTIES BASENAME org.razorqt.global_action.client)
 set_source_files_properties(../daemon/org.razorqt.global_action.client.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionClientAdaptor)
 
@@ -260,7 +278,8 @@ configure_file(
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib COMPONENT runtime)
-install(FILES ${${PROJECT_NAME}_PUBLIC_HEADERS} DESTINATION include COMPONENT development)
+install(FILES ${${PROJECT_NAME}_MAIN_HEADER} DESTINATION include/ COMPONENT development)
+install(FILES ${${PROJECT_NAME}_PUBLIC_HEADERS} DESTINATION include/${PROJECT_NAME} COMPONENT development)
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION lib/pkgconfig COMPONENT development)
 
 

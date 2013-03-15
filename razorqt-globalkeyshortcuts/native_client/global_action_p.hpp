@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED
-#define GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED
+#ifndef GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED
+#define GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED
 
 #include <QObject>
 #include <QString>
@@ -36,31 +36,35 @@
 #include "org.razorqt.global_action.native.h"
 
 
-class GlobalActionNativeClient;
-class ClientAdaptor;
+class GlobalAction;
+class GlobalActionNativeClientImpl;
 
-class GlobalActionNativeClientImpl : public QObject
+class GlobalActionImpl : public QObject
 {
 Q_OBJECT
 
 public:
-    GlobalActionNativeClientImpl(QObject *parent = 0);
-    ~GlobalActionNativeClientImpl();
+    GlobalActionImpl(GlobalActionNativeClientImpl *client, GlobalAction *interface, const QString &path, const QString &description, QObject *parent = 0);
+    ~GlobalActionImpl();
 
-    QString addDBusAction(const QString &shortcut, const QString &path, const QString &description);
-    QString changeDBusShortcut(const QString &path, const QString &shortcut);
-    bool modifyDBusAction(const QString &path, const QString &description);
-    bool removeDBusAction(const QString &path);
+    QString changeShortcut(const QString &shortcut);
+    bool changeDescription(const QString &description);
 
-    void grabShortcut(uint timeout);
+    void setShortcut(const QString &shortcut);
 
-public slots:
-    void grabShortcutFinished(QDBusPendingCallWatcher *call);
+    QString shortcut() const;
+    QString description() const;
+
+signals:
+    void activated();
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 
 private:
-    GlobalActionNativeClient *iface;
-    org::razorqt::global_action::native *mProxy;
-    QMap<QString, QSharedPointer<ClientAdaptor> > mActions;
+    GlobalActionNativeClientImpl *mClient;
+    GlobalAction *mInterface;
+    QString mPath;
+    QString mShortcut;
+    QString mDescription;
 };
 
-#endif // GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED
+#endif // GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED
