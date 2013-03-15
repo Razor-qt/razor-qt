@@ -35,8 +35,6 @@ ClientProxy::ClientProxy(const QString &service, const QDBusObjectPath &path, co
     : QObject(parent)
 {
     org::razorqt::global_action::client *iface = new org::razorqt::global_action::client(service, path.path(), connection, this);
-    connect(iface, SIGNAL(NameOwnerChanged(QString,QString,QString)), this, SLOT(NameOwnerChanged(QString,QString,QString)));
-
     connect(this, SIGNAL(activated()), iface, SLOT(activated()));
     connect(this, SIGNAL(shortcutChanged(QString,QString)), iface, SLOT(shortcutChanged(QString,QString)));
 }
