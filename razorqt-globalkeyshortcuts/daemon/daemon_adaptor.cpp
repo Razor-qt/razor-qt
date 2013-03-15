@@ -244,6 +244,11 @@ QString DaemonAdaptor::grabShortcut(uint timeout, bool &failed, bool &cancelled,
     return shortcut;
 }
 
+void DaemonAdaptor::cancelShortcutGrab()
+{
+    emit onCancelShortcutGrab();
+}
+
 void DaemonAdaptor::quit()
 {
     emit onQuit();

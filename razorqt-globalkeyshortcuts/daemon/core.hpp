@@ -71,7 +71,7 @@ private:
     Core& operator = (const Core &);
 
 private:
-    typedef QPair<int, unsigned int> X11Shortcut;
+    typedef QPair<KeyCode, unsigned int> X11Shortcut;
     typedef QMap<X11Shortcut, QString> ShortcutByX11;
     typedef QMap<QString, X11Shortcut> X11ByShortcut;
     typedef QSet<qulonglong> Ids;
@@ -120,6 +120,7 @@ private slots:
     void getCommandActionInfoById(QPair<bool, CommandActionInfo> &result, const qulonglong &id) const;
 
     void grabShortcut(const uint &timeout, QString &shortcut, bool &failed, bool &cancelled, bool &timedout, const QDBusMessage &message);
+    void cancelShortcutGrab();
 
     void shortcutGrabbed();
     void shortcutGrabTimedout();
@@ -145,8 +146,6 @@ private:
 
     void run();
 
-    bool waitForX11Error(int timeout);
-
     KeyCode remoteStringToKeycode(const QString &str);
     QString remoteKeycodeToString(KeyCode keyCode);
     bool remoteXGrabKey(const X11Shortcut &X11shortcut);
@@ -162,6 +161,11 @@ private:
 
     void saveConfig();
 
+    void lockX11Error();
+    bool checkX11Error(int level = LOG_NOTICE, uint timeout = 10);
+
+    bool waitForX11Error(int level, uint timeout);
+
 private:
     bool mReady;
     bool mUseSyslog;
@@ -175,10 +179,12 @@ private:
     Window mInterClientCommunicationWindow;
     bool mX11EventLoopActive;
 
-    QDBusConnection      *mSessionConnection;
-    DaemonAdaptor        *mDaemonAdaptor;
-    NativeAdaptor  *mNativeAdaptor;
-    DBusProxy            *mDBusProxy;
+    mutable QMutex mX11ErrorMutex;
+
+    QDBusConnection *mSessionConnection;
+    DaemonAdaptor *mDaemonAdaptor;
+    NativeAdaptor *mNativeAdaptor;
+    DBusProxy *mDBusProxy;
 
     mutable QMutex mDataMutex;
 
@@ -220,6 +226,8 @@ private:
     QTimer *mShortcutGrabTimeout;
     QDBusMessage mShortcutGrabRequest;
     bool mShortcutGrabRequested;
+
+    bool mSuppressX11ErrorMessages;
 };
 
 #endif // GLOBAL_ACTION_DAEMON__CORE__INCLUDED

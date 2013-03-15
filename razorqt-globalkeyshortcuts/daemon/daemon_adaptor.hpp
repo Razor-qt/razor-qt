@@ -74,6 +74,7 @@ public slots:
     bool getCommandActionInfoById(qulonglong id, QString &command, QStringList &arguments);
 
     QString grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout);
+    void cancelShortcutGrab();
 
     void quit();
 
@@ -115,6 +116,7 @@ signals:
     void onGetCommandActionInfoById(QPair<bool, CommandActionInfo> &, qulonglong);
 
     void onGrabShortcut(uint, QString &, bool &, bool &, bool &, const QDBusMessage &);
+    void onCancelShortcutGrab();
 
     void onQuit();
 };

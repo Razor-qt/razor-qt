@@ -74,3 +74,8 @@ QString NativeAdaptor::grabShortcut(uint timeout, bool &failed, bool &cancelled,
     emit onGrabShortcut(timeout, shortcut, failed, cancelled, timedout, message());
     return shortcut;
 }
+
+void NativeAdaptor::cancelShortcutGrab()
+{
+    emit onCancelShortcutGrab();
+}

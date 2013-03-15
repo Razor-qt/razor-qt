@@ -34,5 +34,7 @@
 			<arg name="cancelled" type="b" direction="out"/>
 			<arg name="timedout" type="b" direction="out"/>
 		</method>
+
+		<method name="cancelShortcutGrab"/>
 	</interface>
 </node>

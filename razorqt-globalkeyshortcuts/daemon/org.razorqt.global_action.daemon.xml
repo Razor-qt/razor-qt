@@ -132,6 +132,8 @@
 			<arg name="timedout" type="b" direction="out"/>
 		</method>
 
+		<method name="cancelShortcutGrab"/>
+
 		<method name="quit">
 			<annotation name="org.freedesktop.DBus.Method.NoReply" value="true"/>
 		</method>
