@@ -42,7 +42,9 @@ class CommandAction : public BaseAction
 public:
     CommandAction(LogTarget *logTarget, const QString &command, const QStringList &args, const QString &description);
 
-    virtual const char* type() const { return "command"; }
+    static const char* id() { return "command"; }
+
+    virtual const char* type() const { return id(); }
 
     virtual bool call();
 

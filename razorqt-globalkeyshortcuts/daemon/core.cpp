@@ -27,8 +27,6 @@
 
 #include <QCoreApplication>
 
-#include "core.hpp"
-
 #include <QSettings>
 #include <QTimer>
 
@@ -53,6 +51,8 @@
 #include "method_action.hpp"
 #include "dbus_action.hpp"
 #include "command_action.hpp"
+
+#include "core.hpp"
 
 
 enum {
@@ -452,7 +452,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
 
                 if (!minLogLevelSet)
                 {
-                    iniValue = settings.value("General/LogLevel").toString();
+                    iniValue = settings.value(/* General/ */"LogLevel").toString();
                     if (!iniValue.isEmpty())
                     {
                         if (iniValue == "error")
@@ -470,7 +470,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
 
                 if (!multipleActionsBehaviourSet)
                 {
-                    iniValue = settings.value("General/MultipleActionsBehaviour").toString();
+                    iniValue = settings.value(/* General/ */"MultipleActionsBehaviour").toString();
                     if (!iniValue.isEmpty())
                     {
                         if (iniValue == "first")
@@ -484,12 +484,12 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
                     }
                 }
 
-                mAllowGrabLocks = settings.value("General/AllowGrabLocks", mAllowGrabLocks).toBool();
-                mAllowGrabBaseSpecial = settings.value("General/AllowGrabBaseSpecial", mAllowGrabBaseSpecial).toBool();
-                mAllowGrabMiscSpecial = settings.value("General/AllowGrabMiscSpecial", mAllowGrabMiscSpecial).toBool();
-                mAllowGrabBaseKeypad = settings.value("General/AllowGrabBaseKeypad", mAllowGrabBaseKeypad).toBool();
-                mAllowGrabMiscKeypad = settings.value("General/AllowGrabMiscKeypad", mAllowGrabMiscKeypad).toBool();
-                mAllowGrabPrintable = settings.value("General/AllowGrabPrintable", mAllowGrabPrintable).toBool();
+                mAllowGrabLocks = settings.value(/* General/ */"AllowGrabLocks", mAllowGrabLocks).toBool();
+                mAllowGrabBaseSpecial = settings.value(/* General/ */"AllowGrabBaseSpecial", mAllowGrabBaseSpecial).toBool();
+                mAllowGrabMiscSpecial = settings.value(/* General/ */"AllowGrabMiscSpecial", mAllowGrabMiscSpecial).toBool();
+                mAllowGrabBaseKeypad = settings.value(/* General/ */"AllowGrabBaseKeypad", mAllowGrabBaseKeypad).toBool();
+                mAllowGrabMiscKeypad = settings.value(/* General/ */"AllowGrabMiscKeypad", mAllowGrabMiscKeypad).toBool();
+                mAllowGrabPrintable = settings.value(/* General/ */"AllowGrabPrintable", mAllowGrabPrintable).toBool();
 
                 foreach (QString section, settings.childGroups())
                 {
@@ -552,6 +552,8 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
                 }
             }
         }
+        log(LOG_DEBUG, "Config file: %s", qPrintable(mConfigFile));
+
 
         log(LOG_DEBUG, "MinLogLevel: %s", strLevel(mMinLogLevel));
         switch (mMultipleActionsBehaviour)
@@ -582,6 +584,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         log(LOG_DEBUG, "AllowGrabPrintable: %s",   mAllowGrabPrintable   ? "true" : "false");
 
         mSaveAllowed = true;
+        saveConfig();
 
 
 
@@ -601,9 +604,10 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         connect(mDaemonAdaptor, SIGNAL(onAddMethodAction(QPair<QString,qulonglong>&,QString,QString,QDBusObjectPath,QString,QString,QString)), this, SLOT(addMethodAction(QPair<QString,qulonglong>&,QString,QString,QDBusObjectPath,QString,QString,QString)));
         connect(mDaemonAdaptor, SIGNAL(onAddCommandAction(QPair<QString,qulonglong>&,QString,QString,QStringList,QString)), this, SLOT(addCommandAction(QPair<QString,qulonglong>&,QString,QString,QStringList,QString)));
         connect(mDaemonAdaptor, SIGNAL(onModifyActionDescription(bool&,qulonglong,QString)), this, SLOT(modifyActionDescription(bool&,qulonglong,QString)));
-
         connect(mDaemonAdaptor, SIGNAL(onModifyMethodAction(bool&,qulonglong,QString,QDBusObjectPath,QString,QString,QString)), this, SLOT(modifyMethodAction(bool&,qulonglong,QString,QDBusObjectPath,QString,QString,QString)));
         connect(mDaemonAdaptor, SIGNAL(onModifyCommandAction(bool&,qulonglong,QString,QStringList,QString)), this, SLOT(modifyCommandAction(bool&,qulonglong,QString,QStringList,QString)));
+        connect(mDaemonAdaptor, SIGNAL(onEnableAction(bool&,qulonglong,bool)), this, SLOT(enableAction(bool&,qulonglong,bool)));
+        connect(mDaemonAdaptor, SIGNAL(onIsActionEnabled(bool&,qulonglong)), this, SLOT(isActionEnabled(bool&,qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onChangeShortcut(QString&,qulonglong,QString)), this, SLOT(changeShortcut(QString&,qulonglong,QString)));
         connect(mDaemonAdaptor, SIGNAL(onSwapActions(bool&,qulonglong,qulonglong)), this, SLOT(swapActions(bool&,qulonglong,qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onRemoveAction(bool&,qulonglong)), this, SLOT(removeAction(bool&,qulonglong)));
@@ -621,6 +625,8 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
 
         connect(mNativeAdaptor, SIGNAL(onAddDBusAction(QPair<QString,qulonglong>&,QString,QDBusObjectPath,QString,QString)), this, SLOT(addDBusAction(QPair<QString,qulonglong>&,QString,QDBusObjectPath,QString,QString)));
         connect(mNativeAdaptor, SIGNAL(onModifyDBusAction(qulonglong&,QDBusObjectPath,QString,QString)), this, SLOT(modifyDBusAction(qulonglong&,QDBusObjectPath,QString,QString)));
+        connect(mNativeAdaptor, SIGNAL(onEnableDBusAction(bool&,QDBusObjectPath,bool,QString)), this, SLOT(enableDBusAction(bool&,QDBusObjectPath,bool,QString)));
+        connect(mNativeAdaptor, SIGNAL(onIsDBusActionEnabled(bool&,QDBusObjectPath,QString)), this, SLOT(isDBusActionEnabled(bool&,QDBusObjectPath,QString)));
         connect(mNativeAdaptor, SIGNAL(onChangeDBusShortcut(QPair<QString,qulonglong>&,QDBusObjectPath,QString,QString)), this, SLOT(changeDBusShortcut(QPair<QString,qulonglong>&,QDBusObjectPath,QString,QString)));
         connect(mNativeAdaptor, SIGNAL(onRemoveDBusAction(qulonglong&,QDBusObjectPath,QString)), this, SLOT(removeDBusAction(qulonglong&,QDBusObjectPath,QString)));
         connect(mNativeAdaptor, SIGNAL(onGrabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)), this, SLOT(grabShortcut(uint,QString&,bool&,bool&,bool&,QDBusMessage)));
@@ -676,30 +682,30 @@ void Core::saveConfig()
     switch (mMultipleActionsBehaviour)
     {
     case MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
-        settings.setValue("General/MultipleActionsBehaviour", "first");
+        settings.setValue(/* General/ */"MultipleActionsBehaviour", "first");
         break;
 
     case MULTIPLE_ACTIONS_BEHAVIOUR_LAST:
-        settings.setValue("General/MultipleActionsBehaviour", "last");
+        settings.setValue(/* General/ */"MultipleActionsBehaviour", "last");
         break;
 
     case MULTIPLE_ACTIONS_BEHAVIOUR_ALL:
-        settings.setValue("General/MultipleActionsBehaviour", "all");
+        settings.setValue(/* General/ */"MultipleActionsBehaviour", "all");
         break;
 
     case MULTIPLE_ACTIONS_BEHAVIOUR_NONE:
-        settings.setValue("General/MultipleActionsBehaviour", "none");
+        settings.setValue(/* General/ */"MultipleActionsBehaviour", "none");
         break;
 
     default:;
     }
 
-    settings.setValue("General/AllowGrabLocks",       mAllowGrabLocks      );
-    settings.setValue("General/AllowGrabBaseSpecial", mAllowGrabBaseSpecial);
-    settings.setValue("General/AllowGrabMiscSpecial", mAllowGrabMiscSpecial);
-    settings.setValue("General/AllowGrabBaseKeypad",  mAllowGrabBaseKeypad );
-    settings.setValue("General/AllowGrabMiscKeypad",  mAllowGrabMiscKeypad );
-    settings.setValue("General/AllowGrabPrintable",   mAllowGrabPrintable  );
+    settings.setValue(/* General/ */"AllowGrabLocks",       mAllowGrabLocks      );
+    settings.setValue(/* General/ */"AllowGrabBaseSpecial", mAllowGrabBaseSpecial);
+    settings.setValue(/* General/ */"AllowGrabMiscSpecial", mAllowGrabMiscSpecial);
+    settings.setValue(/* General/ */"AllowGrabBaseKeypad",  mAllowGrabBaseKeypad );
+    settings.setValue(/* General/ */"AllowGrabMiscKeypad",  mAllowGrabMiscKeypad );
+    settings.setValue(/* General/ */"AllowGrabPrintable",   mAllowGrabPrintable  );
 
     ShortcutAndActionById::const_iterator lastShortcutAndActionById = mShortcutAndActionById.end();
     for (ShortcutAndActionById::const_iterator shortcutAndActionById = mShortcutAndActionById.begin(); shortcutAndActionById != lastShortcutAndActionById; ++shortcutAndActionById)
@@ -707,35 +713,50 @@ void Core::saveConfig()
         const BaseAction *action = shortcutAndActionById.value().second;
         QString section = shortcutAndActionById.value().first + "." + QString::number(shortcutAndActionById.key());
 
-        settings.beginGroup(section);
-
-        settings.setValue("Enabled", action->isEnabled());
-        settings.setValue("Comment", action->description());
-
-        if (!strcmp(action->type(), "command"))
+        bool persistent = false;
+        if (!strcmp(action->type(), CommandAction::id()))
         {
-            const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
-            settings.setValue("Exec", QVariant(QStringList() << commandAction->command() += commandAction->args()));
+            persistent = true;
         }
-        else if (!strcmp(action->type(), "method"))
+        else if (!strcmp(action->type(), MethodAction::id()))
         {
-            const MethodAction *methodAction = dynamic_cast<const MethodAction*>(action);
-            settings.setValue("DBus-service",   methodAction->service());
-            settings.setValue("DBus-path",      methodAction->path().path());
-            settings.setValue("DBus-interface", methodAction->interface());
-            settings.setValue("DBus-method",    methodAction->method());
+            persistent = true;
         }
-        else if (!strcmp(action->type(), "dbus"))
+        else if (!strcmp(action->type(), DBusAction::id()))
         {
             const DBusAction *dBusAction = dynamic_cast<const DBusAction*>(action);
-            if (dBusAction->isPersistent())
+            persistent = dBusAction->isPersistent();
+        }
+
+        if (persistent)
+        {
+            settings.beginGroup(section);
+
+            settings.setValue("Enabled", action->isEnabled());
+            settings.setValue("Comment", action->description());
+
+            if (!strcmp(action->type(), CommandAction::id()))
             {
+                const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
+                settings.setValue("Exec", QVariant(QStringList() << commandAction->command() += commandAction->args()));
+            }
+            else if (!strcmp(action->type(), MethodAction::id()))
+            {
+                const MethodAction *methodAction = dynamic_cast<const MethodAction*>(action);
+                settings.setValue("DBus-service",   methodAction->service());
+                settings.setValue("DBus-path",      methodAction->path().path());
+                settings.setValue("DBus-interface", methodAction->interface());
+                settings.setValue("DBus-method",    methodAction->method());
+            }
+            else if (!strcmp(action->type(), DBusAction::id()))
+            {
+                const DBusAction *dBusAction = dynamic_cast<const DBusAction*>(action);
                 settings.setValue("DBus-service", dBusAction->service());
                 settings.setValue("DBus-path",    dBusAction->path().path());
             }
-        }
 
-        settings.endGroup();
+            settings.endGroup();
+        }
     }
 }
 
@@ -1986,9 +2007,6 @@ QPair<QString, qulonglong> Core::addOrRegisterDBusAction(const QString &shortcut
 
     log(LOG_INFO, "addDBusAction shortcut:'%s' id:%llu", qPrintable(newShortcut), id);
 
-    if (id)
-        mDaemonAdaptor->actionAdded(id);
-
     return qMakePair(newShortcut, id);
 }
 
@@ -2004,6 +2022,8 @@ void Core::addDBusAction(QPair<QString, qulonglong> &result, const QString &shor
         service = preferredServiceNameByServiceId.value();
 
     result = addOrRegisterDBusAction(shortcut, service, path, description, sender);
+
+    saveConfig();
 }
 
 qulonglong Core::registerDBusAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &description)
@@ -2119,8 +2139,7 @@ void Core::modifyDBusAction(qulonglong& result, const QDBusObjectPath &path, con
 
     mShortcutAndActionById[id].second->setDescription(description);
 
-    if (id)
-        mDaemonAdaptor->actionModified(id);
+    saveConfig();
 
     result = id;
 }
@@ -2141,7 +2160,7 @@ void Core::modifyActionDescription(bool &result, const qulonglong &id, const QSt
 
     BaseAction *action = shortcutAndActionById.value().second;
 
-    if ((strcmp(action->type(), "method")) && (strcmp(action->type(), "command")))
+    if ((strcmp(action->type(), MethodAction::id())) && (strcmp(action->type(), CommandAction::id())))
     {
         log(LOG_WARNING, "modifyActionDescription attempts to modify action of type '%s'", action->type());
         result = false;
@@ -2171,7 +2190,7 @@ void Core::modifyMethodAction(bool &result, const qulonglong &id, const QString 
 
     BaseAction *action = shortcutAndActionById.value().second;
 
-    if (strcmp(action->type(), "method"))
+    if (strcmp(action->type(), MethodAction::id()))
     {
         log(LOG_WARNING, "modifyMethodAction attempts to modify action of type '%s'", action->type());
         result = false;
@@ -2202,7 +2221,7 @@ void Core::modifyCommandAction(bool &result, const qulonglong &id, const QString
 
     BaseAction *action = shortcutAndActionById.value().second;
 
-    if (strcmp(action->type(), "command"))
+    if (strcmp(action->type(), CommandAction::id()))
     {
         log(LOG_WARNING, "modifyMethodAction attempts to modify action of type '%s'", action->type());
         result = false;
@@ -2215,6 +2234,90 @@ void Core::modifyCommandAction(bool &result, const qulonglong &id, const QString
     saveConfig();
 
     result = true;
+}
+
+void Core::enableDBusAction(bool &result, const QDBusObjectPath &path, bool enabled, const QString &sender)
+{
+    log(LOG_INFO, "enableDBusAction path:'%s' enabled:%s sender:'%s'", qPrintable(path.path()), enabled ? " true" : "false", qPrintable(sender));
+
+    DBusClient dBusClient = qMakePair(sender, path);
+
+    QMutexLocker lock(&mDataMutex);
+
+    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
+    if (idByDBusClient == mIdByDBusClient.end())
+    {
+        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+        result = false;
+        return;
+    }
+
+    qulonglong id = idByDBusClient.value();
+
+    mShortcutAndActionById[id].second->setEnabled(enabled);
+
+    saveConfig();
+
+    result = true;
+}
+
+void Core::isDBusActionEnabled(bool &enabled, const QDBusObjectPath &path, const QString &sender)
+{
+    log(LOG_INFO, "isDBusActionEnabled path:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(sender));
+
+    DBusClient dBusClient = qMakePair(sender, path);
+
+    enabled = false;
+
+    QMutexLocker lock(&mDataMutex);
+
+    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
+    if (idByDBusClient == mIdByDBusClient.end())
+    {
+        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+        return;
+    }
+
+    enabled = mShortcutAndActionById[idByDBusClient.value()].second->isEnabled();
+}
+
+void Core::enableAction(bool &result, qulonglong id, bool enabled)
+{
+    log(LOG_INFO, "enableAction id:%llu enabled:%s", id, enabled ? "true" : " false");
+
+    QMutexLocker lock(&mDataMutex);
+
+    ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
+    if (shortcutAndActionById == mShortcutAndActionById.end())
+    {
+        log(LOG_WARNING, "No action registered with id #%llu", id);
+        result = false;
+        return;
+    }
+
+    shortcutAndActionById.value().second->setEnabled(enabled);
+
+    saveConfig();
+
+    result = true;
+}
+
+void Core::isActionEnabled(bool &enabled, qulonglong id)
+{
+    log(LOG_INFO, "isActionEnabled id:%llu", id);
+
+    enabled = false;
+
+    QMutexLocker lock(&mDataMutex);
+
+    ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
+    if (shortcutAndActionById == mShortcutAndActionById.end())
+    {
+        log(LOG_WARNING, "No action registered with id #%llu", id);
+        return;
+    }
+
+    enabled = shortcutAndActionById.value().second->isEnabled();
 }
 
 void Core::changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObjectPath &path, const QString &shortcut, const QString &sender)
@@ -2281,7 +2384,7 @@ void Core::changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObj
 
     dynamic_cast<DBusAction*>(shortcutAndActionById.value().second)->shortcutChanged(oldShortcut, newShortcut);
 
-    mDaemonAdaptor->actionShortcutChanged(id);
+    saveConfig();
 
     result = qMakePair(newShortcut, id);
 }
@@ -2341,7 +2444,7 @@ void Core::changeShortcut(QString &result, const qulonglong &id, const QString &
         mIdsByShortcut[newShortcut].insert(id);
         shortcutAndActionById.value().first = newShortcut;
 
-        if (!strcmp(shortcutAndActionById.value().second->type(), "dbus"))
+        if (!strcmp(shortcutAndActionById.value().second->type(), DBusAction::id()))
             dynamic_cast<DBusAction*>(shortcutAndActionById.value().second)->shortcutChanged(oldShortcut, newShortcut);
     }
 
@@ -2431,8 +2534,7 @@ void Core::removeDBusAction(qulonglong &result, const QDBusObjectPath &path, con
     if (dBusPathsByDBusService.value().isEmpty())
         mDBusPathsByDBusService.erase(dBusPathsByDBusService);
 
-    if (id)
-        mDaemonAdaptor->actionRemoved(id);
+    saveConfig();
 
     result = id;
 }
@@ -2453,7 +2555,7 @@ void Core::removeAction(bool &result, const qulonglong &id)
 
     BaseAction *action = shortcutAndActionById.value().second;
 
-    if (!strcmp(action->type(), "dbus"))
+    if (!strcmp(action->type(), DBusAction::id()))
     {
         log(LOG_WARNING, "Cannot unregister DBus action by id");
         result = false;
@@ -2524,7 +2626,7 @@ GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) c
     result.type = action->type();
     result.description = action->description();
 
-    if (result.type == "dbus")
+    if (result.type == DBusAction::id())
     {
         const DBusAction *dBusAction = dynamic_cast<const DBusAction*>(action);
         QString service = dBusAction->service();
@@ -2533,7 +2635,7 @@ GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) c
             service = preferredServiceNameByServiceId.value();
         result.info = service + " " + dBusAction->path().path();
     }
-    else if (result.type == "method")
+    else if (result.type == MethodAction::id())
     {
         const MethodAction *methodAction = dynamic_cast<const MethodAction*>(action);
         result.info = methodAction->service() + " "
@@ -2541,7 +2643,7 @@ GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) c
             + methodAction->interface() + " "
             + methodAction->method();
     }
-    else if (result.type == "command")
+    else if (result.type == CommandAction::id())
     {
         const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
         result.info = QString("\"") + commandAction->command() + joinToString(commandAction->args(), "\" \"", "\" \"", "\"");
@@ -2596,7 +2698,7 @@ void Core::getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulo
 
     const BaseAction *action = shortcutAndActionById.value().second;
 
-    if (strcmp(action->type(), "dbus"))
+    if (strcmp(action->type(), DBusAction::id()))
     {
         log(LOG_WARNING, "getDBusActionInfoById attempts to request action of type '%s'", action->type());
         result = qMakePair(false, info);
@@ -2631,7 +2733,7 @@ void Core::getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const 
 
     const BaseAction *action = shortcutAndActionById.value().second;
 
-    if (strcmp(action->type(), "method"))
+    if (strcmp(action->type(), MethodAction::id()))
     {
         log(LOG_WARNING, "getMethodActionInfoById attempts to request action of type '%s'", action->type());
         result = qMakePair(false, info);
@@ -2665,7 +2767,7 @@ void Core::getCommandActionInfoById(QPair<bool, CommandActionInfo> &result, cons
 
     const BaseAction *action = shortcutAndActionById.value().second;
 
-    if (strcmp(action->type(), "command"))
+    if (strcmp(action->type(), CommandAction::id()))
     {
         log(LOG_WARNING, "getCommandActionInfoById attempts to request action of type '%s'", action->type());
         result = qMakePair(false, info);

@@ -55,6 +55,9 @@ public slots:
     bool modifyMethodAction(qulonglong id, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     bool modifyCommandAction(qulonglong id, const QString &command, const QStringList &arguments, const QString &description);
 
+    bool enableAction(qulonglong id, bool enabled);
+    bool isActionEnabled(qulonglong id);
+
     QString changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut);
     QString changeShortcut(qulonglong id, const QString &shortcut);
 
@@ -83,6 +86,7 @@ signals:
     void actionModified(qulonglong id);
     void actionRemoved(qulonglong id);
     void actionShortcutChanged(qulonglong id);
+    void actionEnabled(qulonglong id, bool enabled);
     void actionsSwapped(qulonglong id1, qulonglong id2);
     void multipleActionsBehaviourChanged(uint behaviour);
 
@@ -95,6 +99,9 @@ signals:
     void onModifyActionDescription(bool &, qulonglong, const QString &);
     void onModifyMethodAction(bool &, qulonglong, const QString &, const QDBusObjectPath &, const QString &, const QString &, const QString &);
     void onModifyCommandAction(bool &, qulonglong, const QString &, const QStringList &, const QString &);
+
+    void onEnableAction(bool &, qulonglong, bool);
+    void onIsActionEnabled(bool &, qulonglong);
 
     void onChangeDBusShortcut(QPair<QString, qulonglong> &, const QDBusObjectPath &, const QString &, const QString &);
     void onChangeShortcut(QString &, qulonglong, const QString &);

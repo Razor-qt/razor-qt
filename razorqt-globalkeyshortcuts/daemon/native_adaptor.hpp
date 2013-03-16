@@ -45,6 +45,8 @@ public:
     bool modifyDBusAction(const QDBusObjectPath &path, const QString &description);
     QString changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut);
     bool removeDBusAction(const QDBusObjectPath &path);
+    bool enableDBusAction(const QDBusObjectPath &path, bool enabled);
+    bool isDBusActionEnabled(const QDBusObjectPath &path);
 
     QString grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout);
     void cancelShortcutGrab();
@@ -54,6 +56,9 @@ signals:
     void onModifyDBusAction(qulonglong &, const QDBusObjectPath &, const QString &, const QString &);
     void onChangeDBusShortcut(QPair<QString, qulonglong> &, const QDBusObjectPath &, const QString &, const QString &);
     void onRemoveDBusAction(qulonglong &, const QDBusObjectPath &, const QString &);
+    void onEnableDBusAction(bool &, const QDBusObjectPath &, bool, const QString &);
+    void onIsDBusActionEnabled(bool &, const QDBusObjectPath &, const QString &);
+
     void onGrabShortcut(uint, QString &, bool &, bool &, bool &, const QDBusMessage &);
     void onCancelShortcutGrab();
 

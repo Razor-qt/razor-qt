@@ -68,6 +68,20 @@ bool NativeAdaptor::removeDBusAction(const QDBusObjectPath &path)
     return result;
 }
 
+bool NativeAdaptor::enableDBusAction(const QDBusObjectPath &path, bool enabled)
+{
+    bool result;
+    emit onEnableDBusAction(result, path, enabled, calledFromDBus() ? message().service() : QString());
+    return result;
+}
+
+bool NativeAdaptor::isDBusActionEnabled(const QDBusObjectPath &path)
+{
+    bool enabled;
+    emit onIsDBusActionEnabled(enabled, path, calledFromDBus() ? message().service() : QString());
+    return enabled;
+}
+
 QString NativeAdaptor::grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout)
 {
     QString shortcut;

@@ -27,6 +27,16 @@
 			<arg type="b" direction="out"/>
 		</method>
 
+		<method name="enableDBusAction">
+			<arg name="path" type="o" direction="in"/>
+			<arg name="enabled" type="b" direction="in"/>
+			<arg type="b" direction="out"/>
+		</method>
+		<method name="isDBusActionEnabled">
+			<arg name="path" type="o" direction="in"/>
+			<arg type="b" direction="out"/>
+		</method>
+
 		<method name="grabShortcut">
 			<arg name="timeout" type="u" direction="in"/>
 			<arg name="shortcut" type="s" direction="out"/>

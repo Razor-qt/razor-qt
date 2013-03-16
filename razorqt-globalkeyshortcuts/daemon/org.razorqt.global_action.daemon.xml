@@ -49,6 +49,20 @@
 			<arg name="id" type="t"/>
 		</signal>
 
+		<method name="enableAction">
+			<arg name="id" type="t" direction="in"/>
+			<arg name="enabled" type="b" direction="in"/>
+			<arg type="b" direction="out"/>
+		</method>
+		<method name="isActionEnabled">
+			<arg name="id" type="t" direction="in"/>
+			<arg type="b" direction="out"/>
+		</method>
+		<signal name="actionEnabled">
+			<arg name="id" type="t"/>
+			<arg name="enabled" type="b"/>
+		</signal>
+
 		<method name="changeShortcut">
 			<arg name="id" type="t" direction="in"/>
 			<arg name="shortcut" type="s" direction="in"/>

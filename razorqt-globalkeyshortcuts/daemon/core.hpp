@@ -43,7 +43,14 @@
 
 #include "meta_types.hpp"
 #include "log_target.hpp"
-#include "x11.hpp"
+
+extern "C" {
+#include <X11/X.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xproto.h>
+#undef Bool
+}
 
 
 class QTimer;
@@ -99,6 +106,11 @@ private slots:
     void modifyActionDescription(bool &result, const qulonglong &id, const QString &description);
     void modifyMethodAction(bool &result, const qulonglong &id, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     void modifyCommandAction(bool &result, const qulonglong &id, const QString &command, const QStringList &arguments, const QString &description);
+
+    void enableDBusAction(bool &result, const QDBusObjectPath &path, bool enabled, const QString &sender);
+    void isDBusActionEnabled(bool &enabled, const QDBusObjectPath &path, const QString &sender);
+    void enableAction(bool &result, qulonglong id, bool enabled);
+    void isActionEnabled(bool &enabled, qulonglong id);
 
     void changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObjectPath &path, const QString &shortcut, const QString &sender);
     void changeShortcut(QString &result, const qulonglong &id, const QString &shortcut);

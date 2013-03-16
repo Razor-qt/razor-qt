@@ -106,6 +106,22 @@ bool DaemonAdaptor::modifyCommandAction(qulonglong id, const QString &command, c
     return result;
 }
 
+bool DaemonAdaptor::enableAction(qulonglong id, bool enabled)
+{
+    bool result;
+    emit onEnableAction(result, id, enabled);
+    if (result)
+        emit actionEnabled(id, enabled);
+    return result;
+}
+
+bool DaemonAdaptor::isActionEnabled(qulonglong id)
+{
+    bool enabled;
+    emit onIsActionEnabled(enabled, id);
+    return enabled;
+}
+
 QString DaemonAdaptor::changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut)
 {
     QPair<QString, qulonglong> result;

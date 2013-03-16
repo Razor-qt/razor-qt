@@ -42,7 +42,9 @@ class MethodAction : public BaseAction
 public:
     MethodAction(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
 
-    virtual const char* type() const { return "method"; }
+    static const char* id() { return "method"; }
+
+    virtual const char* type() const { return id(); }
 
     virtual bool call();
 

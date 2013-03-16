@@ -88,7 +88,6 @@ set(${PROJECT_NAME}_SOURCES
 )
 
 set(${PROJECT_NAME}_CPP_HEADERS
-	x11.hpp
 	log_target.hpp
 	pipe_utils.hpp
 	string_utils.hpp

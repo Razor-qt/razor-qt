@@ -45,7 +45,9 @@ public:
     DBusAction(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent = false);
     ~DBusAction();
 
-    virtual const char* type() const { return "dbus"; }
+    static const char* id() { return "dbus"; }
+
+    virtual const char* type() const { return id(); }
 
     virtual bool call();
 
