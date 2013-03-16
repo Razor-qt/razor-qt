@@ -1,8 +1,6 @@
 project(global_action_native_client)
 
 cmake_minimum_required(VERSION 2.8.3)
-
-enable_language(CXX)
 add_definitions(-Wall)
 
 add_definitions(-DNATIVE_CLIENT_LIBRARY)
@@ -18,12 +16,6 @@ add_definitions(-D${PROJECT_NAME}_VERSION_MINOR="${${PROJECT_NAME}_VERSION_MINOR
 add_definitions(-DFULL_VERSION="${FULL_VERSION}")
 
 
-include_directories(
-	"${PROJECT_SOURCE_DIR}"
-	"${CMAKE_CURRENT_BINARY_DIR}"
-)
-
-
 if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -37,6 +29,12 @@ else()
 	add_definitions(-DNDEBUG)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 endif()
+
+
+include_directories(
+	"${PROJECT_SOURCE_DIR}"
+	"${CMAKE_CURRENT_BINARY_DIR}"
+)
 
 
 if(CMAKE_PREFERRED_QT EQUAL 4)

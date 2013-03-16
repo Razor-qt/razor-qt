@@ -30,11 +30,11 @@ else()
 endif()
 
 
-
 include_directories(
 	"${PROJECT_SOURCE_DIR}"
 	"${CMAKE_CURRENT_BINARY_DIR}"
 )
+
 
 find_package(X11)
 include_directories(${X11_INCLUDE_DIR})
