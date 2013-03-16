@@ -284,17 +284,31 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
  ************************************************/
 void RazorTaskBar::setButtonSizeLimits()
 {
+    QSize maxSize;
     QSize minSize = QSize(0, 0);
+    
     if (mPlugin->panel()->isHorizontal())
     {
         minSize.setHeight(mPlugin->panel()->lineSize());
     }
-
-    QSize maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    if (mPlugin->panel()->isHorizontal() &&
-        mButtonMaxWidth > -1)
+    
+    // max size fro icon only is disabled. And teh sizing is really
+    // suboptimal for this stype without hard-setting the button to square
+    // size. 20130316 pvanek
+    if (mButtonStyle == Qt::ToolButtonIconOnly)
     {
-        maxSize.setWidth(mButtonMaxWidth);
+        minSize.setWidth(minSize.height());
+        maxSize = minSize;
+    }
+    else
+    {
+        // rest of toolbutton styles
+        maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+        if (mPlugin->panel()->isHorizontal() &&
+            mButtonMaxWidth > -1)
+        {
+            maxSize.setWidth(mButtonMaxWidth);
+        }
     }
 
     QHash<Window, RazorTaskButton*>::const_iterator i = mButtonsHash.constBegin();
