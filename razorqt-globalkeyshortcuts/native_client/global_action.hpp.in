@@ -49,8 +49,11 @@ public:
     QString changeShortcut(const QString &shortcut);
     bool changeDescription(const QString &description);
 
+    QString path() const;
     QString shortcut() const;
     QString description() const;
+
+    bool isValid() const;
 
 signals:
     void activated();

@@ -69,6 +69,11 @@ void GlobalActionImpl::setShortcut(const QString &shortcut)
     mShortcut = shortcut;
 }
 
+QString GlobalActionImpl::path() const
+{
+    return mPath;
+}
+
 QString GlobalActionImpl::shortcut() const
 {
     return mShortcut;
@@ -77,6 +82,16 @@ QString GlobalActionImpl::shortcut() const
 QString GlobalActionImpl::description() const
 {
     return mDescription;
+}
+
+void GlobalActionImpl::setValid(bool valid)
+{
+    mValid = valid;
+}
+
+bool GlobalActionImpl::isValid() const
+{
+    return mValid;
 }
 
 
@@ -94,5 +109,7 @@ GlobalAction::~GlobalAction()
 
 QString GlobalAction::changeShortcut(const QString &shortcut) { return impl->changeShortcut(shortcut); }
 bool GlobalAction::changeDescription(const QString &description) { return impl->changeDescription(description); }
+QString GlobalAction::path() const { return impl->path(); }
 QString GlobalAction::shortcut() const { return impl->shortcut(); }
 QString GlobalAction::description() const { return impl->description(); }
+bool GlobalAction::isValid() const { return impl->isValid(); }

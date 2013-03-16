@@ -52,8 +52,12 @@ public:
 
     void setShortcut(const QString &shortcut);
 
+    QString path() const;
     QString shortcut() const;
     QString description() const;
+
+    void setValid(bool valid);
+    bool isValid() const;
 
 signals:
     void activated();
@@ -65,6 +69,7 @@ private:
     QString mPath;
     QString mShortcut;
     QString mDescription;
+    bool mValid;
 };
 
 #endif // GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED

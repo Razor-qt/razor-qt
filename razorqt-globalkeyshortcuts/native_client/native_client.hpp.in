@@ -47,6 +47,8 @@ public:
 
     GlobalAction* addAction(const QString &shortcut, const QString &path, const QString &description);
 
+    bool isDaemonPresent() const;
+
 public slots:
     void grabShortcut(uint timeout);
     void cancelShortutGrab();
@@ -56,6 +58,10 @@ signals:
     void grabShortcutFailed();
     void grabShortcutCancelled();
     void grabShortcutTimedout();
+
+    void daemonDisappeared();
+    void daemonAppeared();
+    void daemonPresenceChanged(bool);
 
 private:
     GlobalActionNativeClient();

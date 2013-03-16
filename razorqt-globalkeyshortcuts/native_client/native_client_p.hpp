@@ -40,6 +40,7 @@
 
 class GlobalActionNativeClient;
 class ClientAdaptor;
+class QDBusServiceWatcher;
 
 class GlobalActionNativeClientImpl : public QObject
 {
@@ -58,14 +59,20 @@ public:
     void grabShortcut(uint timeout);
     void cancelShortutGrab();
 
+    bool isDaemonPresent() const;
+
 public slots:
     void grabShortcutFinished(QDBusPendingCallWatcher *call);
+    void daemonDisappeared(const QString &);
+    void daemonAppeared(const QString &);
 
 private:
     GlobalActionNativeClient *mInterface;
     org::razorqt::global_action::native *mProxy;
     QMap<QString, QSharedPointer<GlobalAction> > mActions;
     bool mDestructing;
+    QDBusServiceWatcher *mServiceWatcher;
+    bool mDaemonPresent;
 };
 
 #endif // GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED

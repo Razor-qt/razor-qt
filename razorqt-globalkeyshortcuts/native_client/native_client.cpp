@@ -37,13 +37,48 @@ GlobalActionNativeClientImpl::GlobalActionNativeClientImpl(GlobalActionNativeCli
     : QObject(parent)
     , mInterface(interface)
     , mDestructing(false)
+    , mServiceWatcher(new QDBusServiceWatcher("org.razorqt.global_action", QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForOwnerChange, this))
+    , mDaemonPresent(false)
 {
+    connect(mServiceWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(daemonDisappeared(QString)));
+    connect(mServiceWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(daemonAppeared(QString)));
     mProxy = new org::razorqt::global_action::native("org.razorqt.global_action", "/native", QDBusConnection::sessionBus(), this);
+    mDaemonPresent = mProxy->isValid();
 }
 
 GlobalActionNativeClientImpl::~GlobalActionNativeClientImpl()
 {
     mDestructing = true;
+}
+
+void GlobalActionNativeClientImpl::daemonDisappeared(const QString &)
+{
+    mDaemonPresent = false;
+    emit mInterface->daemonDisappeared();
+    emit mInterface->daemonPresenceChanged(mDaemonPresent);
+}
+
+void GlobalActionNativeClientImpl::daemonAppeared(const QString &)
+{
+    foreach (QSharedPointer<GlobalAction> globalAction, mActions)
+    {
+        GlobalActionImpl *globalActionImpl = globalAction->impl;
+
+        QDBusPendingReply<QString, qulonglong> reply = mProxy->addDBusAction(globalActionImpl->shortcut(), QDBusObjectPath(QString("/global_action/") + globalActionImpl->path()), globalActionImpl->description());
+        reply.waitForFinished();
+        globalActionImpl->setValid(!reply.isError() && reply.argumentAt<1>());
+
+        if (globalActionImpl->isValid())
+            globalActionImpl->setShortcut(reply.argumentAt<0>());
+    }
+    mDaemonPresent = true;
+    emit mInterface->daemonAppeared();
+    emit mInterface->daemonPresenceChanged(mDaemonPresent);
+}
+
+bool GlobalActionNativeClientImpl::isDaemonPresent() const
+{
+    return mDaemonPresent;
 }
 
 GlobalAction* GlobalActionNativeClientImpl::addDBusAction(const QString &shortcut, const QString &path, const QString &description)
@@ -64,17 +99,19 @@ GlobalAction* GlobalActionNativeClientImpl::addDBusAction(const QString &shortcu
     if (!QDBusConnection::sessionBus().registerObject(dBusPath.path(), globalActionImpl))
         return 0;
 
-    QDBusPendingReply<QString, qulonglong> reply = mProxy->addDBusAction(shortcut, dBusPath, description);
-    reply.waitForFinished();
-    if (reply.isError())
-        return 0;
-
-    if (!reply.argumentAt<1>())
-        return 0;
+    if (mDaemonPresent)
+    {
+        QDBusPendingReply<QString, qulonglong> reply = mProxy->addDBusAction(shortcut, dBusPath, description);
+        reply.waitForFinished();
+        globalActionImpl->setValid(!reply.isError() && reply.argumentAt<1>());
+        if (globalActionImpl->isValid())
+            globalActionImpl->setShortcut(reply.argumentAt<0>());
+    }
+    else
+        globalActionImpl->setValid(false);
 
     mActions[path] = globalAction;
 
-    globalActionImpl->setShortcut(reply.argumentAt<0>());
 
     return globalAction.data();
 }
@@ -190,3 +227,4 @@ GlobalActionNativeClient::~GlobalActionNativeClient()
 GlobalAction* GlobalActionNativeClient::addAction(const QString &shortcut, const QString &path, const QString &description) { return impl->addDBusAction(shortcut, path, description); }
 void GlobalActionNativeClient::grabShortcut(uint timeout) { impl->grabShortcut(timeout); }
 void GlobalActionNativeClient::cancelShortutGrab() { impl->cancelShortutGrab(); }
+bool GlobalActionNativeClient::isDaemonPresent() const { return impl->isDaemonPresent(); }
