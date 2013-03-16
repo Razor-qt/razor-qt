@@ -9,5 +9,3 @@
 /usr/lib*/librazorqxt.so.*
 %endif
 /usr/share/librazorqt/
-/usr/bin/razor-about
-/usr/share/applications/razor-about.desktop
