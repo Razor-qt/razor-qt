@@ -2,11 +2,8 @@ QWidget {
     border-radius: 5px;
 }
 
-QWidget {
-}
-
 #formFrame { 
-    background-color: rgba(255,255,255,128); 
+    background-color: rgba(200,200,200, 128); 
     border-radius: 10px;
 }
 

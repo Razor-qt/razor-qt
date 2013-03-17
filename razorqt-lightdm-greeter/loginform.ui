@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>393</width>
-    <height>410</height>
+    <width>280</width>
+    <height>397</height>
    </rect>
   </property>
   <property name="font">
@@ -22,10 +22,10 @@
   <widget class="QFrame" name="formFrame">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>40</y>
-     <width>271</width>
-     <height>362</height>
+     <x>40</x>
+     <y>30</y>
+     <width>230</width>
+     <height>361</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -35,7 +35,10 @@
     </sizepolicy>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <property name="leftMargin">
+     <number>18</number>
+    </property>
+    <item row="0" column="1">
      <widget class="QLabel" name="hostnameLabel">
       <property name="minimumSize">
        <size>
@@ -52,7 +55,10 @@
       <property name="font">
        <font>
         <family>Bitstream Vera Sans</family>
-        <pointsize>24</pointsize>
+        <pointsize>18</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -65,15 +71,15 @@
        <number>0</number>
       </property>
       <property name="indent">
-       <number>20</number>
+       <number>60</number>
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="1" column="1">
      <widget class="QComboBox" name="userCombo">
       <property name="minimumSize">
        <size>
-        <width>250</width>
+        <width>200</width>
         <height>50</height>
        </size>
       </property>
@@ -92,11 +98,11 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="2" column="1">
      <widget class="QLineEdit" name="otherUserInput">
       <property name="minimumSize">
        <size>
-        <width>250</width>
+        <width>200</width>
         <height>50</height>
        </size>
       </property>
@@ -118,34 +124,11 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
-     <widget class="QComboBox" name="sessionCombo">
-      <property name="minimumSize">
-       <size>
-        <width>250</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>10000</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bitstream Vera Sans</family>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
+    <item row="3" column="1">
      <widget class="QLineEdit" name="passwordInput">
       <property name="minimumSize">
        <size>
-        <width>250</width>
+        <width>200</width>
         <height>50</height>
        </size>
       </property>
@@ -170,7 +153,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="5" column="1">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="loginButton">
@@ -236,21 +219,44 @@
       </item>
      </layout>
     </item>
+    <item row="6" column="1">
+     <widget class="QComboBox" name="sessionCombo">
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>10000</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bitstream Vera Sans</family>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QLabel" name="iconLabel">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>10</y>
-     <width>100</width>
-     <height>100</height>
+     <x>20</x>
+     <y>3</y>
+     <width>80</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
-     <width>60</width>
-     <height>60</height>
+     <width>0</width>
+     <height>0</height>
     </size>
    </property>
    <property name="maximumSize">

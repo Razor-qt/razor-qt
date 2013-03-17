@@ -57,7 +57,8 @@ LoginForm::LoginForm(QWidget *parent) :
     fillUserAndSessionCombos();
     setupConnections();
     initializeControls();
-
+    ui->formFrame->adjustSize();
+    adjustSize(); 
 }
 
 LoginForm::~LoginForm()
@@ -83,6 +84,7 @@ void LoginForm::setFocus(Qt::FocusReason reason)
 
 void LoginForm::setupAppearence()
 {
+    qDebug() << "Current theme:" << RazorTheme::currentTheme().name();
     setStyleSheet(razorTheme.qss("razor-lightdm-greeter/razor-lightdm-greeter"));
     QPixmap icon(QString(SHARE_DIR) + "/graphics/rqt-2.svg");
     ui->iconLabel->setPixmap(icon.scaled(ui->iconLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -185,6 +187,7 @@ void LoginForm::userComboCurrentIndexChanged()
         }
     }
     ui->formFrame->adjustSize();
+    adjustSize();
 }
 
 void LoginForm::otherUserEditingFinished()
