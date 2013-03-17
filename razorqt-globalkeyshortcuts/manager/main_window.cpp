@@ -26,6 +26,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "main_window.hpp"
+#include "../daemon/meta_types.hpp"
+#include <QDBusMetaType>
 
 
 
@@ -34,7 +36,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     setupUi(this);
 
+    qDBusRegisterMetaType<GeneralActionInfo>();
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     qDBusRegisterMetaType<QList<qulonglong> >();
+    qDBusRegisterMetaType<QMap<qulonglong,GeneralActionInfo> >();
+#endif
 }
 
 void MainWindow::changeEvent(QEvent *e)

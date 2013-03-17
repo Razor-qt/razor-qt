@@ -30,8 +30,6 @@
 
 #include "ui_main_window.h"
 
-#include "daemon_interface.h"
-
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {

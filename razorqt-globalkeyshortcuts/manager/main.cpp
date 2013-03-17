@@ -27,7 +27,7 @@
 
 #include "main_window.hpp"
 
-#if QT_VERSION >= 0x50000
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     #include <QtGui/QGuiApplication>
 #else
     #include <QtGui/QApplication>

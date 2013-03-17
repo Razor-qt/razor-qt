@@ -37,16 +37,20 @@ include_directories(
 
 
 if(CMAKE_PREFERRED_QT EQUAL 4)
-	find_package(Qt4 4.4.0 COMPONENTS QtCore QtDBus)
+	find_package(Qt4 4.4.0 COMPONENTS QtCore QtGui QtDBus)
 elseif(CMAKE_PREFERRED_QT EQUAL 5)
 	find_package(Qt5Core)
+	find_package(Qt5Gui)
+	find_package(Qt5Widgets)
 	find_package(Qt5DBus)
 else()
 	find_package(Qt5Core)
+	find_package(Qt5Gui)
+	find_package(Qt5Widgets)
 	find_package(Qt5DBus)
 
 	if(NOT Qt5Core_VERSION_MAJOR)
-		find_package(Qt4 4.4.0 COMPONENTS QtCore QtDBus)
+		find_package(Qt4 4.4.0 COMPONENTS QtCore QtGui QtDBus)
 	endif()
 endif()
 
@@ -71,7 +75,7 @@ endif()
 set(${PROJECT_NAME}_SOURCES
 	main.cpp
 	main_window.cpp
-	action_model.cpp
+	actions.cpp
 )
 
 set(${PROJECT_NAME}_FORMS
@@ -85,11 +89,12 @@ set(${PROJECT_NAME}_TRANSLATIONS
 )
 
 set(${PROJECT_NAME}_CPP_HEADERS
+	../daemon/meta_types.hpp
 )
 
 set(${PROJECT_NAME}_QT_HEADERS
 	main_window.hpp
-	action_model.hpp
+	actions.hpp
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS
@@ -99,14 +104,7 @@ set(${PROJECT_NAME}_DBUS_PROXYS
 	../daemon/org.razorqt.global_action.daemon.xml
 )
 set_source_files_properties(../daemon/org.razorqt.global_action.daemon.xml PROPERTIES BASENAME org.razorqt.global_action.daemon)
-
-if(${QT_VERSION_MAJOR} EQUAL 4)
-	set(${PROJECT_NAME}_CPP_HEADERS
-		${${PROJECT_NAME}_CPP_HEADERS}
-		meta_types.hpp
-	)
-	set_source_files_properties(../daemon/org.razorqt.global_action.daemon.xml PROPERTIES INCLUDE meta_types.hpp)
-endif()
+set_source_files_properties(../daemon/org.razorqt.global_action.daemon.xml PROPERTIES INCLUDE ../daemon/meta_types.hpp)
 
 
 
@@ -206,7 +204,7 @@ add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_ALL_FILES})
 if(${QT_VERSION_MAJOR} EQUAL 4)
 	target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES})
 elseif(${QT_VERSION_MAJOR} EQUAL 5)
-	qt5_use_modules(${PROJECT_NAME} Core Widgets DBus)
+	qt5_use_modules(${PROJECT_NAME} Core Gui Widgets DBus)
 endif()
 
 
