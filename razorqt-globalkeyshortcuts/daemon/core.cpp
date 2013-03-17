@@ -2623,8 +2623,10 @@ GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) c
 
     const BaseAction* action = shortcutAndAction.second;
 
-    result.type = action->type();
     result.description = action->description();
+    result.enabled = action->isEnabled();
+
+    result.type = action->type();
 
     if (result.type == DBusAction::id())
     {
@@ -2705,6 +2707,10 @@ void Core::getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulo
         return;
     }
 
+    info.shortcut = shortcutAndActionById.value().first;
+    info.description = action->description();
+    info.enabled = action->isEnabled();
+
     const DBusAction *dBusAction = dynamic_cast<const DBusAction*>(action);
     info.service = dBusAction->service();
     PreferredServiceNameByServiceId::const_iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(info.service);
@@ -2740,6 +2746,10 @@ void Core::getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const 
         return;
     }
 
+    info.shortcut = shortcutAndActionById.value().first;
+    info.description = action->description();
+    info.enabled = action->isEnabled();
+
     const MethodAction *methodAction = dynamic_cast<const MethodAction*>(action);
     info.service = methodAction->service();
     info.path = methodAction->path();
@@ -2773,6 +2783,10 @@ void Core::getCommandActionInfoById(QPair<bool, CommandActionInfo> &result, cons
         result = qMakePair(false, info);
         return;
     }
+
+    info.shortcut = shortcutAndActionById.value().first;
+    info.description = action->description();
+    info.enabled = action->isEnabled();
 
     const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
     info.command = commandAction->command();

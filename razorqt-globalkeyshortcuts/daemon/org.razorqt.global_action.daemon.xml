@@ -109,23 +109,31 @@
 			<arg name="id" type="t" direction="in"/>
 			<arg type="b" direction="out"/>
 			<arg name="shortcut" type="s" direction="out"/>
+			<arg name="description" type="s" direction="out"/>
+			<arg name="enabled" type="b" direction="out"/>
 			<arg name="type" type="s" direction="out"/>
 			<arg name="info" type="s" direction="out"/>
-			<arg name="description" type="s" direction="out"/>
 		</method>
 		<method name="getAllActionsById">
 			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QMap&lt;qulonglong,GeneralActionInfo&gt;"/>
-			<arg name="info" type="a{t(ssss)}" direction="out"/>
+			<arg name="info" type="a{t(ssbss)}" direction="out"/>
+			<!-- s:shortcut, s:description, b:enabled, s:type, s:info-->
 		</method>
 		<method name="getDBusActionInfoById">
 			<arg name="id" type="t" direction="in"/>
 			<arg type="b" direction="out"/>
+			<arg name="shortcut" type="s" direction="out"/>
+			<arg name="description" type="s" direction="out"/>
+			<arg name="enabled" type="b" direction="out"/>
 			<arg name="service" type="s" direction="out"/>
 			<arg name="path" type="o" direction="out"/>
 		</method>
 		<method name="getMethodActionInfoById">
 			<arg name="id" type="t" direction="in"/>
 			<arg type="b" direction="out"/>
+			<arg name="shortcut" type="s" direction="out"/>
+			<arg name="description" type="s" direction="out"/>
+			<arg name="enabled" type="b" direction="out"/>
 			<arg name="service" type="s" direction="out"/>
 			<arg name="path" type="o" direction="out"/>
 			<arg name="interface" type="s" direction="out"/>
@@ -134,6 +142,9 @@
 		<method name="getCommandActionInfoById">
 			<arg name="id" type="t" direction="in"/>
 			<arg type="b" direction="out"/>
+			<arg name="shortcut" type="s" direction="out"/>
+			<arg name="description" type="s" direction="out"/>
+			<arg name="enabled" type="b" direction="out"/>
 			<arg name="command" type="s" direction="out"/>
 			<arg name="arguments" type="as" direction="out"/>
 		</method>

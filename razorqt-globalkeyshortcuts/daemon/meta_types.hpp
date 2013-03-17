@@ -29,8 +29,8 @@
 #define GLOBAL_ACTION__META_TYPES__INCLUDED
 
 
-#include <qglobal.h>
-#include <QtDBus/QDBusMetaType>
+#include <QtGlobal>
+#include <QDBusMetaType>
 
 
 typedef enum MultipleActionsBehaviour
@@ -42,26 +42,30 @@ typedef enum MultipleActionsBehaviour
     MULTIPLE_ACTIONS_BEHAVIOUR__COUNT
 } MultipleActionsBehaviour;
 
-typedef struct GeneralActionInfo {
+typedef struct CommonActionInfo {
     QString shortcut;
+    QString description;
+    bool enabled;
+} CommonActionInfo;
+
+typedef struct GeneralActionInfo : CommonActionInfo {
     QString type;
     QString info;
-    QString description;
 } GeneralActionInfo;
 
-typedef struct DBusActionInfo {
+typedef struct DBusActionInfo : CommonActionInfo {
     QString service;
     QDBusObjectPath path;
 } DBusActionInfo;
 
-typedef struct MethodActionInfo {
+typedef struct MethodActionInfo : CommonActionInfo {
     QString service;
     QDBusObjectPath path;
     QString interface;
     QString method;
 } MethodActionInfo;
 
-typedef struct CommandActionInfo {
+typedef struct CommandActionInfo : CommonActionInfo {
     QString command;
     QStringList arguments;
 } CommandActionInfo;
@@ -82,7 +86,7 @@ Q_DECLARE_METATYPE(GeneralActionInfo)
 inline QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo)
 {
     argument.beginStructure();
-    argument << generalActionInfo.shortcut << generalActionInfo.type << generalActionInfo.info << generalActionInfo.description;
+    argument << generalActionInfo.shortcut << generalActionInfo.description << generalActionInfo.enabled << generalActionInfo.type << generalActionInfo.info;
     argument.endStructure();
     return argument;
 }
@@ -90,7 +94,7 @@ inline QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionI
 inline const QDBusArgument& operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo)
 {
     argument.beginStructure();
-    argument >> generalActionInfo.shortcut >> generalActionInfo.type >> generalActionInfo.info >> generalActionInfo.description;
+    argument >> generalActionInfo.shortcut >> generalActionInfo.description >> generalActionInfo.enabled >> generalActionInfo.type >> generalActionInfo.info;
     argument.endStructure();
     return argument;
 }

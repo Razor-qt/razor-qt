@@ -71,10 +71,10 @@ public slots:
 
     QList<qulonglong> getAllActionIds();
     QMap<qulonglong,GeneralActionInfo> getAllActionsById();
-    bool getActionById(qulonglong id, QString &shortcut, QString &type, QString &info, QString &description);
-    bool getDBusActionInfoById(qulonglong id, QString &service, QDBusObjectPath &path);
-    bool getMethodActionInfoById(qulonglong id, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
-    bool getCommandActionInfoById(qulonglong id, QString &command, QStringList &arguments);
+    bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
+    bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
+    bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
+    bool getCommandActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &command, QStringList &arguments);
 
     QString grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout);
     void cancelShortcutGrab();
