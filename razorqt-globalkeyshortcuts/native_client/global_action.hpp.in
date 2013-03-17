@@ -28,7 +28,7 @@
 #ifndef GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__INCLUDED
 #define GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__INCLUDED
 
-#include <QtCore/qglobal.h>
+#include <QtGlobal>
 
 #include <QObject>
 #include <QString>
