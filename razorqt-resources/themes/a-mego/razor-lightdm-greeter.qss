@@ -19,10 +19,10 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(dropdown.svg);
+    image: url(razor-lightdm-greeter/dropdown.svg);
 }
 
 #leaveButton {
     qproperty-iconSize: 25px;
-    qproperty-icon: url(leaveIcon.svg);
+    qproperty-icon: url(razor-lightdm-greeter/leaveIcon.svg);
 }
