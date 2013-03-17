@@ -41,8 +41,8 @@ GlobalActionImpl::GlobalActionImpl(GlobalActionNativeClientImpl *client, GlobalA
 {
     new OrgRazorqtGlobalActionClientAdaptor(this);
 
-    connect(this, SIGNAL(activated()), mInterface, SIGNAL(activated()));
-    connect(this, SIGNAL(shortcutChanged(QString,QString)), mInterface, SIGNAL(shortcutChanged(QString,QString)));
+    connect(this, SIGNAL(emitActivated()), mInterface, SIGNAL(activated()));
+    connect(this, SIGNAL(emitShortcutChanged(QString,QString)), mInterface, SIGNAL(shortcutChanged(QString,QString)));
 }
 
 GlobalActionImpl::~GlobalActionImpl()
@@ -94,6 +94,16 @@ bool GlobalActionImpl::isValid() const
     return mValid;
 }
 
+void GlobalActionImpl::activated()
+{
+    emit emitActivated();
+}
+
+void GlobalActionImpl::shortcutChanged(const QString &oldShortcut, const QString &newShortcut)
+{
+    emit emitShortcutChanged(oldShortcut, newShortcut);
+}
+
 
 GlobalAction::GlobalAction(QObject *parent)
     : QObject(parent)
@@ -105,7 +115,6 @@ GlobalAction::~GlobalAction()
 {
     delete impl;
 }
-
 
 QString GlobalAction::changeShortcut(const QString &shortcut) { return impl->changeShortcut(shortcut); }
 bool GlobalAction::changeDescription(const QString &description) { return impl->changeDescription(description); }

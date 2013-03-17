@@ -32,11 +32,18 @@
 #include <QString>
 #include <QMap>
 #include <QSharedPointer>
+#include <QDBusPendingCallWatcher>
 
 #include "global_action_export.hpp"
 
-#include "org.razorqt.global_action.native.h"
-
+class OrgRazorqtGlobal_actionNativeInterface;
+namespace org {
+  namespace razorqt {
+    namespace global_action {
+      typedef ::OrgRazorqtGlobal_actionNativeInterface native;
+    }
+  }
+}
 
 class GlobalActionNativeClient;
 class ClientAdaptor;
@@ -65,6 +72,16 @@ public slots:
     void grabShortcutFinished(QDBusPendingCallWatcher *call);
     void daemonDisappeared(const QString &);
     void daemonAppeared(const QString &);
+
+signals:
+    void emitShortcutGrabbed(const QString &);
+    void emitGrabShortcutFailed();
+    void emitGrabShortcutCancelled();
+    void emitGrabShortcutTimedout();
+
+    void emitDaemonDisappeared();
+    void emitDaemonAppeared();
+    void emitDaemonPresenceChanged(bool);
 
 private:
     GlobalActionNativeClient *mInterface;

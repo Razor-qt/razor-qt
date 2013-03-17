@@ -41,6 +41,7 @@ class @SHARED_EXPORT@ GlobalAction : public QObject
 {
 Q_OBJECT
 
+friend class GlobalActionImpl;
 friend class GlobalActionNativeClientImpl;
 
 public:

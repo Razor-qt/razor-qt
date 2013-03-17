@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_MANAGER__META_TYPES__INCLUDED
-#define GLOBAL_ACTION_MANAGER__META_TYPES__INCLUDED
+#ifndef GLOBAL_ACTION__META_TYPES__INCLUDED
+#define GLOBAL_ACTION__META_TYPES__INCLUDED
 
 
 #include <qglobal.h>
@@ -67,12 +67,16 @@ typedef struct CommandActionInfo {
 } CommandActionInfo;
 
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    Q_DECLARE_METATYPE(QList<qulonglong>)
-#endif
 
 
 Q_DECLARE_METATYPE(GeneralActionInfo)
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    Q_DECLARE_METATYPE(QList<qulonglong>)
+    typedef QMap<qulonglong,GeneralActionInfo> QMap_qulonglong_GeneralActionInfo;
+    Q_DECLARE_METATYPE(QMap_qulonglong_GeneralActionInfo)
+#endif
+
 
 
 inline QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo)

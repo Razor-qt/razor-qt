@@ -60,7 +60,7 @@ bool DBusAction::call()
     if (!mProxy)
         return false;
 
-    mProxy->activated();
+    mProxy->emitActivated();
 
     return true;
 }
@@ -81,5 +81,5 @@ void DBusAction::disappeared()
 void DBusAction::shortcutChanged(const QString& oldShortcut, const QString& newShortcut)
 {
     if (mProxy)
-        mProxy->shortcutChanged(oldShortcut, newShortcut);
+         mProxy->emitShortcutChanged(oldShortcut, newShortcut);
 }

@@ -33,8 +33,6 @@
 #include <QMap>
 #include <QSharedPointer>
 
-#include "org.razorqt.global_action.native.h"
-
 
 class GlobalAction;
 class GlobalActionNativeClientImpl;
@@ -59,9 +57,13 @@ public:
     void setValid(bool valid);
     bool isValid() const;
 
-signals:
+public slots:
     void activated();
     void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
+
+signals:
+    void emitActivated();
+    void emitShortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 
 private:
     GlobalActionNativeClientImpl *mClient;

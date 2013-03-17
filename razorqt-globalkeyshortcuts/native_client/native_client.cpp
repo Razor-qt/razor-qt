@@ -28,6 +28,7 @@
 #include "native_client_export.hpp"
 #include "native_client_p.hpp"
 #include "global_action_p.hpp"
+#include "org.razorqt.global_action.native.h"
 
 #include <QDBusConnection>
 
@@ -42,8 +43,16 @@ GlobalActionNativeClientImpl::GlobalActionNativeClientImpl(GlobalActionNativeCli
 {
     connect(mServiceWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(daemonDisappeared(QString)));
     connect(mServiceWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(daemonAppeared(QString)));
-    mProxy = new org::razorqt::global_action::native("org.razorqt.global_action", "/native", QDBusConnection::sessionBus(), this);
+    mProxy = new org::razorqt::global_action::native(org::razorqt::global_action::native::staticInterfaceName(), "/native", QDBusConnection::sessionBus(), this);
     mDaemonPresent = mProxy->isValid();
+
+    connect(this, SIGNAL(emitShortcutGrabbed(QString)), mInterface, SIGNAL(shortcutGrabbed(QString)));
+    connect(this, SIGNAL(emitGrabShortcutFailed()), mInterface, SIGNAL(grabShortcutFailed()));
+    connect(this, SIGNAL(emitGrabShortcutCancelled()), mInterface, SIGNAL(grabShortcutCancelled()));
+    connect(this, SIGNAL(emitGrabShortcutTimedout()), mInterface, SIGNAL(grabShortcutTimedout()));
+    connect(this, SIGNAL(emitDaemonDisappeared()), mInterface, SIGNAL(daemonDisappeared()));
+    connect(this, SIGNAL(emitDaemonAppeared()), mInterface, SIGNAL(daemonAppeared()));
+    connect(this, SIGNAL(emitDaemonPresenceChanged(bool)), mInterface, SIGNAL(daemonPresenceChanged()));
 }
 
 GlobalActionNativeClientImpl::~GlobalActionNativeClientImpl()
@@ -54,8 +63,8 @@ GlobalActionNativeClientImpl::~GlobalActionNativeClientImpl()
 void GlobalActionNativeClientImpl::daemonDisappeared(const QString &)
 {
     mDaemonPresent = false;
-    emit mInterface->daemonDisappeared();
-    emit mInterface->daemonPresenceChanged(mDaemonPresent);
+    emit emitDaemonDisappeared();
+    emit emitDaemonPresenceChanged(mDaemonPresent);
 }
 
 void GlobalActionNativeClientImpl::daemonAppeared(const QString &)
@@ -72,8 +81,8 @@ void GlobalActionNativeClientImpl::daemonAppeared(const QString &)
             globalActionImpl->setShortcut(reply.argumentAt<0>());
     }
     mDaemonPresent = true;
-    emit mInterface->daemonAppeared();
-    emit mInterface->daemonPresenceChanged(mDaemonPresent);
+    emit emitDaemonAppeared();
+    emit emitDaemonPresenceChanged(mDaemonPresent);
 }
 
 bool GlobalActionNativeClientImpl::isDaemonPresent() const
@@ -178,22 +187,22 @@ void GlobalActionNativeClientImpl::grabShortcutFinished(QDBusPendingCallWatcher 
     QDBusPendingReply<QString, bool, bool, bool> reply = *call;
     if (reply.isError())
     {
-        emit mInterface->grabShortcutFailed();
+        emit emitGrabShortcutFailed();
     }
     else
     {
         if (reply.argumentAt<1>())
-            emit mInterface->grabShortcutFailed();
+            emit emitGrabShortcutFailed();
         else
         {
             if (reply.argumentAt<2>())
-                emit mInterface->grabShortcutCancelled();
+                emit emitGrabShortcutCancelled();
             else
             {
                 if (reply.argumentAt<3>())
-                    emit mInterface->grabShortcutTimedout();
+                    emit emitGrabShortcutTimedout();
                 else
-                    emit mInterface->shortcutGrabbed(reply.argumentAt<0>());
+                    emit emitShortcutGrabbed(reply.argumentAt<0>());
             }
         }
     }

@@ -34,15 +34,24 @@
 #include <QDBusConnection>
 
 
+class DBusAction;
+
 class ClientProxy : public QObject
 {
     Q_OBJECT
+
+friend class DBusAction;
+
 public:
     ClientProxy(const QString &service, const QDBusObjectPath &path, const QDBusConnection &connection, QObject * parent = 0);
 
 signals:
     void activated();
     void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
+
+protected:
+    void emitActivated();
+    void emitShortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 };
 
 #endif // GLOBAL_ACTION_DAEMON__CLIENT_PROXY__INCLUDED

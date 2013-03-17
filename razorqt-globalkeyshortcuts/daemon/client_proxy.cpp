@@ -38,3 +38,13 @@ ClientProxy::ClientProxy(const QString &service, const QDBusObjectPath &path, co
     connect(this, SIGNAL(activated()), iface, SLOT(activated()));
     connect(this, SIGNAL(shortcutChanged(QString,QString)), iface, SLOT(shortcutChanged(QString,QString)));
 }
+
+void ClientProxy::emitActivated()
+{
+    emit activated();
+}
+
+void ClientProxy::emitShortcutChanged(const QString &oldShortcut, const QString &newShortcut)
+{
+    emit shortcutChanged(oldShortcut, newShortcut);
+}
