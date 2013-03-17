@@ -6,26 +6,36 @@ RazorPanel {
 }
 
 /* PositionBottom */
-RazorPanel[position="0"] {
+RazorPanel[position="Bottom"] {
     border-top: 1px solid #33322E;
 }
 
 
 /* PositionTop */
-RazorPanel[position="1"] {
+RazorPanel[position="Top"] {
     border-bottom: 1px solid #33322E;
 }
+
 
 /*
  * General plugins settings
  */
+Plugin, 
 RazorPanelPlugin {
     margin: 2px 0 2px 0;
     padding: 0;
     spacing: 20px;
+    qproperty-moveMarkerColor: #C94C21;
+}
+
+Plugin  > QWidget,
+Plugin  > QWidget > QWidget{
+    color: #cacaca;
 }
 
 
+Plugin > QToolButton,
+Plugin > QWidget > QToolButton,
 RazorPanelPlugin > QToolButton {
     margin: 0;
     border: 1px solid transparent;
@@ -34,10 +44,11 @@ RazorPanelPlugin > QToolButton {
     color: #aaaaaa;
 }
 
-
-RazorPanelPlugin > QToolButton:hover{
+Plugin > QToolButton:hover,
+Plugin > QWidget > QToolButton:hover,
+RazorPanelPlugin > QToolButton:hover {
     margin: 0;
-    border: 1px solid #33322E;
+    border: 1px solid #7f7f7f;
     color: #cacaca;
 }
 
@@ -70,17 +81,22 @@ RazorPanelPlugin > QToolButton:hover{
     margin-right: 2px;
 }
 
+#QuckLaunchPlaceHolder {
+    color: #AAAAAA;
+}
+
 /*
  * TaskBar
  */
 #TaskBar {
      margin-right: 2px;
      margin-left: 2px;
+     padding: 0;
 }
 
 #TaskBar QToolButton{
      border: 1px solid #4a4a4a;
-     qproperty-iconSize: 16px;
+     margin: 1px;
 }
 
 #TaskBar QToolButton:on{
@@ -100,12 +116,16 @@ RazorPanelPlugin > QToolButton:hover{
  }
  #Clock #TimeLabel{
      font-size: 10pt;
-     color: #cacaca;
  }
  #Clock #DateLabel{
      font-size: 8pt;
-     color: #cacaca;
  }
+
+#Clock QCalendarWidget #qt_calendar_navigationbar,
+#Clock QCalendarWidget #qt_calendar_navigationbar * {
+    background-color: #4E4D48;
+    color: #cacaca;
+}
 
 /*
  * Tray
@@ -116,7 +136,6 @@ RazorPanelPlugin > QToolButton:hover{
     padding-right: 2px;
     margin-left: 4px;
     margin-right: 4px;
-    qproperty-iconSize: 24px;
 }
 
 TrayIcon {
@@ -127,10 +146,6 @@ TrayIcon {
  * Main menu
  */
 #MainMenu {
-    border: 0;
-}
-
-#MainMenu > QToolButton {
     margin-left: 2px;
     margin-right: 2px;
     border: 1px solid #E0875A;
@@ -138,7 +153,6 @@ TrayIcon {
     background: qlineargradient(x1:1, y1:0, x2:0, y2:1, stop:0 #EB743D, stop:0.3 #E76C41, stop:1 #C94C21);
     qproperty-icon: url(mainmenu.svg);
     color: rgba(0, 0, 0, 80%);
-
 }
 
 #MainMenu  QMenu {
@@ -158,27 +172,32 @@ TrayIcon {
 /*
  * Mount plugin
  */
-
-MountButton {
-    qproperty-iconSize: 24px;
-}
-
-MountButton:hover {
-    margin: 0;
-    border: 2px solid transparent;
-}
-
-MountButton:pressed {
-    border: 2px solid transparent;
-}
-
 #RazorMountPopup {
-    background-color: #5c5b56;
+    background-color: #4E4D48;
+    padding: 4px;
 }
 
-#RazorMountPopup > QLabel {
-    color: #ffffff;
+#RazorMountPopup > MenuDiskItem {
+    border-radius: 4px;
 }
+
+#RazorMountPopup > MenuDiskItem:hover {
+    background: rgba(0, 0, 0, 40%);
+}
+
+#RazorMountPopup #EjectButton,
+#RazorMountPopup #DiskButton {
+    qproperty-iconSize: 22px;
+    background-color: transparent;
+    border: none;
+    color: #EEEEEE;
+    padding: 4px;
+}
+
+#RazorMountPopup #NoDiskLabel {
+    margin: 6px;
+}
+
 
 /*
  * Screensaver
@@ -228,12 +247,12 @@ MountButton:pressed {
     padding-right: 3px;
 }
 
-#KbIndicator > QLabel:enabled {
+#KbIndicator:enabled {
     background: qradialgradient(cx:0.5, cy:0.5, radius: 0.5, fx:0.5, fy:0.5, stop:0 coral, stop:1 transparent);
-    color: black;
+    color: #EEEEEE;
 }
 
-#KbIndicator > QLabel:disabled {
+#KbIndicator:disabled {
     background: transparent;
     color: gray;
 }
@@ -270,12 +289,15 @@ MountButton:pressed {
 /*
  * WorldClock
  */
-#WorldClockContent{
+#WorldClock{
     font-size: 10pt;
-    color: #cacaca;
+}
+
+#WorldClock *{
+    background-color: #4E4D48;
+    color: #cacaca;  
 }
 
 #WorldClockPopup{
     font-size: 12pt;
-    color: #cacaca;
 }

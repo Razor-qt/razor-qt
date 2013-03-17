@@ -46,12 +46,12 @@ class RazorNetworkMonitorConfiguration : public QDialog
     Q_OBJECT
 
 public:
-    explicit RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent = 0);
+    explicit RazorNetworkMonitorConfiguration(QSettings *settings, QWidget *parent = 0);
     ~RazorNetworkMonitorConfiguration();
 
 private:
     Ui::RazorNetworkMonitorConfiguration *ui;
-    QSettings &mSettings;
+    QSettings *mSettings;
     RazorSettingsCache mOldSettings;
 
 private slots:

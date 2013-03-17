@@ -28,7 +28,7 @@
 #ifndef RAZORPANELSYSSTAT_H
 #define RAZORPANELSYSSTAT_H
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
 #include "razorsysstatconfiguration.h"
 
 #include <QtGui/QLabel>
@@ -42,21 +42,28 @@ namespace SysStat {
     class BaseStat;
 }
 
-class RazorSysStat : public RazorPanelPlugin
+class RazorSysStat : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorSysStat(const RazorPanelPluginStartInfo* startInfo, QWidget *parent = NULL);
+    RazorSysStat(const IRazorPanelPluginStartupInfo &startupInfo);
     ~RazorSysStat();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+    virtual QWidget *widget() { return mWidget; }
+    virtual QString themeId() const { return "SysStat"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+    virtual bool isSeparate() const { return true; }
+
+    QDialog *configureDialog();
+
+    void realign();
 
 protected slots:
     virtual void lateInit();
-    virtual void showConfigureDialog();
     virtual void settingsChanged();
 
 private:
+    QWidget *mWidget;
     RazorSysStatTitle *mFakeTitle;
     RazorSysStatContent *mContent;
 };
@@ -94,10 +101,10 @@ class RazorSysStatContent : public QWidget
     Q_PROPERTY(QColor netTransmittedColor READ netTransmittedColour WRITE setNetTransmittedColour)
 
 public:
-    RazorSysStatContent(RazorPanel *panel, QWidget *parent = NULL);
+    RazorSysStatContent(IRazorPanelPlugin *plugin, QWidget *parent = NULL);
     ~RazorSysStatContent();
 
-    void updateSettings(const QSettings&);
+    void updateSettings(const QSettings *);
 
 #undef QSS_COLOUR
 #define QSS_COLOUR(GETNAME, SETNAME) \
@@ -122,6 +129,7 @@ public:
 
 public slots:
     void setTitleFont(QFont value);
+    void reset();
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -134,10 +142,10 @@ protected slots:
     void swapUpdate(float used);
     void networkUpdate(unsigned received, unsigned transmitted);
 
-    void reset();
+
 
 private:
-    RazorPanel *mPanel;
+    IRazorPanelPlugin *mPlugin;
 
     SysStat::BaseStat *mStat;
 
@@ -202,6 +210,15 @@ private:
 };
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class RazorSysStatLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new RazorSysStat(startupInfo);
+    }
+};
 
 #endif // RAZORPANELSYSSTAT_H

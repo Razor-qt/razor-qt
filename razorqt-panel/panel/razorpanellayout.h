@@ -29,62 +29,72 @@
 #ifndef RAZORPANELLAYOUT_H
 #define RAZORPANELLAYOUT_H
 
-#include <QtGui/QBoxLayout>
+#include <QtGui/QLayout>
 #include <QtCore/QList>
 #include <QtGui/QWidget>
+#include <QtGui/QLayoutItem>
+#include "irazorpanel.h"
+
 
 class MoveInfo;
 class QMouseEvent;
 class QEvent;
 
-class RazorPanelLayout : public QBoxLayout
+class Plugin;
+class LayoutItemGrid;
+
+class RazorPanelLayout : public QLayout
 {
     Q_OBJECT
-    friend class MoveProcessor;
-
 public:
-    RazorPanelLayout(Direction dir, QWidget* parent=0);
-    virtual ~RazorPanelLayout();
+    explicit RazorPanelLayout(QWidget *parent);
+    ~RazorPanelLayout();
 
-    void startMoveWidget(QWidget* widget);
+    void addItem(QLayoutItem *item);
+    QLayoutItem *itemAt(int index) const;
+    QLayoutItem *takeAt(int index);
+    int count() const;
+    void moveItem(int from, int to, bool withAnimation=false);
 
     QSize sizeHint() const;
+    //QSize minimumSize() const;
+    void setGeometry(const QRect &geometry);
 
+    bool isHorizontal() const;
+
+    void invalidate();
+
+    int lineCount() const;
+    void setLineCount(int value);
+
+    int lineSize() const;
+    void setLineSize(int value);
+
+    IRazorPanel::Position position() const { return mPosition; }
+    void setPosition(IRazorPanel::Position value);
+
+    static bool itemIsSeparate(QLayoutItem *item);
 signals:
-    void widgetMoved(QWidget* movedWidget);
+    void pluginMoved();
 
-};
-
-class MoveProcItem;
-class MoveProcessor: public QWidget
-{
-    Q_OBJECT
-
-public:
-    explicit MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget);
-    ~MoveProcessor();
-
-signals:
-    void widgetMoved(QWidget* movedWidget);
-
-protected:
-    bool event(QEvent* event );
-    void apply();
+public slots:
+    void startMovePlugin();
+    void finishMovePlugin();
 
 private:
-    void mouseMoveHoriz();
-    void mouseMoveVert();
+    mutable QSize mMinPluginSize;
+    LayoutItemGrid *mLeftGrid;
+    LayoutItemGrid *mRightGrid;
+    IRazorPanel::Position mPosition;
+    bool mAnimate;
 
-    QWidget* mWidget;
-    QList<MoveProcItem*> mItems;
-    RazorPanelLayout* mLayout;
-    bool mHoriz;
-    int mIndex;
-    QPoint mOffset;
-    QRect mWidgetPlace;
 
-private slots:
-    void finished();
+    void setGeometryHoriz(const QRect &geometry);
+    void setGeometryVert(const QRect &geometry);
+    void globalIndexToLocal(int index, LayoutItemGrid **grid, int *gridIndex);
+    void globalIndexToLocal(int index, LayoutItemGrid **grid, int *gridIndex) const;
+
+    void setItemGeometry(QLayoutItem *item, const QRect &geometry, bool withAnimation);
 };
 
 #endif // RAZORPANELLAYOUT_H

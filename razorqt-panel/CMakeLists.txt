@@ -19,29 +19,32 @@ endmacro()
 #    cmake -DCLOCK_PLUGIN=Yes .. # Enable clock plugin
 #    cmake -DCLOCK_PLUGIN=No ..  # Disable clock plugin
 
-setByDefault(CLOCK_PLUGIN       Yes )
-setByDefault(DESKTOPSWITCH_PLUGIN  Yes )
-setByDefault(QUICKLAUNCH_PLUGIN Yes )
-setByDefault(TRAY_PLUGIN        Yes )
-setByDefault(MAINMENU_PLUGIN    Yes )
-setByDefault(TASKBAR_PLUGIN     Yes )
-setByDefault(SCREENSAVER_PLUGIN  Yes )
-setByDefault(SHOWDESKTOP_PLUGIN Yes)
-setByDefault(COLORPICKER_PLUGIN Yes)
-setByDefault(MOUNT_PLUGIN Yes)
-setByDefault(HELLOWORLD_PLUGIN No)
-setByDefault(CPULOAD_PLUGIN Yes)
+setByDefault(CLOCK_PLUGIN          Yes)
+setByDefault(DESKTOPSWITCH_PLUGIN  Yes)
+setByDefault(QUICKLAUNCH_PLUGIN    Yes)
+setByDefault(TRAY_PLUGIN           Yes)
+setByDefault(MAINMENU_PLUGIN       Yes)
+setByDefault(TASKBAR_PLUGIN        Yes)
+setByDefault(SCREENSAVER_PLUGIN    Yes)
+setByDefault(SHOWDESKTOP_PLUGIN    Yes)
+setByDefault(COLORPICKER_PLUGIN    Yes)
+setByDefault(MOUNT_PLUGIN          Yes)
+setByDefault(CPULOAD_PLUGIN        Yes)
 setByDefault(NETWORKMONITOR_PLUGIN Yes)
-setByDefault(SENSORS_PLUGIN Yes)
+setByDefault(SENSORS_PLUGIN        Yes)
 
-setByDefault(VOLUME_PLUGIN Yes)
+setByDefault(VOLUME_PLUGIN         Yes)
 # Options for the volume plugin.
 setByDefault(VOLUME_USE_PULSEAUDIO Yes)
-setByDefault(VOLUME_USE_ALSA Yes)
+setByDefault(VOLUME_USE_ALSA       Yes)
 
-setByDefault(SYSSTAT_PLUGIN Yes)
-setByDefault(KBINDICATOR_PLUGIN Yes)
-setByDefault(WORLDCLOCK_PLUGIN Yes)
+setByDefault(SYSSTAT_PLUGIN        Yes)
+setByDefault(KBINDICATOR_PLUGIN    Yes)
+setByDefault(WORLDCLOCK_PLUGIN     Yes)
+
+setByDefault(TEATIME_PLUGIN        No)
+
+setByDefault(DOM_PLUGIN            Yes)
 # *******************************************************************
 
 
@@ -201,6 +204,12 @@ if (KBINDICATOR_PLUGIN)
     add_subdirectory(plugin-kbindicator)
 endif (KBINDICATOR_PLUGIN)
 
+
+if (TEATIME_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "TeaTime")
+    add_subdirectory(plugin-teatime)
+endif (TEATIME_PLUGIN)
+
 if (SYSSTAT_PLUGIN)
     set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "SysStat")
     add_subdirectory(plugin-sysstat)
@@ -221,6 +230,11 @@ if (WORLDCLOCK_PLUGIN)
   endif (ICU_I18N_FOUND)
 
 endif (WORLDCLOCK_PLUGIN)
+
+if (DOM_PLUGIN)
+    set(ENABLED_PLUGINS ${ENABLED_PLUGINS}   "DOM")
+    add_subdirectory(plugin-dom)
+endif (DOM_PLUGIN)
 
 message(STATUS  "**************** The following plugins will be built ****************")
 foreach (PLUGIN_STR ${ENABLED_PLUGINS})

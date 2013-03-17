@@ -44,7 +44,7 @@ class RazorKbIndicatorConfiguration : public QDialog
     Q_OBJECT
 
 public:
-    explicit RazorKbIndicatorConfiguration(QSettings &settings, QWidget *parent = 0);
+    explicit RazorKbIndicatorConfiguration(QSettings *settings, QWidget *parent = 0);
     ~RazorKbIndicatorConfiguration();
 
 public slots:
@@ -59,7 +59,7 @@ public slots:
 
 private:
     Ui::RazorKbIndicatorConfiguration *ui;
-    QSettings &mSettings;
+    QSettings *mSettings;
     RazorSettingsCache oldSettings;
 
     /*

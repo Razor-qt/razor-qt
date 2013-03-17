@@ -31,16 +31,36 @@
 #include <qtxdg/xdgicon.h>
 #include <QtCore/QDebug>
 #include <QtCore/QUrl>
+#include <QHBoxLayout>
+#include <QToolButton>
+#include <QEvent>
 
 /************************************************
 
  ************************************************/
-MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent)
-    : QWidget(parent),
-      mDevice(device)
+MenuDiskItem::MenuDiskItem(RazorMountDevice *device, QWidget *parent):
+    QFrame(parent),
+    mDevice(device)
 {
-    setupUi(this);
-    eject->setIcon(XdgIcon::fromTheme("media-eject"));
+    mDiskButton = new QToolButton(this);
+    mDiskButton->setObjectName("DiskButton");
+    mDiskButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    mDiskButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    connect(mDiskButton, SIGNAL(clicked()), this, SLOT(diskButtonClicked()));
+
+    mEjectButton =  new QToolButton(this);
+    mEjectButton->setObjectName("EjectButton");
+    connect(mEjectButton, SIGNAL(clicked()), this, SLOT(ejectButtonClicked()));
+
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(mDiskButton);
+    layout->addWidget(mEjectButton);
+    this->setLayout(layout);
+
+    layout->setMargin(0);
+    layout->setSpacing(0);
+
+    mEjectButton->setIcon(XdgIcon::fromTheme("media-eject"));
 
     connect(device, SIGNAL(destroyed()),
               this, SLOT(free()));
@@ -72,14 +92,13 @@ void MenuDiskItem::free()
  ************************************************/
 void MenuDiskItem::update()
 {
-    diskButton->setIcon(XdgIcon::fromTheme(QStringList()
-                                            << mDevice->iconName()
-                                            << "drive-removable-media-usb"
-                                           )
-                        );
+    mDiskButton->setIcon(XdgIcon::fromTheme(QStringList()
+                            << mDevice->iconName()
+                            << "drive-removable-media-usb"
+                        ));
 
     QString label = mDevice->label();
-    diskButton->setText(label);
+    mDiskButton->setText(label);
 
     setMountStatus(mDevice->isMounted());
 }
@@ -115,32 +134,16 @@ bool MenuDiskItem::isUsableDevice(const RazorMountDevice *device)
 /************************************************
 
  ************************************************/
-void MenuDiskItem::changeEvent(QEvent *e)
-{
-    QWidget::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        retranslateUi(this);
-        break;
-    default:
-        break;
-    }
-}
-
-
-/************************************************
-
- ************************************************/
 void MenuDiskItem::setMountStatus(bool is_mount)
 {
-    eject->setEnabled(is_mount);
+    mEjectButton->setEnabled(is_mount);
 }
 
 
 /************************************************
 
  ************************************************/
-void MenuDiskItem::on_diskButton_clicked()
+void MenuDiskItem::diskButtonClicked()
 {
     if (!mDevice->isMounted())
         mDevice->mount();
@@ -163,7 +166,7 @@ void MenuDiskItem::mounted()
 /************************************************
 
  ************************************************/
-void MenuDiskItem::on_eject_clicked()
+void MenuDiskItem::ejectButtonClicked()
 {
     mDevice->unmount();
     setMountStatus(mDevice->isMounted());

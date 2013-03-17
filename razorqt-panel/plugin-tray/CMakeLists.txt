@@ -1,16 +1,19 @@
 set(PLUGIN "tray")
 
 set(HEADERS
+  razortrayplugin.h
   razortray.h
   trayicon.h
 )
 
 set(SOURCES
+  razortrayplugin.cpp
   razortray.cpp
   trayicon.cpp
 )
 
 set(MOCS
+  razortrayplugin.h
   razortray.h
   trayicon.h
 )

@@ -29,28 +29,42 @@
 #ifndef SHOWDESKTOP_H
 #define SHOWDESKTOP_H
 
-#include "../panel/razorpanelplugin.h"
-#include "../panel/razorpanel.h"
-
+#include "../panel/irazorpanelplugin.h"
+#include <QToolButton>
 
 class QxtGlobalShortcut;
 
 
-class ShowDesktop : public RazorPanelPlugin
+class ShowDesktop :  public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 
 public:
-    ShowDesktop(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    ShowDesktop(const IRazorPanelPluginStartupInfo &startupInfo);
 
+    virtual QWidget *widget() { return &mButton; }
+    virtual QString themeId() const { return "ShowDesktop"; }
 private:
     QxtGlobalShortcut * m_key;
 
 private slots:
     void showDesktop();
+
+private:
+    QToolButton mButton;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class ShowDesktopLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new ShowDesktop(startupInfo);
+    }
+};
+
 
 #endif
 

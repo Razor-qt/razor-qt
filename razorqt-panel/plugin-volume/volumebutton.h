@@ -32,13 +32,15 @@
 #include <QtCore/QTimer>
 
 class VolumePopup;
-class RazorPanel;
+class IRazorPanel;
+class RazorVolume;
+class IRazorPanelPlugin;
 
 class VolumeButton : public QToolButton
 {
     Q_OBJECT
 public:
-    VolumeButton(RazorPanel *panel, QWidget* parent = 0);
+    VolumeButton(IRazorPanelPlugin *plugin, QWidget* parent = 0);
     ~VolumeButton();
 
     void setShowOnClicked(bool state);
@@ -46,6 +48,10 @@ public:
     void setMixerCommand(const QString &command);
 
     VolumePopup *volumePopup() const { return m_volumePopup; }
+
+public slots:
+    void hideVolumeSlider();
+    void showVolumeSlider();
 
 protected:
     void enterEvent(QEvent *event);
@@ -55,19 +61,14 @@ protected:
 
 private slots:
     void toggleVolumeSlider();
-    void hideVolumeSlider();
-    void showVolumeSlider();
-    void handlePopupHideTimeout();
-    void popupHideTimerStart();
-    void popupHideTimerStop();
     void handleMixerLaunch();
     void handleStockIconChanged(const QString &iconName);
 
 private:
     VolumePopup *m_volumePopup;
-    RazorPanel *m_panel;
+    IRazorPanelPlugin *mPlugin;
+    IRazorPanel *m_panel;
     QTimer m_popupHideTimer;
-    int m_popupHideTimerDuration;
     bool m_showOnClick;
     bool m_muteOnMiddleClick;
     QString m_mixerCommand;

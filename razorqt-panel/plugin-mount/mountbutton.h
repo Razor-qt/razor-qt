@@ -30,83 +30,16 @@
 #define MOUNTBUTTON_H
 
 #include <QtGui/QToolButton>
-#include <QtDBus/QtDBus>
-#include <QtGui/QMenu>
-
-#include <razormount/razormount.h>
-
-#include "menudiskitem.h"
-#include "../panel/razorpanel.h"
-
-class QLabel;
-class UdisksManager;
-
-class Popup: public QWidget
-{
-    Q_OBJECT
-public:
-    explicit Popup(RazorMountManager *manager, QWidget* parent = 0);
-
-    void open(QPoint pos, Qt::Corner anchor=Qt::TopLeftCorner);
-
-signals:
-    void visibilityChanged(bool visible);
-
-protected:
-    void resizeEvent(QResizeEvent *event);
-    void showEvent(QShowEvent *event);
-    void hideEvent(QHideEvent *event);
-
-private slots:
-    MenuDiskItem *addItem(RazorMountDevice *device);
-    void removeItem(RazorMountDevice *device);
-
-private:
-    void realign();
-    RazorMountManager *mManager;
-    QPoint mPos;
-    Qt::Corner mAnchor;
-    QLabel *mPlaceholder;
-    int mDisplayCount;
-};
-
-
 
 class MountButton : public QToolButton
 {
     Q_OBJECT
 public:
-    MountButton(QWidget * parent, RazorPanel * panel);
+    MountButton(QWidget *parent = 0);
     ~MountButton();
 
-    enum DevAction {
-            DevActionNothing,
-            DevActionInfo,
-            DevActionMenu
-        };
-    DevAction devAction() const { return mDevAction; }
-    void setDevAction(DevAction devAction) { mDevAction = devAction; }
-
-private slots:
-    void onDeviceAdded(RazorMountDevice *device);
-    void onDeviceRemoved(RazorMountDevice *device);
-
-    void showHidePopup();
-    void showPopup();
-    void hidePopup();
+public slots:
     void setDown(bool down);
-
-private:
-    void showMessage(const QString &text);
-
-    Popup *mPopup;
-
-    RazorMountManager mManager;
-
-    RazorPanel *mPanel;
-    DevAction mDevAction;
-    QTimer  mPopupHideTimer;
-    int mPopupHideDelay;
 };
 
 #endif

@@ -27,10 +27,11 @@
 
 #ifndef RAZORCPULOAD_H
 #define RAZORCPULOAD_H
-#include "../panel/razorpanelplugin.h"
 #include <QLabel>
 
-class RazorCpuLoad: public RazorPanelPlugin
+class IRazorPanelPlugin;
+
+class RazorCpuLoad: public QFrame
 {
 	Q_OBJECT
 public:
@@ -44,23 +45,21 @@ public:
         LeftToRightBar  //! Bar begins at left edge and grows to the right
     };
 
-	RazorCpuLoad(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorCpuLoad(IRazorPanelPlugin *plugin, QWidget* parent = 0);
 	~RazorCpuLoad();
 
-	virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+
+    void settingsChanged();
 
 protected:
 	void virtual timerEvent(QTimerEvent *event);
 	void virtual paintEvent ( QPaintEvent * event );
 	void virtual resizeEvent(QResizeEvent *);
 
-protected slots:
-	virtual void showConfigureDialog();
-	virtual void settingsChanged();
-
 private:
 	double getLoadCpu() const;
 
+    IRazorPanelPlugin *mPlugin;
 	QWidget m_stuff;
 
 	//! average load
@@ -74,7 +73,6 @@ private:
 	QFont m_font;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif // RAZORCPULOAD_H
 

@@ -46,12 +46,12 @@ class RazorSensorsConfiguration : public QDialog
     Q_OBJECT
 
 public:
-    explicit RazorSensorsConfiguration(QSettings &settings, QWidget *parent = 0);
+    explicit RazorSensorsConfiguration(QSettings *settings, QWidget *parent = 0);
     ~RazorSensorsConfiguration();
 
 private:
     Ui::RazorSensorsConfiguration *ui;
-    QSettings &mSettings;
+    QSettings *mSettings;
     RazorSettingsCache oldSettings;
 
     /*

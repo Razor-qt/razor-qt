@@ -36,29 +36,22 @@
 #include <QtCore/qmath.h>
 #include <QtGui/QPainter>
 #include <QtGui/QResizeEvent>
+#include <QVBoxLayout>
 
+Q_EXPORT_PLUGIN2(panelsysstat, RazorSysStatLibrary)
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorSysStat)
-
-RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
-    RazorPanelPlugin(startInfo, parent),
-    mFakeTitle(new RazorSysStatTitle(this)),
-    mContent(new RazorSysStatContent(panel(), this))
+RazorSysStat::RazorSysStat(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    mWidget(new QWidget()),
+    mFakeTitle(new RazorSysStatTitle(mWidget)),
+    mContent(new RazorSysStatContent(this, mWidget))
 {
-    setObjectName("SysStat");
-
-    QWidget *border = new QWidget(this);
-
-    QVBoxLayout *borderLayout = new QVBoxLayout(border);
+    QVBoxLayout *borderLayout = new QVBoxLayout(mWidget);
     borderLayout->setContentsMargins(0, 0, 0, 0);
     borderLayout->setSpacing(0);
     borderLayout->addWidget(mContent);
     borderLayout->setStretchFactor(mContent, 1);
-
-    addWidget(border);
-
-    this->layout()->setContentsMargins(0, 0, 0, 0);
-    this->layout()->setSpacing(0);
 
     mContent->setMinimumSize(2, 2);
 
@@ -71,6 +64,7 @@ RazorSysStat::RazorSysStat(const RazorPanelPluginStartInfo *startInfo, QWidget *
 
 RazorSysStat::~RazorSysStat()
 {
+    delete mWidget;
 }
 
 void RazorSysStat::lateInit()
@@ -79,16 +73,14 @@ void RazorSysStat::lateInit()
     mContent->setTitleFont(mFakeTitle->font());
 }
 
-void RazorSysStat::showConfigureDialog()
+QDialog *RazorSysStat::configureDialog()
 {
-    RazorSysStatConfiguration *confWindow = this->findChild<RazorSysStatConfiguration*>("SysStatConfigurationWindow");
+    return new RazorSysStatConfiguration(settings(), mWidget);
+}
 
-    if (!confWindow)
-        confWindow = new RazorSysStatConfiguration(settings(), this);
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+void RazorSysStat::realign()
+{
+    mContent->reset();
 }
 
 void RazorSysStat::settingsChanged()
@@ -115,9 +107,9 @@ bool RazorSysStatTitle::event(QEvent *e)
     return QLabel::event(e);
 }
 
-RazorSysStatContent::RazorSysStatContent(RazorPanel *panel, QWidget *parent):
+RazorSysStatContent::RazorSysStatContent(IRazorPanelPlugin *plugin, QWidget *parent):
     QWidget(parent),
-    mPanel(panel),
+    mPlugin(plugin),
     mStat(NULL),
     mUpdateInterval(0),
     mMinimalSize(0),
@@ -126,8 +118,6 @@ RazorSysStatContent::RazorSysStatContent(RazorPanel *panel, QWidget *parent):
     mHistoryOffset(0)
 {
     setObjectName("SysStat_Graph");
-
-    connect(mPanel, SIGNAL(layoutDirectionChanged(QBoxLayout::Direction)), SLOT(reset()));
 }
 
 RazorSysStatContent::~RazorSysStatContent()
@@ -218,7 +208,7 @@ void RazorSysStatContent::updateTitleFontPixelHeight()
     }
 }
 
-void RazorSysStatContent::updateSettings(const QSettings &settings)
+void RazorSysStatContent::updateSettings(const QSettings *settings)
 {
     double old_updateInterval = mUpdateInterval;
     int old_minimalSize = mMinimalSize;
@@ -228,46 +218,46 @@ void RazorSysStatContent::updateSettings(const QSettings &settings)
     bool old_logarithmicScale = mLogarithmicScale;
     int old_logScaleSteps = mLogScaleSteps;
 
-    mUseThemeColours = settings.value("graph/useThemeColours", true).toBool();
-    mUpdateInterval = settings.value("graph/updateInterval", 1.0).toDouble();
-    mMinimalSize = settings.value("graph/minimalSize", 30).toInt();
+    mUseThemeColours = settings->value("graph/useThemeColours", true).toBool();
+    mUpdateInterval = settings->value("graph/updateInterval", 1.0).toDouble();
+    mMinimalSize = settings->value("graph/minimalSize", 30).toInt();
 
-    mGridLines = settings.value("grid/lines", 1).toInt();
+    mGridLines = settings->value("grid/lines", 1).toInt();
 
-    mTitleLabel = settings.value("title/label", QString()).toString();
+    mTitleLabel = settings->value("title/label", QString()).toString();
 
-    mDataType = settings.value("data/type", QString("CPU")).toString();
+    mDataType = settings->value("data/type", QString("CPU")).toString();
 
-    mDataSource = settings.value("data/source", QString()).toString();
+    mDataSource = settings->value("data/source", QString()).toString();
 
-    mUseFrequency = settings.value("cpu/useFrequency", true).toBool();
+    mUseFrequency = settings->value("cpu/useFrequency", true).toBool();
 
-    mNetMaximumSpeed = PluginSysStat::netSpeedFromString(settings.value("net/maximumSpeed", "1 MB/s").toString());
-    mLogarithmicScale = settings.value("net/logarithmicScale", true).toBool();
+    mNetMaximumSpeed = PluginSysStat::netSpeedFromString(settings->value("net/maximumSpeed", "1 MB/s").toString());
+    mLogarithmicScale = settings->value("net/logarithmicScale", true).toBool();
 
-    mLogScaleSteps = settings.value("net/logarithmicScaleSteps", 4).toInt();
+    mLogScaleSteps = settings->value("net/logarithmicScaleSteps", 4).toInt();
     mLogScaleMax = static_cast<qreal>(static_cast<int64_t>(1) << mLogScaleSteps);
 
     mNetRealMaximumSpeed = static_cast<qreal>(static_cast<int64_t>(1) << mNetMaximumSpeed);
 
 
-    mSettingsColours.gridColour = QColor(settings.value("grid/colour", "#c0c0c0").toString());
+    mSettingsColours.gridColour = QColor(settings->value("grid/colour", "#c0c0c0").toString());
 
-    mSettingsColours.titleColour = QColor(settings.value("title/colour", "#ffffff").toString());
+    mSettingsColours.titleColour = QColor(settings->value("title/colour", "#ffffff").toString());
 
-    mSettingsColours.cpuSystemColour = QColor(settings.value("cpu/systemColour",    "#800000").toString());
-    mSettingsColours.cpuUserColour   = QColor(settings.value("cpu/userColour",      "#000080").toString());
-    mSettingsColours.cpuNiceColour   = QColor(settings.value("cpu/niceColour",      "#008000").toString());
-    mSettingsColours.cpuOtherColour  = QColor(settings.value("cpu/otherColour",     "#808000").toString());
-    mSettingsColours.frequencyColour = QColor(settings.value("cpu/frequencyColour", "#808080").toString());
+    mSettingsColours.cpuSystemColour = QColor(settings->value("cpu/systemColour",    "#800000").toString());
+    mSettingsColours.cpuUserColour   = QColor(settings->value("cpu/userColour",      "#000080").toString());
+    mSettingsColours.cpuNiceColour   = QColor(settings->value("cpu/niceColour",      "#008000").toString());
+    mSettingsColours.cpuOtherColour  = QColor(settings->value("cpu/otherColour",     "#808000").toString());
+    mSettingsColours.frequencyColour = QColor(settings->value("cpu/frequencyColour", "#808080").toString());
 
-    mSettingsColours.memAppsColour    = QColor(settings.value("mem/appsColour",    "#000080").toString());
-    mSettingsColours.memBuffersColour = QColor(settings.value("mem/buffersColour", "#008000").toString());
-    mSettingsColours.memCachedColour  = QColor(settings.value("mem/cachedColour",  "#808000").toString());
-    mSettingsColours.swapUsedColour   = QColor(settings.value("mem/swapColour",    "#800000").toString());
+    mSettingsColours.memAppsColour    = QColor(settings->value("mem/appsColour",    "#000080").toString());
+    mSettingsColours.memBuffersColour = QColor(settings->value("mem/buffersColour", "#008000").toString());
+    mSettingsColours.memCachedColour  = QColor(settings->value("mem/cachedColour",  "#808000").toString());
+    mSettingsColours.swapUsedColour   = QColor(settings->value("mem/swapColour",    "#800000").toString());
 
-    mSettingsColours.netReceivedColour    = QColor(settings.value("net/receivedColour",    "#000080").toString());
-    mSettingsColours.netTransmittedColour = QColor(settings.value("net/transmittedColour", "#808000").toString());
+    mSettingsColours.netReceivedColour    = QColor(settings->value("net/receivedColour",    "#000080").toString());
+    mSettingsColours.netTransmittedColour = QColor(settings->value("net/transmittedColour", "#808000").toString());
 
 
     if (mUseThemeColours)
@@ -364,7 +354,8 @@ void RazorSysStatContent::resizeEvent(QResizeEvent * /*event*/)
 
 void RazorSysStatContent::reset()
 {
-    setMinimumSize(mPanel->isHorizontal() ? mMinimalSize : 2, mPanel->isHorizontal() ? 2 : mMinimalSize);
+    setMinimumSize(mPlugin->panel()->isHorizontal() ? mMinimalSize : 2,
+                   mPlugin->panel()->isHorizontal() ? 2 : mMinimalSize);
 
     mHistoryOffset = 0;
     mHistoryImage = QImage(width(), 100, QImage::Format_ARGB32);

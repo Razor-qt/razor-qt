@@ -108,6 +108,25 @@ RazorSettings::RazorSettings(const QString& module, QObject* parent) :
 /************************************************
 
  ************************************************/
+RazorSettings::RazorSettings(const QString &fileName, QSettings::Format format, QObject *parent):
+    QSettings(fileName, format, parent),
+    d_ptr(new RazorSettingsPrivate(this))
+{
+    // HACK: we need to ensure that the user (~/.config/razor/<module>.conf)
+    //       exists to have functional mWatcher
+    if (!contains("__userfile__"))
+    {
+        setValue("__userfile__", true);
+        sync();
+    }
+    d_ptr->mWatcher.addPath(this->fileName());
+    connect(&(d_ptr->mWatcher), SIGNAL(fileChanged(QString)), this, SLOT(fileChanged()));
+}
+
+
+/************************************************
+
+ ************************************************/
 RazorSettings::RazorSettings(const QSettings* parentSettings, const QString& subGroup, QObject* parent):
     QSettings(parentSettings->organizationName(), parentSettings->applicationName(), parent),
     d_ptr(new RazorSettingsPrivate(this))

@@ -26,39 +26,48 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include <QtGui/QMouseEvent>
+#include <QHBoxLayout>
 
 #include "colorpicker.h"
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP (ColorPicker)
 
-ColorPicker::ColorPicker(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-        RazorPanelPlugin (startInfo , parent)
+Q_EXPORT_PLUGIN2(colorpicker, ColorPickerLibrary)
+
+ColorPicker::ColorPicker(const IRazorPanelPluginStartupInfo &startupInfo) :
+    QObject(),
+    IRazorPanelPlugin(startupInfo)
 {
-    setObjectName ("ColorPicker");
-
-    QFontMetrics fm (font());
-    lineEdit.setFixedWidth ( 10*fm.width ("a") );
-
-    layout()->addWidget (&button);
-    layout()->addWidget (&lineEdit);
-
-    button.setIcon(XdgIcon::fromTheme("color-picker", "kcolorchooser"));
-
-    mCapturing = false;
-    connect(&button, SIGNAL(clicked()), this, SLOT(captureMouse()));
 }
 
 ColorPicker::~ColorPicker()
 {
 }
 
-void ColorPicker::captureMouse()
+
+ColorPickerWidget::ColorPickerWidget(QWidget *parent):
+    QFrame(parent)
 {
-    grabMouse(Qt::CrossCursor);
-    mCapturing = true;
+    QFontMetrics fm (mLineEdit.font());
+    mLineEdit.setFixedWidth ( 10*fm.width ("a") );
+
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    setLayout(layout);
+    layout->addWidget (&mButton);
+    layout->addWidget (&mLineEdit);
+
+
+    mButton.setIcon(XdgIcon::fromTheme("color-picker", "kcolorchooser"));
+
+    mCapturing = false;
+    connect(&mButton, SIGNAL(clicked()), this, SLOT(captureMouse()));
+
 }
 
-void ColorPicker::mouseReleaseEvent(QMouseEvent* event)
+ColorPickerWidget::~ColorPickerWidget()
+{
+}
+
+void ColorPickerWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (!mCapturing)
         return;
@@ -69,8 +78,14 @@ void ColorPicker::mouseReleaseEvent(QMouseEvent* event)
     QImage img = pixmap.toImage();
     QColor col = QColor(img.pixel(0,0));
 
-    lineEdit.setText (col.name());
+    mLineEdit.setText (col.name());
 
     mCapturing = false;
     releaseMouse();
+}
+
+void ColorPickerWidget::captureMouse()
+{
+    grabMouse(Qt::CrossCursor);
+    mCapturing = true;
 }

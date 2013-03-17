@@ -33,27 +33,27 @@
 #include <QSignalMapper>
 #include <razorqt/xfitman.h>
 #include <razorqxt/qxtglobalshortcut.h>
+#include <razorqt/razorgridlayout.h>
 
+#include <QHBoxLayout>
 #include "desktopswitch.h"
 #include "desktopswitchbutton.h"
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(DesktopSwitch)
+Q_EXPORT_PLUGIN2(DesktopSwitch, DesktopSwitchPluginLibrary)
 
 
-DesktopSwitch::DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent),
-      m_pSignalMapper(new QSignalMapper(this)),
-      m_desktopCount(1)
+DesktopSwitch::DesktopSwitch(const IRazorPanelPluginStartupInfo &startupInfo) :
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    m_pSignalMapper(new QSignalMapper(this)),
+    m_desktopCount(1)
 {
-    setObjectName("DesktopSwitch");
-    connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
-
     m_buttons = new QButtonGroup(this);
-    
     connect ( m_pSignalMapper, SIGNAL(mapped(int)), this, SLOT(setDesktop(int)));
 
-    layout()->setAlignment(Qt::AlignCenter);
+    mLayout = new RazorGridLayout(&mWidget);
+    mWidget.setLayout(mLayout);
     setup();
 }
 
@@ -80,10 +80,10 @@ void DesktopSwitch::setup()
             sequence = QKeySequence(Qt::CTRL + firstKey++);
         }
 
-        DesktopSwitchButton * m = new DesktopSwitchButton(this, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
+        DesktopSwitchButton * m = new DesktopSwitchButton(&mWidget, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
         m_pSignalMapper->setMapping(m, i);
         connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ;
-        addWidget(m);
+        mWidget.layout()->addWidget(m);
         m_buttons->addButton(m, i);
     }
 
@@ -130,37 +130,39 @@ void DesktopSwitch::setDesktop(int desktop)
     xfitMan().setActiveDesktop(desktop);
 }
 
-void DesktopSwitch::wheelEvent(QWheelEvent* e)
+
+void DesktopSwitch::realign()
+{
+    mLayout->setEnabled(false);
+
+    if (panel()->isHorizontal())
+    {
+        mLayout->setRowCount(qMin(panel()->lineCount(), mLayout->count()));
+        mLayout->setColumnCount(0);
+    }
+    else
+    {
+        mLayout->setColumnCount(qMin(panel()->lineCount(), mLayout->count()));
+        mLayout->setRowCount(0);
+    }
+    mLayout->setEnabled(true);
+}
+
+DesktopSwitchWidget::DesktopSwitchWidget():
+    QFrame()
+{
+}
+
+void DesktopSwitchWidget::wheelEvent(QWheelEvent *e)
 {
     int max = xfitMan().getNumDesktop() - 1;
     int delta = e->delta() < 0 ? 1 : -1;
     int current = xfitMan().getActiveDesktop() + delta;
-    
+
     if (current > max)
         current = 0;
     else if (current < 0)
         current = max;
 
     xfitMan().setActiveDesktop(current);
-}
-
-void DesktopSwitch::realign()
-{
-    int max = 0;
-    bool isHorizontal = panel()->isHorizontal();
-    foreach (QAbstractButton *btn, m_buttons->buttons())
-    {
-        if (isHorizontal)
-            max = qMax(max, btn->sizeHint().width());
-        else
-            max = qMax(max, btn->sizeHint().height());
-    }
-
-    foreach (QAbstractButton *btn, m_buttons->buttons())
-    {
-        if (isHorizontal)
-            btn->setMinimumWidth(max);
-        else
-            btn->setMinimumHeight(max);
-    }
 }

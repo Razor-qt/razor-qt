@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Service
-ServiceTypes=RazorPanel/Plugin
-Name=Hello world
-Comment=A "hello world" plugin.
-
-#TRANSLATIONS_DIR=../translations

@@ -33,7 +33,7 @@ extern "C" {
 #include <statgrab.h>
 }
 
-RazorNetworkMonitorConfiguration::RazorNetworkMonitorConfiguration(QSettings &settings, QWidget *parent) :
+RazorNetworkMonitorConfiguration::RazorNetworkMonitorConfiguration(QSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorNetworkMonitorConfiguration),
     mSettings(settings),
@@ -57,20 +57,20 @@ RazorNetworkMonitorConfiguration::~RazorNetworkMonitorConfiguration()
 
 void RazorNetworkMonitorConfiguration::saveSettings()
 {
-    mSettings.setValue("icon", ui->iconCB->currentIndex());
-    mSettings.setValue("interface", ui->interfaceCB->currentText());
+    mSettings->setValue("icon", ui->iconCB->currentIndex());
+    mSettings->setValue("interface", ui->interfaceCB->currentText());
 }
 
 void RazorNetworkMonitorConfiguration::loadSettings()
 {
-    ui->iconCB->setCurrentIndex(mSettings.value("icon", 1).toInt());
+    ui->iconCB->setCurrentIndex(mSettings->value("icon", 1).toInt());
 
     int count;
     sg_network_iface_stats* stats = sg_get_network_iface_stats(&count);
     for (int ix = 0; ix < count; ix++)
         ui->interfaceCB->addItem(stats[ix].interface_name);
 
-    QString interface = mSettings.value("interface").toString();
+    QString interface = mSettings->value("interface").toString();
     ui->interfaceCB->setCurrentIndex(qMax(qMin(0, count - 1), ui->interfaceCB->findText(interface)));
 }
 

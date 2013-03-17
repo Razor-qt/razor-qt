@@ -4,16 +4,19 @@ set(PLUGIN "networkmonitor")
 
 
 set(HEADERS
+	razornetworkmonitorplugin.h
 	razornetworkmonitor.h
 	razornetworkmonitorconfiguration.h
 )
 
 set(SOURCES
+	razornetworkmonitorplugin.cpp
 	razornetworkmonitor.cpp
 	razornetworkmonitorconfiguration.cpp
 )
 
 set(MOCS
+	razornetworkmonitorplugin.h
 	razornetworkmonitor.h
 	razornetworkmonitorconfiguration.h
 )

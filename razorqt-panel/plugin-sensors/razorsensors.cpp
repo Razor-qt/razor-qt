@@ -27,18 +27,19 @@
 
 #include "razorsensors.h"
 #include "razorsensorsconfiguration.h"
+#include "../panel/irazorpanelplugin.h"
+#include "../panel/irazorpanel.h"
 #include <QtGui/QMessageBox>
 #include <QtGui/QPalette>
 #include <QtCore/QDebug>
+#include <QBoxLayout>
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorSensors)
 
-RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-        RazorPanelPlugin(startInfo, parent),
-        mWarningAboutHighTemperatureTimerFreq(500)
+RazorSensors::RazorSensors(IRazorPanelPlugin *plugin, QWidget* parent):
+    QFrame(parent),
+    mPlugin(plugin),
+    mSettings(plugin->settings())
 {
-    setObjectName("Sensors");
-    connect(panel(), SIGNAL(panelRealigned()), this, SLOT(realign()));
 
     mDetectedChips = mSensors.getDetectedChips();
 
@@ -49,15 +50,18 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
     initDefaultSettings();
 
     // Add GUI elements
-    QProgressBar* pg = NULL;
+    ProgressBar* pg = NULL;
+
+    mLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+    mLayout->setSpacing(0);
 
     QString chipFeatureLabel;
 
-    settings().beginGroup("chips");
+    mSettings->beginGroup("chips");
 
     for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
     {
-        settings().beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
+        mSettings->beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
         const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
 
         for (unsigned int j = 0; j < features.size(); ++j)
@@ -65,12 +69,13 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
                 chipFeatureLabel = QString::fromStdString(features[j].getLabel());
-                settings().beginGroup(chipFeatureLabel);
+                mSettings->beginGroup(chipFeatureLabel);
 
-                pg = new QProgressBar(this);
+                pg = new ProgressBar(this);
+                pg->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
                 // Hide progress bar if it is not enabled
-                if (!settings().value("enabled").toBool())
+                if (!mSettings->value("enabled").toBool())
                 {
                     pg->hide();
                 }
@@ -79,21 +84,21 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
                 pg->setTextVisible(false);
 
                 QPalette pal = pg->palette();
-                QColor color(settings().value("color").toString());
+                QColor color(mSettings->value("color").toString());
                 pal.setColor(QPalette::Active, QPalette::Highlight, color);
                 pal.setColor(QPalette::Inactive, QPalette::Highlight, color);
                 pg->setPalette(pal);
 
                 mTemperatureProgressBars.push_back(pg);
-                layout()->addWidget(pg);
+                mLayout->addWidget(pg);
 
-                settings().endGroup();
+                mSettings->endGroup();
             }
         }
-        settings().endGroup();
+        mSettings->endGroup();
     }
 
-    settings().endGroup();
+    mSettings->endGroup();
 
     // Fit plugin to current panel
     realign();
@@ -104,13 +109,13 @@ RazorSensors::RazorSensors(const RazorPanelPluginStartInfo* startInfo, QWidget* 
     // Run timer that will be updating sensor readings
     mUpdateSensorReadingsTimer.setParent(this);
     connect(&mUpdateSensorReadingsTimer, SIGNAL(timeout()), this, SLOT(updateSensorReadings()));
-    mUpdateSensorReadingsTimer.start(settings().value("updateInterval").toInt() * 1000);
+    mUpdateSensorReadingsTimer.start(mSettings->value("updateInterval").toInt() * 1000);
 
     // Run timer that will be showin warning
     mWarningAboutHighTemperatureTimer.setParent(this);
     connect(&mWarningAboutHighTemperatureTimer, SIGNAL(timeout()), this,
             SLOT(warningAboutHighTemperature()));
-    if (settings().value("warningAboutHighTemperature").toBool())
+    if (mSettings->value("warningAboutHighTemperature").toBool())
     {
         mWarningAboutHighTemperatureTimer.start(mWarningAboutHighTemperatureTimerFreq);
     }
@@ -131,7 +136,7 @@ void RazorSensors::updateSensorReadings()
     bool highTemperature = false;
 
     // Iterator for temperature progress bars
-    std::vector<QProgressBar*>::iterator temperatureProgressBarsIt =
+    std::vector<ProgressBar*>::iterator temperatureProgressBarsIt =
         mTemperatureProgressBars.begin();
 
     for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
@@ -144,7 +149,7 @@ void RazorSensors::updateSensorReadings()
             {
                 tooltip = QString::fromStdString(features[j].getLabel()) + " (" + QChar(0x00B0);
 
-                if (settings().value("useFahrenheitScale").toBool())
+                if (mSettings->value("useFahrenheitScale").toBool())
                 {
                     critTemp = celsiusToFahrenheit(
                         features[j].getValue(SENSORS_SUBFEATURE_TEMP_CRIT));
@@ -171,7 +176,7 @@ void RazorSensors::updateSensorReadings()
                 // Check if temperature is too high
                 if (curTemp >= maxTemp)
                 {
-                    if (settings().value("warningAboutHighTemperature").toBool())
+                    if (mSettings->value("warningAboutHighTemperature").toBool())
                     {
                         // Add current progress bar to the "warning container"
                         mHighTemperatureProgressBars.insert(*temperatureProgressBarsIt);
@@ -227,7 +232,7 @@ void RazorSensors::updateSensorReadings()
 void RazorSensors::warningAboutHighTemperature()
 {
     // Iterator for temperature progress bars
-    std::set<QProgressBar*>::iterator temperatureProgressBarsIt =
+    std::set<ProgressBar*>::iterator temperatureProgressBarsIt =
         mHighTemperatureProgressBars.begin();
 
     int curValue;
@@ -252,55 +257,29 @@ void RazorSensors::warningAboutHighTemperature()
     update();
 }
 
-void RazorSensors::showConfigureDialog()
-{
-    RazorSensorsConfiguration *confWindow =
-            this->findChild<RazorSensorsConfiguration*>("RazorSensorsConfigurationWindow");
-
-    if (!confWindow)
-    {
-        confWindow = new RazorSensorsConfiguration(settings(), this);
-    }
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
-}
 
 void RazorSensors::settingsChanged()
 {
-    mUpdateSensorReadingsTimer.setInterval(settings().value("updateInterval").toInt() * 1000);
-
-    for (unsigned int i = 0; i < mTemperatureProgressBars.size(); ++i)
-    {
-        if (panel()->isHorizontal())
-        {
-            mTemperatureProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
-        }
-        else
-        {
-            mTemperatureProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
-        }
-    }
+    mUpdateSensorReadingsTimer.setInterval(mSettings->value("updateInterval").toInt() * 1000);
 
     // Iterator for temperature progress bars
-    std::vector<QProgressBar*>::iterator temperatureProgressBarsIt =
+    std::vector<ProgressBar*>::iterator temperatureProgressBarsIt =
         mTemperatureProgressBars.begin();
 
-    settings().beginGroup("chips");
+    mSettings->beginGroup("chips");
 
     for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
     {
-        settings().beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
+        mSettings->beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
         const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
 
         for (unsigned int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
-                settings().beginGroup(QString::fromStdString(features[j].getLabel()));
+                mSettings->beginGroup(QString::fromStdString(features[j].getLabel()));
 
-                if (settings().value("enabled").toBool())
+                if (mSettings->value("enabled").toBool())
                 {
                     (*temperatureProgressBarsIt)->show();
                 }
@@ -310,25 +289,25 @@ void RazorSensors::settingsChanged()
                 }
 
                 QPalette pal = (*temperatureProgressBarsIt)->palette();
-                QColor color(settings().value("color").toString());
+                QColor color(mSettings->value("color").toString());
                 pal.setColor(QPalette::Active, QPalette::Highlight, color);
                 pal.setColor(QPalette::Inactive, QPalette::Highlight, color);
                 (*temperatureProgressBarsIt)->setPalette(pal);
 
-                settings().endGroup();
+                mSettings->endGroup();
 
                 // Go to the next temperature progress bar
                 ++temperatureProgressBarsIt;
             }
         }
 
-        settings().endGroup();
+        mSettings->endGroup();
     }
 
-    settings().endGroup();
+    mSettings->endGroup();
 
 
-    if (settings().value("warningAboutHighTemperature").toBool())
+    if (mSettings->value("warningAboutHighTemperature").toBool())
     {
         // Update sensors readings to get the list of high temperature progress bars
         updateSensorReadings();
@@ -343,6 +322,7 @@ void RazorSensors::settingsChanged()
         updateSensorReadings();
     }
 
+    realign();
     update();
 }
 
@@ -352,15 +332,26 @@ void RazorSensors::realign()
     Qt::Orientation cur_orient = Qt::Vertical;
     Qt::LayoutDirection cur_layout_dir = Qt::LeftToRight;
 
-    switch (panel()->position())
+    if (mPlugin->panel()->isHorizontal())
     {
-    case RazorPanel::PositionLeft:
+        mLayout->setDirection(QBoxLayout::LeftToRight);
+    }
+    else
+    {
+        mLayout->setDirection(QBoxLayout::TopToBottom);
+    }
+
+    switch (mPlugin->panel()->position())
+    {
+    case IRazorPanel::PositionLeft:
         cur_orient = Qt::Horizontal;
         break;
-    case RazorPanel::PositionRight:
+
+    case IRazorPanel::PositionRight:
         cur_orient = Qt::Horizontal;
         cur_layout_dir = Qt::RightToLeft;
         break;
+
     default:
         break;
     }
@@ -370,14 +361,14 @@ void RazorSensors::realign()
         mTemperatureProgressBars[i]->setOrientation(cur_orient);
         mTemperatureProgressBars[i]->setLayoutDirection(cur_layout_dir);
 
-        if (panel()->isHorizontal())
+        if (mPlugin->panel()->isHorizontal())
         {
-            mTemperatureProgressBars[i]->setFixedWidth(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedWidth(mPlugin->settings()->value("tempBarWidth").toInt());
             mTemperatureProgressBars[i]->setFixedHeight(QWIDGETSIZE_MAX);
         }
         else
         {
-            mTemperatureProgressBars[i]->setFixedHeight(settings().value("tempBarWidth").toInt());
+            mTemperatureProgressBars[i]->setFixedHeight(mPlugin->settings()->value("tempBarWidth").toInt());
             mTemperatureProgressBars[i]->setFixedWidth(QWIDGETSIZE_MAX);
         }
     }
@@ -391,54 +382,64 @@ double RazorSensors::celsiusToFahrenheit(double celsius)
 
 void RazorSensors::initDefaultSettings()
 {
-    if (!settings().contains("updateInterval"))
+    if (!mSettings->contains("updateInterval"))
     {
-        settings().setValue("updateInterval", 1);
+        mSettings->setValue("updateInterval", 1);
     }
 
-    if (!settings().contains("tempBarWidth"))
+    if (!mSettings->contains("tempBarWidth"))
     {
-        settings().setValue("tempBarWidth", 8);
+        mSettings->setValue("tempBarWidth", 8);
     }
 
-    if (!settings().contains("useFahrenheitScale"))
+    if (!mSettings->contains("useFahrenheitScale"))
     {
-        settings().setValue("useFahrenheitScale", false);
+        mSettings->setValue("useFahrenheitScale", false);
     }
 
-    settings().beginGroup("chips");
+    mSettings->beginGroup("chips");
 
     // Initialize default sensors settings
     for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
     {
-        settings().beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
+        mSettings->beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
         const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
 
         for (unsigned int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
-                settings().beginGroup(QString::fromStdString(features[j].getLabel()));
-                if (!settings().contains("enabled"))
+                mSettings->beginGroup(QString::fromStdString(features[j].getLabel()));
+                if (!mSettings->contains("enabled"))
                 {
-                    settings().setValue("enabled", true);
+                    mSettings->setValue("enabled", true);
                 }
 
-                if (!settings().contains("color"))
+                if (!mSettings->contains("color"))
                 {
                     // This is the default from QtDesigner
-                    settings().setValue("color", QColor(qRgb(98, 140, 178)).name());
+                    mSettings->setValue("color", QColor(qRgb(98, 140, 178)).name());
                 }
-                settings().endGroup();
+                mSettings->endGroup();
             }
         }
-        settings().endGroup();
+        mSettings->endGroup();
     }
 
-    settings().endGroup();
+    mSettings->endGroup();
 
-    if (!settings().contains("warningAboutHighTemperature"))
+    if (!mSettings->contains("warningAboutHighTemperature"))
     {
-        settings().setValue("warningAboutHighTemperature", true);
+        mSettings->setValue("warningAboutHighTemperature", true);
     }
+}
+
+ProgressBar::ProgressBar(QWidget *parent):
+    QProgressBar(parent)
+{
+}
+
+QSize ProgressBar::sizeHint() const
+{
+    return QSize(20, 20);
 }

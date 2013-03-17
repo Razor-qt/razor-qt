@@ -28,27 +28,28 @@
 #ifndef RAZORTRAY_H
 #define RAZORTRAY_H
 
-#include "../panel/razorpanelplugin.h"
+#include <QFrame>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
 class TrayIcon;
 class QSize;
+class RazorGridLayout;
 
 /**
  * @brief This makes our trayplugin
  */
+class IRazorPanelPlugin;
 
-class RazorTray: public RazorPanelPlugin
+class RazorTray: public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
 public:
-    RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorTray(IRazorPanelPlugin *plugin, QWidget* parent = 0);
     ~RazorTray();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment; }
 
     QSize iconSize() const { return mIconSize; }
     void setIconSize(QSize iconSize);
@@ -56,6 +57,7 @@ public:
     /// This handles the events we get from the Razorplugin subsystem
     virtual void x11EventFilter(XEvent* event);
 
+    void realign();
 
 signals:
     void iconSizeChanged(int iconSize);
@@ -78,9 +80,9 @@ private:
     int mDamageEvent;
     int mDamageError;
     QSize mIconSize;
-
+    RazorGridLayout *mLayout;
+    IRazorPanelPlugin *mPlugin;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
 
 #endif

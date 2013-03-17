@@ -35,6 +35,8 @@
 #include <QApplication>
 #include <QtDebug>
 #include "trayicon.h"
+#include <razorqt/razorgridlayout.h>
+#include "../panel/irazorpanel.h"
 #include <QX11Info>
 #include "razortray.h"
 #include <X11/Xlib.h>
@@ -44,7 +46,7 @@
 #include <X11/extensions/Xdamage.h>
 #include "razorqt/xfitman.h"
 #include <QtCore/QTimer>
-
+#include "../panel/irazorpanelplugin.h"
 
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
 #define _NET_SYSTEM_TRAY_ORIENTATION_VERT 1
@@ -57,26 +59,25 @@
 #define XEMBED_MAPPED          (1 << 0)
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorTray)
-
-
 /************************************************
 
  ************************************************/
-RazorTray::RazorTray(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-    RazorPanelPlugin(startInfo, parent),
+RazorTray::RazorTray(IRazorPanelPlugin *plugin, QWidget *parent):
+    QFrame(parent),
     mValid(false),
     mTrayId(0),
     mDamageEvent(0),
     mDamageError(0),
-    mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT)
+    mIconSize(TRAY_ICON_SIZE_DEFAULT, TRAY_ICON_SIZE_DEFAULT),
+    mPlugin(plugin)
 {
-    setObjectName("Tray");
-    layout()->setAlignment(Qt::AlignCenter);
+    mLayout = new RazorGridLayout(this);
+    realign();
 
     // Init the selection later just to ensure that no signals are sent until
     // after construction is done and the creating object has a chance to connect.
     QTimer::singleShot(0, this, SLOT(startTray()));
+
 }
 
 
@@ -133,6 +134,28 @@ void RazorTray::x11EventFilter(XEvent* event)
 /************************************************
 
  ************************************************/
+void RazorTray::realign()
+{
+    mLayout->setEnabled(false);
+    IRazorPanel *panel = mPlugin->panel();
+
+    if (panel->isHorizontal())
+    {
+        mLayout->setRowCount(panel->lineCount());
+        mLayout->setColumnCount(0);
+    }
+    else
+    {
+        mLayout->setColumnCount(panel->lineCount());
+        mLayout->setRowCount(0);
+    }
+    mLayout->setEnabled(true);
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorTray::clientMessageEvent(XClientMessageEvent* e)
 {
     unsigned long opcode;
@@ -155,8 +178,8 @@ void RazorTray::clientMessageEvent(XClientMessageEvent* e)
 
 
         default:
-            if (opcode == xfitMan().atom("_NET_SYSTEM_TRAY_MESSAGE_DATA"))
-                qDebug() << "message from dockapp:" << e->data.b;
+//            if (opcode == xfitMan().atom("_NET_SYSTEM_TRAY_MESSAGE_DATA"))
+//                qDebug() << "message from dockapp:" << e->data.b;
 //            else
 //                qDebug() << "SYSTEM_TRAY : unknown message type" << opcode;
             break;
@@ -250,7 +273,8 @@ void RazorTray::startTray()
     mTrayId = XCreateSimpleWindow(dsp, root, -1, -1, 1, 1, 0, 0, 0);
 
     XSetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S, mTrayId, CurrentTime);
-    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != mTrayId) {
+    if (XGetSelectionOwner(dsp, _NET_SYSTEM_TRAY_S) != mTrayId)
+    {
         qWarning() << "Can't get systray manager";
         stopTray();
         mValid = false;
@@ -307,7 +331,8 @@ void RazorTray::startTray()
 void RazorTray::stopTray()
 {
     qDeleteAll(mIcons);
-    if (mTrayId) {
+    if (mTrayId)
+    {
         XDestroyWindow(QX11Info::display(), mTrayId);
         mTrayId = 0;
     }
@@ -329,6 +354,6 @@ void RazorTray::addIcon(Window winId)
 
     icon->setIconSize(mIconSize);
     mIcons.append(icon);
-    addWidget(icon);
+    mLayout->addWidget(icon);
 }
 

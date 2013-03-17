@@ -62,7 +62,6 @@ public:
     bool isApplicationActive() const;
     Window windowId() const { return mWindow; }
 
-    QSize   sizeHint() const;
     static void unCheckAll();
     int desktopNum() const;
 

@@ -29,7 +29,7 @@
 #ifndef RAZOR_MAINMENU_H
 #define RAZOR_MAINMENU_H
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
 #include <qtxdg/xdgmenu.h>
 
 #include <QtGui/QLabel>
@@ -45,18 +45,23 @@ class PowerManager;
 class ScreenSaver;
 class QxtGlobalShortcut;
 
-class RazorMainMenu : public RazorPanelPlugin
+
+class RazorMainMenu : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorMainMenu(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    RazorMainMenu(const IRazorPanelPluginStartupInfo &startupInfo);
     ~RazorMainMenu();
 
-    virtual RazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
+    QString themeId() const { return "MainMenu"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return HaveConfigDialog ; }
 
+    QWidget *widget() { return &mButton; }
+    QDialog *configureDialog();
+
+    bool isSeparate() const { return true; }
 private:
     QToolButton mButton;
-    QLabel mMainMenuButton;
     QString mLogDir;
     QMenu* mMenu;
     QxtGlobalShortcut *mShortcut;
@@ -65,9 +70,8 @@ private:
     PowerManager* mPowerManager;
     ScreenSaver* mScreenSaver;
     XdgMenu mXdgMenu;
-
 protected slots:
-    virtual void showConfigureDialog();
+
     virtual void settingsChanged();
     void buildMenu();
 
@@ -76,6 +80,12 @@ private slots:
     void showHideMenu();
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class RazorMainMenuPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new RazorMainMenu(startupInfo);}
+};
 
 #endif

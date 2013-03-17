@@ -29,26 +29,39 @@
 #ifndef PANELSCREENSAVER_H
 #define PANELSCREENSAVER_H
 
-#include "../panel/razorpanelplugin.h"
-#include "../panel/razorpanel.h"
+#include "../panel/irazorpanelplugin.h"
+#include <QToolButton>
 
 class ScreenSaver;
 class QxtGlobalShortcut;
 
 
-class PanelScreenSaver : public RazorPanelPlugin
+class PanelScreenSaver : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 
 public:
-    PanelScreenSaver(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    PanelScreenSaver(const IRazorPanelPluginStartupInfo &startupInfo);
+
+    virtual QWidget *widget() { return &mButton; }
+    virtual QString themeId() const { return "PanelScreenSaver"; }
 
 private:
-    ScreenSaver * m_saver;
-    QxtGlobalShortcut * m_key;
+    QToolButton  mButton;
+    ScreenSaver * mSaver;
+    QxtGlobalShortcut * mShortcutKey;
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class PanelScreenSaverLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new PanelScreenSaver(startupInfo);
+    }
+};
 
 #endif
 

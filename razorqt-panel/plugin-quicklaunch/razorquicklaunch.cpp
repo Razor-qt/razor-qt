@@ -26,11 +26,11 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-
 #include "razorquicklaunch.h"
 #include "quicklaunchbutton.h"
-#include "quicklaunchlayout.h"
+#include <razorqt/razorgridlayout.h>
 #include "quicklaunchaction.h"
+#include "../panel/irazorpanelplugin.h"
 
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgicon.h>
@@ -45,24 +45,21 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileIconProvider>
+#include <QSettings>
+#include <QLabel>
 
-
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorQuickLaunch)
-
-
-RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent)
-    : RazorPanelPlugin(startInfo, parent)
+RazorQuickLaunch::RazorQuickLaunch(IRazorPanelPlugin *plugin, QWidget* parent) :
+    QFrame(parent),
+    mPlugin(plugin),
+    mPlaceHolder(0)
 {
-    setObjectName("QuickLaunch");
     setAcceptDrops(true);
 
-    delete layout();
-    m_layout = new QuickLaunchLayout(this, panel());
-    m_layout->setAlignment(Qt::AlignCenter);
-    setLayout(m_layout);
+    mLayout = new RazorGridLayout(this);
+    setLayout(mLayout);
 
-    QSettings *s = &settings();
-    int count = s->beginReadArray("apps");
+    QSettings *settings = mPlugin->settings();
+    int count = settings->beginReadArray("apps");
 
     QString desktop;
     QString file;
@@ -71,9 +68,9 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
     QString icon;
     for (int i = 0; i < count; ++i)
     {
-        s->setArrayIndex(i);
-        desktop = s->value("desktop", "").toString();
-        file = s->value("file", "").toString();
+        settings->setArrayIndex(i);
+        desktop = settings->value("desktop", "").toString();
+        file = settings->value("file", "").toString();
         if (! desktop.isEmpty())
         {
             XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(desktop);
@@ -90,9 +87,9 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
         }
         else
         {
-            execname = s->value("name", "").toString();
-            exec = s->value("exec", "").toString();
-            icon = s->value("icon", "").toString();
+            execname = settings->value("name", "").toString();
+            exec = settings->value("exec", "").toString();
+            icon = settings->value("icon", "").toString();
             if (icon.isNull())
             {
                 qDebug() << "Icon" << icon << "is not valid (isNull). Skipped.";
@@ -102,7 +99,12 @@ RazorQuickLaunch::RazorQuickLaunch(const RazorPanelPluginStartInfo* startInfo, Q
         }
     } // for
 
-    s->endArray();
+    settings->endArray();
+
+    if (mLayout->isEmpty())
+        showPlaceHolder();
+
+    realign();
 }
 
 RazorQuickLaunch::~RazorQuickLaunch()
@@ -111,35 +113,47 @@ RazorQuickLaunch::~RazorQuickLaunch()
 
 int RazorQuickLaunch::indexOfButton(QuickLaunchButton* button) const
 {
-    return m_layout->indexOf(button);
+    return mLayout->indexOf(button);
 }
 
 int RazorQuickLaunch::countOfButtons() const
 {
-    return m_layout->count();
+    return mLayout->count();
+}
+
+void RazorQuickLaunch::realign()
+{
+    mLayout->setEnabled(false);
+    IRazorPanel *panel = mPlugin->panel();
+
+    if (panel->isHorizontal())
+    {
+        mLayout->setRowCount(panel->lineCount());
+        mLayout->setColumnCount(0);
+    }
+    else
+    {
+        mLayout->setColumnCount(panel->lineCount());
+        mLayout->setRowCount(0);
+    }
+    mLayout->setEnabled(true);
 }
 
 void RazorQuickLaunch::addButton(QuickLaunchAction* action)
 {
-    // find first unused index
-    int newIndex = 0;
-    QList<int> keys = m_buttons.uniqueKeys();
-    qSort(keys);
-    foreach (int index, keys)
-    {
-        if (newIndex != index)
-            break;
-        ++newIndex;
-    }
+    mLayout->setEnabled(false);
+    QuickLaunchButton* btn = new QuickLaunchButton(action, this);
+    mLayout->addWidget(btn);
 
-    QuickLaunchButton* btn = new QuickLaunchButton(newIndex, action, this);
-    m_layout->addWidget(btn);
-    m_buttons[newIndex] = btn;
-
-    connect(btn, SIGNAL(switchButtons(int,int)), this, SLOT(switchButtons(int,int)));
-    connect(btn, SIGNAL(buttonDeleted(int)), this, SLOT(buttonDeleted(int)));
+    connect(btn, SIGNAL(switchButtons(QuickLaunchButton*,QuickLaunchButton*)), this, SLOT(switchButtons(QuickLaunchButton*,QuickLaunchButton*)));
+    connect(btn, SIGNAL(buttonDeleted()), this, SLOT(buttonDeleted()));
     connect(btn, SIGNAL(movedLeft()), this, SLOT(buttonMoveLeft()));
     connect(btn, SIGNAL(movedRight()), this, SLOT(buttonMoveRight()));
+
+    mLayout->removeWidget(mPlaceHolder);
+    delete mPlaceHolder;
+    mPlaceHolder = 0;
+    mLayout->setEnabled(true);
 }
 
 void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
@@ -173,7 +187,7 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
         QString fileName(url.toLocalFile());
         XdgDesktopFile * xdg = XdgDesktopFileCache::getFile(fileName);
         QFileInfo fi(fileName);
-        qDebug() << fileName << fi.exists() << fi.isExecutable();
+
         if (xdg->isValid())
         {
             addButton(new QuickLaunchAction(xdg, this));
@@ -188,7 +202,7 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
         }
         else
         {
-            qDebug() << "XdgDesktopFile" << fileName << "is not valid";
+            qWarning() << "XdgDesktopFile" << fileName << "is not valid";
             QMessageBox::information(this, tr("Drop Error"),
                               tr("File/URL '%1' cannot be embedded into QuickLaunch for now").arg(fileName)
                             );
@@ -197,33 +211,46 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
     saveSettings();
 }
 
-void RazorQuickLaunch::switchButtons(int first, int second)
+void RazorQuickLaunch::switchButtons(QuickLaunchButton *button1, QuickLaunchButton *button2)
 {
-    QuickLaunchButton *w1 = m_buttons[first];
-    QuickLaunchButton *w2 = m_buttons[second];
-    m_layout->swapButtons(w1, w2);
+    if (button1 == button2)
+        return;
+
+    int n1 = mLayout->indexOf(button1);
+    int n2 = mLayout->indexOf(button2);
+
+    int l = qMin(n1, n2);
+    int m = qMax(n1, n2);
+
+    mLayout->moveItem(l, m);
+    mLayout->moveItem(m-1, l);
     saveSettings();
 }
 
-void RazorQuickLaunch::buttonDeleted(int id)
+void RazorQuickLaunch::buttonDeleted()
 {
-    QuickLaunchButton *b = m_buttons[id];
-    m_layout->removeWidget(b);
-    m_buttons.remove(id);
-    b->deleteLater();
+    QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
+    if (!btn)
+        return;
+
+    mLayout->removeWidget(btn);
+    btn->deleteLater();
     saveSettings();
+
+    if (mLayout->isEmpty())
+        showPlaceHolder();
 }
 
 void RazorQuickLaunch::buttonMoveLeft()
 {
-    QuickLaunchButton *btn1 = qobject_cast<QuickLaunchButton*>(sender());
-    if (!btn1)
+    QuickLaunchButton *btn = qobject_cast<QuickLaunchButton*>(sender());
+    if (!btn)
         return;
 
-    int index = indexOfButton(btn1);
+    int index = indexOfButton(btn);
     if (index > 0)
     {
-        m_layout->swapButtons(btn1, m_layout->buttonAt(index - 1));
+        mLayout->moveItem(index, index - 1);
         saveSettings();
     }
 }
@@ -238,7 +265,7 @@ void RazorQuickLaunch::buttonMoveRight()
     int index = indexOfButton(btn1);
     if (index < countOfButtons() - 1)
     {
-        m_layout->swapButtons(btn1, m_layout->buttonAt(index + 1));
+        mLayout->moveItem(index, index + 1);
         saveSettings();
     }
 }
@@ -246,23 +273,40 @@ void RazorQuickLaunch::buttonMoveRight()
 
 void RazorQuickLaunch::saveSettings()
 {
-    settings().remove("apps");
-    settings().beginWriteArray("apps");
+    QSettings *settings = mPlugin->settings();
+    settings->remove("apps");
+    settings->beginWriteArray("apps");
     int i = 0;
 
-    foreach(QuickLaunchButton *b, m_layout->buttons())
+    for(int j=0; j<mLayout->count(); ++j)
     {
-        settings().setArrayIndex(i);
+        QuickLaunchButton *b = qobject_cast<QuickLaunchButton*>(mLayout->itemAt(j)->widget());
+        if(!b)
+            continue;
+
+        settings->setArrayIndex(i);
 
         QHashIterator<QString,QString> it(b->settingsMap());
         while (it.hasNext())
         {
             it.next();
-            settings().setValue(it.key(), it.value());
+            settings->setValue(it.key(), it.value());
         }
 
         ++i;
     }
 
-    settings().endArray();
+    settings->endArray();
+}
+
+void RazorQuickLaunch::showPlaceHolder()
+{
+    if (!mPlaceHolder)
+    {
+        mPlaceHolder = new QLabel(this);
+        mPlaceHolder->setObjectName("QuckLaunchPlaceHolder");
+        mPlaceHolder->setText(tr("Drop application\nicons here"));
+    }
+
+    mLayout->addWidget(mPlaceHolder);
 }

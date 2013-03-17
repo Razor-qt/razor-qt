@@ -44,22 +44,18 @@
 #include <razorqxt/qxtglobalshortcut.h>
 #include <razorqt/razornotification.h>
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorVolume)
+Q_EXPORT_PLUGIN2(volume, RazorVolumePluginLibrary)
 
-RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* parent):
-        RazorPanelPlugin(startInfo, parent),
+RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
+        QObject(),
+        IRazorPanelPlugin(startupInfo),
         m_engine(0),
         m_defaultSinkIndex(0),
         m_defaultSink(0)
 {
-    setObjectName("Volume");
-
-    layout()->setAlignment(Qt::AlignCenter);
-    m_volumeButton = new VolumeButton(panel(), this);
-    addWidget(m_volumeButton);
+    m_volumeButton = new VolumeButton(this);
 
     m_notification = new RazorNotification("", this);
-    m_configWindow = new RazorVolumeConfiguration(settings(), this);
 
     // global key shortcuts
     m_keyVolumeUp = new QxtGlobalShortcut(this);
@@ -101,6 +97,11 @@ RazorVolume::RazorVolume(const RazorPanelPluginStartInfo* startInfo, QWidget* pa
     settingsChanged();
 }
 
+RazorVolume::~RazorVolume()
+{
+    delete m_volumeButton;
+}
+
 void RazorVolume::setAudioEngine(AudioEngine *engine)
 {
     if (m_engine) {
@@ -120,18 +121,12 @@ void RazorVolume::setAudioEngine(AudioEngine *engine)
     updateConfigurationSinkList();
 }
 
-void RazorVolume::showConfigureDialog()
-{
-    m_configWindow->show();
-    m_configWindow->raise();
-    m_configWindow->activateWindow();
-}
 
 void RazorVolume::settingsChanged()
 {
 #if defined(USE_PULSEAUDIO) && defined(USE_ALSA)
-    if (!m_engine || m_engine->backendName() != settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString()) {
-        if (settings().value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString() == "PulseAudio")
+    if (!m_engine || m_engine->backendName() != settings()->value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString()) {
+        if (settings()->value(SETTINGS_AUDIO_ENGINE, SETTINGS_DEFAULT_AUDIO_ENGINE).toString() == "PulseAudio")
             setAudioEngine(new PulseAudioEngine(this));
         else
             setAudioEngine(new AlsaEngine(this));
@@ -144,33 +139,32 @@ void RazorVolume::settingsChanged()
         setAudioEngine(new AlsaEngine(this));
 #endif
 
-    m_volumeButton->setShowOnClicked(settings().value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
-    m_volumeButton->setMuteOnMiddleClick(settings().value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
-    m_volumeButton->setMixerCommand(settings().value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
-    m_volumeButton->volumePopup()->setSliderStep(settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
+    m_volumeButton->setShowOnClicked(settings()->value(SETTINGS_SHOW_ON_LEFTCLICK, SETTINGS_DEFAULT_SHOW_ON_LEFTCLICK).toBool());
+    m_volumeButton->setMuteOnMiddleClick(settings()->value(SETTINGS_MUTE_ON_MIDDLECLICK, SETTINGS_DEFAULT_MUTE_ON_MIDDLECLICK).toBool());
+    m_volumeButton->setMixerCommand(settings()->value(SETTINGS_MIXER_COMMAND, SETTINGS_DEFAULT_MIXER_COMMAND).toString());
+    m_volumeButton->volumePopup()->setSliderStep(settings()->value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
 
-    m_defaultSinkIndex = settings().value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
+    m_defaultSinkIndex = settings()->value(SETTINGS_DEVICE, SETTINGS_DEFAULT_DEVICE).toInt();
     if (m_engine && m_engine->sinks().count() > 0) {
         m_defaultSinkIndex = qBound(0, m_defaultSinkIndex, m_engine->sinks().count()-1);
 
         m_defaultSink = m_engine->sinks().at(m_defaultSinkIndex);
         m_volumeButton->volumePopup()->setDevice(m_defaultSink);
 
-        m_engine->setIgnoreMaxVolume(settings().value(SETTINGS_IGNORE_MAX_VOLUME, SETTINGS_DEFAULT_IGNORE_MAX_VOLUME).toBool());
+        m_engine->setIgnoreMaxVolume(settings()->value(SETTINGS_IGNORE_MAX_VOLUME, SETTINGS_DEFAULT_IGNORE_MAX_VOLUME).toBool());
     }
 }
 
 void RazorVolume::updateConfigurationSinkList()
 {
-    if (m_engine)
-        m_configWindow->setSinkList(m_engine->sinks());
+
 }
 
 void RazorVolume::handleShortcutVolumeUp()
 {
     if (m_defaultSink)
     {
-        m_defaultSink->setVolume(m_defaultSink->volume() + settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
+        m_defaultSink->setVolume(m_defaultSink->volume() + settings()->value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
         m_notification->setSummary(tr("Volume: %1").arg(QString::number(m_defaultSink->volume())));
         m_notification->update();
     }
@@ -180,7 +174,7 @@ void RazorVolume::handleShortcutVolumeDown()
 {
     if (m_defaultSink)
     {
-        m_defaultSink->setVolume(m_defaultSink->volume() - settings().value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
+        m_defaultSink->setVolume(m_defaultSink->volume() - settings()->value(SETTINGS_STEP, SETTINGS_DEFAULT_STEP).toInt());
         m_notification->setSummary(tr("Volume: %1").arg(QString::number(m_defaultSink->volume())));
         m_notification->update();
     }
@@ -190,4 +184,25 @@ void RazorVolume::handleShortcutVolumeMute()
 {
     if (m_defaultSink)
         m_defaultSink->toggleMute();
+}
+
+QWidget *RazorVolume::widget()
+{
+    return m_volumeButton;
+}
+
+void RazorVolume::realign()
+{
+    m_volumeButton->hideVolumeSlider();
+}
+
+QDialog *RazorVolume::configureDialog()
+{
+    RazorVolumeConfiguration *configWindow = new RazorVolumeConfiguration(*settings());
+    configWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+
+    if (m_engine)
+       configWindow->setSinkList(m_engine->sinks());
+
+    return configWindow;
 }

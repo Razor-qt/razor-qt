@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=RazorPanel/Plugin
+Name=Tea Time
+Comment=A time to have a cup of tea remainder.

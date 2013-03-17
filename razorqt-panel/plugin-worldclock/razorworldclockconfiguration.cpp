@@ -32,7 +32,7 @@
 #include "razorworldclockconfigurationtimezones.h"
 
 
-RazorWorldClockConfiguration::RazorWorldClockConfiguration(QSettings &settings, QWidget *parent) :
+RazorWorldClockConfiguration::RazorWorldClockConfiguration(QSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorWorldClockConfiguration),
     mSettings(settings),
@@ -74,24 +74,24 @@ void RazorWorldClockConfiguration::loadSettings()
 
     ui->timeZonesLW->clear();
 
-    int size = mSettings.beginReadArray("timeZones");
+    int size = mSettings->beginReadArray("timeZones");
     for (int i = 0; i < size; ++i)
     {
-        mSettings.setArrayIndex(i);
-        ui->timeZonesLW->addItem(mSettings.value("timeZone", QString()).toString());
+        mSettings->setArrayIndex(i);
+        ui->timeZonesLW->addItem(mSettings->value("timeZone", QString()).toString());
     }
-    mSettings.endArray();
+    mSettings->endArray();
 
-    mDefaultTimeZone = mSettings.value("defaultTimeZone", QString()).toString();
+    mDefaultTimeZone = mSettings->value("defaultTimeZone", QString()).toString();
     if (mDefaultTimeZone.isEmpty() && ui->timeZonesLW->count())
         mDefaultTimeZone = ui->timeZonesLW->item(0)->text();
 
     if (ui->timeZonesLW->count())
         setBold(ui->timeZonesLW->findItems(mDefaultTimeZone, Qt::MatchExactly)[0], true);
 
-    ui->customFormatPTE->setPlainText(mSettings.value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString());
+    ui->customFormatPTE->setPlainText(mSettings->value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString());
 
-    QString formatType = mSettings.value("formatType", QString()).toString();
+    QString formatType = mSettings->value("formatType", QString()).toString();
     if (formatType == "custom")
         ui->customFormatRB->setChecked(true);
     else if (formatType == "full")
@@ -112,28 +112,28 @@ void RazorWorldClockConfiguration::saveSettings()
         return;
 
     int size = ui->timeZonesLW->count();
-    mSettings.beginWriteArray("timeZones", size);
+    mSettings->beginWriteArray("timeZones", size);
     for (int i = 0; i < size; ++i)
     {
-        mSettings.setArrayIndex(i);
-        mSettings.setValue("timeZone", ui->timeZonesLW->item(i)->text());
+        mSettings->setArrayIndex(i);
+        mSettings->setValue("timeZone", ui->timeZonesLW->item(i)->text());
     }
-    mSettings.endArray();
+    mSettings->endArray();
 
-    mSettings.setValue("defaultTimeZone", mDefaultTimeZone);
+    mSettings->setValue("defaultTimeZone", mDefaultTimeZone);
 
-    mSettings.setValue("customFormat", ui->customFormatPTE->toPlainText());
+    mSettings->setValue("customFormat", ui->customFormatPTE->toPlainText());
 
     if (ui->customFormatRB->isChecked())
-        mSettings.setValue("formatType", "custom");
+        mSettings->setValue("formatType", "custom");
     else if (ui->fullFormatRB->isChecked())
-        mSettings.setValue("formatType", "full");
+        mSettings->setValue("formatType", "full");
     else if (ui->longFormatRB->isChecked())
-        mSettings.setValue("formatType", "long");
+        mSettings->setValue("formatType", "long");
     else if (ui->mediumFormatRB->isChecked())
-        mSettings.setValue("formatType", "medium");
+        mSettings->setValue("formatType", "medium");
     else
-        mSettings.setValue("formatType", "short");
+        mSettings->setValue("formatType", "short");
 }
 
 void RazorWorldClockConfiguration::dialogButtonsAction(QAbstractButton *button)

@@ -180,7 +180,7 @@ void PowerManager::logout()
                              tr("Do you want to really logout? All unsaved work will be lost...")))
     {
         m_power->logout();
-    }   
+    }
 }
 
 void PowerManager::hibernateFailed()

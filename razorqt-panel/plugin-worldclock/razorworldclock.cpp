@@ -42,11 +42,12 @@
 #include <QtGui/QWheelEvent>
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDesktopWidget>
+#include <QHBoxLayout>
 
 #include <time.h>
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorWorldClock)
+Q_EXPORT_PLUGIN2(panelworldclock, RazorWorldClockLibrary)
 
 
 static QString ICU_to_Qt(const icu::UnicodeString &string)
@@ -73,26 +74,22 @@ static icu::UnicodeString Qt_to_ICU(const QString &string)
 }
 
 
-RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
-    RazorPanelPlugin(startInfo, parent),
-    mContent(new ActiveLabel(this)),
+RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    mContent(new ActiveLabel()),
     mPopup(NULL),
     mTimer(new QTimer(this)),
     mFormatType(FORMAT__INVALID),
     mCalendar(NULL),
     mFormat(NULL)
 {
-    setObjectName("WorldClock");
     mContent->setObjectName("WorldClockContent");
 
     mContent->setAlignment(Qt::AlignCenter);
 
-    addWidget(mContent);
-
-
     mLocale = new icu::Locale();
     mDefaultLanguage = QString(mLocale->getLanguage());
-
 
     settingsChanged();
 
@@ -105,6 +102,8 @@ RazorWorldClock::RazorWorldClock(const RazorPanelPluginStartInfo *startInfo, QWi
 
 RazorWorldClock::~RazorWorldClock()
 {
+    delete mContent;
+
     if (mFormat)
         delete mFormat;
     if (mCalendar)
@@ -113,6 +112,12 @@ RazorWorldClock::~RazorWorldClock()
         delete mLocale;
     u_cleanup();
 }
+
+QWidget *RazorWorldClock::widget()
+{
+    return mContent;
+}
+
 
 void RazorWorldClock::timeout()
 {
@@ -251,20 +256,20 @@ void RazorWorldClock::updateTimezone()
 
 void RazorWorldClock::settingsChanged()
 {
-    QSettings &_settings = settings();
+    QSettings *_settings = settings();
 
     FormatType oldFormatType = mFormatType;
     QString oldCustomFormat = mCustomFormat;
 
     mTimeZones.clear();
 
-    int size = _settings.beginReadArray("timeZones");
+    int size = _settings->beginReadArray("timeZones");
     for (int i = 0; i < size; ++i)
     {
-        _settings.setArrayIndex(i);
-        mTimeZones.append(_settings.value("timeZone", QString()).toString());
+        _settings->setArrayIndex(i);
+        mTimeZones.append(_settings->value("timeZone", QString()).toString());
     }
-    _settings.endArray();
+    _settings->endArray();
     if (mTimeZones.isEmpty())
     {
         icu::TimeZone *timeZone = icu::TimeZone::createDefault();
@@ -275,14 +280,14 @@ void RazorWorldClock::settingsChanged()
         delete timeZone;
     }
 
-    mDefaultTimeZone = _settings.value("defaultTimeZone", QString()).toString();
+    mDefaultTimeZone = _settings->value("defaultTimeZone", QString()).toString();
     if (mDefaultTimeZone.isEmpty())
         mDefaultTimeZone = mTimeZones[0];
     mActiveTimeZone = mDefaultTimeZone;
 
-    mCustomFormat = _settings.value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString();
+    mCustomFormat = _settings->value("customFormat", QString("'<b>'HH:mm:ss'</b><br/><font size=\"-2\">'eee, d MMM yyyy'<br/>'VVVV'</font>'")).toString();
 
-    QString formatType = _settings.value("formatType", QString()).toString();
+    QString formatType = _settings->value("formatType", QString()).toString();
     if (formatType == "custom")
         mFormatType = FORMAT_CUSTOM;
     else if (formatType == "full")
@@ -300,16 +305,9 @@ void RazorWorldClock::settingsChanged()
     updateTimezone();
 }
 
-void RazorWorldClock::showConfigureDialog()
+QDialog *RazorWorldClock::configureDialog()
 {
-    RazorWorldClockConfiguration *confWindow = this->findChild<RazorWorldClockConfiguration*>("WorldClockConfigurationWindow");
-
-    if (!confWindow)
-        confWindow = new RazorWorldClockConfiguration(settings(), this);
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+    return new RazorWorldClockConfiguration(settings());
 }
 
 void RazorWorldClock::wheelScrolled(int delta)
@@ -328,7 +326,7 @@ void RazorWorldClock::popupDialog(bool withCalendar)
     {
         UErrorCode status = U_ZERO_ERROR;
 
-        mPopup = new QDialog(this);
+        mPopup = new QDialog(mContent);
         mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         mPopup->setLayout(new QHBoxLayout(mPopup));
 
@@ -391,19 +389,8 @@ void RazorWorldClock::popupDialog(bool withCalendar)
         }
         mPopup->adjustSize();
 
-        QSize calSize = mPopup->size();
-        QPoint point = panel()->mapToGlobal((this->geometry().topLeft() + this->geometry().bottomRight()) / 2) - QPoint(calSize.width() / 2, calSize.height() / 2);
-        QRect avail = QDesktopWidget().availableGeometry(point);
-        if (point.x() < avail.left())
-            point.setX(avail.left());
-        else if (point.x() > avail.right() - calSize.width())
-            point.setX(avail.right() - calSize.width());
-        if (point.y() < avail.top())
-            point.setY(avail.top());
-        else if (point.y() > avail.bottom() - calSize.height())
-            point.setY(avail.bottom() - calSize.height());
-
-        mPopup->move(point);
+        QRect rect = calculatePopupWindowPos(mPopup->size());
+        mPopup->setGeometry(rect);
         mPopup->show();
     }
     else

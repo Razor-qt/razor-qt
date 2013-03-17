@@ -32,19 +32,15 @@
 #include <QtGui/QLabel>
 #include <QtGui/QX11Info>
 
+Q_EXPORT_PLUGIN2(panelkbindicator, RazorKbIndicatorLibrary)
 
-EXPORT_RAZOR_PANEL_PLUGIN_CPP(RazorKbIndicator)
-
-
-RazorKbIndicator::RazorKbIndicator(const RazorPanelPluginStartInfo *startInfo, QWidget *parent):
-    RazorPanelPlugin(startInfo, parent),
-    mContent(new QLabel(this))
+RazorKbIndicator::RazorKbIndicator(const IRazorPanelPluginStartupInfo &startupInfo):
+    QObject(),
+    IRazorPanelPlugin(startupInfo),
+    mContent(new QLabel())
 {
-    setObjectName("KbIndicator");
-
     connect(this, SIGNAL(indicatorsChanged(uint,uint)), this, SLOT(setIndicators(uint,uint)));
-
-    addWidget(mContent);
+    mContent->setAlignment(Qt::AlignCenter);
 
     int code;
     int major = XkbMajorVersion;
@@ -59,29 +55,34 @@ RazorKbIndicator::RazorKbIndicator(const RazorPanelPluginStartInfo *startInfo, Q
                 XkbSelectEvents(mDisplay, XkbUseCoreKbd, XkbIndicatorStateNotifyMask, XkbIndicatorStateNotifyMask);
 
     settingsChanged();
+    realign();
 }
 
 RazorKbIndicator::~RazorKbIndicator()
 {
+    delete mContent;
+}
+
+QWidget *RazorKbIndicator::widget()
+{
+    return mContent;
 }
 
 void RazorKbIndicator::settingsChanged()
 {
-    mBit = settings().value("bit", 0).toInt();
-    mContent->setText(settings().value("text", QString("C")).toString());
+    mBit = settings()->value("bit", 0).toInt();
+    mContent->setText(settings()->value("text", QString("C")).toString());
     mContent->setEnabled(getLockStatus(mBit));
 }
 
-void RazorKbIndicator::showConfigureDialog()
+QDialog *RazorKbIndicator::configureDialog()
 {
-    RazorKbIndicatorConfiguration *confWindow = this->findChild<RazorKbIndicatorConfiguration*>("KbIndicatorConfigurationWindow");
+    return new RazorKbIndicatorConfiguration(settings());
+}
 
-    if (!confWindow)
-        confWindow = new RazorKbIndicatorConfiguration(settings(), this);
-
-    confWindow->show();
-    confWindow->raise();
-    confWindow->activateWindow();
+void RazorKbIndicator::realign()
+{
+    mContent->setMinimumSize(panel()->lineSize(), panel()->lineSize());
 }
 
 void RazorKbIndicator::setIndicators(unsigned int changed, unsigned int state)

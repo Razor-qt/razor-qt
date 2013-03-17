@@ -2,28 +2,42 @@ set(PLUGIN "mount")
 
 
 set(HEADERS
-    razormount.h
+    razormountplugin.h
     mountbutton.h
     menudiskitem.h
     razormountconfiguration.h
+    popup.h
+    actions/deviceaction.h
+    actions/deviceaction_info.h
+    actions/deviceaction_menu.h
+    actions/deviceaction_nothing.h
 )
 
 set(SOURCES
-    razormount.cpp
+    razormountplugin.cpp
     mountbutton.cpp
     menudiskitem.cpp
+    popup.cpp
     razormountconfiguration.cpp
+    actions/deviceaction.cpp
+    actions/deviceaction_info.cpp
+    actions/deviceaction_menu.cpp
+    actions/deviceaction_nothing.cpp
 )
 
 set(MOCS
-    razormount.h
+    razormountplugin.h
     mountbutton.h
     menudiskitem.h
+    popup.h
     razormountconfiguration.h
+    actions/deviceaction.h
+    actions/deviceaction_info.h
+    actions/deviceaction_menu.h
+    actions/deviceaction_nothing.h
 )
 
 set(UIS
-    menudiskitem.ui
     razormountconfiguration.ui
 )
 

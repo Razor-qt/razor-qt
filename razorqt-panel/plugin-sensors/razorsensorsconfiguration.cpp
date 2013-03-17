@@ -34,7 +34,7 @@
 #include <QtGui/QColorDialog>
 #include <QtCore/QDebug>
 
-RazorSensorsConfiguration::RazorSensorsConfiguration(QSettings &settings, QWidget *parent) :
+RazorSensorsConfiguration::RazorSensorsConfiguration(QSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorSensorsConfiguration),
     mSettings(settings),
@@ -69,10 +69,10 @@ RazorSensorsConfiguration::~RazorSensorsConfiguration()
 
 void RazorSensorsConfiguration::loadSettings()
 {
-    ui->updateIntervalSB->setValue(mSettings.value("updateInterval").toInt());
-    ui->tempBarWidthSB->setValue(mSettings.value("tempBarWidth").toInt());
+    ui->updateIntervalSB->setValue(mSettings->value("updateInterval").toInt());
+    ui->tempBarWidthSB->setValue(mSettings->value("tempBarWidth").toInt());
 
-    if (mSettings.value("useFahrenheitScale").toBool())
+    if (mSettings->value("useFahrenheitScale").toBool())
     {
         ui->fahrenheitTempScaleRB->setChecked(true);
     }
@@ -80,14 +80,14 @@ void RazorSensorsConfiguration::loadSettings()
     // In case of reloading settings we have to clear GUI elements
     ui->detectedChipsCB->clear();
 
-    mSettings.beginGroup("chips");
-    QStringList chipNames = mSettings.childGroups();
+    mSettings->beginGroup("chips");
+    QStringList chipNames = mSettings->childGroups();
 
     for (int i = 0; i < chipNames.size(); ++i)
     {
         ui->detectedChipsCB->addItem(chipNames[i]);
     }
-    mSettings.endGroup();
+    mSettings->endGroup();
 
     // Load feature for the first chip if exist
     if (chipNames.size() > 0)
@@ -96,25 +96,25 @@ void RazorSensorsConfiguration::loadSettings()
     }
 
     ui->warningAboutHighTemperatureChB->setChecked(
-            mSettings.value("warningAboutHighTemperature").toBool());
+            mSettings->value("warningAboutHighTemperature").toBool());
 }
 
 void RazorSensorsConfiguration::saveSettings()
 {
-    mSettings.setValue("updateInterval", ui->updateIntervalSB->value());
-    mSettings.setValue("tempBarWidth", ui->tempBarWidthSB->value());
+    mSettings->setValue("updateInterval", ui->updateIntervalSB->value());
+    mSettings->setValue("tempBarWidth", ui->tempBarWidthSB->value());
 
     if (ui->fahrenheitTempScaleRB->isChecked())
     {
-        mSettings.setValue("useFahrenheitScale", true);
+        mSettings->setValue("useFahrenheitScale", true);
     }
     else
     {
-        mSettings.setValue("useFahrenheitScale", false);
+        mSettings->setValue("useFahrenheitScale", false);
     }
 
-    mSettings.beginGroup("chips");
-    QStringList chipNames = mSettings.childGroups();
+    mSettings->beginGroup("chips");
+    QStringList chipNames = mSettings->childGroups();
 
     if (chipNames.size())
     {
@@ -122,31 +122,31 @@ void RazorSensorsConfiguration::saveSettings()
         QPushButton* colorButton = NULL;
         QCheckBox* enabledCheckbox = NULL;
 
-        mSettings.beginGroup(chipNames[ui->detectedChipsCB->currentIndex()]);
+        mSettings->beginGroup(chipNames[ui->detectedChipsCB->currentIndex()]);
 
-        chipFeatureLabels = mSettings.childGroups();
+        chipFeatureLabels = mSettings->childGroups();
         for (int j = 0; j < chipFeatureLabels.size(); ++j)
         {
-            mSettings.beginGroup(chipFeatureLabels[j]);
+            mSettings->beginGroup(chipFeatureLabels[j]);
 
             enabledCheckbox = qobject_cast<QCheckBox*>(ui->chipFeaturesT->cellWidget(j, 0));
             // We know what we are doing so we don't have to check if enabledCheckbox == 0
-            mSettings.setValue("enabled", enabledCheckbox->isChecked());
+            mSettings->setValue("enabled", enabledCheckbox->isChecked());
 
             colorButton = qobject_cast<QPushButton*>(ui->chipFeaturesT->cellWidget(j, 2));
             // We know what we are doing so we don't have to check if colorButton == 0
-            mSettings.setValue(
+            mSettings->setValue(
                     "color",
                     colorButton->palette().color(QPalette::Normal, QPalette::Button).name());
 
-            mSettings.endGroup();
+            mSettings->endGroup();
         }
-        mSettings.endGroup();
+        mSettings->endGroup();
 
     }
-    mSettings.endGroup();
+    mSettings->endGroup();
 
-    mSettings.setValue("warningAboutHighTemperature",
+    mSettings->setValue("warningAboutHighTemperature",
                        ui->warningAboutHighTemperatureChB->isChecked());
 }
 
@@ -187,8 +187,8 @@ void RazorSensorsConfiguration::changeProgressBarColor()
 
 void RazorSensorsConfiguration::detectedChipSelected(int index)
 {
-    mSettings.beginGroup("chips");
-    QStringList chipNames = mSettings.childGroups();
+    mSettings->beginGroup("chips");
+    QStringList chipNames = mSettings->childGroups();
     QStringList chipFeatureLabels;
     QPushButton* colorButton = NULL;
     QCheckBox* enabledCheckbox = NULL;
@@ -207,16 +207,16 @@ void RazorSensorsConfiguration::detectedChipSelected(int index)
         ui->chipFeaturesT->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
         ui->chipFeaturesT->setHorizontalHeaderLabels(chipFeaturesLabels);
 
-        mSettings.beginGroup(chipNames[index]);
-        chipFeatureLabels = mSettings.childGroups();
+        mSettings->beginGroup(chipNames[index]);
+        chipFeatureLabels = mSettings->childGroups();
         for (int j = 0; j < chipFeatureLabels.size(); ++j)
         {
-            mSettings.beginGroup(chipFeatureLabels[j]);
+            mSettings->beginGroup(chipFeatureLabels[j]);
 
             ui->chipFeaturesT->insertRow(j);
 
             enabledCheckbox = new QCheckBox(ui->chipFeaturesT);
-            enabledCheckbox->setChecked(mSettings.value("enabled").toBool());
+            enabledCheckbox->setChecked(mSettings->value("enabled").toBool());
             // Connect here after the setChecked call because we don't want to send signal
             connect(enabledCheckbox, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));
             ui->chipFeaturesT->setCellWidget(j, 0, enabledCheckbox);
@@ -229,19 +229,19 @@ void RazorSensorsConfiguration::detectedChipSelected(int index)
             connect(colorButton, SIGNAL(clicked()), this, SLOT(changeProgressBarColor()));
             QPalette pal = colorButton->palette();
             pal.setColor(QPalette::Normal, QPalette::Button,
-                         QColor(mSettings.value("color").toString()));
+                         QColor(mSettings->value("color").toString()));
             colorButton->setPalette(pal);
             ui->chipFeaturesT->setCellWidget(j, 2, colorButton);
 
-            mSettings.endGroup();
+            mSettings->endGroup();
         }
-        mSettings.endGroup();
+        mSettings->endGroup();
     }
     else
     {
         qDebug() << "Invalid chip index: " << index;
     }
 
-    mSettings.endGroup();
+    mSettings->endGroup();
 }
 

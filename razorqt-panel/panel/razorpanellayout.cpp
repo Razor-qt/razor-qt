@@ -39,16 +39,13 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QPropertyAnimation>
-
+#include "plugin.h"
 #include "razorpanellimits.h"
-
-// QVariantAnimation class was introduced in Qt 4.6.
-#if QT_VERSION >= 0x040600
-#define ANIMATION_ENABLE
-#endif
-
-
-#ifdef ANIMATION_ENABLE
+#include "irazorpanelplugin.h"
+#include "razorpanel.h"
+#include "pluginmoveprocessor.h"
+#include <QToolButton>
+#include <QStyle>
 
 #define ANIMATION_DURATION 250
 
@@ -58,8 +55,7 @@ public:
     ItemMoveAnimation(QLayoutItem *item) :
             mItem(item)
     {
-        //setEasingCurve(QEasingCurve::InOutQuad); // <-- Classic animation style
-        setEasingCurve(QEasingCurve::OutBack);   // <-- Modern animation style
+        setEasingCurve(QEasingCurve::OutBack);
         setDuration(ANIMATION_DURATION);
     }
 
@@ -70,307 +66,355 @@ public:
 
 private:
     QLayoutItem* mItem;
+
 };
-#endif
 
 
-class MoveProcItem
+struct LayoutItemInfo
+{
+    LayoutItemInfo(QLayoutItem *layoutItem=0);
+    QLayoutItem *item;
+    QRect geometry;
+    bool separate;
+    bool expandable;
+};
+
+
+LayoutItemInfo::LayoutItemInfo(QLayoutItem *layoutItem):
+    item(layoutItem),
+    separate(false),
+    expandable(false)
+{
+    if (!item)
+        return;
+
+    Plugin *p = qobject_cast<Plugin*>(item->widget());
+    if (p)
+    {
+        separate = p->isSeparate();
+        expandable = p->isExpandable();
+        return;
+    }
+}
+
+
+
+/************************************************
+  This is logical plugins grid, it's same for
+  horizontal and vertical panel. Plugins keeps as:
+
+   <---LineCount-->
+   + ---+----+----+
+   | P1 | P2 | P3 |
+   +----+----+----+
+   | P4 | P5 |    |
+   +----+----+----+
+         ...
+   +----+----+----+
+   | PN |    |    |
+   +----+----+----+
+ ************************************************/
+class LayoutItemGrid
 {
 public:
-    MoveProcItem(QLayoutItem* item);
-    ~MoveProcItem();
+    explicit LayoutItemGrid();
 
-    QRect geometry() const { return mGeometry; }
-    void move(QPoint topLeft);
+    void addItem(QLayoutItem *item);
+    int count() const { return mItems.count(); }
+    QLayoutItem *itemAt(int index) const { return mItems[index]; }
+    QLayoutItem *takeAt(int index);
+
+
+    const LayoutItemInfo &itemInfo(int row, int col) const;
+    LayoutItemInfo &itemInfo(int row, int col);
+
+    void update();
+
+    int lineSize() const { return mLineSize; }
+    void setLineSize(int value);
+
+    int colCount() const { return mColCount; }
+    void setColCount(int value);
+
+    int usedColCount() const { return mUsedColCount; }
+
+    int rowCount() const { return mRowCount; }
+
+    void invalidate() { mValid = false; }
+    bool isValid() const { return mValid; }
+
+    QSize sizeHint() const { return mSizeHint; }
+
+    bool horiz() const { return mHoriz; }
+    void setHoriz(bool value);
+
+    void clear();
+    void rebuild();
+
+    bool isExpandable() const { return mExpandable; }
+    int expandableSize() const { return mExpandableSize; }
+
+    void moveItem(int from, int to);
 
 private:
-    QLayoutItem* mItem;
-    QRect mGeometry;
-#ifdef ANIMATION_ENABLE
-    ItemMoveAnimation* mAnimation;
-#endif
+    QVector<LayoutItemInfo> mInfoItems;
+    int mColCount;
+    int mUsedColCount;
+    int mRowCount;
+    bool mValid;
+    int mExpandableSize;
+    int mLineSize;
+
+    QSize mSizeHint;
+    QSize mMinSize;
+    bool mHoriz;
+
+    int mNextRow;
+    int mNextCol;
+    bool mExpandable;
+    QList<QLayoutItem*> mItems;
+
+    void doAddToGrid(QLayoutItem *item);
 };
 
 
 /************************************************
 
  ************************************************/
-MoveProcessor::MoveProcessor(RazorPanelLayout* layout, QWidget* movedWidget):
-    QWidget(movedWidget),
-    mWidget(movedWidget),
-    mLayout(layout)
+LayoutItemGrid::LayoutItemGrid()
 {
-    mWidgetPlace = mWidget->geometry();
-    mOffset = QCursor::pos() - mWidget->pos();
-    mIndex = layout->indexOf(movedWidget);
-    mWidget->raise();
+    mLineSize = 0;
+    clear();
+}
 
-    for (int i=0; i<layout->count(); ++i)
+
+/************************************************
+
+ ************************************************/
+void LayoutItemGrid::clear()
+{
+    mRowCount = 0;
+    mNextRow = 0;
+    mNextCol = 0;
+    mInfoItems.resize(0);
+    mValid = false;
+    mExpandable = false;
+    mExpandableSize = 0;
+    mUsedColCount = 0;
+    mSizeHint = QSize(0,0);
+    mMinSize = QSize(0,0);
+}
+
+
+/************************************************
+
+ ************************************************/
+void LayoutItemGrid::rebuild()
+{
+    clear();
+
+    foreach(QLayoutItem *item, mItems)
     {
-        if (i != mIndex)
-            mItems.append(new MoveProcItem(layout->itemAt(i)));
+        doAddToGrid(item);
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void LayoutItemGrid::addItem(QLayoutItem *item)
+{
+    doAddToGrid(item);
+    mItems.append(item);
+}
+
+
+/************************************************
+
+ ************************************************/
+void LayoutItemGrid::doAddToGrid(QLayoutItem *item)
+{
+    LayoutItemInfo info(item);
+
+    if (info.separate && mNextCol > 0)
+    {
+        mNextCol = 0;
+        mNextRow++;
     }
 
-    QBoxLayout::Direction dir = layout->direction();
-    mHoriz = (dir == QBoxLayout::LeftToRight || dir == QBoxLayout::RightToLeft);
+    int cnt = (mNextRow + 1 ) * mColCount;
+    if (mInfoItems.count() <= cnt)
+        mInfoItems.resize(cnt);
 
-    setMouseTracking(true);
-    show(); //  Only visible widgets can grab mouse input.
+    int idx = mNextRow * mColCount + mNextCol;
+    mInfoItems[idx] = info;
+    mUsedColCount = qMax(mUsedColCount, mNextCol + 1);
+    mExpandable = mExpandable || info.expandable;
+    mRowCount = qMax(mRowCount, mNextRow+1);
 
-    if (mHoriz) this->grabMouse(Qt::SizeHorCursor);
-    else        this->grabMouse(Qt::SizeVerCursor);
-
-    layout->setEnabled(false);
-}
-
-
-/************************************************
-
- ************************************************/
-MoveProcessor::~MoveProcessor()
-{
-    qDeleteAll(mItems);
-}
-
-
-/************************************************
-
- ************************************************/
-bool MoveProcessor::event(QEvent* event)
-{
-    switch (event->type())
+    if (info.separate || mNextCol >= mColCount-1)
     {
-        case QEvent::MouseMove:
-            if (mHoriz) mouseMoveHoriz();
-            else        mouseMoveVert();
-
-            event->accept();
-            return true;
-
-        case QEvent::MouseButtonPress:
-        case QEvent::MouseButtonDblClick:
-            event->accept();
-            return true;
-
-        case QEvent::MouseButtonRelease:
-            event->accept();
-            apply();
-            return true;
-
-
-        case QEvent::ContextMenu:
-            event->accept();
-            return true;
-
-        default:
-            break;
+        mNextRow++;
+        mNextCol = 0;
+    }
+    else
+    {
+        mNextCol++;
     }
 
-    return QWidget::event(event);
+    invalidate();
 }
 
 
 /************************************************
 
  ************************************************/
-inline void MoveProcessor::mouseMoveHoriz()
+QLayoutItem *LayoutItemGrid::takeAt(int index)
 {
-    mWidget->move((QCursor::pos() - mOffset).x(), mWidget->pos().y());
+    QLayoutItem *item = mItems.takeAt(index);
+    rebuild();
+    return item;
+}
 
-    // ::::::::::::::::::::::
-    QRect widgetGeometry = mWidget->geometry();
 
-    // Check to left ..................
-    for (int i = mIndex-1; i>-1; --i)
+/************************************************
+
+ ************************************************/
+void LayoutItemGrid::moveItem(int from, int to)
+{
+    mItems.move(from, to);
+    rebuild();
+}
+
+
+/************************************************
+
+ ************************************************/
+const LayoutItemInfo &LayoutItemGrid::itemInfo(int row, int col) const
+{
+    return mInfoItems[row * mColCount + col];
+}
+
+
+/************************************************
+
+ ************************************************/
+LayoutItemInfo &LayoutItemGrid::itemInfo(int row, int col)
+{
+    return mInfoItems[row * mColCount + col];
+}
+
+
+/************************************************
+
+ ************************************************/
+void LayoutItemGrid::update()
+{
+    mExpandableSize = 0;
+    mSizeHint = QSize(0,0);
+
+    if (mHoriz)
     {
-        MoveProcItem* item = mItems[i];
-        if (widgetGeometry.left() < item->geometry().center().x())
+        mSizeHint.setHeight(mLineSize * mColCount);
+        int x = 0;
+        for (int r=0; r<mRowCount; ++r)
         {
-            mIndex--;
-            QPoint p = item->geometry().topLeft();
-            p.rx() += widgetGeometry.width();
-            item->move(p);
-            mWidgetPlace.translate(- item->geometry().width(), 0);
+            int y = 0;
+            int rw = 0;
+            for (int c=0; c<mColCount; ++c)
+            {
+                LayoutItemInfo &info = itemInfo(r, c);
+                if (!info.item)
+                    continue;
+
+                QSize sz = info.item->sizeHint();
+                info.geometry = QRect(QPoint(x,y), sz);
+                y += sz.height();
+                rw = qMax(rw, sz.width());
+            }
+            x += rw;
+
+            if (itemInfo(r, 0).expandable)
+                mExpandableSize += rw;
+
+            mSizeHint.setWidth(x);
+            mSizeHint.rheight() = qMax(mSizeHint.rheight(), y);
         }
-        else
-            break;
     }
-
-
-    // Check to right ..................
-    for (int i = mIndex; i<mItems.size(); ++i)
+    else
     {
-        MoveProcItem* item = mItems[i];
-        if (widgetGeometry.right() > item->geometry().center().x())
+        mSizeHint.setWidth(mLineSize * mColCount);
+        int y = 0;
+        for (int r=0; r<mRowCount; ++r)
         {
-            mIndex++;
-            QPoint p = item->geometry().topLeft();
-            p.rx() -= widgetGeometry.width();
-            item->move(p);
-            mWidgetPlace.translate(item->geometry().width(), 0);
+            int x = 0;
+            int rh = 0;
+            for (int c=0; c<mColCount; ++c)
+            {
+                LayoutItemInfo &info = itemInfo(r, c);
+                if (!info.item)
+                    continue;
+
+                QSize sz = info.item->sizeHint();
+                info.geometry = QRect(QPoint(x,y), sz);
+                x += sz.width();
+                rh = qMax(rh, sz.height());
+            }
+            y += rh;
+
+            if (itemInfo(r, 0).expandable)
+                mExpandableSize += rh;
+
+            mSizeHint.setHeight(y);
+            mSizeHint.rwidth() = qMax(mSizeHint.rwidth(), x);
         }
-        else
-            break;
-    }
-}
-
-
-/************************************************
-
- ************************************************/
-inline void MoveProcessor::mouseMoveVert()
-{
-    mWidget->move(mWidget->pos().x(), (QCursor::pos() - mOffset).y());
-
-    // ::::::::::::::::::::::
-    QRect widgetGeometry = mWidget->geometry();
-
-    // Check to top ..................
-    for (int i = mIndex-1; i>-1; --i)
-    {
-        MoveProcItem* item = mItems[i];
-        if (widgetGeometry.top() < item->geometry().center().y())
-        {
-            mIndex--;
-            QPoint p = item->geometry().topLeft();
-            p.ry() += widgetGeometry.height();
-            item->move(p);
-            mWidgetPlace.translate(0, -item->geometry().height());
-        }
-        else
-            break;
     }
 
-
-    // Check to bottom ................
-    for (int i = mIndex; i<mItems.size(); ++i)
-    {
-        MoveProcItem* item = mItems[i];
-        if ( widgetGeometry.bottom() > item->geometry().center().y())
-        {
-            mIndex++;
-            QPoint p = item->geometry().topLeft();
-            p.ry() -= widgetGeometry.height();
-            item->move(p);
-            mWidgetPlace.translate(0, item->geometry().height());
-        }
-        else
-            break;
-    }
+    mValid = true;
 }
 
 
 /************************************************
 
  ************************************************/
-void MoveProcessor::apply()
+void LayoutItemGrid::setLineSize(int value)
 {
-    int n = mLayout->indexOf(mWidget);
-
-    QLayoutItem* item = mLayout->takeAt(n);
-    mLayout->insertItem(mIndex, item);
-
-#ifdef ANIMATION_ENABLE
-    ItemMoveAnimation* animation = new ItemMoveAnimation(item);
-    connect(animation, SIGNAL(finished()), this, SLOT(finished()));
-    animation->setStartValue(item->geometry());
-    animation->setEndValue(mWidgetPlace);
-    animation->start(animation->DeleteWhenStopped);
-#else
-    finished();
-#endif
+    mLineSize = qMax(1, value);
+    invalidate();
 }
 
 
 /************************************************
 
  ************************************************/
-void MoveProcessor::finished()
+void LayoutItemGrid::setColCount(int value)
 {
-    releaseMouse();
-    mLayout->setEnabled(true);
-    // activate not work on Qt 4.7, but update not work on 4.6.
-    mLayout->activate();
-    mLayout->update();
-    emit widgetMoved(mWidget);
-    delete this;
-}
-
-
-#ifdef ANIMATION_ENABLE
-/************************************************
-
- ************************************************/
-MoveProcItem::MoveProcItem(QLayoutItem* item):
-    mAnimation(0)
-{
-    mItem = item;
-    mGeometry = item->geometry();
-}
-
-
-/************************************************
-
- ************************************************/
-MoveProcItem::~MoveProcItem()
-{
-    delete mAnimation;
-}
-
-
-/************************************************
-
- ************************************************/
-void MoveProcItem::move(QPoint topLeft)
-{
-    mGeometry.moveTopLeft(topLeft);
-    if (!mAnimation)
-        mAnimation = new ItemMoveAnimation(mItem);
-
-    mAnimation->stop();
-    mAnimation->setStartValue(mItem->geometry());
-    mAnimation->setEndValue(mGeometry);
-    mAnimation->start();
-}
-
-
-#else
-/************************************************
-
- ************************************************/
-MoveProcItem::MoveProcItem(QLayoutItem* item)
-{
-    mItem = item;
-    mGeometry = item->geometry();
-}
-
-
-/************************************************
-
- ************************************************/
-MoveProcItem::~MoveProcItem()
-{
+    mColCount = qMax(1, value);
+    rebuild();
 }
 
 /************************************************
 
  ************************************************/
-void MoveProcItem::move(QPoint topLeft)
+void LayoutItemGrid::setHoriz(bool value)
 {
-    mGeometry.moveTopLeft(topLeft);
-    mItem->setGeometry(mGeometry);
+    mHoriz = value;
+    invalidate();
 }
-#endif
+
 
 
 /************************************************
 
  ************************************************/
-RazorPanelLayout::RazorPanelLayout(Direction dir, QWidget * parent):
-    QBoxLayout(dir, parent)
+RazorPanelLayout::RazorPanelLayout(QWidget *parent) :
+    QLayout(parent),
+    mLeftGrid(new LayoutItemGrid()),
+    mRightGrid(new LayoutItemGrid()),
+    mPosition(IRazorPanel::PositionBottom),
+    mAnimate(false)
 {
-    setContentsMargins(0, 0, 0, 0);
-    setSpacing(0);
     setMargin(0);
 }
 
@@ -380,16 +424,129 @@ RazorPanelLayout::RazorPanelLayout(Direction dir, QWidget * parent):
  ************************************************/
 RazorPanelLayout::~RazorPanelLayout()
 {
+    delete mLeftGrid;
+    delete mRightGrid;
 }
 
 
 /************************************************
 
  ************************************************/
-void RazorPanelLayout::startMoveWidget(QWidget* widget)
+void RazorPanelLayout::addItem(QLayoutItem *item)
 {
-    MoveProcessor* mp = new MoveProcessor(this, widget);
-    connect(mp, SIGNAL(widgetMoved(QWidget*)), this, SIGNAL(widgetMoved(QWidget*)));
+    LayoutItemGrid *grid = mRightGrid;
+
+    Plugin *p = qobject_cast<Plugin*>(item->widget());
+    if (p && p->alignment() == Plugin::AlignLeft)
+        grid = mLeftGrid;
+
+    grid->addItem(item);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::globalIndexToLocal(int index, LayoutItemGrid **grid, int *gridIndex)
+{
+    if (index < mLeftGrid->count())
+    {
+        *grid = mLeftGrid;
+        *gridIndex = index;
+        return;
+    }
+
+    *grid = mRightGrid;
+    *gridIndex = index - mLeftGrid->count();
+}
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::globalIndexToLocal(int index, LayoutItemGrid **grid, int *gridIndex) const
+{
+    if (index < mLeftGrid->count())
+    {
+        *grid = mLeftGrid;
+        *gridIndex = index;
+        return;
+    }
+
+    *grid = mRightGrid;
+    *gridIndex = index - mLeftGrid->count();
+}
+
+
+/************************************************
+
+ ************************************************/
+QLayoutItem *RazorPanelLayout::itemAt(int index) const
+{
+    if (index < 0 || index >= count())
+        return 0;
+
+    LayoutItemGrid *grid=0;
+    int idx=0;
+    globalIndexToLocal(index, &grid, &idx);
+
+    return grid->itemAt(idx);
+}
+
+
+/************************************************
+
+ ************************************************/
+QLayoutItem *RazorPanelLayout::takeAt(int index)
+{
+    if (index < 0 || index >= count())
+        return 0;
+
+    LayoutItemGrid *grid=0;
+    int idx=0;
+    globalIndexToLocal(index, &grid, &idx);
+
+    return grid->takeAt(idx);
+}
+
+
+/************************************************
+
+ ************************************************/
+int RazorPanelLayout::count() const
+{
+    return mLeftGrid->count() + mRightGrid->count();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::moveItem(int from, int to, bool withAnimation)
+{
+    if (from != to)
+    {
+        LayoutItemGrid *fromGrid=0;
+        int fromIdx=0;
+        globalIndexToLocal(from, &fromGrid, &fromIdx);
+
+        LayoutItemGrid *toGrid=0;
+        int toIdx=0;
+        globalIndexToLocal(to, &toGrid, &toIdx);
+
+        if (fromGrid == toGrid)
+        {
+            fromGrid->moveItem(fromIdx, toIdx);
+        }
+        else
+        {
+            QLayoutItem *item = fromGrid->takeAt(fromIdx);
+            toGrid->addItem(item);
+            toGrid->moveItem(toGrid->count()-1, toIdx);
+        }
+    }
+
+    mAnimate = withAnimation;
+    invalidate();
 }
 
 
@@ -398,11 +555,410 @@ void RazorPanelLayout::startMoveWidget(QWidget* widget)
  ************************************************/
 QSize RazorPanelLayout::sizeHint() const
 {
-    QSize size = QBoxLayout::sizeHint();
-    if (isEmpty())
+    if (!mLeftGrid->isValid())
+        mLeftGrid->update();
+
+    if (!mRightGrid->isValid())
+        mRightGrid->update();
+
+    QSize ls = mLeftGrid->sizeHint();
+    QSize rs = mRightGrid->sizeHint();
+
+    if (isHorizontal())
     {
-        size.rheight() = qMax(size.rheight(), PANEL_MINIMUM_SIZE);
-        size.rwidth() = qMax(size.rwidth(), PANEL_MINIMUM_SIZE);
+        return QSize(ls.width() + rs.width(),
+                     qMax(ls.height(), rs.height()));
     }
-    return size;
+    else
+    {
+        return QSize(qMax(ls.width(), rs.width()),
+                     ls.height() + rs.height());
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setGeometry(const QRect &geometry)
+{
+    if (!mLeftGrid->isValid())
+        mLeftGrid->update();
+
+    if (!mRightGrid->isValid())
+        mRightGrid->update();
+
+    if (count())
+    {
+        if (isHorizontal())
+            setGeometryHoriz(geometry);
+        else
+            setGeometryVert(geometry);
+    }
+
+    mAnimate = false;
+    QLayout::setGeometry(geometry);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setItemGeometry(QLayoutItem *item, const QRect &geometry, bool withAnimation)
+{
+    Plugin *plugin = qobject_cast<Plugin*>(item->widget());
+    if (withAnimation && plugin)
+    {
+        ItemMoveAnimation* animation = new ItemMoveAnimation(item);
+        animation->setStartValue(item->geometry());
+        animation->setEndValue(geometry);
+        animation->start(animation->DeleteWhenStopped);
+    }
+    else
+    {
+        item->setGeometry(geometry);
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setGeometryHoriz(const QRect &geometry)
+{
+    // Calc expFactor for expandable plugins like TaskBar.
+    double expFactor;
+    {
+        int expWidth = mLeftGrid->expandableSize() + mRightGrid->expandableSize();
+        int nonExpWidth = mLeftGrid->sizeHint().width()  - mLeftGrid->expandableSize() +
+                      mRightGrid->sizeHint().width() - mRightGrid->expandableSize();
+        expFactor = expWidth ? ((1.0 * geometry.width() - nonExpWidth) / expWidth) : 1;
+    }
+
+    // Calc baselines for plugins like button.
+    QVector<int> baseLines(qMax(mLeftGrid->colCount(), mRightGrid->colCount()));
+    {
+        int bh = (geometry.height() / baseLines.count()) / 2;
+        for (int i=0; i<baseLines.count(); ++i)
+            baseLines[i] = geometry.top() + (i * 2 + 1) * bh;
+    }
+
+#if 0
+    qDebug() << "** RazorPanelLayout::setGeometryHoriz **************";
+    qDebug() << "geometry: " << geometry;
+
+    qDebug() << "Left grid";
+    qDebug() << "  cols:" << mLeftGrid->colCount() << " rows:" << mLeftGrid->rowCount();
+    qDebug() << "  usedCols" << mLeftGrid->usedColCount();
+
+    qDebug() << "Right grid";
+    qDebug() << "  cols:" << mRightGrid->colCount() << " rows:" << mRightGrid->rowCount();
+    qDebug() << "  usedCols" << mRightGrid->usedColCount();
+#endif
+
+
+    // Left aligned plugins.
+    int left=geometry.left();
+    for (int r=0; r<mLeftGrid->rowCount(); ++r)
+    {
+        int rw = 0;
+        for (int c=0; c<mLeftGrid->usedColCount(); ++c)
+        {
+            const LayoutItemInfo &info = mLeftGrid->itemInfo(r, c);
+            if (info.item)
+            {
+                QRect rect;
+                if (info.separate)
+                {
+                    rect.setLeft(left);
+                    rect.setTop(geometry.top());
+                    rect.setHeight(geometry.height());
+
+                    if (info.expandable)
+                        rect.setWidth(info.geometry.width() * expFactor);
+                    else
+                        rect.setWidth(info.geometry.width());
+                }
+                else
+                {
+                    rect.setSize(info.geometry.size());
+                    rect.moveCenter(QPoint(0, baseLines[c]));
+                    rect.moveLeft(left);
+                }
+
+                rw = qMax(rw, rect.width());
+                setItemGeometry(info.item, rect, mAnimate);
+            }
+        }
+        left += rw;
+    }
+
+    // Right aligned plugins.
+    int right=geometry.right();
+    for (int r=mRightGrid->rowCount()-1; r>=0; --r)
+    {
+        int rw = 0;
+        for (int c=0; c<mRightGrid->usedColCount(); ++c)
+        {
+            const LayoutItemInfo &info = mRightGrid->itemInfo(r, c);
+            if (info.item)
+            {
+                QRect rect;
+                if (info.separate)
+                {
+                    rect.setTop(geometry.top());
+                    rect.setHeight(geometry.height());
+
+                    if (info.expandable)
+                        rect.setWidth(info.geometry.width() * expFactor);
+                    else
+                        rect.setWidth(info.geometry.width());
+
+                    rect.moveRight(right);
+                }
+                else
+                {
+                    rect.setSize(info.geometry.size());
+                    rect.moveCenter(QPoint(0, baseLines[c]));
+                    rect.moveRight(right);
+                }
+
+                rw = qMax(rw, rect.width());
+                setItemGeometry(info.item, rect, mAnimate);
+            }
+        }
+        right -= rw;
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setGeometryVert(const QRect &geometry)
+{
+    // Calc expFactor for expandable plugins like TaskBar.
+    double expFactor;
+    {
+        int expHeight = mLeftGrid->expandableSize() + mRightGrid->expandableSize();
+        int nonExpHeight = mLeftGrid->sizeHint().height()  - mLeftGrid->expandableSize() +
+                           mRightGrid->sizeHint().height() - mRightGrid->expandableSize();
+        expFactor = expHeight ? ((1.0 * geometry.height() - nonExpHeight) / expHeight) : 1;
+    }
+
+    // Calc baselines for plugins like button.
+    QVector<int> baseLines(qMax(mLeftGrid->colCount(), mRightGrid->colCount()));
+    {
+        int bw = (geometry.width() / baseLines.count()) / 2;
+        for (int i=0; i<baseLines.count(); ++i)
+            baseLines[i] = geometry.left() + (i * 2 + 1) * bw;
+    }
+
+#if 0
+    qDebug() << "** RazorPanelLayout::setGeometryVert **************";
+    qDebug() << "geometry: " << geometry;
+
+    qDebug() << "Left grid";
+    qDebug() << "  cols:" << mLeftGrid->colCount() << " rows:" << mLeftGrid->rowCount();
+    qDebug() << "  usedCols" << mLeftGrid->usedColCount();
+
+    qDebug() << "Right grid";
+    qDebug() << "  cols:" << mRightGrid->colCount() << " rows:" << mRightGrid->rowCount();
+    qDebug() << "  usedCols" << mRightGrid->usedColCount();
+#endif
+
+    // Top aligned plugins.
+    int top=geometry.top();
+    for (int r=0; r<mLeftGrid->rowCount(); ++r)
+    {
+        int rh = 0;
+        for (int c=0; c<mLeftGrid->usedColCount(); ++c)
+        {
+            const LayoutItemInfo &info = mLeftGrid->itemInfo(r, c);
+            if (info.item)
+            {
+                QRect rect;
+                if (info.separate)
+                {
+                    rect.moveTop(top);
+                    rect.setLeft(geometry.left());
+                    rect.setWidth(geometry.width());
+
+                    if (info.expandable)
+                        rect.setHeight(info.geometry.height() * expFactor);
+                    else
+                        rect.setHeight(info.geometry.height());
+                }
+                else
+                {
+                    rect.setSize(info.geometry.size());
+                    rect.moveCenter(QPoint(baseLines[c], 0));
+                    rect.moveTop(top);
+                }
+
+                rh = qMax(rh, rect.height());
+                setItemGeometry(info.item, rect, mAnimate);
+            }
+        }
+        top += rh;
+    }
+
+
+    // Bottom aligned plugins.
+    int bottom=geometry.bottom();
+    for (int r=mRightGrid->rowCount()-1; r>=0; --r)
+    {
+        int rh = 0;
+        for (int c=0; c<mRightGrid->usedColCount(); ++c)
+        {
+            const LayoutItemInfo &info = mRightGrid->itemInfo(r, c);
+            if (info.item)
+            {
+                QRect rect;
+                if (info.separate)
+                {
+                    rect.setLeft(geometry.left());
+                    rect.setWidth(geometry.width());
+
+                    if (info.expandable)
+                        rect.setHeight(info.geometry.height() * expFactor);
+                    else
+                        rect.setHeight(info.geometry.height());
+                    rect.moveBottom(bottom);
+                }
+                else
+                {
+                    rect.setSize(info.geometry.size());
+                    rect.moveCenter(QPoint(baseLines[c], 0));
+                    rect.moveBottom(bottom);
+                }
+
+                rh = qMax(rh, rect.height());
+                setItemGeometry(info.item, rect, mAnimate);
+            }
+        }
+        bottom -= rh;
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::invalidate()
+{
+    mLeftGrid->invalidate();
+    mRightGrid->invalidate();
+    mMinPluginSize = QSize();
+    QLayout::invalidate();
+}
+
+
+/************************************************
+
+ ************************************************/
+int RazorPanelLayout::lineCount() const
+{
+    return mLeftGrid->colCount();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setLineCount(int value)
+{
+    mLeftGrid->setColCount(value);
+    mRightGrid->setColCount(value);
+    invalidate();
+}
+
+
+/************************************************
+
+ ************************************************/
+int RazorPanelLayout::lineSize() const
+{
+    return mLeftGrid->lineSize();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setLineSize(int value)
+{
+    mLeftGrid->setLineSize(value);
+    mRightGrid->setLineSize(value);
+    invalidate();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::setPosition(IRazorPanel::Position value)
+{
+    mPosition = value;
+    mLeftGrid->setHoriz(isHorizontal());
+    mRightGrid->setHoriz(isHorizontal());
+}
+
+
+/************************************************
+
+ ************************************************/
+bool RazorPanelLayout::isHorizontal() const
+{
+    return mPosition == IRazorPanel::PositionTop ||
+            mPosition == IRazorPanel::PositionBottom;
+}
+
+
+/************************************************
+
+ ************************************************/
+bool RazorPanelLayout::itemIsSeparate(QLayoutItem *item)
+{
+    if (!item)
+        return true;
+
+    Plugin *p = qobject_cast<Plugin*>(item->widget());
+    if (!p)
+        return true;
+
+    return p->isSeparate();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::startMovePlugin()
+{
+    Plugin *plugin = qobject_cast<Plugin*>(sender());
+    if (plugin)
+    {
+        // We have not memoryleaks there.
+        // The processor will be automatically deleted when stopped.
+        PluginMoveProcessor *moveProcessor = new PluginMoveProcessor(this, plugin);
+        moveProcessor->start();
+        connect(moveProcessor, SIGNAL(finished()), this, SLOT(finishMovePlugin()));
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanelLayout::finishMovePlugin()
+{
+    PluginMoveProcessor *moveProcessor = qobject_cast<PluginMoveProcessor*>(sender());
+    if (moveProcessor)
+    {
+        Plugin *plugin = moveProcessor->plugin();
+        int n = indexOf(plugin);
+        plugin->setAlignment(n<mLeftGrid->count() ? Plugin::AlignLeft : Plugin::AlignRight);
+        emit pluginMoved();
+    }
 }

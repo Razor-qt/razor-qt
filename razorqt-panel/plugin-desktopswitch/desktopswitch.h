@@ -29,41 +29,63 @@
 #ifndef DESKTOPSWITCH_H
 #define DESKTOPSWITCH_H
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
+#include <QFrame>
 
 class QSignalMapper;
 class QButtonGroup;
+class RazorGridLayout;
 
+class DesktopSwitchWidget: public QFrame
+{
+    Q_OBJECT
+public:
+    DesktopSwitchWidget();
+
+protected:
+    void wheelEvent(QWheelEvent* e);
+};
 
 /**
  * @brief Desktop switcher. A very simple one...
  */
-class DesktopSwitch : public RazorPanelPlugin
+class DesktopSwitch : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    DesktopSwitch(const RazorPanelPluginStartInfo* startInfo, QWidget* parent = 0);
+    DesktopSwitch(const IRazorPanelPluginStartupInfo &startupInfo);
     ~DesktopSwitch();
 
+    QString themeId() const { return "DesktopSwitch"; }
+    QWidget *widget() { return &mWidget; }
+    bool isSeparate() const { return true; }
     virtual void x11EventFilter(XEvent* event);
-    
+    void realign();
+
 private:
     QButtonGroup * m_buttons;
     QSignalMapper* m_pSignalMapper;
     int m_desktopCount;
     QStringList m_desktopNames;
+    DesktopSwitchWidget mWidget;
+    RazorGridLayout *mLayout;
 
-    void wheelEvent(QWheelEvent* e);
     void setup();
 
 private slots:
     void setDesktop(int desktop);
 
 protected slots:
-    virtual void realign();
+
 };
 
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class DesktopSwitchPluginLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo) { return new DesktopSwitch(startupInfo);}
+};
 
 #endif

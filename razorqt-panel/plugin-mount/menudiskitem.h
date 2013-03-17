@@ -28,11 +28,12 @@
 #ifndef MENUDISKITEM_H
 #define MENUDISKITEM_H
 
-#include "ui_menudiskitem.h"
+#include <QFrame>
+
 class RazorMountDevice;
+class QToolButton;
 
-
-class MenuDiskItem : public QWidget, private Ui::MenuDiskItem
+class MenuDiskItem : public QFrame
 {
     Q_OBJECT
 
@@ -46,12 +47,9 @@ public:
 signals:
     void error(const QString &msg);
 
-protected:
-    void changeEvent(QEvent *e);
-
 private slots:
-    void on_eject_clicked();
-    void on_diskButton_clicked();
+    void ejectButtonClicked();
+    void diskButtonClicked();
     void update();
     void free();
     void mounted();
@@ -59,6 +57,8 @@ private slots:
 
 private:
     RazorMountDevice *mDevice;
+    QToolButton *mDiskButton;
+    QToolButton *mEjectButton;
 };
 
 #endif // MENUDISKITEM_H

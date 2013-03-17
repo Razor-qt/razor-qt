@@ -32,7 +32,7 @@
 
 #include <QtGui/QLabel>
 
-#include "../panel/razorpanelplugin.h"
+#include "../panel/irazorpanelplugin.h"
 #include "razorworldclockconfiguration.h"
 
 
@@ -46,18 +46,20 @@ namespace U_ICU_NAMESPACE {
     class DateFormat;
 }
 
-class RazorWorldClock : public RazorPanelPlugin
+class RazorWorldClock : public QObject, public IRazorPanelPlugin
 {
     Q_OBJECT
 public:
-    RazorWorldClock(const RazorPanelPluginStartInfo* startInfo, QWidget *parent = NULL);
+    RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo);
     ~RazorWorldClock();
 
-    virtual RazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog; }
+    virtual QWidget *widget();
+    virtual QString themeId() const { return "WorldClock"; }
+    virtual IRazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
+    bool isSeparate() const { return true; }
 
-protected slots:
     virtual void settingsChanged();
-    virtual void showConfigureDialog();
+    QDialog *configureDialog();
 
 private slots:
     void synchroTimeout();
@@ -120,6 +122,16 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
 };
 
-EXPORT_RAZOR_PANEL_PLUGIN_H
+class RazorWorldClockLibrary: public QObject, public IRazorPanelPluginLibrary
+{
+    Q_OBJECT
+    Q_INTERFACES(IRazorPanelPluginLibrary)
+public:
+    IRazorPanelPlugin *instance(const IRazorPanelPluginStartupInfo &startupInfo)
+    {
+        return new RazorWorldClock(startupInfo);
+    }
+};
+
 
 #endif // RAZORPANELWORLDCLOCK_H

@@ -51,7 +51,7 @@ class RazorSysStatConfiguration : public QDialog
     Q_OBJECT
 
 public:
-    explicit RazorSysStatConfiguration(QSettings &settings, QWidget *parent = 0);
+    explicit RazorSysStatConfiguration(QSettings *settings, QWidget *parent = 0);
     ~RazorSysStatConfiguration();
 
 public slots:
@@ -69,7 +69,7 @@ signals:
 
 private:
     Ui::RazorSysStatConfiguration *ui;
-    QSettings &mSettings;
+    QSettings *mSettings;
     RazorSettingsCache oldSettings;
 
     void loadSettings();
