@@ -8,7 +8,7 @@ Priority: optional
 Maintainer: %DEBFULLNAME% <%DEBEMAIL%>
 Build-Depends: pkg-config,
 %if MULTIARCH yes
-    %if DISTRIB Debian  
+    %if DISTRIB Debian
     debhelper (>= 9),
     %elseif DISTRIB Ubuntu
         %if RELEASE precise quantal
@@ -16,7 +16,7 @@ Build-Depends: pkg-config,
         %elsif RELEASE oneiric
     debhelper (>= 8),
         %endif
-    %endif 
+    %endif
     dpkg-dev (>= 1.16.0~),
 %else
     debhelper (>= 7.0.50~),
@@ -112,7 +112,10 @@ Description: Razor-qt desktop environment
  other modern WMs can be used, such as fwwm2 to kwin.
 
 Package: razorqt-data
-Architecture: all
+Architecture: any
+%if MULTIARCH yes
+Multi-Arch: same
+%endif
 Depends: ${misc:Depends}
 Replaces: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
 Conflicts: razor-qt, razor-data, razorqt-power (<< ${binary:Version})
@@ -182,15 +185,12 @@ Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
 %endif
 Depends: libqtxdg0 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends},
- razorqt-data (= ${source:Version})
+ razorqt-data (= ${binary:Version}),
 Replaces: razor-qt
 Conflicts: razor-qt
 Description: Common libraries and binaries for the Razor-qt
  This package provides the libraries and binaries that are shared amongst
  the various components of Razor-qt.
- .
- Theres a razor-about application that display information about
- the Razor-qt dekstop, including technical info.
  .
  This package is part of the Razor-qt.
 
@@ -228,6 +228,9 @@ Replaces: razor-qt, razor-desktop
 Conflicts: razor-qt, razor-desktop
 Description: Razor-qt desktop component
  Desktop manager for Razor-qt.
+ .
+ Theres a razor-about application that display information about
+ the Razor-qt dekstop, including technical info.
  .
  This package is part of the Razor-qt.
 

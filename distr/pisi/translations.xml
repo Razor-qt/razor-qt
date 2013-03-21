@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<PISI>
+    <Source>
+        <Name>razor-qt</Name>
+        <Summary xml:lang="tr">Razor-qt masaüstü</Summary>
+        <Description xml:lang="tr">Razor-qt , Qt teknolojilere dayalı gelişmiş, kullanımı kolay ve hızlı bir masaüstü ortamıdır. Diğer Masaüstü ortamlarının aksine, Razor-qt zayıf  ve düşük gereksinimli biligisayarlarda çalışan bir yazılımdır.
+        Bu paket Razor-qt'nin tüm bileşenlerini sağlar.</Description>
+    </Source>
+</PISI>
