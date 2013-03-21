@@ -45,10 +45,13 @@ public:
 
     void setFocus(Qt::FocusReason reason);
 
-    bool isMain() { return m_main; };
+    bool showLoginForm();
+
     LoginForm* loginForm() { return m_LoginForm; };
 private:
-    bool m_main;
+    int getOffset(QString key, int maxVal);
+    void setBackgroundImage(); 
+    int m_Screen;
     LoginForm* m_LoginForm;
 };
 

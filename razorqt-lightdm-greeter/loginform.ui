@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
-    <height>397</height>
+    <width>314</width>
+    <height>396</height>
    </rect>
   </property>
   <property name="font">
@@ -24,7 +24,7 @@
     <rect>
      <x>40</x>
      <y>30</y>
-     <width>230</width>
+     <width>271</width>
      <height>361</height>
     </rect>
    </property>
@@ -36,7 +36,7 @@
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
-     <number>18</number>
+     <number>60</number>
     </property>
     <item row="0" column="1">
      <widget class="QLabel" name="hostnameLabel">
@@ -71,7 +71,7 @@
        <number>0</number>
       </property>
       <property name="indent">
-       <number>60</number>
+       <number>10</number>
       </property>
      </widget>
     </item>
@@ -247,8 +247,8 @@
   <widget class="QLabel" name="iconLabel">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>3</y>
+     <x>14</x>
+     <y>6</y>
      <width>80</width>
      <height>80</height>
     </rect>
@@ -269,7 +269,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../../../tmp/slicer.png</pixmap>
+    <pixmap>resources/rqt-2.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

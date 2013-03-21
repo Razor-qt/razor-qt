@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     {
         MainWindow *w = new MainWindow(i);
         w->show();
-        if (w->isMain())
+        if (w->showLoginForm())
             focusWindow = w;
     }
 
