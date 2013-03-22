@@ -285,23 +285,26 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
 void RazorTaskBar::setButtonSizeLimits()
 {
     QSize maxSize;
-    QSize minSize = QSize(0, 0);
-    
-    if (mPlugin->panel()->isHorizontal())
-    {
-        minSize.setHeight(mPlugin->panel()->lineSize());
-    }
-    
-    // max size fro icon only is disabled. And teh sizing is really
+    QSize minSize;
+
+    // max size for icon only is disabled. And the sizing is really
     // suboptimal for this stype without hard-setting the button to square
     // size. 20130316 pvanek
     if (mButtonStyle == Qt::ToolButtonIconOnly)
     {
-        minSize.setWidth(minSize.height());
-        maxSize = minSize;
+        int s = mPlugin->panel()->lineSize();
+        maxSize = QSize(s, s);
+        minSize = maxSize;
     }
     else
     {
+        minSize = QSize(0, 0);
+    
+        if (mPlugin->panel()->isHorizontal())
+        {
+            minSize.setHeight(mPlugin->panel()->lineSize());
+        }
+    
         // rest of toolbutton styles
         maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
         if (mPlugin->panel()->isHorizontal() &&
@@ -334,18 +337,17 @@ void RazorTaskBar::settingsChanged()
     {
         setButtonStyle(Qt::ToolButtonIconOnly);
         mButtonMaxWidth = -1;
-        setButtonSizeLimits();
     }
     else if (s == "TEXT")
     {
         setButtonStyle(Qt::ToolButtonTextOnly);
-        setButtonSizeLimits();
     }
     else
     {
         setButtonStyle(Qt::ToolButtonTextBesideIcon);
-        setButtonSizeLimits();
     }
+    
+    setButtonSizeLimits();
 
     mShowOnlyCurrentDesktopTasks = mPlugin->settings()->value("showOnlyCurrentDesktopTasks", mShowOnlyCurrentDesktopTasks).toBool();
     RazorTaskButton::setShowOnlyCurrentDesktopTasks(mShowOnlyCurrentDesktopTasks);
