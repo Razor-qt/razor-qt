@@ -34,6 +34,7 @@
 class RazorGridLayoutPrivate
 {
 public:
+    RazorGridLayoutPrivate();
 
     QList<QLayoutItem*> mItems;
     int mRowCount;
@@ -50,7 +51,25 @@ public:
     void updateCache();
     int rows() const;
     int cols() const;
+    QSize mPrefCellMinSize;
+    QSize mPrefCellMaxSize;
 };
+
+
+/************************************************
+
+ ************************************************/
+RazorGridLayoutPrivate::RazorGridLayoutPrivate()
+{
+    mColumnCount = 0;
+    mRowCount = 0;
+    mDirection = RazorGridLayout::LeftToRight;
+    mIsValid = false;
+    mVisibleCount = 0;
+    mStretch = RazorGridLayout::StretchHoriz | RazorGridLayout::StretchVert;
+    mPrefCellMinSize = QSize(0,0);
+    mPrefCellMaxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+}
 
 
 /************************************************
@@ -96,6 +115,8 @@ void RazorGridLayoutPrivate::updateCache()
 #endif
 
     }
+    mCellSizeHint.rwidth() = qBound(mPrefCellMinSize.width(),  mCellSizeHint.width(),  mPrefCellMaxSize.width());
+    mCellSizeHint.rheight()= qBound(mPrefCellMinSize.height(), mCellSizeHint.height(), mPrefCellMaxSize.height());
     mIsValid = !mCellSizeHint.isEmpty();
 }
 
@@ -139,13 +160,6 @@ RazorGridLayout::RazorGridLayout(QWidget *parent):
     QLayout(parent),
     d_ptr(new RazorGridLayoutPrivate())
 {
-    Q_D(RazorGridLayout);
-    d->mColumnCount = 0;
-    d->mRowCount = 0;
-    d->mDirection = LeftToRight;
-    d->mIsValid = false;
-    d->mVisibleCount = 0;
-    d->mStretch = StretchHoriz | StretchVert;
 }
 
 
@@ -323,6 +337,54 @@ void RazorGridLayout::moveItem(int from, int to)
 /************************************************
 
  ************************************************/
+QSize RazorGridLayout::cellMinimumSize() const
+{
+    Q_D(const RazorGridLayout);
+    return d->mPrefCellMinSize;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellMinimumSize(QSize minSize)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMinSize != minSize)
+    {
+        d->mPrefCellMinSize = minSize;
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+QSize RazorGridLayout::cellMaximumSize() const
+{
+    Q_D(const RazorGridLayout);
+    return d->mPrefCellMaxSize;
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellMaximumSize(QSize maxSize)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMaxSize != maxSize)
+    {
+        d->mPrefCellMaxSize = maxSize;
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
 QSize RazorGridLayout::sizeHint() const
 {
     Q_D(const RazorGridLayout);
@@ -348,12 +410,19 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
     int y = geometry.top();
     int x = geometry.left();
 
-    // WTF? Sometimes geometry width isn't equal (right - left)
-    // So we are using geometry.right()-geometry.left() instead geometry.width()
+    // For historical reasons QRect::right returns left() + width() - 1
+    // and QRect::bottom() returns top() + height() - 1;
+    // So we use left() + height() and top() + height()
+    //
+    // http://qt-project.org/doc/qt-4.8/qrect.html
+
+    int maxX = geometry.left() + geometry.width();
+    int maxY = geometry.top() + geometry.height();
+
     int itemWidth;
     if (d->mStretch.testFlag(StretchHoriz))
     {
-        itemWidth = (geometry.right() - geometry.left())  * 1.0 / d->cols();
+        itemWidth = geometry.width() * 1.0 / d->cols();
         itemWidth = qMin(itemWidth, d->mCellMaxSize.width());
     }
     else
@@ -361,10 +430,12 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
         itemWidth = d->mCellSizeHint.width();
     }
 
+    itemWidth = qBound(d->mPrefCellMinSize.width(), itemWidth, d->mPrefCellMaxSize.width());
+
     int itemHeight;
     if (d->mStretch.testFlag(StretchVert))
     {
-        itemHeight = (geometry.bottom() - geometry.top()) * 1.0 / d->rows();
+        itemHeight = geometry.height() * 1.0 / d->rows();
         itemHeight = qMin(itemHeight, d->mCellMaxSize.height());
     }
     else
@@ -372,10 +443,14 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
         itemHeight = d->mCellSizeHint.height();
     }
 
+    itemHeight = qBound(d->mPrefCellMinSize.height(), itemHeight, d->mPrefCellMaxSize.height());
+
+
 #if 0
     qDebug() << "** RazorGridLayout::setGeometry *******************************";
-    qDebug() << "Geometry" << geometry;
-    qDebug() << "CellSize" << d->mCellSizeHint;
+    qDebug() << "Geometry:" << geometry;
+    qDebug() << "CellSize:" << d->mCellSizeHint;
+    qDebug() << "Constraints:" << "min" << d->mPrefCellMinSize << "max" << d->mPrefCellMaxSize;
     qDebug() << "Count" << count();
     qDebug() << "Cols:" << d->cols() << "(" << d->mColumnCount << ")";
     qDebug() << "Rows:" << d->rows() << "(" << d->mRowCount << ")";
@@ -389,8 +464,8 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
         {
             if (!item->widget() || item->widget()->isHidden())
                 continue;
-;
-            if (x + itemWidth > geometry.right())
+
+            if (x + itemWidth > maxX)
             {
                 x = geometry.left();
                 if (d->mStretch.testFlag(StretchVert))
@@ -411,7 +486,7 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
             if (!item->widget() || item->widget()->isHidden())
                 continue;
 
-            if (y + itemHeight > geometry.height())
+            if (y + itemHeight > maxY)
             {
                 y = geometry.top();
                 if (d->mStretch.testFlag(StretchHoriz))

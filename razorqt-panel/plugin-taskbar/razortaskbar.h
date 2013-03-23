@@ -56,8 +56,6 @@ public:
 public slots:
     void activeWindowChanged();
 
-protected:
-
 private:
     void refreshTaskList();
     void refreshButtonVisibility();
@@ -69,7 +67,6 @@ private:
     Qt::ToolButtonStyle mButtonStyle;
     int mButtonMaxWidth;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
-    void setButtonSizeLimits();
     bool mShowOnlyCurrentDesktopTasks;
 
     void handlePropertyNotify(XPropertyEvent* event);

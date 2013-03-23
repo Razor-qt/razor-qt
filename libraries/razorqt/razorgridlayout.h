@@ -56,8 +56,9 @@ public:
     */
     enum StretchFlag
     {
-        StretchHoriz    = 1,    ///< Justifies items in the available horizontal space
-        StretchVert     = 2     ///< Justifies items in the available vertical space
+        NoStretch       = 0,   ///< No justifies items
+        StretchHoriz    = 1,   ///< Justifies items in the available horizontal space
+        StretchVert     = 2    ///< Justifies items in the available vertical space
     };
     Q_DECLARE_FLAGS(Stretch, StretchFlag)
 
@@ -151,6 +152,29 @@ public:
       Moves the item at index position from to index position to.
      **/
     void moveItem(int from, int to);
+
+    /**
+     Returns the cells' minimum size.
+     By default, this property contains a size with zero width and height.
+     **/
+    QSize cellMinimumSize() const;
+
+    /**
+      Sets the minimum size of all cells to minSize pixels.
+     **/
+    void setCellMinimumSize(QSize minSize);
+
+    /**
+     Returns the cells' maximum size.
+     By default, this property contains a size with zero width and height.
+     **/
+    QSize cellMaximumSize() const;
+
+    /**
+      Sets the maximum size of all cells to maxSize pixels.
+     **/
+    void setCellMaximumSize(QSize maxSize);
+
 
 private:
     RazorGridLayoutPrivate* const d_ptr;
