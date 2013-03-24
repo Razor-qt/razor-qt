@@ -282,7 +282,7 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
  ************************************************/
 void RazorTaskBar::settingsChanged()
 {
-    mButtonMaxWidth = mPlugin->settings()->value("maxWidth", 400).toInt();
+    mButtonWidth = mPlugin->settings()->value("buttonWidth", 400).toInt();
     QString s = mPlugin->settings()->value("buttonStyle").toString().toUpper();
 
     if (s == "ICON")
@@ -336,7 +336,7 @@ void RazorTaskBar::realign()
         else
         {
             mLayout->setStretch(RazorGridLayout::StretchHoriz | RazorGridLayout::StretchVert);
-            maxSize.rwidth() = mButtonMaxWidth;
+            maxSize.rwidth() = mButtonWidth;
         }
     }
     else
@@ -355,7 +355,7 @@ void RazorTaskBar::realign()
         else
         {
             mLayout->setColumnCount(1);
-            maxSize.rwidth() = mButtonMaxWidth;
+            maxSize.rwidth() = mButtonWidth;
         }
         minSize.rwidth() = maxSize.width();
     }

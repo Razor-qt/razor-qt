@@ -65,7 +65,7 @@ private:
     bool windowOnActiveDesktop(Window window) const;
     Window mRootWindow;
     Qt::ToolButtonStyle mButtonStyle;
-    int mButtonMaxWidth;
+    int mButtonWidth;
     void setButtonStyle(Qt::ToolButtonStyle buttonStyle);
     bool mShowOnlyCurrentDesktopTasks;
 
