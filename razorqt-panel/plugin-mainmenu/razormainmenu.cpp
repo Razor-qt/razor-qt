@@ -214,23 +214,24 @@ QDialog *RazorMainMenu::configureDialog()
  ************************************************/
 void RazorMainMenu::realign()
 {
-    QSize minSize;
-    QSize maxSize;
-    minSize.setHeight(panel()->lineCount() * panel()->lineSize());
-    minSize.setWidth(minSize.height());
+    QSize minSize = QSize(0, 0);
+    QSize maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 
-    maxSize.setHeight(minSize.height());
-
-    if (mButton.toolButtonStyle() == Qt::ToolButtonIconOnly)
+    if (panel()->isHorizontal())
     {
-        maxSize.setWidth(maxSize.width());
+        minSize.setHeight(panel()->lineCount() * panel()->lineSize());
+        maxSize.setHeight(minSize.height());
+
+        minSize.setWidth(minSize.height());
     }
     else
     {
-        maxSize.setWidth(QWIDGETSIZE_MAX);
+        minSize.setWidth(panel()->lineCount() * panel()->lineSize());
+        minSize.setHeight(panel()->lineSize());
     }
 
     mButton.setMinimumSize(minSize);
     mButton.setMaximumSize(maxSize);
+    mButton.updateGeometry();
 }
 

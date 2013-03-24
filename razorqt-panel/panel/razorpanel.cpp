@@ -692,6 +692,16 @@ bool RazorPanel::event(QEvent *event)
 /************************************************
 
  ************************************************/
+void RazorPanel::showEvent(QShowEvent *event)
+{
+    realign();
+    emit realigned();
+}
+
+
+/************************************************
+
+ ************************************************/
 void RazorPanel::showPopupMenu(Plugin *plugin)
 {
     QList<QMenu*> pluginsMenus;

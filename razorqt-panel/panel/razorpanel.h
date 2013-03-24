@@ -103,6 +103,7 @@ signals:
     
 protected:
     bool event(QEvent *event);
+    void showEvent(QShowEvent *event);
 
 private slots:
     void screensChangeds();
