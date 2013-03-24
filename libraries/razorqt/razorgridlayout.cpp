@@ -361,6 +361,34 @@ void RazorGridLayout::setCellMinimumSize(QSize minSize)
 /************************************************
 
  ************************************************/
+void RazorGridLayout::setCellMinimumHeight(int value)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMinSize.height() != value)
+    {
+        d->mPrefCellMinSize.setHeight(value);
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellMinimumWidth(int value)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMinSize.width() != value)
+    {
+        d->mPrefCellMinSize.setWidth(value);
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
 QSize RazorGridLayout::cellMaximumSize() const
 {
     Q_D(const RazorGridLayout);
@@ -377,6 +405,82 @@ void RazorGridLayout::setCellMaximumSize(QSize maxSize)
     if (d->mPrefCellMaxSize != maxSize)
     {
         d->mPrefCellMaxSize = maxSize;
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellMaximumHeight(int value)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMaxSize.height() != value)
+    {
+        d->mPrefCellMaxSize.setHeight(value);
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellMaximumWidth(int value)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMaxSize.width() != value)
+    {
+        d->mPrefCellMaxSize.setWidth(value);
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellFixedSize(QSize size)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMinSize != size ||
+        d->mPrefCellMaxSize != size)
+    {
+        d->mPrefCellMinSize = size;
+        d->mPrefCellMaxSize = size;
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellFixedHeight(int value)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMinSize.height() != value ||
+        d->mPrefCellMaxSize.height() != value)
+    {
+        d->mPrefCellMinSize.setHeight(value);
+        d->mPrefCellMaxSize.setHeight(value);
+        invalidate();
+    }
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorGridLayout::setCellFixedWidth(int value)
+{
+    Q_D(RazorGridLayout);
+    if (d->mPrefCellMinSize.width() != value ||
+        d->mPrefCellMaxSize.width() != value)
+    {
+        d->mPrefCellMinSize.setWidth(value);
+        d->mPrefCellMaxSize.setWidth(value);
         invalidate();
     }
 }
