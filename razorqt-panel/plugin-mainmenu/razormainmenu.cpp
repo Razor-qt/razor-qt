@@ -175,6 +175,7 @@ void RazorMainMenu::settingsChanged()
 
 
     mShortcut->setShortcut(settings()->value("shortcut", "ALT+F1").toString());
+    realign();
 }
 
 
@@ -205,5 +206,31 @@ void RazorMainMenu::buildMenu()
 QDialog *RazorMainMenu::configureDialog()
 {
     return new RazorMainMenuConfiguration(*settings());
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorMainMenu::realign()
+{
+    QSize minSize;
+    QSize maxSize;
+    minSize.setHeight(panel()->lineCount() * panel()->lineSize());
+    minSize.setWidth(minSize.height());
+
+    maxSize.setHeight(minSize.height());
+
+    if (mButton.toolButtonStyle() == Qt::ToolButtonIconOnly)
+    {
+        maxSize.setWidth(maxSize.width());
+    }
+    else
+    {
+        maxSize.setWidth(QWIDGETSIZE_MAX);
+    }
+
+    mButton.setMinimumSize(minSize);
+    mButton.setMaximumSize(maxSize);
 }
 
