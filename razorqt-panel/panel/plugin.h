@@ -72,6 +72,8 @@ public:
     bool isSeparate() const;
     bool isExpandable() const;
 
+    QWidget *widget() { return mPluginWidget; }
+
     // For QSS properties ..................
     static QColor moveMarkerColor() { return mMoveMarkerColor; }
     static void setMoveMarkerColor(QColor color) { mMoveMarkerColor = color; }

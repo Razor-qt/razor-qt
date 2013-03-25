@@ -152,7 +152,7 @@ TrayIcon {
     border-radius: 3px;
     background: qlineargradient(x1:1, y1:0, x2:0, y2:1, stop:0 #EB743D, stop:0.3 #E76C41, stop:1 #C94C21);
     qproperty-icon: url(mainmenu.svg);
-    color: rgba(0, 0, 0, 80%);
+    color: #EEEEEE;
 }
 
 #MainMenu  QMenu {
@@ -196,6 +196,7 @@ TrayIcon {
 
 #RazorMountPopup #NoDiskLabel {
     margin: 6px;
+    color: #CCCCCC;
 }
 
 

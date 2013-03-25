@@ -143,7 +143,7 @@ TrayIcon {
     border-radius: 3px;
     background: qlineargradient(x1:1, y1:0, x2:0, y2:1, stop:0 #0078A6, stop:0.3 #006891, stop:1 #005576);
     qproperty-icon: url(mainmenu.svg);
-    color: rgba(0, 0, 0, 80%);
+    color: #EEEEEE;
 }
 
 

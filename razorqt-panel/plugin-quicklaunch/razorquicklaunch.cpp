@@ -126,6 +126,15 @@ void RazorQuickLaunch::realign()
     mLayout->setEnabled(false);
     IRazorPanel *panel = mPlugin->panel();
 
+    mLayout->setCellFixedWidth(panel->lineSize());
+    mLayout->setCellFixedHeight(panel->lineSize());
+
+    if (mPlaceHolder)
+    {
+        mLayout->setCellMaximumWidth(QWIDGETSIZE_MAX);
+    }
+
+
     if (panel->isHorizontal())
     {
         mLayout->setRowCount(panel->lineCount());
@@ -154,6 +163,7 @@ void RazorQuickLaunch::addButton(QuickLaunchAction* action)
     delete mPlaceHolder;
     mPlaceHolder = 0;
     mLayout->setEnabled(true);
+    realign();
 }
 
 void RazorQuickLaunch::dragEnterEvent(QDragEnterEvent *e)
@@ -239,6 +249,8 @@ void RazorQuickLaunch::buttonDeleted()
 
     if (mLayout->isEmpty())
         showPlaceHolder();
+
+    realign();
 }
 
 void RazorQuickLaunch::buttonMoveLeft()

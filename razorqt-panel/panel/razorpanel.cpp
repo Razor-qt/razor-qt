@@ -280,6 +280,10 @@ Plugin *RazorPanel::loadPlugin(const RazorPluginInfo &desktopFile, const QString
         connect(plugin, SIGNAL(startMove()), mLayout, SLOT(startMovePlugin()));
         connect(plugin, SIGNAL(remove()), this, SLOT(removePlugin()));
         connect(this, SIGNAL(realigned()), plugin, SLOT(realign()));
+        if (!plugin->isSeparate() && plugin->widget())
+        {
+            plugin->widget()->setFixedSize(QSize(mLineSize, mLineSize));
+        }
         mLayout->addWidget(plugin);
         return plugin;
     }
@@ -546,6 +550,7 @@ void RazorPanel::addPlugin(const RazorPluginInfo &desktopFile)
 {
     QString settingsGroup = findNewPluginSettingsGroup(desktopFile.id());
     loadPlugin(desktopFile, settingsGroup);
+    emit realigned();
     saveSettings(true);
 }
 
@@ -559,6 +564,14 @@ void RazorPanel::setLineSize(int value)
     {
         mLineSize = value;
         mLayout->setLineSize(mLineSize);
+        foreach(Plugin *plugin, mPlugins)
+        {
+            if (!plugin->isSeparate() && plugin->widget())
+            {
+                plugin->widget()->setFixedSize(QSize(mLineSize, mLineSize));
+            }
+        }
+
         realign();
         emit realigned();
         saveSettings(true);
@@ -673,6 +686,16 @@ bool RazorPanel::event(QEvent *event)
         break;
     }
     return QFrame::event(event);
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanel::showEvent(QShowEvent *event)
+{
+    realign();
+    emit realigned();
 }
 
 

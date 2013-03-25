@@ -37,10 +37,19 @@ ColorPicker::ColorPicker(const IRazorPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IRazorPanelPlugin(startupInfo)
 {
+    realign();
 }
 
 ColorPicker::~ColorPicker()
 {
+}
+
+
+void ColorPicker::realign()
+{
+    mWidget.button()->setFixedHeight(panel()->lineSize());
+    mWidget.button()->setFixedWidth(panel()->lineSize());
+    mWidget.lineEdit()->setFixedHeight(panel()->lineSize());
 }
 
 

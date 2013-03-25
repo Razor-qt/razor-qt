@@ -56,8 +56,9 @@ public:
     */
     enum StretchFlag
     {
-        StretchHoriz    = 1,    ///< Justifies items in the available horizontal space
-        StretchVert     = 2     ///< Justifies items in the available vertical space
+        NoStretch       = 0,   ///< No justifies items
+        StretchHoriz    = 1,   ///< Justifies items in the available horizontal space
+        StretchVert     = 2    ///< Justifies items in the available vertical space
     };
     Q_DECLARE_FLAGS(Stretch, StretchFlag)
 
@@ -151,6 +152,74 @@ public:
       Moves the item at index position from to index position to.
      **/
     void moveItem(int from, int to);
+
+    /**
+     Returns the cells' minimum size.
+     By default, this property contains a size with zero width and height.
+     **/
+    QSize cellMinimumSize() const;
+
+    /**
+      Sets the minimum size of all cells to minSize pixels.
+     **/
+    void setCellMinimumSize(QSize minSize);
+
+    /**
+     Sets the minimum height of the cells to value without
+     changing the width. Provided for convenience.
+     **/
+    void setCellMinimumHeight(int value);
+
+    /**
+     Sets the minimum width of the cells to value without
+     changing the heights. Provided for convenience.
+     **/
+    void setCellMinimumWidth(int value);
+
+
+
+    /**
+     Returns the cells' maximum size.
+     By default, this property contains a size with zero width and height.
+     **/
+    QSize cellMaximumSize() const;
+
+    /**
+     Sets the maximum size of all cells to maxSize pixels.
+     **/
+    void setCellMaximumSize(QSize maxSize);
+
+    /**
+     Sets the maximum height of the cells to value without
+     changing the width. Provided for convenience.
+     **/
+    void setCellMaximumHeight(int value);
+
+    /**
+     Sets the maximum width of the cells to value without
+     changing the heights. Provided for convenience.
+     **/
+    void setCellMaximumWidth(int value);
+
+
+
+    /**
+     Sets both the minimum and maximum sizes of the cells to size,
+     thereby preventing it from ever growing or shrinking.
+     **/
+    void setCellFixedSize(QSize size);
+
+    /**
+     Sets both the minimum and maximum height of the cells to value without
+     changing the width. Provided for convenience.
+     **/
+    void setCellFixedHeight(int value);
+
+    /**
+     Sets both the minimum and maximum width of the cells to value without
+     changing the heights. Provided for convenience.
+     **/
+    void setCellFixedWidth(int value);
 
 private:
     RazorGridLayoutPrivate* const d_ptr;

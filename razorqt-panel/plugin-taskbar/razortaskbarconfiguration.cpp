@@ -51,7 +51,7 @@ RazorTaskbarConfiguration::RazorTaskbarConfiguration(QSettings &settings, QWidge
     connect(ui->fCurrentDesktopRB, SIGNAL(clicked()), this, SLOT(saveSettings()));
     connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(updateControls(int)));
     connect(ui->buttonStyleCB, SIGNAL(activated(int)), this, SLOT(saveSettings()));
-    connect(ui->maxWidthSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
+    connect(ui->buttonWidthSB, SIGNAL(valueChanged(int)), this, SLOT(saveSettings()));
     connect(ui->middleClickCB, SIGNAL(clicked()), this, SLOT(saveSettings()));
 }
 
@@ -75,15 +75,15 @@ void RazorTaskbarConfiguration::loadSettings()
     ui->buttonStyleCB->setCurrentIndex(ui->buttonStyleCB->findData(mSettings.value("buttonStyle", "IconText")));
     updateControls(ui->buttonStyleCB->currentIndex());
 
-    /* Keep maxWidth loading at the end of this method to prevent errors */
-    ui->maxWidthSB->setValue(mSettings.value("maxWidth", 400).toInt());
+    /* Keep buttonWidth loading at the end of this method to prevent errors */
+    ui->buttonWidthSB->setValue(mSettings.value("buttonWidth", 400).toInt());
 }
 
 void RazorTaskbarConfiguration::saveSettings()
 {
     mSettings.setValue("showOnlyCurrentDesktopTasks", ui->fCurrentDesktopRB->isChecked());
     mSettings.setValue("buttonStyle", ui->buttonStyleCB->itemData(ui->buttonStyleCB->currentIndex()));
-    mSettings.setValue("maxWidth", ui->maxWidthSB->value());
+    mSettings.setValue("buttonWidth", ui->buttonWidthSB->value());
     mSettings.setValue("closeOnMiddleClick", ui->middleClickCB->isChecked());
 }
 
@@ -91,13 +91,13 @@ void RazorTaskbarConfiguration::updateControls(int index)
 {
     if (ui->buttonStyleCB->itemData(index) == "Icon")
     {
-        ui->maxWidthSB->setEnabled(false);
-        ui->maxWidthL->setEnabled(false);
+        ui->buttonWidthSB->setEnabled(false);
+        ui->buttonWidthL->setEnabled(false);
     }
     else
     {
-        ui->maxWidthSB->setEnabled(true);
-        ui->maxWidthL->setEnabled(true);
+        ui->buttonWidthSB->setEnabled(true);
+        ui->buttonWidthL->setEnabled(true);
     }
 }
 
@@ -105,12 +105,12 @@ void RazorTaskbarConfiguration::dialogButtonsAction(QAbstractButton *btn)
 {
     if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
     {
-        /* We have to disable signals for maxWidthSB to prevent errors. Otherwise not all data
+        /* We have to disable signals for buttonWidthSB to prevent errors. Otherwise not all data
           could be restored */
-        ui->maxWidthSB->blockSignals(true);
+        ui->buttonWidthSB->blockSignals(true);
         oldSettings.loadToSettings();
         loadSettings();
-        ui->maxWidthSB->blockSignals(false);
+        ui->buttonWidthSB->blockSignals(false);
     }
     else
     {

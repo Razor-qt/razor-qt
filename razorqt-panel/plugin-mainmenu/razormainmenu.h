@@ -60,6 +60,9 @@ public:
     QDialog *configureDialog();
 
     bool isSeparate() const { return true; }
+
+    void realign();
+
 private:
     QToolButton mButton;
     QString mLogDir;

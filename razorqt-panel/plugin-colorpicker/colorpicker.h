@@ -46,6 +46,10 @@ public:
     ColorPickerWidget(QWidget* parent = 0);
     ~ColorPickerWidget();
 
+    QLineEdit *lineEdit() { return &mLineEdit; }
+    QToolButton *button() { return &mButton; }
+
+
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
@@ -70,6 +74,8 @@ public:
     virtual QString themeId() const { return "ColorPicker"; }
 
     bool isSeparate() const { return true; }
+
+    void realign();
 
 private:
     ColorPickerWidget mWidget;
