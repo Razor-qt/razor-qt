@@ -96,11 +96,15 @@ if (ENABLE_LIGHTDM_GREETER)
         target_link_libraries ( razor-lightdm-greeter  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${LIGHTDM_QT_LIBRARIES} )
 
         file(GLOB DESKTOP_FILES resources/*.desktop)
-        set(CONFIG_FILE resources/lightdm-razor-greeter.conf)
+        file(GLOB CONFIG_FILES resources/*.conf)
 
         install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
         install(FILES   ${DESKTOP_FILES}   DESTINATION /usr/share/xgreeters)
-        install(FILES   ${CONFIG_FILE} DESTINATION /etc/lightdm)
+        
+        # Use execute_process with 'cp' rather than cmake's install as I couldn't figure out how to make 
+        # install create a backup of destination.
+        install(CODE "execute_process(COMMAND cp -v -u --backup=numbered \"${CONFIG_FILES}\" /etc/lightdm)")
+
     endif()
 
 endif (ENABLE_LIGHTDM_GREETER)
