@@ -47,7 +47,7 @@ MainWindow::MainWindow(int screen, QWidget *parent)
         m_Screen(screen)
 {
     setObjectName(QString("MainWindow_%1").arg(screen));
-
+    
     
     QRect screenRect = QApplication::desktop()->screenGeometry(screen);
     setGeometry(screenRect);
@@ -151,7 +151,8 @@ void MainWindow::setBackgroundImage()
     }
 
     QPalette palette;
-    QBrush brush(backgroundImage);
+    QRect rect = QApplication::desktop()->screenGeometry(m_Screen);
+    QBrush brush(backgroundImage.scaled(rect.width(), rect.height()));
     palette.setBrush(this->backgroundRole(), brush); 
     
     this->setPalette(palette);
