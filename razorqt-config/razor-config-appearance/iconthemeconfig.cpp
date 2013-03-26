@@ -80,7 +80,7 @@ void IconThemeConfig::initIconsThemes()
                     item->setIcon(2, theme.icon("edit-undo"));
                     item->setIcon(3, theme.icon("media-playback-start"));
 
-                    item->setText(4, theme.comment().isEmpty() ? theme.text() : theme.text() + " ( " + theme.comment() + " )");
+                    item->setText(4, theme.comment().isEmpty() ? theme.text() : theme.text() + " (" + theme.comment() + ")");
                 }
             }
         }
