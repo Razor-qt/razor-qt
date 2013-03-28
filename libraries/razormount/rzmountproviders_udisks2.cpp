@@ -436,6 +436,8 @@ bool UDisks2MountDevice::mount()
         mMountPath = "";
 
     return ret;
+#else
+    return false;
 #endif
 }
 
@@ -454,6 +456,8 @@ bool UDisks2MountDevice::unmount()
                              SIGNAL(unmounted()),
                              SLOT(dbusError(QDBusError, QDBusMessage)));
     return ret;
+#else
+    return false;
 #endif
 }
 
@@ -469,5 +473,7 @@ bool UDisks2MountDevice::eject()
     return mDbus->callWithCallback("DriveEject", args, this,
                              SLOT(dbusSuccess(QDBusMessage)),
                              SLOT(dbusError(QDBusError, QDBusMessage)));
+#else
+    return false;
 #endif
 }
