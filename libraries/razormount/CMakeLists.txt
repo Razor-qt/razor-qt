@@ -14,6 +14,7 @@ set(razormount_HDRS
 set(razormount_SRCS
     razormount.cpp
     rzmountproviders.cpp
+    rzmountproviders_udisks2.cpp
 )
 
 set(razormount_MOCS

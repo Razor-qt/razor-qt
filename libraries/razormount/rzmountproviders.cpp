@@ -57,26 +57,27 @@ UDiskProvider::UDiskProvider(QObject *parent):
         return;
     }
 
-    system.connect("org.freedesktop.UDisks",
-                    "/org/freedesktop/UDisks",
-                    "org.freedesktop.UDisks",
-                    "DeviceAdded",
+    system.connect("org.freedesktop.UDisks2",
+                    "/org/freedesktop/UDisks2",
+                    "org.freedesktop.DBus.ObjectManager",
+                    "InterfacesAdded",
                     this,
-                    SLOT(dbusDeviceAdded(QDBusObjectPath)));
+                    SLOT(dbusDeviceAdded(QDBusObjectPath, QStringList)));
 
-    system.connect("org.freedesktop.UDisks",
-                    "/org/freedesktop/UDisks",
-                    "org.freedesktop.UDisks",
-                    "DeviceRemoved",
+    system.connect("org.freedesktop.UDisks2",
+                    "/org/freedesktop/UDisks2",
+                    "org.freedesktop.DBus.ObjectManager",
+                    "InterfacesRemoved",
                     this,
-                    SLOT(dbusDeviceRemoved(QDBusObjectPath)));
-
+                    SLOT(dbusDeviceRemoved(QDBusObjectPath, QStringList)));
+/*
     system.connect("org.freedesktop.UDisks",
                     "/org/freedesktop/UDisks",
                     "org.freedesktop.UDisks",
                     "DeviceChanged",
                     this,
                     SLOT(dbusDeviceChanged(QDBusObjectPath)));
+                    */
 
     mIsValid = true;
 }
