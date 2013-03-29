@@ -136,6 +136,9 @@ private:
 
 private slots:
     void dbusError(const QDBusError &err, const QDBusMessage &msg);
+    void aboutToMount();
+    void aboutToUnmount();
+    void aboutToEject();
     void update();
 };
 

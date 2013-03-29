@@ -217,7 +217,7 @@ void UDisks2MountDevice::update()
     QStringList mounts = mountPoints();
     res = setIsMounted(mounts.count() != 0) || res;
 
-    res = setIsEjectable(mDriveIface->property("Ejectable").toBool());
+    res = setIsEjectable(mDriveIface->property("Ejectable").toBool()) || res;
     res = setSize(mBlockIface->property("Size").toULongLong()) || res;
     res = setVendor(mDriveIface->property("Vendor").toString()) || res;
     res = setModel(mDriveIface->property("Model").toString()) || res;
@@ -251,7 +251,7 @@ QStringList UDisks2MountDevice::mountPoints() const
     foreach (QByteArray p, l)
         points.append(p);
 
-//    qDebug() << "UDisks2MountDevice::mountPoints()" << points;
+    qDebug() << "UDisks2MountDevice::mountPoints()" << points;
     return points;
 }
 
@@ -324,6 +324,7 @@ QString UDisks2MountDevice::calcLabel()
     if (mSize)
         label += QString(" [%3]").arg(sizeToString(size));
 
+    qDebug() << "LABEL" << mPath.path() << label;
     return label;
 }
 
@@ -409,65 +410,81 @@ QString UDisks2MountDevice::calcIconName()
 
 void UDisks2MountDevice::dbusError(const QDBusError &err, const QDBusMessage &msg)
 {
-    qWarning() << "UdisksInfo::mDbus_error" << err.message();
+    qWarning() << "UDisks2MountDevice::mDbus_error" << err.message();
     emit error(err.message());
 }
 
 bool UDisks2MountDevice::mount()
 {
-#if 0
-    if (mIsMounted)
-        return true;
+    qDebug() << "MOUNT" << mPath.path();
 
-    QList<QVariant> args;
-    args << QVariant(QString()) << QVariant(QStringList());
+    QDBusConnection c = QDBusConnection::systemBus();
+    QDBusMessage msg = QDBusMessage::createMethodCall("org.freedesktop.UDisks2",
+                                                      mPath.path(),
+                                                      "org.freedesktop.UDisks2.Filesystem",
+                                                      "Mount");
+    QVariantMap options;
+    if (fileSystem() == "vfat")
+        options.insert("options", "flush");
 
-    bool ret;
-    ret = mDbus->callWithCallback("FilesystemMount", args, this,
-                             //SLOT(dbusSuccess(QDBusMessage)),
-                             SIGNAL(mounted()),
-                             SLOT(dbusError(QDBusError, QDBusMessage)));
+    msg << options;
 
-    QStringList paths = mDbus->property("DeviceMountPaths").toStringList();
+    return c.callWithCallback(msg,
+                              this,
+                              SLOT(aboutToMount()),
+                              SLOT(dbusError(QDBusError,QDBusMessage)));
 
-    if (!paths.empty())
-        mMountPath = paths.at(0);
-    else
-        mMountPath = "";
-
-    return ret;
-#endif
 }
 
 bool UDisks2MountDevice::unmount()
 {
-#if 0
+    qDebug() << "UNMOUNT" << mPath.path();
+
     if (!mIsMounted)
         return true;
 
-    QList<QVariant> args;
-    args << QVariant(QStringList());
+    QDBusConnection c = QDBusConnection::systemBus();
+    QDBusMessage msg = QDBusMessage::createMethodCall("org.freedesktop.UDisks2",
+                                                      mPath.path(),
+                                                      "org.freedesktop.UDisks2.Filesystem",
+                                                      "Unmount");
+    QVariantMap options;
+    if (fileSystem() == "vfat")
+        options.insert("options", "flush");
 
-    bool ret;
-    ret = mDbus->callWithCallback("FilesystemUnmount", args, this,
-//                             SLOT(dbusSuccess(QDBusMessage)),
-                             SIGNAL(unmounted()),
-                             SLOT(dbusError(QDBusError, QDBusMessage)));
-    return ret;
-#endif
+    msg << options;
+
+    return c.callWithCallback(msg,
+                              this,
+                              SLOT(aboutToUnmount()),
+                              SLOT(dbusError(QDBusError,QDBusMessage)));
+
 }
 
 bool UDisks2MountDevice::eject()
 {
-#if 0
-    if (!mIsMounted)
-        return false;
+    qDebug() << "EJECT" << mPath.path();
 
-    QList<QVariant> args;
-    args << QVariant(QStringList());
+    return mDriveIface->callWithCallback("Eject",
+                                         QVariantList(),
+                                         this,
+                                         SLOT(aboutToEject()),
+                                         SLOT(dbusError(QDBusError,QDBusMessage)));
+}
 
-    return mDbus->callWithCallback("DriveEject", args, this,
-                             SLOT(dbusSuccess(QDBusMessage)),
-                             SLOT(dbusError(QDBusError, QDBusMessage)));
-#endif
+void UDisks2MountDevice::aboutToMount()
+{
+    update();
+    emit mounted();
+}
+
+void UDisks2MountDevice::aboutToUnmount()
+{
+    update();
+    emit unmounted();
+}
+
+void UDisks2MountDevice::aboutToEject()
+{
+    qDebug() << "UDisks2MountDevice::aboutToEject success";
 }
