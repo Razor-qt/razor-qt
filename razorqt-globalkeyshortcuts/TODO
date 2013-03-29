@@ -1,0 +1,8 @@
+daemon:
+	NTH: method action should bind arguments
+	NTH: smarter converting string list to string ("-enclosing)
+
+manager:
+	add/edit command actions
+	add/edit method actions
+	NTH: dbus browser for method actions
