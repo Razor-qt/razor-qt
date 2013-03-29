@@ -2,6 +2,8 @@
 #define SHORTCUT_SELECTOR_HPP
 
 #include <QPushButton>
+#include <QWidget>
+#include <QString>
 
 
 class GlobalActionNativeClient;
