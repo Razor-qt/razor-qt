@@ -679,6 +679,8 @@ void Core::saveConfig()
 
     QSettings settings(mConfigFile, QSettings::IniFormat);
 
+    settings.clear();
+
     switch (mMultipleActionsBehaviour)
     {
     case MULTIPLE_ACTIONS_BEHAVIOUR_FIRST:
