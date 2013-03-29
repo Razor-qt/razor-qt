@@ -76,6 +76,7 @@ set(${PROJECT_NAME}_SOURCES
 	main.cpp
 	main_window.cpp
 	actions.cpp
+	default_model.cpp
 	../daemon/meta_types.cpp
 )
 
@@ -96,6 +97,7 @@ set(${PROJECT_NAME}_CPP_HEADERS
 set(${PROJECT_NAME}_QT_HEADERS
 	main_window.hpp
 	actions.hpp
+	default_model.hpp
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS

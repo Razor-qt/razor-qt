@@ -26,14 +26,26 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "main_window.hpp"
+#include "actions.hpp"
+#include "default_model.hpp"
+
+#include <QItemSelectionModel>
 
 
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
     setupUi(this);
 
+    m_actions = new Actions(this);
+    m_defaultModel = new DefaultModel(m_actions, this);
+    m_selectionModel = new QItemSelectionModel(m_defaultModel);
+
+    actions_TV->setModel(m_defaultModel);
+
+    actions_TV->setSelectionModel(m_selectionModel);
+
+    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -46,4 +58,34 @@ void MainWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void MainWindow::selectionChanged(const QItemSelection &/*selected*/, const QItemSelection &/*deselected*/)
+{
+    QModelIndexList rows = m_selectionModel->selectedRows();
+
+    modify_PB->setEnabled(rows.length() == 1);
+    changeShortcut_PB->setEnabled(rows.length() == 1);
+    swap_PB->setEnabled(rows.length() == 2);
+    remove_PB->setEnabled(rows.length() != 0);
+}
+
+void MainWindow::on_add_PB_clicked()
+{
+}
+
+void MainWindow::on_modify_PB_clicked()
+{
+}
+
+void MainWindow::on_changeShortcut_PB_clicked()
+{
+}
+
+void MainWindow::on_swap_PB_clicked()
+{
+}
+
+void MainWindow::on_remove_PB_clicked()
+{
 }

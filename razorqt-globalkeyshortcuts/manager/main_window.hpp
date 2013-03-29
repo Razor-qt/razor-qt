@@ -28,8 +28,13 @@
 #ifndef GLOBAL_ACTION_MANAGER__MAIN_WINDOW__INCLUDED
 #define GLOBAL_ACTION_MANAGER__MAIN_WINDOW__INCLUDED
 
+
 #include "ui_main_window.h"
 
+
+class Actions;
+class DefaultModel;
+class QItemSelectionModel;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -40,6 +45,20 @@ public:
     
 protected:
     void changeEvent(QEvent *e);
+
+protected slots:
+    void selectionChanged(const QItemSelection &, const QItemSelection &);
+
+    void on_add_PB_clicked();
+    void on_modify_PB_clicked();
+    void on_changeShortcut_PB_clicked();
+    void on_swap_PB_clicked();
+    void on_remove_PB_clicked();
+
+private:
+    Actions *m_actions;
+    DefaultModel *m_defaultModel;
+    QItemSelectionModel *m_selectionModel;
 };
 
 #endif // GLOBAL_ACTION_MANAGER__MAIN_WINDOW__INCLUDED
