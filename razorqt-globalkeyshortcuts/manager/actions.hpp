@@ -50,6 +50,7 @@ namespace org {
 }
 
 class QDBusServiceWatcher;
+class QDBusPendingCallWatcher;
 
 class Actions : public QObject
 {
@@ -71,7 +72,30 @@ public:
     QList<qulonglong> allCommandActionIds() const;
     QPair<bool, CommandActionInfo> commandActionInfoById(qulonglong id) const;
 
+
+    QPair<QString, qulonglong> addMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
+    QPair<QString, qulonglong> addCommandAction(const QString &shortcut, const QString &command, const QStringList &arguments, const QString &description);
+
+    bool modifyActionDescription(const qulonglong &id, const QString &description);
+    bool modifyMethodAction(const qulonglong &id, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
+    bool modifyCommandAction(const qulonglong &id, const QString &command, const QStringList &arguments, const QString &description);
+
+    bool enableAction(qulonglong id, bool enabled);
+
+    QString changeShortcut(const qulonglong &id, const QString &shortcut);
+
+    bool swapActions(const qulonglong &id1, const qulonglong &id2);
+
+    bool removeAction(const qulonglong &id);
+
+
     MultipleActionsBehaviour multipleActionsBehaviour() const;
+
+    void setMultipleActionsBehaviour(const MultipleActionsBehaviour &behaviour);
+
+
+    void grabShortcut(uint timeout);
+    void cancelShortutGrab();
 
 signals:
     void daemonDisappeared();
@@ -84,6 +108,11 @@ signals:
     void actionRemoved(qulonglong id);
 
     void multipleActionsBehaviourChanged(MultipleActionsBehaviour behaviour);
+
+    void shortcutGrabbed(const QString &);
+    void grabShortcutFailed();
+    void grabShortcutCancelled();
+    void grabShortcutTimedout();
 
 private:
     void init();
@@ -117,6 +146,8 @@ private slots:
     void do_actionRemoved(qulonglong id);
     void on_actionRemoved(qulonglong id);
     void on_multipleActionsBehaviourChanged(uint behaviour);
+
+    void grabShortcutFinished(QDBusPendingCallWatcher *call);
 
 private:
     org::razorqt::global_action::daemon *mDaemonProxy;

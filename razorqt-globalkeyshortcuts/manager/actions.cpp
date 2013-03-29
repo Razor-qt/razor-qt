@@ -446,4 +446,139 @@ void Actions::on_actionRemoved(qulonglong id)
 void Actions::on_multipleActionsBehaviourChanged(uint behaviour)
 {
     mMultipleActionsBehaviour = static_cast<MultipleActionsBehaviour>(behaviour);
+    emit multipleActionsBehaviourChanged(mMultipleActionsBehaviour);
+}
+
+QPair<QString, qulonglong> Actions::addMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)
+{
+    QDBusPendingReply<QString, qulonglong> reply = mDaemonProxy->addMethodAction(shortcut, service, path, interface, method, description);
+    reply.waitForFinished();
+    if (reply.isError())
+        return qMakePair<QString, qulonglong>(QString(), 0ull);
+
+    return qMakePair<QString, qulonglong>(reply.argumentAt<0>(), reply.argumentAt<1>());
+}
+
+QPair<QString, qulonglong> Actions::addCommandAction(const QString &shortcut, const QString &command, const QStringList &arguments, const QString &description)
+{
+    QDBusPendingReply<QString, qulonglong> reply = mDaemonProxy->addCommandAction(shortcut, command, arguments, description);
+    reply.waitForFinished();
+    if (reply.isError())
+        return qMakePair<QString, qulonglong>(QString(), 0ull);
+
+    return qMakePair<QString, qulonglong>(reply.argumentAt<0>(), reply.argumentAt<1>());
+}
+
+bool Actions::modifyActionDescription(const qulonglong &id, const QString &description)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->modifyActionDescription(id, description);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::modifyMethodAction(const qulonglong &id, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->modifyMethodAction(id, service, path, interface, method, description);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::modifyCommandAction(const qulonglong &id, const QString &command, const QStringList &arguments, const QString &description)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->modifyCommandAction(id, command, arguments, description);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::enableAction(qulonglong id, bool enabled)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->enableAction(id, enabled);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+QString Actions::changeShortcut(const qulonglong &id, const QString &shortcut)
+{
+    QDBusPendingReply<QString> reply = mDaemonProxy->changeShortcut(id, shortcut);
+    reply.waitForFinished();
+    if (reply.isError())
+        return QString();
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::swapActions(const qulonglong &id1, const qulonglong &id2)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->swapActions(id1, id2);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::removeAction(const qulonglong &id)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->removeAction(id);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+void Actions::setMultipleActionsBehaviour(const MultipleActionsBehaviour &behaviour)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->setMultipleActionsBehaviour(behaviour);
+    reply.waitForFinished();
+}
+
+void Actions::grabShortcut(uint timeout)
+{
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(mDaemonProxy->grabShortcut(timeout), this);
+
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(grabShortcutFinished(QDBusPendingCallWatcher*)));
+}
+
+void Actions::cancelShortutGrab()
+{
+    mDaemonProxy->cancelShortcutGrab();
+}
+
+void Actions::grabShortcutFinished(QDBusPendingCallWatcher *call)
+{
+    QDBusPendingReply<QString, bool, bool, bool> reply = *call;
+    if (reply.isError())
+        emit grabShortcutFailed();
+    else
+    {
+        if (reply.argumentAt<1>())
+            emit grabShortcutFailed();
+        else
+        {
+            if (reply.argumentAt<2>())
+                emit grabShortcutCancelled();
+            else
+            {
+                if (reply.argumentAt<3>())
+                    emit grabShortcutTimedout();
+                else
+                    emit shortcutGrabbed(reply.argumentAt<0>());
+            }
+        }
+    }
+
+    call->deleteLater();
 }

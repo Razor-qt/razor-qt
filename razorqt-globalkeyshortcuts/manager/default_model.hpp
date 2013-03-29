@@ -51,8 +51,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
-signals:
-    
+    qulonglong id(const QModelIndex &index) const;
+
 public slots:
     void daemonDisappeared();
     void daemonAppeared();
@@ -64,8 +64,8 @@ public slots:
     void actionRemoved(qulonglong id);
 
 private:
-    Actions *m_actions;
-    QMap<qulonglong, GeneralActionInfo> m_content;
+    Actions *mActions;
+    QMap<qulonglong, GeneralActionInfo> mContent;
 
 };
 

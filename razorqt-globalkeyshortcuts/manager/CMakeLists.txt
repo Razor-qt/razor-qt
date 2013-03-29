@@ -77,6 +77,7 @@ set(${PROJECT_NAME}_SOURCES
 	main_window.cpp
 	actions.cpp
 	default_model.cpp
+	shortcut_selector.cpp
 	../daemon/meta_types.cpp
 )
 
@@ -98,6 +99,7 @@ set(${PROJECT_NAME}_QT_HEADERS
 	main_window.hpp
 	actions.hpp
 	default_model.hpp
+	shortcut_selector.hpp
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS

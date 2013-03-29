@@ -30,6 +30,7 @@
 #include "default_model.hpp"
 
 #include <QItemSelectionModel>
+#include <QSortFilterProxyModel>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -37,15 +38,21 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
-    m_actions = new Actions(this);
-    m_defaultModel = new DefaultModel(m_actions, this);
-    m_selectionModel = new QItemSelectionModel(m_defaultModel);
+    mActions = new Actions(this);
+    mDefaultModel = new DefaultModel(mActions, this);
+    mSortFilterProxyModel = new QSortFilterProxyModel(this);
 
-    actions_TV->setModel(m_defaultModel);
+    mSortFilterProxyModel->setSourceModel(mDefaultModel);
+    actions_TV->setModel(mSortFilterProxyModel);
 
-    actions_TV->setSelectionModel(m_selectionModel);
+    mSelectionModel = new QItemSelectionModel(actions_TV->model());
+    actions_TV->setSelectionModel(mSelectionModel);
 
-    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
+    connect(mSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
+
+    connect(mActions, SIGNAL(daemonDisappeared()), SLOT(daemonDisappeared()));
+    connect(mActions, SIGNAL(daemonAppeared()), SLOT(daemonAppeared()));
+    connect(mActions, SIGNAL(multipleActionsBehaviourChanged(MultipleActionsBehaviour)), SLOT(multipleActionsBehaviourChanged(MultipleActionsBehaviour)));
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -60,14 +67,49 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
+void MainWindow::daemonDisappeared()
+{
+    add_PB->setEnabled(false);
+    actions_TV->setEnabled(false);
+    multipleActionsBehaviour_CB->setEnabled(false);
+}
+
+void MainWindow::daemonAppeared()
+{
+    add_PB->setEnabled(true);
+    actions_TV->setEnabled(true);
+    multipleActionsBehaviour_CB->setEnabled(true);
+
+    multipleActionsBehaviour_CB->setCurrentIndex(mActions->multipleActionsBehaviour());
+
+    actions_TV->horizontalHeader()->setSortIndicator(0, Qt::AscendingOrder);
+}
+
+void MainWindow::multipleActionsBehaviourChanged(MultipleActionsBehaviour behaviour)
+{
+    multipleActionsBehaviour_CB->setCurrentIndex(behaviour);
+}
+
+void MainWindow::on_multipleActionsBehaviour_CB_currentIndexChanged(int index)
+{
+    mActions->setMultipleActionsBehaviour(static_cast<MultipleActionsBehaviour>(index));
+}
+
 void MainWindow::selectionChanged(const QItemSelection &/*selected*/, const QItemSelection &/*deselected*/)
 {
-    QModelIndexList rows = m_selectionModel->selectedRows();
+    QModelIndexList rows = mSelectionModel->selectedRows();
 
     modify_PB->setEnabled(rows.length() == 1);
-    changeShortcut_PB->setEnabled(rows.length() == 1);
-    swap_PB->setEnabled(rows.length() == 2);
     remove_PB->setEnabled(rows.length() != 0);
+
+    bool enableSwap = (rows.length() == 2);
+    if (enableSwap)
+    {
+        QPair<bool, GeneralActionInfo> info0 = mActions->actionById(mDefaultModel->id(rows[0]));
+        QPair<bool, GeneralActionInfo> info1 = mActions->actionById(mDefaultModel->id(rows[1]));
+        enableSwap = (info0.first && info1.first && (info0.second.shortcut == info1.second.shortcut));
+    }
+    swap_PB->setEnabled(enableSwap);
 }
 
 void MainWindow::on_add_PB_clicked()
@@ -78,14 +120,14 @@ void MainWindow::on_modify_PB_clicked()
 {
 }
 
-void MainWindow::on_changeShortcut_PB_clicked()
-{
-}
-
 void MainWindow::on_swap_PB_clicked()
 {
+    QModelIndexList rows = mSelectionModel->selectedRows();
+    mActions->swapActions(mDefaultModel->id(rows[0]), mDefaultModel->id(rows[1]));
 }
 
 void MainWindow::on_remove_PB_clicked()
 {
+    foreach (QModelIndex rowIndex, mSelectionModel->selectedRows())
+        mActions->removeAction(mDefaultModel->id(rowIndex));
 }

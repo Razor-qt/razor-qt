@@ -30,11 +30,13 @@
 
 
 #include "ui_main_window.h"
+#include "../daemon/meta_types.hpp"
 
 
 class Actions;
 class DefaultModel;
 class QItemSelectionModel;
+class QSortFilterProxyModel;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -42,7 +44,13 @@ class MainWindow : public QMainWindow, private Ui::MainWindow
     
 public:
     explicit MainWindow(QWidget *parent = 0);
-    
+
+public slots:
+    void daemonDisappeared();
+    void daemonAppeared();
+
+    void multipleActionsBehaviourChanged(MultipleActionsBehaviour behaviour);
+
 protected:
     void changeEvent(QEvent *e);
 
@@ -51,14 +59,16 @@ protected slots:
 
     void on_add_PB_clicked();
     void on_modify_PB_clicked();
-    void on_changeShortcut_PB_clicked();
     void on_swap_PB_clicked();
     void on_remove_PB_clicked();
 
+    void on_multipleActionsBehaviour_CB_currentIndexChanged(int);
+
 private:
-    Actions *m_actions;
-    DefaultModel *m_defaultModel;
-    QItemSelectionModel *m_selectionModel;
+    Actions *mActions;
+    DefaultModel *mDefaultModel;
+    QSortFilterProxyModel *mSortFilterProxyModel;
+    QItemSelectionModel *mSelectionModel;
 };
 
 #endif // GLOBAL_ACTION_MANAGER__MAIN_WINDOW__INCLUDED

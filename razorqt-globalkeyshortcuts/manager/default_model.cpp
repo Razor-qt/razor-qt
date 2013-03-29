@@ -32,7 +32,7 @@
 
 DefaultModel::DefaultModel(Actions *actions, QObject *parent)
     : QAbstractTableModel(parent)
-    , m_actions(actions)
+    , mActions(actions)
 {
     connect(actions, SIGNAL(daemonDisappeared()), SLOT(daemonDisappeared()));
     connect(actions, SIGNAL(daemonAppeared()), SLOT(daemonAppeared()));
@@ -49,12 +49,12 @@ DefaultModel::~DefaultModel()
 
 int DefaultModel::rowCount(const QModelIndex &/*parent*/) const
 {
-    return m_content.size();
+    return mContent.size();
 }
 
 int DefaultModel::columnCount(const QModelIndex &/*parent*/) const
 {
-    return 4;
+    return 5;
 }
 
 QVariant DefaultModel::data(const QModelIndex &index, int role) const
@@ -66,22 +66,25 @@ QVariant DefaultModel::data(const QModelIndex &index, int role) const
             switch (index.column())
             {
             case 0:
-                return m_content[m_content.keys()[index.row()]].shortcut;
+                return mContent.keys()[index.row()];
 
             case 1:
-                return m_content[m_content.keys()[index.row()]].description;
+                return mContent[mContent.keys()[index.row()]].shortcut;
 
             case 2:
-                return m_content[m_content.keys()[index.row()]].type;
+                return mContent[mContent.keys()[index.row()]].description;
 
             case 3:
-                return m_content[m_content.keys()[index.row()]].info;
+                return mContent[mContent.keys()[index.row()]].type;
+
+            case 4:
+                return mContent[mContent.keys()[index.row()]].info;
             }
         break;
 
     case Qt::CheckStateRole:
         if ((index.row() >= 0) && (index.row() < rowCount()) && (index.column() == 0))
-            return m_content[m_content.keys()[index.row()]].enabled;
+            return mContent[mContent.keys()[index.row()]].enabled ? Qt::Checked : Qt::Unchecked;
         break;
 
     default:;
@@ -101,15 +104,18 @@ QVariant DefaultModel::headerData(int section, Qt::Orientation orientation, int 
             switch (section)
             {
             case 0:
-                return tr("Shortcut");
+                return tr("Id");
 
             case 1:
-                return tr("Description");
+                return tr("Shortcut");
 
             case 2:
-                return tr("Type");
+                return tr("Description");
 
             case 3:
+                return tr("Type");
+
+            case 4:
                 return tr("Info");
             }
             break;
@@ -132,40 +138,47 @@ Qt::ItemFlags DefaultModel::flags(const QModelIndex &index) const
     return result;
 }
 
+qulonglong DefaultModel::id(const QModelIndex &index) const
+{
+    if ((index.row() >= 0) && (index.row() < rowCount()))
+        return mContent.keys()[index.row()];
+    return 0ull;
+}
+
 void DefaultModel::daemonDisappeared()
 {
-    beginRemoveRows(QModelIndex(), 0, rowCount());
+    beginResetModel();
 
-    m_content.clear();
+    mContent.clear();
 
-    endRemoveRows();
+    endResetModel();
 }
 
 void DefaultModel::daemonAppeared()
 {
-    QList<qulonglong> allIds = m_actions->allActionIds();
+    QList<qulonglong> allIds = mActions->allActionIds();
 
     beginInsertRows(QModelIndex(), 0, allIds.size() - 1);
 
     foreach (qulonglong id, allIds)
-        m_content[id] = m_actions->actionById(id).second;
+        mContent[id] = mActions->actionById(id).second;
 
     endInsertRows();
 }
 
 void DefaultModel::actionAdded(qulonglong id)
 {
-    if (!m_content.contains(id))
+    if (!mContent.contains(id))
     {
-        QPair<bool, GeneralActionInfo> result = m_actions->actionById(id);
+        QPair<bool, GeneralActionInfo> result = mActions->actionById(id);
         if (result.first)
         {
-            QMap<qulonglong, GeneralActionInfo>::ConstIterator I = m_content.lowerBound(id);
-            int row = (I == m_content.constEnd()) ? m_content.size() : m_content.keys().indexOf(I.key());
+            QMap<qulonglong, GeneralActionInfo>::ConstIterator I = mContent.lowerBound(id);
+            int row = (I == mContent.constEnd()) ? mContent.size() : mContent.keys().indexOf(I.key());
 
             beginInsertRows(QModelIndex(), row, row);
 
-            m_content[id] = result.second;
+            mContent[id] = result.second;
 
             endInsertRows();
         }
@@ -174,56 +187,56 @@ void DefaultModel::actionAdded(qulonglong id)
 
 void DefaultModel::actionEnabled(qulonglong id, bool enabled)
 {
-    if (m_content.contains(id))
+    if (mContent.contains(id))
     {
-        int row = m_content.keys().indexOf(id);
+        int row = mContent.keys().indexOf(id);
 
-        m_content[id].enabled = enabled;
+        mContent[id].enabled = enabled;
 
-        emit dataChanged(createIndex(row, 0), createIndex(row, 3));
+        emit dataChanged(index(row, 0), index(row, 3));
     }
 }
 
 void DefaultModel::actionModified(qulonglong id)
 {
-    if (m_content.contains(id))
+    if (mContent.contains(id))
     {
-        QPair<bool, GeneralActionInfo> result = m_actions->actionById(id);
+        QPair<bool, GeneralActionInfo> result = mActions->actionById(id);
         if (result.first)
         {
-            int row = m_content.keys().indexOf(id);
+            int row = mContent.keys().indexOf(id);
 
-            m_content[id] = result.second;
+            mContent[id] = result.second;
 
-            emit dataChanged(createIndex(row, 0), createIndex(row, 3));
+            emit dataChanged(index(row, 0), index(row, 3));
         }
     }
 }
 
 void DefaultModel::actionsSwapped(qulonglong id1, qulonglong id2)
 {
-    if (m_content.contains(id1) && m_content.contains(id2))
+    if (mContent.contains(id1) && mContent.contains(id2))
     {
-        QList<qulonglong> keys = m_content.keys();
+        QList<qulonglong> keys = mContent.keys();
         int row1 = keys.indexOf(id1);
         int row2 = keys.indexOf(id2);
 
-        std::swap(m_content[id1], m_content[id2]);
+        std::swap(mContent[id1], mContent[id2]);
 
-        emit dataChanged(createIndex(row1, 0), createIndex(row1, 3));
-        emit dataChanged(createIndex(row2, 0), createIndex(row2, 3));
+        emit dataChanged(index(row1, 0), index(row1, 3));
+        emit dataChanged(index(row2, 0), index(row2, 3));
     }
 }
 
 void DefaultModel::actionRemoved(qulonglong id)
 {
-    if (m_content.contains(id))
+    if (mContent.contains(id))
     {
-        int row = m_content.keys().indexOf(id);
+        int row = mContent.keys().indexOf(id);
 
         beginRemoveRows(QModelIndex(), row, row);
 
-        m_content.remove(id);
+        mContent.remove(id);
 
         endRemoveRows();
     }

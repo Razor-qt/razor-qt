@@ -31,6 +31,9 @@
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
@@ -43,6 +46,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="add_PB">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Add ...</string>
           </property>
@@ -65,16 +71,6 @@
           </property>
           <property name="text">
            <string>Modify ...</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="changeShortcut_PB">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Change shortcut ...</string>
           </property>
          </widget>
         </item>
@@ -113,6 +109,54 @@
      </layout>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="multipleActionsBehaviour_L">
+        <property name="text">
+         <string>Multiple actions behaviour:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="multipleActionsBehaviour_CB">
+        <item>
+         <property name="text">
+          <string>First</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Last</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>All</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <spacer name="horizontalSpacer">
@@ -145,7 +189,6 @@
   <tabstop>add_PB</tabstop>
   <tabstop>remove_PB</tabstop>
   <tabstop>modify_PB</tabstop>
-  <tabstop>changeShortcut_PB</tabstop>
   <tabstop>swap_PB</tabstop>
   <tabstop>close_PB</tabstop>
  </tabstops>
