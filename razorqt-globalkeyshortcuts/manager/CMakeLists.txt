@@ -76,6 +76,7 @@ set(${PROJECT_NAME}_SOURCES
 	main.cpp
 	main_window.cpp
 	actions.cpp
+	../daemon/meta_types.cpp
 )
 
 set(${PROJECT_NAME}_FORMS

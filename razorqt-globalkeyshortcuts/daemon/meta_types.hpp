@@ -72,32 +72,18 @@ typedef struct CommandActionInfo : CommonActionInfo {
 
 
 
-
-Q_DECLARE_METATYPE(GeneralActionInfo)
+typedef QMap<qulonglong,GeneralActionInfo> QMap_qulonglong_GeneralActionInfo;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    Q_DECLARE_METATYPE(QList<qulonglong>)
-    typedef QMap<qulonglong,GeneralActionInfo> QMap_qulonglong_GeneralActionInfo;
-    Q_DECLARE_METATYPE(QMap_qulonglong_GeneralActionInfo)
+Q_DECLARE_METATYPE(QList<qulonglong>)
 #endif
+Q_DECLARE_METATYPE(GeneralActionInfo)
+Q_DECLARE_METATYPE(QMap_qulonglong_GeneralActionInfo)
 
 
 
-inline QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo)
-{
-    argument.beginStructure();
-    argument << generalActionInfo.shortcut << generalActionInfo.description << generalActionInfo.enabled << generalActionInfo.type << generalActionInfo.info;
-    argument.endStructure();
-    return argument;
-}
-
-inline const QDBusArgument& operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo)
-{
-    argument.beginStructure();
-    argument >> generalActionInfo.shortcut >> generalActionInfo.description >> generalActionInfo.enabled >> generalActionInfo.type >> generalActionInfo.info;
-    argument.endStructure();
-    return argument;
-}
+QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo);
+const QDBusArgument& operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo);
 
 #endif // GLOBAL_ACTION_MANAGER__META_TYPES__INCLUDED
 

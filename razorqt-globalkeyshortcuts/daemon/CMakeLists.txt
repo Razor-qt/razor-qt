@@ -85,6 +85,7 @@ set(${PROJECT_NAME}_SOURCES
 	method_action.cpp
 	dbus_action.cpp
 	command_action.cpp
+	meta_types.cpp
 )
 
 set(${PROJECT_NAME}_CPP_HEADERS
