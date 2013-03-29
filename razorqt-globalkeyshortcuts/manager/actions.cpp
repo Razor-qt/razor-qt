@@ -36,7 +36,7 @@ Actions::Actions(QObject *parent)
 {
     connect(mServiceWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(on_daemonDisappeared(QString)));
     connect(mServiceWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(on_daemonAppeared(QString)));
-    mDaemonProxy = new org::razorqt::global_action::daemon(org::razorqt::global_action::daemon::staticInterfaceName(), "/daemon", QDBusConnection::sessionBus(), this);
+    mDaemonProxy = new org::razorqt::global_action::daemon("org.razorqt.global_action", "/daemon", QDBusConnection::sessionBus(), this);
 
     connect(mDaemonProxy, SIGNAL(actionAdded(qulonglong)), this, SLOT(on_actionAdded(qulonglong)));
     connect(mDaemonProxy, SIGNAL(actionEnabled(qulonglong,bool)), this, SLOT(on_actionEnabled(qulonglong,bool)));

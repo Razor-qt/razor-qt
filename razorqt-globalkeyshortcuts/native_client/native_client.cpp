@@ -43,7 +43,7 @@ GlobalActionNativeClientImpl::GlobalActionNativeClientImpl(GlobalActionNativeCli
 {
     connect(mServiceWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(daemonDisappeared(QString)));
     connect(mServiceWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(daemonAppeared(QString)));
-    mProxy = new org::razorqt::global_action::native(org::razorqt::global_action::native::staticInterfaceName(), "/native", QDBusConnection::sessionBus(), this);
+    mProxy = new org::razorqt::global_action::native("org.razorqt.global_action", "/native", QDBusConnection::sessionBus(), this);
     mDaemonPresent = mProxy->isValid();
 
     connect(this, SIGNAL(emitShortcutGrabbed(QString)), mInterface, SIGNAL(shortcutGrabbed(QString)));
