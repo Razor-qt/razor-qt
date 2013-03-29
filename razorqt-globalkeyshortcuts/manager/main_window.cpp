@@ -38,11 +38,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
+    QColor grayedOutColour(actions_TV->palette().color(actions_TV->foregroundRole()));
+    QColor backgroundColour(actions_TV->palette().color(actions_TV->backgroundRole()));
+    grayedOutColour.toHsl();
+    backgroundColour.toHsl();
+    grayedOutColour.setHslF(grayedOutColour.hslHueF(), grayedOutColour.hslSaturationF(), (grayedOutColour.lightnessF() + backgroundColour.lightnessF() * 3) / 4.0);
+    grayedOutColour.toRgb();
+
     QFont highlightedFont(actions_TV->font());
     highlightedFont.setBold(!highlightedFont.bold());
 
     mActions = new Actions(this);
-    mDefaultModel = new DefaultModel(mActions, QColor(), highlightedFont, this);
+    mDefaultModel = new DefaultModel(mActions, grayedOutColour, highlightedFont, this);
     mSortFilterProxyModel = new QSortFilterProxyModel(this);
 
     mSortFilterProxyModel->setSourceModel(mDefaultModel);

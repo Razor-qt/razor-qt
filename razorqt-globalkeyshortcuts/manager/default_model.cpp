@@ -89,6 +89,11 @@ QVariant DefaultModel::data(const QModelIndex &index, int role) const
             return mHighlightedFont;
         break;
 
+    case Qt::ForegroundRole:
+        if (!mContent[mContent.keys()[index.row()]].enabled)
+            return mGrayedOutColour;
+        break;
+
     case Qt::CheckStateRole:
         if ((index.row() >= 0) && (index.row() < rowCount()) && (index.column() == 0))
             return mContent[mContent.keys()[index.row()]].enabled ? Qt::Checked : Qt::Unchecked;
