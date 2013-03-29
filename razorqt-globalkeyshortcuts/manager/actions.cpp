@@ -46,12 +46,17 @@ Actions::Actions(QObject *parent)
     connect(mDaemonProxy, SIGNAL(actionsSwapped(qulonglong,qulonglong)), this, SLOT(on_actionsSwapped(qulonglong,qulonglong)));
     connect(mDaemonProxy, SIGNAL(multipleActionsBehaviourChanged(uint)), this, SLOT(on_multipleActionsBehaviourChanged(uint)));
 
-    init();
-    emit daemonAppeared();
+    QTimer::singleShot(0, this, SLOT(delayedInit()));
 }
 
 Actions::~Actions()
 {
+}
+
+void Actions::delayedInit()
+{
+    if (mDaemonProxy->isValid())
+        on_daemonAppeared(QString());
 }
 
 void Actions::on_daemonDisappeared(const QString &)

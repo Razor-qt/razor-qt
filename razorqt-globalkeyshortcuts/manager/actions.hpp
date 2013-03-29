@@ -82,6 +82,7 @@ signals:
     void actionModified(qulonglong id);
     void actionsSwapped(qulonglong id1, qulonglong id2);
     void actionRemoved(qulonglong id);
+
     void multipleActionsBehaviourChanged(MultipleActionsBehaviour behaviour);
 
 private:
@@ -102,6 +103,8 @@ private:
     uint getMultipleActionsBehaviour();
 
 private slots:
+    void delayedInit();
+
     void on_daemonDisappeared(const QString &);
     void on_daemonAppeared(const QString &);
 
