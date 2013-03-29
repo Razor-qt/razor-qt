@@ -59,6 +59,16 @@ class NativeAdaptor;
 class DBusProxy;
 class BaseAction;
 
+template<class Key>
+class QOrderedSet : public QMap<Key, Key>
+{
+public:
+    typename QMap<Key, Key>::iterator insert(const Key &akey)
+    {
+        return QMap<Key, Key>::insert(akey, akey);
+    }
+};
+
 class Core : public QThread, public LogTarget
 {
     Q_OBJECT
@@ -81,15 +91,15 @@ private:
     typedef QPair<KeyCode, unsigned int> X11Shortcut;
     typedef QMap<X11Shortcut, QString> ShortcutByX11;
     typedef QMap<QString, X11Shortcut> X11ByShortcut;
-    typedef QSet<qulonglong> Ids;
+    typedef QOrderedSet<qulonglong> Ids;
     typedef QMap<QString, Ids> IdsByShortcut;
     typedef QPair<QString, QDBusObjectPath> DBusClient;
     typedef QMap<DBusClient, qulonglong> IdByDBusClient;
-    typedef QSet<QDBusObjectPath> DBusPaths;
+    typedef QOrderedSet<QDBusObjectPath> DBusPaths;
     typedef QMap<QString, DBusPaths> DBusPathsByDBusService;
     typedef QPair<QString, BaseAction*> ShortcutAndAction;
     typedef QMap<qulonglong, ShortcutAndAction> ShortcutAndActionById;
-    typedef QSet<QString> ServiceNames;
+    typedef QOrderedSet<QString> ServiceNames;
     typedef QMap<QString, ServiceNames> ServiceNamesByServiceId;
     typedef QMap<QString, QString> PreferredServiceNameByServiceId;
     typedef QMap<QString, QString> ServiceIdByServiceName;
