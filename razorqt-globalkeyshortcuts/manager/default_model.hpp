@@ -31,6 +31,8 @@
 
 #include <QAbstractTableModel>
 #include <QMap>
+#include <QColor>
+#include <QFont>
 
 #include "../daemon/meta_types.hpp"
 
@@ -38,11 +40,21 @@
 class Actions;
 
 
+template<class Key>
+class QOrderedSet : public QMap<Key, Key>
+{
+public:
+    typename QMap<Key, Key>::iterator insert(const Key &akey)
+    {
+        return QMap<Key, Key>::insert(akey, akey);
+    }
+};
+
 class DefaultModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit DefaultModel(Actions *, QObject *parent = 0);
+    explicit DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, QObject *parent = 0);
     ~DefaultModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -66,7 +78,10 @@ public slots:
 private:
     Actions *mActions;
     QMap<qulonglong, GeneralActionInfo> mContent;
+    QMap<QString, QOrderedSet<qulonglong> > mShortcuts;
 
+    QColor mGrayedOutColour;
+    QFont mHighlightedFont;
 };
 
 #endif // GLOBAL_ACTION_MANAGER__DEFAULT_MODEL__INCLUDED

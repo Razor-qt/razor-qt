@@ -30,9 +30,11 @@
 #include "actions.hpp"
 
 
-DefaultModel::DefaultModel(Actions *actions, QObject *parent)
+DefaultModel::DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, QObject *parent)
     : QAbstractTableModel(parent)
     , mActions(actions)
+    , mGrayedOutColour(grayedOutColour)
+    , mHighlightedFont(highlightedFont)
 {
     connect(actions, SIGNAL(daemonDisappeared()), SLOT(daemonDisappeared()));
     connect(actions, SIGNAL(daemonAppeared()), SLOT(daemonAppeared()));
@@ -80,6 +82,11 @@ QVariant DefaultModel::data(const QModelIndex &index, int role) const
             case 4:
                 return mContent[mContent.keys()[index.row()]].info;
             }
+        break;
+
+    case Qt::FontRole:
+        if ((index.row() >= 0) && (index.row() < rowCount()) && (index.column() == 1) && (mShortcuts[mContent[mContent.keys()[index.row()]].shortcut].size() > 1))
+            return mHighlightedFont;
         break;
 
     case Qt::CheckStateRole:
@@ -150,6 +157,7 @@ void DefaultModel::daemonDisappeared()
     beginResetModel();
 
     mContent.clear();
+    mShortcuts.clear();
 
     endResetModel();
 }
@@ -161,7 +169,10 @@ void DefaultModel::daemonAppeared()
     beginInsertRows(QModelIndex(), 0, allIds.size() - 1);
 
     foreach (qulonglong id, allIds)
+    {
         mContent[id] = mActions->actionById(id).second;
+        mShortcuts[mContent[id].shortcut].insert(id);
+    }
 
     endInsertRows();
 }
@@ -173,14 +184,25 @@ void DefaultModel::actionAdded(qulonglong id)
         QPair<bool, GeneralActionInfo> result = mActions->actionById(id);
         if (result.first)
         {
-            QMap<qulonglong, GeneralActionInfo>::ConstIterator I = mContent.lowerBound(id);
-            int row = (I == mContent.constEnd()) ? mContent.size() : mContent.keys().indexOf(I.key());
+            QList<qulonglong> keys = mContent.keys();
+            int row = qBinaryFind(keys, mContent.lowerBound(id).key()) - keys.constBegin();
 
             beginInsertRows(QModelIndex(), row, row);
 
             mContent[id] = result.second;
+            mShortcuts[mContent[id].shortcut].insert(id);
 
             endInsertRows();
+
+            keys = mContent.keys();
+            foreach (qulonglong siblingId, mShortcuts[mContent[id].shortcut])
+            {
+                if (id != siblingId)
+                {
+                    int siblingRow = qBinaryFind(keys, siblingId) - keys.constBegin();
+                    emit dataChanged(index(siblingRow, 1), index(siblingRow, 1));
+                }
+            }
         }
     }
 }
@@ -189,7 +211,8 @@ void DefaultModel::actionEnabled(qulonglong id, bool enabled)
 {
     if (mContent.contains(id))
     {
-        int row = mContent.keys().indexOf(id);
+        QList<qulonglong> keys = mContent.keys();
+        int row = qBinaryFind(keys, id) - keys.constBegin();
 
         mContent[id].enabled = enabled;
 
@@ -204,7 +227,24 @@ void DefaultModel::actionModified(qulonglong id)
         QPair<bool, GeneralActionInfo> result = mActions->actionById(id);
         if (result.first)
         {
-            int row = mContent.keys().indexOf(id);
+            QList<qulonglong> keys = mContent.keys();
+            int row = qBinaryFind(keys, id) - keys.constBegin();
+
+            if (mContent[id].shortcut != result.second.shortcut)
+            {
+                mShortcuts[result.second.shortcut].insert(id);
+                mShortcuts[mContent[id].shortcut].remove(id);
+                foreach (qulonglong siblingId, mShortcuts[mContent[id].shortcut])
+                {
+                    int siblingRow = qBinaryFind(keys, siblingId) - keys.constBegin();
+                    emit dataChanged(index(siblingRow, 1), index(siblingRow, 1));
+                }
+                foreach (qulonglong siblingId, mShortcuts[result.second.shortcut])
+                {
+                    int siblingRow = qBinaryFind(keys, siblingId) - keys.constBegin();
+                    emit dataChanged(index(siblingRow, 1), index(siblingRow, 1));
+                }
+            }
 
             mContent[id] = result.second;
 
@@ -218,8 +258,8 @@ void DefaultModel::actionsSwapped(qulonglong id1, qulonglong id2)
     if (mContent.contains(id1) && mContent.contains(id2))
     {
         QList<qulonglong> keys = mContent.keys();
-        int row1 = keys.indexOf(id1);
-        int row2 = keys.indexOf(id2);
+        int row1 = qBinaryFind(keys, id1) - keys.constBegin();
+        int row2 = qBinaryFind(keys, id2) - keys.constBegin();
 
         std::swap(mContent[id1], mContent[id2]);
 
@@ -232,12 +272,22 @@ void DefaultModel::actionRemoved(qulonglong id)
 {
     if (mContent.contains(id))
     {
-        int row = mContent.keys().indexOf(id);
+        QList<qulonglong> keys = mContent.keys();
+        int row = qBinaryFind(keys, id) - keys.constBegin();
 
         beginRemoveRows(QModelIndex(), row, row);
+
+        mShortcuts[mContent[id].shortcut].remove(id);
+        QString shortcut = mContent[id].shortcut;
 
         mContent.remove(id);
 
         endRemoveRows();
+
+        foreach (qulonglong siblingId, mShortcuts[shortcut])
+        {
+            int siblingRow = qBinaryFind(keys, siblingId) - keys.constBegin();
+            emit dataChanged(index(siblingRow, 1), index(siblingRow, 1));
+        }
     }
 }

@@ -38,8 +38,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setupUi(this);
 
+    QFont highlightedFont(actions_TV->font());
+    highlightedFont.setBold(!highlightedFont.bold());
+
     mActions = new Actions(this);
-    mDefaultModel = new DefaultModel(mActions, this);
+    mDefaultModel = new DefaultModel(mActions, QColor(), highlightedFont, this);
     mSortFilterProxyModel = new QSortFilterProxyModel(this);
 
     mSortFilterProxyModel->setSourceModel(mDefaultModel);
