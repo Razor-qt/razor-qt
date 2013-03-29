@@ -186,9 +186,7 @@ void GlobalActionNativeClientImpl::grabShortcutFinished(QDBusPendingCallWatcher 
 {
     QDBusPendingReply<QString, bool, bool, bool> reply = *call;
     if (reply.isError())
-    {
         emit emitGrabShortcutFailed();
-    }
     else
     {
         if (reply.argumentAt<1>())
