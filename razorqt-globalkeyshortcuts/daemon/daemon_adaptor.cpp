@@ -206,10 +206,10 @@ bool DaemonAdaptor::getActionById(qulonglong id, QString &shortcut, QString &des
     return success;
 }
 
-QMap<qulonglong,GeneralActionInfo> DaemonAdaptor::getAllActionsById()
+QMap<qulonglong,GeneralActionInfo> DaemonAdaptor::getAllActions()
 {
     QMap<qulonglong,GeneralActionInfo> result;
-    emit onGetAllActionsById(result);
+    emit onGetAllActions(result);
     return result;
 }
 

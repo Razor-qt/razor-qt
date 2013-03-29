@@ -70,7 +70,7 @@ public slots:
     uint getMultipleActionsBehaviour();
 
     QList<qulonglong> getAllActionIds();
-    QMap<qulonglong,GeneralActionInfo> getAllActionsById();
+    QMap<qulonglong,GeneralActionInfo> getAllActions();
     bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
     bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
@@ -116,7 +116,7 @@ signals:
 
     void onGetAllActionIds(QList<qulonglong> &);
     void onGetActionById(QPair<bool, GeneralActionInfo> &, qulonglong);
-    void onGetAllActionsById(QMap<qulonglong,GeneralActionInfo> &);
+    void onGetAllActions(QMap<qulonglong,GeneralActionInfo> &);
 
     void onGetDBusActionInfoById(QPair<bool, DBusActionInfo> &, qulonglong);
     void onGetMethodActionInfoById(QPair<bool, MethodActionInfo> &, qulonglong);

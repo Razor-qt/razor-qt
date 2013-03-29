@@ -91,7 +91,7 @@ private:
     QList<qulonglong> getAllActionIds();
 
     bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
-    QMap<qulonglong,GeneralActionInfo> getAllActionsById();
+    QMap<qulonglong,GeneralActionInfo> getAllActions();
 
     bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);

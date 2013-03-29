@@ -615,7 +615,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         connect(mDaemonAdaptor, SIGNAL(onGetMultipleActionsBehaviour(MultipleActionsBehaviour&)), this, SLOT(getMultipleActionsBehaviour(MultipleActionsBehaviour&)));
         connect(mDaemonAdaptor, SIGNAL(onGetAllActionIds(QList<qulonglong>&)), this, SLOT(getAllActionIds(QList<qulonglong>&)));
         connect(mDaemonAdaptor, SIGNAL(onGetActionById(QPair<bool,GeneralActionInfo>&,qulonglong)), this, SLOT(getActionById(QPair<bool,GeneralActionInfo>&,qulonglong)));
-        connect(mDaemonAdaptor, SIGNAL(onGetAllActionsById(QMap<qulonglong,GeneralActionInfo>&)), this, SLOT(getAllActionsById(QMap<qulonglong,GeneralActionInfo>&)));
+        connect(mDaemonAdaptor, SIGNAL(onGetAllActions(QMap<qulonglong,GeneralActionInfo>&)), this, SLOT(getAllActions(QMap<qulonglong,GeneralActionInfo>&)));
         connect(mDaemonAdaptor, SIGNAL(onGetDBusActionInfoById(QPair<bool,DBusActionInfo>&,qulonglong)), this, SLOT(getDBusActionInfoById(QPair<bool,DBusActionInfo>&,qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGetMethodActionInfoById(QPair<bool,MethodActionInfo>&,qulonglong)), this, SLOT(getMethodActionInfoById(QPair<bool,MethodActionInfo>&,qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGetCommandActionInfoById(QPair<bool,CommandActionInfo>&,qulonglong)), this, SLOT(getCommandActionInfoById(QPair<bool,CommandActionInfo>&,qulonglong)));
@@ -2671,7 +2671,7 @@ void Core::getActionById(QPair<bool, GeneralActionInfo> &result, const qulonglon
     result = qMakePair(true, actionInfo(shortcutAndActionById.value()));
 }
 
-void Core::getAllActionsById(QMap<qulonglong,GeneralActionInfo> &result) const
+void Core::getAllActions(QMap<qulonglong,GeneralActionInfo> &result) const
 {
     QMutexLocker lock(&mDataMutex);
 

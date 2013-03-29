@@ -125,7 +125,7 @@ private slots:
 
     void getAllActionIds(QList<qulonglong> &result) const;
     void getActionById(QPair<bool, GeneralActionInfo> &result, const qulonglong &id) const;
-    void getAllActionsById(QMap<qulonglong,GeneralActionInfo> &result) const;
+    void getAllActions(QMap<qulonglong,GeneralActionInfo> &result) const;
 
     void getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulonglong &id) const;
     void getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const qulonglong &id) const;

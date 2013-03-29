@@ -70,7 +70,7 @@ void Actions::init()
 {
     clear();
 
-    mGeneralActionInfo = getAllActionsById();
+    mGeneralActionInfo = getAllActions();
     GeneralActionInfos::const_iterator M = mGeneralActionInfo.constEnd();
     for (GeneralActionInfos::const_iterator I = mGeneralActionInfo.constBegin(); I != M; ++I)
     {
@@ -228,9 +228,9 @@ bool Actions::getActionById(qulonglong id, QString &shortcut, QString &descripti
     return mDaemonProxy->getActionById(id, shortcut, description, enabled, type, info);
 }
 
-QMap<qulonglong,GeneralActionInfo> Actions::getAllActionsById()
+QMap<qulonglong,GeneralActionInfo> Actions::getAllActions()
 {
-    return mDaemonProxy->getAllActionsById();
+    return mDaemonProxy->getAllActions();
 }
 
 bool Actions::isActionEnabled(qulonglong id)

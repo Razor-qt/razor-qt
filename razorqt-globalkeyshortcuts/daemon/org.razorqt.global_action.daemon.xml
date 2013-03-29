@@ -114,8 +114,8 @@
 			<arg name="type" type="s" direction="out"/>
 			<arg name="info" type="s" direction="out"/>
 		</method>
-		<method name="getAllActionsById">
 			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QMap&lt;qulonglong,GeneralActionInfo&gt;"/>
+		<method name="getAllActions">
 			<arg name="info" type="a{t(ssbss)}" direction="out"/>
 			<!-- s:shortcut, s:description, b:enabled, s:type, s:info-->
 		</method>
