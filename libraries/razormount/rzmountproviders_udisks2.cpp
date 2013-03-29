@@ -433,7 +433,7 @@ bool UDisks2MountDevice::mount()
                               this,
                               SLOT(aboutToMount()),
                               SLOT(dbusError(QDBusError,QDBusMessage)));
-
+    return ret;
 }
 
 bool UDisks2MountDevice::unmount()
@@ -458,7 +458,6 @@ bool UDisks2MountDevice::unmount()
                               this,
                               SLOT(aboutToUnmount()),
                               SLOT(dbusError(QDBusError,QDBusMessage)));
-
 }
 
 bool UDisks2MountDevice::eject()
