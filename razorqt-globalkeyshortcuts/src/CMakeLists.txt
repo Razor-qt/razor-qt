@@ -134,9 +134,9 @@ qt4_add_resources(${PROJECT}_RESOURCE_FILES ${${PROJECT}_RESOURCES})
 if(COMMAND qt4_wrap_ui)
 	qt4_wrap_ui(${PROJECT}_FORM_FILES ${${PROJECT}_FORMS})
 endif()
-if(COMMAND qt4_create_translation)
-	qt4_create_translation(${${PROJECT}_QM_FILES} ${${PROJECT}_TRANSLATABLE} ${${PROJECT}_TRANSLATIONS})
-endif()
+#if(COMMAND qt4_create_translation)
+#	qt4_create_translation(${${PROJECT}_QM_FILES} ${${PROJECT}_TRANSLATABLE} ${${PROJECT}_TRANSLATIONS})
+#endif()
 
 
 

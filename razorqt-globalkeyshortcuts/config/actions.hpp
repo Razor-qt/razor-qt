@@ -37,7 +37,7 @@
 #include <QPair>
 #include <QDBusObjectPath>
 
-#include "../daemon/meta_types.hpp"
+#include "../src/meta_types.hpp"
 
 
 class OrgRazorqtGlobal_actionDaemonInterface;

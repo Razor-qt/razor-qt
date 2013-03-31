@@ -4,9 +4,9 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012 Razor team
+ * Copyright: 2013 Razor team
  * Authors:
- *   Aaron Lewis <the.warl0ck.1989@gmail.com>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -25,17 +25,20 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <razorqt/razorapplication.h>
-#include "razortranslate.h"
-#include "shortcuteditor.h"
+#include "main_window.hpp"
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    #include <QtGui/QGuiApplication>
+#else
+    #include <QtGui/QApplication>
+#endif
+
 
 int main(int argc, char *argv[])
 {
-    RazorApplication a(argc, argv);
-    TRANSLATE_APP;
-
-    ShortcutEditor w;
+    QApplication a(argc, argv);
+    MainWindow w;
     w.show();
-
+    
     return a.exec();
 }

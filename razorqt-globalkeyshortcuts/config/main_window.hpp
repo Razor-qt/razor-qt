@@ -30,7 +30,7 @@
 
 
 #include "ui_main_window.h"
-#include "../daemon/meta_types.hpp"
+#include "../src/meta_types.hpp"
 
 
 class Actions;
