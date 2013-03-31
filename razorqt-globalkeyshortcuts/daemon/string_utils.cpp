@@ -35,3 +35,18 @@ QString joinToString(const QStringList &list, const QString &prefix, const QStri
         result = prefix + result + postfix;
     return result;
 }
+
+QString joinCommandLine(const QString &command, QStringList arguments)
+{
+    arguments.prepend(command);
+    int m = arguments.length();
+    for (int i = 0; i < m; ++i)
+    {
+        QString &item = arguments[i];
+        if (item.contains(QRegExp("[ \r\n\t\"']")))
+            item.prepend("'").append("'");
+        else if (item.isEmpty())
+            item = QString("''");
+    }
+    return arguments.join(" ");
+}

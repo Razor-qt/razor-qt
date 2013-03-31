@@ -35,4 +35,6 @@
 
 QString joinToString(const QStringList &list, const QString &prefix, const QString &joiner, const QString &postfix);
 
+QString joinCommandLine(const QString &command, QStringList arguments);
+
 #endif // GLOBAL_ACTION_DAEMON__STRING_UTILS__INCLUDED

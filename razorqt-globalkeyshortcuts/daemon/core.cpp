@@ -2650,7 +2650,7 @@ GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) c
     else if (result.type == CommandAction::id())
     {
         const CommandAction *commandAction = dynamic_cast<const CommandAction*>(action);
-        result.info = QString("\"") + commandAction->command() + QString("\"") + joinToString(commandAction->args(), " \"", "\" \"", "\"");
+        result.info = joinCommandLine(commandAction->command(), commandAction->args());
     }
 
     return result;
