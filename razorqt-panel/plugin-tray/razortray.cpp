@@ -176,7 +176,7 @@ void RazorTray::clientMessageEvent(XClientMessageEvent* e)
 
         case SYSTEM_TRAY_BEGIN_MESSAGE:
         case SYSTEM_TRAY_CANCEL_MESSAGE:
-            qDebug() << "we don't show baloons messages.";
+            qDebug() << "we don't show balloon messages.";
             break;
 
 

@@ -38,7 +38,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Select Sytem Wallpaper Image</source>
+        <source>Select System Wallpaper Image</source>
         <translation type="unfinished"/>
     </message>
 </context>

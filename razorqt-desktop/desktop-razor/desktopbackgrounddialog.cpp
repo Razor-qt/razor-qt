@@ -97,7 +97,7 @@ void DesktopBackgroundDialog::wallpaperButton_clicked()
 void DesktopBackgroundDialog::systemButton_clicked()
 {
     QString fname = QFileDialog::getOpenFileName(this,
-                                                tr("Select Sytem Wallpaper Image"),
+                                                tr("Select System Wallpaper Image"),
                                                 "/usr/share/wallpapers",
                                                 tr("Images (*.png *.xpm *.jpg *.jpeg *.svg)"));
     if (fname.isNull())
