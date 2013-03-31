@@ -81,6 +81,7 @@ public:
     bool modifyCommandAction(const qulonglong &id, const QString &command, const QStringList &arguments, const QString &description);
 
     bool enableAction(qulonglong id, bool enabled);
+    bool isActionEnabled(qulonglong id);
 
     QString changeShortcut(const qulonglong &id, const QString &shortcut);
 
@@ -121,13 +122,11 @@ private:
     QList<qulonglong> getAllActionIds();
 
     bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
-    QMap<qulonglong,GeneralActionInfo> getAllActions();
+    QMap<qulonglong, GeneralActionInfo> getAllActions();
 
     bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
     bool getCommandActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &command, QStringList &arguments);
-
-    bool isActionEnabled(qulonglong id);
 
     uint getMultipleActionsBehaviour();
 

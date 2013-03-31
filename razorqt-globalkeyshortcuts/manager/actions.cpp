@@ -208,46 +208,6 @@ MultipleActionsBehaviour Actions::multipleActionsBehaviour() const
     return mMultipleActionsBehaviour;
 }
 
-bool Actions::getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path)
-{
-    return mDaemonProxy->getDBusActionInfoById(id, shortcut, description, enabled, service, path);
-}
-
-bool Actions::getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method)
-{
-    return mDaemonProxy->getMethodActionInfoById(id, shortcut, description, enabled, service, path, interface, method);
-}
-
-bool Actions::getCommandActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &command, QStringList &arguments)
-{
-    return mDaemonProxy->getCommandActionInfoById(id, shortcut, description, enabled, command, arguments);
-}
-
-QList<qulonglong> Actions::getAllActionIds()
-{
-    return mDaemonProxy->getAllActionIds();
-}
-
-bool Actions::getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info)
-{
-    return mDaemonProxy->getActionById(id, shortcut, description, enabled, type, info);
-}
-
-QMap<qulonglong,GeneralActionInfo> Actions::getAllActions()
-{
-    return mDaemonProxy->getAllActions();
-}
-
-bool Actions::isActionEnabled(qulonglong id)
-{
-    return mDaemonProxy->isActionEnabled(id);
-}
-
-uint Actions::getMultipleActionsBehaviour()
-{
-    return mDaemonProxy->getMultipleActionsBehaviour();
-}
-
 void Actions::do_actionAdded(qulonglong id)
 {
     QString shortcut;
@@ -449,6 +409,56 @@ void Actions::on_multipleActionsBehaviourChanged(uint behaviour)
     emit multipleActionsBehaviourChanged(mMultipleActionsBehaviour);
 }
 
+bool Actions::getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path)
+{
+    return mDaemonProxy->getDBusActionInfoById(id, shortcut, description, enabled, service, path);
+}
+
+bool Actions::getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method)
+{
+    return mDaemonProxy->getMethodActionInfoById(id, shortcut, description, enabled, service, path, interface, method);
+}
+
+bool Actions::getCommandActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &command, QStringList &arguments)
+{
+    return mDaemonProxy->getCommandActionInfoById(id, shortcut, description, enabled, command, arguments);
+}
+
+QList<qulonglong> Actions::getAllActionIds()
+{
+    QDBusPendingReply<QList<qulonglong> > reply = mDaemonProxy->getAllActionIds();
+    reply.waitForFinished();
+    if (reply.isError())
+        return QList<qulonglong>();
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info)
+{
+    return mDaemonProxy->getActionById(id, shortcut, description, enabled, type, info);
+}
+
+QMap<qulonglong, GeneralActionInfo> Actions::getAllActions()
+{
+    QDBusPendingReply<QMap<qulonglong, GeneralActionInfo> > reply = mDaemonProxy->getAllActions();
+    reply.waitForFinished();
+    if (reply.isError())
+        return QMap<qulonglong, GeneralActionInfo>();
+
+    return reply.argumentAt<0>();
+}
+
+uint Actions::getMultipleActionsBehaviour()
+{
+    QDBusPendingReply<uint> reply = mDaemonProxy->getMultipleActionsBehaviour();
+    reply.waitForFinished();
+    if (reply.isError())
+        return 0;
+
+    return reply.argumentAt<0>();
+}
+
 QPair<QString, qulonglong> Actions::addMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)
 {
     QDBusPendingReply<QString, qulonglong> reply = mDaemonProxy->addMethodAction(shortcut, service, path, interface, method, description);
@@ -502,6 +512,16 @@ bool Actions::modifyCommandAction(const qulonglong &id, const QString &command, 
 bool Actions::enableAction(qulonglong id, bool enabled)
 {
     QDBusPendingReply<bool> reply = mDaemonProxy->enableAction(id, enabled);
+    reply.waitForFinished();
+    if (reply.isError())
+        return false;
+
+    return reply.argumentAt<0>();
+}
+
+bool Actions::isActionEnabled(qulonglong id)
+{
+    QDBusPendingReply<bool> reply = mDaemonProxy->isActionEnabled(id);
     reply.waitForFinished();
     if (reply.isError())
         return false;
