@@ -1195,6 +1195,13 @@ void Core::run()
                                 checkX11Error();
                             }
                         }
+                        else
+                        {
+                            log(LOG_DEBUG, "grabShortcut: already grabbed %s", qPrintable(shortcut));
+                            lockX11Error();
+                            XUngrabKeyboard(mDisplay, CurrentTime);
+                            checkX11Error();
+                        }
                     }
                     if (!ignoreKey)
                     {
