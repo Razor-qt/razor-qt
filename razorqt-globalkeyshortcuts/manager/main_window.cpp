@@ -93,6 +93,13 @@ void MainWindow::daemonAppeared()
     multipleActionsBehaviour_CB->setCurrentIndex(mActions->multipleActionsBehaviour());
 
     actions_TV->horizontalHeader()->setSortIndicator(0, Qt::AscendingOrder);
+
+    int m = actions_TV->model()->columnCount() - 1;
+    for (int i = 0; i < m; ++i)
+    {
+        actions_TV->resizeColumnToContents(i);
+        actions_TV->setColumnWidth(i, actions_TV->columnWidth(i) + 20);
+    }
 }
 
 void MainWindow::multipleActionsBehaviourChanged(MultipleActionsBehaviour behaviour)
