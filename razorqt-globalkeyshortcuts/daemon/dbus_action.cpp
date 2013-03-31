@@ -27,10 +27,11 @@
 
 #include "dbus_action.hpp"
 #include "client_proxy.hpp"
+#include "log_target.hpp"
 
 
-DBusAction::DBusAction(const QString &service, const QDBusObjectPath &path, const QString &description)
-    : BaseAction(description)
+DBusAction::DBusAction(LogTarget *logTarget, const QString &service, const QDBusObjectPath &path, const QString &description)
+    : BaseAction(logTarget, description)
     , mProxy(0)
     , mService(service)
     , mPath(path)
@@ -38,8 +39,8 @@ DBusAction::DBusAction(const QString &service, const QDBusObjectPath &path, cons
 {
 }
 
-DBusAction::DBusAction(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent)
-    : BaseAction(description)
+DBusAction::DBusAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent)
+    : BaseAction(logTarget, description)
     , mProxy(new ClientProxy(service, path, connection))
     , mService(service)
     , mPath(path)
@@ -58,7 +59,10 @@ bool DBusAction::call()
         return false;
 
     if (!mProxy)
+    {
+        mLogTarget->log(LOG_WARNING, "No native client: \"%s\"", qPrintable(mService));
         return false;
+    }
 
     mProxy->emitActivated();
 

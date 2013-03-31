@@ -26,10 +26,11 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "method_action.hpp"
+#include "log_target.hpp"
 
 
-MethodAction::MethodAction(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)
-    : BaseAction(description)
+MethodAction::MethodAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)
+    : BaseAction(logTarget, description)
     , mConnection(connection)
     , mService(service)
     , mPath(path)
@@ -43,5 +44,9 @@ bool MethodAction::call()
     if (!isEnabled())
         return false;
 
-    return mConnection.call(QDBusMessage::createMethodCall(mService, mPath.path(), mInterface, mMethodName), QDBus::BlockWithGui).type() == QDBusMessage::ReplyMessage;
+    bool result = mConnection.call(QDBusMessage::createMethodCall(mService, mPath.path(), mInterface, mMethodName), QDBus::BlockWithGui).type() == QDBusMessage::ReplyMessage;
+    if (!result)
+        mLogTarget->log(LOG_WARNING, "Failed to call dbus method: service:'%s' path:'%s' interface:'%s' method:'%s'", qPrintable(mService), qPrintable(mPath.path()), qPrintable(mInterface), qPrintable(mMethodName));
+
+    return result;
 }

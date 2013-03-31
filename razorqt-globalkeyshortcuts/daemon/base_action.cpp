@@ -26,10 +26,12 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "base_action.hpp"
+#include "log_target.hpp"
 
 
-BaseAction::BaseAction(const QString &description)
-    : mDescription(description)
+BaseAction::BaseAction(LogTarget *logTarget, const QString &description)
+    : mLogTarget(logTarget)
+    , mDescription(description)
     , mEnabled(true)
 {
 }

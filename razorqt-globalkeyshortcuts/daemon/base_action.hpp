@@ -31,10 +31,12 @@
 
 #include <QString>
 
+class LogTarget;
+
 class BaseAction
 {
 public:
-    BaseAction(const QString &description);
+    BaseAction(LogTarget *logTarget, const QString &description);
     virtual ~BaseAction();
 
     virtual const char* type() const = 0;
@@ -47,6 +49,9 @@ public:
     void setEnabled(bool value = true) { mEnabled = value; }
     void setDisabled(bool value = true) { mEnabled = !value; }
     bool isEnabled() const { return mEnabled; }
+
+protected:
+    LogTarget *mLogTarget;
 
 private:
     QString mDescription;

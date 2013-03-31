@@ -2012,7 +2012,7 @@ QPair<QString, qulonglong> Core::addOrRegisterDBusAction(const QString &shortcut
 
     mIdsByShortcut[newShortcut].insert(id);
     mIdByDBusClient[dBusClient] = id;
-    mShortcutAndActionById[id] = qMakePair<QString, BaseAction*>(newShortcut, sender.isEmpty() ? new DBusAction(service, path, description) : new DBusAction(QDBusConnection::sessionBus(), service, path, description, service != sender));
+    mShortcutAndActionById[id] = qMakePair<QString, BaseAction*>(newShortcut, sender.isEmpty() ? new DBusAction(this, service, path, description) : new DBusAction(this, QDBusConnection::sessionBus(), service, path, description, service != sender));
 
     log(LOG_INFO, "addDBusAction shortcut:'%s' id:%llu", qPrintable(newShortcut), id);
 
@@ -2070,7 +2070,7 @@ void Core::addMethodAction(QPair<QString, qulonglong> &result, const QString &sh
     qulonglong id = ++mLastId;
 
     mIdsByShortcut[newShortcut].insert(id);
-    mShortcutAndActionById[id] = qMakePair<QString, BaseAction*>(newShortcut, new MethodAction(QDBusConnection::sessionBus(), service, path, interface, method, description));
+    mShortcutAndActionById[id] = qMakePair<QString, BaseAction*>(newShortcut, new MethodAction(this, QDBusConnection::sessionBus(), service, path, interface, method, description));
 
     log(LOG_INFO, "addMethodAction shortcut:'%s' id:%llu", qPrintable(newShortcut), id);
 
@@ -2207,7 +2207,7 @@ void Core::modifyMethodAction(bool &result, const qulonglong &id, const QString 
     }
 
     delete action;
-    shortcutAndActionById.value().second = new MethodAction(QDBusConnection::sessionBus(), service, path, interface, method, description);
+    shortcutAndActionById.value().second = new MethodAction(this, QDBusConnection::sessionBus(), service, path, interface, method, description);
 
     saveConfig();
 

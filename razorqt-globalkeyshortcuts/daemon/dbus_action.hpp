@@ -41,8 +41,8 @@ class ClientProxy;
 class DBusAction : public BaseAction
 {
 public:
-    DBusAction(const QString &service, const QDBusObjectPath &path, const QString &description);
-    DBusAction(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent = false);
+    DBusAction(LogTarget *logTarget, const QString &service, const QDBusObjectPath &path, const QString &description);
+    DBusAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent = false);
     ~DBusAction();
 
     static const char* id() { return "dbus"; }

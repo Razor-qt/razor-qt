@@ -35,8 +35,6 @@
 #include <QStringList>
 
 
-class LogTarget;
-
 class CommandAction : public BaseAction
 {
 public:
@@ -53,7 +51,6 @@ public:
     QStringList args() const { return mArgs; }
 
 private:
-    LogTarget *mLogTarget;
     QString mCommand;
     QStringList mArgs;
 };

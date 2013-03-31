@@ -40,7 +40,7 @@
 class MethodAction : public BaseAction
 {
 public:
-    MethodAction(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
+    MethodAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
 
     static const char* id() { return "method"; }
 
