@@ -122,8 +122,8 @@ void MainWindow::selectionChanged(const QItemSelection &/*selected*/, const QIte
     bool enableSwap = (rows.length() == 2);
     if (enableSwap)
     {
-        QPair<bool, GeneralActionInfo> info0 = mActions->actionById(mDefaultModel->id(rows[0]));
-        QPair<bool, GeneralActionInfo> info1 = mActions->actionById(mDefaultModel->id(rows[1]));
+        QPair<bool, GeneralActionInfo> info0 = mActions->actionById(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rows[0])));
+        QPair<bool, GeneralActionInfo> info1 = mActions->actionById(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rows[1])));
         enableSwap = (info0.first && info1.first && (info0.second.shortcut == info1.second.shortcut));
     }
     swap_PB->setEnabled(enableSwap);
@@ -140,11 +140,11 @@ void MainWindow::on_modify_PB_clicked()
 void MainWindow::on_swap_PB_clicked()
 {
     QModelIndexList rows = mSelectionModel->selectedRows();
-    mActions->swapActions(mDefaultModel->id(rows[0]), mDefaultModel->id(rows[1]));
+    mActions->swapActions(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rows[0])), mDefaultModel->id(mSortFilterProxyModel->mapToSource(rows[1])));
 }
 
 void MainWindow::on_remove_PB_clicked()
 {
     foreach (QModelIndex rowIndex, mSelectionModel->selectedRows())
-        mActions->removeAction(mDefaultModel->id(rowIndex));
+        mActions->removeAction(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rowIndex)));
 }
