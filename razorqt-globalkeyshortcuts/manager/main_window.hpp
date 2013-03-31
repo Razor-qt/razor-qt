@@ -37,6 +37,7 @@ class Actions;
 class DefaultModel;
 class QItemSelectionModel;
 class QSortFilterProxyModel;
+class EditActionDialog;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -64,11 +65,16 @@ protected slots:
 
     void on_multipleActionsBehaviour_CB_currentIndexChanged(int);
 
+    void on_actions_TV_doubleClicked(const QModelIndex &);
+
 private:
     Actions *mActions;
     DefaultModel *mDefaultModel;
     QSortFilterProxyModel *mSortFilterProxyModel;
     QItemSelectionModel *mSelectionModel;
+    EditActionDialog *mEditActionDialog;
+
+    void editAction(const QModelIndex &);
 };
 
 #endif // GLOBAL_ACTION_MANAGER__MAIN_WINDOW__INCLUDED

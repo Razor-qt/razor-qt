@@ -84,10 +84,12 @@ set(${PROJECT_NAME}_SOURCES
 	default_model.cpp
 	shortcut_selector.cpp
 	../daemon/meta_types.cpp
+	edit_action_dialog.cpp
 )
 
 set(${PROJECT_NAME}_FORMS
 	main_window.ui
+	edit_action_dialog.ui
 )
 
 set(${PROJECT_NAME}_RESOURCES
@@ -105,6 +107,7 @@ set(${PROJECT_NAME}_QT_HEADERS
 	actions.hpp
 	default_model.hpp
 	shortcut_selector.hpp
+	edit_action_dialog.hpp
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS

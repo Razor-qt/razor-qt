@@ -28,6 +28,7 @@
 #include "main_window.hpp"
 #include "actions.hpp"
 #include "default_model.hpp"
+#include "edit_action_dialog.hpp"
 
 #include <QItemSelectionModel>
 #include <QSortFilterProxyModel>
@@ -35,6 +36,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , mEditActionDialog(0)
 {
     setupUi(this);
 
@@ -131,10 +133,12 @@ void MainWindow::selectionChanged(const QItemSelection &/*selected*/, const QIte
 
 void MainWindow::on_add_PB_clicked()
 {
+    editAction(QModelIndex());
 }
 
 void MainWindow::on_modify_PB_clicked()
 {
+    editAction(mSelectionModel->currentIndex());
 }
 
 void MainWindow::on_swap_PB_clicked()
@@ -147,4 +151,29 @@ void MainWindow::on_remove_PB_clicked()
 {
     foreach (QModelIndex rowIndex, mSelectionModel->selectedRows())
         mActions->removeAction(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rowIndex)));
+}
+
+void MainWindow::on_actions_TV_doubleClicked(const QModelIndex &index)
+{
+    if (index.column() == 0)
+    {
+        qulonglong id = mDefaultModel->id(mSortFilterProxyModel->mapToSource(index));
+        mActions->enableAction(id, !mActions->isActionEnabled(id));
+    }
+    else
+        editAction(index);
+}
+
+void MainWindow::editAction(const QModelIndex &index)
+{
+    qulonglong id = 0;
+
+    if(index.isValid())
+        id = mDefaultModel->id(mSortFilterProxyModel->mapToSource(index));
+
+    if (!mEditActionDialog)
+        mEditActionDialog = new EditActionDialog(mActions, this);
+
+    if (mEditActionDialog->load(id))
+        mEditActionDialog->exec();
 }

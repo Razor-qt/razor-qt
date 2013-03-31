@@ -14,7 +14,9 @@ class ShortcutSelector : public QPushButton
     Q_OBJECT
 public:
     explicit ShortcutSelector(Actions *actions, QWidget *parent = 0);
-    
+    explicit ShortcutSelector(QWidget *parent = 0);
+    void setActions(Actions *actions);
+
 signals:
     void shortcutGrabbed(const QString &);
 
@@ -31,6 +33,8 @@ private:
     QString mOldShortcut;
     int mTimeoutCounter;
     QTimer *mShortcutTimer;
+
+    void init();
 };
 
 #endif // SHORTCUT_SELECTOR_HPP

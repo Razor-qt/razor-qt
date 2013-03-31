@@ -6,8 +6,22 @@
 
 ShortcutSelector::ShortcutSelector(Actions *actions, QWidget *parent)
     : QPushButton(parent)
-    , mActions(actions)
+    , mActions(0)
     , mShortcutTimer(new QTimer(this))
+{
+    init();
+    setActions(actions);
+}
+
+ShortcutSelector::ShortcutSelector(QWidget *parent)
+    : QPushButton(parent)
+    , mActions(0)
+    , mShortcutTimer(new QTimer(this))
+{
+    init();
+}
+
+void ShortcutSelector::init()
 {
     setCheckable(true);
 
@@ -17,6 +31,13 @@ ShortcutSelector::ShortcutSelector(Actions *actions, QWidget *parent)
     connect(this, SIGNAL(clicked()), this, SLOT(grabShortcut()));
 
     connect(mShortcutTimer, SIGNAL(timeout()), this, SLOT(shortcutTimer_timeout()));
+}
+
+void ShortcutSelector::setActions(Actions *actions)
+{
+    if (mActions)
+        return;
+    mActions = actions;
     connect(mActions, SIGNAL(grabShortcutCancelled()), this, SLOT(grabShortcut_fail()));
     connect(mActions, SIGNAL(grabShortcutTimedout()), this, SLOT(grabShortcut_fail()));
     connect(mActions, SIGNAL(grabShortcutFailed()), this, SLOT(grabShortcut_fail()));
@@ -25,6 +46,9 @@ ShortcutSelector::ShortcutSelector(Actions *actions, QWidget *parent)
 
 void ShortcutSelector::grabShortcut(int timeout)
 {
+    if (!mActions)
+        return;
+
     if (!isChecked())
     {
         mActions->cancelShortutGrab();
