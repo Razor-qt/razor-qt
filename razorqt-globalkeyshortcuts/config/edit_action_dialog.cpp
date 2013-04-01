@@ -41,7 +41,8 @@ EditActionDialog::EditActionDialog(Actions *actions, QWidget *parent)
 void EditActionDialog::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-    switch (e->type()) {
+    switch (e->type())
+    {
     case QEvent::LanguageChange:
         retranslateUi(this);
         break;
@@ -58,9 +59,13 @@ static QString joinCommandLine(const QString &command, QStringList arguments)
     {
         QString &item = arguments[i];
         if (item.contains(QRegExp("[ \r\n\t\"']")))
+        {
             item.prepend("'").append("'");
+        }
         else if (item.isEmpty())
+        {
             item = QString("''");
+        }
     }
     return arguments.join(" ");
 }
@@ -72,24 +77,34 @@ static QStringList splitCommandLine(QString commandLine)
     QRegExp spacePattern("\\s+");
     QRegExp itemPattern("([^ \r\n\t\"']+)|((\"([^\"]|\\\")*\")|('([^']|\\')*'))(?=\\s)");
 
-    for (int pos = 0; ; )
+    for (int pos = 0; ;)
     {
         if (commandLine.indexOf(spacePattern, pos) != pos)
+        {
             return QStringList();
+        }
         pos += spacePattern.matchedLength();
 
         if (pos == commandLine.length())
+        {
             break;
+        }
 
         if (commandLine.indexOf(itemPattern, pos) != pos)
+        {
             return QStringList();
+        }
         pos += itemPattern.matchedLength();
 
         QString item = itemPattern.cap(2);
         if (item.length())
+        {
             result << item.mid(1, item.length() - 2);
+        }
         else
+        {
             result << itemPattern.cap(1);
+        }
     }
     return result;
 }
@@ -102,10 +117,12 @@ void EditActionDialog::when_accepted()
         {
             QStringList commandLine = splitCommandLine(command_PTE->toPlainText());
             if (!commandLine.length())
+            {
                 return;
+            }
             mActions->modifyCommandAction(mId, commandLine[0], commandLine.mid(1), description_LE->text());
         }
-        else if(dbus_method_RB->isChecked())
+        else if (dbus_method_RB->isChecked())
         {
             mActions->modifyMethodAction(mId, service_LE->text(), QDBusObjectPath(path_LE->text()), interface_LE->text(), method_LE->text(), description_LE->text());
         }
@@ -119,15 +136,19 @@ void EditActionDialog::when_accepted()
         {
             QStringList commandLine = splitCommandLine(command_PTE->toPlainText());
             if (!commandLine.length())
+            {
                 return;
+            }
             result = mActions->addCommandAction(mShortcut, commandLine[0], commandLine.mid(1), description_LE->text());
         }
-        else if(dbus_method_RB->isChecked())
+        else if (dbus_method_RB->isChecked())
         {
             result = mActions->addMethodAction(mShortcut, service_LE->text(), QDBusObjectPath(path_LE->text()), interface_LE->text(), method_LE->text(), description_LE->text());
         }
         if (result.second && !enabled_CB->isChecked())
+        {
             mActions->enableAction(result.second, false);
+        }
     }
 }
 
@@ -139,7 +160,9 @@ bool EditActionDialog::load(qulonglong id)
     {
         QPair<bool, GeneralActionInfo> info = mActions->actionById(id);
         if (!info.first)
+        {
             return false;
+        }
 
         bool canEdit = ((info.second.type == "command") || (info.second.type == "method"));
 
@@ -154,14 +177,18 @@ bool EditActionDialog::load(qulonglong id)
         {
             QPair<bool, CommandActionInfo> commandInfo = mActions->commandActionInfoById(id);
             if (!commandInfo.first)
+            {
                 return false;
+            }
             command_PTE->setPlainText(joinCommandLine(commandInfo.second.command, commandInfo.second.arguments));
         }
         else if (info.second.type == "method")
         {
             QPair<bool, MethodActionInfo> methodInfo = mActions->methodActionInfoById(id);
             if (!methodInfo.first)
+            {
                 return false;
+            }
             service_LE->setText(methodInfo.second.service);
             path_LE->setText(methodInfo.second.path.path());
             interface_LE->setText(methodInfo.second.interface);

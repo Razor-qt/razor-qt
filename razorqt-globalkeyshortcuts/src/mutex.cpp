@@ -35,5 +35,7 @@ Mutex::Mutex()
 Mutex::~Mutex()
 {
     if (!mInitResult)
+    {
         pthread_mutex_destroy(&mMutex);
+    }
 }

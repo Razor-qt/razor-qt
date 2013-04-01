@@ -56,7 +56,9 @@ DBusAction::~DBusAction()
 bool DBusAction::call()
 {
     if (!isEnabled())
+    {
         return false;
+    }
 
     if (!mProxy)
     {
@@ -72,7 +74,9 @@ bool DBusAction::call()
 void DBusAction::appeared(const QDBusConnection &connection)
 {
     if (mProxy) // should never happen
+    {
         return;
+    }
     mProxy = new ClientProxy(mService, mPath, connection);
 }
 
@@ -82,8 +86,10 @@ void DBusAction::disappeared()
     mProxy = 0;
 }
 
-void DBusAction::shortcutChanged(const QString& oldShortcut, const QString& newShortcut)
+void DBusAction::shortcutChanged(const QString &oldShortcut, const QString &newShortcut)
 {
     if (mProxy)
-         mProxy->emitShortcutChanged(oldShortcut, newShortcut);
+    {
+        mProxy->emitShortcutChanged(oldShortcut, newShortcut);
+    }
 }

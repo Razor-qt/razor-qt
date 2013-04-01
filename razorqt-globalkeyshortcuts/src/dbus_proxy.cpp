@@ -30,17 +30,21 @@
 #include "org.freedesktop.DBus.h"
 
 
-DBusProxy::DBusProxy(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, QObject * parent)
+DBusProxy::DBusProxy(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, QObject *parent)
     : QObject(parent)
 {
     org::freedesktop::DBus *iface = new org::freedesktop::DBus(service, path.path(), connection, this);
-    connect(iface, SIGNAL(NameOwnerChanged(QString,QString,QString)), this, SLOT(NameOwnerChanged(QString,QString,QString)));
+    connect(iface, SIGNAL(NameOwnerChanged(QString, QString, QString)), this, SLOT(NameOwnerChanged(QString, QString, QString)));
 }
 
 void DBusProxy::NameOwnerChanged(const QString &argin0, const QString &argin1, const QString &argin2)
 {
     if (argin1.isEmpty() && !argin2.isEmpty())
+    {
         emit onServiceAppeared(argin0, argin2);
+    }
     if (!argin1.isEmpty() && argin2.isEmpty())
+    {
         emit onServiceDisappeared(argin0, argin1);
+    }
 }

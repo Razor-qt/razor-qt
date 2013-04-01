@@ -30,7 +30,7 @@
 #include "org.razorqt.global_action.native.h"
 
 
-NativeAdaptor::NativeAdaptor(QObject * parent)
+NativeAdaptor::NativeAdaptor(QObject *parent)
     : QObject(parent)
     , QDBusContext()
 {

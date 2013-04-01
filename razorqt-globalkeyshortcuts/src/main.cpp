@@ -55,13 +55,15 @@ int main(int argc, char *argv[])
     MultipleActionsBehaviour multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
     QStringList configFiles;
 
-    static struct option longOptions[] = {
+    static struct option longOptions[] =
+    {
         {"no-daemon", no_argument, 0, 'n'},
         {"log-level", required_argument, 0, 'l'},
         {"multiple-actions-behaviour", required_argument, 0, 'm'},
         {"config-file", required_argument, 0, 'f'},
         {"help", no_argument, 0, 'h'},
-        {0, 0, 0, 0} };
+        {0, 0, 0, 0}
+    };
 
     for (;;)
     {
@@ -70,7 +72,9 @@ int main(int argc, char *argv[])
         int c = getopt_long(argc, argv, "h?", longOptions, &optionIndex);
 
         if (c == -1)
+        {
             break;
+        }
 
         switch (c)
         {
@@ -80,15 +84,25 @@ int main(int argc, char *argv[])
 
         case 'l':
             if (!strcmp(optarg, "error"))
+            {
                 minLogLevel = LOG_ERR;
+            }
             else if (!strcmp(optarg, "warning"))
+            {
                 minLogLevel = LOG_WARNING;
+            }
             else if (!strcmp(optarg, "notice"))
+            {
                 minLogLevel = LOG_NOTICE;
+            }
             else if (!strcmp(optarg, "info"))
+            {
                 minLogLevel = LOG_INFO;
+            }
             else if (!strcmp(optarg, "debug"))
+            {
                 minLogLevel = LOG_DEBUG;
+            }
             else
             {
                 fprintf(stderr, "Invalid minimal log level: %s\n", optarg);
@@ -101,13 +115,21 @@ int main(int argc, char *argv[])
 
         case 'm':
             if (!strcmp(optarg, "first"))
+            {
                 multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
+            }
             else if (!strcmp(optarg, "last"))
+            {
                 multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_LAST;
+            }
             else if (!strcmp(optarg, "all"))
+            {
                 multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_ALL;
+            }
             else if (!strcmp(optarg, "none"))
+            {
                 multipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_NONE;
+            }
             else
             {
                 fprintf(stderr, "Invalid multiple actions behaviour: %s\n", optarg);
@@ -193,14 +215,18 @@ int main(int argc, char *argv[])
     (void)ignoreIt;
 
     if (configFiles.empty())
+    {
         configFiles.push_back(QString::fromLocal8Bit(getenv("HOME")) + "/" DEFAULT_CONFIG);
+    }
 
     QCoreApplication app(argc, argv);
 
     Core core(runAsDaemon, minLogLevelSet, minLogLevel, configFiles, multipleActionsBehaviourSet, multipleActionsBehaviour);
 
     if (!core.ready())
+    {
         return EXIT_FAILURE;
+    }
 
     return app.exec();
 }

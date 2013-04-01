@@ -11,7 +11,8 @@ static uint64_t now_ms()
     return (now.tv_sec * 1000 + now.tv_usec / 1000);
 }
 
-namespace DBus {
+namespace DBus
+{
 
 FixedTimeout::FixedTimeout(unsigned int interval, DefaultMainLoop *mainLoop)
     : DefaultTimeout(100, true, mainLoop)

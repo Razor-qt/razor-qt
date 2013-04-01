@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     mSelectionModel = new QItemSelectionModel(actions_TV->model());
     actions_TV->setSelectionModel(mSelectionModel);
 
-    connect(mSelectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged(QItemSelection,QItemSelection)));
+    connect(mSelectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(selectionChanged(QItemSelection, QItemSelection)));
 
     connect(mActions, SIGNAL(daemonDisappeared()), SLOT(daemonDisappeared()));
     connect(mActions, SIGNAL(daemonAppeared()), SLOT(daemonAppeared()));
@@ -70,7 +70,8 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
-    switch (e->type()) {
+    switch (e->type())
+    {
     case QEvent::LanguageChange:
         retranslateUi(this);
         break;
@@ -149,8 +150,8 @@ void MainWindow::on_swap_PB_clicked()
 
 void MainWindow::on_remove_PB_clicked()
 {
-    foreach (QModelIndex rowIndex, mSelectionModel->selectedRows())
-        mActions->removeAction(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rowIndex)));
+    foreach(QModelIndex rowIndex, mSelectionModel->selectedRows())
+    mActions->removeAction(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rowIndex)));
 }
 
 void MainWindow::on_actions_TV_doubleClicked(const QModelIndex &index)
@@ -161,19 +162,27 @@ void MainWindow::on_actions_TV_doubleClicked(const QModelIndex &index)
         mActions->enableAction(id, !mActions->isActionEnabled(id));
     }
     else
+    {
         editAction(index);
+    }
 }
 
 void MainWindow::editAction(const QModelIndex &index)
 {
     qulonglong id = 0;
 
-    if(index.isValid())
+    if (index.isValid())
+    {
         id = mDefaultModel->id(mSortFilterProxyModel->mapToSource(index));
+    }
 
     if (!mEditActionDialog)
+    {
         mEditActionDialog = new EditActionDialog(mActions, this);
+    }
 
     if (mEditActionDialog->load(id))
+    {
         mEditActionDialog->exec();
+    }
 }

@@ -41,7 +41,9 @@ error_t createPipe(int fd[2])
 {
     error_t result = 0;
     if (pipe(fd) < 0)
+    {
         result = errno;
+    }
     if (!result)
     {
         fcntl(fd[STDIN_FILENO], F_SETFD, FD_CLOEXEC);
@@ -56,10 +58,14 @@ error_t readAll(int fd, void *data, size_t length)
     {
         ssize_t bytes_read = read(fd, data, length);
         if (bytes_read < 0)
+        {
             return errno;
+        }
         if (!bytes_read)
+        {
             return -1;
-        data = reinterpret_cast<char*>(data) + bytes_read;
+        }
+        data = reinterpret_cast<char *>(data) + bytes_read;
         length -= bytes_read;
     }
     return 0;
@@ -71,10 +77,14 @@ error_t writeAll(int fd, const void *data, size_t length)
     {
         ssize_t bytes_written = write(fd, data, length);
         if (bytes_written < 0)
+        {
             return errno;
+        }
         if (!bytes_written)
+        {
             return -1;
-        data = reinterpret_cast<const char*>(data) + bytes_written;
+        }
+        data = reinterpret_cast<const char *>(data) + bytes_written;
         length -= bytes_written;
     }
     return 0;

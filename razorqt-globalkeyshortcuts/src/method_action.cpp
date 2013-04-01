@@ -42,11 +42,15 @@ MethodAction::MethodAction(LogTarget *logTarget, const QDBusConnection &connecti
 bool MethodAction::call()
 {
     if (!isEnabled())
+    {
         return false;
+    }
 
     bool result = mConnection.call(QDBusMessage::createMethodCall(mService, mPath.path(), mInterface, mMethodName), QDBus::BlockWithGui).type() == QDBusMessage::ReplyMessage;
     if (!result)
+    {
         mLogTarget->log(LOG_WARNING, "Failed to call dbus method: service:'%s' path:'%s' interface:'%s' method:'%s'", qPrintable(mService), qPrintable(mPath.path()), qPrintable(mInterface), qPrintable(mMethodName));
+    }
 
     return result;
 }

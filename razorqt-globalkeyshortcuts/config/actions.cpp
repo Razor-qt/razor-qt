@@ -39,11 +39,11 @@ Actions::Actions(QObject *parent)
     mDaemonProxy = new org::razorqt::global_action::daemon("org.razorqt.global_action", "/daemon", QDBusConnection::sessionBus(), this);
 
     connect(mDaemonProxy, SIGNAL(actionAdded(qulonglong)), this, SLOT(on_actionAdded(qulonglong)));
-    connect(mDaemonProxy, SIGNAL(actionEnabled(qulonglong,bool)), this, SLOT(on_actionEnabled(qulonglong,bool)));
+    connect(mDaemonProxy, SIGNAL(actionEnabled(qulonglong, bool)), this, SLOT(on_actionEnabled(qulonglong, bool)));
     connect(mDaemonProxy, SIGNAL(actionModified(qulonglong)), this, SLOT(on_actionModified(qulonglong)));
     connect(mDaemonProxy, SIGNAL(actionRemoved(qulonglong)), this, SLOT(on_actionRemoved(qulonglong)));
     connect(mDaemonProxy, SIGNAL(actionShortcutChanged(qulonglong)), this, SLOT(on_actionShortcutChanged(qulonglong)));
-    connect(mDaemonProxy, SIGNAL(actionsSwapped(qulonglong,qulonglong)), this, SLOT(on_actionsSwapped(qulonglong,qulonglong)));
+    connect(mDaemonProxy, SIGNAL(actionsSwapped(qulonglong, qulonglong)), this, SLOT(on_actionsSwapped(qulonglong, qulonglong)));
     connect(mDaemonProxy, SIGNAL(multipleActionsBehaviourChanged(uint)), this, SLOT(on_multipleActionsBehaviourChanged(uint)));
 
     QTimer::singleShot(0, this, SLOT(delayedInit()));
@@ -56,7 +56,9 @@ Actions::~Actions()
 void Actions::delayedInit()
 {
     if (mDaemonProxy->isValid())
+    {
         on_daemonAppeared(QString());
+    }
 }
 
 void Actions::on_daemonDisappeared(const QString &)
@@ -160,7 +162,9 @@ QPair<bool, GeneralActionInfo> Actions::actionById(qulonglong id) const
 {
     GeneralActionInfos::const_iterator I = mGeneralActionInfo.constFind(id);
     if (I == mGeneralActionInfo.constEnd())
+    {
         return qMakePair(false, GeneralActionInfo());
+    }
     return qMakePair(true, I.value());
 }
 
@@ -173,7 +177,9 @@ QPair<bool, DBusActionInfo> Actions::dBusActionInfoById(qulonglong id) const
 {
     DBusActionInfos::const_iterator I = mDBusActionInfo.constFind(id);
     if (I == mDBusActionInfo.constEnd())
+    {
         return qMakePair(false, DBusActionInfo());
+    }
     return qMakePair(true, I.value());
 }
 
@@ -186,7 +192,9 @@ QPair<bool, MethodActionInfo> Actions::methodActionInfoById(qulonglong id) const
 {
     MethodActionInfos::const_iterator I = mMethodActionInfo.constFind(id);
     if (I == mMethodActionInfo.constEnd())
+    {
         return qMakePair(false, MethodActionInfo());
+    }
     return qMakePair(true, I.value());
 }
 
@@ -199,7 +207,9 @@ QPair<bool, CommandActionInfo> Actions::commandActionInfoById(qulonglong id) con
 {
     CommandActionInfos::const_iterator I = mCommandActionInfo.constFind(id);
     if (I == mCommandActionInfo.constEnd())
+    {
         return qMakePair(false, CommandActionInfo());
+    }
     return qMakePair(true, I.value());
 }
 
@@ -294,19 +304,25 @@ void Actions::on_actionEnabled(qulonglong id, bool enabled)
         {
             DBusActionInfos::iterator DI = mDBusActionInfo.find(id);
             if (DI != mDBusActionInfo.end())
+            {
                 DI.value().enabled = enabled;
+            }
         }
         else if (GI.value().type == "method")
         {
             MethodActionInfos::iterator MI = mMethodActionInfo.find(id);
             if (MI != mMethodActionInfo.end())
+            {
                 MI.value().enabled = enabled;
+            }
         }
         else if (GI.value().type == "command")
         {
             CommandActionInfos::iterator CI = mCommandActionInfo.find(id);
             if (CI != mCommandActionInfo.end())
+            {
                 CI.value().enabled = enabled;
+            }
         }
     }
     emit actionEnabled(id, enabled);
@@ -429,7 +445,9 @@ QList<qulonglong> Actions::getAllActionIds()
     QDBusPendingReply<QList<qulonglong> > reply = mDaemonProxy->getAllActionIds();
     reply.waitForFinished();
     if (reply.isError())
+    {
         return QList<qulonglong>();
+    }
 
     return reply.argumentAt<0>();
 }
@@ -444,7 +462,9 @@ QMap<qulonglong, GeneralActionInfo> Actions::getAllActions()
     QDBusPendingReply<QMap<qulonglong, GeneralActionInfo> > reply = mDaemonProxy->getAllActions();
     reply.waitForFinished();
     if (reply.isError())
+    {
         return QMap<qulonglong, GeneralActionInfo>();
+    }
 
     return reply.argumentAt<0>();
 }
@@ -454,7 +474,9 @@ uint Actions::getMultipleActionsBehaviour()
     QDBusPendingReply<uint> reply = mDaemonProxy->getMultipleActionsBehaviour();
     reply.waitForFinished();
     if (reply.isError())
+    {
         return 0;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -464,7 +486,9 @@ QPair<QString, qulonglong> Actions::addMethodAction(const QString &shortcut, con
     QDBusPendingReply<QString, qulonglong> reply = mDaemonProxy->addMethodAction(shortcut, service, path, interface, method, description);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return qMakePair<QString, qulonglong>(QString(), 0ull);
+    }
 
     return qMakePair<QString, qulonglong>(reply.argumentAt<0>(), reply.argumentAt<1>());
 }
@@ -474,7 +498,9 @@ QPair<QString, qulonglong> Actions::addCommandAction(const QString &shortcut, co
     QDBusPendingReply<QString, qulonglong> reply = mDaemonProxy->addCommandAction(shortcut, command, arguments, description);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return qMakePair<QString, qulonglong>(QString(), 0ull);
+    }
 
     return qMakePair<QString, qulonglong>(reply.argumentAt<0>(), reply.argumentAt<1>());
 }
@@ -484,7 +510,9 @@ bool Actions::modifyActionDescription(const qulonglong &id, const QString &descr
     QDBusPendingReply<bool> reply = mDaemonProxy->modifyActionDescription(id, description);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -494,7 +522,9 @@ bool Actions::modifyMethodAction(const qulonglong &id, const QString &service, c
     QDBusPendingReply<bool> reply = mDaemonProxy->modifyMethodAction(id, service, path, interface, method, description);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -504,7 +534,9 @@ bool Actions::modifyCommandAction(const qulonglong &id, const QString &command, 
     QDBusPendingReply<bool> reply = mDaemonProxy->modifyCommandAction(id, command, arguments, description);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -514,7 +546,9 @@ bool Actions::enableAction(qulonglong id, bool enabled)
     QDBusPendingReply<bool> reply = mDaemonProxy->enableAction(id, enabled);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -524,7 +558,9 @@ bool Actions::isActionEnabled(qulonglong id)
     QDBusPendingReply<bool> reply = mDaemonProxy->isActionEnabled(id);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -534,7 +570,9 @@ QString Actions::changeShortcut(const qulonglong &id, const QString &shortcut)
     QDBusPendingReply<QString> reply = mDaemonProxy->changeShortcut(id, shortcut);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return QString();
+    }
 
     return reply.argumentAt<0>();
 }
@@ -544,7 +582,9 @@ bool Actions::swapActions(const qulonglong &id1, const qulonglong &id2)
     QDBusPendingReply<bool> reply = mDaemonProxy->swapActions(id1, id2);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -554,7 +594,9 @@ bool Actions::removeAction(const qulonglong &id)
     QDBusPendingReply<bool> reply = mDaemonProxy->removeAction(id);
     reply.waitForFinished();
     if (reply.isError())
+    {
         return false;
+    }
 
     return reply.argumentAt<0>();
 }
@@ -569,7 +611,7 @@ void Actions::grabShortcut(uint timeout)
 {
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(mDaemonProxy->grabShortcut(timeout), this);
 
-    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(grabShortcutFinished(QDBusPendingCallWatcher*)));
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(grabShortcutFinished(QDBusPendingCallWatcher *)));
 }
 
 void Actions::cancelShortutGrab()
@@ -581,21 +623,31 @@ void Actions::grabShortcutFinished(QDBusPendingCallWatcher *call)
 {
     QDBusPendingReply<QString, bool, bool, bool> reply = *call;
     if (reply.isError())
+    {
         emit grabShortcutFailed();
+    }
     else
     {
         if (reply.argumentAt<1>())
+        {
             emit grabShortcutFailed();
+        }
         else
         {
             if (reply.argumentAt<2>())
+            {
                 emit grabShortcutCancelled();
+            }
             else
             {
                 if (reply.argumentAt<3>())
+                {
                     emit grabShortcutTimedout();
+                }
                 else
+                {
                     emit shortcutGrabbed(reply.argumentAt<0>());
+                }
             }
         }
     }

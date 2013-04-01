@@ -28,7 +28,7 @@
 #include "meta_types.hpp"
 
 
-QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo)
+QDBusArgument &operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo)
 {
     argument.beginStructure();
     argument << generalActionInfo.shortcut << generalActionInfo.description << generalActionInfo.enabled << generalActionInfo.type << generalActionInfo.info;
@@ -36,7 +36,7 @@ QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &ge
     return argument;
 }
 
-const QDBusArgument& operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo)
+const QDBusArgument &operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo)
 {
     argument.beginStructure();
     argument >> generalActionInfo.shortcut >> generalActionInfo.description >> generalActionInfo.enabled >> generalActionInfo.type >> generalActionInfo.info;
@@ -44,16 +44,17 @@ const QDBusArgument& operator >> (const QDBusArgument &argument, GeneralActionIn
     return argument;
 }
 
-namespace {
+namespace
+{
 
 class TypeRegistrator
 {
 public:
     TypeRegistrator()
     {
-        #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
         qDBusRegisterMetaType<QList<qulonglong> >();
-        #endif
+#endif
         qDBusRegisterMetaType<GeneralActionInfo>();
         qDBusRegisterMetaType<QMap_qulonglong_GeneralActionInfo>();
     }

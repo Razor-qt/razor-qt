@@ -32,7 +32,9 @@ QString joinToString(const QStringList &list, const QString &prefix, const QStri
 {
     QString result = list.join(joiner);
     if (!result.isEmpty())
+    {
         result = prefix + result + postfix;
+    }
     return result;
 }
 
@@ -44,9 +46,13 @@ QString joinCommandLine(const QString &command, QStringList arguments)
     {
         QString &item = arguments[i];
         if (item.contains(QRegExp("[ \r\n\t\"']")))
+        {
             item.prepend("'").append("'");
+        }
         else if (item.isEmpty())
+        {
             item = QString("''");
+        }
     }
     return arguments.join(" ");
 }

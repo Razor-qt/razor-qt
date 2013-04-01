@@ -30,7 +30,7 @@
 #include "org.razorqt.global_action.daemon.h"
 
 
-DaemonAdaptor::DaemonAdaptor(QObject * parent)
+DaemonAdaptor::DaemonAdaptor(QObject *parent)
     : QObject(parent)
     , QDBusContext()
 {
@@ -44,7 +44,9 @@ QString DaemonAdaptor::addDBusAction(const QString &shortcut, const QDBusObjectP
     QString usedShortcut = result.first;
     id = result.second;
     if (id)
+    {
         emit actionAdded(id);
+    }
     return usedShortcut;
 }
 
@@ -55,7 +57,9 @@ QString DaemonAdaptor::addMethodAction(const QString &shortcut, const QString &s
     QString usedShortcut = result.first;
     id = result.second;
     if (id)
+    {
         emit actionAdded(id);
+    }
     return usedShortcut;
 }
 
@@ -66,7 +70,9 @@ QString DaemonAdaptor::addCommandAction(const QString &shortcut, const QString &
     QString usedShortcut = result.first;
     id = result.second;
     if (id)
+    {
         emit actionAdded(id);
+    }
     return usedShortcut;
 }
 
@@ -75,7 +81,9 @@ bool DaemonAdaptor::modifyDBusAction(const QDBusObjectPath &path, const QString 
     qulonglong id;
     emit onModifyDBusAction(id, path, description, calledFromDBus() ? message().service() : QString());
     if (id)
+    {
         emit actionModified(id);
+    }
     return id;
 }
 
@@ -84,7 +92,9 @@ bool DaemonAdaptor::modifyActionDescription(qulonglong id, const QString &descri
     bool result;
     emit onModifyActionDescription(result, id, description);
     if (result)
+    {
         emit actionModified(id);
+    }
     return result;
 }
 
@@ -93,7 +103,9 @@ bool DaemonAdaptor::modifyMethodAction(qulonglong id, const QString &service, co
     bool result;
     emit onModifyMethodAction(result, id, service, path, interface, method, description);
     if (result)
+    {
         emit actionModified(id);
+    }
     return result;
 }
 
@@ -102,7 +114,9 @@ bool DaemonAdaptor::modifyCommandAction(qulonglong id, const QString &command, c
     bool result;
     emit onModifyCommandAction(result, id, command, arguments, description);
     if (result)
+    {
         emit actionModified(id);
+    }
     return result;
 }
 
@@ -111,7 +125,9 @@ bool DaemonAdaptor::enableAction(qulonglong id, bool enabled)
     bool result;
     emit onEnableAction(result, id, enabled);
     if (result)
+    {
         emit actionEnabled(id, enabled);
+    }
     return result;
 }
 
@@ -127,7 +143,9 @@ QString DaemonAdaptor::changeDBusShortcut(const QDBusObjectPath &path, const QSt
     QPair<QString, qulonglong> result;
     emit onChangeDBusShortcut(result, path, shortcut, calledFromDBus() ? message().service() : QString());
     if (!result.first.isEmpty())
+    {
         emit actionShortcutChanged(result.second);
+    }
     return result.first;
 }
 
@@ -136,7 +154,9 @@ QString DaemonAdaptor::changeShortcut(qulonglong id, const QString &shortcut)
     QString result;
     emit onChangeShortcut(result, id, shortcut);
     if (!result.isEmpty())
+    {
         emit actionShortcutChanged(id);
+    }
     return result;
 }
 
@@ -145,7 +165,9 @@ bool DaemonAdaptor::swapActions(qulonglong id1, qulonglong id2)
     bool result;
     emit onSwapActions(result, id1, id2);
     if (result)
+    {
         emit actionsSwapped(id1, id2);
+    }
     return result;
 }
 
@@ -154,7 +176,9 @@ bool DaemonAdaptor::removeDBusAction(const QDBusObjectPath &path)
     qulonglong id;
     emit onRemoveDBusAction(id, path, calledFromDBus() ? message().service() : QString());
     if (id)
+    {
         emit actionRemoved(id);
+    }
     return id;
 }
 
@@ -163,14 +187,18 @@ bool DaemonAdaptor::removeAction(qulonglong id)
     bool result;
     emit onRemoveAction(result, id);
     if (result)
+    {
         emit actionRemoved(id);
+    }
     return result;
 }
 
 bool DaemonAdaptor::setMultipleActionsBehaviour(uint behaviour)
 {
     if (behaviour >= MULTIPLE_ACTIONS_BEHAVIOUR__COUNT)
+    {
         return false;
+    }
     emit onSetMultipleActionsBehaviour(static_cast<MultipleActionsBehaviour>(behaviour));
     emit multipleActionsBehaviourChanged(behaviour);
     return true;
@@ -206,9 +234,9 @@ bool DaemonAdaptor::getActionById(qulonglong id, QString &shortcut, QString &des
     return success;
 }
 
-QMap<qulonglong,GeneralActionInfo> DaemonAdaptor::getAllActions()
+QMap<qulonglong, GeneralActionInfo> DaemonAdaptor::getAllActions()
 {
-    QMap<qulonglong,GeneralActionInfo> result;
+    QMap<qulonglong, GeneralActionInfo> result;
     emit onGetAllActions(result);
     return result;
 }

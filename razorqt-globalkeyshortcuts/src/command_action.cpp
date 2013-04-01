@@ -46,11 +46,15 @@ CommandAction::CommandAction(LogTarget *logTarget, const QString &command, const
 bool CommandAction::call()
 {
     if (!isEnabled())
+    {
         return false;
+    }
 
     bool result = QProcess::startDetached(mCommand, mArgs);
     if (!result)
+    {
         mLogTarget->log(LOG_WARNING, "Failed to launch command \"%s\"%s", qPrintable(mCommand), qPrintable(joinToString(mArgs, " \"", "\" \"", "\"")));
+    }
 
     return result;
 }

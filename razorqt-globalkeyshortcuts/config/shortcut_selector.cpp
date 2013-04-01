@@ -36,7 +36,9 @@ void ShortcutSelector::init()
 void ShortcutSelector::setActions(Actions *actions)
 {
     if (mActions)
+    {
         return;
+    }
     mActions = actions;
     connect(mActions, SIGNAL(grabShortcutCancelled()), this, SLOT(grabShortcut_fail()));
     connect(mActions, SIGNAL(grabShortcutTimedout()), this, SLOT(grabShortcut_fail()));
@@ -47,7 +49,9 @@ void ShortcutSelector::setActions(Actions *actions)
 void ShortcutSelector::grabShortcut(int timeout)
 {
     if (!mActions)
+    {
         return;
+    }
 
     if (!isChecked())
     {
