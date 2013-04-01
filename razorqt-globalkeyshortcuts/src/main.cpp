@@ -30,8 +30,8 @@
 #include <QString>
 #include <QStringList>
 
-#include "meta_types.hpp"
-#include "core.hpp"
+#include "meta_types.h"
+#include "core.h"
 
 #include <errno.h>
 #include <getopt.h>

@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "daemon_adaptor.hpp"
+#include "daemon_adaptor.h"
 
 #include "org.razorqt.global_action.daemon.h"
 

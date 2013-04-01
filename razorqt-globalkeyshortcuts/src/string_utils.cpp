@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "string_utils.hpp"
+#include "string_utils.h"
 
 
 QString joinToString(const QStringList &list, const QString &prefix, const QString &joiner, const QString &postfix)

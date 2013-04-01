@@ -25,34 +25,38 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_DAEMON__COMMAND_ACTION__INCLUDED
-#define GLOBAL_ACTION_DAEMON__COMMAND_ACTION__INCLUDED
+#ifndef EDIT_ACTION_DIALOG_HPP
+#define EDIT_ACTION_DIALOG_HPP
 
 
-#include "base_action.hpp"
-
-#include <QString>
-#include <QStringList>
+#include "ui_edit_action_dialog.h"
 
 
-class CommandAction : public BaseAction
+class Actions;
+
+class EditActionDialog : public QDialog, private Ui::EditActionDialog
 {
+    Q_OBJECT
+
 public:
-    CommandAction(LogTarget *logTarget, const QString &command, const QStringList &args, const QString &description);
+    explicit EditActionDialog(Actions *actions, QWidget *parent = 0);
 
-    static const char* id() { return "command"; }
+    bool load(qulonglong id);
 
-    virtual const char* type() const { return id(); }
+protected slots:
+    void when_accepted();
 
-    virtual bool call();
+    void on_shortcut_SS_shortcutGrabbed(const QString &);
+    void on_command_RB_clicked(bool);
+    void on_dbus_method_RB_clicked(bool);
 
-    QString command() const { return mCommand; }
-
-    QStringList args() const { return mArgs; }
+protected:
+    void changeEvent(QEvent *e);
 
 private:
-    QString mCommand;
-    QStringList mArgs;
+    Actions *mActions;
+    qulonglong mId;
+    QString mShortcut;
 };
 
-#endif // GLOBAL_ACTION_DAEMON__COMMAND_ACTION__INCLUDED
+#endif // EDIT_ACTION_DIALOG_HPP

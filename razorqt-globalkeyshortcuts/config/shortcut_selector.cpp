@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "shortcut_selector.hpp"
-#include "actions.hpp"
+#include "shortcut_selector.h"
+#include "actions.h"
 
 #include <QTimer>
 

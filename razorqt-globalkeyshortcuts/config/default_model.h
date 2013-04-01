@@ -34,7 +34,7 @@
 #include <QColor>
 #include <QFont>
 
-#include "../src/meta_types.hpp"
+#include "../src/meta_types.h"
 
 
 class Actions;

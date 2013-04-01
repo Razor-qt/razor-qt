@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "meta_types.hpp"
+#include "meta_types.h"
 
 
 QDBusArgument &operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo)

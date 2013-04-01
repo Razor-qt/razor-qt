@@ -36,14 +36,14 @@
 #include <QDBusObjectPath>
 #include <QPair>
 
-#include "meta_types.hpp"
+#include "meta_types.h"
 
 
 class DaemonAdaptor : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
-    DaemonAdaptor(QObject * parent = 0);
+    DaemonAdaptor(QObject *parent = 0);
 
 public slots:
     QString addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id);
@@ -70,7 +70,7 @@ public slots:
     uint getMultipleActionsBehaviour();
 
     QList<qulonglong> getAllActionIds();
-    QMap<qulonglong,GeneralActionInfo> getAllActions();
+    QMap<qulonglong, GeneralActionInfo> getAllActions();
     bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
     bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
@@ -116,7 +116,7 @@ signals:
 
     void onGetAllActionIds(QList<qulonglong> &);
     void onGetActionById(QPair<bool, GeneralActionInfo> &, qulonglong);
-    void onGetAllActions(QMap<qulonglong,GeneralActionInfo> &);
+    void onGetAllActions(QMap<qulonglong, GeneralActionInfo> &);
 
     void onGetDBusActionInfoById(QPair<bool, DBusActionInfo> &, qulonglong);
     void onGetMethodActionInfoById(QPair<bool, MethodActionInfo> &, qulonglong);

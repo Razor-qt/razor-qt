@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "actions.hpp"
+#include "actions.h"
 
 #include "org.razorqt.global_action.daemon.h"
 

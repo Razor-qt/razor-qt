@@ -25,33 +25,38 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_DAEMON__CLIENT_PROXY__INCLUDED
-#define GLOBAL_ACTION_DAEMON__CLIENT_PROXY__INCLUDED
+#ifndef GLOBAL_ACTION_DAEMON__BASE_ACTION__INCLUDED
+#define GLOBAL_ACTION_DAEMON__BASE_ACTION__INCLUDED
 
 
-#include <QObject>
-#include <QDBusObjectPath>
-#include <QDBusConnection>
+#include <QString>
 
+class LogTarget;
 
-class DBusAction;
-
-class ClientProxy : public QObject
+class BaseAction
 {
-    Q_OBJECT
-
-friend class DBusAction;
-
 public:
-    ClientProxy(const QString &service, const QDBusObjectPath &path, const QDBusConnection &connection, QObject * parent = 0);
+    BaseAction(LogTarget *logTarget, const QString &description);
+    virtual ~BaseAction();
 
-signals:
-    void activated();
-    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
+    virtual const char *type() const = 0;
+
+    virtual bool call() = 0;
+
+    const QString &description() const { return mDescription; }
+    void setDescription(const QString &description) { mDescription = description; }
+
+    void setEnabled(bool value = true) { mEnabled = value; }
+    void setDisabled(bool value = true) { mEnabled = !value; }
+    bool isEnabled() const { return mEnabled; }
 
 protected:
-    void emitActivated();
-    void emitShortcutChanged(const QString &oldShortcut, const QString &newShortcut);
+    LogTarget *mLogTarget;
+
+private:
+    QString mDescription;
+
+    bool mEnabled;
 };
 
-#endif // GLOBAL_ACTION_DAEMON__CLIENT_PROXY__INCLUDED
+#endif // GLOBAL_ACTION_DAEMON__BASE_ACTION__INCLUDED

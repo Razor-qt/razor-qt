@@ -25,10 +25,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "main_window.hpp"
-#include "actions.hpp"
-#include "default_model.hpp"
-#include "edit_action_dialog.hpp"
+#include "main_window.h"
+#include "actions.h"
+#include "default_model.h"
+#include "edit_action_dialog.h"
 
 #include <QItemSelectionModel>
 #include <QSortFilterProxyModel>

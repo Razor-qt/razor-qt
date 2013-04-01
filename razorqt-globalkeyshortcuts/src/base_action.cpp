@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "base_action.hpp"
-#include "log_target.hpp"
+#include "base_action.h"
+#include "log_target.h"
 
 
 BaseAction::BaseAction(LogTarget *logTarget, const QString &description)

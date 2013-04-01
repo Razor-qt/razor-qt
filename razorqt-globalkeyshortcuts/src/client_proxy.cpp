@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "client_proxy.hpp"
+#include "client_proxy.h"
 
 
 #include "org.razorqt.global_action.client.h"

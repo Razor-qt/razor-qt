@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "log_target.hpp"
+#include "log_target.h"
 
 
 LogTarget::LogTarget()

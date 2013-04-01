@@ -26,8 +26,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 
-#include "default_model.hpp"
-#include "actions.hpp"
+#include "default_model.h"
+#include "actions.h"
 
 
 DefaultModel::DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, QObject *parent)

@@ -25,38 +25,27 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef EDIT_ACTION_DIALOG_HPP
-#define EDIT_ACTION_DIALOG_HPP
+#ifndef GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
+#define GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
 
 
-#include "ui_edit_action_dialog.h"
+#include <QObject>
+#include <QDBusConnection>
+#include <QDBusObjectPath>
 
 
-class Actions;
-
-class EditActionDialog : public QDialog, private Ui::EditActionDialog
+class DBusProxy : public QObject
 {
     Q_OBJECT
-    
 public:
-    explicit EditActionDialog(Actions *actions, QWidget *parent = 0);
-    
-    bool load(qulonglong id);
+    DBusProxy(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, QObject *parent = 0);
 
-protected slots:
-    void when_accepted();
+public slots:
+    void NameOwnerChanged(const QString &argin0, const QString &argin1, const QString &argin2);
 
-    void on_shortcut_SS_shortcutGrabbed(const QString &);
-    void on_command_RB_clicked(bool);
-    void on_dbus_method_RB_clicked(bool);
-
-protected:
-    void changeEvent(QEvent *e);
-
-private:
-    Actions *mActions;
-    qulonglong mId;
-    QString mShortcut;
+signals:
+    void onServiceAppeared(const QString &, const QString &);
+    void onServiceDisappeared(const QString &, const QString &);
 };
 
-#endif // EDIT_ACTION_DIALOG_HPP
+#endif // GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED

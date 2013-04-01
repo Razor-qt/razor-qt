@@ -42,17 +42,17 @@
 
 #include <stdexcept>
 
-#include "pipe_utils.hpp"
-#include "string_utils.hpp"
-#include "daemon_adaptor.hpp"
-#include "native_adaptor.hpp"
-#include "dbus_proxy.hpp"
-#include "base_action.hpp"
-#include "method_action.hpp"
-#include "dbus_action.hpp"
-#include "command_action.hpp"
+#include "pipe_utils.h"
+#include "string_utils.h"
+#include "daemon_adaptor.h"
+#include "native_adaptor.h"
+#include "dbus_proxy.h"
+#include "base_action.h"
+#include "method_action.h"
+#include "dbus_action.h"
+#include "command_action.h"
 
-#include "core.hpp"
+#include "core.h"
 
 
 enum

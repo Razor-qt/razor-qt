@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "dbus_proxy.hpp"
+#include "dbus_proxy.h"
 
 #include "org.freedesktop.DBus.h"
 

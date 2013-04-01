@@ -25,27 +25,26 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
-#define GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
+#ifndef GLOBAL_ACTION_DAEMON__FIXED_TIMEOUT__INCLUDED
+#define GLOBAL_ACTION_DAEMON__FIXED_TIMEOUT__INCLUDED
 
 
-#include <QObject>
-#include <QDBusConnection>
-#include <QDBusObjectPath>
+#include "dbus_cpp.hpp"
 
-
-class DBusProxy : public QObject
+namespace DBus
 {
-    Q_OBJECT
+
+class FixedTimeout : public DefaultTimeout
+{
 public:
-    DBusProxy(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, QObject * parent = 0);
+    FixedTimeout(unsigned int interval, DefaultMainLoop *mainLoop);
 
-public slots:
-    void NameOwnerChanged(const QString &argin0, const QString &argin1, const QString &argin2);
+    bool isExpired() const;
 
-signals:
-    void onServiceAppeared(const QString &, const QString &);
-    void onServiceDisappeared(const QString &, const QString &);
+private:
+    uint64_t mExpired;
 };
 
-#endif // GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
+}
+
+#endif // GLOBAL_ACTION_DAEMON__FIXED_TIMEOUT__INCLUDED

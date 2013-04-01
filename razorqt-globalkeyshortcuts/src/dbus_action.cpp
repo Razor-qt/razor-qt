@@ -25,9 +25,9 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "dbus_action.hpp"
-#include "client_proxy.hpp"
-#include "log_target.hpp"
+#include "dbus_action.h"
+#include "client_proxy.h"
+#include "log_target.h"
 
 
 DBusAction::DBusAction(LogTarget *logTarget, const QString &service, const QDBusObjectPath &path, const QString &description)

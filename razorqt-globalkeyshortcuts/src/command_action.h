@@ -25,25 +25,34 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_DAEMON__FIXED_TIMEOUT__INCLUDED
-#define GLOBAL_ACTION_DAEMON__FIXED_TIMEOUT__INCLUDED
+#ifndef GLOBAL_ACTION_DAEMON__COMMAND_ACTION__INCLUDED
+#define GLOBAL_ACTION_DAEMON__COMMAND_ACTION__INCLUDED
 
 
-#include "dbus_cpp.hpp"
+#include "base_action.h"
 
-namespace DBus {
+#include <QString>
+#include <QStringList>
 
-class FixedTimeout : public DefaultTimeout
+
+class CommandAction : public BaseAction
 {
 public:
-    FixedTimeout(unsigned int interval, DefaultMainLoop *mainLoop);
+    CommandAction(LogTarget *logTarget, const QString &command, const QStringList &args, const QString &description);
 
-    bool isExpired() const;
+    static const char *id() { return "command"; }
+
+    virtual const char *type() const { return id(); }
+
+    virtual bool call();
+
+    QString command() const { return mCommand; }
+
+    QStringList args() const { return mArgs; }
 
 private:
-    uint64_t mExpired;
+    QString mCommand;
+    QStringList mArgs;
 };
 
-}
-
-#endif // GLOBAL_ACTION_DAEMON__FIXED_TIMEOUT__INCLUDED
+#endif // GLOBAL_ACTION_DAEMON__COMMAND_ACTION__INCLUDED

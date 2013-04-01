@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "method_action.hpp"
-#include "log_target.hpp"
+#include "method_action.h"
+#include "log_target.h"
 
 
 MethodAction::MethodAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)

@@ -25,15 +25,15 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "command_action.hpp"
+#include "command_action.h"
 
 #include <QProcess>
 
 #include <errno.h>
 #include <string.h>
 
-#include "log_target.hpp"
-#include "string_utils.hpp"
+#include "log_target.h"
+#include "string_utils.h"
 
 
 CommandAction::CommandAction(LogTarget *logTarget, const QString &command, const QStringList &args, const QString &description)

@@ -42,37 +42,42 @@ typedef enum MultipleActionsBehaviour
     MULTIPLE_ACTIONS_BEHAVIOUR__COUNT
 } MultipleActionsBehaviour;
 
-typedef struct CommonActionInfo {
+typedef struct CommonActionInfo
+{
     QString shortcut;
     QString description;
     bool enabled;
 } CommonActionInfo;
 
-typedef struct GeneralActionInfo : CommonActionInfo {
+typedef struct GeneralActionInfo : CommonActionInfo
+{
     QString type;
     QString info;
 } GeneralActionInfo;
 
-typedef struct DBusActionInfo : CommonActionInfo {
+typedef struct DBusActionInfo : CommonActionInfo
+{
     QString service;
     QDBusObjectPath path;
 } DBusActionInfo;
 
-typedef struct MethodActionInfo : CommonActionInfo {
+typedef struct MethodActionInfo : CommonActionInfo
+{
     QString service;
     QDBusObjectPath path;
     QString interface;
     QString method;
 } MethodActionInfo;
 
-typedef struct CommandActionInfo : CommonActionInfo {
+typedef struct CommandActionInfo : CommonActionInfo
+{
     QString command;
     QStringList arguments;
 } CommandActionInfo;
 
 
 
-typedef QMap<qulonglong,GeneralActionInfo> QMap_qulonglong_GeneralActionInfo;
+typedef QMap<qulonglong, GeneralActionInfo> QMap_qulonglong_GeneralActionInfo;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 Q_DECLARE_METATYPE(QList<qulonglong>)
@@ -82,8 +87,8 @@ Q_DECLARE_METATYPE(QMap_qulonglong_GeneralActionInfo)
 
 
 
-QDBusArgument& operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo);
-const QDBusArgument& operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo);
+QDBusArgument &operator << (QDBusArgument &argument, const GeneralActionInfo &generalActionInfo);
+const QDBusArgument &operator >> (const QDBusArgument &argument, GeneralActionInfo &generalActionInfo);
 
 #endif // GLOBAL_ACTION_MANAGER__META_TYPES__INCLUDED
 

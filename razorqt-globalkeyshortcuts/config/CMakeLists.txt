@@ -38,15 +38,15 @@ set(${PROJECT}_TRANSLATIONS
 )
 
 set(${PROJECT}_CPP_HEADERS
-	../src/meta_types.hpp
+	../src/meta_types.h
 )
 
 set(${PROJECT}_QT_HEADERS
-	main_window.hpp
-	actions.hpp
-	default_model.hpp
-	shortcut_selector.hpp
-	edit_action_dialog.hpp
+	main_window.h
+	actions.h
+	default_model.h
+	shortcut_selector.h
+	edit_action_dialog.h
 )
 
 set(${PROJECT}_DBUS_ADAPTERS
@@ -56,7 +56,7 @@ set(${PROJECT}_DBUS_PROXYS
 	../src/org.razorqt.global_action.daemon.xml
 )
 set_source_files_properties(../src/org.razorqt.global_action.daemon.xml PROPERTIES BASENAME org.razorqt.global_action.daemon)
-set_source_files_properties(../src/org.razorqt.global_action.daemon.xml PROPERTIES INCLUDE ../src/meta_types.hpp)
+set_source_files_properties(../src/org.razorqt.global_action.daemon.xml PROPERTIES INCLUDE ../src/meta_types.h)
 
 
 

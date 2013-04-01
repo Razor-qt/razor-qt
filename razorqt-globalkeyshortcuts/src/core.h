@@ -41,8 +41,8 @@
 #include <QDBusMessage>
 #include <QDBusObjectPath>
 
-#include "meta_types.hpp"
-#include "log_target.hpp"
+#include "meta_types.h"
+#include "log_target.h"
 
 extern "C" {
 #include <X11/X.h>
@@ -73,7 +73,7 @@ class Core : public QThread, public LogTarget
 {
     Q_OBJECT
 public:
-    Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringList &configFiles, bool multipleActionsBehaviourSet, MultipleActionsBehaviour multipleActionsBehaviour, QObject * parent = 0);
+    Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringList &configFiles, bool multipleActionsBehaviourSet, MultipleActionsBehaviour multipleActionsBehaviour, QObject *parent = 0);
     ~Core();
 
     bool ready() const { return mReady; }
@@ -85,7 +85,7 @@ signals:
 
 private:
     Core(const Core &);
-    Core& operator = (const Core &);
+    Core &operator = (const Core &);
 
 private:
     typedef QPair<KeyCode, unsigned int> X11Shortcut;
@@ -97,7 +97,7 @@ private:
     typedef QMap<DBusClient, qulonglong> IdByDBusClient;
     typedef QOrderedSet<QDBusObjectPath> DBusPaths;
     typedef QMap<QString, DBusPaths> DBusPathsByDBusService;
-    typedef QPair<QString, BaseAction*> ShortcutAndAction;
+    typedef QPair<QString, BaseAction *> ShortcutAndAction;
     typedef QMap<qulonglong, ShortcutAndAction> ShortcutAndActionById;
     typedef QOrderedSet<QString> ServiceNames;
     typedef QMap<QString, ServiceNames> ServiceNamesByServiceId;
@@ -135,7 +135,7 @@ private slots:
 
     void getAllActionIds(QList<qulonglong> &result) const;
     void getActionById(QPair<bool, GeneralActionInfo> &result, const qulonglong &id) const;
-    void getAllActions(QMap<qulonglong,GeneralActionInfo> &result) const;
+    void getAllActions(QMap<qulonglong, GeneralActionInfo> &result) const;
 
     void getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulonglong &id) const;
     void getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const qulonglong &id) const;

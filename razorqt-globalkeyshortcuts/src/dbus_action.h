@@ -29,7 +29,7 @@
 #define GLOBAL_ACTION_DAEMON__DBUS_ACTION__INCLUDED
 
 
-#include "base_action.hpp"
+#include "base_action.h"
 
 #include <QString>
 #include <QDBusObjectPath>
@@ -45,16 +45,16 @@ public:
     DBusAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent = false);
     ~DBusAction();
 
-    static const char* id() { return "dbus"; }
+    static const char *id() { return "dbus"; }
 
-    virtual const char* type() const { return id(); }
+    virtual const char *type() const { return id(); }
 
     virtual bool call();
 
-    void shortcutChanged(const QString& oldShortcut, const QString& newShortcut);
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 
-    const QString& service() const { return mService; }
-    const QDBusObjectPath& path() const { return mPath; }
+    const QString &service() const { return mService; }
+    const QDBusObjectPath &path() const { return mPath; }
 
     void appeared(const QDBusConnection &connection);
     void disappeared();

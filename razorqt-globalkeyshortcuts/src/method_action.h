@@ -29,7 +29,7 @@
 #define GLOBAL_ACTION_DAEMON__METHOD_ACTION__INCLUDED
 
 
-#include "base_action.hpp"
+#include "base_action.h"
 
 #include <QString>
 #include <QDBusConnection>
@@ -42,9 +42,9 @@ class MethodAction : public BaseAction
 public:
     MethodAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
 
-    static const char* id() { return "method"; }
+    static const char *id() { return "method"; }
 
-    virtual const char* type() const { return id(); }
+    virtual const char *type() const { return id(); }
 
     virtual bool call();
 

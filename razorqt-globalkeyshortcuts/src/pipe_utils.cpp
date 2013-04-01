@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "pipe_utils.hpp"
+#include "pipe_utils.h"
 
 #include <unistd.h>
 #include <fcntl.h>

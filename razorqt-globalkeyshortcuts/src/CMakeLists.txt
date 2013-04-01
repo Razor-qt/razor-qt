@@ -34,22 +34,22 @@ set(${PROJECT}_SOURCES
 )
 
 set(${PROJECT}_CPP_HEADERS
-	log_target.hpp
-	pipe_utils.hpp
-	string_utils.hpp
-	base_action.hpp
-	method_action.hpp
-	dbus_action.hpp
-	command_action.hpp
-	meta_types.hpp
+	log_target.h
+	pipe_utils.h
+	string_utils.h
+	base_action.h
+	method_action.h
+	dbus_action.h
+	command_action.h
+	meta_types.h
 )
 
 set(${PROJECT}_QT_HEADERS
-	core.hpp
-	dbus_proxy.hpp
-	client_proxy.hpp
-	daemon_adaptor.hpp
-	native_adaptor.hpp
+	core.h
+	dbus_proxy.h
+	client_proxy.h
+	daemon_adaptor.h
+	native_adaptor.h
 )
 
 set(${PROJECT}_FORMS
@@ -66,12 +66,12 @@ set(${PROJECT}_DBUS_ADAPTERS
 	org.razorqt.global_action.native.xml
 )
 
-set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES PARENT daemon_adaptor.hpp)
+set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES PARENT daemon_adaptor.h)
 set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES PARENT_CLASSNAME DaemonAdaptor)
 set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES BASENAME org.razorqt.global_action.daemon)
 set_source_files_properties(org.razorqt.global_action.daemon.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionDaemonAdaptor)
 
-set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES PARENT native_adaptor.hpp)
+set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES PARENT native_adaptor.h)
 set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES PARENT_CLASSNAME NativeAdaptor)
 set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES BASENAME org.razorqt.global_action.native)
 set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionNativeAdaptor)

@@ -25,7 +25,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "native_adaptor.hpp"
+#include "native_adaptor.h"
 
 #include "org.razorqt.global_action.native.h"
 

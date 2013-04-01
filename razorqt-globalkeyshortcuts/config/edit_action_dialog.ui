@@ -274,7 +274,7 @@
   <customwidget>
    <class>ShortcutSelector</class>
    <extends>QPushButton</extends>
-   <header>shortcut_selector.hpp</header>
+   <header>shortcut_selector.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

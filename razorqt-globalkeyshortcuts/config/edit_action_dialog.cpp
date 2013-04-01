@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "edit_action_dialog.hpp"
-#include "actions.hpp"
+#include "edit_action_dialog.h"
+#include "actions.h"
 
 EditActionDialog::EditActionDialog(Actions *actions, QWidget *parent)
     : QDialog(parent)

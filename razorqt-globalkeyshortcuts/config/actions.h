@@ -37,16 +37,19 @@
 #include <QPair>
 #include <QDBusObjectPath>
 
-#include "../src/meta_types.hpp"
+#include "../src/meta_types.h"
 
 
 class OrgRazorqtGlobal_actionDaemonInterface;
-namespace org {
-  namespace razorqt {
-    namespace global_action {
-      typedef ::OrgRazorqtGlobal_actionDaemonInterface daemon;
-    }
-  }
+namespace org
+{
+namespace razorqt
+{
+namespace global_action
+{
+typedef ::OrgRazorqtGlobal_actionDaemonInterface daemon;
+}
+}
 }
 
 class QDBusServiceWatcher;

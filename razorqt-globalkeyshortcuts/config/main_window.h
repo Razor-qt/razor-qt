@@ -30,7 +30,7 @@
 
 
 #include "ui_main_window.h"
-#include "../src/meta_types.hpp"
+#include "../src/meta_types.h"
 
 
 class Actions;
@@ -42,7 +42,7 @@ class EditActionDialog;
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow(QWidget *parent = 0);
 
