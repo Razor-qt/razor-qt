@@ -77,8 +77,9 @@ protected:
     }
 };
 
-PowerManager::PowerManager(QObject * parent)
-    : QObject(parent)
+PowerManager::PowerManager(QObject * parent, bool skipWarning)
+    : QObject(parent),
+        m_skipWarning(skipWarning)
 {
     libTranslate("librazorqt");
     m_power = new RazorPower(this);
@@ -140,8 +141,9 @@ QList<QAction*> PowerManager::availableActions()
 
 void PowerManager::suspend()
 {
-     if (MessageBox::question(tr("Razor Session Suspend"),
-                            tr("Do you want to really suspend your computer?<p>Suspends the computer into a low power state. System state is not preserved if the power is lost.")))
+     if (m_skipWarning ||
+         MessageBox::question(tr("Razor Session Suspend"),
+                              tr("Do you want to really suspend your computer?<p>Suspends the computer into a low power state. System state is not preserved if the power is lost.")))
     {
         m_power->suspend();
     }
@@ -149,7 +151,8 @@ void PowerManager::suspend()
 
 void PowerManager::hibernate()
 {
-    if (MessageBox::question(tr("Razor Session Hibernate"),
+    if (m_skipWarning ||
+        MessageBox::question(tr("Razor Session Hibernate"),
                              tr("Do you want to really hibernate your computer?<p>Hibernates the computer into a low power state. System state is preserved if the power is lost.")))
     {
         m_power->hibernate();
@@ -158,7 +161,8 @@ void PowerManager::hibernate()
 
 void PowerManager::reboot()
 {
-    if (MessageBox::question(tr("Razor Session Reboot"),
+    if (m_skipWarning ||
+        MessageBox::question(tr("Razor Session Reboot"),
                              tr("Do you want to really restart your computer? All unsaved work will be lost...")))
     {
         m_power->reboot();
@@ -167,7 +171,8 @@ void PowerManager::reboot()
 
 void PowerManager::shutdown()
 {
-    if (MessageBox::question(tr("Razor Session Shutdown"),
+    if (m_skipWarning ||
+        MessageBox::question(tr("Razor Session Shutdown"),
                              tr("Do you want to really switch off your computer? All unsaved work will be lost...")))
     {
         m_power->shutdown();
@@ -176,7 +181,8 @@ void PowerManager::shutdown()
 
 void PowerManager::logout()
 {
-    if (MessageBox::question(tr("Razor Session Logout"),
+    if (m_skipWarning ||
+        MessageBox::question(tr("Razor Session Logout"),
                              tr("Do you want to really logout? All unsaved work will be lost...")))
     {
         m_power->logout();

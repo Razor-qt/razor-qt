@@ -40,7 +40,7 @@ class PowerManager : public QObject
     Q_OBJECT
 
 public:
-    PowerManager(QObject * parent);
+    PowerManager(QObject * parent, bool skipWarning = false);
     ~PowerManager();
     QList<QAction*> availableActions();
 
@@ -53,8 +53,12 @@ public slots:
     // razor session
     void logout();
 
+public:
+    bool skipWarning() const { return m_skipWarning; }
+
 private:
     RazorPower * m_power;
+    bool m_skipWarning;
 
 private slots:
     void hibernateFailed();

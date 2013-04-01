@@ -25,6 +25,7 @@
 
 #include "loginform.h"
 #include "ui_loginform.h"
+
 #include <QtCore/QDebug>
 #include <QtGui/QCompleter>
 #include <QtCore/QAbstractListModel>
@@ -43,7 +44,7 @@ LoginForm::LoginForm(QWidget *parent) :
         ui(new Ui::LoginForm), 
         m_Greeter(),
         m_LoginData(&m_Greeter),
-        m_razorPowerProcess(),
+        m_powerManager(this, true),
         m_otherUserComboIndex(-1)
 {
     if (!m_Greeter.connectSync())
@@ -115,7 +116,6 @@ void LoginForm::setupConnections()
     connect(ui->otherUserInput, SIGNAL(editingFinished()), this, SLOT(otherUserEditingFinished()));
     connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(loginClicked()));
     connect(ui->leaveButton, SIGNAL(clicked()), this, SLOT(leaveClicked()));
-    connect(&m_razorPowerProcess, SIGNAL(finished(int)), this, SLOT(razorPowerFinished())); 
 
 
     connect(&m_Greeter, SIGNAL(showPrompt(QString,QLightDM::Greeter::PromptType)),
@@ -126,6 +126,14 @@ void LoginForm::setupConnections()
 
 void LoginForm::initializeControls()
 {
+    QMenu* leaveMenu = new QMenu(this);
+    ui->leaveButton->setMenu(leaveMenu);
+    
+    foreach (QAction *action, m_powerManager.availableActions())
+    {
+        leaveMenu->addAction(action);
+    }
+
     qDebug() << "showManualLoginHint:" << m_Greeter.showManualLoginHint();
 
     ui->sessionCombo->setCurrentIndex(m_LoginData.suggestedSession());
@@ -205,18 +213,6 @@ void LoginForm::loginClicked()
     m_Greeter.respond(ui->passwordInput->text().trimmed());
     ui->passwordInput->clear();
     ui->passwordInput->setEnabled(false);
-}
-
-void LoginForm::leaveClicked()
-{
-    qDebug() << "leave";
-    m_razorPowerProcess.start("razor-power");
-    setEnabled(false);
-}
-
-void LoginForm::razorPowerFinished() 
-{
-    setEnabled(true);
 }
 
 void LoginForm::onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType)

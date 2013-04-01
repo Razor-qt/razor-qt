@@ -32,6 +32,7 @@
 #include <QtGui/QKeyEvent>
 #include <QGraphicsOpacityEffect>
 #include "logindata.h"
+#include "powermanager.h"
 
 namespace Ui {
 class LoginForm;
@@ -51,8 +52,6 @@ public slots:
     void userComboCurrentIndexChanged();
     void otherUserEditingFinished(); 
     void loginClicked();
-    void leaveClicked();
-    void razorPowerFinished();
 
     void onPrompt(QString prompt, QLightDM::Greeter::PromptType promptType);
 
@@ -69,8 +68,8 @@ private:
     Ui::LoginForm *ui;
     QLightDM::Greeter m_Greeter; 
     LoginData m_LoginData;
-    QProcess m_razorPowerProcess;
-
+    PowerManager m_powerManager;
+    
     int m_otherUserComboIndex;
     QString m_user;
 };
