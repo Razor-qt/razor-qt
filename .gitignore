@@ -16,6 +16,7 @@ razorqt-desktop/razor-desktop
 razorqt-panel/panel/razor-panel
 *~
 *.autosave
+*-swp
 CMakeLists.txt.user*
 /build
 nbproject/

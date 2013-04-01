@@ -48,7 +48,7 @@ EXPORT_RAZOR_DESKTOP_PLUGIN_CPP(RazorDeskManager);
 QString RazorDeskManager::info()
 {
     return tr("A legacy desktop manager. "
-              "It allows to use window manager's native menus. "
+              "It allows use of window manager's native menus. "
               "Only classical icons and simple wallpaper functionality is implemented"
             );
 }

@@ -63,17 +63,17 @@ void IconThemeInfo::load(const QString &fileName)
 
 void IconThemeInfo::loadDirsInfo(QSettings &file, const QString &path)
 {
-    if (file.value("Size", 0).toInt() == PRIVIEW_ICON_SIZE &&
-        file.value("Context").toString() == "Actions"
-        )
+    foreach (QString i, file.value("Icon Theme/Directories", QStringList()).toStringList())
     {
-        mActionsDir = path;
-    }
-
-    foreach (QString group, file.childGroups())
-    {
-        file.beginGroup(group);
-        loadDirsInfo(file, path + QDir::separator() + group);
+        file.beginGroup(i);
+        if (file.value("Size", 0).toInt() == PRIVIEW_ICON_SIZE &&
+            file.value("Context").toString() == "Actions"
+           )   
+        {
+            mActionsDir = path + QDir::separator() + i;
+            file.endGroup();              
+            return;
+        }
         file.endGroup();
     }
 }

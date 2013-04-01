@@ -109,4 +109,62 @@ private:
     void delDevice(UDiskMountDevice *device);
 };
 
+
+
+class UDisks2MountDevice: public RazorMountDevice
+{
+    Q_OBJECT
+public:
+    UDisks2MountDevice(const QDBusObjectPath &path);
+    QDBusObjectPath path() { return mPath; }
+
+    virtual bool mount();
+    virtual bool unmount();
+    virtual bool eject();
+
+private:
+    QDBusInterface *mBlockIface;
+    QDBusInterface *mDriveIface;
+    QDBusObjectPath mPath;
+
+    MediaType calcMediaType();
+    QString calcLabel();
+    bool calcIsExternal();
+    QString calcIconName();
+    QStringList mountPoints() const;
+
+
+private slots:
+    void dbusError(const QDBusError &err, const QDBusMessage &msg);
+    void aboutToMount();
+    void aboutToUnmount();
+    void aboutToEject();
+    void update();
+};
+
+
+
+class UDisks2Provider: public RzMountProvider
+{
+    Q_OBJECT
+public:
+    explicit UDisks2Provider(QObject *parent = 0);
+
+    virtual void update();
+
+public slots:
+    void dbusDeviceChanged(const QDBusObjectPath &path);
+
+private slots:
+    void dbusDeviceAdded(const QDBusObjectPath &path, const QVariantMap &map);
+    void dbusDeviceRemoved(const QDBusObjectPath &path, const QStringList &list);
+
+private:
+    QHash<QString, UDisks2MountDevice*> mDevicesByPath;
+    UDisks2MountDevice *getDevice(const QDBusObjectPath &path) const;
+
+    void addDevice(UDisks2MountDevice *device);
+    void delDevice(UDisks2MountDevice *device);
+};
+
 #endif // RAZORMOUNT_RZMOUNTPROVIDERS_H

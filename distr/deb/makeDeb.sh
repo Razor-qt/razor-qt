@@ -4,7 +4,7 @@ NAME='razorqt'
 
 function help {
   cat << HELP_TEXT
-Usage: makeDeb.sh [otions] <path-to-source>
+Usage: makeDeb.sh [options] <path-to-source>
 
 Options
   -h|--help             display this message

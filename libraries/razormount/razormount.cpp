@@ -61,11 +61,18 @@ RazorMountManager::RazorMountManager(QObject *parent):
     QObject(parent),
     mProvider(0)
 {
-    mProvider = new UDiskProvider(this);
+    mProvider = new UDisks2Provider(this);
     if (!mProvider->isValid())
-    {
+    {              
         delete mProvider;
         mProvider = 0;
+
+        mProvider = new UDiskProvider(this);
+        if (!mProvider->isValid())
+        {
+            delete mProvider;
+            mProvider = 0;
+        }
     }
 
     if (!mProvider)
@@ -95,13 +102,19 @@ void RazorMountManager::update()
 {
     if (mProvider)
         mProvider->update();
+    else
+        qDebug() << "RazorMountDeviceList RazorMountManager::update() no valid provider in use";
+
 }
 
 
 const RazorMountDeviceList RazorMountManager::devices() const
 {
     if (mProvider)
+    {
+        qDebug() << "RazorMountManager::devices" << mProvider->devices();
         return mProvider->devices();
+    }
     else
     {
         qDebug() << "RazorMountDeviceList RazorMountManager::devices() no valid provider in use";

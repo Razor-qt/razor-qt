@@ -303,7 +303,7 @@ void fillLangguages(QMap<QString, QString> *languages)
     languages->insert("uz"    ,"Uzbek");
     languages->insert("ve"    ,"Venda");
     languages->insert("vi"    ,"Vietnamese");
-    languages->insert("vi_VN" ,"Vietnamese (Viet Nam)");
+    languages->insert("vi_VN" ,"Vietnamese (Vietnam)");
     languages->insert("vls"   ,"Vlaams");
     languages->insert("wa"    ,"Walloon");
     languages->insert("cy"    ,"Welsh");
