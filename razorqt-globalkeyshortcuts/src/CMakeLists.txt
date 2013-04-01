@@ -1,5 +1,5 @@
-set(PROJECT razor-globalkeyshortcuts)
-project(${PROJECT})
+set(PROJECT_NAME razor-globalkeyshortcuts)
+project(${PROJECT_NAME})
 
 cmake_minimum_required(VERSION 2.6)
 
@@ -16,7 +16,7 @@ include_directories(
 
 
 
-set(${PROJECT}_SOURCES
+set(${PROJECT_NAME}_SOURCES
 	main.cpp
 	core.cpp
 	daemon_adaptor.cpp
@@ -33,7 +33,7 @@ set(${PROJECT}_SOURCES
 	meta_types.cpp
 )
 
-set(${PROJECT}_CPP_HEADERS
+set(${PROJECT_NAME}_CPP_HEADERS
 	log_target.h
 	pipe_utils.h
 	string_utils.h
@@ -44,7 +44,7 @@ set(${PROJECT}_CPP_HEADERS
 	meta_types.h
 )
 
-set(${PROJECT}_QT_HEADERS
+set(${PROJECT_NAME}_QT_HEADERS
 	core.h
 	dbus_proxy.h
 	client_proxy.h
@@ -52,16 +52,16 @@ set(${PROJECT}_QT_HEADERS
 	native_adaptor.h
 )
 
-set(${PROJECT}_FORMS
+set(${PROJECT_NAME}_FORMS
 )
 
-set(${PROJECT}_RESOURCES
+set(${PROJECT_NAME}_RESOURCES
 )
 
-set(${PROJECT}_TRANSLATIONS
+set(${PROJECT_NAME}_TRANSLATIONS
 )
 
-set(${PROJECT}_DBUS_ADAPTERS
+set(${PROJECT_NAME}_DBUS_ADAPTERS
 	org.razorqt.global_action.daemon.xml
 	org.razorqt.global_action.native.xml
 )
@@ -76,7 +76,7 @@ set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES PARE
 set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES BASENAME org.razorqt.global_action.native)
 set_source_files_properties(org.razorqt.global_action.native.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionNativeAdaptor)
 
-set(${PROJECT}_DBUS_PROXYS
+set(${PROJECT_NAME}_DBUS_PROXYS
 	org.freedesktop.DBus.xml
 	org.razorqt.global_action.client.xml
 )
@@ -87,15 +87,15 @@ set_source_files_properties(org.razorqt.global_action.client.xml PROPERTIES BASE
 
 
 
-set(${PROJECT}_HEADERS
-	${${PROJECT}_CPP_HEADERS}
-	${${PROJECT}_QT_HEADERS}
+set(${PROJECT_NAME}_HEADERS
+	${${PROJECT_NAME}_CPP_HEADERS}
+	${${PROJECT_NAME}_QT_HEADERS}
 )
 
-set(${PROJECT}_TRANSLATABLE
-	${${PROJECT}_SOURCES}
-	${${PROJECT}_HEADERS}
-	${${PROJECT}_FORMS}
+set(${PROJECT_NAME}_TRANSLATABLE
+	${${PROJECT_NAME}_SOURCES}
+	${${PROJECT_NAME}_HEADERS}
+	${${PROJECT_NAME}_FORMS}
 )
 
 
@@ -108,56 +108,56 @@ find_package(Qt4 COMPONENTS QtCore QtDBus)
 
 include(${QT_USE_FILE})
 
-foreach(DBUS_ADAPTOR ${${PROJECT}_DBUS_ADAPTERS})
+foreach(DBUS_ADAPTOR ${${PROJECT_NAME}_DBUS_ADAPTERS})
 	get_source_file_property(DBUS_ADAPTOR_INCLUDE ${DBUS_ADAPTOR} PARENT)
 	get_source_file_property(DBUS_ADAPTOR_PARENT_CLASSNAME ${DBUS_ADAPTOR} PARENT_CLASSNAME)
 	get_source_file_property(DBUS_ADAPTOR_BASENAME ${DBUS_ADAPTOR} BASENAME)
 	get_source_file_property(DBUS_ADAPTOR_CLASSNAME ${DBUS_ADAPTOR} CLASSNAME)
 	if(DBUS_ADAPTOR_BASENAME)
 		if(DBUS_ADAPTOR_CLASSNAME)
-			qt4_add_dbus_adaptor(${PROJECT}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME} ${DBUS_ADAPTOR_CLASSNAME})
+			qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME} ${DBUS_ADAPTOR_CLASSNAME})
 		else()
-			qt4_add_dbus_adaptor(${PROJECT}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME})
+			qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME})
 		endif()
 	else()
-		qt4_add_dbus_adaptor(${PROJECT}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME})
+		qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME})
 	endif()
 endforeach()
 
-foreach(DBUS_INTERFACE ${${PROJECT}_DBUS_PROXYS})
+foreach(DBUS_INTERFACE ${${PROJECT_NAME}_DBUS_PROXYS})
 	get_source_file_property(DBUS_INTERFACE_BASENAME ${DBUS_INTERFACE} BASENAME)
-	qt4_add_dbus_interface(${PROJECT}_DBUS_INTERFACE_FILES ${DBUS_INTERFACE} ${DBUS_INTERFACE_BASENAME})
+	qt4_add_dbus_interface(${PROJECT_NAME}_DBUS_INTERFACE_FILES ${DBUS_INTERFACE} ${DBUS_INTERFACE_BASENAME})
 endforeach()
 
-qt4_wrap_cpp(${PROJECT}_MOC_FILES ${${PROJECT}_QT_HEADERS})
-qt4_add_resources(${PROJECT}_RESOURCE_FILES ${${PROJECT}_RESOURCES})
+qt4_wrap_cpp(${PROJECT_NAME}_MOC_FILES ${${PROJECT_NAME}_QT_HEADERS})
+qt4_add_resources(${PROJECT_NAME}_RESOURCE_FILES ${${PROJECT_NAME}_RESOURCES})
 if(COMMAND qt4_wrap_ui)
-	qt4_wrap_ui(${PROJECT}_FORM_FILES ${${PROJECT}_FORMS})
+	qt4_wrap_ui(${PROJECT_NAME}_FORM_FILES ${${PROJECT_NAME}_FORMS})
 endif()
 #if(COMMAND qt4_create_translation)
-#	qt4_create_translation(${${PROJECT}_QM_FILES} ${${PROJECT}_TRANSLATABLE} ${${PROJECT}_TRANSLATIONS})
+#	qt4_create_translation(${${PROJECT_NAME}_QM_FILES} ${${PROJECT_NAME}_TRANSLATABLE} ${${PROJECT_NAME}_TRANSLATIONS})
 #endif()
 
 
 
-set(${PROJECT}_GENERATED_FILES
-	${${PROJECT}_MOC_FILES}
-	${${PROJECT}_FORM_FILES}
-	${${PROJECT}_RESOURCE_FILES}
-	${${PROJECT}_QM_FILES}
-	${${PROJECT}_DBUS_INTERFACE_FILES}
-	${${PROJECT}_DBUS_ADAPTOR_FILES}
+set(${PROJECT_NAME}_GENERATED_FILES
+	${${PROJECT_NAME}_MOC_FILES}
+	${${PROJECT_NAME}_FORM_FILES}
+	${${PROJECT_NAME}_RESOURCE_FILES}
+	${${PROJECT_NAME}_QM_FILES}
+	${${PROJECT_NAME}_DBUS_INTERFACE_FILES}
+	${${PROJECT_NAME}_DBUS_ADAPTOR_FILES}
 )
 
-set(${PROJECT}_ALL_FILES
-	${${PROJECT}_SOURCES}
-	${${PROJECT}_HEADERS}
-	${${PROJECT}_GENERATED_FILES}
+set(${PROJECT_NAME}_ALL_FILES
+	${${PROJECT_NAME}_SOURCES}
+	${${PROJECT_NAME}_HEADERS}
+	${${PROJECT_NAME}_GENERATED_FILES}
 )
 
 
 
-add_executable(${PROJECT} ${${PROJECT}_ALL_FILES})
-target_link_libraries(${PROJECT} ${X11_LIBRARIES} ${QT_LIBRARIES})
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_ALL_FILES})
+target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES} ${QT_LIBRARIES})
 
-install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
