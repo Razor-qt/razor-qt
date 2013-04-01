@@ -51,7 +51,6 @@ public slots:
     void userComboCurrentIndexChanged();
     void otherUserEditingFinished(); 
     void loginClicked();
-    void clearAll();
     void leaveClicked();
     void razorPowerFinished();
 

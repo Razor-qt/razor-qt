@@ -114,7 +114,6 @@ void LoginForm::setupConnections()
     connect(ui->userCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(userComboCurrentIndexChanged()));
     connect(ui->otherUserInput, SIGNAL(editingFinished()), this, SLOT(otherUserEditingFinished()));
     connect(ui->loginButton, SIGNAL(clicked(bool)), this, SLOT(loginClicked()));
-    connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(clearAll()));
     connect(ui->leaveButton, SIGNAL(clicked()), this, SLOT(leaveClicked()));
     connect(&m_razorPowerProcess, SIGNAL(finished(int)), this, SLOT(razorPowerFinished())); 
 
@@ -206,12 +205,6 @@ void LoginForm::loginClicked()
     m_Greeter.respond(ui->passwordInput->text().trimmed());
     ui->passwordInput->clear();
     ui->passwordInput->setEnabled(false);
-}
-
-void LoginForm::clearAll()
-{
-	ui->userCombo->setCurrentIndex(-1);
-    initializeControls();
 }
 
 void LoginForm::leaveClicked()
