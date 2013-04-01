@@ -25,18 +25,22 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "main_window.h"
-
+#include <QtGlobal>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#include <QtGui/QGuiApplication>
+#include <QGuiApplication>
 #else
-#include <QtGui/QApplication>
+#include <QApplication>
 #endif
 
+#include "razortranslate.h"
+
+#include "main_window.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    TRANSLATE_APP;
+
     MainWindow w;
     w.show();
 
