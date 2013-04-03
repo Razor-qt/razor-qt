@@ -48,7 +48,8 @@ int main(int argc, char *argv[])
 {
     bool wrongArgs = false;
     bool printHelp = false;
-    bool runAsDaemon = true;
+    bool runAsDaemon = false;
+    bool useSyslog = false;
     bool minLogLevelSet = false;
     int minLogLevel = LOG_NOTICE;
     bool multipleActionsBehaviourSet = false;
@@ -58,6 +59,8 @@ int main(int argc, char *argv[])
     static struct option longOptions[] =
     {
         {"no-daemon", no_argument, 0, 'n'},
+        {"daemon", no_argument, 0, 'd'},
+        {"use-syslog", no_argument, 0, 's'},
         {"log-level", required_argument, 0, 'l'},
         {"multiple-actions-behaviour", required_argument, 0, 'm'},
         {"config-file", required_argument, 0, 'f'},
@@ -80,6 +83,14 @@ int main(int argc, char *argv[])
         {
         case 'n':
             runAsDaemon = false;
+            break;
+
+        case 'd':
+            runAsDaemon = true;
+            break;
+
+        case 's':
+            useSyslog = true;
             break;
 
         case 'l':
@@ -169,7 +180,14 @@ int main(int argc, char *argv[])
                "\n"
                "  --no-daemon\n"
                "      Run as a usual application, not a daemon\n"
-               "      and print messages to stderr instead of syslog.\n"
+               "      and print messages to stderr.\n"
+               "\n"
+               "  --daemon\n"
+               "      Run as a daemon, not a usual application\n"
+               "      and print messages to syslog.\n"
+               "\n"
+               "  --use-syslog\n"
+               "      Print messages to syslog if run as a usual application.\n"
                "\n"
                "  --log-level=VALUE\n"
                "      Set minimal log level.\n"
@@ -221,7 +239,7 @@ int main(int argc, char *argv[])
 
     QCoreApplication app(argc, argv);
 
-    Core core(runAsDaemon, minLogLevelSet, minLogLevel, configFiles, multipleActionsBehaviourSet, multipleActionsBehaviour);
+    Core core(runAsDaemon || useSyslog, minLogLevelSet, minLogLevel, configFiles, multipleActionsBehaviourSet, multipleActionsBehaviour);
 
     if (!core.ready())
     {
