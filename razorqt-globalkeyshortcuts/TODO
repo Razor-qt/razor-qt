@@ -1,6 +1,7 @@
 daemon:
-	NTH: method action should bind arguments
-	NTH: smarter converting string list to string ("-enclosing)
+	Nice to have: argument bindings for method action
 
 manager:
-	NTH: dbus browser for method actions
+	Nice to have: dbus browser for method actions
+	Nice to have: file browser for command actions
+	Nice to have: menu browser for command actions
