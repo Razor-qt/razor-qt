@@ -198,6 +198,7 @@ class XdgDesktopFileCache
 {
 public:
     static XdgDesktopFile* getFile(const QString& fileName);
+    static QList<XdgDesktopFile*> getApps(const QString & mimeType);
     static XdgDesktopFile* getDefaultApp(const QString& mimeType);
 };
 

@@ -48,8 +48,11 @@
 #include <QtCore/QProcess>
 #include <QUrl>
 #include <QDesktopServices>
+#include <QList>
+#include <QtAlgorithms>
 #include <unistd.h>
-
+#include <qalgorithms.h>
+#include <QSettings>
 
 /************************************************
 
@@ -313,7 +316,6 @@ bool XdgDesktopFileData::read(const QString &prefix)
     mIsValid = (prefix.isEmpty()) || prefixExists;
     return mIsValid;
 }
-
 
 /************************************************
 
@@ -1204,7 +1206,7 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 /************************************************
 
  ************************************************/
-void loadMimeCacheDir(const QString& dirName, QHash<QString, XdgDesktopFile*>* cache)
+void loadMimeCacheDir(const QString& dirName, QHash<QString, QList<XdgDesktopFile*> > & cache)
 {
     QDir dir(dirName);
     // Directories have the type "application/x-directory", but in the desktop file
@@ -1229,45 +1231,53 @@ void loadMimeCacheDir(const QString& dirName, QHash<QString, XdgDesktopFile*>* c
             continue;
 
         QStringList mimes = df->value("MimeType").toString().split(';', QString::SkipEmptyParts);
-        int newPref= df->value("InitialPreference", 0).toInt();
 
-        foreach (QString m, mimes)
+        foreach (QString mime, mimes)
         {
-            // If the association doesn't exist or its priority is less.
-            if (!cache->contains(m) ||
-                cache->value(m)->value("InitialPreference", 0).toInt() < newPref)
+            int pref = df->value("InitialPreference", 0).toInt();
+            // FIXME Insert according to InitialPreference 
+            int position = cache[mime].length();
+            while (position > 0 && cache[mime][position - 1]->value("InitialPreference, 0").toInt() < pref)
             {
-                cache->insert(m, df);
-                if (specials.contains(m))
-                    cache->insert(specials.value(m), df);
+                position--;
             }
+            cache[mime].insert(position, df);
         }
     }
+}
 
+void loadMimeCache(QHash<QString, QList<XdgDesktopFile*> > & cache)
+{
+    QStringList dataDirs = XdgDirs::dataDirs();
+    dataDirs.prepend(XdgDirs::dataHome(false));
+
+    foreach (const QString dirname, dataDirs) 
+    {
+        loadMimeCacheDir(dirname + "/applications", cache);
+    }
+}
+
+QList<XdgDesktopFile*>  XdgDesktopFileCache::getApps(const QString& mimetype)
+{
+    static QHash<QString, QList<XdgDesktopFile*> > cache;
+
+    if (cache.isEmpty())
+    {
+        loadMimeCache(cache);
+    }
+
+    return cache.value(mimetype);
 }
 
 
 /************************************************
 
  ************************************************/
-XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimeType)
+XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimetype)
 {
-    static QHash<QString, XdgDesktopFile*> cache;
-    // Initialize the cache .....................
-    if (cache.isEmpty())
-    {
-        QStringList dataDirs = XdgDirs::dataDirs();
-        dataDirs.prepend(XdgDirs::dataHome(false));
+    // FIXME Must look in <datahome:datadirs>/applications/defaults.list
 
-        foreach (QString dirName, dataDirs)
-            loadMimeCacheDir(dirName + "/applications", &cache);
-    }
-    // ..........................................
-
-
-    if (cache.contains(mimeType))
-        return cache.value(mimeType);
-    else
-        return 0;
+    QList<XdgDesktopFile*> apps = getApps(mimetype);
+    return apps.isEmpty() ? 0 : apps[0];
 }
 

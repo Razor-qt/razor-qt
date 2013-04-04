@@ -1,5 +1,7 @@
 project(libqtxdg)
 
+add_subdirectory(test)
+
 # additional cmake files
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
