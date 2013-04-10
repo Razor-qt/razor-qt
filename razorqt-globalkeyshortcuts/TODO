@@ -1,6 +1,3 @@
-panel plugins:
-	Must have: Unique panel & plugin identification.
-
 shortcut-selector:
 	Should have: Add submenu to clear the shortcut.
 
@@ -8,6 +5,7 @@ daemon:
 	Should have: Argument bindings for method action.
 
 manager:
+	Should have: Ability to remove obsolete (or inactive) client actions.
 	Nice to have: D-Bus browser for method actions.
 	Nice to have: File browser for command actions.
 	Nice to have: Menu browser for command actions.
