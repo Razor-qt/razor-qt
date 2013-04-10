@@ -2,7 +2,7 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Screensaver Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation>面板 屏幕保护程序 全局快捷键 &apos;%1&apos; 无法被注册</translation>
     </message>
 </context>

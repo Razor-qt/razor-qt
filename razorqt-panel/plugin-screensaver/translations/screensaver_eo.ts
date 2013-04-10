@@ -2,7 +2,7 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Screensaver Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation>Ĉiea klavkombino por ekrankurteno de panelo: &apos;%1&apos; ne registreblas</translation>
     </message>
 </context>

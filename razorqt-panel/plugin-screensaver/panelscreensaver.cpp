@@ -55,7 +55,7 @@ PanelScreenSaver::PanelScreenSaver(const IRazorPanelPluginStartupInfo &startupIn
     QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_L);
     if (! mShortcutKey->setShortcut(ks))
     {
-        RazorNotification::notify(tr("Panel Screensaver Global shorcut: '%1' cannot be registered").arg(ks.toString()));
+        RazorNotification::notify(tr("Panel Screensaver Global shortcut: '%1' cannot be registered").arg(ks.toString()));
     }
     
     connect(mShortcutKey, SIGNAL(activated()), mSaver, SLOT(lockScreen()));

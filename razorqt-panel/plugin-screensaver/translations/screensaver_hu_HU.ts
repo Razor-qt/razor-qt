@@ -2,7 +2,7 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Screensaver Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation>A(z) „%1” gyorsbillentyű a panel képernyővédőjének megjelenítéséhez nem regisztrálható</translation>
     </message>
 </context>

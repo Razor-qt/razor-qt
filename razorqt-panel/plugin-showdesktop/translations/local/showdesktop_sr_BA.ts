@@ -8,7 +8,7 @@
         <translation>Глобална пречица тастатуре</translation>
     </message>
     <message>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Show Desktop Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation>Глобална пречица приказа површи за панел: „%1“ не може бити регистрована</translation>
     </message>
     <message>
