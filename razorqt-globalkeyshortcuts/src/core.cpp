@@ -29,6 +29,7 @@
 
 #include <QSettings>
 #include <QTimer>
+#include <QDBusConnectionInterface>
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -46,10 +47,9 @@
 #include "string_utils.h"
 #include "daemon_adaptor.h"
 #include "native_adaptor.h"
-#include "dbus_proxy.h"
 #include "base_action.h"
 #include "method_action.h"
-#include "dbus_action.h"
+#include "client_action.h"
 #include "command_action.h"
 
 #include "core.h"
@@ -378,15 +378,12 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
     , mInterClientCommunicationWindow(0)
     , mDaemonAdaptor(0)
     , mNativeAdaptor(0)
-    , mDBusProxy(0)
     , mLastId(0ull)
     , mGrabbingShortcut(false)
-
     , AltMask(Mod1Mask)
     , MetaMask(Mod4Mask)
     , Level3Mask(Mod5Mask)
     , Level5Mask(Mod3Mask)
-
     , mMultipleActionsBehaviour(multipleActionsBehaviour)
     , mAllowGrabLocks(false)
     , mAllowGrabBaseSpecial(false)
@@ -406,7 +403,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
     initBothPipeEnds(mX11RequestPipe);
     initBothPipeEnds(mX11ResponsePipe);
 
-    mConfigFile = QString(getenv("HOME")) + "/.config/global_actions.ini";
+    mConfigFile = QString(getenv("HOME")) + "/.config/global_key_shortcutss.ini";
 
     try
     {
@@ -418,9 +415,9 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         ::signal(SIGINT, ::unixSignalHandler);
 
 
-        if (!QDBusConnection::sessionBus().registerService("org.razorqt.global_action"))
+        if (!QDBusConnection::sessionBus().registerService("org.razorqt.global_key_shortcuts"))
         {
-            throw std::runtime_error(std::string("Cannot register service 'org.razorqt.global_action'"));
+            throw std::runtime_error(std::string("Cannot register service 'org.razorqt.global_key_shortcuts'"));
         }
 
 
@@ -554,21 +551,21 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
                         }
                         else
                         {
-                            iniValue = settings.value("DBus-service").toString();
+                            iniValue = settings.value("path").toString();
                             if (!iniValue.isEmpty())
                             {
-                                QString service = iniValue;
+                                QString path = iniValue;
 
-                                iniValue = settings.value("DBus-path").toString();
-                                if (!iniValue.isEmpty())
+                                if (settings.contains("interface"))
                                 {
-                                    QString path = iniValue;
+                                    QString interface = settings.value("interface").toString();
 
-                                    if (settings.contains("DBus-interface"))
+                                    iniValue = settings.value("service").toString();
+                                    if (!iniValue.isEmpty())
                                     {
-                                        QString interface = settings.value("DBus-interface").toString();
+                                        QString service = iniValue;
 
-                                        iniValue = settings.value("DBus-method").toString();
+                                        iniValue = settings.value("method").toString();
                                         if (!iniValue.isEmpty())
                                         {
                                             QString method = iniValue;
@@ -576,10 +573,10 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
                                             id = registerMethodAction(shortcut, service, QDBusObjectPath(path), interface, method, description);
                                         }
                                     }
-                                    else
-                                    {
-                                        id = registerDBusAction(shortcut, service, QDBusObjectPath(path), description);
-                                    }
+                                }
+                                else
+                                {
+                                    id = registerClientAction(shortcut, QDBusObjectPath(path), description);
                                 }
                             }
                         }
@@ -639,13 +636,10 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         mNativeAdaptor = new NativeAdaptor(this);
         if (!QDBusConnection::sessionBus().registerObject("/native", mNativeAdaptor))
         {
-            throw std::runtime_error(std::string("Cannot create daemon native adaptor"));
+            throw std::runtime_error(std::string("Cannot create daemon native client adaptor"));
         }
 
-        mDBusProxy = new DBusProxy(QDBusConnection::sessionBus(), QString("org.freedesktop.DBus"), QDBusObjectPath("/org/freedesktop/DBus"), this);
-
-        connect(mDBusProxy, SIGNAL(onServiceAppeared(QString, QString)), this, SLOT(serviceAppeared(QString, QString)));
-        connect(mDBusProxy, SIGNAL(onServiceDisappeared(QString, QString)), this, SLOT(serviceDisappeared(QString, QString)));
+        connect(QDBusConnection::sessionBus().interface(), SIGNAL(serviceOwnerChanged(QString, QString, QString)), this, SLOT(serviceOwnerChanged(QString, QString, QString)));
 
         connect(mDaemonAdaptor, SIGNAL(onAddMethodAction(QPair<QString, qulonglong>&, QString, QString, QDBusObjectPath, QString, QString, QString)), this, SLOT(addMethodAction(QPair<QString, qulonglong>&, QString, QString, QDBusObjectPath, QString, QString, QString)));
         connect(mDaemonAdaptor, SIGNAL(onAddCommandAction(QPair<QString, qulonglong>&, QString, QString, QStringList, QString)), this, SLOT(addCommandAction(QPair<QString, qulonglong>&, QString, QString, QStringList, QString)));
@@ -654,6 +648,7 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         connect(mDaemonAdaptor, SIGNAL(onModifyCommandAction(bool &, qulonglong, QString, QStringList, QString)), this, SLOT(modifyCommandAction(bool &, qulonglong, QString, QStringList, QString)));
         connect(mDaemonAdaptor, SIGNAL(onEnableAction(bool &, qulonglong, bool)), this, SLOT(enableAction(bool &, qulonglong, bool)));
         connect(mDaemonAdaptor, SIGNAL(onIsActionEnabled(bool &, qulonglong)), this, SLOT(isActionEnabled(bool &, qulonglong)));
+        connect(mDaemonAdaptor, SIGNAL(onGetClientActionSender(QString &, qulonglong)), this, SLOT(getClientActionSender(QString &, qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onChangeShortcut(QString &, qulonglong, QString)), this, SLOT(changeShortcut(QString &, qulonglong, QString)));
         connect(mDaemonAdaptor, SIGNAL(onSwapActions(bool &, qulonglong, qulonglong)), this, SLOT(swapActions(bool &, qulonglong, qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onRemoveAction(bool &, qulonglong)), this, SLOT(removeAction(bool &, qulonglong)));
@@ -662,19 +657,20 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         connect(mDaemonAdaptor, SIGNAL(onGetAllActionIds(QList<qulonglong>&)), this, SLOT(getAllActionIds(QList<qulonglong>&)));
         connect(mDaemonAdaptor, SIGNAL(onGetActionById(QPair<bool, GeneralActionInfo>&, qulonglong)), this, SLOT(getActionById(QPair<bool, GeneralActionInfo>&, qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGetAllActions(QMap<qulonglong, GeneralActionInfo>&)), this, SLOT(getAllActions(QMap<qulonglong, GeneralActionInfo>&)));
-        connect(mDaemonAdaptor, SIGNAL(onGetDBusActionInfoById(QPair<bool, DBusActionInfo>&, qulonglong)), this, SLOT(getDBusActionInfoById(QPair<bool, DBusActionInfo>&, qulonglong)));
+        connect(mDaemonAdaptor, SIGNAL(onGetClientActionInfoById(QPair<bool, ClientActionInfo>&, qulonglong)), this, SLOT(getClientActionInfoById(QPair<bool, ClientActionInfo>&, qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGetMethodActionInfoById(QPair<bool, MethodActionInfo>&, qulonglong)), this, SLOT(getMethodActionInfoById(QPair<bool, MethodActionInfo>&, qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGetCommandActionInfoById(QPair<bool, CommandActionInfo>&, qulonglong)), this, SLOT(getCommandActionInfoById(QPair<bool, CommandActionInfo>&, qulonglong)));
         connect(mDaemonAdaptor, SIGNAL(onGrabShortcut(uint, QString &, bool &, bool &, bool &, QDBusMessage)), this, SLOT(grabShortcut(uint, QString &, bool &, bool &, bool &, QDBusMessage)));
         connect(mDaemonAdaptor, SIGNAL(onCancelShortcutGrab()), this, SLOT(cancelShortcutGrab()));
         connect(mDaemonAdaptor, SIGNAL(onQuit()), qApp, SLOT(quit()));
 
-        connect(mNativeAdaptor, SIGNAL(onAddDBusAction(QPair<QString, qulonglong>&, QString, QDBusObjectPath, QString, QString)), this, SLOT(addDBusAction(QPair<QString, qulonglong>&, QString, QDBusObjectPath, QString, QString)));
-        connect(mNativeAdaptor, SIGNAL(onModifyDBusAction(qulonglong &, QDBusObjectPath, QString, QString)), this, SLOT(modifyDBusAction(qulonglong &, QDBusObjectPath, QString, QString)));
-        connect(mNativeAdaptor, SIGNAL(onEnableDBusAction(bool &, QDBusObjectPath, bool, QString)), this, SLOT(enableDBusAction(bool &, QDBusObjectPath, bool, QString)));
-        connect(mNativeAdaptor, SIGNAL(onIsDBusActionEnabled(bool &, QDBusObjectPath, QString)), this, SLOT(isDBusActionEnabled(bool &, QDBusObjectPath, QString)));
-        connect(mNativeAdaptor, SIGNAL(onChangeDBusShortcut(QPair<QString, qulonglong>&, QDBusObjectPath, QString, QString)), this, SLOT(changeDBusShortcut(QPair<QString, qulonglong>&, QDBusObjectPath, QString, QString)));
-        connect(mNativeAdaptor, SIGNAL(onRemoveDBusAction(qulonglong &, QDBusObjectPath, QString)), this, SLOT(removeDBusAction(qulonglong &, QDBusObjectPath, QString)));
+        connect(mNativeAdaptor, SIGNAL(onAddClientAction(QPair<QString, qulonglong>&, QString, QDBusObjectPath, QString, QString)), this, SLOT(addClientAction(QPair<QString, qulonglong>&, QString, QDBusObjectPath, QString, QString)));
+        connect(mNativeAdaptor, SIGNAL(onModifyClientAction(qulonglong &, QDBusObjectPath, QString, QString)), this, SLOT(modifyClientAction(qulonglong &, QDBusObjectPath, QString, QString)));
+        connect(mNativeAdaptor, SIGNAL(onEnableClientAction(bool &, QDBusObjectPath, bool, QString)), this, SLOT(enableClientAction(bool &, QDBusObjectPath, bool, QString)));
+        connect(mNativeAdaptor, SIGNAL(onIsClientActionEnabled(bool &, QDBusObjectPath, QString)), this, SLOT(isClientActionEnabled(bool &, QDBusObjectPath, QString)));
+        connect(mNativeAdaptor, SIGNAL(onChangeClientActionShortcut(QPair<QString, qulonglong>&, QDBusObjectPath, QString, QString)), this, SLOT(changeClientActionShortcut(QPair<QString, qulonglong>&, QDBusObjectPath, QString, QString)));
+        connect(mNativeAdaptor, SIGNAL(onRemoveClientAction(bool &, QDBusObjectPath, QString)), this, SLOT(removeClientAction(bool &, QDBusObjectPath, QString)));
+        connect(mNativeAdaptor, SIGNAL(onDeactivateClientAction(bool &, QDBusObjectPath, QString)), this, SLOT(deactivateClientAction(bool &, QDBusObjectPath, QString)));
         connect(mNativeAdaptor, SIGNAL(onGrabShortcut(uint, QString &, bool &, bool &, bool &, QDBusMessage)), this, SLOT(grabShortcut(uint, QString &, bool &, bool &, bool &, QDBusMessage)));
         connect(mNativeAdaptor, SIGNAL(onCancelShortcutGrab()), this, SLOT(cancelShortcutGrab()));
 
@@ -707,7 +703,6 @@ Core::~Core()
     wait();
 
     delete mDaemonAdaptor;
-    delete mDBusProxy;
 
     ShortcutAndActionById::iterator lastShortcutAndActionById = mShortcutAndActionById.end();
     for (ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.begin(); shortcutAndActionById != lastShortcutAndActionById; ++shortcutAndActionById)
@@ -766,50 +761,31 @@ void Core::saveConfig()
         const BaseAction *action = shortcutAndActionById.value().second;
         QString section = shortcutAndActionById.value().first + "." + QString::number(shortcutAndActionById.key());
 
-        bool persistent = false;
+        settings.beginGroup(section);
+
+        settings.setValue("Enabled", action->isEnabled());
+        settings.setValue("Comment", action->description());
+
         if (!strcmp(action->type(), CommandAction::id()))
         {
-            persistent = true;
+            const CommandAction *commandAction = dynamic_cast<const CommandAction *>(action);
+            settings.setValue("Exec", QVariant(QStringList() << commandAction->command() += commandAction->args()));
         }
         else if (!strcmp(action->type(), MethodAction::id()))
         {
-            persistent = true;
+            const MethodAction *methodAction = dynamic_cast<const MethodAction *>(action);
+            settings.setValue("service",   methodAction->service());
+            settings.setValue("path",      methodAction->path().path());
+            settings.setValue("interface", methodAction->interface());
+            settings.setValue("method",    methodAction->method());
         }
-        else if (!strcmp(action->type(), DBusAction::id()))
+        else if (!strcmp(action->type(), ClientAction::id()))
         {
-            const DBusAction *dBusAction = dynamic_cast<const DBusAction *>(action);
-            persistent = dBusAction->isPersistent();
+            const ClientAction *clientAction = dynamic_cast<const ClientAction *>(action);
+            settings.setValue("path",  clientAction->path().path());
         }
 
-        if (persistent)
-        {
-            settings.beginGroup(section);
-
-            settings.setValue("Enabled", action->isEnabled());
-            settings.setValue("Comment", action->description());
-
-            if (!strcmp(action->type(), CommandAction::id()))
-            {
-                const CommandAction *commandAction = dynamic_cast<const CommandAction *>(action);
-                settings.setValue("Exec", QVariant(QStringList() << commandAction->command() += commandAction->args()));
-            }
-            else if (!strcmp(action->type(), MethodAction::id()))
-            {
-                const MethodAction *methodAction = dynamic_cast<const MethodAction *>(action);
-                settings.setValue("DBus-service",   methodAction->service());
-                settings.setValue("DBus-path",      methodAction->path().path());
-                settings.setValue("DBus-interface", methodAction->interface());
-                settings.setValue("DBus-method",    methodAction->method());
-            }
-            else if (!strcmp(action->type(), DBusAction::id()))
-            {
-                const DBusAction *dBusAction = dynamic_cast<const DBusAction *>(action);
-                settings.setValue("DBus-service", dBusAction->service());
-                settings.setValue("DBus-path",    dBusAction->path().path());
-            }
-
-            settings.endGroup();
-        }
+        settings.endGroup();
     }
 }
 
@@ -1675,76 +1651,49 @@ void Core::run()
     checkX11Error(0);
 }
 
-void Core::serviceAppeared(const QString &service, const QString &id)
+void Core::serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner)
 {
-    log(LOG_DEBUG, "serviceAppeared '%s' '%s'", qPrintable(service), qPrintable(id));
-
-    QMutexLocker lock(&mDataMutex);
-
-    if (service != id)
+    if (!oldOwner.isEmpty() && newOwner.isEmpty())
     {
-        mServiceNamesByServiceId[id].insert(service);
-        if (mPreferredServiceNameByServiceId.find(id) == mPreferredServiceNameByServiceId.end())
-        {
-            mPreferredServiceNameByServiceId[id] = service;
-        }
-        mServiceIdByServiceName[service] = id;
-
-        DBusPathsByDBusService::iterator dBusPathsByDBusService = mDBusPathsByDBusService.find(id);
-        if (dBusPathsByDBusService != mDBusPathsByDBusService.end())
-        {
-            DBusPaths::iterator lastDBusPaths = dBusPathsByDBusService.value().end();
-            for (DBusPaths::iterator dBusPaths = dBusPathsByDBusService.value().begin(); dBusPaths != lastDBusPaths; ++dBusPaths)
-            {
-                const QDBusObjectPath &path = *dBusPaths;
-
-                IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(qMakePair(id, path));
-                if (idByDBusClient != mIdByDBusClient.end())
-                {
-                    log(LOG_INFO, "Activating DBus action for '%s' @ %s", qPrintable(service), qPrintable(path.path()));
-
-                    ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(idByDBusClient.value());
-                    if (shortcutAndActionById != mShortcutAndActionById.end())
-                    {
-                        dynamic_cast<DBusAction *>(shortcutAndActionById.value().second)->appeared(QDBusConnection::sessionBus());
-                    }
-                }
-            }
-        }
+        serviceDisappeared(oldOwner);
     }
 }
 
-void Core::serviceDisappeared(const QString &service, const QString &id)
+void Core::serviceDisappeared(const QString &sender)
 {
-    log(LOG_DEBUG, "serviceDisappeared '%s' '%s'", qPrintable(service), qPrintable(id));
+    log(LOG_DEBUG, "serviceDisappeared '%s'", qPrintable(sender));
 
     QMutexLocker lock(&mDataMutex);
 
-    DBusPathsByDBusService::iterator dBusPathsByDBusService = mDBusPathsByDBusService.find(id);
-    if (dBusPathsByDBusService != mDBusPathsByDBusService.end())
+    ClientPathsBySender::iterator clientPathsBySender = mClientPathsBySender.find(sender);
+    if (clientPathsBySender != mClientPathsBySender.end())
     {
-        size_t pathsCount = dBusPathsByDBusService.value().size();
-        DBusPaths::iterator lastDBusPaths = dBusPathsByDBusService.value().end();
-        for (DBusPaths::iterator dBusPaths = dBusPathsByDBusService.value().begin(); dBusPaths != lastDBusPaths; ++dBusPaths)
+        ClientPaths::const_iterator lastClientPath = clientPathsBySender.value().end();
+        for (ClientPaths::const_iterator clientPath = clientPathsBySender.value().begin(); clientPath != lastClientPath; ++clientPath)
         {
-            const QDBusObjectPath &path = *dBusPaths;
+            const QDBusObjectPath &path = *clientPath;
 
-            IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(qMakePair(id, path));
-            if (idByDBusClient != mIdByDBusClient.end())
+            IdByClientPath::iterator idByClientPath = mIdByClientPath.find(path);
+            if (idByClientPath != mIdByClientPath.end())
             {
-                log(LOG_INFO, "Disactivating DBus action for '%s' @ %s", qPrintable(service), qPrintable(path.path()));
+                const qulonglong &id = idByClientPath.value();
 
-                ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(idByDBusClient.value());
+                log(LOG_INFO, "Disactivating DBus action for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+
+                ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
                 if (shortcutAndActionById != mShortcutAndActionById.end())
                 {
                     const QString &shortcut = shortcutAndActionById.value().first;
+
+                    dynamic_cast<ClientAction *>(shortcutAndActionById.value().second)->disappeared();
+                    mDaemonAdaptor->emit_clientActionSenderChanged(id, QString());
 
                     X11Shortcut X11shortcut = mX11ByShortcut[shortcut];
 
                     IdsByShortcut::iterator idsByShortcut = mIdsByShortcut.find(shortcut);
                     if (idsByShortcut != mIdsByShortcut.end())
                     {
-                        idsByShortcut.value().remove(idByDBusClient.value());
+                        idsByShortcut.value().remove(id);
                         if (idsByShortcut.value().isEmpty())
                         {
                             mIdsByShortcut.erase(idsByShortcut);
@@ -1755,52 +1704,11 @@ void Core::serviceDisappeared(const QString &service, const QString &id)
                             }
                         }
                     }
-
-                    if (id != service)
-                    {
-                        dynamic_cast<DBusAction *>(shortcutAndActionById.value().second)->disappeared();
-                    }
-                    else
-                    {
-                        delete shortcutAndActionById.value().second;
-                        mShortcutAndActionById.erase(shortcutAndActionById);
-                        mIdByDBusClient.erase(idByDBusClient);
-                        --pathsCount;
-                    }
                 }
             }
+            mSenderByClientPath.remove(path);
         }
-        if (!pathsCount)
-        {
-            mDBusPathsByDBusService.erase(dBusPathsByDBusService);
-        }
-    }
-
-
-    if (id == service)
-    {
-        mPreferredServiceNameByServiceId.remove(id);
-        mServiceNamesByServiceId.remove(id);
-    }
-    else
-    {
-        ServiceNamesByServiceId::iterator serviceNamesByServiceId = mServiceNamesByServiceId.find(id);
-        if (serviceNamesByServiceId != mServiceNamesByServiceId.end())
-        {
-            serviceNamesByServiceId.value().remove(service);
-            if (serviceNamesByServiceId.value().isEmpty())
-            {
-                mServiceNamesByServiceId.erase(serviceNamesByServiceId);
-            }
-        }
-
-        PreferredServiceNameByServiceId::iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(id);
-        if ((preferredServiceNameByServiceId != mPreferredServiceNameByServiceId.end()) && (preferredServiceNameByServiceId.value() == service))
-        {
-            mPreferredServiceNameByServiceId.erase(preferredServiceNameByServiceId);
-        }
-
-        mServiceIdByServiceName.remove(service);
+        mClientPathsBySender.erase(clientPathsBySender);
     }
 }
 
@@ -2095,8 +2003,13 @@ QString Core::X11ToShortcut(const X11Shortcut &X11shortcut)
     return result;
 }
 
-bool Core::addActionCommon(const QString &shortcut, X11Shortcut &X11shortcut, QString &usedShortcut)
+QString Core::checkShortcut(const QString &shortcut, X11Shortcut &X11shortcut)
 {
+    if (shortcut.isEmpty())
+        return QString();
+
+    QString usedShortcut;
+
     try
     {
         X11shortcut = ShortcutToX11(shortcut);
@@ -2104,7 +2017,7 @@ bool Core::addActionCommon(const QString &shortcut, X11Shortcut &X11shortcut, QS
     catch (bool)
     {
         log(LOG_WARNING, "Cannot extract keycode and modifiers from shortcut '%s'", qPrintable(shortcut));
-        return false;
+        return QString();
     }
 
     try
@@ -2123,7 +2036,7 @@ bool Core::addActionCommon(const QString &shortcut, X11Shortcut &X11shortcut, QS
     catch (bool)
     {
         log(LOG_WARNING, "Cannot get back shortcut '%s'", qPrintable(shortcut));
-        return false;
+        return QString();
     }
 
     if (shortcut != usedShortcut)
@@ -2137,99 +2050,101 @@ bool Core::addActionCommon(const QString &shortcut, X11Shortcut &X11shortcut, QS
         mX11ByShortcut[usedShortcut] = X11shortcut;
     }
 
-    return true;
+    return usedShortcut;
 }
 
-QPair<QString, qulonglong> Core::addOrRegisterDBusAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &description, const QString &sender)
+QPair<QString, qulonglong> Core::addOrRegisterClientAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, const QString &sender)
 {
-    DBusClient dBusClient = qMakePair(service, path);
-
-//    QMutexLocker lock(&mDataMutex);
-
-    DBusPathsByDBusService::iterator dBusPathsByDBusService = mDBusPathsByDBusService.find(service);
-    if (dBusPathsByDBusService != mDBusPathsByDBusService.end())
-    {
-        DBusPaths::iterator dBusPaths = dBusPathsByDBusService.value().find(path);
-        if (dBusPaths != dBusPathsByDBusService.value().end())
-        {
-            log(LOG_WARNING, "DBus client already registered for '%s' @ %s", qPrintable(service), qPrintable(path.path()));
-            IdByDBusClient::const_iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
-            if (idByDBusClient != mIdByDBusClient.end())
-            {
-                return qMakePair(mShortcutAndActionById[idByDBusClient.value()].first, idByDBusClient.value());
-            }
-            else
-            {
-                return qMakePair(QString(), 0ull);
-            }
-        }
-        else
-        {
-            dBusPathsByDBusService.value().insert(path);
-        }
-    }
-    else
-    {
-        mDBusPathsByDBusService[service].insert(path);
-    }
-
     X11Shortcut X11shortcut;
-    QString usedShortcut;
 
-    if (!addActionCommon(shortcut, X11shortcut, usedShortcut))
+    QString newShortcut = checkShortcut(shortcut, X11shortcut);
+//    if (newShortcut.isEmpty())
+//    {
+//        return qMakePair(QString(), 0ull);
+//    }
+
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient != mIdByClientPath.end())
     {
-        dBusPathsByDBusService = mDBusPathsByDBusService.find(service);
-        dBusPathsByDBusService.value().remove(path);
-        if (dBusPathsByDBusService.value().isEmpty())
+        qulonglong id = idByNativeClient.value();
+        ShortcutAndAction &shortcutAndAction = mShortcutAndActionById[id];
+        if (newShortcut != shortcutAndAction.first)
         {
-            mDBusPathsByDBusService.erase(dBusPathsByDBusService);
+            mShortcutAndActionById[id].first = newShortcut;
         }
-        return qMakePair(QString(), 0ull);
-    }
 
-    QString newShortcut = grabOrReuseKey(X11shortcut, usedShortcut);
-    if (newShortcut.isEmpty())
-    {
-        return qMakePair(QString(), 0ull);
-    }
+        if (!newShortcut.isEmpty())
+        {
+            newShortcut = grabOrReuseKey(X11shortcut, newShortcut);
+            mIdsByShortcut[newShortcut].insert(id);
+        }
 
+        dynamic_cast<ClientAction*>(shortcutAndAction.second)->appeared(QDBusConnection::sessionBus(), sender);
+
+        return qMakePair(newShortcut, id);
+    }
 
     qulonglong id = ++mLastId;
 
-    mIdsByShortcut[newShortcut].insert(id);
-    mIdByDBusClient[dBusClient] = id;
-    mShortcutAndActionById[id] = qMakePair<QString, BaseAction *>(newShortcut, sender.isEmpty() ? new DBusAction(this, service, path, description) : new DBusAction(this, QDBusConnection::sessionBus(), service, path, description, service != sender));
+    if (!sender.isEmpty() && !newShortcut.isEmpty())
+    {
+        newShortcut = grabOrReuseKey(X11shortcut, newShortcut);
+        mIdsByShortcut[newShortcut].insert(id);
+    }
 
-    log(LOG_INFO, "addDBusAction shortcut:'%s' id:%llu", qPrintable(newShortcut), id);
+    mIdByClientPath[path] = id;
+    ClientAction *clientAction = sender.isEmpty() ? new ClientAction(this, path, description) : new ClientAction(this, QDBusConnection::sessionBus(), sender, path, description);
+    mShortcutAndActionById[id] = qMakePair<QString, BaseAction *>(newShortcut, clientAction);
+
+    log(LOG_INFO, "addClientAction shortcut:'%s' id:%llu", qPrintable(newShortcut), id);
 
     return qMakePair(newShortcut, id);
 }
 
-void Core::addDBusAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QDBusObjectPath &path, const QString &description, const QString &sender)
+void Core::addClientAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QDBusObjectPath &path, const QString &description, const QString &sender)
 {
-    log(LOG_INFO, "addDBusAction shortcut:'%s' path:'%s' description:'%s' sender:'%s'", qPrintable(shortcut), qPrintable(path.path()), qPrintable(description), qPrintable(sender));
+    log(LOG_INFO, "addClientAction shortcut:'%s' path:'%s' description:'%s' sender:'%s'", qPrintable(shortcut), qPrintable(path.path()), qPrintable(description), qPrintable(sender));
 
     QMutexLocker lock(&mDataMutex);
 
-    QString service = sender;
-    PreferredServiceNameByServiceId::const_iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(sender);
-    if (preferredServiceNameByServiceId != mPreferredServiceNameByServiceId.end())
+    SenderByClientPath::iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath != mSenderByClientPath.end())
     {
-        service = preferredServiceNameByServiceId.value();
+        log(LOG_WARNING, "Action already registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = qMakePair(QString(), 0ull);
+        return;
     }
 
-    result = addOrRegisterDBusAction(shortcut, service, path, description, sender);
+    QString useShortcut = shortcut;
+    if (shortcut.isEmpty())
+    {
+        IdByClientPath::ConstIterator idByClientPath = mIdByClientPath.find(path);
+        if (idByClientPath != mIdByClientPath.constEnd())
+        {
+            useShortcut = mShortcutAndActionById[idByClientPath.value()].first;;
+        }
+    }
+
+    mSenderByClientPath[path] = sender;
+
+    mClientPathsBySender[sender].insert(path);
+
+    result = addOrRegisterClientAction(useShortcut, path, description, sender);
 
     saveConfig();
+
+    mDaemonAdaptor->emit_clientActionSenderChanged(result.second, sender);
+
+    mDaemonAdaptor->emit_actionAdded(result.second);
 }
 
-qulonglong Core::registerDBusAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &description)
+qulonglong Core::registerClientAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description)
 {
-    log(LOG_INFO, "registerDBusAction shortcut:'%s' service:'%s' path:'%s' description:'%s'", qPrintable(shortcut), qPrintable(service), qPrintable(path.path()), qPrintable(description));
+    log(LOG_INFO, "registerClientAction shortcut:'%s' path:'%s' description:'%s'", qPrintable(shortcut), qPrintable(path.path()), qPrintable(description));
 
     QMutexLocker lock(&mDataMutex);
 
-    return addOrRegisterDBusAction(shortcut, service, path, description, QString()).second;
+    return addOrRegisterClientAction(shortcut, path, description, QString()).second;
 }
 
 void Core::addMethodAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description)
@@ -2239,15 +2154,14 @@ void Core::addMethodAction(QPair<QString, qulonglong> &result, const QString &sh
     QMutexLocker lock(&mDataMutex);
 
     X11Shortcut X11shortcut;
-    QString usedShortcut;
-
-    if (!addActionCommon(shortcut, X11shortcut, usedShortcut))
+    QString newShortcut = checkShortcut(shortcut, X11shortcut);
+    if (newShortcut.isEmpty())
     {
         result = qMakePair(QString(), 0ull);
         return;
     }
 
-    QString newShortcut = grabOrReuseKey(X11shortcut, usedShortcut);
+    newShortcut = grabOrReuseKey(X11shortcut, newShortcut);
     if (newShortcut.isEmpty())
     {
         result = qMakePair(QString(), 0ull);
@@ -2281,15 +2195,14 @@ void Core::addCommandAction(QPair<QString, qulonglong> &result, const QString &s
     QMutexLocker lock(&mDataMutex);
 
     X11Shortcut X11shortcut;
-    QString usedShortcut;
-
-    if (!addActionCommon(shortcut, X11shortcut, usedShortcut))
+    QString newShortcut = checkShortcut(shortcut, X11shortcut);
+    if (newShortcut.isEmpty())
     {
         result = qMakePair(QString(), 0ull);
         return;
     }
 
-    QString newShortcut = grabOrReuseKey(X11shortcut, usedShortcut);
+    newShortcut = grabOrReuseKey(X11shortcut, newShortcut);
     if (newShortcut.isEmpty())
     {
         result = qMakePair(QString(), 0ull);
@@ -2316,29 +2229,29 @@ qulonglong Core::registerCommandAction(const QString &shortcut, const QString &c
     return result.second;
 }
 
-void Core::modifyDBusAction(qulonglong &result, const QDBusObjectPath &path, const QString &description, const QString &sender)
+void Core::modifyClientAction(qulonglong &result, const QDBusObjectPath &path, const QString &description, const QString &sender)
 {
-    log(LOG_INFO, "modifyDBusAction path:'%s' description:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(description), qPrintable(sender));
-
-    DBusClient dBusClient = qMakePair(sender, path);
+    log(LOG_INFO, "modifyClientAction path:'%s' description:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(description), qPrintable(sender));
 
     QMutexLocker lock(&mDataMutex);
 
-    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
-    if (idByDBusClient == mIdByDBusClient.end())
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient == mIdByClientPath.end())
     {
-        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+        log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
         result = 0ull;
         return;
     }
 
-    qulonglong id = idByDBusClient.value();
+    qulonglong id = idByNativeClient.value();
 
     mShortcutAndActionById[id].second->setDescription(description);
 
     saveConfig();
 
     result = id;
+
+    mDaemonAdaptor->emit_actionModified(result);
 }
 
 void Core::modifyActionDescription(bool &result, const qulonglong &id, const QString &description)
@@ -2433,49 +2346,46 @@ void Core::modifyCommandAction(bool &result, const qulonglong &id, const QString
     result = true;
 }
 
-void Core::enableDBusAction(bool &result, const QDBusObjectPath &path, bool enabled, const QString &sender)
+void Core::enableClientAction(bool &result, const QDBusObjectPath &path, bool enabled, const QString &sender)
 {
-    log(LOG_INFO, "enableDBusAction path:'%s' enabled:%s sender:'%s'", qPrintable(path.path()), enabled ? " true" : "false", qPrintable(sender));
-
-    DBusClient dBusClient = qMakePair(sender, path);
+    log(LOG_INFO, "enableClientAction path:'%s' enabled:%s sender:'%s'", qPrintable(path.path()), enabled ? " true" : "false", qPrintable(sender));
 
     QMutexLocker lock(&mDataMutex);
 
-    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
-    if (idByDBusClient == mIdByDBusClient.end())
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient == mIdByClientPath.end())
     {
-        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+        log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
         result = false;
         return;
     }
 
-    qulonglong id = idByDBusClient.value();
+    qulonglong id = idByNativeClient.value();
 
     mShortcutAndActionById[id].second->setEnabled(enabled);
 
     saveConfig();
 
     result = true;
+
+    mDaemonAdaptor->emit_actionEnabled(id, result);
 }
 
-void Core::isDBusActionEnabled(bool &enabled, const QDBusObjectPath &path, const QString &sender)
+void Core::isClientActionEnabled(bool &enabled, const QDBusObjectPath &path, const QString &sender)
 {
-    log(LOG_INFO, "isDBusActionEnabled path:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(sender));
-
-    DBusClient dBusClient = qMakePair(sender, path);
+    log(LOG_INFO, "isClientActionEnabled path:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(sender));
 
     enabled = false;
 
     QMutexLocker lock(&mDataMutex);
-
-    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
-    if (idByDBusClient == mIdByDBusClient.end())
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient == mIdByClientPath.end())
     {
-        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+        log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
         return;
     }
 
-    enabled = mShortcutAndActionById[idByDBusClient.value()].second->isEnabled();
+    enabled = mShortcutAndActionById[idByNativeClient.value()].second->isEnabled();
 }
 
 void Core::enableAction(bool &result, qulonglong id, bool enabled)
@@ -2517,9 +2427,31 @@ void Core::isActionEnabled(bool &enabled, qulonglong id)
     enabled = shortcutAndActionById.value().second->isEnabled();
 }
 
-void Core::changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObjectPath &path, const QString &shortcut, const QString &sender)
+void Core::getClientActionSender(QString &sender, qulonglong id)
 {
-    log(LOG_INFO, "changeDBusShortcut path:'%s' shortcut:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(shortcut), qPrintable(sender));
+    log(LOG_INFO, "getClientActionSender id:'%llu'", id);
+
+    sender.clear();
+
+    QMutexLocker lock(&mDataMutex);
+
+    ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
+    if (shortcutAndActionById == mShortcutAndActionById.end())
+    {
+        log(LOG_WARNING, "No action registered with id #%llu", id);
+        return;
+    }
+
+    BaseAction *action = shortcutAndActionById.value().second;
+    if (!strcmp(action->type(), ClientAction::id()))
+    {
+        sender = dynamic_cast<ClientAction *>(action)->service();
+    }
+}
+
+void Core::changeClientActionShortcut(QPair<QString, qulonglong> &result, const QDBusObjectPath &path, const QString &shortcut, const QString &sender)
+{
+    log(LOG_INFO, "changeClientActionShortcut path:'%s' shortcut:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(shortcut), qPrintable(sender));
 
     if (shortcut.isEmpty())
     {
@@ -2527,41 +2459,39 @@ void Core::changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObj
         return;
     }
 
-    DBusClient dBusClient = qMakePair(sender, path);
-
     QMutexLocker lock(&mDataMutex);
 
-    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
-    if (idByDBusClient == mIdByDBusClient.end())
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient == mIdByClientPath.end())
     {
-        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+        log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
         result = qMakePair(QString(), 0ull);
         return;
     }
 
-    qulonglong id = idByDBusClient.value();
+    qulonglong id = idByNativeClient.value();
 
     X11Shortcut X11shortcut;
-    QString usedShortcut;
-
-    if (!addActionCommon(shortcut, X11shortcut, usedShortcut))
+    QString newShortcut = checkShortcut(shortcut, X11shortcut);
+    if (newShortcut.isEmpty())
     {
-        result = qMakePair(QString(), 0ull);
+        result = qMakePair(QString(), id);
         return;
     }
 
     ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
 
     QString oldShortcut = shortcutAndActionById.value().first;
-    QString newShortcut = grabOrReuseKey(X11shortcut, usedShortcut);
-    if (newShortcut.isEmpty())
-    {
-        result = qMakePair(QString(), 0ull);
-        return;
-    }
 
-    if (oldShortcut != usedShortcut)
+    if (oldShortcut != newShortcut)
     {
+        newShortcut = grabOrReuseKey(X11shortcut, newShortcut);
+        if (newShortcut.isEmpty())
+        {
+            result = qMakePair(QString(), id);
+            return;
+        }
+
         IdsByShortcut::iterator idsByShortcut = mIdsByShortcut.find(oldShortcut);
         if (idsByShortcut != mIdsByShortcut.end())
         {
@@ -2581,9 +2511,11 @@ void Core::changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObj
         shortcutAndActionById.value().first = newShortcut;
     }
 
-    dynamic_cast<DBusAction *>(shortcutAndActionById.value().second)->shortcutChanged(oldShortcut, newShortcut);
-
     saveConfig();
+
+    dynamic_cast<ClientAction *>(shortcutAndActionById.value().second)->shortcutChanged(oldShortcut, newShortcut);
+
+    mDaemonAdaptor->emit_actionShortcutChanged(id);
 
     result = qMakePair(newShortcut, id);
 }
@@ -2609,24 +2541,24 @@ void Core::changeShortcut(QString &result, const qulonglong &id, const QString &
     }
 
     X11Shortcut X11shortcut;
-    QString usedShortcut;
-
-    if (!addActionCommon(shortcut, X11shortcut, usedShortcut))
-    {
-        result = QString();
-        return;
-    }
-
-    QString oldShortcut = shortcutAndActionById.value().first;
-    QString newShortcut = grabOrReuseKey(X11shortcut, usedShortcut);
+    QString newShortcut = checkShortcut(shortcut, X11shortcut);
     if (newShortcut.isEmpty())
     {
         result = QString();
         return;
     }
 
-    if (oldShortcut != usedShortcut)
+    QString oldShortcut = shortcutAndActionById.value().first;
+
+    if (oldShortcut != newShortcut)
     {
+        newShortcut = grabOrReuseKey(X11shortcut, newShortcut);
+        if (newShortcut.isEmpty())
+        {
+            result = QString();
+            return;
+        }
+
         IdsByShortcut::iterator idsByShortcut = mIdsByShortcut.find(oldShortcut);
         if (idsByShortcut != mIdsByShortcut.end())
         {
@@ -2645,9 +2577,9 @@ void Core::changeShortcut(QString &result, const qulonglong &id, const QString &
         mIdsByShortcut[newShortcut].insert(id);
         shortcutAndActionById.value().first = newShortcut;
 
-        if (!strcmp(shortcutAndActionById.value().second->type(), DBusAction::id()))
+        if (!strcmp(shortcutAndActionById.value().second->type(), ClientAction::id()))
         {
-            dynamic_cast<DBusAction *>(shortcutAndActionById.value().second)->shortcutChanged(oldShortcut, newShortcut);
+            dynamic_cast<ClientAction *>(shortcutAndActionById.value().second)->shortcutChanged(oldShortcut, newShortcut);
         }
     }
 
@@ -2692,23 +2624,21 @@ void Core::swapActions(bool &result, const qulonglong &id1, const qulonglong &id
     result = true;
 }
 
-void Core::removeDBusAction(qulonglong &result, const QDBusObjectPath &path, const QString &sender)
+void Core::removeClientAction(bool &result, const QDBusObjectPath &path, const QString &sender)
 {
-    log(LOG_INFO, "removeDBusAction path:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(sender));
-
-    DBusClient dBusClient = qMakePair(sender, path);
+    log(LOG_INFO, "removeClientAction path:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(sender));
 
     QMutexLocker lock(&mDataMutex);
 
-    IdByDBusClient::iterator idByDBusClient = mIdByDBusClient.find(dBusClient);
-    if (idByDBusClient == mIdByDBusClient.end())
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient == mIdByClientPath.end())
     {
-        log(LOG_WARNING, "No action registered for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
-        result = 0ull;
+        log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = false;
         return;
     }
 
-    qulonglong id = idByDBusClient.value();
+    qulonglong id = idByNativeClient.value();
 
     ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
     QString shortcut = shortcutAndActionById.value().first;
@@ -2717,7 +2647,7 @@ void Core::removeDBusAction(qulonglong &result, const QDBusObjectPath &path, con
 
     delete shortcutAndActionById.value().second;
     mShortcutAndActionById.erase(shortcutAndActionById);
-    mIdByDBusClient.remove(dBusClient);
+    mIdByClientPath.remove(path);
 
     IdsByShortcut::iterator idsByShortcut = mIdsByShortcut.find(shortcut);
     if (idsByShortcut != mIdsByShortcut.end())
@@ -2734,16 +2664,17 @@ void Core::removeDBusAction(qulonglong &result, const QDBusObjectPath &path, con
         }
     }
 
-    DBusPathsByDBusService::iterator dBusPathsByDBusService = mDBusPathsByDBusService.find(sender);
-    dBusPathsByDBusService.value().remove(path);
-    if (dBusPathsByDBusService.value().isEmpty())
-    {
-        mDBusPathsByDBusService.erase(dBusPathsByDBusService);
-    }
+    mSenderByClientPath.remove(path);
+
+    mClientPathsBySender[sender].remove(path);
+    if (mClientPathsBySender[sender].isEmpty())
+        mClientPathsBySender.remove(sender);
 
     saveConfig();
 
-    result = id;
+    result = true;
+
+    mDaemonAdaptor->emit_actionRemoved(id);
 }
 
 void Core::removeAction(bool &result, const qulonglong &id)
@@ -2762,7 +2693,7 @@ void Core::removeAction(bool &result, const qulonglong &id)
 
     BaseAction *action = shortcutAndActionById.value().second;
 
-    if (!strcmp(action->type(), DBusAction::id()))
+    if (!strcmp(action->type(), ClientAction::id()))
     {
         log(LOG_WARNING, "Cannot unregister DBus action by id");
         result = false;
@@ -2794,6 +2725,53 @@ void Core::removeAction(bool &result, const qulonglong &id)
     saveConfig();
 
     result = true;
+}
+
+void Core::deactivateClientAction(bool &result, const QDBusObjectPath &path, const QString &sender)
+{
+    log(LOG_INFO, "deactivateClientAction path:'%s' sender:'%s'", qPrintable(path.path()), qPrintable(sender));
+
+    QMutexLocker lock(&mDataMutex);
+
+    IdByClientPath::iterator idByNativeClient = mIdByClientPath.find(path);
+    if (idByNativeClient == mIdByClientPath.end())
+    {
+        log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
+    qulonglong id = idByNativeClient.value();
+
+    ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
+    QString shortcut = shortcutAndActionById.value().first;
+
+    dynamic_cast<ClientAction*>(shortcutAndActionById.value().second)->disappeared();
+
+    IdsByShortcut::iterator idsByShortcut = mIdsByShortcut.find(shortcut);
+    if (idsByShortcut != mIdsByShortcut.end())
+    {
+        idsByShortcut.value().remove(id);
+        if (idsByShortcut.value().isEmpty())
+        {
+            mIdsByShortcut.erase(idsByShortcut);
+
+            if (!remoteXUngrabKey(mX11ByShortcut[shortcut]))
+            {
+                log(LOG_WARNING, "Cannot ungrab shortcut '%s'", qPrintable(shortcut));
+            }
+        }
+    }
+
+    mSenderByClientPath.remove(path);
+
+    mClientPathsBySender[sender].remove(path);
+    if (mClientPathsBySender[sender].isEmpty())
+        mClientPathsBySender.remove(sender);
+
+    result = true;
+
+    mDaemonAdaptor->emit_clientActionSenderChanged(id, QString());
 }
 
 void Core::setMultipleActionsBehaviour(const MultipleActionsBehaviour &behaviour)
@@ -2839,16 +2817,10 @@ GeneralActionInfo Core::actionInfo(const ShortcutAndAction &shortcutAndAction) c
 
     result.type = action->type();
 
-    if (result.type == DBusAction::id())
+    if (result.type == ClientAction::id())
     {
-        const DBusAction *dBusAction = dynamic_cast<const DBusAction *>(action);
-        QString service = dBusAction->service();
-        PreferredServiceNameByServiceId::const_iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(service);
-        if (preferredServiceNameByServiceId != mPreferredServiceNameByServiceId.end())
-        {
-            service = preferredServiceNameByServiceId.value();
-        }
-        result.info = service + " " + dBusAction->path().path();
+        const ClientAction *clientAction = dynamic_cast<const ClientAction *>(action);
+        result.info = clientAction->path().path();
     }
     else if (result.type == MethodAction::id())
     {
@@ -2897,11 +2869,11 @@ void Core::getAllActions(QMap<qulonglong, GeneralActionInfo> &result) const
     }
 }
 
-void Core::getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulonglong &id) const
+void Core::getClientActionInfoById(QPair<bool, ClientActionInfo> &result, const qulonglong &id) const
 {
-    log(LOG_INFO, "getDBusActionInfoById id:%llu", id);
+    log(LOG_INFO, "getClientActionInfoById id:%llu", id);
 
-    DBusActionInfo info;
+    ClientActionInfo info;
 
     QMutexLocker lock(&mDataMutex);
 
@@ -2915,9 +2887,9 @@ void Core::getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulo
 
     const BaseAction *action = shortcutAndActionById.value().second;
 
-    if (strcmp(action->type(), DBusAction::id()))
+    if (strcmp(action->type(), ClientAction::id()))
     {
-        log(LOG_WARNING, "getDBusActionInfoById attempts to request action of type '%s'", action->type());
+        log(LOG_WARNING, "getClientActionInfoById attempts to request action of type '%s'", action->type());
         result = qMakePair(false, info);
         return;
     }
@@ -2926,14 +2898,8 @@ void Core::getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulo
     info.description = action->description();
     info.enabled = action->isEnabled();
 
-    const DBusAction *dBusAction = dynamic_cast<const DBusAction *>(action);
-    info.service = dBusAction->service();
-    PreferredServiceNameByServiceId::const_iterator preferredServiceNameByServiceId = mPreferredServiceNameByServiceId.find(info.service);
-    if (preferredServiceNameByServiceId != mPreferredServiceNameByServiceId.end())
-    {
-        info.service = preferredServiceNameByServiceId.value();
-    }
-    info.path = dBusAction->path();
+    const ClientAction *clientAction = dynamic_cast<const ClientAction *>(action);
+    info.path = clientAction->path();
 
     result = qMakePair(true, info);
 }

@@ -25,35 +25,32 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "dbus_action.h"
+#include "client_action.h"
 #include "client_proxy.h"
 #include "log_target.h"
 
 
-DBusAction::DBusAction(LogTarget *logTarget, const QString &service, const QDBusObjectPath &path, const QString &description)
+ClientAction::ClientAction(LogTarget *logTarget, const QDBusObjectPath &path, const QString &description)
     : BaseAction(logTarget, description)
     , mProxy(0)
-    , mService(service)
     , mPath(path)
-    , mPersistent(true)
 {
 }
 
-DBusAction::DBusAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent)
+ClientAction::ClientAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description)
     : BaseAction(logTarget, description)
-    , mProxy(new ClientProxy(service, path, connection))
-    , mService(service)
+    , mProxy(0)
     , mPath(path)
-    , mPersistent(persistent)
 {
+    appeared(connection, service);
 }
 
-DBusAction::~DBusAction()
+ClientAction::~ClientAction()
 {
     delete mProxy;
 }
 
-bool DBusAction::call()
+bool ClientAction::call()
 {
     if (!isEnabled())
     {
@@ -71,22 +68,24 @@ bool DBusAction::call()
     return true;
 }
 
-void DBusAction::appeared(const QDBusConnection &connection)
+void ClientAction::appeared(const QDBusConnection &connection, const QString &service)
 {
     if (mProxy) // should never happen
     {
         return;
     }
-    mProxy = new ClientProxy(mService, mPath, connection);
+    mService = service;
+    mProxy = new ClientProxy(mService, QDBusObjectPath("/global_key_shortcuts" + mPath.path()), connection);
 }
 
-void DBusAction::disappeared()
+void ClientAction::disappeared()
 {
+    mService.clear();
     delete mProxy;
     mProxy = 0;
 }
 
-void DBusAction::shortcutChanged(const QString &oldShortcut, const QString &newShortcut)
+void ClientAction::shortcutChanged(const QString &oldShortcut, const QString &newShortcut)
 {
     if (mProxy)
     {

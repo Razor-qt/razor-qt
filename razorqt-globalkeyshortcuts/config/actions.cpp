@@ -27,19 +27,20 @@
 
 #include "actions.h"
 
-#include "org.razorqt.global_action.daemon.h"
+#include "org.razorqt.global_key_shortcuts.daemon.h"
 
 Actions::Actions(QObject *parent)
     : QObject(parent)
-    , mServiceWatcher(new QDBusServiceWatcher("org.razorqt.global_action", QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForOwnerChange, this))
+    , mServiceWatcher(new QDBusServiceWatcher("org.razorqt.global_key_shortcuts", QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForOwnerChange, this))
     , mMultipleActionsBehaviour(MULTIPLE_ACTIONS_BEHAVIOUR_FIRST)
 {
     connect(mServiceWatcher, SIGNAL(serviceUnregistered(QString)), this, SLOT(on_daemonDisappeared(QString)));
     connect(mServiceWatcher, SIGNAL(serviceRegistered(QString)), this, SLOT(on_daemonAppeared(QString)));
-    mDaemonProxy = new org::razorqt::global_action::daemon("org.razorqt.global_action", "/daemon", QDBusConnection::sessionBus(), this);
+    mDaemonProxy = new org::razorqt::global_key_shortcuts::daemon("org.razorqt.global_key_shortcuts", "/daemon", QDBusConnection::sessionBus(), this);
 
     connect(mDaemonProxy, SIGNAL(actionAdded(qulonglong)), this, SLOT(on_actionAdded(qulonglong)));
     connect(mDaemonProxy, SIGNAL(actionEnabled(qulonglong, bool)), this, SLOT(on_actionEnabled(qulonglong, bool)));
+    connect(mDaemonProxy, SIGNAL(clientActionSenderChanged(qulonglong, QString)), this, SLOT(on_clientActionSenderChanged(qulonglong, QString)));
     connect(mDaemonProxy, SIGNAL(actionModified(qulonglong)), this, SLOT(on_actionModified(qulonglong)));
     connect(mDaemonProxy, SIGNAL(actionRemoved(qulonglong)), this, SLOT(on_actionRemoved(qulonglong)));
     connect(mDaemonProxy, SIGNAL(actionShortcutChanged(qulonglong)), this, SLOT(on_actionShortcutChanged(qulonglong)));
@@ -81,22 +82,22 @@ void Actions::init()
     GeneralActionInfos::const_iterator M = mGeneralActionInfo.constEnd();
     for (GeneralActionInfos::const_iterator I = mGeneralActionInfo.constBegin(); I != M; ++I)
     {
-        if (I.value().type == "dbus")
+        if (I.value().type == "client")
         {
             QString shortcut;
             QString description;
             bool enabled;
-            QString service;
             QDBusObjectPath path;
-            if (getDBusActionInfoById(I.key(), shortcut, description, enabled, service, path))
+            if (getClientActionInfoById(I.key(), shortcut, description, enabled, path))
             {
-                DBusActionInfo info;
+                ClientActionInfo info;
                 info.shortcut = shortcut;
                 info.description = description;
                 info.enabled = enabled;
-                info.service = service;
                 info.path = path;
-                mDBusActionInfo[I.key()] = info;
+                mClientActionInfo[I.key()] = info;
+
+                updateClientActionSender(I.key());
             }
         }
         else if (I.value().type == "method")
@@ -147,7 +148,7 @@ void Actions::init()
 void Actions::clear()
 {
     mGeneralActionInfo.clear();
-    mDBusActionInfo.clear();
+    mClientActionInfo.clear();
     mMethodActionInfo.clear();
     mCommandActionInfo.clear();
     mMultipleActionsBehaviour = MULTIPLE_ACTIONS_BEHAVIOUR_FIRST;
@@ -168,17 +169,17 @@ QPair<bool, GeneralActionInfo> Actions::actionById(qulonglong id) const
     return qMakePair(true, I.value());
 }
 
-QList<qulonglong> Actions::allDBusActionIds() const
+QList<qulonglong> Actions::allClientActionIds() const
 {
-    return mDBusActionInfo.keys();
+    return mClientActionInfo.keys();
 }
 
-QPair<bool, DBusActionInfo> Actions::dBusActionInfoById(qulonglong id) const
+QPair<bool, ClientActionInfo> Actions::clientActionInfoById(qulonglong id) const
 {
-    DBusActionInfos::const_iterator I = mDBusActionInfo.constFind(id);
-    if (I == mDBusActionInfo.constEnd())
+    ClientActionInfos::const_iterator I = mClientActionInfo.constFind(id);
+    if (I == mClientActionInfo.constEnd())
     {
-        return qMakePair(false, DBusActionInfo());
+        return qMakePair(false, ClientActionInfo());
     }
     return qMakePair(true, I.value());
 }
@@ -236,19 +237,17 @@ void Actions::do_actionAdded(qulonglong id)
         mGeneralActionInfo[id] = generalActionInfo;
     }
 
-    if (type == "dbus")
+    if (type == "client")
     {
-        QString service;
         QDBusObjectPath path;
-        if (getDBusActionInfoById(id, shortcut, description, enabled, service, path))
+        if (getClientActionInfoById(id, shortcut, description, enabled, path))
         {
-            DBusActionInfo dBusActionInfo;
-            dBusActionInfo.shortcut = shortcut;
-            dBusActionInfo.description = description;
-            dBusActionInfo.enabled = enabled;
-            dBusActionInfo.service = service;
-            dBusActionInfo.path = path;
-            mDBusActionInfo[id] = dBusActionInfo;
+            ClientActionInfo clientActionInfo;
+            clientActionInfo.shortcut = shortcut;
+            clientActionInfo.description = description;
+            clientActionInfo.enabled = enabled;
+            clientActionInfo.path = path;
+            mClientActionInfo[id] = clientActionInfo;
         }
     }
     else if (type == "method")
@@ -300,10 +299,10 @@ void Actions::on_actionEnabled(qulonglong id, bool enabled)
     {
         GI.value().enabled = enabled;
 
-        if (GI.value().type == "dbus")
+        if (GI.value().type == "client")
         {
-            DBusActionInfos::iterator DI = mDBusActionInfo.find(id);
-            if (DI != mDBusActionInfo.end())
+            ClientActionInfos::iterator DI = mClientActionInfo.find(id);
+            if (DI != mClientActionInfo.end())
             {
                 DI.value().enabled = enabled;
             }
@@ -328,6 +327,12 @@ void Actions::on_actionEnabled(qulonglong id, bool enabled)
     emit actionEnabled(id, enabled);
 }
 
+void Actions::on_clientActionSenderChanged(qulonglong id, const QString &sender)
+{
+    mClientActionSenders[id] = sender;
+    emit actionModified(id);
+}
+
 void Actions::on_actionModified(qulonglong id)
 {
     do_actionAdded(id);
@@ -350,15 +355,15 @@ void Actions::on_actionsSwapped(qulonglong id1, qulonglong id2)
 
         if (GI1.value().type == GI2.value().type)
         {
-            if (GI1.value().type == "dbus")
+            if (GI1.value().type == "client")
             {
-                DBusActionInfos::iterator DI1 = mDBusActionInfo.find(id1);
-                DBusActionInfos::iterator DI2 = mDBusActionInfo.find(id2);
-                if ((DI1 != mDBusActionInfo.end()) && (DI2 != mDBusActionInfo.end()))
+                ClientActionInfos::iterator DI1 = mClientActionInfo.find(id1);
+                ClientActionInfos::iterator DI2 = mClientActionInfo.find(id2);
+                if ((DI1 != mClientActionInfo.end()) && (DI2 != mClientActionInfo.end()))
                 {
-                    DBusActionInfo dBusActionInfo = DI1.value();
+                    ClientActionInfo clientActionInfo = DI1.value();
                     DI1.value() = DI2.value();
-                    DI2.value() = dBusActionInfo;
+                    DI2.value() = clientActionInfo;
                     swapped = true;
                 }
             }
@@ -408,7 +413,7 @@ void Actions::on_actionsSwapped(qulonglong id1, qulonglong id2)
 void Actions::do_actionRemoved(qulonglong id)
 {
     mGeneralActionInfo.remove(id);
-    mDBusActionInfo.remove(id);
+    mClientActionInfo.remove(id);
     mMethodActionInfo.remove(id);
     mCommandActionInfo.remove(id);
 }
@@ -425,9 +430,9 @@ void Actions::on_multipleActionsBehaviourChanged(uint behaviour)
     emit multipleActionsBehaviourChanged(mMultipleActionsBehaviour);
 }
 
-bool Actions::getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path)
+bool Actions::getClientActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QDBusObjectPath &path)
 {
-    return mDaemonProxy->getDBusActionInfoById(id, shortcut, description, enabled, service, path);
+    return mDaemonProxy->getClientActionInfoById(id, shortcut, description, enabled, path);
 }
 
 bool Actions::getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method)
@@ -563,6 +568,25 @@ bool Actions::isActionEnabled(qulonglong id)
     }
 
     return reply.argumentAt<0>();
+}
+
+QString Actions::getClientActionSender(qulonglong id)
+{
+    return mClientActionSenders[id];
+}
+
+QString Actions::updateClientActionSender(qulonglong id)
+{
+    QDBusPendingReply<QString> reply = mDaemonProxy->getClientActionSender(id);
+    reply.waitForFinished();
+    if (reply.isError())
+    {
+        return QString();
+    }
+
+    QString sender = reply.argumentAt<0>();
+    mClientActionSenders[id] = sender;
+    return sender;
 }
 
 QString Actions::changeShortcut(const qulonglong &id, const QString &shortcut)

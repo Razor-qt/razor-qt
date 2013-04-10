@@ -28,13 +28,13 @@
 #include "client_proxy.h"
 
 
-#include "org.razorqt.global_action.client.h"
+#include "org.razorqt.global_key_shortcuts.client.h"
 
 
 ClientProxy::ClientProxy(const QString &service, const QDBusObjectPath &path, const QDBusConnection &connection, QObject *parent)
     : QObject(parent)
 {
-    org::razorqt::global_action::client *iface = new org::razorqt::global_action::client(service, path.path(), connection, this);
+    org::razorqt::global_key_shortcuts::client *iface = new org::razorqt::global_key_shortcuts::client(service, path.path(), connection, this);
     connect(this, SIGNAL(activated()), iface, SLOT(activated()));
     connect(this, SIGNAL(shortcutChanged(QString, QString)), iface, SLOT(shortcutChanged(QString, QString)));
 }

@@ -25,10 +25,54 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_NATIVE_CLIENT__INCLUDED
-#define GLOBAL_ACTION_NATIVE_CLIENT__INCLUDED
+#ifndef GLOBAL_KEY_SHORTCUT_CLIENT__ACTION__INCLUDED
+#define GLOBAL_KEY_SHORTCUT_CLIENT__ACTION__INCLUDED
 
-#include <@PROJECT_NAME@/global_action.hpp>
-#include <@PROJECT_NAME@/native_client.hpp>
+#include <QtGlobal>
 
-#endif // GLOBAL_ACTION_NATIVE_CLIENT__INCLUDED
+#include <QObject>
+#include <QString>
+
+
+namespace GlobalKeyShortcut
+{
+
+class ActionImpl;
+class ClientImpl;
+
+#ifndef SHARED_EXPORT
+#define SHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+class SHARED_EXPORT Action : public QObject
+{
+    Q_OBJECT
+
+    friend class ActionImpl;
+    friend class ClientImpl;
+
+public:
+    ~Action();
+
+    QString changeShortcut(const QString &shortcut);
+    bool changeDescription(const QString &description);
+
+    QString path() const;
+    QString shortcut() const;
+    QString description() const;
+
+    bool isValid() const;
+
+signals:
+    void activated();
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
+
+private:
+    Action(QObject *parent = 0);
+
+    ActionImpl *impl;
+};
+
+}
+
+#endif // GLOBAL_KEY_SHORTCUT_CLIENT__ACTION__INCLUDED

@@ -12,7 +12,7 @@ set(MOCS
   showdesktop.h
 )
 
-set(LIBRARIES ${LIBRARIES} razorqxt )
+set(LIBRARIES ${LIBRARIES} razor-global-key-shortcuts-client )
 
 #*******************************************
 include ("../BuildPlugin.cmake")

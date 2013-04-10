@@ -1,7 +1,7 @@
 <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
 "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 <node>
-	<interface name="org.razorqt.global_action.daemon">
+	<interface name="org.razorqt.global_key_shortcuts.daemon">
 		<method name="addMethodAction">
 			<arg name="shortcut" type="s" direction="in"/>
 			<arg name="service" type="s" direction="in"/>
@@ -63,6 +63,15 @@
 			<arg name="enabled" type="b"/>
 		</signal>
 
+		<method name="getClientActionSender">
+			<arg name="id" type="t" direction="in"/>
+			<arg type="s" direction="out"/>
+		</method>
+		<signal name="clientActionSenderChanged">
+			<arg name="id" type="t"/>
+			<arg name="sender" type="s"/>
+		</signal>
+
 		<method name="changeShortcut">
 			<arg name="id" type="t" direction="in"/>
 			<arg name="shortcut" type="s" direction="in"/>
@@ -119,13 +128,12 @@
 			<arg name="info" type="a{t(ssbss)}" direction="out"/>
 			<!-- GeneralActionInfo = s:shortcut, s:description, b:enabled, s:type, s:info -->
 		</method>
-		<method name="getDBusActionInfoById">
+		<method name="getClientActionInfoById">
 			<arg name="id" type="t" direction="in"/>
 			<arg type="b" direction="out"/>
 			<arg name="shortcut" type="s" direction="out"/>
 			<arg name="description" type="s" direction="out"/>
 			<arg name="enabled" type="b" direction="out"/>
-			<arg name="service" type="s" direction="out"/>
 			<arg name="path" type="o" direction="out"/>
 		</method>
 		<method name="getMethodActionInfoById">

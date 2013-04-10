@@ -25,26 +25,27 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "dbus_proxy.h"
+#ifndef GLOBAL_ACTION_NATIVE_CLIENT__CLIENT_ADAPTOR__INCLUDED
+#define GLOBAL_ACTION_NATIVE_CLIENT__CLIENT_ADAPTOR__INCLUDED
 
-#include "org.freedesktop.DBus.h"
+#include <QObject>
 
-
-DBusProxy::DBusProxy(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, QObject *parent)
-    : QObject(parent)
+class ClientAdaptor : public QObject
 {
-    org::freedesktop::DBus *iface = new org::freedesktop::DBus(service, path.path(), connection, this);
-    connect(iface, SIGNAL(NameOwnerChanged(QString, QString, QString)), this, SLOT(NameOwnerChanged(QString, QString, QString)));
-}
+    Q_OBJECT
+public:
+    explicit ClientAdaptor(const QString &path, QObject *parent = 0);
 
-void DBusProxy::NameOwnerChanged(const QString &argin0, const QString &argin1, const QString &argin2)
-{
-    if (argin1.isEmpty() && !argin2.isEmpty())
-    {
-        emit onServiceAppeared(argin0, argin2);
-    }
-    if (!argin1.isEmpty() && argin2.isEmpty())
-    {
-        emit onServiceDisappeared(argin0, argin1);
-    }
-}
+signals:
+    void on_activated(const QString &path);
+    void on_shortcutChanged(const QString &path, const QString &oldShortcut, const QString &newShortcut);
+
+public slots:
+    void activated();
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
+
+private:
+    QString mPath;
+};
+
+#endif // GLOBAL_ACTION_NATIVE_CLIENT__CLIENT_ADAPTOR__INCLUDED

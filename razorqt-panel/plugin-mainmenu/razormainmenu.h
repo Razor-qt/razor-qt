@@ -39,12 +39,15 @@
 
 #include "menustyle.h"
 
+
 class QMenu;
 class RazorBar;
 class PowerManager;
 class ScreenSaver;
-class QxtGlobalShortcut;
-
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 class RazorMainMenu : public QObject, public IRazorPanelPlugin
 {
@@ -67,12 +70,15 @@ private:
     QToolButton mButton;
     QString mLogDir;
     QMenu* mMenu;
-    QxtGlobalShortcut *mShortcut;
+    GlobalKeyShortcut::Action *mShortcut;
     MenuStyle mTopMenuStyle;
     MenuStyle mMenuStyle;
     PowerManager* mPowerManager;
     ScreenSaver* mScreenSaver;
     XdgMenu mXdgMenu;
+
+    bool mLockCascadeChanges;
+
 protected slots:
 
     virtual void settingsChanged();
@@ -81,6 +87,7 @@ protected slots:
 private slots:
     void showMenu();
     void showHideMenu();
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 };
 
 class RazorMainMenuPluginLibrary: public QObject, public IRazorPanelPluginLibrary

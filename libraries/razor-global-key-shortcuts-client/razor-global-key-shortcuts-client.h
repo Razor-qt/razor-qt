@@ -25,27 +25,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
-#define GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
+#ifndef GLOBAL_KEY_SHORTCUT_CLIENT__INCLUDED
+#define GLOBAL_KEY_SHORTCUT_CLIENT__INCLUDED
 
+#include <razor-global-key-shortcuts-client/action.h>
+#include <razor-global-key-shortcuts-client/client.h>
 
-#include <QObject>
-#include <QDBusConnection>
-#include <QDBusObjectPath>
-
-
-class DBusProxy : public QObject
-{
-    Q_OBJECT
-public:
-    DBusProxy(const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, QObject *parent = 0);
-
-public slots:
-    void NameOwnerChanged(const QString &argin0, const QString &argin1, const QString &argin2);
-
-signals:
-    void onServiceAppeared(const QString &, const QString &);
-    void onServiceDisappeared(const QString &, const QString &);
-};
-
-#endif // GLOBAL_ACTION_DAEMON__DBUS_PROXY__INCLUDED
+#endif // GLOBAL_KEY_SHORTCUT_CLIENT__INCLUDED

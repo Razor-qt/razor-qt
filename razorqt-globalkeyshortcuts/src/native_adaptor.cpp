@@ -27,7 +27,7 @@
 
 #include "native_adaptor.h"
 
-#include "org.razorqt.global_action.native.h"
+#include "org.razorqt.global_key_shortcuts.native.h"
 
 
 NativeAdaptor::NativeAdaptor(QObject *parent)
@@ -37,48 +37,55 @@ NativeAdaptor::NativeAdaptor(QObject *parent)
     new OrgRazorqtGlobalActionNativeAdaptor(this);
 }
 
-QString NativeAdaptor::addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id)
+QString NativeAdaptor::addClientAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id)
 {
     QPair<QString, qulonglong> result;
-    emit onAddDBusAction(result, shortcut, path, description, calledFromDBus() ? message().service() : QString());
+    emit onAddClientAction(result, shortcut, path, description, calledFromDBus() ? message().service() : QString());
     QString usedShortcut = result.first;
     id = result.second;
     return usedShortcut;
 }
 
-bool NativeAdaptor::modifyDBusAction(const QDBusObjectPath &path, const QString &description)
+bool NativeAdaptor::modifyClientAction(const QDBusObjectPath &path, const QString &description)
 {
     qulonglong result;
-    emit onModifyDBusAction(result, path, description, calledFromDBus() ? message().service() : QString());
+    emit onModifyClientAction(result, path, description, calledFromDBus() ? message().service() : QString());
     return result;
 }
 
-QString NativeAdaptor::changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut)
+QString NativeAdaptor::changeClientActionShortcut(const QDBusObjectPath &path, const QString &shortcut)
 {
     QPair<QString, qulonglong> result;
-    emit onChangeDBusShortcut(result, path, shortcut, calledFromDBus() ? message().service() : QString());
+    emit onChangeClientActionShortcut(result, path, shortcut, calledFromDBus() ? message().service() : QString());
     QString usedShortcut = result.first;
     return usedShortcut;
 }
 
-bool NativeAdaptor::removeDBusAction(const QDBusObjectPath &path)
-{
-    qulonglong result;
-    emit onRemoveDBusAction(result, path, calledFromDBus() ? message().service() : QString());
-    return result;
-}
-
-bool NativeAdaptor::enableDBusAction(const QDBusObjectPath &path, bool enabled)
+bool NativeAdaptor::removeClientAction(const QDBusObjectPath &path)
 {
     bool result;
-    emit onEnableDBusAction(result, path, enabled, calledFromDBus() ? message().service() : QString());
+    emit onRemoveClientAction(result, path, calledFromDBus() ? message().service() : QString());
     return result;
 }
 
-bool NativeAdaptor::isDBusActionEnabled(const QDBusObjectPath &path)
+bool NativeAdaptor::deactivateClientAction(const QDBusObjectPath &path)
+{
+    bool result;
+    emit onDeactivateClientAction(result, path, calledFromDBus() ? message().service() : QString());
+    return result;
+}
+
+bool NativeAdaptor::enableClientAction(const QDBusObjectPath &path, bool enabled)
+{
+    bool result;
+    emit onEnableClientAction(result, path, enabled, calledFromDBus() ? message().service() : QString());
+    return result;
+}
+
+bool NativeAdaptor::isClientActionEnabled(const QDBusObjectPath &path)
 {
     bool enabled;
-    emit onIsDBusActionEnabled(enabled, path, calledFromDBus() ? message().service() : QString());
+    emit onIsClientActionEnabled(enabled, path, calledFromDBus() ? message().service() : QString());
     return enabled;
 }
 

@@ -46,11 +46,9 @@ public:
     DaemonAdaptor(QObject *parent = 0);
 
 public slots:
-    QString addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id);
     QString addMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description, qulonglong &id);
     QString addCommandAction(const QString &shortcut, const QString &command, const QStringList &arguments, const QString &description, qulonglong &id);
 
-    bool modifyDBusAction(const QDBusObjectPath &path, const QString &description);
     bool modifyActionDescription(qulonglong id, const QString &description);
     bool modifyMethodAction(qulonglong id, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     bool modifyCommandAction(qulonglong id, const QString &command, const QStringList &arguments, const QString &description);
@@ -58,12 +56,12 @@ public slots:
     bool enableAction(qulonglong id, bool enabled);
     bool isActionEnabled(qulonglong id);
 
-    QString changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut);
+    QString getClientActionSender(qulonglong id);
+
     QString changeShortcut(qulonglong id, const QString &shortcut);
 
     bool swapActions(qulonglong id1, qulonglong id2);
 
-    bool removeDBusAction(const QDBusObjectPath &path);
     bool removeAction(qulonglong id);
 
     bool setMultipleActionsBehaviour(uint behaviour);
@@ -72,7 +70,7 @@ public slots:
     QList<qulonglong> getAllActionIds();
     QMap<qulonglong, GeneralActionInfo> getAllActions();
     bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
-    bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
+    bool getClientActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
     bool getCommandActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &command, QStringList &arguments);
 
@@ -81,21 +79,27 @@ public slots:
 
     void quit();
 
+    void emit_actionAdded(qulonglong id);
+    void emit_actionModified(qulonglong id);
+    void emit_actionRemoved(qulonglong id);
+    void emit_actionShortcutChanged(qulonglong id);
+    void emit_actionEnabled(qulonglong id, bool enabled);
+    void emit_clientActionSenderChanged(qulonglong id, const QString &sender);
+
 signals:
     void actionAdded(qulonglong id);
     void actionModified(qulonglong id);
     void actionRemoved(qulonglong id);
     void actionShortcutChanged(qulonglong id);
     void actionEnabled(qulonglong id, bool enabled);
+    void clientActionSenderChanged(qulonglong id, const QString &sender);
     void actionsSwapped(qulonglong id1, qulonglong id2);
     void multipleActionsBehaviourChanged(uint behaviour);
 
 signals:
-    void onAddDBusAction(QPair<QString, qulonglong> &, const QString &, const QDBusObjectPath &, const QString &, const QString &);
     void onAddMethodAction(QPair<QString, qulonglong> &, const QString &, const QString &, const QDBusObjectPath &, const QString &, const QString &, const QString &);
     void onAddCommandAction(QPair<QString, qulonglong> &, const QString &, const QString &, const QStringList &, const QString &);
 
-    void onModifyDBusAction(qulonglong &, const QDBusObjectPath &, const QString &, const QString &);
     void onModifyActionDescription(bool &, qulonglong, const QString &);
     void onModifyMethodAction(bool &, qulonglong, const QString &, const QDBusObjectPath &, const QString &, const QString &, const QString &);
     void onModifyCommandAction(bool &, qulonglong, const QString &, const QStringList &, const QString &);
@@ -103,12 +107,12 @@ signals:
     void onEnableAction(bool &, qulonglong, bool);
     void onIsActionEnabled(bool &, qulonglong);
 
-    void onChangeDBusShortcut(QPair<QString, qulonglong> &, const QDBusObjectPath &, const QString &, const QString &);
+    void onGetClientActionSender(QString &, qulonglong);
+
     void onChangeShortcut(QString &, qulonglong, const QString &);
 
     void onSwapActions(bool &, qulonglong, qulonglong);
 
-    void onRemoveDBusAction(qulonglong &, const QDBusObjectPath &, const QString &);
     void onRemoveAction(bool &, qulonglong);
 
     void onSetMultipleActionsBehaviour(const MultipleActionsBehaviour &);
@@ -118,7 +122,7 @@ signals:
     void onGetActionById(QPair<bool, GeneralActionInfo> &, qulonglong);
     void onGetAllActions(QMap<qulonglong, GeneralActionInfo> &);
 
-    void onGetDBusActionInfoById(QPair<bool, DBusActionInfo> &, qulonglong);
+    void onGetClientActionInfoById(QPair<bool, ClientActionInfo> &, qulonglong);
     void onGetMethodActionInfoById(QPair<bool, MethodActionInfo> &, qulonglong);
     void onGetCommandActionInfoById(QPair<bool, CommandActionInfo> &, qulonglong);
 

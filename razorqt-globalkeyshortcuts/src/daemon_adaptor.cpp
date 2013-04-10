@@ -27,7 +27,7 @@
 
 #include "daemon_adaptor.h"
 
-#include "org.razorqt.global_action.daemon.h"
+#include "org.razorqt.global_key_shortcuts.daemon.h"
 
 
 DaemonAdaptor::DaemonAdaptor(QObject *parent)
@@ -35,19 +35,6 @@ DaemonAdaptor::DaemonAdaptor(QObject *parent)
     , QDBusContext()
 {
     new OrgRazorqtGlobalActionDaemonAdaptor(this);
-}
-
-QString DaemonAdaptor::addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id)
-{
-    QPair<QString, qulonglong> result;
-    emit onAddDBusAction(result, shortcut, path, description, calledFromDBus() ? message().service() : QString());
-    QString usedShortcut = result.first;
-    id = result.second;
-    if (id)
-    {
-        emit actionAdded(id);
-    }
-    return usedShortcut;
 }
 
 QString DaemonAdaptor::addMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description, qulonglong &id)
@@ -74,17 +61,6 @@ QString DaemonAdaptor::addCommandAction(const QString &shortcut, const QString &
         emit actionAdded(id);
     }
     return usedShortcut;
-}
-
-bool DaemonAdaptor::modifyDBusAction(const QDBusObjectPath &path, const QString &description)
-{
-    qulonglong id;
-    emit onModifyDBusAction(id, path, description, calledFromDBus() ? message().service() : QString());
-    if (id)
-    {
-        emit actionModified(id);
-    }
-    return id;
 }
 
 bool DaemonAdaptor::modifyActionDescription(qulonglong id, const QString &description)
@@ -138,15 +114,11 @@ bool DaemonAdaptor::isActionEnabled(qulonglong id)
     return enabled;
 }
 
-QString DaemonAdaptor::changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut)
+QString DaemonAdaptor::getClientActionSender(qulonglong id)
 {
-    QPair<QString, qulonglong> result;
-    emit onChangeDBusShortcut(result, path, shortcut, calledFromDBus() ? message().service() : QString());
-    if (!result.first.isEmpty())
-    {
-        emit actionShortcutChanged(result.second);
-    }
-    return result.first;
+    QString sender;
+    emit onGetClientActionSender(sender, id);
+    return sender;
 }
 
 QString DaemonAdaptor::changeShortcut(qulonglong id, const QString &shortcut)
@@ -169,17 +141,6 @@ bool DaemonAdaptor::swapActions(qulonglong id1, qulonglong id2)
         emit actionsSwapped(id1, id2);
     }
     return result;
-}
-
-bool DaemonAdaptor::removeDBusAction(const QDBusObjectPath &path)
-{
-    qulonglong id;
-    emit onRemoveDBusAction(id, path, calledFromDBus() ? message().service() : QString());
-    if (id)
-    {
-        emit actionRemoved(id);
-    }
-    return id;
 }
 
 bool DaemonAdaptor::removeAction(qulonglong id)
@@ -241,17 +202,16 @@ QMap<qulonglong, GeneralActionInfo> DaemonAdaptor::getAllActions()
     return result;
 }
 
-bool DaemonAdaptor::getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path)
+bool DaemonAdaptor::getClientActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QDBusObjectPath &path)
 {
-    QPair<bool, DBusActionInfo> result;
-    emit onGetDBusActionInfoById(result, id);
+    QPair<bool, ClientActionInfo> result;
+    emit onGetClientActionInfoById(result, id);
     bool success = result.first;
     if (success)
     {
         shortcut = result.second.shortcut;
         description = result.second.description;
         enabled = result.second.enabled;
-        service = result.second.service;
         path = result.second.path;
     }
     return success;
@@ -306,4 +266,34 @@ void DaemonAdaptor::cancelShortcutGrab()
 void DaemonAdaptor::quit()
 {
     emit onQuit();
+}
+
+void DaemonAdaptor::emit_actionAdded(qulonglong id)
+{
+    emit actionAdded(id);
+}
+
+void DaemonAdaptor::emit_actionModified(qulonglong id)
+{
+    emit actionModified(id);
+}
+
+void DaemonAdaptor::emit_actionRemoved(qulonglong id)
+{
+    emit actionRemoved(id);
+}
+
+void DaemonAdaptor::emit_actionShortcutChanged(qulonglong id)
+{
+    emit actionShortcutChanged(id);
+}
+
+void DaemonAdaptor::emit_actionEnabled(qulonglong id, bool enabled)
+{
+    emit actionEnabled(id, enabled);
+}
+
+void DaemonAdaptor::emit_clientActionSenderChanged(qulonglong id, const QString &sender)
+{
+    emit clientActionSenderChanged(id, sender);
 }

@@ -54,7 +54,7 @@ class DefaultModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, QObject *parent = 0);
+    explicit DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, const QFont &italicFont, const QFont &highlightedItalicFont, QObject *parent = 0);
     ~DefaultModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -82,6 +82,10 @@ private:
 
     QColor mGrayedOutColour;
     QFont mHighlightedFont;
+    QFont mItalicFont;
+    QFont mHighlightedItalicFont;
+
+    QMap<QString, QString> mVerboseType;
 };
 
 #endif // GLOBAL_ACTION_CONFIG__DEFAULT_MODEL__INCLUDED

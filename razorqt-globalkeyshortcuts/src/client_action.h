@@ -38,14 +38,14 @@
 
 class ClientProxy;
 
-class DBusAction : public BaseAction
+class ClientAction : public BaseAction
 {
 public:
-    DBusAction(LogTarget *logTarget, const QString &service, const QDBusObjectPath &path, const QString &description);
-    DBusAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description, bool persistent = false);
-    ~DBusAction();
+    ClientAction(LogTarget *logTarget, const QDBusObjectPath &path, const QString &description);
+    ClientAction(LogTarget *logTarget, const QDBusConnection &connection, const QString &service, const QDBusObjectPath &path, const QString &description);
+    ~ClientAction();
 
-    static const char *id() { return "dbus"; }
+    static const char *id() { return "client"; }
 
     virtual const char *type() const { return id(); }
 
@@ -56,22 +56,16 @@ public:
     const QString &service() const { return mService; }
     const QDBusObjectPath &path() const { return mPath; }
 
-    void appeared(const QDBusConnection &connection);
+    void appeared(const QDBusConnection &connection, const QString &service);
     void disappeared();
 
     bool isPresent() const { return mProxy; }
-
-//    void makePersistent() { mPersistent = true; }
-//    void makeTemporary() { mPersistent = false; }
-    bool isPersistent() const { return mPersistent; }
 
 private:
     ClientProxy *mProxy;
 
     QString mService;
     QDBusObjectPath mPath;
-
-    bool mPersistent;
 };
 
 #endif // GLOBAL_ACTION_DAEMON__DBUS_ACTION__INCLUDED

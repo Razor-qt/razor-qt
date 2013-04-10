@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED
-#define GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED
+#ifndef GLOBAL_KEY_SHORTCUT_CLIENT__ACTION__IMPL__INCLUDED
+#define GLOBAL_KEY_SHORTCUT_CLIENT__ACTION__IMPL__INCLUDED
 
 #include <QObject>
 #include <QString>
@@ -34,16 +34,19 @@
 #include <QSharedPointer>
 
 
-class GlobalAction;
-class GlobalActionNativeClientImpl;
-
-class GlobalActionImpl : public QObject
+namespace GlobalKeyShortcut
 {
-Q_OBJECT
+
+class Action;
+class ClientImpl;
+
+class ActionImpl : public QObject
+{
+    Q_OBJECT
 
 public:
-    GlobalActionImpl(GlobalActionNativeClientImpl *client, GlobalAction *interface, const QString &path, const QString &description, QObject *parent = 0);
-    ~GlobalActionImpl();
+    ActionImpl(ClientImpl *client, Action *interface, const QString &path, const QString &description, QObject *parent = 0);
+    ~ActionImpl();
 
     QString changeShortcut(const QString &shortcut);
     bool changeDescription(const QString &description);
@@ -66,12 +69,15 @@ signals:
     void emitShortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 
 private:
-    GlobalActionNativeClientImpl *mClient;
-    GlobalAction *mInterface;
+    ClientImpl *mClient;
+    Action *mInterface;
+    QString mAlias;
     QString mPath;
     QString mShortcut;
     QString mDescription;
     bool mValid;
 };
 
-#endif // GLOBAL_ACTION_NATIVE_CLIENT__GLOBAL_ACTION__IMPL__INCLUDED
+}
+
+#endif // GLOBAL_KEY_SHORTCUT_CLIENT__ACTION__IMPL__INCLUDED

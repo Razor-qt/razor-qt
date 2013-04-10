@@ -35,11 +35,14 @@ namespace Ui {
 }
 
 class RazorSettings;
-class QxtGlobalShortcut;
 class CommandListView;
 class CommandItemModel;
 class PowerManager;
 class ScreenSaver;
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 
 class Dialog : public QDialog
@@ -62,12 +65,14 @@ protected:
 private:
     Ui::Dialog *ui;
     RazorSettings *mSettings;
-    QxtGlobalShortcut *mGlobalShortcut;
+    GlobalKeyShortcut::Action *mGlobalShortcut;
     CommandItemModel *mCommandItemModel;
     bool mShowOnTop;
     int mMonitor;
     PowerManager *mPowerManager;
     ScreenSaver *mScreenSaver;
+
+    bool mLockCascadeChanges;
 
     void realign();
     //! \brief handle various additional behaviours (math only for now)
@@ -79,6 +84,7 @@ private slots:
     void setFilter(const QString &text, bool onlyHistory=false);
     void runCommand();
     void showConfigDialog();
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 };
 
 #endif // DIALOG_H

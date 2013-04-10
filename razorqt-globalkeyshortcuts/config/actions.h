@@ -40,14 +40,14 @@
 #include "../src/meta_types.h"
 
 
-class OrgRazorqtGlobal_actionDaemonInterface;
+class OrgRazorqtGlobal_key_shortcutsDaemonInterface;
 namespace org
 {
 namespace razorqt
 {
-namespace global_action
+namespace global_key_shortcuts
 {
-typedef ::OrgRazorqtGlobal_actionDaemonInterface daemon;
+typedef ::OrgRazorqtGlobal_key_shortcutsDaemonInterface daemon;
 }
 }
 }
@@ -66,8 +66,8 @@ public:
     QList<qulonglong> allActionIds() const;
     QPair<bool, GeneralActionInfo> actionById(qulonglong id) const;
 
-    QList<qulonglong> allDBusActionIds() const;
-    QPair<bool, DBusActionInfo> dBusActionInfoById(qulonglong id) const;
+    QList<qulonglong> allClientActionIds() const;
+    QPair<bool, ClientActionInfo> clientActionInfoById(qulonglong id) const;
 
     QList<qulonglong> allMethodActionIds() const;
     QPair<bool, MethodActionInfo> methodActionInfoById(qulonglong id) const;
@@ -85,6 +85,9 @@ public:
 
     bool enableAction(qulonglong id, bool enabled);
     bool isActionEnabled(qulonglong id);
+
+    QString getClientActionSender(qulonglong id);
+    QString updateClientActionSender(qulonglong id);
 
     QString changeShortcut(const qulonglong &id, const QString &shortcut);
 
@@ -127,7 +130,7 @@ private:
     bool getActionById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &type, QString &info);
     QMap<qulonglong, GeneralActionInfo> getAllActions();
 
-    bool getDBusActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path);
+    bool getClientActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QDBusObjectPath &path);
     bool getMethodActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &service, QDBusObjectPath &path, QString &interface, QString &method);
     bool getCommandActionInfoById(qulonglong id, QString &shortcut, QString &description, bool &enabled, QString &command, QStringList &arguments);
 
@@ -139,27 +142,33 @@ private slots:
     void on_daemonDisappeared(const QString &);
     void on_daemonAppeared(const QString &);
 
-    void do_actionAdded(qulonglong id);
     void on_actionAdded(qulonglong id);
     void on_actionEnabled(qulonglong id, bool enabled);
+    void on_clientActionSenderChanged(qulonglong id, const QString &sender);
     void on_actionModified(qulonglong id);
     void on_actionShortcutChanged(qulonglong id);
     void on_actionsSwapped(qulonglong id1, qulonglong id2);
-    void do_actionRemoved(qulonglong id);
     void on_actionRemoved(qulonglong id);
     void on_multipleActionsBehaviourChanged(uint behaviour);
 
     void grabShortcutFinished(QDBusPendingCallWatcher *call);
 
 private:
-    org::razorqt::global_action::daemon *mDaemonProxy;
+    void do_actionAdded(qulonglong id);
+    void do_actionRemoved(qulonglong id);
+
+private:
+    org::razorqt::global_key_shortcuts::daemon *mDaemonProxy;
     QDBusServiceWatcher *mServiceWatcher;
 
     typedef QMap<qulonglong, GeneralActionInfo> GeneralActionInfos;
     GeneralActionInfos mGeneralActionInfo;
 
-    typedef QMap<qulonglong, DBusActionInfo> DBusActionInfos;
-    DBusActionInfos mDBusActionInfo;
+    typedef QMap<qulonglong, ClientActionInfo> ClientActionInfos;
+    ClientActionInfos mClientActionInfo;
+
+    typedef QMap<qulonglong, QString> ClientActionSenders;
+    ClientActionSenders mClientActionSenders;
 
     typedef QMap<qulonglong, MethodActionInfo> MethodActionInfos;
     MethodActionInfos mMethodActionInfo;

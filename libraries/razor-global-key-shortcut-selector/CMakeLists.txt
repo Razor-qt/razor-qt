@@ -1,4 +1,4 @@
-set(PROJECT_NAME razor-globalkeyshortcuts)
+set(PROJECT_NAME razor-global-key-shortcut-selector)
 project(${PROJECT_NAME})
 
 cmake_minimum_required(VERSION 2.6)
@@ -12,42 +12,32 @@ endif()
 include_directories(
 	"${PROJECT_SOURCE_DIR}"
 	"${CMAKE_CURRENT_BINARY_DIR}"
+	"${CMAKE_SOURCE_DIR}/libraries"
 )
 
+
+
+add_definitions(-DSHARED_EXPORT=Q_DECL_EXPORT)
 
 
 set(${PROJECT_NAME}_SOURCES
-	main.cpp
-	core.cpp
-	daemon_adaptor.cpp
-	native_adaptor.cpp
-	client_proxy.cpp
-	log_target.cpp
-	pipe_utils.cpp
-	string_utils.cpp
-	base_action.cpp
-	method_action.cpp
-	client_action.cpp
-	command_action.cpp
-	meta_types.cpp
+	shortcut_selector.cpp
 )
 
-set(${PROJECT_NAME}_CPP_HEADERS
-	log_target.h
-	pipe_utils.h
-	string_utils.h
-	base_action.h
-	method_action.h
-	client_action.h
-	command_action.h
-	meta_types.h
+set(${PROJECT_NAME}_MAIN_HEADER
 )
 
-set(${PROJECT_NAME}_QT_HEADERS
-	core.h
-	client_proxy.h
-	daemon_adaptor.h
-	native_adaptor.h
+set(${PROJECT_NAME}_PUBLIC_CPP_HEADERS
+)
+
+set(${PROJECT_NAME}_PRIVATE_CPP_HEADERS
+)
+
+set(${PROJECT_NAME}_PUBLIC_QT_HEADERS
+	shortcut_selector.h
+)
+
+set(${PROJECT_NAME}_PRIVATE_QT_HEADERS
 )
 
 set(${PROJECT_NAME}_FORMS
@@ -60,31 +50,36 @@ set(${PROJECT_NAME}_TRANSLATIONS
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS
-	org.razorqt.global_key_shortcuts.daemon.xml
-	org.razorqt.global_key_shortcuts.native.xml
 )
-
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES PARENT daemon_adaptor.h)
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES PARENT_CLASSNAME DaemonAdaptor)
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.daemon)
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionDaemonAdaptor)
-
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES PARENT native_adaptor.h)
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES PARENT_CLASSNAME NativeAdaptor)
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.native)
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionNativeAdaptor)
 
 set(${PROJECT_NAME}_DBUS_PROXYS
-	org.razorqt.global_key_shortcuts.client.xml
 )
 
-set_source_files_properties(org.razorqt.global_key_shortcuts.client.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.client)
 
 
+set(${PROJECT_NAME}_PUBLIC_HEADERS
+	${${PROJECT_NAME}_PUBLIC_CPP_HEADERS}
+	${${PROJECT_NAME}_PUBLIC_QT_HEADERS}
+)
+
+set(${PROJECT_NAME}_PRIVATE_HEADERS
+	${${PROJECT_NAME}_PRIVATE_CPP_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_QT_HEADERS}
+)
+
+set(${PROJECT_NAME}_CPP_HEADERS
+	${${PROJECT_NAME}_PUBLIC_CPP_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_CPP_HEADERS}
+)
+
+set(${PROJECT_NAME}_QT_HEADERS
+	${${PROJECT_NAME}_PUBLIC_QT_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_QT_HEADERS}
+)
 
 set(${PROJECT_NAME}_HEADERS
-	${${PROJECT_NAME}_CPP_HEADERS}
-	${${PROJECT_NAME}_QT_HEADERS}
+	${${PROJECT_NAME}_PUBLIC_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_HEADERS}
 )
 
 set(${PROJECT_NAME}_TRANSLATABLE
@@ -95,11 +90,7 @@ set(${PROJECT_NAME}_TRANSLATABLE
 
 
 
-find_package(X11)
-include_directories(${X11_INCLUDE_DIR})
-
-
-find_package(Qt4 COMPONENTS QtCore QtDBus)
+find_package(Qt4 COMPONENTS QtCore QtGui QtDBus)
 
 include(${QT_USE_FILE})
 
@@ -152,7 +143,16 @@ set(${PROJECT_NAME}_ALL_FILES
 
 
 
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_ALL_FILES})
-target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES} ${QT_LIBRARIES})
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_ALL_FILES})
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} razor-global-key-shortcuts-client)
+set_target_properties(${PROJECT_NAME}
+	PROPERTIES
+	VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
+	SOVERSION ${MAJOR_VERSION}
+)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib COMPONENT runtime)
+install(FILES ${${PROJECT_NAME}_PUBLIC_HEADERS} DESTINATION include/${PROJECT_NAME} COMPONENT development)
+
+include(create_pkgconfig_file)
+create_pkgconfig_file(${PROJECT_NAME} "Razor-qt global key shortcuts GUI support library")

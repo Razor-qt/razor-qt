@@ -48,10 +48,15 @@ MainWindow::MainWindow(QWidget *parent)
     grayedOutColour.toRgb();
 
     QFont highlightedFont(actions_TV->font());
+    QFont italicFont(actions_TV->font());
+    QFont highlightedItalicFont(actions_TV->font());
     highlightedFont.setBold(!highlightedFont.bold());
+    italicFont.setItalic(!italicFont.italic());
+    highlightedItalicFont.setItalic(!highlightedItalicFont.italic());
+    highlightedItalicFont.setBold(!highlightedItalicFont.bold());
 
     mActions = new Actions(this);
-    mDefaultModel = new DefaultModel(mActions, grayedOutColour, highlightedFont, this);
+    mDefaultModel = new DefaultModel(mActions, grayedOutColour, highlightedFont, italicFont, highlightedItalicFont, this);
     mSortFilterProxyModel = new QSortFilterProxyModel(this);
 
     mSortFilterProxyModel->setSourceModel(mDefaultModel);

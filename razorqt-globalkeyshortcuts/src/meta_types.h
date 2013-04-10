@@ -55,11 +55,10 @@ typedef struct GeneralActionInfo : CommonActionInfo
     QString info;
 } GeneralActionInfo;
 
-typedef struct DBusActionInfo : CommonActionInfo
+typedef struct ClientActionInfo : CommonActionInfo
 {
-    QString service;
     QDBusObjectPath path;
-} DBusActionInfo;
+} ClientActionInfo;
 
 typedef struct MethodActionInfo : CommonActionInfo
 {

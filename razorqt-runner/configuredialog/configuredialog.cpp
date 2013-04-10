@@ -86,7 +86,7 @@ ConfigureDialog::ConfigureDialog(QSettings *settings, QWidget *parent) :
 
 
     // Shortcut .................................
-    connect(ui->shortcutEd, SIGNAL(keySequenceChanged(QString)), this, SLOT(shortcutChanged(QString)));
+    connect(ui->shortcutEd, SIGNAL(shortcutGrabbed(QString)), this, SLOT(shortcutChanged(QString)));
     settingsChanged();
 }
 
@@ -102,7 +102,7 @@ void ConfigureDialog::settingsChanged()
         ui->positionCbx->setCurrentIndex(1);
 
     ui->monitorCbx->setCurrentIndex(mSettings->value("dialog/monitor", 0).toInt());
-    ui->shortcutEd->setKeySequence(mSettings->value("dialog/shortcut", "Alt+F2").toString());
+    ui->shortcutEd->setText(mSettings->value("dialog/shortcut", "Alt+F2").toString());
 }
 
 
@@ -120,6 +120,7 @@ ConfigureDialog::~ConfigureDialog()
  ************************************************/
 void ConfigureDialog::shortcutChanged(const QString &text)
 {
+    ui->shortcutEd->setText(text);
     mSettings->setValue("dialog/shortcut", text);
 }
 
@@ -148,6 +149,6 @@ void ConfigureDialog::monitorCbxChanged(int index)
 void ConfigureDialog::resetSettings()
 {
     mOldSettings->loadToSettings();
-    ui->shortcutEd->setChecked(false);
+    ui->shortcutEd->clear();
     settingsChanged();
 }

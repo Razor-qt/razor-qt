@@ -25,43 +25,52 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED
-#define GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED
+#ifndef GLOBAL_KEY_SHORTCUT_CLIENT__CLIENT__IMPL__INCLUDED
+#define GLOBAL_KEY_SHORTCUT_CLIENT__CLIENT__IMPL__INCLUDED
 
 #include <QObject>
 #include <QString>
 #include <QMap>
-#include <QSharedPointer>
 #include <QDBusPendingCallWatcher>
 
-#include "global_action_export.hpp"
+#include "action.h"
 
-class OrgRazorqtGlobal_actionNativeInterface;
-namespace org {
-  namespace razorqt {
-    namespace global_action {
-      typedef ::OrgRazorqtGlobal_actionNativeInterface native;
-    }
-  }
+
+class OrgRazorqtGlobal_key_shortcutsNativeInterface;
+namespace org
+{
+namespace razorqt
+{
+namespace global_key_shortcuts
+{
+typedef ::OrgRazorqtGlobal_key_shortcutsNativeInterface native;
+}
+}
 }
 
-class GlobalActionNativeClient;
-class ClientAdaptor;
 class QDBusServiceWatcher;
 
-class GlobalActionNativeClientImpl : public QObject
+namespace GlobalKeyShortcut
 {
-Q_OBJECT
+class Client;
+
+class ClientAdaptor;
+
+class ClientImpl : public QObject
+{
+    Q_OBJECT
 
 public:
-    GlobalActionNativeClientImpl(GlobalActionNativeClient *interface, QObject *parent = 0);
-    ~GlobalActionNativeClientImpl();
+    ClientImpl(Client *interface, QObject *parent = 0);
+    ~ClientImpl();
 
-    GlobalAction* addDBusAction(const QString &shortcut, const QString &path, const QString &description);
+    Action *addClientAction(const QString &shortcut, const QString &path, const QString &description, QObject *parent);
 
-    QString changeDBusShortcut(const QString &path, const QString &shortcut);
-    bool modifyDBusAction(const QString &path, const QString &description);
-    bool removeDBusAction(const QString &path);
+    QString changeClientActionShortcut(const QString &path, const QString &shortcut);
+    bool modifyClientAction(const QString &path, const QString &description);
+    bool removeClientAction(const QString &path);
+
+    void removeAction(ActionImpl *action);
 
     void grabShortcut(uint timeout);
     void cancelShortutGrab();
@@ -84,12 +93,13 @@ signals:
     void emitDaemonPresenceChanged(bool);
 
 private:
-    GlobalActionNativeClient *mInterface;
-    org::razorqt::global_action::native *mProxy;
-    QMap<QString, QSharedPointer<GlobalAction> > mActions;
-    bool mDestructing;
+    Client *mInterface;
+    org::razorqt::global_key_shortcuts::native *mProxy;
+    QMap<QString, Action*> mActions;
     QDBusServiceWatcher *mServiceWatcher;
     bool mDaemonPresent;
 };
 
-#endif // GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__IMPL__INCLUDED
+}
+
+#endif // GLOBAL_KEY_SHORTCUT_CLIENT__CLIENT__IMPL__INCLUDED

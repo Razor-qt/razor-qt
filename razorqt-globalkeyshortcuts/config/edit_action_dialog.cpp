@@ -199,9 +199,7 @@ bool EditActionDialog::load(qulonglong id)
             command_PTE->clear();
         }
 
-        shortcut_SS->setEnabled(canEdit);
         description_LE->setEnabled(canEdit);
-        enabled_CB->setEnabled(canEdit);
         command_RB->setEnabled(false);
         dbus_method_RB->setEnabled(false);
         action_SW->setEnabled(canEdit);
@@ -220,9 +218,7 @@ bool EditActionDialog::load(qulonglong id)
         interface_LE->clear();
         method_LE->clear();
 
-        shortcut_SS->setEnabled(true);
         description_LE->setEnabled(true);
-        enabled_CB->setEnabled(true);
         command_RB->setEnabled(true);
         dbus_method_RB->setEnabled(true);
         action_SW->setEnabled(false);

@@ -93,42 +93,44 @@ private:
     typedef QMap<QString, X11Shortcut> X11ByShortcut;
     typedef QOrderedSet<qulonglong> Ids;
     typedef QMap<QString, Ids> IdsByShortcut;
-    typedef QPair<QString, QDBusObjectPath> DBusClient;
-    typedef QMap<DBusClient, qulonglong> IdByDBusClient;
-    typedef QOrderedSet<QDBusObjectPath> DBusPaths;
-    typedef QMap<QString, DBusPaths> DBusPathsByDBusService;
+    typedef QDBusObjectPath ClientPath;
+    typedef QMap<ClientPath, qulonglong> IdByClientPath;
     typedef QPair<QString, BaseAction *> ShortcutAndAction;
     typedef QMap<qulonglong, ShortcutAndAction> ShortcutAndActionById;
-    typedef QOrderedSet<QString> ServiceNames;
-    typedef QMap<QString, ServiceNames> ServiceNamesByServiceId;
-    typedef QMap<QString, QString> PreferredServiceNameByServiceId;
-    typedef QMap<QString, QString> ServiceIdByServiceName;
+    typedef QMap<ClientPath, QString> SenderByClientPath;
+    typedef QSet<ClientPath> ClientPaths;
+    typedef QMap<QString, ClientPaths> ClientPathsBySender;
 
 private slots:
-    void serviceAppeared(const QString &service, const QString &id);
-    void serviceDisappeared(const QString &service, const QString &id);
+    void serviceOwnerChanged(const QString &name, const QString &oldOwner, const QString &newOwner);
+    void serviceDisappeared(const QString &sender);
 
-    void addDBusAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QDBusObjectPath &path, const QString &description, const QString &sender);
+    void addClientAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QDBusObjectPath &path, const QString &description, const QString &sender);
     void addMethodAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     void addCommandAction(QPair<QString, qulonglong> &result, const QString &shortcut, const QString &command, const QStringList &arguments, const QString &description);
 
-    void modifyDBusAction(qulonglong &result, const QDBusObjectPath &path, const QString &description, const QString &sender);
+    void modifyClientAction(qulonglong &result, const QDBusObjectPath &path, const QString &description, const QString &sender);
     void modifyActionDescription(bool &result, const qulonglong &id, const QString &description);
     void modifyMethodAction(bool &result, const qulonglong &id, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     void modifyCommandAction(bool &result, const qulonglong &id, const QString &command, const QStringList &arguments, const QString &description);
 
-    void enableDBusAction(bool &result, const QDBusObjectPath &path, bool enabled, const QString &sender);
-    void isDBusActionEnabled(bool &enabled, const QDBusObjectPath &path, const QString &sender);
+    void enableClientAction(bool &result, const QDBusObjectPath &path, bool enabled, const QString &sender);
+    void isClientActionEnabled(bool &enabled, const QDBusObjectPath &path, const QString &sender);
     void enableAction(bool &result, qulonglong id, bool enabled);
     void isActionEnabled(bool &enabled, qulonglong id);
 
-    void changeDBusShortcut(QPair<QString, qulonglong> &result, const QDBusObjectPath &path, const QString &shortcut, const QString &sender);
+    void getClientActionSender(QString &sender, qulonglong id);
+
+
+    void changeClientActionShortcut(QPair<QString, qulonglong> &result, const QDBusObjectPath &path, const QString &shortcut, const QString &sender);
     void changeShortcut(QString &result, const qulonglong &id, const QString &shortcut);
 
     void swapActions(bool &result, const qulonglong &id1, const qulonglong &id2);
 
-    void removeDBusAction(qulonglong &result, const QDBusObjectPath &path, const QString &sender);
+    void removeClientAction(bool &result, const QDBusObjectPath &path, const QString &sender);
     void removeAction(bool &result, const qulonglong &id);
+
+    void deactivateClientAction(bool &result, const QDBusObjectPath &path, const QString &sender);
 
     void setMultipleActionsBehaviour(const MultipleActionsBehaviour &behaviour);
     void getMultipleActionsBehaviour(MultipleActionsBehaviour &result) const;
@@ -137,7 +139,7 @@ private slots:
     void getActionById(QPair<bool, GeneralActionInfo> &result, const qulonglong &id) const;
     void getAllActions(QMap<qulonglong, GeneralActionInfo> &result) const;
 
-    void getDBusActionInfoById(QPair<bool, DBusActionInfo> &result, const qulonglong &id) const;
+    void getClientActionInfoById(QPair<bool, ClientActionInfo> &result, const qulonglong &id) const;
     void getMethodActionInfoById(QPair<bool, MethodActionInfo> &result, const qulonglong &id) const;
     void getCommandActionInfoById(QPair<bool, CommandActionInfo> &result, const qulonglong &id) const;
 
@@ -148,8 +150,8 @@ private slots:
     void shortcutGrabTimedout();
 
 private:
-    QPair<QString, qulonglong> addOrRegisterDBusAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &description, const QString &sender);
-    qulonglong registerDBusAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &description);
+    QPair<QString, qulonglong> addOrRegisterClientAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, const QString &sender);
+    qulonglong registerClientAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description);
     qulonglong registerMethodAction(const QString &shortcut, const QString &service, const QDBusObjectPath &path, const QString &interface, const QString &method, const QString &description);
     qulonglong registerCommandAction(const QString &shortcut, const QString &command, const QStringList &arguments, const QString &description);
 
@@ -175,7 +177,7 @@ private:
 
     QString grabOrReuseKey(const X11Shortcut &X11shortcut, const QString &shortcut);
 
-    bool addActionCommon(const QString &shortcut, X11Shortcut &X11shortcut, QString &usedShortcut);
+    QString checkShortcut(const QString &shortcut, X11Shortcut &X11shortcut);
 
     bool isEscape(KeySym keySym, unsigned int modifiers);
     bool isModifier(KeySym keySym);
@@ -206,7 +208,6 @@ private:
     QDBusConnection *mSessionConnection;
     DaemonAdaptor *mDaemonAdaptor;
     NativeAdaptor *mNativeAdaptor;
-    DBusProxy *mDBusProxy;
 
     mutable QMutex mDataMutex;
 
@@ -217,12 +218,10 @@ private:
     X11ByShortcut mX11ByShortcut;
     ShortcutByX11 mShortcutByX11;
     IdsByShortcut mIdsByShortcut;
-    IdByDBusClient mIdByDBusClient;
-    DBusPathsByDBusService mDBusPathsByDBusService;
     ShortcutAndActionById mShortcutAndActionById;
-    ServiceNamesByServiceId mServiceNamesByServiceId;
-    PreferredServiceNameByServiceId mPreferredServiceNameByServiceId;
-    ServiceIdByServiceName mServiceIdByServiceName;
+    IdByClientPath mIdByClientPath;
+    SenderByClientPath mSenderByClientPath; // add: path->sender
+    ClientPathsBySender mClientPathsBySender; // disappear: sender->[path]
 
 
     unsigned int NumLockMask;

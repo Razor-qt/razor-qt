@@ -30,11 +30,13 @@
 #include "actions.h"
 
 
-DefaultModel::DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, QObject *parent)
+DefaultModel::DefaultModel(Actions *actions, const QColor &grayedOutColour, const QFont &highlightedFont, const QFont &italicFont, const QFont &highlightedItalicFont, QObject *parent)
     : QAbstractTableModel(parent)
     , mActions(actions)
     , mGrayedOutColour(grayedOutColour)
     , mHighlightedFont(highlightedFont)
+    , mItalicFont(italicFont)
+    , mHighlightedItalicFont(highlightedItalicFont)
 {
     connect(actions, SIGNAL(daemonDisappeared()), SLOT(daemonDisappeared()));
     connect(actions, SIGNAL(daemonAppeared()), SLOT(daemonAppeared()));
@@ -43,6 +45,10 @@ DefaultModel::DefaultModel(Actions *actions, const QColor &grayedOutColour, cons
     connect(actions, SIGNAL(actionEnabled(qulonglong, bool)), SLOT(actionEnabled(qulonglong, bool)));
     connect(actions, SIGNAL(actionsSwapped(qulonglong, qulonglong)), SLOT(actionsSwapped(qulonglong, qulonglong)));
     connect(actions, SIGNAL(actionRemoved(qulonglong)), SLOT(actionRemoved(qulonglong)));
+
+    mVerboseType["command"] = tr("Command");
+    mVerboseType["method"] = tr("DBus call");
+    mVerboseType["client"] = tr("Client");
 }
 
 DefaultModel::~DefaultModel()
@@ -77,7 +83,7 @@ QVariant DefaultModel::data(const QModelIndex &index, int role) const
                 return mContent[mContent.keys()[index.row()]].description;
 
             case 3:
-                return mContent[mContent.keys()[index.row()]].type;
+                return mVerboseType[mContent[mContent.keys()[index.row()]].type];
 
             case 4:
                 return mContent[mContent.keys()[index.row()]].info;
@@ -85,10 +91,16 @@ QVariant DefaultModel::data(const QModelIndex &index, int role) const
         break;
 
     case Qt::FontRole:
-        if ((index.row() >= 0) && (index.row() < rowCount()) && (index.column() == 1) && (mShortcuts[mContent[mContent.keys()[index.row()]].shortcut].size() > 1))
+    {
+        if ((index.row() >= 0) && (index.row() < rowCount()))
         {
-            return mHighlightedFont;
+            qulonglong id = mContent.keys()[index.row()];
+            bool multiple = (index.column() == 1) && (mShortcuts[mContent[id].shortcut].size() > 1);
+            bool inactive = (mContent[id].type == "client") && (mActions->getClientActionSender(id).isEmpty());
+            if (multiple || inactive)
+                return multiple ? (inactive ? mHighlightedItalicFont : mHighlightedFont) : mItalicFont;
         }
+    }
         break;
 
     case Qt::ForegroundRole:

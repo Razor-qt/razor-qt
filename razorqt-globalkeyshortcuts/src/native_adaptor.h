@@ -41,23 +41,25 @@ class NativeAdaptor : public QObject, protected QDBusContext
 public:
     NativeAdaptor(QObject *parent = 0);
 
-    QString addDBusAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id);
-    bool modifyDBusAction(const QDBusObjectPath &path, const QString &description);
-    QString changeDBusShortcut(const QDBusObjectPath &path, const QString &shortcut);
-    bool removeDBusAction(const QDBusObjectPath &path);
-    bool enableDBusAction(const QDBusObjectPath &path, bool enabled);
-    bool isDBusActionEnabled(const QDBusObjectPath &path);
+    QString addClientAction(const QString &shortcut, const QDBusObjectPath &path, const QString &description, qulonglong &id);
+    bool modifyClientAction(const QDBusObjectPath &path, const QString &description);
+    QString changeClientActionShortcut(const QDBusObjectPath &path, const QString &shortcut);
+    bool removeClientAction(const QDBusObjectPath &path);
+    bool deactivateClientAction(const QDBusObjectPath &path);
+    bool enableClientAction(const QDBusObjectPath &path, bool enabled);
+    bool isClientActionEnabled(const QDBusObjectPath &path);
 
     QString grabShortcut(uint timeout, bool &failed, bool &cancelled, bool &timedout);
     void cancelShortcutGrab();
 
 signals:
-    void onAddDBusAction(QPair<QString, qulonglong> &, const QString &, const QDBusObjectPath &, const QString &, const QString &);
-    void onModifyDBusAction(qulonglong &, const QDBusObjectPath &, const QString &, const QString &);
-    void onChangeDBusShortcut(QPair<QString, qulonglong> &, const QDBusObjectPath &, const QString &, const QString &);
-    void onRemoveDBusAction(qulonglong &, const QDBusObjectPath &, const QString &);
-    void onEnableDBusAction(bool &, const QDBusObjectPath &, bool, const QString &);
-    void onIsDBusActionEnabled(bool &, const QDBusObjectPath &, const QString &);
+    void onAddClientAction(QPair<QString, qulonglong> &, const QString &, const QDBusObjectPath &, const QString &, const QString &);
+    void onModifyClientAction(qulonglong &, const QDBusObjectPath &, const QString &, const QString &);
+    void onChangeClientActionShortcut(QPair<QString, qulonglong> &, const QDBusObjectPath &, const QString &, const QString &);
+    void onRemoveClientAction(bool &, const QDBusObjectPath &, const QString &);
+    void onDeactivateClientAction(bool &, const QDBusObjectPath &, const QString &);
+    void onEnableClientAction(bool &, const QDBusObjectPath &, bool, const QString &);
+    void onIsClientActionEnabled(bool &, const QDBusObjectPath &, const QString &);
 
     void onGrabShortcut(uint, QString &, bool &, bool &, bool &, const QDBusMessage &);
     void onCancelShortcutGrab();

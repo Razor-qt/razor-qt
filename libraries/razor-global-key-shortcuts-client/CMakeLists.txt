@@ -1,4 +1,4 @@
-set(PROJECT_NAME razor-config-globalkeyshortcuts)
+set(PROJECT_NAME razor-global-key-shortcuts-client)
 project(${PROJECT_NAME})
 
 cmake_minimum_required(VERSION 2.6)
@@ -16,19 +16,37 @@ include_directories(
 
 
 
+set(${PROJECT_NAME}_PATH_TO_DAEMON "../../razorqt-globalkeyshortcuts/src/")
+
+add_definitions(-DSHARED_EXPORT=Q_DECL_EXPORT)
+
+
 set(${PROJECT_NAME}_SOURCES
-	main.cpp
-	main_window.cpp
-	actions.cpp
-	default_model.cpp
-	shortcut_selector.cpp
-	../src/meta_types.cpp
-	edit_action_dialog.cpp
+	client.cpp
+	action.cpp
+)
+
+set(${PROJECT_NAME}_MAIN_HEADER
+	razor-global-key-shortcuts-client.h
+)
+
+set(${PROJECT_NAME}_PUBLIC_CPP_HEADERS
+)
+
+set(${PROJECT_NAME}_PRIVATE_CPP_HEADERS
+)
+
+set(${PROJECT_NAME}_PUBLIC_QT_HEADERS
+	client.h
+	action.h
+)
+
+set(${PROJECT_NAME}_PRIVATE_QT_HEADERS
+	client_p.h
+	action_p.h
 )
 
 set(${PROJECT_NAME}_FORMS
-	main_window.ui
-	edit_action_dialog.ui
 )
 
 set(${PROJECT_NAME}_RESOURCES
@@ -37,32 +55,46 @@ set(${PROJECT_NAME}_RESOURCES
 set(${PROJECT_NAME}_TRANSLATIONS
 )
 
+set(${PROJECT_NAME}_DBUS_ADAPTERS
+	${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml
+)
+
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml PROPERTIES PARENT action_p.h)
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml PROPERTIES PARENT_CLASSNAME GlobalKeyShortcut::ActionImpl)
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.client)
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml PROPERTIES CLASSNAME OrgRazorqtActionClientAdaptor)
+
+set(${PROJECT_NAME}_DBUS_PROXYS
+	${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.native.xml
+)
+
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.native.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.native)
+
+
+
+set(${PROJECT_NAME}_PUBLIC_HEADERS
+	${${PROJECT_NAME}_PUBLIC_CPP_HEADERS}
+	${${PROJECT_NAME}_PUBLIC_QT_HEADERS}
+)
+
+set(${PROJECT_NAME}_PRIVATE_HEADERS
+	${${PROJECT_NAME}_PRIVATE_CPP_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_QT_HEADERS}
+)
+
 set(${PROJECT_NAME}_CPP_HEADERS
-	../src/meta_types.h
+	${${PROJECT_NAME}_PUBLIC_CPP_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_CPP_HEADERS}
 )
 
 set(${PROJECT_NAME}_QT_HEADERS
-	main_window.h
-	actions.h
-	default_model.h
-	shortcut_selector.h
-	edit_action_dialog.h
+	${${PROJECT_NAME}_PUBLIC_QT_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_QT_HEADERS}
 )
-
-set(${PROJECT_NAME}_DBUS_ADAPTERS
-)
-
-set(${PROJECT_NAME}_DBUS_PROXYS
-	../src/org.razorqt.global_key_shortcuts.daemon.xml
-)
-set_source_files_properties(../src/org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.daemon)
-set_source_files_properties(../src/org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES INCLUDE ../src/meta_types.h)
-
-
 
 set(${PROJECT_NAME}_HEADERS
-	${${PROJECT_NAME}_CPP_HEADERS}
-	${${PROJECT_NAME}_QT_HEADERS}
+	${${PROJECT_NAME}_PUBLIC_HEADERS}
+	${${PROJECT_NAME}_PRIVATE_HEADERS}
 )
 
 set(${PROJECT_NAME}_TRANSLATABLE
@@ -107,18 +139,6 @@ endif()
 #	qt4_create_translation(${${PROJECT_NAME}_QM_FILES} ${${PROJECT_NAME}_TRANSLATABLE} ${${PROJECT_NAME}_TRANSLATIONS})
 #endif()
 
-# Translations **********************************
-razor_translate_ts(${PROJECT_NAME}_QM_FILES
-	SOURCES
-	${${PROJECT_NAME}_TRANSLATABLE}
-)
-
-razor_translate_desktop(${PROJECT_NAME}_DESKTOP_FILES
-	SOURCES
-	${PROJECT_NAME}.desktop.in
-)
-#************************************************
-
 
 
 set(${PROJECT_NAME}_GENERATED_FILES
@@ -128,7 +148,6 @@ set(${PROJECT_NAME}_GENERATED_FILES
 	${${PROJECT_NAME}_QM_FILES}
 	${${PROJECT_NAME}_DBUS_INTERFACE_FILES}
 	${${PROJECT_NAME}_DBUS_ADAPTOR_FILES}
-	${${PROJECT_NAME}_DESKTOP_FILES}
 )
 
 set(${PROJECT_NAME}_ALL_FILES
@@ -139,7 +158,17 @@ set(${PROJECT_NAME}_ALL_FILES
 
 
 
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_ALL_FILES})
+add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_ALL_FILES})
 target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES})
+set_target_properties(${PROJECT_NAME}
+	PROPERTIES
+	VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}
+	SOVERSION ${MAJOR_VERSION}
+)
 
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib COMPONENT runtime)
+install(FILES ${${PROJECT_NAME}_MAIN_HEADER} DESTINATION include/ COMPONENT development)
+install(FILES ${${PROJECT_NAME}_PUBLIC_HEADERS} DESTINATION include/${PROJECT_NAME} COMPONENT development)
+
+include(create_pkgconfig_file)
+create_pkgconfig_file(${PROJECT_NAME} "Razor-qt global key shortcuts client library")

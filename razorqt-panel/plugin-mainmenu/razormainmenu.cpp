@@ -38,7 +38,7 @@
 #include <QtGui/QMessageBox>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 #include <razorqt/xfitman.h>
 
 #include <qtxdg/xdgicon.h>
@@ -52,13 +52,17 @@
 
 Q_EXPORT_PLUGIN2(mainmenu, RazorMainMenuPluginLibrary)
 
+#define DEFAULT_SHORTCUT "Alt+F1"
+
 /************************************************
 
  ************************************************/
 RazorMainMenu::RazorMainMenu(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
     IRazorPanelPlugin(startupInfo),
-    mMenu(0)
+    mMenu(0),
+    mShortcut(0),
+    mLockCascadeChanges(false)
 {
     mButton.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -67,10 +71,10 @@ RazorMainMenu::RazorMainMenu(const IRazorPanelPluginStartupInfo &startupInfo):
     mPowerManager = new PowerManager(this);
     mScreenSaver = new ScreenSaver(this);
 
-    mShortcut = new QxtGlobalShortcut(this);
-    connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
-
     settingsChanged();
+
+    connect(mShortcut, SIGNAL(activated()), this, SLOT(showHideMenu()));
+    connect(mShortcut, SIGNAL(shortcutChanged(QString,QString)), this, SLOT(shortcutChanged(QString,QString)));
 }
 
 
@@ -91,6 +95,23 @@ void RazorMainMenu::showHideMenu()
         mMenu->hide();
     else
         showMenu();
+}
+
+
+/************************************************
+
+ ************************************************/
+void RazorMainMenu::shortcutChanged(const QString &/*oldShortcut*/, const QString &newShortcut)
+{
+    if (!newShortcut.isEmpty())
+    {
+        mLockCascadeChanges = true;
+
+        settings()->setValue("dialog/shortcut", newShortcut);
+        settings()->sync();
+
+        mLockCascadeChanges = false;
+    }
 }
 
 
@@ -141,6 +162,9 @@ void RazorMainMenu::showMenu()
  ************************************************/
 void RazorMainMenu::settingsChanged()
 {
+    if (mLockCascadeChanges)
+        return;
+
     if (settings()->value("showText", false).toBool())
     {
         mButton.setText(settings()->value("text", "Start").toString());
@@ -174,7 +198,17 @@ void RazorMainMenu::settingsChanged()
     }
 
 
-    mShortcut->setShortcut(settings()->value("shortcut", "ALT+F1").toString());
+    QString shortcut = settings()->value("shortcut", DEFAULT_SHORTCUT).toString();
+    if (shortcut.isEmpty())
+        shortcut = DEFAULT_SHORTCUT;
+
+    if (!mShortcut)
+        mShortcut = GlobalKeyShortcut::Client::instance()->addAction(shortcut, "/panel/main_menu/show_hide", tr("Show/hide main menu"), this);
+    else if (mShortcut->shortcut() != shortcut)
+    {
+        mShortcut->changeShortcut(shortcut);
+    }
+
     realign();
 }
 
@@ -235,3 +269,4 @@ void RazorMainMenu::realign()
     mButton.updateGeometry();
 }
 
+#undef DEFAULT_SHORTCUT

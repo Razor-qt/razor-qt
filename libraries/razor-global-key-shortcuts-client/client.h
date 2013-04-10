@@ -25,8 +25,8 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__INCLUDED
-#define GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__INCLUDED
+#ifndef GLOBAL_KEY_SHORTCUT_CLIENT__CLIENT__INCLUDED
+#define GLOBAL_KEY_SHORTCUT_CLIENT__CLIENT__INCLUDED
 
 #include <QtGlobal>
 
@@ -34,18 +34,26 @@
 #include <QString>
 
 
-class GlobalAction;
-class GlobalActionNativeClientImpl;
-
-class @SHARED_EXPORT@ GlobalActionNativeClient : public QObject
+namespace GlobalKeyShortcut
 {
-Q_OBJECT
+
+class Action;
+class ClientImpl;
+
+#ifndef SHARED_EXPORT
+#define SHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+class SHARED_EXPORT Client : public QObject
+{
+    Q_OBJECT
 
 public:
-    static GlobalActionNativeClient* instance();
-    ~GlobalActionNativeClient();
+    static Client *instance();
+    ~Client();
 
-    GlobalAction* addAction(const QString &shortcut, const QString &path, const QString &description);
+    Action *addAction(const QString &shortcut, const QString &path, const QString &description, QObject *parent = 0);
+    bool removeAction(const QString &path);
 
     bool isDaemonPresent() const;
 
@@ -64,9 +72,11 @@ signals:
     void daemonPresenceChanged(bool);
 
 private:
-    GlobalActionNativeClient();
+    Client();
 
-    GlobalActionNativeClientImpl *impl;
+    ClientImpl *impl;
 };
 
-#endif // GLOBAL_ACTION_NATIVE_CLIENT__NATIVE_CLIENT__INCLUDED
+}
+
+#endif // GLOBAL_KEY_SHORTCUT_CLIENT__CLIENT__INCLUDED

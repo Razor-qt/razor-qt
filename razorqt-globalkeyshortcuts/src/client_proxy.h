@@ -34,13 +34,13 @@
 #include <QDBusConnection>
 
 
-class DBusAction;
+class ClientAction;
 
 class ClientProxy : public QObject
 {
     Q_OBJECT
 
-    friend class DBusAction;
+    friend class ClientAction;
 
 public:
     ClientProxy(const QString &service, const QDBusObjectPath &path, const QDBusConnection &connection, QObject *parent = 0);
