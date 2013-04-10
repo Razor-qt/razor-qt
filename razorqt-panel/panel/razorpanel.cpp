@@ -116,6 +116,7 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     connect(&mDelaySave, SIGNAL(timeout()), this, SLOT(saveSettings()));
 
     connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(screensChangeds()));
+    connect(QApplication::desktop(), SIGNAL(resized(int)), this, SLOT(realign()));
     connect(QApplication::desktop(), SIGNAL(screenCountChanged(int)), this, SLOT(screensChangeds()));
     connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
