@@ -42,7 +42,7 @@ class DesktopSwitchButton : public QToolButton
     Q_OBJECT
     
 public:
-    DesktopSwitchButton(QWidget * parent, int index, const QString &shortcut, const QString &title=QString());
+    DesktopSwitchButton(QWidget * parent, int index, const QString &path, const QString &shortcut, const QString &title=QString());
 
 public slots:
     void unregisterShortcut();

@@ -48,7 +48,7 @@ ShowDesktop::ShowDesktop(const IRazorPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IRazorPanelPlugin(startupInfo)
 {
-    m_key = GlobalKeyShortcut::Client::instance()->addAction(QString(), "/panel/show_desktop/show_hide", tr("Show desktop"), this);
+    m_key = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/show_desktop/%2/show_hide").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Show desktop"), this);
     if (m_key)
     {
         connect(m_key, SIGNAL(activated()), this, SLOT(showDesktop()));

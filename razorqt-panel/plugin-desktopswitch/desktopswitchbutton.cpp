@@ -32,7 +32,7 @@
 
 #include "desktopswitchbutton.h"
 
-DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QString &shortcut, const QString &title)
+DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QString &path, const QString &shortcut, const QString &title)
     : QToolButton(parent)
     , m_shortcut(0)
     , mIndex(index)
@@ -48,7 +48,7 @@ DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QStr
         {
             description.append(QString(" (%1)").arg(title));
         }
-        m_shortcut = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/desktop_switch/desktop_%1").arg(index + 1), description, this);
+        m_shortcut = GlobalKeyShortcut::Client::instance()->addAction(QString(), path, description, this);
         if (m_shortcut)
         {
             if (m_shortcut->shortcut().isEmpty())
