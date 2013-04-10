@@ -1,7 +1,14 @@
+panel plugins:
+	Must have: Unique panel & plugin identification.
+
+shortcut-selector:
+	Should have: Add submenu to clear the shortcut.
+
 daemon:
-	Nice to have: argument bindings for method action
+	Should have: Argument bindings for method action.
 
 manager:
-	Nice to have: dbus browser for method actions
-	Nice to have: file browser for command actions
-	Nice to have: menu browser for command actions
+	Nice to have: D-Bus browser for method actions.
+	Nice to have: File browser for command actions.
+	Nice to have: Menu browser for command actions.
+	Nice to have: Delegate to change shortcuts in the table.
