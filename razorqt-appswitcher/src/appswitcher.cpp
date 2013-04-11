@@ -84,7 +84,7 @@ void RazorAppSwitcher::AppSwitcher::applySettings()
 
     if (! m_key->setShortcut(shortcut))
     {
-        RazorNotification::notify(tr("Global shorcut: '%1' cannot be registered").arg(shortcut.toString()));
+        RazorNotification::notify(tr("Global shortcut: '%1' cannot be registered").arg(shortcut.toString()));
         exit(1);
     }
     

@@ -8,7 +8,7 @@
     </message>
     <message>
         <location filename="../panelscreensaver.cpp" line="60"/>
-        <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Screensaver Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation type="unfinished"/>
     </message>
 </context>

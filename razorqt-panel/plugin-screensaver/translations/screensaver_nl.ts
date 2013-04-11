@@ -2,7 +2,7 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Screensaver Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation>Paneel Schermbeveiliging Globale snelkoppeling: &apos;%1&apos; kan niet worden toegepast</translation>
     </message>
 </context>
