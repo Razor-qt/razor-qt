@@ -2,7 +2,7 @@
 <context>
     <name>PanelScreenSaver</name>
     <message>
-        <source>Panel Screensaver Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Screensaver Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation>Plugin &quot;Wygaszacz ekranu&quot;: globalny skrót &apos;%1&apos; nie może zostać zarejestrowany</translation>
     </message>
 </context>

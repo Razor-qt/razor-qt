@@ -14,7 +14,7 @@ Options
   --ver=VERSION         package version
   -S|--sign             sign a result files
   -s|--source           build a source package, if ommited build a binary package
-  --debug               debug mode not build package only create debian directory
+  --debug               debug mode, not build package - only create debian directory
 HELP_TEXT
 }
 
@@ -386,7 +386,7 @@ if [ "${TYPE}" = '-b' ]; then
             echo -e "Missing file: ${file}";
 
         elif [ $pkgCount -gt 1 ]; then
-            echo -e "Douplicates:  ${file}$pkgNames"
+            echo -e "Duplicates:  ${file}$pkgNames"
         fi
 
     done

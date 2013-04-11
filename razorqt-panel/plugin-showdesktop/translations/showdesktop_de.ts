@@ -8,7 +8,7 @@
     </message>
     <message>
         <location filename="../showdesktop.cpp" line="56"/>
-        <source>Panel Show Desktop Global shorcut: &apos;%1&apos; cannot be registered</source>
+        <source>Panel Show Desktop Global shortcut: &apos;%1&apos; cannot be registered</source>
         <translation type="unfinished"/>
     </message>
     <message>
