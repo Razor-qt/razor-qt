@@ -51,9 +51,9 @@
 #include <QList>
 #include <QtAlgorithms>
 #include <unistd.h>
-#include <qalgorithms.h>
 #include <QSettings>
-
+#include <QTextStream>
+#include <QFile>
 /************************************************
 
  ************************************************/
@@ -1202,6 +1202,102 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 }
 
 
+/*! 
+ * Handles files with a syntax similar to desktopfiles as QSettings files.
+ * The differences between ini-files and desktopfiles are:
+ * desktopfiles uses '#' as comment marker, and ';' as list-separator.
+ * Every key/value must be inside a section (i.e. there is no 'General' pseudo-section)
+ */
+bool readDesktopFile(QIODevice & device, QSettings::SettingsMap & map)
+{
+    QString section;
+    QTextStream stream(&device);
+    
+    while (!stream.atEnd()) {
+        QString line = stream.readLine().trimmed();
+
+        // Skip comments and empty lines
+        if (line.startsWith('#') || line.isEmpty())
+            continue;
+
+        // Section ..............................
+        if (line.startsWith('[') && line.endsWith(']'))
+        {
+            section = line.mid(1, line.length()-2);
+            continue;
+        }
+
+        QString key = line.section('=', 0, 0).trimmed();
+        QString value = line.section('=', 1).trimmed();
+
+        if (key.isEmpty())
+            continue;
+   
+        if (section.isEmpty())
+        {
+            qWarning() << "key=value outside section";
+            return false;
+        }
+
+        key.prepend("/");
+        key.prepend(section);
+
+        if (value.contains(";")) 
+        {
+            map.insert(key, value.split(";"));
+        }
+        else
+        {
+            map.insert(key, value);
+        }
+
+    }
+    
+    return true;
+}
+
+/*! See readDesktopFile
+ */
+bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map)
+{
+    QTextStream stream(&device);
+    QString section; 
+
+    foreach (QString key, map.keys())
+    {
+        if (! map.value(key).canConvert<QString>())
+        {
+            return false;
+        }
+
+        QString thisSection = key.section("/", 0, 0);
+        if (thisSection.isEmpty())
+        {
+            qWarning() << "No section defined";
+            return false;
+        }
+
+        if (thisSection != section)
+        {
+            stream << "[" << thisSection << "]" << "\n";
+            section = thisSection;
+        }
+
+        QString remainingKey = key.section("/", 1, -1);
+        
+        if (remainingKey.isEmpty())
+        {
+            qWarning() << "Only one level in key..." ;
+            return false;
+        }
+
+        stream << remainingKey << "=" << map.value(key).toString() << "\n";
+
+    }
+        
+    return true;
+}
+
 
 /************************************************
 
@@ -1235,7 +1331,8 @@ void loadMimeCacheDir(const QString& dirName, QHash<QString, QList<XdgDesktopFil
         foreach (QString mime, mimes)
         {
             int pref = df->value("InitialPreference", 0).toInt();
-            // FIXME Insert according to InitialPreference 
+            // We move the desktopFile forward in the list for this mime, so that 
+            // no desktopfile in front of it have a lower initialPreference.
             int position = cache[mime].length();
             while (position > 0 && cache[mime][position - 1]->value("InitialPreference, 0").toInt() < pref)
             {
@@ -1275,7 +1372,45 @@ QList<XdgDesktopFile*>  XdgDesktopFileCache::getApps(const QString& mimetype)
  ************************************************/
 XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimetype)
 {
-    // FIXME Must look in <datahome:datadirs>/applications/defaults.list
+    // First, we look in ~/.local/share/applications/defaults.list, /usr/local/share/applications/defaults.list and
+    // /usr/share/applications/defaults.list (in that order) for a default.
+    QStringList dataDirs = XdgDirs::dataDirs();
+    dataDirs.prepend(XdgDirs::dataHome(false));
+    QSettings::Format format = QSettings::registerFormat(".list", readDesktopFile, writeDesktopFile);
+    foreach(const QString dataDir, dataDirs)
+    {
+        QString defaultsListPath = dataDir + "/applications/defaults.list";
+        if (QFileInfo(defaultsListPath).exists())
+        {
+            QSettings defaults(defaultsListPath, format);
+            
+
+            defaults.beginGroup("Default Applications");
+            if (defaults.contains(mimetype))
+            {
+                QVariant value = defaults.value(mimetype);
+                if (value.canConvert<QStringList>()) // A single string can also convert to a stringlist
+                {
+                    foreach (const QString desktopFileName, value.toStringList())
+                    {
+                        XdgDesktopFile* desktopFile = XdgDesktopFileCache::getFile(desktopFileName);
+                        if (desktopFile->isValid())
+                        {
+                            return desktopFile;
+                        }
+                        else 
+                        {
+                            qWarning() << desktopFileName << "not a valid desktopfile";
+                        }
+                    }
+                }
+            }
+            defaults.endGroup();
+        }
+    }
+
+    // If we havent found anything up to here, we look for a desktopfile that declares
+    // the ability to handle the given mimetype. See getApps.
 
     QList<XdgDesktopFile*> apps = getApps(mimetype);
     return apps.isEmpty() ? 0 : apps[0];

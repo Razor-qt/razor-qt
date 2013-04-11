@@ -2,6 +2,7 @@
 #define QTXDG_TEST_H
 
 #include <QString>
+#include <QDebug>
 
 class QtXdgTest
 {
@@ -12,8 +13,7 @@ public:
 
     void testTextHtml();
     void testMeldComparison();
-
-private:
+    bool testCustomFormat();
     void compare(QString mimetype);
     QString xdgDesktopFileDefaultApp(QString mimetype);
     QString xdgUtilDefaultApp(QString mimetype);
@@ -24,8 +24,9 @@ private:
 int main(int argc, char** args)
 {
 //    QtXdgTest().testDefaultApp();
-    QtXdgTest().testTextHtml();
-    QtXdgTest().testMeldComparison();
+//      qDebug() << "Default for text/html:" << QtXdgTest().xdgDesktopFileDefaultApp("text/html");
+//    QtXdgTest().testMeldComparison();
+    qDebug() << QtXdgTest().testCustomFormat();
 };
 
 #endif /* QTXDG_TEST_H */

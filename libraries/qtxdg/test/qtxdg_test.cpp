@@ -1,33 +1,3 @@
-/* BEGIN_COMMON_COPYRIGHT_HEADER
- * (c)LGPL2+
- *
- * Razor - a lightweight, Qt based, desktop toolset
- * http://razor-qt.org
- *
- * Copyright: 2012 Razor team
- * Authors:
- *   Alexander Sokoloff <sokoloff.a@gmail.com>
- *
- * This code based on kconf_update utility.
- *   Copyright (c) 2001 Waldo Bastian <bastian@kde.org>
- *
- * This program or library is free software; you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA
- *
- * END_COMMON_COPYRIGHT_HEADER */
-
 #include "qtxdg_test.h"
 
 #include "qtxdg/xdgdesktopfile.h"
@@ -38,6 +8,7 @@
 #include <QProcess>
 
 #include <QDebug>
+#include <QSettings>
 
 void QtXdgTest::testDefaultApp()
 {
@@ -93,6 +64,50 @@ void QtXdgTest::testMeldComparison()
     compare("application/x-meld-comparison");
 }
 
+// Implemented in xdgdesktopfile.cpp
+bool readDesktopFile(QIODevice & device, QSettings::SettingsMap & map);
+bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map);
+
+
+bool QtXdgTest::testCustomFormat()
+{
+    QSettings::Format desktopFormat = QSettings::registerFormat("list", readDesktopFile, writeDesktopFile);
+    QFile::remove("/tmp/test.list");
+    QFile::remove("/tmp/test2.list");
+    QSettings test("/tmp/test.list", desktopFormat);
+    test.beginGroup("Default Applications");
+    test.setValue("text/plain", QString("gvim.desktop"));
+    test.setValue("text/html", QString("firefox.desktop"));
+    test.endGroup();
+    test.beginGroup("Other Applications");
+    test.setValue("application/pdf", QString("qpdfview.desktop"));
+    test.setValue("image/svg+xml", QString("inkscape.desktop"));
+    test.sync();
+
+    QFile::copy("/tmp/test.list", "/tmp/test2.list");
+
+    QSettings test2("/tmp/test2.list", desktopFormat);
+    if (test2.allKeys().size() != 4) return false;
+
+    test2.beginGroup("Default Applications");
+    qDebug() << test2.value("text/plain");
+    if (test2.value("text/plain") != QString("gvim.desktop")) return false;
+
+    qDebug() << test2.value("text/html");
+    if (test2.value("text/html") != QString("firefox.desktop")) return false;
+    test2.endGroup();
+
+    test2.beginGroup("Other Applications");
+    qDebug() << test2.value("application/pdf");
+    if (test2.value("application/pdf") != QString("qpdfview.desktop")) return false;
+
+    qDebug() << test2.value("image/svg+xml");
+    if (test2.value("image/svg+xml") != QString("inkscape.desktop")) return false;
+    test2.endGroup();
+
+    return true;
+}
+
 
 QString QtXdgTest::xdgDesktopFileDefaultApp(QString mimetype)
 {
@@ -104,6 +119,8 @@ QString QtXdgTest::xdgDesktopFileDefaultApp(QString mimetype)
     } 
     return defaultAppS;
 }
+
+
 
 QString QtXdgTest::xdgUtilDefaultApp(QString mimetype)
 {
