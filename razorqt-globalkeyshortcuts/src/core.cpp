@@ -1678,7 +1678,7 @@ void Core::serviceDisappeared(const QString &sender)
             {
                 const qulonglong &id = idByClientPath.value();
 
-                log(LOG_INFO, "Disactivating DBus action for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
+                log(LOG_INFO, "Disactivating client action for '%s' @ %s", qPrintable(sender), qPrintable(path.path()));
 
                 ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
                 if (shortcutAndActionById != mShortcutAndActionById.end())
@@ -2693,11 +2693,29 @@ void Core::removeAction(bool &result, const qulonglong &id)
 
     BaseAction *action = shortcutAndActionById.value().second;
 
-    if (!strcmp(action->type(), ClientAction::id()))
+    bool isClientAction = !strcmp(action->type(), ClientAction::id());
+
+    if (isClientAction)
     {
-        log(LOG_WARNING, "Cannot unregister DBus action by id");
-        result = false;
-        return;
+        ClientAction *clientAction = dynamic_cast<ClientAction*>(action);
+        if (clientAction->isPresent())
+        {
+            log(LOG_WARNING, "Cannot remove active client action by id");
+            result = false;
+            return;
+        }
+        else
+        {
+            const QDBusObjectPath &path = clientAction->path();
+
+            SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+            if (senderByClientPath != mSenderByClientPath.end())
+            {
+                log(LOG_WARNING, "Action is currently registered for '%s'", qPrintable(path.path()));
+                result = false;
+                return;
+            }
+        }
     }
 
     QString shortcut = shortcutAndActionById.value().first;
