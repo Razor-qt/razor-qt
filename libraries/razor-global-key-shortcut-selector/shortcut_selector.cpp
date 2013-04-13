@@ -3,14 +3,17 @@
 #include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 
 #include <QTimer>
+#include <QAction>
+#include <QMenu>
 
 
 ShortcutSelector::ShortcutSelector(QWidget *parent)
-    : QPushButton(parent)
+    : QToolButton(parent)
     , mClient(GlobalKeyShortcut::Client::instance())
     , mShortcutTimer(new QTimer(this))
 {
     setCheckable(true);
+    setFocusPolicy(Qt::StrongFocus);
 
     mShortcutTimer->setInterval(1000);
     mShortcutTimer->setSingleShot(false);
@@ -70,4 +73,18 @@ void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
 void ShortcutSelector::clear()
 {
     setText(QString());
+}
+
+QAction * ShortcutSelector::addMenuAction(const QString &title)
+{
+    QMenu *subMenu = menu();
+    if (!subMenu)
+    {
+        setPopupMode(QToolButton::MenuButtonPopup);
+        subMenu = new QMenu(this);
+        setMenu(subMenu);
+    }
+    QAction *action = new QAction(title, subMenu);
+    subMenu->addAction(action);
+    return action;
 }

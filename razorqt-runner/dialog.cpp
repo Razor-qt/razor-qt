@@ -64,7 +64,8 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog),
     mSettings(new RazorSettings("razor-runner", this)),
     mGlobalShortcut(0),
-    mLockCascadeChanges(false)
+    mLockCascadeChanges(false),
+    mConfigureDialog(0)
 {
     ui->setupUi(this);
     setWindowTitle("Razor Runner");
@@ -402,7 +403,9 @@ void Dialog::runCommand()
  ************************************************/
 void Dialog::showConfigDialog()
 {
-    ConfigureDialog::createAndShow(mSettings, this);
+    if (!mConfigureDialog)
+        mConfigureDialog = new ConfigureDialog(mSettings, DEFAULT_SHORTCUT, this);
+    mConfigureDialog->exec();
 }
 
 #undef DEFAULT_SHORTCUT

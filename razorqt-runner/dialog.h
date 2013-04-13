@@ -39,6 +39,7 @@ class CommandListView;
 class CommandItemModel;
 class PowerManager;
 class ScreenSaver;
+class ConfigureDialog;
 namespace GlobalKeyShortcut
 {
 class Action;
@@ -73,6 +74,8 @@ private:
     ScreenSaver *mScreenSaver;
 
     bool mLockCascadeChanges;
+
+    ConfigureDialog *mConfigureDialog;
 
     void realign();
     //! \brief handle various additional behaviours (math only for now)

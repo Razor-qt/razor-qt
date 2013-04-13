@@ -1,7 +1,7 @@
 #ifndef SHORTCUT_SELECTOR_HPP
 #define SHORTCUT_SELECTOR_HPP
 
-#include <QPushButton>
+#include <QToolButton>
 #include <QWidget>
 #include <QString>
 
@@ -13,14 +13,17 @@ namespace GlobalKeyShortcut
 class Client;
 }
 
-class ShortcutSelector : public QPushButton
+class ShortcutSelector : public QToolButton
 {
     Q_OBJECT
 public:
     explicit ShortcutSelector(QWidget *parent = 0);
 
+    QAction *addMenuAction(const QString &title);
+
 signals:
     void shortcutGrabbed(const QString &);
+    void cleared();
 
 public slots:
     void grabShortcut();
