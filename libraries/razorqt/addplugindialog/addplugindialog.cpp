@@ -150,33 +150,42 @@ AddPluginDialog::AddPluginDialog(const QStringList& desktopFilesDirs,
     ui(new Ui::AddPluginDialog),
     mTimerId(0)
 {
+    libTranslate("librazorqt");
+    ui->setupUi(this);
+
     mPlugins = RazorPluginInfo::search(desktopFilesDirs, serviceType, nameFilter);
     qSort(mPlugins.begin(), mPlugins.end(), pluginDescriptionLessThan);
+    
+    ui->pluginList->setItemDelegate(new HtmlDelegate(QSize(32, 32), ui->pluginList));
+
+    init();
+    
+    connect(ui->pluginList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(emitPluginSelected()));
+    connect(ui->pluginList, SIGNAL(itemSelectionChanged()), this, SLOT(toggleAddButtonState()));
+    connect(ui->searchEdit, SIGNAL(textEdited(QString)), this, SLOT(searchEditTexChanged(QString)));
+    connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(emitPluginSelected()));
+}
+
+void AddPluginDialog::setPluginsInUse(const RazorPluginInfoList pluginsInUse)
+{
+    mPluginsInUse = pluginsInUse;
     init();
 }
 
-
-/************************************************
-
- ************************************************/
 void AddPluginDialog::init()
 {
-    libTranslate("librazorqt");
-    ui->setupUi(this);
     QListWidget* pluginList = ui->pluginList;
-
-    pluginList->setItemDelegate(new HtmlDelegate(QSize(32, 32), pluginList));
-    //pluginList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    connect(pluginList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(emitPluginSelected()));
-    connect(pluginList, SIGNAL(itemSelectionChanged()), this, SLOT(toggleAddButtonState()));
+    
+    pluginList->clear();
 
     QIcon fallIco = XdgIcon::fromTheme("preferences-plugin");
 
     for (int i=0; i< mPlugins.length(); ++i)
     {
+        bool inUse = mPluginsInUse.contains(mPlugins.at(i));
         const RazorPluginInfo &plugin = mPlugins.at(i);
         QListWidgetItem* item = new QListWidgetItem(ui->pluginList);
-        item->setText(QString("<b>%1</b><br>\n%2\n").arg(plugin.name(), plugin.comment()));
+        item->setText(QString("<b>%1</b><br>\n%2\n%3").arg(plugin.name(), plugin.comment(), inUse ? "<b><i>in use</i></b>" : ""));
         item->setIcon(plugin.icon(fallIco));
         item->setData(INDEX_ROLE, i);
         item->setData(SEARCH_ROLE, QString("%1 %2 %3 %4").arg(
@@ -189,9 +198,6 @@ void AddPluginDialog::init()
     }
 
     ui->addButton->setEnabled(false);
-
-    connect(ui->searchEdit, SIGNAL(textEdited(QString)), this, SLOT(searchEditTexChanged(QString)));
-    connect(ui->addButton, SIGNAL(clicked(bool)), this, SLOT(emitPluginSelected()));
 }
 
 /************************************************
@@ -245,6 +251,7 @@ void AddPluginDialog::emitPluginSelected()
     if (pluginList->currentItem() && pluginList->currentItem()->isSelected())
     {
         RazorPluginInfo plugin = mPlugins.at(pluginList->currentItem()->data(INDEX_ROLE).toInt());
+        qDebug() << "emitPluginSelected emitted";
         emit pluginSelected(plugin);
     }
 }

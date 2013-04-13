@@ -42,7 +42,7 @@ class IconView : public DesktopWidgetPlugin
 {
     Q_OBJECT
 public:
-    IconView(DesktopScene * scene, const QString & configId, RazorSettings * config);
+    IconView(DesktopScene * scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info);
 //    ~IconView();
 
     QString info();

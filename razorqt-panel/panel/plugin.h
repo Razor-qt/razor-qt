@@ -68,6 +68,8 @@ public:
 
     QMenu* popupMenu() const;
     IRazorPanelPlugin * iPlugin() const { return mPlugin; }
+    
+    const RazorPluginInfo desktopFile() { return mDesktopFile; }
 
     bool isSeparate() const;
     bool isExpandable() const;

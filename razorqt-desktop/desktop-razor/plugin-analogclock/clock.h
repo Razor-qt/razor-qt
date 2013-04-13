@@ -42,7 +42,7 @@ class ClockPlugin : public DesktopWidgetPlugin
 {
     Q_OBJECT
 public:
-    ClockPlugin(DesktopScene * scene, const QString & configId, RazorSettings * config);
+    ClockPlugin(DesktopScene * scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info);
 
     QString info();
     QString instanceInfo();

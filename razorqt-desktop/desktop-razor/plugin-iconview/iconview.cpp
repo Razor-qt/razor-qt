@@ -37,8 +37,8 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(IconView)
 
 
-IconView::IconView(DesktopScene * scene, const QString & configId, RazorSettings * config)
-    : DesktopWidgetPlugin(scene, configId, config)
+IconView::IconView(DesktopScene * scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info)
+    : DesktopWidgetPlugin(scene, configId, config, info)
 {
     m_proxy = new QGraphicsProxyWidget(this);
     m_widget = new IconViewWidget(configId, config);

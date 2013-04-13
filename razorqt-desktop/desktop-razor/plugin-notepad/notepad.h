@@ -40,7 +40,7 @@ class Notepad : public DesktopWidgetPlugin
 {
     Q_OBJECT
 public:
-    Notepad(DesktopScene *scene, const QString &configId, RazorSettings *config);
+    Notepad(DesktopScene *scene, const QString &configId, RazorSettings *config, const RazorPluginInfo &info);
     ~Notepad();
 
     QString info();

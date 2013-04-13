@@ -79,5 +79,6 @@ install(TARGETS ${PROJECT} DESTINATION ${DESKTOP_PLUGIN_DIR})
 
 add_subdirectory( plugin-helloworld )
 add_subdirectory( plugin-iconview )
+#add_subdirectory( plugin-iconview1 )
 add_subdirectory( plugin-analogclock )
 add_subdirectory( plugin-notepad )

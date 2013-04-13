@@ -45,8 +45,8 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(ClockPlugin)
 
 
-ClockPlugin::ClockPlugin(DesktopScene * scene, const QString & configId, RazorSettings * config)
-    : DesktopWidgetPlugin(scene, configId, config)
+ClockPlugin::ClockPlugin(DesktopScene * scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info)
+    : DesktopWidgetPlugin(scene, configId, config, info)
 {
     m_widget = new Clock(this, configId, config);
     m_widget->show();

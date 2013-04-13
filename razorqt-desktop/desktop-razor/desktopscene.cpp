@@ -141,7 +141,7 @@ DesktopScene::DesktopScene(QObject * parent)
         DesktopWidgetPlugin * item = m_plugins[configId];
         if (!item)
         {
-            item = loadPlugin(lib, configId);
+            item = loadPlugin(lib, configId, list.first());
             m_plugins.insert(configId, item);
         }
 
@@ -267,17 +267,29 @@ void DesktopScene::showAddPluginDialog()
         connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)),
         		this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
+    
+    RazorPluginInfoList pluginsInUse;
+    foreach (DesktopWidgetPlugin *i, m_plugins.values())
+    {
+        RazorPluginInfo info = i->desktopFile();
+        if (pluginsInUse.contains(info))
+            continue;
+        pluginsInUse << info;
+        qDebug() << i->desktopFile() << "to be used";
+    }
+    dlg->setPluginsInUse(pluginsInUse);
 
     dlg->exec();
 }
 
 void DesktopScene::addPlugin(const RazorPluginInfo &pluginInfo)
 {
+    qDebug() << "addPlugin called" << sender();
     QLibrary* lib = loadPluginLib(pluginInfo);
     if (!lib)
         return;
     QString pluginID = QString("%1_%2").arg(pluginInfo.id()).arg(QUuid::createUuid().toString());
-    DesktopWidgetPlugin * plugin = loadPlugin(lib, pluginID);
+    DesktopWidgetPlugin * plugin = loadPlugin(lib, pluginID, pluginInfo);
 
     // "clever" positioning
     QSizeF size(200, 200);
@@ -327,6 +339,7 @@ void DesktopScene::addPlugin(const RazorPluginInfo &pluginInfo)
             break;
         }
     } // while
+    
 }
 
 void DesktopScene::removePlugin(bool ask)
@@ -347,7 +360,7 @@ void DesktopScene::removePlugin(bool ask)
     save();
 }
 
-DesktopWidgetPlugin * DesktopScene::loadPlugin(QLibrary * lib, const QString & configId)
+DesktopWidgetPlugin * DesktopScene::loadPlugin(QLibrary * lib, const QString & configId, const RazorPluginInfo &info)
 {
     Q_ASSERT(lib);
     DesktopWidgetInitFunction initFunc = (DesktopWidgetInitFunction) lib->resolve("init");
@@ -358,7 +371,7 @@ DesktopWidgetPlugin * DesktopScene::loadPlugin(QLibrary * lib, const QString & c
     }
     else
     {
-        DesktopWidgetPlugin * plugin = initFunc(this, configId, DesktopConfig::instance()->config);
+        DesktopWidgetPlugin * plugin = initFunc(this, configId, DesktopConfig::instance()->config, info);
         Q_ASSERT(plugin);
         addItem(plugin);
         return plugin;

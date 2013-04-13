@@ -533,6 +533,11 @@ void RazorPanel::showAddPluginDialog()
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(dialog, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
+    
+    RazorPluginInfoList pluginsInUse;
+    foreach (Plugin *i, mPlugins)
+        pluginsInUse << i->desktopFile();
+    dialog->setPluginsInUse(pluginsInUse);
 
     dialog->show();
     dialog->raise();
