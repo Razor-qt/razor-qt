@@ -29,6 +29,7 @@
 #include "actions.h"
 #include "default_model.h"
 #include "edit_action_dialog.h"
+#include "shortcut_delegate.h"
 
 #include <QItemSelectionModel>
 #include <QSortFilterProxyModel>
@@ -64,6 +65,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     mSelectionModel = new QItemSelectionModel(actions_TV->model());
     actions_TV->setSelectionModel(mSelectionModel);
+
+    actions_TV->setItemDelegateForColumn(1, new ShortcutDelegate(mActions, this));
 
     connect(mSelectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), SLOT(selectionChanged(QItemSelection, QItemSelection)));
 
@@ -161,13 +164,19 @@ void MainWindow::on_remove_PB_clicked()
 
 void MainWindow::on_actions_TV_doubleClicked(const QModelIndex &index)
 {
-    if (index.column() == 0)
+    switch (index.column())
+    {
+    case 0:
     {
         qulonglong id = mDefaultModel->id(mSortFilterProxyModel->mapToSource(index));
         mActions->enableAction(id, !mActions->isActionEnabled(id));
     }
-    else
-    {
+        break;
+
+    case 1:
+        break;
+
+    default:
         editAction(index);
     }
 }

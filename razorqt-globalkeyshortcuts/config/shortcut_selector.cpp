@@ -140,3 +140,18 @@ QAction * ShortcutSelector::addMenuAction(const QString &title)
     subMenu->addAction(action);
     return action;
 }
+
+bool ShortcutSelector::isGrabbing() const
+{
+    return isChecked();
+}
+
+
+void ShortcutSelector::cancelNow()
+{
+    if (isChecked())
+    {
+        setText(mOldShortcut);
+        mActions->cancelShorcutGrab();
+    }
+}

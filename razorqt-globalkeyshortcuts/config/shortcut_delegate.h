@@ -25,54 +25,33 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GLOBAL_ACTION_CONFIG__SHORTCUT_SELECTOR__INCLUDED
-#define GLOBAL_ACTION_CONFIG__SHORTCUT_SELECTOR__INCLUDED
+#ifndef GLOBAL_ACTION_CONFIG__SHORTCUT_DELEGATE__INCLUDED
+#define GLOBAL_ACTION_CONFIG__SHORTCUT_DELEGATE__INCLUDED
 
-#include <QToolButton>
-#include <QWidget>
-#include <QString>
+
+#include <QItemDelegate>
 
 
 class Actions;
-class QTimer;
 
-class ShortcutSelector : public QToolButton
+class ShortcutDelegate : public QItemDelegate
 {
     Q_OBJECT
+
 public:
-    explicit ShortcutSelector(Actions *actions, QWidget *parent = 0);
-    explicit ShortcutSelector(QWidget *parent = 0);
-    void setActions(Actions *actions);
+    explicit ShortcutDelegate(Actions *actions, QObject *parent = 0);
 
-    QAction *addMenuAction(const QString &title);
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    bool shortcutAutoApplied(void) const { return mAutoApplyShortcut; }
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
-    bool isGrabbing() const;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-signals:
-    void shortcutGrabbed(const QString &);
-
-public slots:
-    void grabShortcut(int timeout = 10);
-
-    void autoApplyShortcut(bool value = true) { mAutoApplyShortcut = value; }
-
-    void cancelNow();
-
-private slots:
-    void shortcutTimer_timeout();
-    void grabShortcut_fail();
-    void newShortcutGrabbed(const QString &);
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
     Actions *mActions;
-    QString mOldShortcut;
-    int mTimeoutCounter;
-    QTimer *mShortcutTimer;
-    bool mAutoApplyShortcut;
-
-    void init();
 };
 
-#endif // GLOBAL_ACTION_CONFIG__SHORTCUT_SELECTOR__INCLUDED
+#endif // GLOBAL_ACTION_CONFIG__SHORTCUT_DELEGATE__INCLUDED

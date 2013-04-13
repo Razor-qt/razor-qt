@@ -24,6 +24,7 @@ set(${PROJECT_NAME}_SOURCES
 	shortcut_selector.cpp
 	../src/meta_types.cpp
 	edit_action_dialog.cpp
+	shortcut_delegate.cpp
 )
 
 set(${PROJECT_NAME}_FORMS
@@ -47,6 +48,7 @@ set(${PROJECT_NAME}_QT_HEADERS
 	default_model.h
 	shortcut_selector.h
 	edit_action_dialog.h
+	shortcut_delegate.h
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTERS
