@@ -36,6 +36,7 @@ ShortcutSelector::ShortcutSelector(Actions *actions, QWidget *parent)
     : QToolButton(parent)
     , mActions(0)
     , mShortcutTimer(new QTimer(this))
+    , mAutoApplyShortcut(false)
 {
     init();
     setActions(actions);
@@ -45,6 +46,7 @@ ShortcutSelector::ShortcutSelector(QWidget *parent)
     : QToolButton(parent)
     , mActions(0)
     , mShortcutTimer(new QTimer(this))
+    , mAutoApplyShortcut(false)
 {
     init();
 }
@@ -52,6 +54,7 @@ ShortcutSelector::ShortcutSelector(QWidget *parent)
 void ShortcutSelector::init()
 {
     setCheckable(true);
+    setFocusPolicy(Qt::StrongFocus);
 
     mShortcutTimer->setInterval(1000);
     mShortcutTimer->setSingleShot(false);
@@ -117,8 +120,10 @@ void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
 {
     setChecked(false);
     mShortcutTimer->stop();
-//    setText(newShortcut);
-    setText(QString());
+    if (mAutoApplyShortcut)
+        setText(newShortcut);
+    else
+        setText(QString());
     emit shortcutGrabbed(newShortcut);
 }
 

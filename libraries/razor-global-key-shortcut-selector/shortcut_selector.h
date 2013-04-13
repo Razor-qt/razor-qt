@@ -21,6 +21,8 @@ public:
 
     QAction *addMenuAction(const QString &title);
 
+    bool shortcutAutoApplied(void) const { return mAutoApplyShortcut; }
+
 signals:
     void shortcutGrabbed(const QString &);
     void cleared();
@@ -29,6 +31,8 @@ public slots:
     void grabShortcut();
 
     void clear();
+
+    void autoApplyShortcut(bool value = true) { mAutoApplyShortcut = value; }
 
 private slots:
     void shortcutTimer_timeout();
@@ -40,6 +44,7 @@ private:
     QString mOldShortcut;
     int mTimeoutCounter;
     QTimer *mShortcutTimer;
+    bool mAutoApplyShortcut;
 };
 
 #endif // SHORTCUT_SELECTOR_HPP

@@ -11,6 +11,7 @@ ShortcutSelector::ShortcutSelector(QWidget *parent)
     : QToolButton(parent)
     , mClient(GlobalKeyShortcut::Client::instance())
     , mShortcutTimer(new QTimer(this))
+    , mAutoApplyShortcut(false)
 {
     setCheckable(true);
     setFocusPolicy(Qt::StrongFocus);
@@ -65,8 +66,10 @@ void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
 {
     setChecked(false);
     mShortcutTimer->stop();
-//    setText(newShortcut);
-    setText(QString());
+    if (mAutoApplyShortcut)
+        setText(newShortcut);
+    else
+        setText(QString());
     emit shortcutGrabbed(newShortcut);
 }
 
