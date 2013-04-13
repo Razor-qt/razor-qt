@@ -47,6 +47,7 @@ protected slots:
     void when_accepted();
 
     void on_shortcut_SS_shortcutGrabbed(const QString &);
+    void shortcutClear();
     void on_command_RB_clicked(bool);
     void on_dbus_method_RB_clicked(bool);
 

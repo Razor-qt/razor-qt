@@ -156,7 +156,7 @@ void MainWindow::on_swap_PB_clicked()
 void MainWindow::on_remove_PB_clicked()
 {
     foreach(QModelIndex rowIndex, mSelectionModel->selectedRows())
-    mActions->removeAction(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rowIndex)));
+        mActions->removeAction(mDefaultModel->id(mSortFilterProxyModel->mapToSource(rowIndex)));
 }
 
 void MainWindow::on_actions_TV_doubleClicked(const QModelIndex &index)

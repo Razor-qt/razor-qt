@@ -35,6 +35,8 @@ EditActionDialog::EditActionDialog(Actions *actions, QWidget *parent)
     setupUi(this);
     shortcut_SS->setActions(mActions);
 
+    connect(shortcut_SS->addMenuAction(tr("Clear")), SIGNAL(triggered()), SLOT(shortcutClear()));
+
     connect(this, SIGNAL(accepted()), SLOT(when_accepted()));
 }
 
@@ -231,6 +233,11 @@ void EditActionDialog::on_shortcut_SS_shortcutGrabbed(const QString &shortcut)
 {
     mShortcut = shortcut;
     shortcut_SS->setText(shortcut);
+}
+
+void EditActionDialog::shortcutClear()
+{
+    on_shortcut_SS_shortcutGrabbed(QString());
 }
 
 void EditActionDialog::on_command_RB_clicked(bool checked)

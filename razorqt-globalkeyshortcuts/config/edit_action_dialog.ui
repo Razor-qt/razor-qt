@@ -273,7 +273,7 @@
  <customwidgets>
   <customwidget>
    <class>ShortcutSelector</class>
-   <extends>QPushButton</extends>
+   <extends>QToolButton</extends>
    <header>shortcut_selector.h</header>
   </customwidget>
  </customwidgets>

@@ -28,7 +28,7 @@
 #ifndef GLOBAL_ACTION_CONFIG__SHORTCUT_SELECTOR__INCLUDED
 #define GLOBAL_ACTION_CONFIG__SHORTCUT_SELECTOR__INCLUDED
 
-#include <QPushButton>
+#include <QToolButton>
 #include <QWidget>
 #include <QString>
 
@@ -36,13 +36,15 @@
 class Actions;
 class QTimer;
 
-class ShortcutSelector : public QPushButton
+class ShortcutSelector : public QToolButton
 {
     Q_OBJECT
 public:
     explicit ShortcutSelector(Actions *actions, QWidget *parent = 0);
     explicit ShortcutSelector(QWidget *parent = 0);
     void setActions(Actions *actions);
+
+    QAction *addMenuAction(const QString &title);
 
 signals:
     void shortcutGrabbed(const QString &);

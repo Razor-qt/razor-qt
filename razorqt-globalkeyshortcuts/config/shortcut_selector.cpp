@@ -29,10 +29,11 @@
 #include "actions.h"
 
 #include <QTimer>
+#include <QMenu>
 
 
 ShortcutSelector::ShortcutSelector(Actions *actions, QWidget *parent)
-    : QPushButton(parent)
+    : QToolButton(parent)
     , mActions(0)
     , mShortcutTimer(new QTimer(this))
 {
@@ -41,7 +42,7 @@ ShortcutSelector::ShortcutSelector(Actions *actions, QWidget *parent)
 }
 
 ShortcutSelector::ShortcutSelector(QWidget *parent)
-    : QPushButton(parent)
+    : QToolButton(parent)
     , mActions(0)
     , mShortcutTimer(new QTimer(this))
 {
@@ -119,4 +120,18 @@ void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
 //    setText(newShortcut);
     setText(QString());
     emit shortcutGrabbed(newShortcut);
+}
+
+QAction * ShortcutSelector::addMenuAction(const QString &title)
+{
+    QMenu *subMenu = menu();
+    if (!subMenu)
+    {
+        setPopupMode(QToolButton::MenuButtonPopup);
+        subMenu = new QMenu(this);
+        setMenu(subMenu);
+    }
+    QAction *action = new QAction(title, subMenu);
+    subMenu->addAction(action);
+    return action;
 }
