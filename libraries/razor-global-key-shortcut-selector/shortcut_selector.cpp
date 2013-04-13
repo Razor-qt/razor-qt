@@ -1,3 +1,30 @@
+/* BEGIN_COMMON_COPYRIGHT_HEADER
+ * (c)LGPL2+
+ *
+ * Razor - a lightweight, Qt based, desktop toolset
+ * http://razor-qt.org
+ *
+ * Copyright: 2013 Razor team
+ * Authors:
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
+ *
+ * This program or library is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA
+ *
+ * END_COMMON_COPYRIGHT_HEADER */
+
 #include "shortcut_selector.h"
 
 #include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
@@ -28,7 +55,7 @@ ShortcutSelector::ShortcutSelector(QWidget *parent)
     connect(mClient, SIGNAL(shortcutGrabbed(QString)), this, SLOT(newShortcutGrabbed(QString)));
 }
 
-void ShortcutSelector::grabShortcut()
+void ShortcutSelector::grabShortcut(int timeout)
 {
     if (!isChecked())
     {
@@ -36,7 +63,7 @@ void ShortcutSelector::grabShortcut()
         return;
     }
 
-    mTimeoutCounter = 10;
+    mTimeoutCounter = timeout;
     mOldShortcut = text();
     setText(QString::number(mTimeoutCounter));
     mShortcutTimer->start();
@@ -56,10 +83,13 @@ void ShortcutSelector::shortcutTimer_timeout()
 
 void ShortcutSelector::grabShortcut_fail()
 {
-    setChecked(false);
-    mShortcutTimer->stop();
-    setText(mOldShortcut);
-    emit shortcutGrabbed(mOldShortcut);
+    if (isChecked())
+    {
+        setChecked(false);
+        mShortcutTimer->stop();
+        setText(mOldShortcut);
+        emit shortcutGrabbed(mOldShortcut);
+    }
 }
 
 void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
@@ -90,4 +120,18 @@ QAction * ShortcutSelector::addMenuAction(const QString &title)
     QAction *action = new QAction(title, subMenu);
     subMenu->addAction(action);
     return action;
+}
+
+bool ShortcutSelector::isGrabbing() const
+{
+    return isChecked();
+}
+
+void ShortcutSelector::cancelNow()
+{
+    if (isChecked())
+    {
+        grabShortcut_fail();
+        mClient->cancelShorcutGrab();
+    }
 }

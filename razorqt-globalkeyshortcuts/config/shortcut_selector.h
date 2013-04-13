@@ -56,6 +56,8 @@ signals:
 public slots:
     void grabShortcut(int timeout = 10);
 
+    void clear();
+
     void autoApplyShortcut(bool value = true) { mAutoApplyShortcut = value; }
 
     void cancelNow();

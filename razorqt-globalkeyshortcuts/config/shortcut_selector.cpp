@@ -110,10 +110,13 @@ void ShortcutSelector::shortcutTimer_timeout()
 
 void ShortcutSelector::grabShortcut_fail()
 {
-    setChecked(false);
-    mShortcutTimer->stop();
-    setText(mOldShortcut);
-    emit shortcutGrabbed(mOldShortcut);
+    if (isChecked())
+    {
+        setChecked(false);
+        mShortcutTimer->stop();
+        setText(mOldShortcut);
+        emit shortcutGrabbed(mOldShortcut);
+    }
 }
 
 void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
@@ -125,6 +128,11 @@ void ShortcutSelector::newShortcutGrabbed(const QString &newShortcut)
     else
         setText(QString());
     emit shortcutGrabbed(newShortcut);
+}
+
+void ShortcutSelector::clear()
+{
+    setText(QString());
 }
 
 QAction * ShortcutSelector::addMenuAction(const QString &title)
@@ -146,12 +154,11 @@ bool ShortcutSelector::isGrabbing() const
     return isChecked();
 }
 
-
 void ShortcutSelector::cancelNow()
 {
     if (isChecked())
     {
-        setText(mOldShortcut);
+        grabShortcut_fail();
         mActions->cancelShorcutGrab();
     }
 }
