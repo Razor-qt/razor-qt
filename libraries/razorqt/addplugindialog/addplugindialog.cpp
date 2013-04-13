@@ -182,10 +182,14 @@ void AddPluginDialog::init()
 
     for (int i=0; i< mPlugins.length(); ++i)
     {
-        bool inUse = mPluginsInUse.contains(mPlugins.at(i));
+        bool count = mPluginsInUse.count(mPlugins.at(i));
+        QString countStr;
+        if (count)
+            countStr = tr("(%1 active)").arg(count);
+
         const RazorPluginInfo &plugin = mPlugins.at(i);
         QListWidgetItem* item = new QListWidgetItem(ui->pluginList);
-        item->setText(QString("<b>%1</b><br>\n%2\n%3").arg(plugin.name(), plugin.comment(), inUse ? "<b><i>in use</i></b>" : ""));
+        item->setText(QString("<b>%1 %2</b><br>\n%3\n").arg(plugin.name(), countStr, plugin.comment()));
         item->setIcon(plugin.icon(fallIco));
         item->setData(INDEX_ROLE, i);
         item->setData(SEARCH_ROLE, QString("%1 %2 %3 %4").arg(

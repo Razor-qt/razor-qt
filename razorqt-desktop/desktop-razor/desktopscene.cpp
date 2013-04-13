@@ -270,13 +270,7 @@ void DesktopScene::showAddPluginDialog()
     
     RazorPluginInfoList pluginsInUse;
     foreach (DesktopWidgetPlugin *i, m_plugins.values())
-    {
-        RazorPluginInfo info = i->desktopFile();
-        if (pluginsInUse.contains(info))
-            continue;
-        pluginsInUse << info;
-        qDebug() << i->desktopFile() << "to be used";
-    }
+        pluginsInUse << i->desktopFile();
     dlg->setPluginsInUse(pluginsInUse);
 
     dlg->exec();
