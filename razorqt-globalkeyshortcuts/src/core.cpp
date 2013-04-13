@@ -523,7 +523,6 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
                 mAllowGrabMiscSpecial = settings.value(/* General/ */"AllowGrabMiscSpecial", mAllowGrabMiscSpecial).toBool();
                 mAllowGrabBaseKeypad = settings.value(/* General/ */"AllowGrabBaseKeypad", mAllowGrabBaseKeypad).toBool();
                 mAllowGrabMiscKeypad = settings.value(/* General/ */"AllowGrabMiscKeypad", mAllowGrabMiscKeypad).toBool();
-                mAllowGrabPrintable = settings.value(/* General/ */"AllowGrabPrintable", mAllowGrabPrintable).toBool();
 
                 foreach(QString section, settings.childGroups())
                 {
@@ -620,7 +619,6 @@ Core::Core(bool useSyslog, bool minLogLevelSet, int minLogLevel, const QStringLi
         log(LOG_DEBUG, "AllowGrabMiscSpecial: %s", mAllowGrabMiscSpecial ? "true" : "false");
         log(LOG_DEBUG, "AllowGrabBaseKeypad: %s",  mAllowGrabBaseKeypad  ? "true" : "false");
         log(LOG_DEBUG, "AllowGrabMiscKeypad: %s",  mAllowGrabMiscKeypad  ? "true" : "false");
-        log(LOG_DEBUG, "AllowGrabPrintable: %s",   mAllowGrabPrintable   ? "true" : "false");
 
         mSaveAllowed = true;
         saveConfig();
@@ -753,7 +751,6 @@ void Core::saveConfig()
     settings.setValue(/* General/ */"AllowGrabMiscSpecial", mAllowGrabMiscSpecial);
     settings.setValue(/* General/ */"AllowGrabBaseKeypad",  mAllowGrabBaseKeypad);
     settings.setValue(/* General/ */"AllowGrabMiscKeypad",  mAllowGrabMiscKeypad);
-    settings.setValue(/* General/ */"AllowGrabPrintable",   mAllowGrabPrintable);
 
     ShortcutAndActionById::const_iterator lastShortcutAndActionById = mShortcutAndActionById.end();
     for (ShortcutAndActionById::const_iterator shortcutAndActionById = mShortcutAndActionById.begin(); shortcutAndActionById != lastShortcutAndActionById; ++shortcutAndActionById)
