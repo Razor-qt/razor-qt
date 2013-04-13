@@ -239,7 +239,7 @@ void RazorMainMenu::buildMenu()
  ************************************************/
 QDialog *RazorMainMenu::configureDialog()
 {
-    return new RazorMainMenuConfiguration(*settings());
+    return new RazorMainMenuConfiguration(*settings(), DEFAULT_SHORTCUT);
 }
 
 

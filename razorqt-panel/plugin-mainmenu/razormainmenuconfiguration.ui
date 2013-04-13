@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>470</width>
-    <height>279</height>
+    <height>287</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -146,7 +146,7 @@
  <customwidgets>
   <customwidget>
    <class>ShortcutSelector</class>
-   <extends>QPushButton</extends>
+   <extends>QToolButton</extends>
    <header location="global">razor-global-key-shortcut-selector/shortcut_selector.h</header>
   </customwidget>
  </customwidgets>

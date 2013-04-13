@@ -45,13 +45,14 @@ class RazorMainMenuConfiguration : public QDialog
     Q_OBJECT
 
 public:
-    explicit RazorMainMenuConfiguration(QSettings &settings, QWidget *parent = 0);
+    explicit RazorMainMenuConfiguration(QSettings &settings, const QString &defaultShortcut, QWidget *parent = 0);
     ~RazorMainMenuConfiguration();
 
 private:
     Ui::RazorMainMenuConfiguration *ui;
     QSettings &mSettings;
     RazorSettingsCache mOldSettings;
+    QString mDefaultShortcut;
 
 private slots:
     /*
@@ -63,6 +64,7 @@ private slots:
     void showTextChanged(bool value);
     void chooseMenuFile();
     void shortcutChanged(const QString &value);
+    void shortcutReset();
 };
 
 #endif // RAZORMAINMENUCONFIGURATION_H

@@ -32,11 +32,12 @@
 
 #include <QtGui/QFileDialog>
 
-RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, QWidget *parent) :
+RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, const QString &defaultShortcut, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorMainMenuConfiguration),
     mSettings(settings),
-    mOldSettings(settings)
+    mOldSettings(settings),
+    mDefaultShortcut(defaultShortcut)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("MainMenuConfigurationWindow");
@@ -53,6 +54,7 @@ RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, QWid
     connect(ui->chooseMenuFilePB, SIGNAL(clicked()), this, SLOT(chooseMenuFile()));
     
     connect(ui->shortcutEd, SIGNAL(shortcutGrabbed(QString)), this, SLOT(shortcutChanged(QString)));
+    connect(ui->shortcutEd->addMenuAction(tr("Reset")), SIGNAL(triggered()), this, SLOT(shortcutReset()));
 }
 
 RazorMainMenuConfiguration::~RazorMainMenuConfiguration()
@@ -98,6 +100,11 @@ void RazorMainMenuConfiguration::shortcutChanged(const QString &value)
 {
     ui->shortcutEd->setText(value);
     mSettings.setValue("shortcut", value);
+}
+
+void RazorMainMenuConfiguration::shortcutReset()
+{
+    shortcutChanged(mDefaultShortcut);
 }
 
 void RazorMainMenuConfiguration::dialogButtonsAction(QAbstractButton *btn)
