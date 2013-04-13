@@ -99,13 +99,13 @@ void ShortcutSelector::grabShortcut(int timeout)
 
 void ShortcutSelector::shortcutTimer_timeout()
 {
-    --mTimeoutCounter;
-    setText(QString::number(mTimeoutCounter));
-    if (!mTimeoutCounter)
+    if (mTimeoutCounter > 0)
     {
-        setChecked(false);
-        mShortcutTimer->stop();
+        --mTimeoutCounter;
+        setText(QString::number(mTimeoutCounter));
     }
+    else
+        setText(QString());
 }
 
 void ShortcutSelector::grabShortcut_fail()
