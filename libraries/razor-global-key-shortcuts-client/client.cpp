@@ -226,7 +226,7 @@ void ClientImpl::grabShortcut(uint timeout)
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(grabShortcutFinished(QDBusPendingCallWatcher *)));
 }
 
-void ClientImpl::cancelShortutGrab()
+void ClientImpl::cancelShorcutGrab()
 {
     mProxy->cancelShortcutGrab();
 }
@@ -294,7 +294,7 @@ Client::~Client()
 Action *Client::addAction(const QString &shortcut, const QString &path, const QString &description, QObject *parent) { return impl->addClientAction(shortcut, path, description, parent); }
 bool Client::removeAction(const QString &path) { return impl->removeClientAction(path); }
 void Client::grabShortcut(uint timeout) { impl->grabShortcut(timeout); }
-void Client::cancelShortutGrab() { impl->cancelShortutGrab(); }
+void Client::cancelShorcutGrab() { impl->cancelShorcutGrab(); }
 bool Client::isDaemonPresent() const { return impl->isDaemonPresent(); }
 
 }

@@ -638,7 +638,7 @@ void Actions::grabShortcut(uint timeout)
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), this, SLOT(grabShortcutFinished(QDBusPendingCallWatcher *)));
 }
 
-void Actions::cancelShortutGrab()
+void Actions::cancelShorcutGrab()
 {
     mDaemonProxy->cancelShortcutGrab();
 }

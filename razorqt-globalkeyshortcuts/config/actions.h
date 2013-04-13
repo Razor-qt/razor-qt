@@ -102,7 +102,7 @@ public:
 
 
     void grabShortcut(uint timeout);
-    void cancelShortutGrab();
+    void cancelShorcutGrab();
 
 signals:
     void daemonDisappeared();

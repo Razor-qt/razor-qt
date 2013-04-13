@@ -73,7 +73,7 @@ public:
     void removeAction(ActionImpl *action);
 
     void grabShortcut(uint timeout);
-    void cancelShortutGrab();
+    void cancelShorcutGrab();
 
     bool isDaemonPresent() const;
 

@@ -32,7 +32,7 @@ void ShortcutSelector::grabShortcut()
 {
     if (!isChecked())
     {
-        mClient->cancelShortutGrab();
+        mClient->cancelShorcutGrab();
         return;
     }
 

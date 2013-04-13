@@ -86,7 +86,7 @@ void ShortcutSelector::grabShortcut(int timeout)
 
     if (!isChecked())
     {
-        mActions->cancelShortutGrab();
+        mActions->cancelShorcutGrab();
         return;
     }
 

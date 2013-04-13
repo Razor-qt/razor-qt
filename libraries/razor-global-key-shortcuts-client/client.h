@@ -59,7 +59,7 @@ public:
 
 public slots:
     void grabShortcut(uint timeout);
-    void cancelShortutGrab();
+    void cancelShorcutGrab();
 
 signals:
     void shortcutGrabbed(const QString &);
