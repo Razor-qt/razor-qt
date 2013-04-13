@@ -2243,6 +2243,21 @@ void Core::modifyClientAction(qulonglong &result, const QDBusObjectPath &path, c
         return;
     }
 
+    SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath == mSenderByClientPath.end())
+    {
+        log(LOG_WARNING, "No action activated for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = 0ull;
+        return;
+    }
+
+    if (senderByClientPath.value() != sender)
+    {
+        log(LOG_WARNING, "Sender mismatch: caller: %s owner: %s", qPrintable(senderByClientPath.value()), qPrintable(sender));
+        result = 0ull;
+        return;
+    }
+
     qulonglong id = idByNativeClient.value();
 
     mShortcutAndActionById[id].second->setDescription(description);
@@ -2360,6 +2375,21 @@ void Core::enableClientAction(bool &result, const QDBusObjectPath &path, bool en
         return;
     }
 
+    SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath == mSenderByClientPath.end())
+    {
+        log(LOG_WARNING, "No action activated for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
+    if (senderByClientPath.value() != sender)
+    {
+        log(LOG_WARNING, "Sender mismatch: caller: %s owner: %s", qPrintable(senderByClientPath.value()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
     qulonglong id = idByNativeClient.value();
 
     mShortcutAndActionById[id].second->setEnabled(enabled);
@@ -2382,6 +2412,19 @@ void Core::isClientActionEnabled(bool &enabled, const QDBusObjectPath &path, con
     if (idByNativeClient == mIdByClientPath.end())
     {
         log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        return;
+    }
+
+    SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath == mSenderByClientPath.end())
+    {
+        log(LOG_WARNING, "No action activated for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        return;
+    }
+
+    if (senderByClientPath.value() != sender)
+    {
+        log(LOG_WARNING, "Sender mismatch: caller: %s owner: %s", qPrintable(senderByClientPath.value()), qPrintable(sender));
         return;
     }
 
@@ -2465,6 +2508,21 @@ void Core::changeClientActionShortcut(QPair<QString, qulonglong> &result, const 
     if (idByNativeClient == mIdByClientPath.end())
     {
         log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = qMakePair(QString(), 0ull);
+        return;
+    }
+
+    SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath == mSenderByClientPath.end())
+    {
+        log(LOG_WARNING, "No action activated for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = qMakePair(QString(), 0ull);
+        return;
+    }
+
+    if (senderByClientPath.value() != sender)
+    {
+        log(LOG_WARNING, "Sender mismatch: caller: %s owner: %s", qPrintable(senderByClientPath.value()), qPrintable(sender));
         result = qMakePair(QString(), 0ull);
         return;
     }
@@ -2638,6 +2696,21 @@ void Core::removeClientAction(bool &result, const QDBusObjectPath &path, const Q
         return;
     }
 
+    SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath == mSenderByClientPath.end())
+    {
+        log(LOG_WARNING, "No action activated for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
+    if (senderByClientPath.value() != sender)
+    {
+        log(LOG_WARNING, "Sender mismatch: caller: %s owner: %s", qPrintable(senderByClientPath.value()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
     qulonglong id = idByNativeClient.value();
 
     ShortcutAndActionById::iterator shortcutAndActionById = mShortcutAndActionById.find(id);
@@ -2755,6 +2828,21 @@ void Core::deactivateClientAction(bool &result, const QDBusObjectPath &path, con
     if (idByNativeClient == mIdByClientPath.end())
     {
         log(LOG_WARNING, "No action registered for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
+    SenderByClientPath::Iterator senderByClientPath = mSenderByClientPath.find(path);
+    if (senderByClientPath == mSenderByClientPath.end())
+    {
+        log(LOG_WARNING, "No action activated for '%s' (sender: %s)", qPrintable(path.path()), qPrintable(sender));
+        result = false;
+        return;
+    }
+
+    if (senderByClientPath.value() != sender)
+    {
+        log(LOG_WARNING, "Sender mismatch: caller: %s owner: %s", qPrintable(senderByClientPath.value()), qPrintable(sender));
         result = false;
         return;
     }
