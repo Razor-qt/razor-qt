@@ -30,6 +30,7 @@
 #include <QtGui/QIcon>
 #include <QtCore/QDebug>
 #include <QtCore/QLibraryInfo>
+#include <QDirIterator>
 #include <csignal>
 
 #include "razorpanelapplication.h"
@@ -56,16 +57,28 @@ int main(int argc, char *argv[])
 
     // Read command line arguments .......................
     // The first argument is config file name.
-    QString configFile = "panel";
+    QString configFile;
+
     if (app->arguments().count() > 1)
     {
         configFile = app->arguments().at(1);
         if (configFile.endsWith(".conf"))
             configFile.chop(5);
+        app->addPanel(configFile);
+    }
+    else
+    {
+        QDirIterator it("/home/pvanek/.config/razor/razor-panel/", QStringList() << "*.conf", QDir::Files);
+        while (it.hasNext())
+        {
+            it.next();
+            configFile = it.fileName();
+            if (configFile.endsWith(".conf"))
+                configFile.chop(5);
+            app->addPanel(configFile);
+        }
     }
 
-    RazorPanel *panel = new RazorPanel(configFile);
-    app->setPanel(panel);
 
     //Setup Unix signal handlers
     struct sigaction term;
@@ -75,11 +88,8 @@ int main(int argc, char *argv[])
     sigaction(SIGTERM, &term, 0);
     sigaction(SIGINT,  &term, 0);
 
-    panel->show();
     bool res = app->exec();
 
-    app->setPanel(0);
-    delete panel;
     app->deleteLater();
     return res;
 }

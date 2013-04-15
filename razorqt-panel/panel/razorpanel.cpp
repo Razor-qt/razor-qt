@@ -104,7 +104,7 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setWindowTitle("Razor Panel");
-    setObjectName("RazorPanel");
+    setObjectName(QString("RazorPanel %1").arg(configFile));
 
     mLayout = new RazorPanelLayout(this);
     connect(mLayout, SIGNAL(pluginMoved()), this, SLOT(pluginMoved()));
@@ -124,6 +124,8 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     mSettings = new RazorSettings("razor-panel/" + configFile, this);
     readSettings();
     loadPlugins();
+    
+    show();
 }
 
 
@@ -756,7 +758,7 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
 
 //#ifdef DEBUG
     menu.addSeparator();
-    menu.addAction("Exit (debug only)", this, SLOT(close()));
+    menu.addAction("Exit (debug only)", qApp, SLOT(quit()));
 //#endif
 
     menu.exec(QCursor::pos());
@@ -903,9 +905,3 @@ void RazorPanel::pluginMoved()
     }
     saveSettings();
 }
-
-
-
-
-
-
