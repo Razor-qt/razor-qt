@@ -78,7 +78,6 @@ qtxdg_translate_ts(libqtxdg_QM_FILES
 
 
 #**********************************************************
-cmake_minimum_required( VERSION 2.6 )
 
 include(RazorLibSuffix)
 
