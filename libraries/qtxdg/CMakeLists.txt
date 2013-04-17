@@ -79,7 +79,6 @@ qtxdg_translate_ts(libqtxdg_QM_FILES
 
 #**********************************************************
 
-include(RazorLibSuffix)
 
 QT4_WRAP_CPP(libqtxdg_CXX_FILES ${libqtxdg_MOCS})
 

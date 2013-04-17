@@ -57,7 +57,6 @@ file(GLOB SYSSTAT_TS_FILES
 
 #**********************************************************
 
-include(RazorLibSuffix)
 
 QT4_WRAP_CPP(SYSSTAT_CXX ${SYSSTAT_MOCS})
 qt4_add_translation(SYSSTAT_QM_FILES ${SYSSTAT_TS_FILES})
