@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        QDirIterator it("/home/pvanek/.config/razor/razor-panel/", QStringList() << "*.conf", QDir::Files);
+        QDirIterator it(QDir::homePath() + "/.config/razor/razor-panel/", QStringList() << "*.conf", QDir::Files);
         while (it.hasNext())
         {
             it.next();
