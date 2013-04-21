@@ -302,3 +302,10 @@ TrayIcon {
 #WorldClockPopup{
     font-size: 12pt;
 }
+
+/*
+ * CPU monitor
+ */
+#RazorCpuLoad {
+    qproperty-fontColor: #cacaca;
+}

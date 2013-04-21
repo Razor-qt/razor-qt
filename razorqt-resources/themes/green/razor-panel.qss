@@ -264,3 +264,10 @@ TrayIcon {
     font-size: 12pt;
     color: #606060;
 }
+
+/*
+ * CPU monitor
+ */
+#RazorCpuLoad {
+    qproperty-fontColor: #606060;
+}

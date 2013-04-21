@@ -49,6 +49,8 @@ RazorCpuLoad::RazorCpuLoad(IRazorPanelPlugin* plugin, QWidget* parent):
     m_barOrientation(TopDownBar),
     m_timerID(-1)
 {
+    setObjectName("RazorCpuLoad");
+
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(&m_stuff);
 
@@ -157,8 +159,11 @@ void RazorCpuLoad::paintEvent ( QPaintEvent * )
 
 	p.fillRect(r1, shade);
 
-	if( m_showText )
-		p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
+	if (m_showText)
+    {
+        p.setPen(fontColor);
+        p.drawText(rect(), Qt::AlignCenter, QString::number(m_avg));
+    }
 }
 
 
@@ -183,4 +188,3 @@ void RazorCpuLoad::settingsChanged()
 	m_timerID = startTimer(m_updateInterval);
 	update();
 }
-

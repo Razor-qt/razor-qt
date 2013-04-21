@@ -301,3 +301,10 @@ TrayIcon {
     font-size: 12pt;
     color: #aaaaaa;
 }
+
+/*
+ * CPU monitor
+ */
+#RazorCpuLoad {
+    qproperty-fontColor: #aaaaaa;
+}
