@@ -24,7 +24,6 @@ set(razormount_MOCS
 
 QT4_WRAP_CPP(razourmount_MOCS ${razormount_MOCS})
 
-#include(RazorLibSuffix)
 
 add_library ( razormount SHARED ${razormount_SRCS} ${razourmount_MOCS} )
 

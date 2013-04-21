@@ -9,7 +9,6 @@ set (PATCH_VERSION 0)
 
 
 add_definitions(-Wall)
-find_package(Qt4 REQUIRED)
 find_package(LibMagic REQUIRED)
 
 
@@ -79,10 +78,7 @@ qtxdg_translate_ts(libqtxdg_QM_FILES
 
 
 #**********************************************************
-cmake_minimum_required( VERSION 2.6 )
 
-include(RazorLibSuffix)
-include(${QT_USE_FILE})
 
 QT4_WRAP_CPP(libqtxdg_CXX_FILES ${libqtxdg_MOCS})
 

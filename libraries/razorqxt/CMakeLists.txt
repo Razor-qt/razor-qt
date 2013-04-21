@@ -1,4 +1,3 @@
-include(RazorLibSuffix)
 
 find_package(X11 REQUIRED)
 include_directories(${X11_INCLUDE_DIR})
