@@ -30,13 +30,21 @@
 #include "razorcpuload.h"
 #include "razorcpuloadconfiguration.h"
 
+#include <QVBoxLayout>
+
 Q_EXPORT_PLUGIN2(cpuload, RazorCpuLoadPluginLibrary)
 
 RazorCpuLoadPlugin::RazorCpuLoadPlugin(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
-    IRazorPanelPlugin(startupInfo),
-    mWidget(new RazorCpuLoad(this))
+    IRazorPanelPlugin(startupInfo)
 {
+    mWidget = new QWidget();
+    mContent = new RazorCpuLoad(this, mWidget);
+    QVBoxLayout *layout = new QVBoxLayout(mWidget);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->addWidget(mContent);
+    layout->setStretchFactor(mContent, 1);
 }
 
 RazorCpuLoadPlugin::~RazorCpuLoadPlugin()
@@ -51,10 +59,10 @@ QWidget *RazorCpuLoadPlugin::widget()
 
 QDialog *RazorCpuLoadPlugin::configureDialog()
 {
-    return new RazorCpuLoadConfiguration(settings(), mWidget);
+    return new RazorCpuLoadConfiguration(settings(), mContent);
 }
 
 void RazorCpuLoadPlugin::settingsChanged()
 {
-    mWidget->settingsChanged();
+    mContent->settingsChanged();
 }

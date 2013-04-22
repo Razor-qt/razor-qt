@@ -52,7 +52,8 @@ protected:
     virtual void settingsChanged();
 
 private:
-    RazorCpuLoad *mWidget;
+    QWidget *mWidget;
+    RazorCpuLoad *mContent;
 };
 
 
