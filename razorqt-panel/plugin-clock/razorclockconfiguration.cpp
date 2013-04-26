@@ -169,7 +169,7 @@ void RazorClockConfiguration::loadSettings()
     ui->showDateAfterTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "after");
     ui->showDateBelowTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "below");
 
-    mCustomDateFormat = mSettings.value("mCustomDateFormat", QString()).toString();
+    mCustomDateFormat = mSettings.value("customDateFormat", QString()).toString();
     QString dateFormat = mSettings.value("dateFormat", QLocale::system().dateFormat(QLocale::ShortFormat)).toString();
 
     createDateFormats();
@@ -201,7 +201,7 @@ void RazorClockConfiguration::saveSettings()
         (ui->showDateAfterTimeRB->isChecked() ? "after" :
         (ui->showDateBelowTimeRB->isChecked() ? "below" : "no" )));
 
-    mSettings.setValue("mCustomDateFormat", mCustomDateFormat);
+    mSettings.setValue("customDateFormat", mCustomDateFormat);
     if (ui->dateFormatCOB->currentIndex() == (ui->dateFormatCOB->count() - 1))
         mSettings.setValue("dateFormat", mCustomDateFormat);
     else
