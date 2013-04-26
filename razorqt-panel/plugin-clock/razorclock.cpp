@@ -107,6 +107,7 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
  */
 RazorClock::~RazorClock()
 {
+    delete mMainWidget;
 }
 
 QDateTime RazorClock::currentDateTime()
