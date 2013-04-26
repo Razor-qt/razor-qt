@@ -58,6 +58,8 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     connect(ui->showDateBeforeTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
     connect(ui->showDateAfterTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
     connect(ui->showDateBelowTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
+
+    connect(ui->autorotateCB, SIGNAL(clicked()), SLOT(saveSettings()));
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -169,7 +171,7 @@ void RazorClockConfiguration::loadSettings()
     ui->showDateAfterTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "after");
     ui->showDateBelowTimeRB->setChecked(mSettings.value("showDate", "no").toString().toLower() == "below");
 
-    mCustomDateFormat = mSettings.value("mCustomDateFormat", QString()).toString();
+    mCustomDateFormat = mSettings.value("customDateFormat", QString()).toString();
     QString dateFormat = mSettings.value("dateFormat", QLocale::system().dateFormat(QLocale::ShortFormat)).toString();
 
     createDateFormats();
@@ -183,6 +185,8 @@ void RazorClockConfiguration::loadSettings()
             ui->dateFormatCOB->setCurrentIndex(1);
     }
     mOldIndex = ui->dateFormatCOB->currentIndex();
+
+    ui->autorotateCB->setChecked(mSettings.value("autoRotate", true).toBool());
 }
 
 void RazorClockConfiguration::saveSettings()
@@ -201,11 +205,13 @@ void RazorClockConfiguration::saveSettings()
         (ui->showDateAfterTimeRB->isChecked() ? "after" :
         (ui->showDateBelowTimeRB->isChecked() ? "below" : "no" )));
 
-    mSettings.setValue("mCustomDateFormat", mCustomDateFormat);
+    mSettings.setValue("customDateFormat", mCustomDateFormat);
     if (ui->dateFormatCOB->currentIndex() == (ui->dateFormatCOB->count() - 1))
         mSettings.setValue("dateFormat", mCustomDateFormat);
     else
         mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
+
+    mSettings.setValue("autoRotate", ui->autorotateCB->isChecked());
 }
 
 void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)

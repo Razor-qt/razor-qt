@@ -4,11 +4,12 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2013 Razor team
  * Authors:
  *   Christopher "VdoP" Regali
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -59,38 +60,45 @@ Q_EXPORT_PLUGIN2(clock, RazorClockPluginLibrary)
 RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
     IRazorPanelPlugin(startupInfo),
-    mContent(new QFrame()),
-    mCalendarDialog(0)
+    mCalendarDialog(0),
+    mAutoRotate(true)
 {
-    mClockFormat = "hh:mm";
-
+    mMainWidget = new QWidget();
+    mRotatedWidget = new RotatedWidget(*(new QWidget()), mMainWidget);
+    mContent = mRotatedWidget->content();
     mTimeLabel = new QLabel(mContent);
-    mTimeLabel->setObjectName("TimeLabel");
     mDateLabel = new QLabel(mContent);
+
+    QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
+    borderLayout->setContentsMargins(0, 0, 0, 0);
+    borderLayout->setSpacing(0);
+    borderLayout->addWidget(mRotatedWidget, 0, Qt::AlignCenter);
+
+    mTimeLabel->setObjectName("TimeLabel");
     mDateLabel->setObjectName("DateLabel");
+
     QVBoxLayout *contentLayout = new QVBoxLayout(mContent);
+    contentLayout->setContentsMargins(0, 0, 0, 0);
+    contentLayout->setSpacing(1);
     contentLayout->addWidget(mTimeLabel, 0, Qt::AlignCenter);
     contentLayout->addWidget(mDateLabel, 0, Qt::AlignCenter);
     mContent->setLayout(contentLayout);
 
-    contentLayout->setContentsMargins(0, 0, 0, 0);
-
-    contentLayout->setSpacing(1);
-
-    mTimeLabel->setAlignment(Qt::AlignCenter);
-    mDateLabel->setAlignment(Qt::AlignCenter);
-    contentLayout->setAlignment(Qt::AlignCenter);
-
     mTimeLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     mDateLabel->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
     mContent->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    mRotatedWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+    mMainWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+
 
     mClockTimer = new QTimer(this);
     connect (mClockTimer, SIGNAL(timeout()), SLOT(updateTime()));
 
+    mClockFormat = "hh:mm";
+
     mFirstDayOfWeek = firstDayOfWeek();
 
-    mContent->installEventFilter(this);
+    mMainWidget->installEventFilter(this);
     settingsChanged();
 }
 
@@ -99,7 +107,7 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
  */
 RazorClock::~RazorClock()
 {
-    delete mContent;
+    delete mMainWidget;
 }
 
 QDateTime RazorClock::currentDateTime()
@@ -136,6 +144,10 @@ void RazorClock::showTime(const QDateTime &now)
     {
         mTimeLabel->setText(QLocale::system().toString(now, mClockFormat));
     }
+
+    mRotatedWidget->adjustContentSize();
+
+    mRotatedWidget->update();
 }
 
 void RazorClock::restartTimer(const QDateTime &now)
@@ -162,6 +174,14 @@ void RazorClock::settingsChanged()
     bool dateAfterTime = (settings()->value("showDate", "no").toString().toLower() == "after");
     mDateOnNewLine = (settings()->value("showDate", "no").toString().toLower() == "below");
 
+    bool autoRotate = settings()->value("autoRotate", true).toBool();
+    if (autoRotate != mAutoRotate)
+    {
+        mAutoRotate = autoRotate;
+        realign();
+    }
+
+
     if (dateBeforeTime)
         mClockFormat = QString("%1 %2").arg(mDateFormat).arg(mTimeFormat);
     else if (dateAfterTime)
@@ -186,6 +206,28 @@ void RazorClock::settingsChanged()
 
         restartTimer(now);
     }
+}
+
+void RazorClock::realign()
+{
+    if (mAutoRotate)
+        switch (panel()->position())
+        {
+        case IRazorPanel::PositionTop:
+        case IRazorPanel::PositionBottom:
+            mRotatedWidget->setOrigin(Qt::TopLeftCorner);
+            break;
+
+        case IRazorPanel::PositionLeft:
+            mRotatedWidget->setOrigin(Qt::BottomLeftCorner);
+            break;
+
+        case IRazorPanel::PositionRight:
+            mRotatedWidget->setOrigin(Qt::TopRightCorner);
+            break;
+        }
+    else
+        mRotatedWidget->setOrigin(Qt::TopLeftCorner);
 }
 
 static QDate getMaxDate(const QFontMetrics &metrics, const QString &format)
@@ -321,11 +363,11 @@ QDialog * RazorClock::configureDialog()
 
 bool RazorClock::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == mContent)
+    if (watched == mMainWidget)
     {
         if (event->type() == QEvent::ToolTip)
         {
-            mContent->setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
+            mMainWidget->setToolTip(QDateTime::currentDateTime().toString(Qt::DefaultLocaleLongDate));
         }
 
         return false;
@@ -333,4 +375,3 @@ bool RazorClock::eventFilter(QObject *watched, QEvent *event)
 
     return false;
 }
-

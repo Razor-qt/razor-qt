@@ -109,14 +109,14 @@ RazorTaskButton {
 /*
  * Clock
  */
- #Clock #TimeLabel {
-     font-size: 10pt;
-     color: #606060;
- }
- #Clock #DateLabel {
-     font-size: 8pt;
-     color: #606060;
- }
+#Clock #TimeLabel {
+    font-size: 10pt;
+    color: #606060;
+}
+#Clock #DateLabel {
+    font-size: 8pt;
+    color: #606060;
+}
 
 /*
  * Tray

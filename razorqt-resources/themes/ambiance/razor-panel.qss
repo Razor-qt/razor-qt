@@ -111,15 +111,17 @@ RazorPanelPlugin > QToolButton:hover {
 /*
  * Clock
  */
- #Clock > QWidget{
-     margin-right: 2px;
- }
- #Clock #TimeLabel{
-     font-size: 10pt;
- }
- #Clock #DateLabel{
-     font-size: 8pt;
- }
+#Clock > QWidget{
+    margin-right: 2px;
+}
+#Clock #TimeLabel{
+    font-size: 10pt;
+    color: #cacaca;
+}
+#Clock #DateLabel{
+    font-size: 8pt;
+    color: #cacaca;
+}
 
 #Clock QCalendarWidget #qt_calendar_navigationbar,
 #Clock QCalendarWidget #qt_calendar_navigationbar * {
@@ -290,17 +292,14 @@ TrayIcon {
 /*
  * WorldClock
  */
-#WorldClock{
+#WorldClockContent{
     font-size: 10pt;
-}
-
-#WorldClock *{
-    background-color: #4E4D48;
-    color: #cacaca;  
+    color: #cacaca;
 }
 
 #WorldClockPopup{
     font-size: 12pt;
+    color: #cacaca;
 }
 
 /*

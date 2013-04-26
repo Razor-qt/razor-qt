@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>360</height>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
       <item>
        <widget class="QCheckBox" name="useUtcCB">
         <property name="text">
-         <string>Use UTC</string>
+         <string>&amp;Use UTC</string>
         </property>
        </widget>
       </item>
@@ -73,7 +73,7 @@
       <item row="0" column="0" colspan="2">
        <widget class="QRadioButton" name="dontShowDateRB">
         <property name="text">
-         <string>Do not show date</string>
+         <string>&amp;Do not show date</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -83,21 +83,40 @@
       <item row="1" column="0" colspan="2">
        <widget class="QRadioButton" name="showDateBeforeTimeRB">
         <property name="text">
-         <string>Show date before time</string>
+         <string>Show date &amp;before time</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
        <widget class="QRadioButton" name="showDateAfterTimeRB">
         <property name="text">
-         <string>Show date after time</string>
+         <string>Show date &amp;after time</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QRadioButton" name="showDateBelowTimeRB">
         <property name="text">
-         <string>Show date below time on new line</string>
+         <string>Show date below time on new &amp;line</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="orientationGB">
+     <property name="title">
+      <string>Orientation</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="autorotateCB">
+        <property name="text">
+         <string>Auto&amp;rotate</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

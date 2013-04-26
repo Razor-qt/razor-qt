@@ -60,6 +60,8 @@ RazorWorldClockConfiguration::RazorWorldClockConfiguration(QSettings *settings, 
     connect(ui->customFormatRB, SIGNAL(toggled(bool)), SLOT(saveSettings()));
     connect(ui->customFormatPTE, SIGNAL(textChanged()), SLOT(saveSettings()));
 
+    connect(ui->autorotateCB, SIGNAL(clicked()), SLOT(saveSettings()));
+
     loadSettings();
 }
 
@@ -103,6 +105,8 @@ void RazorWorldClockConfiguration::loadSettings()
     else
         ui->shortFormatRB->setChecked(true);
 
+    ui->autorotateCB->setChecked(mSettings->value("autoRotate", true).toBool());
+
     mLockCascadeSettingChanges = false;
 }
 
@@ -134,6 +138,8 @@ void RazorWorldClockConfiguration::saveSettings()
         mSettings->setValue("formatType", "medium");
     else
         mSettings->setValue("formatType", "short");
+
+    mSettings->setValue("autoRotate", ui->autorotateCB->isChecked());
 }
 
 void RazorWorldClockConfiguration::dialogButtonsAction(QAbstractButton *button)
