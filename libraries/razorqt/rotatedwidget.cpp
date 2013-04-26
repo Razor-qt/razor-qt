@@ -73,10 +73,8 @@ void RotatedWidget::adjustContentSize()
         updateGeometry();
 }
 
-QSize RotatedWidget::minimumSizeHint() const
+QSize RotatedWidget::adjustedSize(QSize size) const
 {
-    QSize result = mContent->minimumSizeHint();
-
     switch (mOrigin)
     {
     case Qt::TopLeftCorner:
@@ -85,30 +83,38 @@ QSize RotatedWidget::minimumSizeHint() const
 
     case Qt::TopRightCorner:
     case Qt::BottomLeftCorner:
-        result.transpose();
+        size.transpose();
         break;
     }
 
-    return result;
+    return size;
+}
+
+QPoint RotatedWidget::adjustedPoint(QPoint point) const
+{
+    switch (mOrigin)
+    {
+    case Qt::TopLeftCorner:
+    case Qt::BottomRightCorner:
+        break;
+
+    case Qt::TopRightCorner:
+    case Qt::BottomLeftCorner:
+        point = QPoint(point.y(), point.x());
+        break;
+    }
+
+    return point;
+}
+
+QSize RotatedWidget::minimumSizeHint() const
+{
+    return adjustedSize(mContent->minimumSizeHint());
 }
 
 QSize RotatedWidget::sizeHint() const
 {
-    QSize result = mContent->sizeHint();
-
-    switch (mOrigin)
-    {
-    case Qt::TopLeftCorner:
-    case Qt::BottomRightCorner:
-        break;
-
-    case Qt::TopRightCorner:
-    case Qt::BottomLeftCorner:
-        result.transpose();
-        break;
-    }
-
-    return result;
+    return adjustedSize(mContent->sizeHint());
 }
 
 void RotatedWidget::paintEvent(QPaintEvent */*event*/)

@@ -49,6 +49,9 @@ public:
     virtual QSize minimumSizeHint() const;
     virtual QSize sizeHint() const;
 
+    QSize adjustedSize(QSize) const;
+    QPoint adjustedPoint(QPoint) const;
+
 protected:
     virtual void paintEvent(QPaintEvent *);
 
