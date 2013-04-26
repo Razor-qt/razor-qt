@@ -37,7 +37,7 @@ class RotatedWidget: public QWidget
     Q_PROPERTY(Qt::Corner origin READ origin WRITE setOrigin)
 
 public:
-    explicit RotatedWidget(QWidget *content, QWidget* parent = 0, Qt::WindowFlags f = 0);
+    explicit RotatedWidget(QWidget &content, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
     Qt::Corner origin() const;
     void setOrigin(Qt::Corner);

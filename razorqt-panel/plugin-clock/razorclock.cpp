@@ -64,7 +64,7 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
     mAutoRotate(true)
 {
     mMainWidget = new QWidget();
-    mRotatedWidget = new RotatedWidget(new QWidget(), mMainWidget);
+    mRotatedWidget = new RotatedWidget(*(new QWidget()), mMainWidget);
     mContent = mRotatedWidget->content();
     mTimeLabel = new QLabel(mContent);
     mDateLabel = new QLabel(mContent);

@@ -32,9 +32,9 @@
 #include <QImage>
 
 
-RotatedWidget::RotatedWidget(QWidget *content, QWidget *parent, Qt::WindowFlags f)
+RotatedWidget::RotatedWidget(QWidget &content, QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
-    , mContent(content)
+    , mContent(&content)
     , mOrigin(Qt::TopLeftCorner)
 {
     mContent->setParent(this);
