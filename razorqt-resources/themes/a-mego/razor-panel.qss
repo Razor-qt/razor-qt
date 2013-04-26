@@ -288,13 +288,9 @@ TrayIcon {
 /*
  * WorldClock
  */
-#WorldClock{
+#WorldClockContent{
     font-size: 10pt;
     color: #aaaaaa;
-}
-
-#WorldClock > QWidget {
-    background-color: #121212;  
 }
 
 #WorldClockPopup{
