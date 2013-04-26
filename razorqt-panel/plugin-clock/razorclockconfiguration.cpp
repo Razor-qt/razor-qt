@@ -58,6 +58,8 @@ RazorClockConfiguration::RazorClockConfiguration(QSettings &settings, QWidget *p
     connect(ui->showDateBeforeTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
     connect(ui->showDateAfterTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
     connect(ui->showDateBelowTimeRB, SIGNAL(clicked()), SLOT(saveSettings()));
+
+    connect(ui->autorotateCB, SIGNAL(clicked()), SLOT(saveSettings()));
 }
 
 RazorClockConfiguration::~RazorClockConfiguration()
@@ -183,6 +185,8 @@ void RazorClockConfiguration::loadSettings()
             ui->dateFormatCOB->setCurrentIndex(1);
     }
     mOldIndex = ui->dateFormatCOB->currentIndex();
+
+    ui->autorotateCB->setChecked(mSettings.value("autoRotate", true).toBool());
 }
 
 void RazorClockConfiguration::saveSettings()
@@ -206,6 +210,8 @@ void RazorClockConfiguration::saveSettings()
         mSettings.setValue("dateFormat", mCustomDateFormat);
     else
         mSettings.setValue("dateFormat", ui->dateFormatCOB->itemData(ui->dateFormatCOB->currentIndex()));
+
+    mSettings.setValue("autoRotate", ui->autorotateCB->isChecked());
 }
 
 void RazorClockConfiguration::dialogButtonsAction(QAbstractButton *btn)
