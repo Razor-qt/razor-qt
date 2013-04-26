@@ -21,7 +21,7 @@
      </property>
      <widget class="QWidget" name="timeZonesT">
       <attribute name="title">
-       <string>Time zones</string>
+       <string>Time &amp;zones</string>
       </attribute>
       <layout class="QHBoxLayout" name="_7">
        <item>
@@ -39,7 +39,7 @@
          <item>
           <widget class="QPushButton" name="addPB">
            <property name="text">
-            <string>Add ...</string>
+            <string>&amp;Add ...</string>
            </property>
           </widget>
          </item>
@@ -49,7 +49,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Remove</string>
+            <string>&amp;Remove</string>
            </property>
           </widget>
          </item>
@@ -59,7 +59,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Set as default</string>
+            <string>Set as &amp;default</string>
            </property>
           </widget>
          </item>
@@ -69,7 +69,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Move up</string>
+            <string>Move &amp;up</string>
            </property>
           </widget>
          </item>
@@ -79,7 +79,7 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Move down</string>
+            <string>Move do&amp;wn</string>
            </property>
           </widget>
          </item>
@@ -102,7 +102,7 @@
      </widget>
      <widget class="QWidget" name="displayFormatT">
       <attribute name="title">
-       <string>Display format</string>
+       <string>Display &amp;format</string>
       </attribute>
       <layout class="QVBoxLayout" name="_8" stretch="0">
        <item>
@@ -120,7 +120,7 @@
              <item>
               <widget class="QRadioButton" name="shortFormatRB">
                <property name="text">
-                <string>Short</string>
+                <string>&amp;Short</string>
                </property>
                <property name="checked">
                 <bool>false</bool>
@@ -130,28 +130,28 @@
              <item>
               <widget class="QRadioButton" name="mediumFormatRB">
                <property name="text">
-                <string>Medium</string>
+                <string>&amp;Medium</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QRadioButton" name="longFormatRB">
                <property name="text">
-                <string>Long</string>
+                <string>Lon&amp;g</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QRadioButton" name="fullFormatRB">
                <property name="text">
-                <string>Full</string>
+                <string>Ful&amp;l</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QRadioButton" name="customFormatRB">
                <property name="text">
-                <string>Custom</string>
+                <string>C&amp;ustom</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
@@ -190,8 +190,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>565</width>
-             <height>2129</height>
+             <width>566</width>
+             <height>2145</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="_5">
@@ -557,6 +557,36 @@ p, li { white-space: pre-wrap; }
           </widget>
          </widget>
         </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="generalT">
+      <attribute name="title">
+       <string>&amp;General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QCheckBox" name="autorotateCB">
+         <property name="text">
+          <string>Auto&amp;rotate</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

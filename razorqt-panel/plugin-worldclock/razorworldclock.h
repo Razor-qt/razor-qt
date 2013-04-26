@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012 Razor team
+ * Copyright: 2012-2013 Razor team
  * Authors:
  *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
@@ -31,6 +31,8 @@
 #include <unicode/unistr.h>
 
 #include <QtGui/QLabel>
+
+#include <razorqt/rotatedwidget.h>
 
 #include "../panel/irazorpanelplugin.h"
 #include "razorworldclockconfiguration.h"
@@ -59,6 +61,7 @@ public:
     bool isSeparate() const { return true; }
 
     virtual void settingsChanged();
+    virtual void realign();
     QDialog *configureDialog();
 
 private slots:
@@ -69,6 +72,8 @@ private slots:
     void middleMouseButtonClicked();
 
 private:
+//    QWidget *mMainWidget;
+    RotatedWidget* mRotatedWidget;
     ActiveLabel *mContent;
     QDialog* mPopup;
 
@@ -91,6 +96,7 @@ private:
     FormatType mFormatType;
 
     QString mDefaultLanguage;
+    bool mAutoRotate;
 
     icu::Locale *mLocale;
     icu::Calendar *mCalendar;
