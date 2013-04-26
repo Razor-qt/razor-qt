@@ -49,6 +49,8 @@
 
 Q_EXPORT_PLUGIN2(panelworldclock, RazorWorldClockLibrary)
 
+size_t RazorWorldClock::instanceCounter = 0;
+
 
 static QString ICU_to_Qt(const icu::UnicodeString &string)
 {
@@ -81,6 +83,7 @@ RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo
     mTimer(new QTimer(this)),
     mFormatType(FORMAT__INVALID),
     mAutoRotate(true),
+    mLocale(NULL),
     mCalendar(NULL),
     mFormat(NULL)
 {
@@ -101,19 +104,21 @@ RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
     connect(mContent, SIGNAL(leftMouseButtonClicked()), SLOT(leftMouseButtonClicked()));
     connect(mContent, SIGNAL(middleMouseButtonClicked()), SLOT(middleMouseButtonClicked()));
+
+    ++instanceCounter;
 }
 
 RazorWorldClock::~RazorWorldClock()
 {
-    delete mContent;
+    --instanceCounter;
 
-    if (mFormat)
-        delete mFormat;
-    if (mCalendar)
-        delete mCalendar;
-    if (mLocale)
-        delete mLocale;
-    u_cleanup();
+    delete mRotatedWidget;
+    delete mFormat;
+    delete mCalendar;
+    delete mLocale;
+
+    if (!instanceCounter)
+        u_cleanup();
 }
 
 QWidget *RazorWorldClock::widget()

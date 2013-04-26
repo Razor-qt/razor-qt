@@ -72,7 +72,8 @@ private slots:
     void middleMouseButtonClicked();
 
 private:
-//    QWidget *mMainWidget;
+    static size_t instanceCounter;
+
     RotatedWidget* mRotatedWidget;
     ActiveLabel *mContent;
     QDialog* mPopup;
