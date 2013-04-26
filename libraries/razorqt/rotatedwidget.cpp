@@ -31,6 +31,16 @@
 #include <QPainter>
 #include <QImage>
 
+#include <QApplication>
+
+#include <QMouseEvent>
+
+#ifndef QT_NO_WHEELEVENT
+#include <QWheelEvent>
+#endif
+
+#include <QResizeEvent>
+
 
 RotatedWidget::RotatedWidget(QWidget &content, QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
@@ -153,4 +163,108 @@ void RotatedWidget::paintEvent(QPaintEvent */*event*/)
 
     painter.setTransform(transform);
     painter.drawImage(originPoint, image);
+}
+
+void RotatedWidget::mousePressEvent(QMouseEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QMouseEvent contentEvent(event->type(), adjustedPoint(event->pos()), event->globalPos(), event->button(), event->buttons(), event->modifiers());
+    QApplication::sendEvent(mContent, &contentEvent);
+
+    cascadeCall = false;
+}
+
+void RotatedWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QMouseEvent contentEvent(event->type(), adjustedPoint(event->pos()), event->globalPos(), event->button(), event->buttons(), event->modifiers());
+    QApplication::sendEvent(mContent, &contentEvent);
+
+    cascadeCall = false;
+}
+
+void RotatedWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QMouseEvent contentEvent(event->type(), adjustedPoint(event->pos()), event->globalPos(), event->button(), event->buttons(), event->modifiers());
+    QApplication::sendEvent(mContent, &contentEvent);
+
+    cascadeCall = false;
+}
+
+void RotatedWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QMouseEvent contentEvent(event->type(), adjustedPoint(event->pos()), event->globalPos(), event->button(), event->buttons(), event->modifiers());
+    QApplication::sendEvent(mContent, &contentEvent);
+
+    cascadeCall = false;
+}
+
+#ifndef QT_NO_WHEELEVENT
+void RotatedWidget::wheelEvent(QWheelEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QWheelEvent contentEvent(adjustedPoint(event->pos()), event->globalPos(), event->delta(), event->buttons(), event->modifiers(), event->orientation());
+    QApplication::sendEvent(mContent, &contentEvent);
+
+    cascadeCall = false;
+}
+#endif
+
+void RotatedWidget::enterEvent(QEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QApplication::sendEvent(mContent, event);
+
+    cascadeCall = false;
+}
+
+void RotatedWidget::leaveEvent(QEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QApplication::sendEvent(mContent, event);
+
+    cascadeCall = false;
+}
+
+void RotatedWidget::resizeEvent(QResizeEvent *event)
+{
+    static bool cascadeCall = false;
+    if (cascadeCall)
+        return;
+    cascadeCall = true;
+
+    QResizeEvent contentEvent(adjustedSize(event->size()), adjustedSize(event->oldSize()));
+    QApplication::sendEvent(mContent, &contentEvent);
+
+    cascadeCall = false;
 }

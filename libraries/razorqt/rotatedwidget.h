@@ -55,6 +55,18 @@ public:
 protected:
     virtual void paintEvent(QPaintEvent *);
 
+    // Transition event handlers
+    virtual void mousePressEvent(QMouseEvent *);
+    virtual void mouseReleaseEvent(QMouseEvent *);
+    virtual void mouseDoubleClickEvent(QMouseEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *);
+#ifndef QT_NO_WHEELEVENT
+    virtual void wheelEvent(QWheelEvent *);
+#endif
+    virtual void enterEvent(QEvent *);
+    virtual void leaveEvent(QEvent *);
+    virtual void resizeEvent(QResizeEvent *);
+
 private:
     QWidget *mContent;
     Qt::Corner mOrigin;
