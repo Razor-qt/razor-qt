@@ -41,10 +41,14 @@
 #include <QtGui/QMessageBox>
 #include <QtDebug>
 #include <qtxdg/xdgicon.h>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 #include <razorqt/razornotification.h>
 
 Q_EXPORT_PLUGIN2(volume, RazorVolumePluginLibrary)
+
+#define DEFAULT_UP_SHORTCUT "XF86AudioRaiseVolume"
+#define DEFAULT_DOWN_SHORTCUT "XF86AudioLowerVolume"
+#define DEFAULT_MUTE_SHORTCUT "XF86AudioMute"
 
 RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
         QObject(),
@@ -58,29 +62,53 @@ RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
     m_notification = new RazorNotification("", this);
 
     // global key shortcuts
-    m_keyVolumeUp = new QxtGlobalShortcut(this);
-    m_keyVolumeDown = new QxtGlobalShortcut(this);
-    m_keyMuteToggle = new QxtGlobalShortcut(this);
     QString shortcutNotRegistered;
 
-    QKeySequence keySequenceVolumeUp(Qt::Key_VolumeUp);
-    if (!m_keyVolumeUp->setShortcut(keySequenceVolumeUp)) 
+    m_keyVolumeUp = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/volume_control/%2/up").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Increase sound volume"), this);
+    if (m_keyVolumeUp)
     {
-        shortcutNotRegistered = "'" + keySequenceVolumeUp.toString() + "' ";
+        connect(m_keyVolumeUp, SIGNAL(activated()), this, SLOT(handleShortcutVolumeUp()));
+
+        if (m_keyVolumeUp->shortcut().isEmpty())
+        {
+            m_keyVolumeUp->changeShortcut(DEFAULT_UP_SHORTCUT);
+            if (m_keyVolumeUp->shortcut().isEmpty())
+            {
+                shortcutNotRegistered = " '" DEFAULT_UP_SHORTCUT "'";
+            }
+        }
     }
 
-    QKeySequence keySequenceVolumeDown(Qt::Key_VolumeDown);
-    if (!m_keyVolumeDown->setShortcut(keySequenceVolumeDown)) 
+    m_keyVolumeDown = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/volume_control/%2/down").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Decrease sound volume"), this);
+    if (m_keyVolumeDown)
     {
-        shortcutNotRegistered += "'" + keySequenceVolumeDown.toString() + "' ";
+        connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
+
+        if (m_keyVolumeDown->shortcut().isEmpty())
+        {
+            m_keyVolumeDown->changeShortcut(DEFAULT_DOWN_SHORTCUT);
+            if (m_keyVolumeDown->shortcut().isEmpty())
+            {
+                shortcutNotRegistered += " '" DEFAULT_DOWN_SHORTCUT "'";
+            }
+        }
     }
 
-    QKeySequence keySequenceMuteToggle(Qt::Key_VolumeMute);
-    if (!m_keyMuteToggle->setShortcut(keySequenceMuteToggle)) 
+    m_keyMuteToggle = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/volume_control/%2/mute").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Mute/unmute sound volume"), this);
+    if (m_keyMuteToggle)
     {
-        shortcutNotRegistered += "'" + keySequenceMuteToggle.toString() + "' ";
+        connect(m_keyMuteToggle, SIGNAL(activated()), this, SLOT(handleShortcutVolumeMute()));
+
+        if (m_keyMuteToggle->shortcut().isEmpty())
+        {
+            m_keyMuteToggle->changeShortcut(DEFAULT_MUTE_SHORTCUT);
+            if (m_keyMuteToggle->shortcut().isEmpty())
+            {
+                shortcutNotRegistered += " '" DEFAULT_MUTE_SHORTCUT "'";
+            }
+        }
     }
-    
+
     if(!shortcutNotRegistered.isEmpty())
     {
         m_notification->setSummary(tr("Volume Control: The following shortcuts can not be registered: %1").arg(shortcutNotRegistered));
@@ -89,10 +117,6 @@ RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
     
     m_notification->setTimeout(1000);
     m_notification->setUrgencyHint(RazorNotification::UrgencyLow);
-
-    connect(m_keyVolumeUp, SIGNAL(activated()), this, SLOT(handleShortcutVolumeUp()));
-    connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
-    connect(m_keyMuteToggle, SIGNAL(activated()), this, SLOT(handleShortcutVolumeMute()));
 
     settingsChanged();
 }
@@ -206,3 +230,7 @@ QDialog *RazorVolume::configureDialog()
 
     return configWindow;
 }
+
+#undef DEFAULT_UP_SHORTCUT
+#undef DEFAULT_DOWN_SHORTCUT
+#undef DEFAULT_MUTE_SHORTCUT

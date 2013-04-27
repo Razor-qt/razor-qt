@@ -19,7 +19,6 @@ set(UIS
 
 set(LIBRARIES
   razorqt
-  razorqxt
 )
 
 #*******************************************

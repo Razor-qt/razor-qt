@@ -28,27 +28,42 @@
 
 #include <QToolButton>
 #include <QtDebug>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 
 #include "desktopswitchbutton.h"
 
-DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QKeySequence &sequence, const QString &title)
+DesktopSwitchButton::DesktopSwitchButton(QWidget * parent, int index, const QString &path, const QString &shortcut, const QString &title)
     : QToolButton(parent)
+    , m_shortcut(0)
+    , mIndex(index)
 {
-    QString mask("%1");
-    setText(mask.arg(index+1));
+    setText(QString::number(index + 1));
     setCheckable(true);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
-    if (!sequence.isEmpty())
+    if (!shortcut.isEmpty())
     {
-        m_shortcut = new QxtGlobalShortcut(this);
-        m_shortcut->setShortcut(sequence);
-        connect(m_shortcut, SIGNAL(activated()), this, SIGNAL(activated()));
+        QString description = tr("Switch to desktop %1").arg(index + 1);
+        if (!title.isEmpty())
+        {
+            description.append(QString(" (%1)").arg(title));
+        }
+        m_shortcut = GlobalKeyShortcut::Client::instance()->addAction(QString(), path, description, this);
+        if (m_shortcut)
+        {
+            if (m_shortcut->shortcut().isEmpty())
+                m_shortcut->changeShortcut(shortcut);
+            connect(m_shortcut, SIGNAL(activated()), this, SIGNAL(activated()));
+        }
     }
     
     if (!title.isEmpty())
     {
         setToolTip(title);
     }
+}
+
+void DesktopSwitchButton::unregisterShortcut()
+{
+    GlobalKeyShortcut::Client::instance()->removeAction(QString("/desktop_switch/desktop_%1").arg(mIndex + 1));
 }

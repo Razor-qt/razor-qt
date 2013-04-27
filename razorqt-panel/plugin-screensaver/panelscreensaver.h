@@ -32,9 +32,12 @@
 #include "../panel/irazorpanelplugin.h"
 #include <QToolButton>
 
-class ScreenSaver;
-class QxtGlobalShortcut;
 
+class ScreenSaver;
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 class PanelScreenSaver : public QObject, public IRazorPanelPlugin
 {
@@ -49,7 +52,7 @@ public:
 private:
     QToolButton  mButton;
     ScreenSaver * mSaver;
-    QxtGlobalShortcut * mShortcutKey;
+    GlobalKeyShortcut::Action * mShortcutKey;
 };
 
 class PanelScreenSaverLibrary: public QObject, public IRazorPanelPluginLibrary

@@ -30,12 +30,14 @@
 #include <QHBoxLayout>
 #include <razorqt/screensaver.h>
 #include <razorqt/razornotification.h>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 
 #include "panelscreensaver.h"
 
 
 Q_EXPORT_PLUGIN2(screensaver, PanelScreenSaverLibrary)
+
+#define DEFAULT_SHORTCUT "Control+Alt+L"
 
 
 PanelScreenSaver::PanelScreenSaver(const IRazorPanelPluginStartupInfo &startupInfo) :
@@ -49,15 +51,21 @@ PanelScreenSaver::PanelScreenSaver(const IRazorPanelPluginStartupInfo &startupIn
         mButton.setDefaultAction(actions.first());
     //mButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    
-    mShortcutKey = new QxtGlobalShortcut(this);
 
-    QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_L);
-    if (! mShortcutKey->setShortcut(ks))
+    mShortcutKey = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/screen_saver/%2/lock").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Lock Screen"), this);
+    if (mShortcutKey)
     {
-        RazorNotification::notify(tr("Panel Screensaver Global shortcut: '%1' cannot be registered").arg(ks.toString()));
+        connect(mShortcutKey, SIGNAL(activated()), mSaver, SLOT(lockScreen()));
+
+        if (mShortcutKey->shortcut().isEmpty())
+        {
+            mShortcutKey->changeShortcut(DEFAULT_SHORTCUT);
+            if (mShortcutKey->shortcut().isEmpty())
+            {
+                RazorNotification::notify(tr("Panel Screensaver: Global shortcut '%1' cannot be registered").arg(DEFAULT_SHORTCUT));
+            }
+        }
     }
-    
-    connect(mShortcutKey, SIGNAL(activated()), mSaver, SLOT(lockScreen()));
 }
 
+#undef DEFAULT_SHORTCUT

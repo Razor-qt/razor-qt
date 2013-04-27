@@ -38,29 +38,19 @@
 #include <QtGui/QKeySequence>
 #include <QtGui/QPushButton>
 #include <QtGui/QCloseEvent>
-
+#include <QAction>
 
 
 
 /************************************************
 
  ************************************************/
-ConfigureDialog *ConfigureDialog::createAndShow(QSettings *settings, QWidget *parent)
-{
-    ConfigureDialog *dlg = new ConfigureDialog(settings, parent);
-    dlg->exec();
-    return dlg;
-}
-
-
-/************************************************
-
- ************************************************/
-ConfigureDialog::ConfigureDialog(QSettings *settings, QWidget *parent) :
+ConfigureDialog::ConfigureDialog(QSettings *settings, const QString &defaultShortcut, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigureDialog),
     mSettings(settings),
-    mOldSettings(new RazorSettingsCache(settings))
+    mOldSettings(new RazorSettingsCache(settings)),
+    mDefaultShortcut(defaultShortcut)
 {
     ui->setupUi(this);
 
@@ -86,7 +76,10 @@ ConfigureDialog::ConfigureDialog(QSettings *settings, QWidget *parent) :
 
 
     // Shortcut .................................
-    connect(ui->shortcutEd, SIGNAL(keySequenceChanged(QString)), this, SLOT(shortcutChanged(QString)));
+    connect(ui->shortcutEd, SIGNAL(shortcutGrabbed(QString)), this, SLOT(shortcutChanged(QString)));
+
+    connect(ui->shortcutEd->addMenuAction(tr("Reset")), SIGNAL(triggered()), this, SLOT(shortcutReset()));
+
     settingsChanged();
 }
 
@@ -102,7 +95,7 @@ void ConfigureDialog::settingsChanged()
         ui->positionCbx->setCurrentIndex(1);
 
     ui->monitorCbx->setCurrentIndex(mSettings->value("dialog/monitor", 0).toInt());
-    ui->shortcutEd->setKeySequence(mSettings->value("dialog/shortcut", "Alt+F2").toString());
+    ui->shortcutEd->setText(mSettings->value("dialog/shortcut", "Alt+F2").toString());
 }
 
 
@@ -111,6 +104,7 @@ void ConfigureDialog::settingsChanged()
  ************************************************/
 ConfigureDialog::~ConfigureDialog()
 {
+    delete mOldSettings;
     delete ui;
 }
 
@@ -120,7 +114,17 @@ ConfigureDialog::~ConfigureDialog()
  ************************************************/
 void ConfigureDialog::shortcutChanged(const QString &text)
 {
+    ui->shortcutEd->setText(text);
     mSettings->setValue("dialog/shortcut", text);
+}
+
+
+/************************************************
+
+ ************************************************/
+void ConfigureDialog::shortcutReset()
+{
+    shortcutChanged(mDefaultShortcut);
 }
 
 
@@ -148,6 +152,6 @@ void ConfigureDialog::monitorCbxChanged(int index)
 void ConfigureDialog::resetSettings()
 {
     mOldSettings->loadToSettings();
-    ui->shortcutEd->setChecked(false);
+    ui->shortcutEd->clear();
     settingsChanged();
 }

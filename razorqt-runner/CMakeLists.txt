@@ -37,7 +37,8 @@ set(QRC_FILES
 
 set(razor-runner_LIBRARIES
     razorqt
-    razorqxt
+    razor-global-key-shortcuts-client
+    razor-global-key-shortcut-selector
     qtxdg
 )
 
@@ -86,7 +87,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 add_definitions(-Wall)
-find_package(Qt4 REQUIRED)
+find_package(Qt4 REQUIRED QtCore QtGui QtDBus)
 include(${QT_USE_FILE})
 find_package(X11 REQUIRED)
 include_directories(${X11_INCLUDE_DIR})

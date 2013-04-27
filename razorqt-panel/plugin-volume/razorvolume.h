@@ -37,7 +37,10 @@ class VolumeButton;
 class AudioEngine;
 class AudioDevice;
 class RazorNotification;
-class QxtGlobalShortcut;
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 class RazorVolume : public QObject, public IRazorPanelPlugin
 {
@@ -65,9 +68,9 @@ private:
     VolumeButton *m_volumeButton;
     int m_defaultSinkIndex;
     AudioDevice *m_defaultSink;
-    QxtGlobalShortcut *m_keyVolumeUp;
-    QxtGlobalShortcut *m_keyVolumeDown;
-    QxtGlobalShortcut *m_keyMuteToggle;
+    GlobalKeyShortcut::Action *m_keyVolumeUp;
+    GlobalKeyShortcut::Action *m_keyVolumeDown;
+    GlobalKeyShortcut::Action *m_keyMuteToggle;
     RazorNotification *m_notification;
 };
 
