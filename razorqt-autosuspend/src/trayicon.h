@@ -36,6 +36,8 @@
 #include "batteryinfo.h"
 #include "battery.h"
 
+class IconNamingScheme;
+
 class TrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT
@@ -49,20 +51,20 @@ private:
     void updateToolTip();
     void updateStateAsString();
 
-    void  checkThemeStatusIcons();
-    bool mThemeHasStatusIcons;
-   
+    void determingIconNamingScheme();
+    void setupThemeStatusIcons(); 
     QIcon getBuiltInIcon(double chargeLevel, bool discharging);
     
     Battery* mBattery; 
     BatteryInfo mBatteryInfo;
     RazorSettings mSettings;
+    const IconNamingScheme* mCurrentNamingScheme;
 
 private slots:
     void update();
     void iconThemeChanged();
     void settingsChanged();
-   void showStatus(QSystemTrayIcon::ActivationReason reason);
+    void showStatus(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // MAINWINDOW_H

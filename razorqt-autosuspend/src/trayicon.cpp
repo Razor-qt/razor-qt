@@ -33,6 +33,24 @@
 #include <QtSvg/QSvgRenderer>
 #include <QtGui/QPainter>
 
+class IconNamingScheme 
+{
+public:
+    static QList<IconNamingScheme*> & getAllSchemes();
+
+    bool currentIconThemeHasAllIconsOfThisScheme() const;
+    QString iconName(float chargeLevel, bool discharging) const;
+ 
+private:
+    IconNamingScheme(QString schemeName, QList<float> chargeLevels, QList<QString> iconNamesCharging, QList<QString> iconNamesDischarging);
+  
+    QList<float> mChargeLevels;
+    QList<QString> mIconNamesCharging;
+    QList<QString> mIconNamesDischarging;
+    QString mSchemeName;
+};
+
+
 TrayIcon::TrayIcon(Battery* battery, QObject *parent) : 
     QSystemTrayIcon(parent), 
         mBattery(battery), 
@@ -43,7 +61,7 @@ TrayIcon::TrayIcon(Battery* battery, QObject *parent) :
     connect(&mSettings, SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
     connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(showStatus(QSystemTrayIcon::ActivationReason)));
 
-    checkThemeStatusIcons(); 
+    determingIconNamingScheme(); 
     update(); 
     setVisible(mSettings.value(SHOWTRAYICON_KEY, true).toBool());
 }
@@ -70,37 +88,13 @@ void TrayIcon::updateStatusIcon(bool force)
         qDebug() << "No significant change - not updating icon";
         return;
     }
-
+    
     chargeLevel = mBattery->chargeLevel();
     discharging = mBattery->discharging();
 
-    if (mSettings.value(USETHEMEICONS_KEY, true).toBool() && mThemeHasStatusIcons)
+    if (mSettings.value(USETHEMEICONS_KEY, true).toBool() && mCurrentNamingScheme) 
     {
-        QString iconName;
-        
-        if (QIcon::themeName() == "oxygen")
-        {
-            if (chargeLevel < 20)        iconName = discharging ? "battery-low" : "battery-charging-low";
-            else if (chargeLevel < 40)   iconName = discharging ? "battery-caution" : "battery-charging-caution";
-            else if (chargeLevel < 60)   iconName = discharging ? "battery-040" : "battery-charging-040";
-            else if (chargeLevel < 80)   iconName = discharging ? "battery-060" : "battery-charging-060";
-            else if (chargeLevel < 99.5) iconName = discharging ? "battery-080" : "battery-charging-080";
-            else                         iconName = discharging ? "battery-100" : "battery-charging";
-        }
-        else // For all themes but 'oxygen' we follow freedesktop's battery status icon name standard 
-             // (http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html) _with_ the changes proposed in
-             // https://bugs.freedesktop.org/show_bug.cgi?id=41458 (we assume that this patch will be accepted)
-        {
-            if      (chargeLevel <  1 && discharging) iconName = "battery-empty" ;
-            else if (chargeLevel < 20)                iconName = discharging ? "battery-caution" : "battery-caution-discharging";
-            else if (chargeLevel < 40)                iconName = discharging ? "battery-low" : "battery-low-discharging";
-            else if (chargeLevel < 60)                iconName = discharging ? "battery-good" : "battery-good-discharging";
-            else                                      iconName = discharging ? "battery-full" : "battery-full-discharging";
-        }
-        
-        qDebug() << "ChargeLevel" << chargeLevel 
-                 << "- getting icon:"  << iconName 
-                 << "from" << QIcon::themeName() << "theme";
+        QString iconName = mCurrentNamingScheme->iconName(chargeLevel, discharging);
         setIcon(QIcon::fromTheme(iconName));
     }
     else
@@ -120,37 +114,24 @@ void TrayIcon::updateToolTip()
     setToolTip(toolTip);
 }
 
-
-
-void TrayIcon::checkThemeStatusIcons()
+void TrayIcon::determingIconNamingScheme()
 {
-    mThemeHasStatusIcons = true; 
-    if ("oxygen" != QIcon::themeName())
+    foreach(const IconNamingScheme *scheme, IconNamingScheme::getAllSchemes()) 
     {
-        // We know what icons the oxygen theme contains, so with oxygen we're good
-        // but we don't know that all icon themes have those that the freedesktop
-        // standard prescribes. If the current theme doesn't, we will fall back to 
-        // the built in status icons.
-
-        static QStringList statusIconNames = QStringList() 
-            <<  "battery-empty" 
-            << "battery-caution"           << "battery-low"          << "battery-good"          << "battery-full"
-            <<  "battery-caution-charging" << "battery-low-charging" << "battery-good-charging" << "battery-full-charging";
-
-        foreach (QString statusIconName, statusIconNames) 
+        if (scheme->currentIconThemeHasAllIconsOfThisScheme()) 
         {
-            if (! QIcon::hasThemeIcon(statusIconName))
-            {
-                mThemeHasStatusIcons = false;
-                break;
-            }
+            mCurrentNamingScheme = scheme;
+            return;
         }
     }
+
+    mCurrentNamingScheme = 0;
 }
 
 void TrayIcon::iconThemeChanged()
 {
-    checkThemeStatusIcons();
+    qDebug() << "iconThemeChanged";
+    determingIconNamingScheme();
     updateStatusIcon(true);
 }
 
@@ -163,7 +144,7 @@ void TrayIcon::settingsChanged()
 
 QIcon TrayIcon::getBuiltInIcon(double chargeLevel, bool discharging)
 {
-        // See http://www.w3.org/TR/SVG/Overview.html 
+    // See http://www.w3.org/TR/SVG/Overview.html 
     // and regarding circle-arch in particular: 
     // http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
    
@@ -248,75 +229,6 @@ QIcon TrayIcon::getBuiltInIcon(double chargeLevel, bool discharging)
 
 }
 
-/*QIcon TrayIcon::getBuiltInIcon(double chargeLevel, bool discharging)
-{
-      // See http://www.w3.org/TR/SVG/Overview.html 
-    // and regarding circle-arch in particular: 
-    // http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands
-    static const QString svgTemplate =
-        "<?xml version='1.0' standalone='no'?>\n"
-        "<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>\n"
-        "<svg xmlns='http://www.w3.org/2000/svg'  version='1.1' viewBox='0 0 200 200'>\n"
-        "   %1\n"
-        "   <circle cx='100' cy='100' r='55' fill='white'/>\n"
-        "   %2\n"
-        "</svg>\n";
-    
-    // We show charge with a segment of a circle.
-    // We start at the top of the circle
-    // The starting point of the circle segment is at the top (12 o'clock or (0,1) or pi/2 
-    // and it moves counter-clockwise as the charge increases
-    // First we calculate in floating point numbers, using a circle with center
-    // in (0,0) and a radius of 1
-    double angle = 2*M_PI*chargeLevel/100 + M_PI_2; 
-    double segment_endpoint_x = cos(angle);
-    double segment_endpoint_y = sin(angle);
-    int large_arch = (angle > M_PI + M_PI_2 ? 1 : 0); // 1 if the arch is more than half a circle, 0 otherwise
-
-    // svg uses an coordinate system with (0,0) at the topmost left corner,  
-    // y increasing downwards and x increasing left-to-right.
-    // We draw the circle with center at (100,100) and radius 100 so that it 
-    // fits inside a viewBox of (0 0 200 200).
-    int x_start = 100;
-    int y_start =   0;
-    int x_end = round(100 + 100*segment_endpoint_x);
-    int y_end = round(100 - 100*segment_endpoint_y);
-    int x_rel = x_end - x_start;
-    int y_rel = y_end - y_start;
-
-    // We color the arch red when charge level < 30% and discharging, green otherwise
-    static const QString warningcolor = "rgb(200, 40, 40)"; 
-    static const QString green = "rgb(40, 200, 40)";
-    bool warn_level = chargeLevel < 30 && discharging;
-    QString chargeArch = 
-        QString("<path d='M100,100 v -100 a100,100 0 %1,0 %2,%3 z' fill='%4' stroke-width='0'/>")
-            .arg(large_arch)
-            .arg(x_rel)
-            .arg(y_rel)
-            .arg(warn_level ? warningcolor : green);
-   
-    //qDebug() << "chargeArch:" << chargeArch;
-    // We color the minus sign red when chargelevel below 30%, black otherwise
-    QString minus =
-        QString("<path d='M 60,100 h 80' stroke='%1' stroke-width='20'/>")
-            .arg(warn_level ? warningcolor : "black");
- 
-    static QString plus =
-        "<path d='M 60,100 h 80 M 100,60 v 80' stroke='black' stroke-width='20'/>";
- 
-    QString svg = svgTemplate.arg(chargeArch).arg(discharging ? minus : plus);
-
-   qDebug() << svg;
-
-    // Paint the svg on a pixmap and create an icon from that.
-    QSvgRenderer render(svg.toAscii());
-    QPixmap pixmap(render.defaultSize());
-    pixmap.fill(QColor(0,0,0,0));
-    QPainter painter(&pixmap);
-    render.render(&painter);
-    return QIcon(pixmap);
-}*/
-
 void TrayIcon::showStatus(ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
@@ -331,4 +243,89 @@ void TrayIcon::showStatus(ActivationReason reason)
         }
     }
 }
+
+// IconNamingScheme
+
+QString IconNamingScheme::iconName(float chargeLevel, bool discharging) const
+{   
+    int i = 0;
+    while(i < mChargeLevels.size() - 1 && mChargeLevels.at(i+1) <= chargeLevel) i++;
+    
+    return discharging ? mIconNamesDischarging.at(i) : mIconNamesCharging.at(i);
+}
+
+
+IconNamingScheme::IconNamingScheme(QString schemeName, QList<float> chargeLevels, QList<QString> iconNamesCharging, QList<QString> iconNamesDischarging)
+{
+    mSchemeName = schemeName;
+    mChargeLevels = chargeLevels;
+    mIconNamesCharging = iconNamesCharging;
+    mIconNamesDischarging = iconNamesDischarging;
+}
+
+bool IconNamingScheme::currentIconThemeHasAllIconsOfThisScheme() const
+{
+    qDebug() << "NamingScheme: " << mSchemeName << "- antal:" << mChargeLevels.size();
+    for (int i = 0; i < mIconNamesCharging.size(); i++) 
+    {
+        qDebug() << "Looking for"  << mIconNamesCharging.at(i);
+        if (!QIcon::hasThemeIcon(mIconNamesCharging.at(i)))
+        {
+            qDebug() << "Not found";
+            return false;
+        }
+        
+        qDebug() << "Looking for"  << mIconNamesDischarging.at(i);
+        if (!QIcon::hasThemeIcon(mIconNamesDischarging.at(i)))
+        {
+            qDebug() << "Not found";
+            return false;
+        }
+    }
+    qDebug();
+
+    return true;
+}
+
+QList<IconNamingScheme*> & IconNamingScheme::getAllSchemes()
+{
+    static QList<IconNamingScheme*> schemes;
+    if (schemes.isEmpty()) 
+    {
+        // Freedesktop naming scheme 
+         schemes << new IconNamingScheme(
+                "freedesktop",
+                (QList<float>() << 0 << 1 << 20 << 40 << 60),
+                (QList<QString>() << "battery-empty" << "battery-caution-charging" << "battery-low-charging" 
+                                  << "battery-good-charging" <<  "battery-full-charging"),
+                (QList<QString>() << "battery-empty" << "battery-caution" << "battery-low" << "battery-good" <<  "battery-full")
+                );
+        
+         // Oxygen naming scheme
+         schemes << new IconNamingScheme(
+                "oxygen",
+                ((QList<float>()) << 0 << 20 << 40 << 60 << 80 << 99.5),
+                ((QList<QString>()) << "battery-charging-low" << "battery-charging-caution" << "battery-charging-040"
+                                    << "battery-charging-060" << "battery-charging-080" << "battery-charging"),
+                ((QList<QString>()) << "battery-low" << "battery-caution" << "battery-040"
+                                    << "battery-060" << "battery-080" << "battery-100")
+                );
+
+         // AwOken naming scheme
+         schemes << new IconNamingScheme(
+                "AwOken",
+                ((QList<float>()) << 0 << 20 << 40 << 60 << 80 << 99.5),
+                ((QList<QString>()) << "battery-000-charging" << "battery-020-charging" << "battery-040-charging"
+                                    << "battery-060-charging" << "battery-080-charging" << "battery-100-charging"),
+                ((QList<QString>()) << "battery-000" << "battery-020" << "battery-040"
+                                   << "battery-060" << "battery-080" << "battery-100")
+                );
+    }
+
+    return schemes;
+}
+
+
+
+
 
