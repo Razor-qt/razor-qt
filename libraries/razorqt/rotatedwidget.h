@@ -36,6 +36,17 @@ class RotatedWidget: public QWidget
 
     Q_PROPERTY(Qt::Corner origin READ origin WRITE setOrigin)
 
+    Q_PROPERTY(bool transferMousePressEvent READ transferMousePressEvent WRITE setTransferMousePressEvent)
+    Q_PROPERTY(bool transferMouseReleaseEvent READ transferMouseReleaseEvent WRITE setTransferMouseReleaseEvent)
+    Q_PROPERTY(bool transferMouseDoubleClickEvent READ transferMouseDoubleClickEvent WRITE setTransferMouseDoubleClickEvent)
+    Q_PROPERTY(bool transferMouseMoveEvent READ transferMouseMoveEvent WRITE setTransferMouseMoveEvent)
+#ifndef QT_NO_WHEELEVENT
+    Q_PROPERTY(bool transferWheelEvent READ transferWheelEvent WRITE setTransferWheelEvent)
+#endif
+
+    Q_PROPERTY(bool transferEnterEvent READ transferEnterEvent WRITE setTransferEnterEvent)
+    Q_PROPERTY(bool transferLeaveEvent READ transferLeaveEvent WRITE setTransferLeaveEvent)
+
 public:
     explicit RotatedWidget(QWidget &content, QWidget* parent = 0, Qt::WindowFlags f = 0);
 
@@ -52,6 +63,30 @@ public:
     QSize adjustedSize(QSize) const;
     QPoint adjustedPoint(QPoint) const;
 
+
+    bool transferMousePressEvent() const { return mTransferMousePressEvent; }
+    void setTransferMousePressEvent(bool value) { mTransferMousePressEvent = value; }
+
+    bool transferMouseReleaseEvent() const { return mTransferMouseReleaseEvent; }
+    void setTransferMouseReleaseEvent(bool value) { mTransferMouseReleaseEvent = value; }
+
+    bool transferMouseDoubleClickEvent() const { return mTransferMouseDoubleClickEvent; }
+    void setTransferMouseDoubleClickEvent(bool value) { mTransferMouseDoubleClickEvent = value; }
+
+    bool transferMouseMoveEvent() const { return mTransferMouseMoveEvent; }
+    void setTransferMouseMoveEvent(bool value) { mTransferMouseMoveEvent = value; }
+
+#ifndef QT_NO_WHEELEVENT
+    bool transferWheelEvent() const { return mTransferWheelEvent; }
+    void setTransferWheelEvent(bool value) { mTransferWheelEvent = value; }
+#endif
+
+    bool transferEnterEvent() const { return mTransferEnterEvent; }
+    void setTransferEnterEvent(bool value) { mTransferEnterEvent = value; }
+
+    bool transferLeaveEvent() const { return mTransferLeaveEvent; }
+    void setTransferLeaveEvent(bool value) { mTransferLeaveEvent = value; }
+
 protected:
     virtual void paintEvent(QPaintEvent *);
 
@@ -65,11 +100,22 @@ protected:
 #endif
     virtual void enterEvent(QEvent *);
     virtual void leaveEvent(QEvent *);
+
     virtual void resizeEvent(QResizeEvent *);
 
 private:
     QWidget *mContent;
     Qt::Corner mOrigin;
+
+    bool mTransferMousePressEvent;
+    bool mTransferMouseReleaseEvent;
+    bool mTransferMouseDoubleClickEvent;
+    bool mTransferMouseMoveEvent;
+#ifndef QT_NO_WHEELEVENT
+    bool mTransferWheelEvent;
+#endif
+    bool mTransferEnterEvent;
+    bool mTransferLeaveEvent;
 };
 
 #endif

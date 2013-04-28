@@ -46,9 +46,17 @@ RotatedWidget::RotatedWidget(QWidget &content, QWidget *parent, Qt::WindowFlags 
     : QWidget(parent, f)
     , mContent(&content)
     , mOrigin(Qt::TopLeftCorner)
+    , mTransferMousePressEvent(false)
+    , mTransferMouseReleaseEvent(false)
+    , mTransferMouseDoubleClickEvent(false)
+    , mTransferMouseMoveEvent(false)
+#ifndef QT_NO_WHEELEVENT
+    , mTransferWheelEvent(false)
+#endif
+    , mTransferEnterEvent(false)
+    , mTransferLeaveEvent(false)
 {
     mContent->setParent(this);
-    mContent->hide();
 }
 
 Qt::Corner RotatedWidget::origin() const
@@ -60,9 +68,15 @@ void RotatedWidget::setOrigin(Qt::Corner newOrigin)
 {
     if (mOrigin != newOrigin)
     {
+        if (mOrigin == Qt::TopLeftCorner)
+            mContent->hide();
+
         mOrigin = newOrigin;
         adjustContentSize();
         update();
+
+        if (mOrigin == Qt::TopLeftCorner)
+            mContent->show();
     }
 }
 
@@ -129,6 +143,9 @@ QSize RotatedWidget::sizeHint() const
 
 void RotatedWidget::paintEvent(QPaintEvent */*event*/)
 {
+    if (mOrigin == Qt::TopLeftCorner)
+        return;
+
     QSize sz = mContent->size();
     QImage image(sz, QImage::Format_ARGB32);
     image.fill(Qt::transparent);
@@ -167,6 +184,12 @@ void RotatedWidget::paintEvent(QPaintEvent */*event*/)
 
 void RotatedWidget::mousePressEvent(QMouseEvent *event)
 {
+    if (!mTransferMousePressEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
@@ -180,6 +203,12 @@ void RotatedWidget::mousePressEvent(QMouseEvent *event)
 
 void RotatedWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (!mTransferMouseReleaseEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
@@ -193,6 +222,12 @@ void RotatedWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void RotatedWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    if (!mTransferMouseDoubleClickEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
@@ -206,6 +241,12 @@ void RotatedWidget::mouseDoubleClickEvent(QMouseEvent *event)
 
 void RotatedWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    if (!mTransferMouseMoveEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
@@ -220,6 +261,12 @@ void RotatedWidget::mouseMoveEvent(QMouseEvent *event)
 #ifndef QT_NO_WHEELEVENT
 void RotatedWidget::wheelEvent(QWheelEvent *event)
 {
+    if (!mTransferWheelEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
@@ -234,6 +281,12 @@ void RotatedWidget::wheelEvent(QWheelEvent *event)
 
 void RotatedWidget::enterEvent(QEvent *event)
 {
+    if (!mTransferEnterEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
@@ -246,6 +299,12 @@ void RotatedWidget::enterEvent(QEvent *event)
 
 void RotatedWidget::leaveEvent(QEvent *event)
 {
+    if (!mTransferLeaveEvent)
+    {
+        event->ignore();
+        return;
+    }
+
     static bool cascadeCall = false;
     if (cascadeCall)
         return;
