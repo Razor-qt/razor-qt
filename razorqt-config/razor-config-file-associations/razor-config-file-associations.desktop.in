@@ -1,0 +1,13 @@
+[Desktop Entry]
+X-SuSE-translate=true
+OnlyShowIn=X-RAZOR;
+Type=Application
+Exec=razor-config-file-associations
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Icon=preferences-desktop-filetype-association
+Name=Razor file association configuration
+Comment=Configure file associations
+GenericName=Razor file association configuration
+
+#TRANSLATIONS_DIR=translations
