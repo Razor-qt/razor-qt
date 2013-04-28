@@ -1165,18 +1165,17 @@ QString findDesktopFile(const QString& desktopName)
  ************************************************/
 XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
 {
-    static QHash<QString, XdgDesktopFile*> mDesktopFiles;
-    if (mDesktopFiles.contains(fileName))
-         return mDesktopFiles.value(fileName);
-
-
+    if (instance().m_fileCache.contains(fileName))
+    {
+        return instance().m_fileCache.value(fileName);
+    }
+    
     if (fileName.startsWith(QDir::separator()))
     {
         // Absolute path ........................
         //qDebug() << "XdgDesktopFileCache: add new file" << fileName;
-        XdgDesktopFile* desktopFile = new XdgDesktopFile();
-        desktopFile->load(fileName);
-        mDesktopFiles.insert(fileName, desktopFile);
+        XdgDesktopFile* desktopFile = load(fileName);
+        instance().m_fileCache.insert(fileName, desktopFile);
         return desktopFile;
     }
     else
@@ -1186,20 +1185,38 @@ XdgDesktopFile* XdgDesktopFileCache::getFile(const QString& fileName)
         //qDebug() << "Sokoloff XdgDesktopFileCache::getFile found fileName" << fileName << filePath;
         XdgDesktopFile* desktopFile;
 
-        if (!mDesktopFiles.contains(filePath))
+        if (!instance().m_fileCache.contains(filePath))
         {
-            desktopFile = new XdgDesktopFile();
-            desktopFile->load(filePath);
-            mDesktopFiles.insert(filePath, desktopFile);
+            desktopFile = load(filePath);
+            instance().m_fileCache.insert(filePath, desktopFile);
         }
         else
-            desktopFile = mDesktopFiles.value(filePath);
+            desktopFile = instance().m_fileCache.value(filePath);
 
-
-        mDesktopFiles.insert(fileName, desktopFile);
+        instance().m_fileCache.insert(fileName, desktopFile);
         return desktopFile;
     }
 }
+
+QList<XdgDesktopFile*> XdgDesktopFileCache::getAllFiles()
+{
+    return instance().m_fileCache.values();
+}
+
+
+
+XdgDesktopFileCache & XdgDesktopFileCache::instance()
+{
+    static XdgDesktopFileCache cache;
+    if (!cache.m_IsInitialized)
+    {
+       cache.initialize(); 
+       cache.m_IsInitialized = true;
+    }
+
+    return cache;
+}
+
 
 
 /*! 
@@ -1302,6 +1319,60 @@ bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map)
 /************************************************
 
  ************************************************/
+void XdgDesktopFileCache::initialize(const QString& dirName)
+{
+    QDir dir(dirName);
+    // Directories have the type "application/x-directory", but in the desktop file
+    // are shown as "inode/directory". To handle these cases, we use this hash.
+    QHash<QString, QString> specials;
+    specials.insert("inode/directory", "application/x-directory");
+
+
+    // Working recursively ............
+    QFileInfoList files = dir.entryInfoList(QStringList(), QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+    foreach (QFileInfo f, files)
+    {
+        if (f.isDir())
+        {
+            initialize(f.absoluteFilePath());
+            continue;
+        }
+
+
+        XdgDesktopFile* df = load(f.absoluteFilePath());
+        if (!df)
+            continue;
+
+        if (! m_fileCache.contains(f.absoluteFilePath()))
+        {
+            m_fileCache.insert(f.absoluteFilePath(), df);
+        }
+        
+        QStringList mimes = df->value("MimeType").toString().split(';', QString::SkipEmptyParts);
+
+        foreach (QString mime, mimes)
+        {
+            int pref = df->value("InitialPreference", 0).toInt();
+            // We move the desktopFile forward in the list for this mime, so that 
+            // no desktopfile in front of it have a lower initialPreference.
+            int position = m_defaultAppsCache[mime].length();
+            while (position > 0 && m_defaultAppsCache[mime][position - 1]->value("InitialPreference, 0").toInt() < pref)
+            {
+                position--;
+            }
+            m_defaultAppsCache[mime].insert(position, df);
+        }
+    }
+
+}
+
+XdgDesktopFile* XdgDesktopFileCache::load(const QString& fileName)
+{
+    XdgDesktopFile* desktopFile = new XdgDesktopFile();
+    desktopFile->load(fileName);
+    return desktopFile;
+}
+
 void loadMimeCacheDir(const QString& dirName, QHash<QString, QList<XdgDesktopFile*> > & cache)
 {
     QDir dir(dirName);
@@ -1343,27 +1414,48 @@ void loadMimeCacheDir(const QString& dirName, QHash<QString, QList<XdgDesktopFil
     }
 }
 
-void loadMimeCache(QHash<QString, QList<XdgDesktopFile*> > & cache)
+QSettings::Format XdgDesktopFileCache::desktopFileSettingsFormat()
+{
+    static QSettings::Format format = QSettings::InvalidFormat;
+
+    if (format == QSettings::InvalidFormat)
+    {
+        format = QSettings::registerFormat("*.list", readDesktopFile, writeDesktopFile);
+        qDebug() << "registerFormat returned:" << format;
+    }
+
+    return format;
+}
+
+
+XdgDesktopFileCache::XdgDesktopFileCache() :
+    m_IsInitialized(false),
+        m_defaultAppsCache(),
+        m_fileCache()
+{
+}
+
+XdgDesktopFileCache::~XdgDesktopFileCache()
+{
+}
+
+
+
+void XdgDesktopFileCache::initialize()
 {
     QStringList dataDirs = XdgDirs::dataDirs();
     dataDirs.prepend(XdgDirs::dataHome(false));
 
     foreach (const QString dirname, dataDirs) 
     {
-        loadMimeCacheDir(dirname + "/applications", cache);
+        initialize(dirname + "/applications");
+//        loadMimeCacheDir(dirname + "/applications", m_defaultAppsCache);
     }
 }
 
 QList<XdgDesktopFile*>  XdgDesktopFileCache::getApps(const QString& mimetype)
 {
-    static QHash<QString, QList<XdgDesktopFile*> > cache;
-
-    if (cache.isEmpty())
-    {
-        loadMimeCache(cache);
-    }
-
-    return cache.value(mimetype);
+    return instance().m_defaultAppsCache.value(mimetype);
 }
 
 
@@ -1376,13 +1468,12 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimetype)
     // /usr/share/applications/defaults.list (in that order) for a default.
     QStringList dataDirs = XdgDirs::dataDirs();
     dataDirs.prepend(XdgDirs::dataHome(false));
-    QSettings::Format format = QSettings::registerFormat(".list", readDesktopFile, writeDesktopFile);
     foreach(const QString dataDir, dataDirs)
     {
         QString defaultsListPath = dataDir + "/applications/defaults.list";
         if (QFileInfo(defaultsListPath).exists())
         {
-            QSettings defaults(defaultsListPath, format);
+            QSettings defaults(defaultsListPath, desktopFileSettingsFormat());
             
 
             defaults.beginGroup("Default Applications");
@@ -1411,8 +1502,8 @@ XdgDesktopFile* XdgDesktopFileCache::getDefaultApp(const QString& mimetype)
 
     // If we havent found anything up to here, we look for a desktopfile that declares
     // the ability to handle the given mimetype. See getApps.
-
     QList<XdgDesktopFile*> apps = getApps(mimetype);
-    return apps.isEmpty() ? 0 : apps[0];
+    XdgDesktopFile* desktopFile = apps.isEmpty() ? 0 : apps[0];
+    return desktopFile;
 }
 

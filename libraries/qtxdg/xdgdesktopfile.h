@@ -36,6 +36,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
+#include <QtCore/QSettings>
 
 class XdgDesktopFileData;
 	
@@ -198,9 +199,24 @@ class XdgDesktopFileCache
 {
 public:
     static XdgDesktopFile* getFile(const QString& fileName);
+    static QList<XdgDesktopFile*> getAllFiles();
     static QList<XdgDesktopFile*> getApps(const QString & mimeType);
     static XdgDesktopFile* getDefaultApp(const QString& mimeType);
-};
+    static QSettings::Format desktopFileSettingsFormat();
+
+private:
+    static XdgDesktopFileCache & instance();
+    static XdgDesktopFile* load(const QString & fileName);
+
+    XdgDesktopFileCache();
+    ~XdgDesktopFileCache();
+
+    void initialize();    
+    void initialize(const QString & dirName);
+    bool m_IsInitialized;
+    QHash<QString, QList<XdgDesktopFile*> > m_defaultAppsCache;
+    QHash<QString, XdgDesktopFile*> m_fileCache;
+ };
 
 
 #endif // QTXDG_XDGDESKTOPFILE_H
