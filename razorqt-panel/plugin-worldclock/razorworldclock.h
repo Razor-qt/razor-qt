@@ -55,10 +55,11 @@ public:
     RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo);
     ~RazorWorldClock();
 
-    virtual QWidget *widget();
+    virtual QWidget *widget() { return mMainWidget; }
     virtual QString themeId() const { return "WorldClock"; }
     virtual IRazorPanelPlugin::Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
     bool isSeparate() const { return true; }
+    void activated(ActivationReason reason);
 
     virtual void settingsChanged();
     virtual void realign();
@@ -68,12 +69,11 @@ private slots:
     void synchroTimeout();
     void timeout();
     void wheelScrolled(int);
-    void leftMouseButtonClicked();
-    void middleMouseButtonClicked();
 
 private:
     static size_t instanceCounter;
 
+    QWidget *mMainWidget;
     RotatedWidget* mRotatedWidget;
     ActiveLabel *mContent;
     QDialog* mPopup;
@@ -107,8 +107,6 @@ private:
     void updateFormat();
     void restartTimer(int);
     void updateTimezone();
-
-    void popupDialog(bool);
 };
 
 

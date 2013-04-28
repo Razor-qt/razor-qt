@@ -87,8 +87,16 @@ RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo
     mCalendar(NULL),
     mFormat(NULL)
 {
+    mMainWidget = new QWidget();
     mContent = new ActiveLabel();
-    mRotatedWidget = new RotatedWidget(*mContent);
+    mRotatedWidget = new RotatedWidget(*mContent, mMainWidget);
+
+    mRotatedWidget->setTransferWheelEvent(true);
+
+    QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
+    borderLayout->setContentsMargins(0, 0, 0, 0);
+    borderLayout->setSpacing(0);
+    borderLayout->addWidget(mRotatedWidget, 0, Qt::AlignCenter);
 
     mContent->setObjectName("WorldClockContent");
 
@@ -102,8 +110,6 @@ RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
-    connect(mContent, SIGNAL(leftMouseButtonClicked()), SLOT(leftMouseButtonClicked()));
-    connect(mContent, SIGNAL(middleMouseButtonClicked()), SLOT(middleMouseButtonClicked()));
 
     ++instanceCounter;
 }
@@ -112,7 +118,7 @@ RazorWorldClock::~RazorWorldClock()
 {
     --instanceCounter;
 
-    delete mRotatedWidget;
+    delete mMainWidget;
     delete mFormat;
     delete mCalendar;
     delete mLocale;
@@ -120,12 +126,6 @@ RazorWorldClock::~RazorWorldClock()
     if (!instanceCounter)
         u_cleanup();
 }
-
-QWidget *RazorWorldClock::widget()
-{
-    return mRotatedWidget;
-}
-
 
 void RazorWorldClock::timeout()
 {
@@ -338,17 +338,26 @@ void RazorWorldClock::wheelScrolled(int delta)
     }
 }
 
-void RazorWorldClock::popupDialog(bool withCalendar)
+void RazorWorldClock::activated(ActivationReason reason)
 {
-    if (!mPopup)
+    switch (reason)
     {
-        UErrorCode status = U_ZERO_ERROR;
+    case IRazorPanelPlugin::Trigger:
+    case IRazorPanelPlugin::MiddleClick:
+        break;
+
+    default:
+        return;
+    }
+
+    if (!mPopup)
+    {        UErrorCode status = U_ZERO_ERROR;
 
         mPopup = new QDialog(mContent);
         mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         mPopup->setLayout(new QHBoxLayout(mPopup));
 
-        if (withCalendar)
+        if (reason == IRazorPanelPlugin::Trigger)
         {
             mPopup->layout()->setContentsMargins(0, 0, 0, 0);
             QCalendarWidget *calendarWidget = new QCalendarWidget(mPopup);
@@ -416,16 +425,6 @@ void RazorWorldClock::popupDialog(bool withCalendar)
         mPopup->deleteLater();
         mPopup = NULL;
     }
-}
-
-void RazorWorldClock::leftMouseButtonClicked()
-{
-    popupDialog(true);
-}
-
-void RazorWorldClock::middleMouseButtonClicked()
-{
-    popupDialog(false);
 }
 
 void RazorWorldClock::realign()
