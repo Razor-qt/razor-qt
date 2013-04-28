@@ -32,6 +32,9 @@
 #include <QtCore/QString>
 #include <QtCore/QFileInfo>
 #include <QtGui/QIcon>
+
+class XdgMimeData;
+
 /*! @brief The XdgMimeInfo class provides mime information about file.
  */
 class XdgMimeInfo
@@ -50,15 +53,26 @@ public:
     /// Returns the name of the mime type.
     QString mimeType() const;
 
+
+    QString comment() const;
+
+    QString localizedComment() const;
+
+    QStringList patterns() const;
+
     /// Returns an icon associated with the mime type.
     QIcon   icon() const;
 
     /// Returns an icon associated with the mime type.
     QString iconName() const;
 
+    QString subClassOf() const;
+
+    bool loadFromDb(QIODevice* xml);
+
 private:
-    QString mType;
-    QString mSubType;
+    XdgMimeData *mData;
 };
+
 
 #endif // QTXDG_XDGMIME_H

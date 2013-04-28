@@ -28,11 +28,37 @@
 
 #include "xdgmime.h"
 #include "xdgicon.h"
+#include "xdgdirs.h"
 
 #include <QFileInfo>
 #include <magic.h>
 #include <QDebug>
 #include <QtCore/QStringList>
+#include <QMap>
+#include <QDir>
+#include <QFileInfo>
+#include <QFile>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QSharedData>
+
+
+struct XdgMimeData
+{
+public:
+    XdgMimeData(QString media, QString subtype);
+    bool readXml(QIODevice* xml);
+    
+    QString mMedia;
+    QString mSubtype;
+
+    bool mDbLoaded;
+    QString mComment;
+    QMap<QString, QString> mLocalizedComments;
+    QStringList mPatterns;
+    QString mSubClassOf;
+};
+
 
 
 /************************************************
@@ -40,8 +66,9 @@
  ************************************************/
 XdgMimeInfo::XdgMimeInfo(const QString& mimeType)
 {
-    mType = mimeType.section('/', 0, 0);
-    mSubType = mimeType.section('/', 1);
+    QString media = mimeType.section('/', 0, 0);
+    QString subtype = mimeType.section('/', 1);
+    mData = new XdgMimeData(media, subtype);
 }
 
 
@@ -92,8 +119,9 @@ QString getFileMimeType(const QFileInfo& fileInfo, bool followSymLinks)
 XdgMimeInfo::XdgMimeInfo(const QFileInfo& file, bool followSymLinks)
 {
     QString mimeType = getFileMimeType(file, followSymLinks);
-    mType = mimeType.section('/', 0, 0);
-    mSubType = mimeType.section('/', 1);
+    QString media = mimeType.section('/', 0, 0);
+    QString subtype = mimeType.section('/', 1);
+    mData = new XdgMimeData(media, subtype);
 }
 
 
@@ -102,9 +130,24 @@ XdgMimeInfo::XdgMimeInfo(const QFileInfo& file, bool followSymLinks)
  ************************************************/
 QString XdgMimeInfo::mimeType() const
 {
-    return mType + "/" + mSubType;
+    return mData->mMedia + "/" + mData->mSubtype;
 }
 
+QString XdgMimeInfo::comment() const
+{
+    return mData->mComment;
+}
+
+QString XdgMimeInfo::localizedComment() const
+{
+    // FIXME
+    return mData->mComment;
+}
+
+QStringList XdgMimeInfo::patterns() const
+{
+    return mData->mPatterns;
+}
 
 /************************************************
 
@@ -112,10 +155,10 @@ QString XdgMimeInfo::mimeType() const
 QString XdgMimeInfo::iconName() const
 {
     QStringList names;
-    names << QString("%1-x-%2").arg(mType, mSubType);
-    names << QString("%1-%2").arg(mType, mSubType);
-    names << QString("%1-x-generic").arg(mType);
-    names << QString("%1-generic").arg(mType);
+    names << QString("%1-x-%2").arg(mData->mMedia, mData->mSubtype);
+    names << QString("%1-%2").arg(mData->mMedia, mData->mSubtype);
+    names << QString("%1-x-generic").arg(mData->mMedia);
+    names << QString("%1-generic").arg(mData->mMedia);
 
     foreach (QString s, names)
     {
@@ -132,5 +175,87 @@ QString XdgMimeInfo::iconName() const
 QIcon XdgMimeInfo::icon() const
 {
     return XdgIcon::fromTheme(iconName());
+}
+
+
+QString XdgMimeInfo::subClassOf() const
+{
+    return mData->mSubClassOf;
+}
+
+
+bool XdgMimeInfo::loadFromDb(QIODevice* xml)
+{
+    return mData->readXml(xml);
+}
+
+
+
+XdgMimeData::XdgMimeData(QString media, QString subtype): 
+        mMedia(media),
+        mSubtype(subtype),
+        mDbLoaded(false)
+{
+}
+
+bool XdgMimeData::readXml(QIODevice* xml)
+{
+    QDomDocument domDocument;
+    if (! domDocument.setContent(xml, false))
+    {
+        return false;
+    }
+
+    QDomElement rootElement = domDocument.documentElement();
+    if (rootElement.nodeName() != "mime-type")
+    {
+        return false;
+    }
+
+    if (rootElement.attribute("type") != mMedia + "/" + mSubtype)
+    {
+        return false;
+    }
+
+    QDomNodeList commentNodes = rootElement.elementsByTagName("comment");
+    for(uint i = 0; i < commentNodes.length(); i++)
+    {
+        if (! commentNodes.item(i).isElement())
+        {
+            continue;
+        }
+
+        QDomElement commentElement = commentNodes.item(i).toElement();
+
+        if (commentElement.hasAttribute("xml:lang"))
+        {
+            mLocalizedComments[commentElement.attribute("xml:lang")] = commentElement.text();
+        }
+        else 
+        {
+            mComment = commentElement.text();
+        }
+    }
+
+    QSet<QString> collectedPatterns; 
+    QDomNodeList globNodes = rootElement.elementsByTagName("glob");
+    for(uint i = 0; i < globNodes.length(); i++)
+    {
+        if (globNodes.item(i).isElement() && globNodes.item(i).toElement().hasAttribute("pattern"))
+        {
+            collectedPatterns << globNodes.item(i).toElement().attribute("pattern");
+        }
+    }
+    
+    mPatterns = collectedPatterns.toList();
+    mPatterns.sort();
+
+    QDomNodeList subClassOfElements = rootElement.elementsByTagName("sub-class-of");
+    if (subClassOfElements.size() > 0)
+    {
+        mSubClassOf = subClassOfElements.at(0).toElement().attribute("type");
+    }
+
+    return true;
 }
 
