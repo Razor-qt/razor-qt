@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="timeZonesT">
       <attribute name="title">
@@ -190,8 +190,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>566</width>
-             <height>2145</height>
+             <width>297</width>
+             <height>3120</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="_5">
@@ -568,7 +568,7 @@ p, li { white-space: pre-wrap; }
        <item>
         <widget class="QCheckBox" name="autorotateCB">
          <property name="text">
-          <string>Auto&amp;rotate</string>
+          <string>Auto&amp;rotate when the panel is vertical</string>
          </property>
          <property name="checked">
           <bool>true</bool>

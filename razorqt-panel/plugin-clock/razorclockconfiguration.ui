@@ -113,7 +113,7 @@
       <item>
        <widget class="QCheckBox" name="autorotateCB">
         <property name="text">
-         <string>Auto&amp;rotate</string>
+         <string>Auto&amp;rotate when the panel is vertical</string>
         </property>
         <property name="checked">
          <bool>true</bool>
