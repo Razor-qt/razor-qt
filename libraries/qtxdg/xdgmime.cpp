@@ -259,3 +259,91 @@ bool XdgMimeData::readXml(QIODevice* xml)
     return true;
 }
 
+
+QStringList XdgMimeInfoCache::mediatypes()
+{
+    return cache().keys();
+}
+
+QStringList XdgMimeInfoCache::subtypes(const QString& media)
+{
+    return cache().value(media).keys();
+}
+
+XdgMimeInfo* XdgMimeInfoCache::xdgMimeInfo(const QString & media, const QString & subtype)
+{
+    return cache().value(media).value(subtype);
+}
+
+XdgMimeInfo* XdgMimeInfoCache::xdgMimeInfo(const QString& mimetype)
+{
+    QString media = mimetype.section("/", 0, 0);
+    QString subtype = mimetype.section("/", 1, 1);
+    return xdgMimeInfo(media, subtype);
+}
+
+
+void loadMimeInfoCache(QMap<QString, QMap<QString, XdgMimeInfo*> > & cache)
+{
+    qDebug() << "loadMimeInfoCache";
+    QStringList datadirs = XdgDirs::dataDirs(); 
+    datadirs.prepend(XdgDirs::dataHome(false));
+    const QStringList filters = (QStringList() << "*.xml");
+ 
+    foreach (const QString datadir, datadirs)
+    {
+        QDir mimedir(datadir + "/mime");
+        
+        if (! mimedir.exists())
+        {
+            continue;
+        }
+        
+       
+        foreach (QFileInfo mediadirInfo, mimedir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot))
+        {
+            QString media = mediadirInfo.fileName();
+            
+            QDir mediadir(mediadirInfo.absoluteFilePath()); 
+            foreach (QFileInfo subtypefileInfo, mediadir.entryInfoList(filters, QDir::Files))
+            {
+                QString subtype = subtypefileInfo.fileName().left(subtypefileInfo.fileName().length() - 4);
+                //qDebug() << "subtype:" << subtype;
+                QFile subtypefile(subtypefileInfo.absoluteFilePath());
+                XdgMimeInfo* mimeInfo = new XdgMimeInfo(media + "/" + subtype);
+                if (subtypefile.open(QIODevice::ReadOnly) && mimeInfo->loadFromDb(&subtypefile))
+                {
+                    cache[media][subtype] = mimeInfo;
+                }
+                else 
+                {
+                    delete mimeInfo;
+                }
+                
+            }
+        }
+    }
+
+    // TESTING
+    XdgMimeData data("application", "msword");
+    QFile mswordxml("/usr/share/mime/application/msword.xml");
+    mswordxml.open(QIODevice::ReadOnly);
+    data.readXml(&mswordxml);
+    qDebug() << "=================================================================================";
+    qDebug() << "data:" << data.mMedia << data.mSubtype << data.mComment << data.mLocalizedComments << data.mPatterns;
+    qDebug() << "=================================================================================";
+}
+
+QMap<QString, QMap<QString, XdgMimeInfo*> > & XdgMimeInfoCache::cache()
+{
+    static QMap<QString, QMap<QString, XdgMimeInfo*> > _cache;
+    static bool cache_loaded = false;
+
+    if (! cache_loaded)
+    {
+        loadMimeInfoCache(_cache);
+        cache_loaded = true;
+    }
+    
+    return _cache;
+}

@@ -75,4 +75,16 @@ private:
 };
 
 
+class XdgMimeInfoCache 
+{
+public:
+    static QStringList mediatypes();
+    static QStringList subtypes(const QString & media);
+    static XdgMimeInfo* xdgMimeInfo(const QString & media, const QString & subtype);
+    static XdgMimeInfo* xdgMimeInfo(const QString & mimetype);
+
+private:
+    static QMap<QString, QMap<QString, XdgMimeInfo*> > & cache();
+};
+
 #endif // QTXDG_XDGMIME_H
