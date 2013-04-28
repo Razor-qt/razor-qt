@@ -6,7 +6,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif (NOT CMAKE_BUILD_TYPE)
 
 add_definitions ( -Wall )
-find_package ( Qt4 REQUIRED )
+find_package ( Qt4 REQUIRED QtCore QtGui QtDBus )
 include ( ${QT_USE_FILE} )
 find_package(X11 REQUIRED)
 
@@ -31,7 +31,7 @@ set ( razor-appswitcher_SRCS
 
 set(LIBRARIES
     razorqt
-    razorqxt
+    razor-global-key-shortcuts-client
 )
 
 QT4_WRAP_CPP(MOCS ${razor-appswitcher_HDRS})
@@ -41,7 +41,7 @@ SET (exec razor-appswitcher)
 
 add_executable ( ${exec} ${razor-appswitcher_SRCS} ${UIS} ${RSCS} ${TRS} ${MOCS} )
 add_dependencies( ${exec} razorqt )
-target_link_libraries(${exec}   ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
+target_link_libraries(${exec}   ${QT_LIBRARIES}
                                 ${LIBRARIES}
                     )
 INSTALL(TARGETS ${exec} RUNTIME DESTINATION bin)

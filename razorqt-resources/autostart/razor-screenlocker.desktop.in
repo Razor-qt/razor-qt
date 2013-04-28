@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Screen Locker
+TryExec=razor-screenlocker
+Exec=razor-screenlocker
+OnlyShowIn=Razor;
+X-Razor-Module=true
+
+#TRANSLATIONS_DIR=translations

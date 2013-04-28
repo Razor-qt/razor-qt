@@ -37,8 +37,8 @@
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(HelloWorld)
 
 
-HelloWorld::HelloWorld(DesktopScene * scene, const QString & configId, RazorSettings * config)
-    : DesktopWidgetPlugin(scene, configId, config)
+HelloWorld::HelloWorld(DesktopScene * scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info)
+    : DesktopWidgetPlugin(scene, configId, config, info)
 {
     m_config->beginGroup(configId);
 

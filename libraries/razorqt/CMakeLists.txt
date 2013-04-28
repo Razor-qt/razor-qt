@@ -17,19 +17,20 @@ set(razorqt_PUB_HDRS
     addplugindialog/addplugindialog.h
     screensaver.h
     razorapplication.h
-    razorshortcutbutton.h
     # upower. Maybe standalone lib?
     #librazor-upower/battery.h
     #librazor-upower/ucpufreq.h
     #librazor-upower/upower.h
     libtranslate.h
     pageselectwidget.h
+    programfinder.h
     razorconfigdialog.h
     razorpower/razorpower.h
     razornotification.h
     razorautostartentry.h
     translatorsinfo/translatorsinfo.h
     razorgridlayout.h
+    rotatedwidget.h
 )
 
 set(razorqt_PRIV_HDRS
@@ -47,12 +48,12 @@ set(razorqt_SRCS
     razorsettings.cpp
     screensaver.cpp
     razorapplication.cpp
-    razorshortcutbutton.cpp
     # upower. Maybe standalone lib?
     #librazor-upower/battery.cpp
     #librazor-upower/ucpufreq.cpp
     #librazor-upower/upower.cpp
     pageselectwidget.cpp
+    programfinder.cpp
     razorconfigdialog.cpp
     razorpower/razorpower.cpp
     razorpower/razorpowerproviders.cpp
@@ -60,6 +61,7 @@ set(razorqt_SRCS
     razorautostartentry.cpp
     translatorsinfo/translatorsinfo.cpp
     razorgridlayout.cpp
+    rotatedwidget.cpp
 )
 
 set(razorqt_MOCS
@@ -70,8 +72,6 @@ set(razorqt_MOCS
     razorsettings.h
     screensaver.h
     razorapplication.h
-    razorshortcutbutton.h
-    razorshortcutbutton_p.h
     # upower. Maybe standalone lib?
     #librazor-upower/battery.h
     #librazor-upower/ucpufreq.h
@@ -83,6 +83,7 @@ set(razorqt_MOCS
     razorpower/razorpower.h
     razorpower/razorpowerproviders.h
     razorgridlayout.h
+    rotatedwidget.h
 )
 
 QT4_ADD_DBUS_INTERFACE(razorqt_SRCS
@@ -121,7 +122,6 @@ QT4_WRAP_CPP(MOCS ${razorqt_MOCS})
 QT4_WRAP_UI(UIS ${razorqt_UIS})
 
 
-include(RazorLibSuffix)
 
 include(translatorsinfo/CMakeLists.txt)
 get_translatorsinfo_qrc(translatorsinfo_qrc)

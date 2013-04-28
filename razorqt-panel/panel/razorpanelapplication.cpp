@@ -35,18 +35,23 @@
 
  ************************************************/
 RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
-    : RazorApplication(argc, argv),
-    mPanel(0)
+    : RazorApplication(argc, argv)
 {
+}
+
+RazorPanelApplication::~RazorPanelApplication()
+{
+    qDeleteAll(mPanels);
 }
 
 
 /************************************************
 
  ************************************************/
-void RazorPanelApplication::setPanel(RazorPanel* panel)
+void RazorPanelApplication::addPanel(const QString &cfg)
 {
-    mPanel = panel;
+    RazorPanel *panel = new RazorPanel(cfg);
+    mPanels << panel;
 }
 
 
@@ -55,7 +60,7 @@ void RazorPanelApplication::setPanel(RazorPanel* panel)
  ************************************************/
 bool RazorPanelApplication::x11EventFilter(XEvent * event)
 {
-    if (mPanel)
-        mPanel->x11EventFilter(event);
+    foreach(RazorPanel *i, mPanels)
+        i->x11EventFilter(event);
     return false;
 }

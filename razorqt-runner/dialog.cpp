@@ -34,7 +34,7 @@
 
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgicon.h>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 
@@ -54,6 +54,8 @@
 QEvent::Type QEventKeyPress=QEvent::KeyPress;
 #include <razorqt/xfitman.h>
 
+#define DEFAULT_SHORTCUT "Alt+F2"
+
 /************************************************
 
  ************************************************/
@@ -61,7 +63,9 @@ Dialog::Dialog(QWidget *parent) :
     QDialog(parent, Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint),
     ui(new Ui::Dialog),
     mSettings(new RazorSettings("razor-runner", this)),
-    mGlobalShortcut(new QxtGlobalShortcut(this))
+    mGlobalShortcut(0),
+    mLockCascadeChanges(false),
+    mConfigureDialog(0)
 {
     ui->setupUi(this);
     setWindowTitle("Razor Runner");
@@ -86,7 +90,6 @@ Dialog::Dialog(QWidget *parent) :
     setFilter("");
 
     ui->commandList->setItemDelegate(new HtmlDelegate(QSize(32, 32), ui->commandList));
-    connect(mGlobalShortcut, SIGNAL(activated()), this, SLOT(showHide()));
 
     // Popup menu ...............................
     QAction *a = new QAction(XdgIcon::fromTheme("configure"), tr("Configure razor-runner"), this);
@@ -111,6 +114,10 @@ Dialog::Dialog(QWidget *parent) :
     // End of popup menu ........................
 
     applySettings();
+
+    connect(mGlobalShortcut, SIGNAL(activated()), this, SLOT(showHide()));
+    connect(mGlobalShortcut, SIGNAL(shortcutChanged(QString,QString)), this, SLOT(shortcutChanged(QString,QString)));
+
     resize(mSettings->value("dialog/width", 400).toInt(), size().height());
 }
 
@@ -300,15 +307,20 @@ void Dialog::realign()
  ************************************************/
 void Dialog::applySettings()
 {
-    // Shortcut .................................
-    QKeySequence shortcut = QKeySequence::fromString(mSettings->value("dialog/shortcut", "Alt+F2").toString());
-    if (shortcut.isEmpty())
-        shortcut = QKeySequence::fromString("Alt+F2");
+    if (mLockCascadeChanges)
+        return;
 
-    if (mGlobalShortcut->shortcut() != shortcut)
+    // Shortcut .................................
+    QString shortcut = mSettings->value("dialog/shortcut", DEFAULT_SHORTCUT).toString();
+    if (shortcut.isEmpty())
+        shortcut = DEFAULT_SHORTCUT;
+
+    if (!mGlobalShortcut)
+        mGlobalShortcut = GlobalKeyShortcut::Client::instance()->addAction(shortcut, "/runner/show_hide_dialog", tr("Show/hide runner dialog"), this);
+    else if (mGlobalShortcut->shortcut() != shortcut)
     {
-        mGlobalShortcut->setShortcut(shortcut);
-        std::cout << tr("Press \"%1\" to see dialog.").arg(shortcut.toString()).toLocal8Bit().constData() << std::endl;
+        mGlobalShortcut->changeShortcut(shortcut);
+//        std::cout << tr("Press \"%1\" to see dialog.").arg(shortcut.toString()).toLocal8Bit().constData() << std::endl;
     }
 
     mShowOnTop = mSettings->value("dialog/show_on_top", true).toBool();
@@ -317,6 +329,23 @@ void Dialog::applySettings()
 
     realign();
     mSettings->sync();
+}
+
+
+/************************************************
+
+ ************************************************/
+void Dialog::shortcutChanged(const QString &/*oldShortcut*/, const QString &newShortcut)
+{
+    if (!newShortcut.isEmpty())
+    {
+        mLockCascadeChanges = true;
+
+        mSettings->setValue("dialog/shortcut", newShortcut);
+        mSettings->sync();
+
+        mLockCascadeChanges = false;
+    }
 }
 
 
@@ -374,5 +403,9 @@ void Dialog::runCommand()
  ************************************************/
 void Dialog::showConfigDialog()
 {
-    ConfigureDialog::createAndShow(mSettings, this);
+    if (!mConfigureDialog)
+        mConfigureDialog = new ConfigureDialog(mSettings, DEFAULT_SHORTCUT, this);
+    mConfigureDialog->exec();
 }
+
+#undef DEFAULT_SHORTCUT

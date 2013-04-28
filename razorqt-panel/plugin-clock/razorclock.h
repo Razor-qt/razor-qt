@@ -4,11 +4,12 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2010-2011 Razor team
+ * Copyright: 2010-2013 Razor team
  * Authors:
  *   Christopher "VdoP" Regali
  *   Alexander Sokoloff <sokoloff.a@gmail.com>
  *   Maciej Płaza <plaza.maciej@gmail.com>
+ *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
  * This program or library is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
@@ -32,6 +33,7 @@
 
 #include "../panel/irazorpanelplugin.h"
 #include "razorclockconfiguration.h"
+#include <razorqt/rotatedwidget.h>
 
 #include <QtCore/QString>
 #include <QtGui/QFrame>
@@ -49,12 +51,14 @@ public:
 
     virtual Flags flags() const { return PreferRightAlignment | HaveConfigDialog ; }
     QString themeId() const { return "Clock"; }
-    QWidget *widget() { return mContent; }
+    QWidget *widget() { return mMainWidget; }
     QDialog *configureDialog();
     void settingsChanged();
 
     void activated(ActivationReason reason);
     bool isSeparate() const { return true; }
+
+    void realign();
 
 public slots:
     void updateTime();
@@ -64,7 +68,9 @@ protected:
 
 private:
     QTimer* mClockTimer;
-    QFrame* mContent;
+    QWidget *mMainWidget;
+    QWidget *mContent;
+    RotatedWidget* mRotatedWidget;
     QLabel* mTimeLabel;
     QLabel* mDateLabel;
     QString mClockFormat;
@@ -75,6 +81,7 @@ private:
     bool mDateOnNewLine;
     bool mUseUTC;
     Qt::DayOfWeek mFirstDayOfWeek;
+    bool mAutoRotate;
 
     QDateTime currentDateTime();
     void showTime(const QDateTime &);

@@ -32,11 +32,12 @@
 
 #include <QtGui/QFileDialog>
 
-RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, QWidget *parent) :
+RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, const QString &defaultShortcut, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::RazorMainMenuConfiguration),
     mSettings(settings),
-    mOldSettings(settings)
+    mOldSettings(settings),
+    mDefaultShortcut(defaultShortcut)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("MainMenuConfigurationWindow");
@@ -52,7 +53,8 @@ RazorMainMenuConfiguration::RazorMainMenuConfiguration(QSettings &settings, QWid
     connect(ui->textLE, SIGNAL(textEdited(QString)), this, SLOT(textButtonChanged(QString)));
     connect(ui->chooseMenuFilePB, SIGNAL(clicked()), this, SLOT(chooseMenuFile()));
     
-    connect(ui->shortcutEd, SIGNAL(keySequenceChanged(QString)), this, SLOT(shortcutChanged(QString)));
+    connect(ui->shortcutEd, SIGNAL(shortcutGrabbed(QString)), this, SLOT(shortcutChanged(QString)));
+    connect(ui->shortcutEd->addMenuAction(tr("Reset")), SIGNAL(triggered()), this, SLOT(shortcutReset()));
 }
 
 RazorMainMenuConfiguration::~RazorMainMenuConfiguration()
@@ -71,7 +73,7 @@ void RazorMainMenuConfiguration::loadSettings()
         menuFile = XdgMenu::getMenuFileName();
     }
     ui->menuFilePathLE->setText(menuFile);
-    ui->shortcutEd->setKeySequence(mSettings.value("shortcut", "Alt+F1").toString());
+    ui->shortcutEd->setText(mSettings.value("shortcut", "Alt+F1").toString());
 }
 
 void RazorMainMenuConfiguration::textButtonChanged(const QString &value)
@@ -96,7 +98,13 @@ void RazorMainMenuConfiguration::chooseMenuFile()
 
 void RazorMainMenuConfiguration::shortcutChanged(const QString &value)
 {
-    mSettings.setValue("shortcut", ui->shortcutEd->keySequence().toString());
+    ui->shortcutEd->setText(value);
+    mSettings.setValue("shortcut", value);
+}
+
+void RazorMainMenuConfiguration::shortcutReset()
+{
+    shortcutChanged(mDefaultShortcut);
 }
 
 void RazorMainMenuConfiguration::dialogButtonsAction(QAbstractButton *btn)

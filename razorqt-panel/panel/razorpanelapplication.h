@@ -38,13 +38,13 @@ class RazorPanelApplication : public RazorApplication
     Q_OBJECT
 public:
     explicit RazorPanelApplication(int& argc, char** argv);
+    ~RazorPanelApplication();
     virtual bool x11EventFilter(XEvent* event);
 
-    RazorPanel* panel() const { return mPanel; }
-    void setPanel(RazorPanel* panel);
+    void addPanel(const QString &cfg);
 
 private:
-    RazorPanel* mPanel;
+    QList<RazorPanel*> mPanels;
 };
 
 

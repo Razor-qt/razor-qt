@@ -245,9 +245,10 @@ void RazorTaskButton::btnClicked(bool checked)
  ************************************************/
 void RazorTaskButton::activateWithDraggable()
 {
-    if (!mDraggableMimeData || mDraggableMimeData->text().isEmpty())
+    if (!mDraggableMimeData)
         return;
-
+    // raise app in any time when there is a drag
+    // in progress to allow drop it into an app
     raiseApplication();
 }
 

@@ -34,8 +34,8 @@
 
 EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(Notepad)
 
-Notepad::Notepad(DesktopScene *scene, const QString &configId, RazorSettings *config)
-  : DesktopWidgetPlugin(scene, configId, config)
+Notepad::Notepad(DesktopScene *scene, const QString &configId, RazorSettings *config, const RazorPluginInfo &info)
+  : DesktopWidgetPlugin(scene, configId, config, info)
 {
     setObjectName("Notepad");
     m_config->beginGroup(configId);

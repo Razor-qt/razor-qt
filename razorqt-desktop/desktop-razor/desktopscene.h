@@ -83,7 +83,7 @@ private:
 
     QStringList pluginDesktopDirs();
 
-    DesktopWidgetPlugin * loadPlugin(QLibrary * lib, const QString & configId="default");
+    DesktopWidgetPlugin * loadPlugin(QLibrary * lib, const QString & configId="default", const RazorPluginInfo &info = RazorPluginInfo());
     QLibrary* loadPluginLib(const RazorPluginInfo &pluginInfo);
 
     void save();

@@ -49,10 +49,8 @@ public:
     };
 
 
-    explicit ConfigureDialog(QSettings *settings, QWidget *parent = 0);
+    explicit ConfigureDialog(QSettings *settings, const QString &defaultShortcut, QWidget *parent = 0);
     ~ConfigureDialog();
-
-    static ConfigureDialog *createAndShow(QSettings *settings, QWidget *parent);
 
 protected:
    // void closeEvent(QCloseEvent *event);
@@ -61,9 +59,11 @@ private:
     Ui::ConfigureDialog *ui;
     QSettings *mSettings;
     RazorSettingsCache *mOldSettings;
+    QString mDefaultShortcut;
 
 private slots:
     void shortcutChanged(const QString &text);
+    void shortcutReset();
     void settingsChanged();
     void positionCbxChanged(int index);
     void monitorCbxChanged(int index);

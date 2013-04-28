@@ -32,8 +32,11 @@
 #include "../panel/irazorpanelplugin.h"
 #include <QToolButton>
 
-class QxtGlobalShortcut;
 
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 class ShowDesktop :  public QObject, public IRazorPanelPlugin
 {
@@ -45,7 +48,7 @@ public:
     virtual QWidget *widget() { return &mButton; }
     virtual QString themeId() const { return "ShowDesktop"; }
 private:
-    QxtGlobalShortcut * m_key;
+    GlobalKeyShortcut::Action * m_key;
 
 private slots:
     void showDesktop();

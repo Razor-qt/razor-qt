@@ -31,20 +31,28 @@
 
 #include <QtGui/QToolButton>
 
-class QxtGlobalShortcut;
+
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 class DesktopSwitchButton : public QToolButton
 {
     Q_OBJECT
     
 public:
-    DesktopSwitchButton(QWidget * parent, int index, const QKeySequence &sequence, const QString &title=QString());
+    DesktopSwitchButton(QWidget * parent, int index, const QString &path, const QString &shortcut, const QString &title=QString());
+
+public slots:
+    void unregisterShortcut();
 
 signals:
     void activated();
 
 private:
-    QxtGlobalShortcut * m_shortcut;
+    GlobalKeyShortcut::Action * m_shortcut;
+    int mIndex;
 };
 
 #endif

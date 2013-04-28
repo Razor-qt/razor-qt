@@ -58,6 +58,8 @@ public:
 
     ~AddPluginDialog();
 
+    void setPluginsInUse(const RazorPluginInfoList pluginsInUse);
+
 signals:
     void pluginSelected(const RazorPluginInfo &plugin);
 
@@ -68,6 +70,7 @@ private:
     void init();
     Ui::AddPluginDialog *ui;
     RazorPluginInfoList mPlugins;
+    RazorPluginInfoList mPluginsInUse;
     int mTimerId;
 
 private slots:

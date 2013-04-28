@@ -31,6 +31,7 @@
 
 #include <QtGui/QGraphicsObject>
 #include <razorqt/razorsettings.h>
+#include <razorqt/razorplugininfo.h>
 
 class DesktopScene;
 
@@ -39,7 +40,7 @@ class DesktopWidgetPlugin : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    DesktopWidgetPlugin(DesktopScene *scene, const QString & configId, RazorSettings * config);
+    DesktopWidgetPlugin(DesktopScene *scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info);
 
     static int ZVAL() { return 2; }
 
@@ -67,6 +68,8 @@ public:
 
     void setEditable(bool editable);
     bool editable() { return m_editable; }
+    
+    RazorPluginInfo desktopFile() { return m_desktopFile; }
 
 signals:
     void pluginResized(const QSizeF &size);
@@ -98,6 +101,8 @@ private:
     bool m_highlight;
 
     QTimer * m_timer;
+    
+    RazorPluginInfo m_desktopFile;
 
     QCursor getCursorByPos(const QPointF & position);
 
@@ -109,22 +114,22 @@ private slots:
 
 /*! Prototype for plugin's init() function
  */
-typedef DesktopWidgetPlugin* (*DesktopWidgetInitFunction)(DesktopScene *scene, const QString & configId, RazorSettings * config);
+typedef DesktopWidgetPlugin* (*DesktopWidgetInitFunction)(DesktopScene *scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &);
 
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin header file.
  */
 #define EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_H \
-    extern "C" DesktopWidgetPlugin* init(DesktopScene *scene, const QString & configId, RazorSettings * config);
+    extern "C" DesktopWidgetPlugin* init(DesktopScene *scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info);
 
 /*! Helper macro for define RazorPanelPlugin.
     Place this macro in your plugin source file.
  */
 #define EXPORT_RAZOR_DESKTOP_WIDGET_PLUGIN_CPP(PLUGINCLASS)        \
-    DesktopWidgetPlugin* init(DesktopScene *scene, const QString & configId, RazorSettings * config)              \
+    DesktopWidgetPlugin* init(DesktopScene *scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info)              \
     {                                                       \
-        return new PLUGINCLASS(scene, configId, config);      \
+        return new PLUGINCLASS(scene, configId, config, info);      \
     }
 
 

@@ -34,6 +34,9 @@ class IRazorPanelPlugin;
 class RazorCpuLoad: public QFrame
 {
 	Q_OBJECT
+    
+    Q_PROPERTY(QColor fontColor READ getFontColor WRITE setFontColor)
+
 public:
     /**
       Describes orientation of cpu load bar
@@ -50,6 +53,9 @@ public:
 
 
     void settingsChanged();
+
+    void setFontColor(QColor value) { fontColor = value; }
+    QColor getFontColor() const { return fontColor; }
 
 protected:
 	void virtual timerEvent(QTimerEvent *event);
@@ -71,6 +77,8 @@ private:
     int m_timerID;
 
 	QFont m_font;
+    
+    QColor fontColor;
 };
 
 

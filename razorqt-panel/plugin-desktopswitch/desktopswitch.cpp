@@ -32,7 +32,7 @@
 #include <QtDebug>
 #include <QSignalMapper>
 #include <razorqt/xfitman.h>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 #include <razorqt/razorgridlayout.h>
 
 #include <QHBoxLayout>
@@ -65,22 +65,17 @@ void DesktopSwitch::setup()
         // TODO/FIXME: maybe it has to be removed from layout too?
         m_pSignalMapper->removeMappings(b);
         m_buttons->removeButton(b);
+//        dynamic_cast<DesktopSwitchButton*>(b)->unregisterShortcut();
         delete b;
     }
 
     // create new desktop layout
-    int firstKey = Qt::Key_F1;
-    int maxKey = Qt::Key_F35; // max defined in Qt
-
     for (int i = 0; i < m_desktopCount; ++i)
     {
-        QKeySequence sequence;
-        if (firstKey < maxKey)
-        {
-            sequence = QKeySequence(Qt::CTRL + firstKey++);
-        }
+        QString path = QString("/panel/%1/desktop_switch/%2/desktop_%3").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()).arg(i + 1);
+        QString shortcut = QString("Control+F%1").arg(i + 1);
 
-        DesktopSwitchButton * m = new DesktopSwitchButton(&mWidget, i, sequence, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
+        DesktopSwitchButton * m = new DesktopSwitchButton(&mWidget, i, path, shortcut, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
         m_pSignalMapper->setMapping(m, i);
         connect(m, SIGNAL(activated()), m_pSignalMapper, SLOT(map())) ;
         mWidget.layout()->addWidget(m);

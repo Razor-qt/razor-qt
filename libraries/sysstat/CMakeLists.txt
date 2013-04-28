@@ -9,7 +9,6 @@ add_definitions(-DPATCH_VERSION=${PATCH_VERSION})
 add_definitions(-DSYSSTAT_LIBRARY)
 
 add_definitions(-Wall)
-find_package(Qt4 REQUIRED)
 
 
 set(SYSSTAT_PUBLIC_HDRS
@@ -57,10 +56,7 @@ file(GLOB SYSSTAT_TS_FILES
 
 
 #**********************************************************
-cmake_minimum_required( VERSION 2.6 )
 
-include(RazorLibSuffix)
-include(${QT_USE_FILE})
 
 QT4_WRAP_CPP(SYSSTAT_CXX ${SYSSTAT_MOCS})
 qt4_add_translation(SYSSTAT_QM_FILES ${SYSSTAT_TS_FILES})

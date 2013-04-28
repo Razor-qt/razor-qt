@@ -40,7 +40,7 @@
 #include <razorqt/xfitman.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/razorsettings.h>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 #include <razorqt/razornotification.h>
 
 
@@ -49,6 +49,8 @@
 
 RazorAppSwitcher::AppSwitcher::AppSwitcher()
     : QWidget(0, Qt::FramelessWindowHint | Qt::Tool)
+    , m_key(0)
+    , m_lockCascadeChanges(false)
 {
     setupUi(this);
 
@@ -65,30 +67,52 @@ RazorAppSwitcher::AppSwitcher::AppSwitcher()
     scrollArea->setWidget(background);
     background->setLayout(m_layout);
 
-    m_key = new QxtGlobalShortcut(this);
-
     connect(m_settings, SIGNAL(settingsChanged()), this, SLOT(applySettings()));
-    connect(m_key, SIGNAL(activated()), this, SLOT(globalKeyActivated()));
-    
+
     applySettings();
+
+    connect(m_key, SIGNAL(activated()), this, SLOT(globalKeyActivated()));
+    connect(m_key, SIGNAL(shortcutChanged(QString,QString)), this, SLOT(shortcutChanged(QString,QString)));
 }
 
 void RazorAppSwitcher::AppSwitcher::applySettings()
 {
-    QKeySequence shortcut = QKeySequence::fromString(m_settings->value("shortcut", DEFAULT_SHORTCUT).toString());
-    if (shortcut.isEmpty())
-        shortcut = QKeySequence::fromString(DEFAULT_SHORTCUT);
-    
-    if (m_key->shortcut() == shortcut)
+    if (m_lockCascadeChanges)
         return;
 
-    if (! m_key->setShortcut(shortcut))
-    {
-        RazorNotification::notify(tr("Global shortcut: '%1' cannot be registered").arg(shortcut.toString()));
-        exit(1);
-    }
+    QString shortcut = m_settings->value("shortcut", DEFAULT_SHORTCUT).toString();
+    if (shortcut.isEmpty())
+        shortcut = DEFAULT_SHORTCUT;
+
+    if (!m_key)
+        m_key = GlobalKeyShortcut::Client::instance()->addAction(shortcut, "/app_switcher/switch", tr("Switch applications"), this);
     
+    if (m_key)
+    {
+        if (m_key->shortcut() == shortcut)
+            return;
+
+        if (m_key->changeShortcut(shortcut).isEmpty())
+        {
+            RazorNotification::notify(tr("Global shortcut: '%1' cannot be registered").arg(shortcut));
+//            exit(1);
+        }
+    }
+
     m_settings->sync();
+}
+
+void RazorAppSwitcher::AppSwitcher::shortcutChanged(const QString &/*oldShortcut*/, const QString &newShortcut)
+{
+    if (!newShortcut.isEmpty())
+    {
+        m_lockCascadeChanges = true;
+
+        m_settings->setValue("shortcut", newShortcut);
+        m_settings->sync();
+
+        m_lockCascadeChanges = false;
+    }
 }
 
 void RazorAppSwitcher::AppSwitcher::globalKeyActivated()
@@ -359,3 +383,5 @@ void RazorAppSwitcher::SwitcherItem::mouseReleaseEvent(QMouseEvent * e)
 {
     emit activateXWindow();
 }
+
+#undef DEFAULT_SHORTCUT

@@ -4,7 +4,7 @@
  * Razor - a lightweight, Qt based, desktop toolset
  * http://razor-qt.org
  *
- * Copyright: 2012 Razor team
+ * Copyright: 2012-2013 Razor team
  * Authors:
  *   Kuzma Shapran <kuzma.shapran@gmail.com>
  *
@@ -49,6 +49,8 @@
 
 Q_EXPORT_PLUGIN2(panelworldclock, RazorWorldClockLibrary)
 
+size_t RazorWorldClock::instanceCounter = 0;
+
 
 static QString ICU_to_Qt(const icu::UnicodeString &string)
 {
@@ -77,13 +79,25 @@ static icu::UnicodeString Qt_to_ICU(const QString &string)
 RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo):
     QObject(),
     IRazorPanelPlugin(startupInfo),
-    mContent(new ActiveLabel()),
     mPopup(NULL),
     mTimer(new QTimer(this)),
     mFormatType(FORMAT__INVALID),
+    mAutoRotate(true),
+    mLocale(NULL),
     mCalendar(NULL),
     mFormat(NULL)
 {
+    mMainWidget = new QWidget();
+    mContent = new ActiveLabel();
+    mRotatedWidget = new RotatedWidget(*mContent, mMainWidget);
+
+    mRotatedWidget->setTransferWheelEvent(true);
+
+    QVBoxLayout *borderLayout = new QVBoxLayout(mMainWidget);
+    borderLayout->setContentsMargins(0, 0, 0, 0);
+    borderLayout->setSpacing(0);
+    borderLayout->addWidget(mRotatedWidget, 0, Qt::AlignCenter);
+
     mContent->setObjectName("WorldClockContent");
 
     mContent->setAlignment(Qt::AlignCenter);
@@ -96,28 +110,22 @@ RazorWorldClock::RazorWorldClock(const IRazorPanelPluginStartupInfo &startupInfo
     connect(mTimer, SIGNAL(timeout()), SLOT(timeout()));
 
     connect(mContent, SIGNAL(wheelScrolled(int)), SLOT(wheelScrolled(int)));
-    connect(mContent, SIGNAL(leftMouseButtonClicked()), SLOT(leftMouseButtonClicked()));
-    connect(mContent, SIGNAL(middleMouseButtonClicked()), SLOT(middleMouseButtonClicked()));
+
+    ++instanceCounter;
 }
 
 RazorWorldClock::~RazorWorldClock()
 {
-    delete mContent;
+    --instanceCounter;
 
-    if (mFormat)
-        delete mFormat;
-    if (mCalendar)
-        delete mCalendar;
-    if (mLocale)
-        delete mLocale;
-    u_cleanup();
+    delete mMainWidget;
+    delete mFormat;
+    delete mCalendar;
+    delete mLocale;
+
+    if (!instanceCounter)
+        u_cleanup();
 }
-
-QWidget *RazorWorldClock::widget()
-{
-    return mContent;
-}
-
 
 void RazorWorldClock::timeout()
 {
@@ -139,6 +147,9 @@ void RazorWorldClock::timeout()
         {
             mContent->setText(ICU_to_Qt(str));
             mLastShownText = str;
+
+            mRotatedWidget->adjustContentSize();
+            mRotatedWidget->update();
         }
     }
 }
@@ -303,6 +314,13 @@ void RazorWorldClock::settingsChanged()
         updateFormat();
 
     updateTimezone();
+
+    bool autoRotate = settings()->value("autoRotate", true).toBool();
+    if (autoRotate != mAutoRotate)
+    {
+        mAutoRotate = autoRotate;
+        realign();
+    }
 }
 
 QDialog *RazorWorldClock::configureDialog()
@@ -320,17 +338,26 @@ void RazorWorldClock::wheelScrolled(int delta)
     }
 }
 
-void RazorWorldClock::popupDialog(bool withCalendar)
+void RazorWorldClock::activated(ActivationReason reason)
 {
-    if (!mPopup)
+    switch (reason)
     {
-        UErrorCode status = U_ZERO_ERROR;
+    case IRazorPanelPlugin::Trigger:
+    case IRazorPanelPlugin::MiddleClick:
+        break;
+
+    default:
+        return;
+    }
+
+    if (!mPopup)
+    {        UErrorCode status = U_ZERO_ERROR;
 
         mPopup = new QDialog(mContent);
         mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
         mPopup->setLayout(new QHBoxLayout(mPopup));
 
-        if (withCalendar)
+        if (reason == IRazorPanelPlugin::Trigger)
         {
             mPopup->layout()->setContentsMargins(0, 0, 0, 0);
             QCalendarWidget *calendarWidget = new QCalendarWidget(mPopup);
@@ -400,14 +427,26 @@ void RazorWorldClock::popupDialog(bool withCalendar)
     }
 }
 
-void RazorWorldClock::leftMouseButtonClicked()
+void RazorWorldClock::realign()
 {
-    popupDialog(true);
-}
+    if (mAutoRotate)
+        switch (panel()->position())
+        {
+        case IRazorPanel::PositionTop:
+        case IRazorPanel::PositionBottom:
+            mRotatedWidget->setOrigin(Qt::TopLeftCorner);
+            break;
 
-void RazorWorldClock::middleMouseButtonClicked()
-{
-    popupDialog(false);
+        case IRazorPanel::PositionLeft:
+            mRotatedWidget->setOrigin(Qt::BottomLeftCorner);
+            break;
+
+        case IRazorPanel::PositionRight:
+            mRotatedWidget->setOrigin(Qt::TopRightCorner);
+            break;
+        }
+    else
+        mRotatedWidget->setOrigin(Qt::TopLeftCorner);
 }
 
 ActiveLabel::ActiveLabel(QWidget * parent) :

@@ -35,10 +35,12 @@
 #include <X11/X.h>
 
 
-class QxtGlobalShortcut;
 class RazorSettings;
-class QShortcut;
 class QHBoxLayout;
+namespace GlobalKeyShortcut
+{
+class Action;
+}
 
 
 namespace RazorAppSwitcher {
@@ -92,7 +94,7 @@ public:
 
 private:
     //! 3rd party class to handle global keyboard shortcut
-    QxtGlobalShortcut * m_key;
+    GlobalKeyShortcut::Action * m_key;
 
     //! Hide the appswitcher after some time if there is no user action
     QTimer *m_timer;
@@ -107,6 +109,8 @@ private:
     QHBoxLayout * m_layout;
 
     RazorSettings *m_settings;
+
+    bool m_lockCascadeChanges;
 
     //! Enable m_key, the global shortcut.
     void hideEvent(QHideEvent *e);
@@ -137,9 +141,11 @@ private slots:
     void setScrollAreaVisibility();
 
     void applySettings();
+
+    void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
 };
 
-}; // namespace
+} // namespace
 
 
 #endif

@@ -79,9 +79,13 @@ build_module(MODULE_LIBRAZORQT
     "Core Razor library"
     libraries/razorqt On)
 
-build_module(MODULE_LIBRAZORQXT
-    "Razor global hotkey library"
-    libraries/razorqxt On)
+build_module(MODULE_LIBRAZORGLOBALKEYSHORTCUTSCLIENT
+    "Razor global key shortcuts client library"
+    libraries/razor-global-key-shortcuts-client On)
+
+build_module(MODULE_LIBRAZORGLOBALKEYSHORTCUTSBUTTON
+    "Razor global key shortcuts GUI support library"
+    libraries/razor-global-key-shortcut-selector On)
 
 build_module(MODULE_LIBRAZORMOUNT
     "Razor mount library"
@@ -158,6 +162,10 @@ build_module(MODULE_GLOBALKEYSHORTCUTS
 build_module(MODULE_CONFUPDATE
     "Configuration updater"
     razorqt-confupdate On)
+
+build_module(MODULE_SCREENLOCKER
+    "Screen Locker"
+    razorqt-screenlocker Off)
 
 message(STATUS  "**************** The following modules will be built ****************")
 foreach (MODULE_NAME ${ENABLED_MODULES})

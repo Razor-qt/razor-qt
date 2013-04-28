@@ -34,11 +34,12 @@
 #include "desktopscene.h"
 
 
-DesktopWidgetPlugin::DesktopWidgetPlugin(DesktopScene *scene, const QString & configId, RazorSettings * config)
+DesktopWidgetPlugin::DesktopWidgetPlugin(DesktopScene *scene, const QString & configId, RazorSettings * config, const RazorPluginInfo &info)
     : QGraphicsObject(0),
       m_config(config),
       m_configId(configId),
-      m_timer(0)
+      m_timer(0),
+      m_desktopFile(info)
 {
     setZValue(ZVAL());
 

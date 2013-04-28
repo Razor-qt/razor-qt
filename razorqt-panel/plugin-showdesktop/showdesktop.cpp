@@ -28,7 +28,7 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QAction>
 #include <QtGui/QX11Info>
-#include <razorqxt/qxtglobalshortcut.h>
+#include <razor-global-key-shortcuts-client/razor-global-key-shortcuts-client.h>
 #include <qtxdg/xdgicon.h>
 #include <razorqt/xfitman.h>
 #include <razorqt/razornotification.h>
@@ -41,21 +41,28 @@
 
 Q_EXPORT_PLUGIN2(showdesktop, ShowDesktopLibrary)
 
+#define DEFAULT_SHORTCUT "Control+Alt+D"
+
 
 ShowDesktop::ShowDesktop(const IRazorPanelPluginStartupInfo &startupInfo) :
     QObject(),
     IRazorPanelPlugin(startupInfo)
 {
-    m_key = new QxtGlobalShortcut(this);
-
-    QKeySequence ks(Qt::CTRL + Qt::ALT + Qt::Key_D);
-    if (! m_key->setShortcut(ks))
+    m_key = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/show_desktop/%2/show_hide").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Show desktop"), this);
+    if (m_key)
     {
-        RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(ks.toString()));
+        connect(m_key, SIGNAL(activated()), this, SLOT(showDesktop()));
+
+        if (m_key->shortcut().isEmpty())
+        {
+            m_key->changeShortcut(DEFAULT_SHORTCUT);
+            if (m_key->shortcut().isEmpty())
+            {
+                RazorNotification::notify(tr("Show Desktop: Global shortcut '%1' cannot be registered").arg(DEFAULT_SHORTCUT));
+            }
+        }
     }
 
-    connect(m_key, SIGNAL(activated()), this, SLOT(showDesktop()));
-    
     QAction * act = new QAction(XdgIcon::fromTheme("user-desktop"), tr("Show Desktop"), this);
     connect(act, SIGNAL(triggered()), this, SLOT(showDesktop()));
 
@@ -81,3 +88,5 @@ void ShowDesktop::showDesktop()
 
     xfitMan().clientMessage(QX11Info::appRootWindow(),xfitMan().atom("_NET_SHOWING_DESKTOP"),(unsigned long) !bDesktopShown, 0,0,0,0);
 }
+
+#undef DEFAULT_SHORTCUT
