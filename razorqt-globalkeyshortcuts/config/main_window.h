@@ -39,7 +39,7 @@ class QItemSelectionModel;
 class QSortFilterProxyModel;
 class EditActionDialog;
 
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainWindow : public QDialog, private Ui::MainWindow
 {
     Q_OBJECT
 

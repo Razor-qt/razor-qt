@@ -25,20 +25,14 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QtGlobal>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-#include <QGuiApplication>
-#else
-#include <QApplication>
-#endif
-
+#include <razorqt/razorapplication.h>
 #include "razortranslate.h"
 
 #include "main_window.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    RazorApplication a(argc, argv);
     TRANSLATE_APP;
 
     MainWindow w;

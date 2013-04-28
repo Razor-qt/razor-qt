@@ -36,7 +36,7 @@
 
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QDialog(parent)
     , mEditActionDialog(0)
 {
     setupUi(this);
@@ -77,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::changeEvent(QEvent *e)
 {
-    QMainWindow::changeEvent(e);
+    QDialog::changeEvent(e);
     switch (e->type())
     {
     case QEvent::LanguageChange:

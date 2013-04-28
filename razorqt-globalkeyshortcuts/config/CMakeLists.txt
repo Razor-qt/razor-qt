@@ -142,6 +142,6 @@ set(${PROJECT_NAME}_ALL_FILES
 
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_ALL_FILES})
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} razorqt)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
