@@ -41,8 +41,6 @@ public:
     ~RazorPanelApplication();
     virtual bool x11EventFilter(XEvent* event);
 
-    void addPanel(const QString &cfg);
-
 private:
     QList<RazorPanel*> mPanels;
 };

@@ -55,7 +55,7 @@ public:
         AlignmentRight  =  1
     };
 
-    RazorPanel(const QString &configFile, QWidget *parent = 0);
+    RazorPanel(const QString &configGroup, QWidget *parent = 0);
     virtual ~RazorPanel();
 
     void readSettings();
@@ -117,6 +117,7 @@ private slots:
 private:
     RazorPanelLayout* mLayout;
     RazorSettings *mSettings;
+    QString mConfigGroup;
     QList<Plugin*> mPlugins;
 
     int findAvailableScreen(RazorPanel::Position position);
