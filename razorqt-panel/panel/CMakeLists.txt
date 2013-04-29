@@ -121,5 +121,5 @@ add_executable(${PROJECT} ${razor-panel_PUB_H_FILES} ${razor-panel_PRIV_H_FILES}
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
-install(FILES   ${CONFIG_FILES}    DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor/razor-panel/)
+install(FILES   ${CONFIG_FILES}    DESTINATION ${RAZOR_ETC_XDG_DIRECTORY}/razor/)
 install(FILES  ${razor-panel_PUB_H_FILES} DESTINATION include/razorqt)

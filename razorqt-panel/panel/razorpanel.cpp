@@ -48,8 +48,7 @@
 #include <qtxdg/xdgdirs.h>
 
 
-// Config keys and groups .......................
-#define CFG_PANEL_GROUP     "panel"
+// Config keys and groups
 #define CFG_KEY_SCREENNUM   "desktop"
 #define CFG_KEY_POSITION    "position"
 #define CFG_KEY_LINESIZE    "lineSize"
@@ -57,7 +56,7 @@
 #define CFG_KEY_LENGTH      "width"
 #define CFG_KEY_PERCENT     "width-percent"
 #define CFG_KEY_ALIGNMENT   "alignment"
-#define CFG_FULLKEY_PLUGINS "panel/plugins"
+#define CFG_KEY_PLUGINS "plugins"
 
 
 /************************************************
@@ -95,8 +94,9 @@ QString RazorPanel::positionToStr(IRazorPanel::Position position)
 /************************************************
 
  ************************************************/
-RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
+RazorPanel::RazorPanel(const QString &configGroup, QWidget *parent) :
     QFrame(parent),
+    mConfigGroup(configGroup),
     mLineSize(22),
     mLineCount(1)
 {
@@ -104,7 +104,7 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setWindowTitle("Razor Panel");
-    setObjectName(QString("RazorPanel %1").arg(configFile));
+    setObjectName(QString("RazorPanel %1").arg(configGroup));
 
     mLayout = new RazorPanelLayout(this);
     connect(mLayout, SIGNAL(pluginMoved()), this, SLOT(pluginMoved()));
@@ -121,7 +121,7 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
     connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
 
-    mSettings = new RazorSettings("razor-panel/" + configFile, this);
+    mSettings = new RazorSettings("panel", this);
     readSettings();
     loadPlugins();
     
@@ -135,7 +135,7 @@ RazorPanel::RazorPanel(const QString &configFile, QWidget *parent) :
 void RazorPanel::readSettings()
 {
     // Read settings ......................................
-    mSettings->beginGroup(CFG_PANEL_GROUP);
+    mSettings->beginGroup(mConfigGroup);
 
     // By default we are using size & count from theme.
     setLineSize(mSettings->value(CFG_KEY_LINESIZE, mLineSize).toInt());
@@ -166,6 +166,8 @@ void RazorPanel::saveSettings(bool later)
 
     QStringList pluginsList;
 
+    mSettings->beginGroup(mConfigGroup);
+
     foreach (const Plugin *plugin, mPlugins)
     {
         pluginsList << plugin->settingsGroup();
@@ -173,15 +175,12 @@ void RazorPanel::saveSettings(bool later)
 
     if (pluginsList.isEmpty())
     {
-        mSettings->setValue(CFG_FULLKEY_PLUGINS, "");
+        mSettings->setValue(CFG_KEY_PLUGINS, "");
     }
     else
     {
-        mSettings->setValue(CFG_FULLKEY_PLUGINS, pluginsList);
+        mSettings->setValue(CFG_KEY_PLUGINS, pluginsList);
     }
-
-
-    mSettings->beginGroup(CFG_PANEL_GROUP);
 
     mSettings->setValue(CFG_KEY_LINESIZE, mLineSize);
     mSettings->setValue(CFG_KEY_LINECNT,  mLineCount);
@@ -248,7 +247,9 @@ QStringList pluginDesktopDirs()
 void RazorPanel::loadPlugins()
 {
     QStringList desktopDirs = pluginDesktopDirs();
-    QStringList sections = mSettings->value(CFG_FULLKEY_PLUGINS).toStringList();
+    mSettings->beginGroup(mConfigGroup);
+    QStringList sections = mSettings->value(CFG_KEY_PLUGINS).toStringList();
+    mSettings->endGroup();
 
     foreach (QString sect, sections)
     {

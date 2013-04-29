@@ -28,6 +28,8 @@
 
 #include "razorpanelapplication.h"
 #include "razorpanel.h"
+#include <razorqt/razorsettings.h>
+#include <QtDebug>
 #include <X11/Xlib.h>
 
 
@@ -37,23 +39,22 @@
 RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
     : RazorApplication(argc, argv)
 {
+    RazorSettings s("panel");
+    QStringList panels = s.value("panels").toStringList();
+    qDebug() << "PANELS" << panels;
+
+    Q_FOREACH(QString i, panels)
+    {
+        qDebug() << "PANEL" << i;
+        RazorPanel *panel = new RazorPanel(i);
+        mPanels << panel;
+    }
 }
 
 RazorPanelApplication::~RazorPanelApplication()
 {
     qDeleteAll(mPanels);
 }
-
-
-/************************************************
-
- ************************************************/
-void RazorPanelApplication::addPanel(const QString &cfg)
-{
-    RazorPanel *panel = new RazorPanel(cfg);
-    mPanels << panel;
-}
-
 
 /************************************************
 

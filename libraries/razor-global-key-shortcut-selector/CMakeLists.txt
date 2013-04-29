@@ -151,7 +151,7 @@ set_target_properties(${PROJECT_NAME}
 	SOVERSION ${MAJOR_VERSION}
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib COMPONENT runtime)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib${LIB_SUFFIX} COMPONENT runtime)
 install(FILES ${${PROJECT_NAME}_PUBLIC_HEADERS} DESTINATION include/${PROJECT_NAME} COMPONENT development)
 
 include(create_pkgconfig_file)

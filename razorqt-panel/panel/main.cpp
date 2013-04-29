@@ -55,31 +55,6 @@ int main(int argc, char *argv[])
 
     TRANSLATE_APP;
 
-    // Read command line arguments .......................
-    // The first argument is config file name.
-    QString configFile;
-
-    if (app->arguments().count() > 1)
-    {
-        configFile = app->arguments().at(1);
-        if (configFile.endsWith(".conf"))
-            configFile.chop(5);
-        app->addPanel(configFile);
-    }
-    else
-    {
-        QDirIterator it(QDir::homePath() + "/.config/razor/razor-panel/", QStringList() << "*.conf", QDir::Files);
-        while (it.hasNext())
-        {
-            it.next();
-            configFile = it.fileName();
-            if (configFile.endsWith(".conf"))
-                configFile.chop(5);
-            app->addPanel(configFile);
-        }
-    }
-
-
     //Setup Unix signal handlers
     struct sigaction term;
     term.sa_handler = termSignalHandler;
