@@ -110,6 +110,7 @@ endif()
 #endif()
 
 # Translations **********************************
+include(RazorTranslate)
 razor_translate_ts(${PROJECT_NAME}_QM_FILES
 	SOURCES
 	${${PROJECT_NAME}_TRANSLATABLE}
