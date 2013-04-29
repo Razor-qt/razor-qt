@@ -706,7 +706,14 @@ QString XdgDesktopFile::fileName() const
  ************************************************/
 QIcon const XdgDesktopFile::icon(const QIcon& fallback) const
 {
-    return XdgIcon::fromTheme(value("Icon").toString(), fallback);
+    QIcon result = XdgIcon::fromTheme(value("Icon").toString(), fallback);
+
+    if (result.isNull() && type() == ApplicationType) {
+        result = XdgIcon::fromTheme("application-x-executable.png");
+        // TODO Maybe defaults for other desktopfile types as well..
+    }
+
+    return result;
 }
 
 
