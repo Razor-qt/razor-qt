@@ -64,7 +64,7 @@ RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
     // global key shortcuts
     QString shortcutNotRegistered;
 
-    m_keyVolumeUp = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/volume_control/%2/up").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Increase sound volume"), this);
+    m_keyVolumeUp = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/up").arg(settings()->group()), tr("Increase sound volume"), this);
     if (m_keyVolumeUp)
     {
         connect(m_keyVolumeUp, SIGNAL(activated()), this, SLOT(handleShortcutVolumeUp()));
@@ -79,7 +79,7 @@ RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
         }
     }
 
-    m_keyVolumeDown = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/volume_control/%2/down").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Decrease sound volume"), this);
+    m_keyVolumeDown = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/down").arg(settings()->group()), tr("Decrease sound volume"), this);
     if (m_keyVolumeDown)
     {
         connect(m_keyVolumeDown, SIGNAL(activated()), this, SLOT(handleShortcutVolumeDown()));
@@ -94,7 +94,7 @@ RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
         }
     }
 
-    m_keyMuteToggle = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/volume_control/%2/mute").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Mute/unmute sound volume"), this);
+    m_keyMuteToggle = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/mute").arg(settings()->group()), tr("Mute/unmute sound volume"), this);
     if (m_keyMuteToggle)
     {
         connect(m_keyMuteToggle, SIGNAL(activated()), this, SLOT(handleShortcutVolumeMute()));

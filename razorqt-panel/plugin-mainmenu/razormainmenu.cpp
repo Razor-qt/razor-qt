@@ -203,7 +203,7 @@ void RazorMainMenu::settingsChanged()
         shortcut = DEFAULT_SHORTCUT;
 
     if (!mShortcut)
-        mShortcut = GlobalKeyShortcut::Client::instance()->addAction(shortcut, QString("/panel/%1/main_menu/%2/show_hide").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Show/hide main menu"), this);
+        mShortcut = GlobalKeyShortcut::Client::instance()->addAction(shortcut, QString("/panel/%1/show_hide").arg(settings()->group()), tr("Show/hide main menu"), this);
     else if (mShortcut->shortcut() != shortcut)
     {
         mShortcut->changeShortcut(shortcut);

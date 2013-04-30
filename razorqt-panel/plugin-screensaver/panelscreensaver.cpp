@@ -52,7 +52,7 @@ PanelScreenSaver::PanelScreenSaver(const IRazorPanelPluginStartupInfo &startupIn
     //mButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 
-    mShortcutKey = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/screen_saver/%2/lock").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()), tr("Lock Screen"), this);
+    mShortcutKey = GlobalKeyShortcut::Client::instance()->addAction(QString(), QString("/panel/%1/lock").arg(settings()->group()), tr("Lock Screen"), this);
     if (mShortcutKey)
     {
         connect(mShortcutKey, SIGNAL(activated()), mSaver, SLOT(lockScreen()));
