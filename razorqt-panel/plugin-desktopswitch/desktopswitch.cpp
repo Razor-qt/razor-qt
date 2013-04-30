@@ -72,7 +72,7 @@ void DesktopSwitch::setup()
     // create new desktop layout
     for (int i = 0; i < m_desktopCount; ++i)
     {
-        QString path = QString("/panel/%1/desktop_switch/%2/desktop_%3").arg(QFileInfo(settings()->fileName()).baseName()).arg(settings()->group()).arg(i + 1);
+        QString path = QString("/panel/%1/desktop_%2").arg(settings()->group()).arg(i + 1);
         QString shortcut = QString("Control+F%1").arg(i + 1);
 
         DesktopSwitchButton * m = new DesktopSwitchButton(&mWidget, i, path, shortcut, xfitMan().getDesktopName(i, tr("Desktop %1").arg(i+1)));
