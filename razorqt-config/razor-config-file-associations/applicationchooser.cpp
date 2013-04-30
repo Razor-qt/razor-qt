@@ -46,8 +46,8 @@ ApplicationChooser::ApplicationChooser(XdgMimeInfo* mimeInfo, QSettings* default
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     fillApplicationListWidget();
     connect(widget.buttonBox, SIGNAL(accepted()), this, SLOT(ok()));
-    connect(widget.applicationTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this,                           SLOT(selectionChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
+    connect(widget.applicationListWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+            this,                           SLOT(selectionChanged(QListWidgetItem*, QListWidgetItem*)));
 }
 
 ApplicationChooser::~ApplicationChooser()
@@ -59,112 +59,59 @@ void ApplicationChooser::fillApplicationListWidget()
     if (m_MimeInfo) 
     {
         XdgDesktopFile* currentDefaultApplication = XdgDesktopFileCache::getDefaultApp(m_MimeInfo->mimeType());
-        QList<XdgDesktopFile*> addedApps;
-
-        QList<XdgMimeInfo*> mimeInfos;
-        XdgMimeInfo* mimeInfo = m_MimeInfo;
-
-        while (mimeInfo)
+        QSet<XdgDesktopFile*> addedApps; 
+        QList<XdgDesktopFile*> applications; 
+    
+        for (XdgMimeInfo *mimeInfo = m_MimeInfo; mimeInfo; mimeInfo = XdgMimeInfoCache::xdgMimeInfo(mimeInfo->subClassOf()))
         {
-            mimeInfos.append(mimeInfo);
-            if (! mimeInfo->subClassOf().isEmpty())
-            {
-                mimeInfo = XdgMimeInfoCache::xdgMimeInfo(mimeInfo->subClassOf());
-            }
-            else
-            {
-                mimeInfo = 0;
-            }
+            applications.append(XdgDesktopFileCache::getApps(mimeInfo->mimeType()));
         }
-        mimeInfos.append(0); // Represents 'other mimetypes'. Hackish - I know. 
+        applications.append(XdgDesktopFileCache::getAllFiles());
 
-        QTreeWidgetItem *groupToOpenInitially = 0; 
-        QTreeWidgetItem *itemToSelectInitially = 0;
-
-        foreach (XdgMimeInfo* mimeInfo, mimeInfos)
+        // Insert all found apps in the listwidget, skipping repetitions and putting current default
+        // application at the top (if it exists)
+        foreach (XdgDesktopFile* desktopFile, applications) 
         {
-            QString headingText;
-            QList<XdgDesktopFile*> tmp; 
-            QList<XdgDesktopFile*> appsForThisMimetype;
+            if (addedApps.contains(desktopFile)) 
+                continue;
             
-            if (mimeInfo)
-            {
-                headingText = tr("Applications that handle %1").arg(mimeInfo->comment());
-                tmp = XdgDesktopFileCache::getApps(mimeInfo->mimeType());
-            }
-            else
-            {
-               headingText = tr("Other applications");
-               tmp =  XdgDesktopFileCache::getAllFiles();
-            }
-            
-            qDebug() << headingText << appsForThisMimetype.size() << groupToOpenInitially;
-            
-            foreach(XdgDesktopFile* df, tmp)
-            {
-                qDebug() << "Consider:" << df->name() 
-                         << "- type:" << df->type() 
-                         << "- Exec:" << df->value("Exec");
+            // Only applications
+            if (desktopFile->type() != XdgDesktopFile::ApplicationType)  
+                continue;
 
-                if (addedApps.contains(df)) continue;
-                if (df->type() != XdgDesktopFile::ApplicationType) continue;
-                
-                QString exec = df->value("Exec").toString();
-                if (! ((exec.contains("%f") || exec.contains("%F") || exec.contains("%u") || exec.contains("%U"))))
-                    continue;
-                
-                appsForThisMimetype.append(df);
-                addedApps.append(df);
-            }
-                
-            QTreeWidgetItem *appGroup = new QTreeWidgetItem(widget.applicationTreeWidget);
-            appGroup->setText(0, headingText);
-            
-            // We expand the first group that has applications. These applications
-            // would be the most relevant
-            if ((!groupToOpenInitially) && appsForThisMimetype.size() > 0)
+            // The application should be able to open documents, so it should accept a file or uri argument, or
+            // else we cannot use it
+            QString exec = desktopFile->value("Exec").toString();
+            if (! ((exec.contains("%f") || exec.contains("%F") || exec.contains("%u") || exec.contains("%U")))) 
+                continue;
+ 
+            QListWidgetItem *item = new QListWidgetItem();
+            item->setIcon(desktopFile->icon());
+            item->setText(desktopFile->name());
+            QString filenameNoPath = QFileInfo(desktopFile->fileName()).fileName();
+            item->setData(32, filenameNoPath);
+
+            if (desktopFile == currentDefaultApplication) 
             {
-                groupToOpenInitially = appGroup;
+                widget.applicationListWidget->insertItem(0, item);
+            }
+            else 
+            {
+                widget.applicationListWidget->addItem(item);
             }
 
-            foreach (XdgDesktopFile* desktopFile, appsForThisMimetype)
-            {
-                QTreeWidgetItem *item = new QTreeWidgetItem(appGroup);
-                item->setIcon(0, desktopFile->icon());
-                item->setText(0, desktopFile->name());
-                QString filenameNoPath = QFileInfo(desktopFile->fileName()).fileName();
-                item->setData(0, 32, filenameNoPath);
-
-                // If there is a default application, we select that and open 
-                // its group;
-                if (desktopFile == currentDefaultApplication)
-                {
-                    itemToSelectInitially = item; 
-                    groupToOpenInitially = appGroup;
-                }
-
-            }
-
+            addedApps.insert(desktopFile);
         }
 
-        if (groupToOpenInitially)
-        {
-            groupToOpenInitially->setExpanded(true);
-        }
 
-        if (itemToSelectInitially)
-        {
-            itemToSelectInitially->setExpanded(true);
-        }
-        
-        widget.applicationTreeWidget->resizeColumnToContents(0);
-        widget.applicationTreeWidget->setFocus();
+       
+        widget.applicationListWidget->setFocus();
     }
 }
 
 void ApplicationChooser::ok()
 {
-    QString desktopfile = widget.applicationTreeWidget->currentItem()->data(0, 32).toString();
+    QString desktopfile = widget.applicationListWidget->currentItem()->data(32).toString();
     if (! desktopfile.isEmpty())
     {
         qDebug() << "Ok called, selecting: " << desktopfile;
@@ -174,10 +121,10 @@ void ApplicationChooser::ok()
     }
 }
 
-void ApplicationChooser::selectionChanged(QTreeWidgetItem* newItem, QTreeWidgetItem* oldItem)
+void ApplicationChooser::selectionChanged(QListWidgetItem* newItem, QListWidgetItem* oldItem)
 {
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    if (newItem && (! newItem->data(0, 32).toString().isEmpty()))
+    if (newItem && (! newItem->data(32).toString().isEmpty()))
     {
         widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }

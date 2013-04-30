@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>447</width>
-    <height>380</height>
+    <width>651</width>
+    <height>382</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
     <string>Pick an application for:</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="applicationTreeWidget">
+  <widget class="QListWidget" name="applicationListWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -59,26 +59,6 @@
      <height>230</height>
     </rect>
    </property>
-   <property name="columnCount">
-    <number>1</number>
-   </property>
-   <attribute name="headerVisible">
-    <bool>false</bool>
-   </attribute>
-   <attribute name="headerCascadingSectionResizes">
-    <bool>false</bool>
-   </attribute>
-   <attribute name="headerMinimumSectionSize">
-    <number>50</number>
-   </attribute>
-   <attribute name="headerStretchLastSection">
-    <bool>false</bool>
-   </attribute>
-   <column>
-    <property name="text">
-     <string>1</string>
-    </property>
-   </column>
   </widget>
   <widget class="QLabel" name="mimetypeLabel">
    <property name="geometry">

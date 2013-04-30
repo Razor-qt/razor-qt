@@ -42,7 +42,7 @@ public:
 
 private slots:
     void ok();
-    void selectionChanged(QTreeWidgetItem *newItem, QTreeWidgetItem *oldItem);
+    void selectionChanged(QListWidgetItem *newItem, QListWidgetItem *oldItem);
 
 private:
     XdgMimeInfo* m_MimeInfo;
