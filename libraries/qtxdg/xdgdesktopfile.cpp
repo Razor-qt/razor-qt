@@ -1355,7 +1355,7 @@ void XdgDesktopFileCache::initialize(const QString& dirName)
             m_fileCache.insert(f.absoluteFilePath(), df);
         }
         
-        QStringList mimes = df->value("MimeType").toString().split(';', QString::SkipEmptyParts);
+        QStringList mimes = df->value("MimeType").toString().split(';', QString::SkipEmptyParts); 
 
         foreach (QString mime, mimes)
         {

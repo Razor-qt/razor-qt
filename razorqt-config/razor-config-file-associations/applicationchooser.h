@@ -42,7 +42,7 @@ public:
 
 private slots:
     void ok();
-    void selectionChanged(QListWidgetItem *newItem, QListWidgetItem *oldItem);
+    void selectionChanged();
 
 private:
     XdgMimeInfo* m_MimeInfo;

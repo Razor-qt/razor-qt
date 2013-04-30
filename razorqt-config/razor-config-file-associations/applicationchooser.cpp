@@ -23,7 +23,6 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include <QTreeWidget>
 #include <QDialogButtonBox>
 #include <QPushButton>
 #include <QSettings>
@@ -34,6 +33,7 @@
 #include "libraries/qtxdg/xdgmime.h"
 #include "applicationchooser.h"
 
+Q_DECLARE_METATYPE(XdgDesktopFile*)
 
 ApplicationChooser::ApplicationChooser(XdgMimeInfo* mimeInfo, QSettings* defaultsList, QObject *parent, QString uri) :
     m_MimeInfo(mimeInfo),
@@ -46,8 +46,7 @@ ApplicationChooser::ApplicationChooser(XdgMimeInfo* mimeInfo, QSettings* default
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     fillApplicationListWidget();
     connect(widget.buttonBox, SIGNAL(accepted()), this, SLOT(ok()));
-    connect(widget.applicationListWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-            this,                           SLOT(selectionChanged(QListWidgetItem*, QListWidgetItem*)));
+    connect(widget.applicationListWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(selectionChanged()));
 }
 
 ApplicationChooser::~ApplicationChooser()
@@ -88,22 +87,22 @@ void ApplicationChooser::fillApplicationListWidget()
             QListWidgetItem *item = new QListWidgetItem();
             item->setIcon(desktopFile->icon());
             item->setText(desktopFile->name());
-            QString filenameNoPath = QFileInfo(desktopFile->fileName()).fileName();
-            item->setData(32, filenameNoPath);
-
+            item->setData(32, QVariant::fromValue<XdgDesktopFile*>(desktopFile));
+            
             if (desktopFile == currentDefaultApplication) 
             {
                 widget.applicationListWidget->insertItem(0, item);
+                item->setSelected(true);
             }
             else 
             {
                 widget.applicationListWidget->addItem(item);
+                item->setSelected(false);
             }
 
             addedApps.insert(desktopFile);
         }
-
-
+        selectionChanged();
        
         widget.applicationListWidget->setFocus();
     }
@@ -111,21 +110,65 @@ void ApplicationChooser::fillApplicationListWidget()
 
 void ApplicationChooser::ok()
 {
-    QString desktopfile = widget.applicationListWidget->currentItem()->data(32).toString();
-    if (! desktopfile.isEmpty())
+    XdgDesktopFile* desktopfile = widget.applicationListWidget->currentItem()->data(32).value<XdgDesktopFile*>();
+    if (desktopfile)
     {
         qDebug() << "Ok called, selecting: " << desktopfile;
+        QString fileNameNoPath = QFileInfo(desktopfile->fileName()).fileName();
         m_DefaultsList->beginGroup("Default Applications");
-        m_DefaultsList->setValue(m_MimeInfo->mimeType(), desktopfile);
+        m_DefaultsList->setValue(m_MimeInfo->mimeType(), fileNameNoPath);
         m_DefaultsList->endGroup();
     }
 }
 
-void ApplicationChooser::selectionChanged(QListWidgetItem* newItem, QListWidgetItem* oldItem)
+void ApplicationChooser::selectionChanged()
 {
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    if (newItem && (! newItem->data(32).toString().isEmpty()))
+    widget.appIconLabel->clear();
+    widget.appNameLabel->clear();
+    widget.handlesLabel->hide();
+    widget.mimetypeListWidget->clear(); 
+    widget.mimetypeListWidget->setVisible(false);
+
+    QListWidgetItem* newItem = widget.applicationListWidget->currentItem();
+    qDebug() << newItem;
+    if (newItem) {
+        qDebug() << newItem->isSelected();
+        qDebug() << newItem->data(32).toInt();
+    }
+    if (newItem && newItem->data(32).value<XdgDesktopFile*>())
     {
+        XdgDesktopFile* desktopFile = newItem->data(32).value<XdgDesktopFile*>();
+        
+        QIcon icon = desktopFile->icon();
+        if (! icon.isNull()) 
+        {
+            widget.appIconLabel->setPixmap(icon.pixmap(widget.appIconLabel->size()));
+        }
+        
+        widget.appNameLabel->setText(desktopFile->name());
+
+        widget.handlesLabel->show();
+
+        QSet<QString> mimeTypeComments;
+        foreach (QString mimeType, desktopFile->value("MimeType").toString().split(";", QString::SkipEmptyParts))
+        {
+            XdgMimeInfo* mimeInfo = XdgMimeInfoCache::xdgMimeInfo(mimeType);
+            if (mimeInfo)
+            {
+                mimeTypeComments.insert(mimeInfo->comment());
+            }
+        }
+        QList<QString> mimetypeCommentsList = mimeTypeComments.toList();
+        qSort(mimetypeCommentsList);
+        foreach (QString mimetypeComment, mimetypeCommentsList)
+        {
+            QListWidgetItem* item = new QListWidgetItem(mimetypeComment, widget.mimetypeListWidget);
+            item->setFlags(0);
+        }
+
+        widget.mimetypeListWidget->setVisible(true);
+
         widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }
 }
