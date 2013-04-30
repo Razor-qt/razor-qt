@@ -33,7 +33,7 @@
 #include <QtCore/QFileInfo>
 #include <QtGui/QIcon>
 
-class XdgMimeData;
+struct XdgMimeData;
 
 /*! @brief The XdgMimeInfo class provides mime information about file.
  */
