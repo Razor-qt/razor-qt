@@ -62,6 +62,7 @@ MimetypeViewer::~MimetypeViewer() {
 
 void MimetypeViewer::initializeMimeTreeWidget()
 {
+    widget.mimetypeTreeWidget->setHeaderLabel("Mimetypes");
     QTreeWidgetItem* firstItem = 0;
 
     foreach (const QString media, XdgMimeInfoCache::mediatypes())
@@ -87,13 +88,16 @@ void MimetypeViewer::initializeMimeTreeWidget()
 
 void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
 {
-    widget.frame->setEnabled(false);
     widget.appIcon->clear();
     widget.iconLabel->clear();
     widget.descriptionLabel->clear();
     widget.patternsLabel->clear();
     widget.applicationLabel->clear();
-    widget.chooseApplicationsButton->hide();
+    widget.chooseApplicationsButton->setEnabled(false);
+
+    widget.patternsGroupBox->hide();
+    widget.applicationsGroupBox->hide();
+
     if (widget.mimetypeTreeWidget->currentItem() && widget.mimetypeTreeWidget->currentItem()->parent())
     {
         QString media = widget.mimetypeTreeWidget->currentItem()->parent()->text(0);
@@ -133,7 +137,11 @@ void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
             widget.applicationLabel->setText(tr("Not defined"));
             widget.chooseApplicationsButton->setText(tr("&Choose..."));
         }
-        widget.frame->setEnabled(true);
+
+        widget.patternsGroupBox->show();
+        widget.applicationsGroupBox->show();
+        widget.chooseApplicationsButton->setEnabled(true);
+
     }
     else 
     {
