@@ -27,6 +27,7 @@
 #define	_APPLICATIONCHOOSER_H
 
 #include "ui_applicationchooser.h"
+#include "libraries/qtxdg/xdgdesktopfile.h"
 
 class XdgMimeInfo;
 class QSettings;
@@ -45,10 +46,13 @@ private slots:
     void selectionChanged();
 
 private:
+    void addApplicationsToApplicationListWidget(QTreeWidgetItem* parent, 
+                                                QList<XdgDesktopFile*> applications, 
+                                                QSet<XdgDesktopFile*> & alreadyAdded);
     XdgMimeInfo* m_MimeInfo;
     Ui::ApplicationChooser widget;
     QSettings *m_DefaultsList;
-
+    XdgDesktopFile* m_CurrentDefaultApplication;
 };
 
 #endif	/* _APPLICATIONCHOOSER_H */

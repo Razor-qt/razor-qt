@@ -39,78 +39,109 @@ ApplicationChooser::ApplicationChooser(XdgMimeInfo* mimeInfo, QSettings* default
     m_MimeInfo(mimeInfo),
     m_DefaultsList(defaultsList)
 {
-    
+    m_CurrentDefaultApplication = XdgDesktopFileCache::getDefaultApp(m_MimeInfo->mimeType());
     widget.setupUi(this);
     widget.mimetypeIconLabel->setPixmap(m_MimeInfo->icon().pixmap(widget.mimetypeIconLabel->size()));
     widget.mimetypeLabel->setText(m_MimeInfo->comment());
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     fillApplicationListWidget();
     connect(widget.buttonBox, SIGNAL(accepted()), this, SLOT(ok()));
-    connect(widget.applicationListWidget, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(selectionChanged()));
+    connect(widget.applicationTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(selectionChanged()));
 }
 
 ApplicationChooser::~ApplicationChooser()
 {
 }
 
+
 void ApplicationChooser::fillApplicationListWidget()
 {
+    widget.applicationTreeWidget->clear();
     if (m_MimeInfo) 
     {
-        XdgDesktopFile* currentDefaultApplication = XdgDesktopFileCache::getDefaultApp(m_MimeInfo->mimeType());
         QSet<XdgDesktopFile*> addedApps; 
-        QList<XdgDesktopFile*> applications; 
-    
-        for (XdgMimeInfo *mimeInfo = m_MimeInfo; mimeInfo; mimeInfo = XdgMimeInfoCache::xdgMimeInfo(mimeInfo->subClassOf()))
-        {
-            applications.append(XdgDesktopFileCache::getApps(mimeInfo->mimeType()));
-        }
-        applications.append(XdgDesktopFileCache::getAllFiles());
-
-        // Insert all found apps in the listwidget, skipping repetitions and putting current default
-        // application at the top (if it exists)
-        foreach (XdgDesktopFile* desktopFile, applications) 
-        {
-            if (addedApps.contains(desktopFile)) 
-                continue;
-            
-            // Only applications
-            if (desktopFile->type() != XdgDesktopFile::ApplicationType)  
-                continue;
-
-            // The application should be able to open documents, so it should accept a file or uri argument, or
-            // else we cannot use it
-            QString exec = desktopFile->value("Exec").toString();
-            if (! ((exec.contains("%f") || exec.contains("%F") || exec.contains("%u") || exec.contains("%U")))) 
-                continue;
- 
-            QListWidgetItem *item = new QListWidgetItem();
-            item->setIcon(desktopFile->icon());
-            item->setText(desktopFile->name());
-            item->setData(32, QVariant::fromValue<XdgDesktopFile*>(desktopFile));
-            
-            if (desktopFile == currentDefaultApplication) 
-            {
-                widget.applicationListWidget->insertItem(0, item);
-                item->setSelected(true);
-            }
-            else 
-            {
-                widget.applicationListWidget->addItem(item);
-                item->setSelected(false);
-            }
-
-            addedApps.insert(desktopFile);
-        }
-        selectionChanged();
+        QList<XdgDesktopFile*> applicationsThatHandleThisMimetype = XdgDesktopFileCache::getApps(m_MimeInfo->mimeType());
+        QList<XdgDesktopFile*> otherApplications;
        
-        widget.applicationListWidget->setFocus();
+        for (XdgMimeInfo* mimeInfo = XdgMimeInfoCache::xdgMimeInfo(m_MimeInfo->subClassOf());
+             mimeInfo; 
+             mimeInfo =XdgMimeInfoCache::xdgMimeInfo(mimeInfo->subClassOf()))
+        {
+            otherApplications.append(XdgDesktopFileCache::getApps(mimeInfo->mimeType()));
+        }
+        otherApplications.append(XdgDesktopFileCache::getAllFiles());
+
+        qDebug() << "Adding applications1, size:"  << applicationsThatHandleThisMimetype.size();
+        QTreeWidgetItem* headingItem = new QTreeWidgetItem(widget.applicationTreeWidget);
+        headingItem->setExpanded(true);
+        headingItem->setFlags(Qt::ItemIsEnabled);
+        headingItem->setText(0, tr("Applications that handle %1").arg(m_MimeInfo->comment()));
+        QSize size(0, 25);
+        headingItem->setSizeHint(0, size);
+        
+
+        if (applicationsThatHandleThisMimetype.isEmpty()) 
+        {
+            QTreeWidgetItem* noAppsFoundItem = new QTreeWidgetItem(headingItem);
+            noAppsFoundItem->setText(0, tr("No applications found"));
+            noAppsFoundItem->setFlags(0);
+            QFont font = noAppsFoundItem->font(0);
+            font.setStyle(QFont::StyleItalic);
+            noAppsFoundItem->setFont(0, font);
+        }
+        else 
+        {
+            addApplicationsToApplicationListWidget(headingItem, applicationsThatHandleThisMimetype, addedApps);
+        }
+      
+        qDebug() << "Adding other applications:" << otherApplications.size();
+        headingItem = new QTreeWidgetItem(widget.applicationTreeWidget);
+        headingItem->setFlags(Qt::ItemIsEnabled);
+        headingItem->setExpanded(true);
+        headingItem->setText(0, tr("Other applications"));
+        headingItem->setSizeHint(0, size);
+        addApplicationsToApplicationListWidget(headingItem, otherApplications, addedApps);
+
+        widget.applicationTreeWidget->setFocus();
     }
 }
 
+void ApplicationChooser::addApplicationsToApplicationListWidget(QTreeWidgetItem* parent, 
+                                                                QList<XdgDesktopFile*> applications, 
+                                                                QSet<XdgDesktopFile*>& alreadyAdded)
+{
+    // Insert applications in the listwidget, skipping already added applications
+    foreach (XdgDesktopFile* desktopFile, applications) 
+    {
+        if (alreadyAdded.contains(desktopFile)) 
+            continue;
+        
+        // Only applications
+        if (desktopFile->type() != XdgDesktopFile::ApplicationType)  
+            continue;
+
+        // The application should be able to open documents, so it should accept a file or uri argument, or
+        // else we cannot use it
+        QString exec = desktopFile->value("Exec").toString();
+        if (! ((exec.contains("%f") || exec.contains("%F") || exec.contains("%u") || exec.contains("%U")))) 
+            continue;
+
+        QTreeWidgetItem *item = new QTreeWidgetItem(parent);
+        item->setIcon(0, desktopFile->icon());
+        item->setText(0, desktopFile->name());
+        item->setData(0, 32, QVariant::fromValue<XdgDesktopFile*>(desktopFile));
+        item->setSelected(desktopFile == m_CurrentDefaultApplication);
+
+        alreadyAdded.insert(desktopFile);
+    }
+    selectionChanged();
+}
+
+
+
 void ApplicationChooser::ok()
 {
-    XdgDesktopFile* desktopfile = widget.applicationListWidget->currentItem()->data(32).value<XdgDesktopFile*>();
+    XdgDesktopFile* desktopfile = widget.applicationTreeWidget->currentItem()->data(0, 32).value<XdgDesktopFile*>();
     if (desktopfile)
     {
         qDebug() << "Ok called, selecting: " << desktopfile;
@@ -124,51 +155,10 @@ void ApplicationChooser::ok()
 void ApplicationChooser::selectionChanged()
 {
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    widget.appIconLabel->clear();
-    widget.appNameLabel->clear();
-    widget.handlesLabel->hide();
-    widget.mimetypeListWidget->clear(); 
-    widget.mimetypeListWidget->setVisible(false);
 
-    QListWidgetItem* newItem = widget.applicationListWidget->currentItem();
-    qDebug() << newItem;
-    if (newItem) {
-        qDebug() << newItem->isSelected();
-        qDebug() << newItem->data(32).toInt();
-    }
-    if (newItem && newItem->data(32).value<XdgDesktopFile*>())
+    QTreeWidgetItem* newItem = widget.applicationTreeWidget->currentItem();
+    if (newItem && newItem->data(0, 32).value<XdgDesktopFile*>())
     {
-        XdgDesktopFile* desktopFile = newItem->data(32).value<XdgDesktopFile*>();
-        
-        QIcon icon = desktopFile->icon();
-        if (! icon.isNull()) 
-        {
-            widget.appIconLabel->setPixmap(icon.pixmap(widget.appIconLabel->size()));
-        }
-        
-        widget.appNameLabel->setText(desktopFile->name());
-
-        widget.handlesLabel->show();
-
-        QSet<QString> mimeTypeComments;
-        foreach (QString mimeType, desktopFile->value("MimeType").toString().split(";", QString::SkipEmptyParts))
-        {
-            XdgMimeInfo* mimeInfo = XdgMimeInfoCache::xdgMimeInfo(mimeType);
-            if (mimeInfo)
-            {
-                mimeTypeComments.insert(mimeInfo->comment());
-            }
-        }
-        QList<QString> mimetypeCommentsList = mimeTypeComments.toList();
-        qSort(mimetypeCommentsList);
-        foreach (QString mimetypeComment, mimetypeCommentsList)
-        {
-            QListWidgetItem* item = new QListWidgetItem(mimetypeComment, widget.mimetypeListWidget);
-            item->setFlags(0);
-        }
-
-        widget.mimetypeListWidget->setVisible(true);
-
         widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     }
 }
