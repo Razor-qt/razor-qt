@@ -17,10 +17,10 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>mimetypeviewer</string>
+   <string>Mimetypes</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="2" column="0">
     <widget class="QTreeWidget" name="mimetypeTreeWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -35,7 +35,7 @@
       </size>
      </property>
      <attribute name="headerVisible">
-      <bool>true</bool>
+      <bool>false</bool>
      </attribute>
      <attribute name="headerDefaultSectionSize">
       <number>500</number>
@@ -46,20 +46,13 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>16</pointsize>
+        <pointsize>10</pointsize>
        </font>
       </property>
      </column>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QDialogButtonBox" name="dialogButtonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
+   <item row="2" column="1">
     <widget class="QFrame" name="frame">
      <property name="enabled">
       <bool>true</bool>
@@ -86,7 +79,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>140</y>
+        <y>170</y>
         <width>260</width>
         <height>130</height>
        </rect>
@@ -98,7 +91,7 @@
        <property name="geometry">
         <rect>
          <x>140</x>
-         <y>80</y>
+         <y>90</y>
          <width>110</width>
          <height>30</height>
         </rect>
@@ -107,70 +100,65 @@
         <string>&amp;Choose...</string>
        </property>
       </widget>
-      <widget class="QLabel" name="applicationLabel">
-       <property name="geometry">
-        <rect>
-         <x>80</x>
-         <y>30</y>
-         <width>170</width>
-         <height>30</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Not defined</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="appIcon">
+      <widget class="QFrame" name="applicationLabelFrame">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>20</y>
-         <width>50</width>
-         <height>50</height>
+         <width>241</width>
+         <height>51</height>
         </rect>
        </property>
-       <property name="text">
-        <string>TextLabel</string>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
        </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="appIcon">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="applicationLabel">
+          <property name="text">
+           <string>None</string>
+          </property>
+          <property name="indent">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
-     </widget>
-     <widget class="QLabel" name="descriptionLabel">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>20</y>
-        <width>190</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Description</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="iconLabel">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>10</y>
-        <width>50</width>
-        <height>50</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>50</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Icon</string>
-      </property>
      </widget>
      <widget class="QGroupBox" name="patternsGroupBox">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>100</y>
         <width>260</width>
         <height>60</height>
        </rect>
@@ -190,8 +178,77 @@
        <property name="text">
         <string>*.txt *.xml</string>
        </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
       </widget>
      </widget>
+     <widget class="QGroupBox" name="mimetypeGroupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>260</width>
+        <height>90</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Mimetype</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="iconLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Icon</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="descriptionLabel">
+         <property name="text">
+          <string>Description</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Choose a mimetype...</string>
+     </property>
+     <property name="indent">
+      <number>15</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="dialogButtonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
+     </property>
     </widget>
    </item>
   </layout>

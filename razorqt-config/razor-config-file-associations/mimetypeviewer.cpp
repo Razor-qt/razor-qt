@@ -88,15 +88,16 @@ void MimetypeViewer::initializeMimeTreeWidget()
 
 void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
 {
-    widget.appIcon->clear();
-    widget.iconLabel->clear();
-    widget.descriptionLabel->clear();
+    widget.iconLabel->hide();
+    widget.descriptionLabel->setText(tr("None"));
+    widget.mimetypeGroupBox->setEnabled(false);
+    
     widget.patternsLabel->clear();
+    widget.patternsGroupBox->setEnabled(false);
+     
+    widget.appIcon->hide();
     widget.applicationLabel->clear();
-    widget.chooseApplicationsButton->setEnabled(false);
-
-    widget.patternsGroupBox->hide();
-    widget.applicationsGroupBox->hide();
+    widget.applicationsGroupBox->setEnabled(false);
 
     if (widget.mimetypeTreeWidget->currentItem() && widget.mimetypeTreeWidget->currentItem()->parent())
     {
@@ -110,17 +111,19 @@ void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
         }
 
         widget.descriptionLabel->setText(m_CurrentMime->comment());
-         
+        
         QIcon icon = m_CurrentMime->icon();
         if (! icon.isNull())
         {
             widget.iconLabel->setPixmap(icon.pixmap(widget.iconLabel->size()));
+            widget.iconLabel->show();
         }
+        widget.mimetypeGroupBox->setEnabled(true);
 
-        widget.patternsLabel->setText(m_CurrentMime->patterns().join(" "));
 
-        widget.chooseApplicationsButton->show();
-
+        widget.patternsLabel->setText(m_CurrentMime->patterns().join("  "));
+        widget.patternsGroupBox->setEnabled(true);
+        
         XdgDesktopFile* defaultApp = XdgDesktopFileCache::getDefaultApp(m_CurrentMime->mimeType());
         if (defaultApp && defaultApp->isValid())
         {
@@ -128,20 +131,16 @@ void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
             QString localizedName = defaultApp->localizedValue("Name", nonLocalizedName).toString();
             QIcon appIcon = defaultApp->icon(); 
             widget.appIcon->setPixmap(appIcon.pixmap(widget.iconLabel->size())); 
+            widget.appIcon->show();
             widget.applicationLabel->setText(localizedName);
             widget.chooseApplicationsButton->setText(tr("&Change..."));
         }
         else 
         {
-            widget.appIcon->setPixmap(QIcon::fromTheme("unknown").pixmap(widget.appIcon->size()));
-            widget.applicationLabel->setText(tr("Not defined"));
+            widget.applicationLabel->setText(tr("None"));
             widget.chooseApplicationsButton->setText(tr("&Choose..."));
         }
-
-        widget.patternsGroupBox->show();
-        widget.applicationsGroupBox->show();
-        widget.chooseApplicationsButton->setEnabled(true);
-
+        widget.applicationsGroupBox->setEnabled(true);
     }
     else 
     {
