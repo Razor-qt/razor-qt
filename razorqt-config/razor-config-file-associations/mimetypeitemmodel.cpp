@@ -27,7 +27,8 @@
  */
 
 
-MimetypeItemModel::MimetypeItemModel()
+MimetypeItemModel::MimetypeItemModel(QObject *parent) :
+QAbstractItemModel(parent)
 {
 }
 
@@ -136,4 +137,61 @@ int MimetypeItemModel::rowCount(const QModelIndex& parent) const
     {
         return XdgMimeInfoCache::mediatypes().size();
     }
+}
+
+
+MimetypeFilterItemModel::MimetypeFilterItemModel(QObject* parent) : 
+    QSortFilterProxyModel(parent)
+{
+}
+
+bool MimetypeFilterItemModel::filterAcceptsRow(int source_row, const QModelIndex& source_parent) const
+{
+    QModelIndex index = sourceModel()->index(source_row, 0, source_parent);
+  
+    if (source_parent.isValid()) 
+    {
+        return filterHelper(index);
+    } 
+    else 
+    {
+        for (int i = 0; i < sourceModel()->rowCount(index); i++)
+        {
+            if (filterAcceptsRow(i, index)) 
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool MimetypeFilterItemModel::filterHelper(QModelIndex& source_index) const
+{
+    XdgMimeInfo* mimeInfo = source_index.data(MimeInfoRole).value<XdgMimeInfo*>();
+    if (!mimeInfo)
+    {
+        return false;
+    }
+
+    if (mimeInfo->mimeType().contains(filterRegExp()))
+    {
+        return true;
+    }
+
+    if (mimeInfo->comment().contains(filterRegExp()))
+    {
+        return true;
+    }
+
+    foreach (const QString pattern, mimeInfo->patterns())
+    {
+        if (pattern.contains(filterRegExp()))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -9,6 +9,7 @@
 #define	MIMETYPEITEMMODEL_H
 
 #include <QAbstractItemModel>
+#include <QSortFilterProxyModel>
 
 #include "libraries/qtxdg/xdgmime.h"
 
@@ -23,7 +24,7 @@ Q_DECLARE_METATYPE(XdgMimeInfo*)
 class MimetypeItemModel : public QAbstractItemModel
 {
 public:
-    MimetypeItemModel();
+    MimetypeItemModel(QObject *parent = 0);
     virtual ~MimetypeItemModel();
 
     QVariant data(const QModelIndex &index, int role) const;
@@ -32,6 +33,17 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const {return 1;} 
 };
+
+class MimetypeFilterItemModel : public QSortFilterProxyModel
+{
+public:
+    MimetypeFilterItemModel(QObject *parent = 0);
+    
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+
+    bool filterHelper(QModelIndex& source_index) const;
+};
+
 
 #endif	/* MIMETYPEITEMMODEL_H */
 

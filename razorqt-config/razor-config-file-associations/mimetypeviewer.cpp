@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <QPixmap>
 #include <QListWidget>
+#include <QSortFilterProxyModel>
 
 #include "qtxdg/xdgmime.h"
 #include "qtxdg/xdgdesktopfile.h"
@@ -40,14 +41,22 @@
 #include "mimetypeitemmodel.h"
 
 MimetypeViewer::MimetypeViewer( QWidget *parent) : 
+        m_MimetypeFilterItemModel(this),
         m_CurrentMime(0)
  {
     widget.setupUi(this);
 
     initializeMimeTreeWidget();
 
+    connect(widget.searchTermLineEdit, SIGNAL(textChanged(const QString&)), 
+            &m_MimetypeFilterItemModel, SLOT(setFilterFixedString(const QString&)));
+    
+    connect(widget.searchTermLineEdit, SIGNAL(textChanged(const QString&)), 
+            this, SLOT(autoExpandOnSearch()));
+            
     connect(widget.mimetypeTreeView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), 
             this, SLOT(currentMimetypeChanged()));
+
 
     connect(widget.chooseApplicationsButton, SIGNAL(clicked()), this, SLOT(chooseApplication()));    
     connect(widget.dialogButtonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonBoxClicked(QAbstractButton*)));
@@ -64,7 +73,9 @@ MimetypeViewer::~MimetypeViewer() {
 
 void MimetypeViewer::initializeMimeTreeWidget()
 {
-    widget.mimetypeTreeView->setModel(new MimetypeItemModel());
+    m_MimetypeFilterItemModel.setSourceModel(new MimetypeItemModel(&m_MimetypeFilterItemModel));
+
+    widget.mimetypeTreeView->setModel(&m_MimetypeFilterItemModel);
     widget.mimetypeTreeView->setFocus();
 }
 
@@ -82,10 +93,17 @@ void MimetypeViewer::currentMimetypeChanged()
     widget.applicationsGroupBox->setEnabled(false);
 
     m_CurrentMime = 0;
-   
-    QModelIndex index = widget.mimetypeTreeView->selectionModel()->currentIndex();
 
-    m_CurrentMime =  index.model()->data(index, MimeInfoRole).value<XdgMimeInfo*>();
+    QModelIndex index = widget.mimetypeTreeView->selectionModel()->currentIndex();
+   
+    if (!index.isValid()) 
+    {
+        return;
+    }
+    
+    QVariant variant = index.data(MimeInfoRole);
+
+    m_CurrentMime =  variant.value<XdgMimeInfo*>();
             
     if (!m_CurrentMime)
     {
@@ -125,6 +143,20 @@ void MimetypeViewer::currentMimetypeChanged()
     widget.applicationsGroupBox->setEnabled(true);
 
 }
+
+void MimetypeViewer::autoExpandOnSearch()
+{
+    qDebug() << "Ind i autoExpandOnSearch...";
+    for (int i = 0; i < m_MimetypeFilterItemModel.rowCount(); i++) 
+    {
+        QModelIndex mediatypeIndex = m_MimetypeFilterItemModel.index(i, 0);
+        if (m_MimetypeFilterItemModel.rowCount(mediatypeIndex) < 8)
+        {
+            widget.mimetypeTreeView->setExpanded(mediatypeIndex, true);
+        }
+    }
+}
+
 
 void MimetypeViewer::chooseApplication()
 {

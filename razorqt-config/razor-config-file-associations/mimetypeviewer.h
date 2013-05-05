@@ -29,10 +29,12 @@
 #include <QDialog>
 #include <QModelIndex>
 #include "ui_mimetypeviewer.h"
+#include "mimetypeitemmodel.h"
 
-class XdgMimeInfo;
 class QSettings;
+class XdgMimeInfo;
 class RazorSettingsCache;
+class MimetypeFilterItemModel;
 
 class MimetypeViewer : public QDialog {
     Q_OBJECT
@@ -43,11 +45,13 @@ public:
 
 private slots:
     void currentMimetypeChanged();
+    void autoExpandOnSearch();
     void chooseApplication();
     void dialogButtonBoxClicked(QAbstractButton *button);
 
 private:
     Ui::mimetypeviewer widget;
+    MimetypeFilterItemModel m_MimetypeFilterItemModel;
     XdgMimeInfo* m_CurrentMime;
     QSettings* mDefaultsList;
     RazorSettingsCache *mSettingsCache;
