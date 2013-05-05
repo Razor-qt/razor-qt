@@ -12,6 +12,7 @@ endif()
 include_directories(
 	"${PROJECT_SOURCE_DIR}"
 	"${CMAKE_CURRENT_BINARY_DIR}"
+	"${CMAKE_SOURCE_DIR}/libraries/"
 )
 
 
