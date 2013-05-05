@@ -31,11 +31,13 @@
 
 #include "qtxdg/xdgmime.h"
 #include "qtxdg/xdgdesktopfile.h"
+#include "qtxdg/xdgdirs.h"
+#include "razorqt/razorsettings.h"
+
 
 #include "mimetypeviewer.h"
 #include "applicationchooser.h"
-#include "qtxdg/xdgdirs.h"
-#include "razorqt/razorsettings.h"
+#include "mimetypeitemmodel.h"
 
 MimetypeViewer::MimetypeViewer( QWidget *parent) : 
         m_CurrentMime(0)
@@ -44,8 +46,8 @@ MimetypeViewer::MimetypeViewer( QWidget *parent) :
 
     initializeMimeTreeWidget();
 
-    connect(widget.mimetypeTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-            this, SLOT(currentMimetypeChanged(QTreeWidgetItem*)));
+    connect(widget.mimetypeTreeView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), 
+            this, SLOT(currentMimetypeChanged()));
 
     connect(widget.chooseApplicationsButton, SIGNAL(clicked()), this, SLOT(chooseApplication()));    
     connect(widget.dialogButtonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonBoxClicked(QAbstractButton*)));
@@ -62,31 +64,11 @@ MimetypeViewer::~MimetypeViewer() {
 
 void MimetypeViewer::initializeMimeTreeWidget()
 {
-    widget.mimetypeTreeWidget->setHeaderLabel("Mimetypes");
-    QTreeWidgetItem* firstItem = 0;
-
-    foreach (const QString media, XdgMimeInfoCache::mediatypes())
-    {
-        QTreeWidgetItem* typeItem = new QTreeWidgetItem(widget.mimetypeTreeWidget);
-        typeItem->setText(0, media);
-
-        if (! firstItem)
-        {
-            firstItem = typeItem;
-        }
-
-        foreach (const QString subtype, XdgMimeInfoCache::subtypes(media))
-        {
-            QTreeWidgetItem* subtypeItem = new QTreeWidgetItem(typeItem);
-            subtypeItem->setText(0, subtype);
-        }
-    }
-
-    firstItem->setSelected(true);
-    widget.mimetypeTreeWidget->setFocus();
+    widget.mimetypeTreeView->setModel(new MimetypeItemModel());
+    widget.mimetypeTreeView->setFocus();
 }
 
-void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
+void MimetypeViewer::currentMimetypeChanged()
 {
     widget.iconLabel->hide();
     widget.descriptionLabel->setText(tr("None"));
@@ -99,53 +81,49 @@ void MimetypeViewer::currentMimetypeChanged(QTreeWidgetItem* newItem)
     widget.applicationLabel->clear();
     widget.applicationsGroupBox->setEnabled(false);
 
-    if (widget.mimetypeTreeWidget->currentItem() && widget.mimetypeTreeWidget->currentItem()->parent())
+    m_CurrentMime = 0;
+   
+    QModelIndex index = widget.mimetypeTreeView->selectionModel()->currentIndex();
+
+    m_CurrentMime =  index.model()->data(index, MimeInfoRole).value<XdgMimeInfo*>();
+            
+    if (!m_CurrentMime)
     {
-        QString media = widget.mimetypeTreeWidget->currentItem()->parent()->text(0);
-        QString subtype = widget.mimetypeTreeWidget->currentItem()->text(0);
-        m_CurrentMime = XdgMimeInfoCache::xdgMimeInfo(media, subtype);
-        
-        if (!m_CurrentMime)
-        {
-            return;
-        }
+        return;
+    }
 
-        widget.descriptionLabel->setText(m_CurrentMime->comment());
-        
-        QIcon icon = m_CurrentMime->icon();
-        if (! icon.isNull())
-        {
-            widget.iconLabel->setPixmap(icon.pixmap(widget.iconLabel->size()));
-            widget.iconLabel->show();
-        }
-        widget.mimetypeGroupBox->setEnabled(true);
+    widget.descriptionLabel->setText(m_CurrentMime->comment());
+    
+    QIcon icon = m_CurrentMime->icon();
+    if (! icon.isNull())
+    {
+        widget.iconLabel->setPixmap(icon.pixmap(widget.iconLabel->size()));
+        widget.iconLabel->show();
+    }
+    widget.mimetypeGroupBox->setEnabled(true);
 
 
-        widget.patternsLabel->setText(m_CurrentMime->patterns().join("  "));
-        widget.patternsGroupBox->setEnabled(true);
-        
-        XdgDesktopFile* defaultApp = XdgDesktopFileCache::getDefaultApp(m_CurrentMime->mimeType());
-        if (defaultApp && defaultApp->isValid())
-        {
-            QString nonLocalizedName = defaultApp->value("Name").toString();
-            QString localizedName = defaultApp->localizedValue("Name", nonLocalizedName).toString();
-            QIcon appIcon = defaultApp->icon(); 
-            widget.appIcon->setPixmap(appIcon.pixmap(widget.iconLabel->size())); 
-            widget.appIcon->show();
-            widget.applicationLabel->setText(localizedName);
-            widget.chooseApplicationsButton->setText(tr("&Change..."));
-        }
-        else 
-        {
-            widget.applicationLabel->setText(tr("None"));
-            widget.chooseApplicationsButton->setText(tr("&Choose..."));
-        }
-        widget.applicationsGroupBox->setEnabled(true);
+    widget.patternsLabel->setText(m_CurrentMime->patterns().join("  "));
+    widget.patternsGroupBox->setEnabled(true);
+    
+    XdgDesktopFile* defaultApp = XdgDesktopFileCache::getDefaultApp(m_CurrentMime->mimeType());
+    if (defaultApp && defaultApp->isValid())
+    {
+        QString nonLocalizedName = defaultApp->value("Name").toString();
+        QString localizedName = defaultApp->localizedValue("Name", nonLocalizedName).toString();
+        QIcon appIcon = defaultApp->icon(); 
+        widget.appIcon->setPixmap(appIcon.pixmap(widget.iconLabel->size())); 
+        widget.appIcon->show();
+        widget.applicationLabel->setText(localizedName);
+        widget.chooseApplicationsButton->setText(tr("&Change..."));
     }
     else 
     {
-        m_CurrentMime = 0;
+        widget.applicationLabel->setText(tr("None"));
+        widget.chooseApplicationsButton->setText(tr("&Choose..."));
     }
+    widget.applicationsGroupBox->setEnabled(true);
+
 }
 
 void MimetypeViewer::chooseApplication()
@@ -153,8 +131,8 @@ void MimetypeViewer::chooseApplication()
     if (m_CurrentMime)
     {
         ApplicationChooser(m_CurrentMime, mDefaultsList, this).exec();    
-        currentMimetypeChanged(widget.mimetypeTreeWidget->currentItem());
-        widget.mimetypeTreeWidget->setFocus();
+        currentMimetypeChanged();
+        widget.mimetypeTreeView->setFocus();
     }
 }
 
@@ -164,7 +142,7 @@ void MimetypeViewer::dialogButtonBoxClicked(QAbstractButton* button)
     if (role == QDialogButtonBox::ResetRole)
     {
         mSettingsCache->loadToSettings();
-        currentMimetypeChanged(widget.mimetypeTreeWidget->currentItem());
+        currentMimetypeChanged();
     }
     else
     {

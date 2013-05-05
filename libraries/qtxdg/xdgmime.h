@@ -53,6 +53,11 @@ public:
     /// Returns the name of the mime type.
     QString mimeType() const;
 
+    /// Returns the media type, eg. 'application' for mimetype 'application/pdf'
+    QString mediaType() const;
+
+    /// Returns the subtype, e.g. 'pdf' for 'application/pdf'
+    QString subType() const;
 
     QString comment() const;
 

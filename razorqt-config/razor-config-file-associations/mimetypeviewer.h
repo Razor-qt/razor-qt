@@ -27,6 +27,7 @@
 #define	_MIMETYPEVIEWER_H
 
 #include <QDialog>
+#include <QModelIndex>
 #include "ui_mimetypeviewer.h"
 
 class XdgMimeInfo;
@@ -41,7 +42,7 @@ public:
     void initializeMimeTreeWidget();
 
 private slots:
-    void currentMimetypeChanged(QTreeWidgetItem* newItem);
+    void currentMimetypeChanged();
     void chooseApplication();
     void dialogButtonBoxClicked(QAbstractButton *button);
 

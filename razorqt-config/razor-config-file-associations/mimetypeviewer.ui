@@ -20,38 +20,6 @@
    <string>Mimetypes</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QTreeWidget" name="mimetypeTreeWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>180</width>
-       <height>280</height>
-      </size>
-     </property>
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="headerDefaultSectionSize">
-      <number>500</number>
-     </attribute>
-     <column>
-      <property name="text">
-       <string notr="true">Mimetypes</string>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-     </column>
-    </widget>
-   </item>
    <item row="2" column="1">
     <widget class="QFrame" name="frame">
      <property name="enabled">
@@ -249,6 +217,43 @@
      <property name="standardButtons">
       <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
      </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QTreeView" name="mimetypeTreeView">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>180</width>
+       <height>280</height>
+      </size>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="headerHidden">
+      <bool>true</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="headerDefaultSectionSize">
+      <number>0</number>
+     </attribute>
+     <attribute name="headerMinimumSectionSize">
+      <number>500</number>
+     </attribute>
     </widget>
    </item>
   </layout>

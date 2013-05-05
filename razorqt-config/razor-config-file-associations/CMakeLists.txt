@@ -10,6 +10,7 @@ include_directories (
 set(H_FILES
     mimetypeviewer.h
     applicationchooser.h
+    mimetypeitemmodel.h
 )
 
 set(MOC_FILES
@@ -20,6 +21,7 @@ set(MOC_FILES
 set(CPP_FILES
     mimetypeviewer.cpp
     applicationchooser.cpp
+    mimetypeitemmodel.cpp
     main.cpp
 )
 

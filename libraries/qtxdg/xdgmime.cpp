@@ -133,6 +133,18 @@ QString XdgMimeInfo::mimeType() const
     return mData->mMedia + "/" + mData->mSubtype;
 }
 
+
+QString XdgMimeInfo::mediaType() const
+{
+    return mData->mMedia;
+}
+
+
+QString XdgMimeInfo::subType() const
+{
+    return mData->mSubtype;
+}
+
 QString XdgMimeInfo::comment() const
 {
     return mData->mComment;
