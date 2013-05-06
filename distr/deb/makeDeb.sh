@@ -5,6 +5,7 @@ NAME='razorqt'
 function help {
   cat << HELP_TEXT
 Usage: makeDeb.sh [options] <path-to-source>
+   or  makeDeb.sh [options] <path-to-source-tar-file>
 
 Options
   -h|--help             display this message
@@ -13,8 +14,9 @@ Options
   -d|--distrib=DISTRIB  distib type (Debian or Ubuntu), autodetect if ommited
   --ver=VERSION         package version
   -S|--sign             sign a result files
-  -s|--source           build a source package, if ommited build a binary package
+  -s|--source           build a source package, if omitted build a binary package
   --debug               debug mode, not build package - only create debian directory
+  --debdir              path to debian directory, if omitted used distr/deb/debian from the source dir or tar file.
 HELP_TEXT
 }
 
@@ -35,7 +37,7 @@ function setVariable
 
     VARIABLES="${VARIABLES}${VAR}=$*\n"
     debug "set variable: ${VAR} = $*"
-    debug "variables $VARIABLES"
+    #debug "variables $VARIABLES"
 }
 
 function getVariable
@@ -142,6 +144,7 @@ function skipBlock
 function processBlock
 {
     nextToken
+
     while [ "$token" != "" ]; do
         case $token in
             %IF|%IFNOT)
@@ -197,6 +200,7 @@ function prepareFile
 TYPE='-b'
 SIGN='-uc -us'
 SRC_DIR="../.."
+DEB_DIR=""
 
 while [ $# -gt 0 ]; do
   case $1 in
@@ -240,13 +244,18 @@ while [ $# -gt 0 ]; do
         shift
       ;;
 
+    --debdir)
+        DEB_DIR=$2
+        shift 2
+      ;;
+
     --)
         shift
         break
       ;;
 
     *)
-        SRC_DIR=$1
+        SRC=$1
         shift
       ;;
 
@@ -254,18 +263,26 @@ while [ $# -gt 0 ]; do
 done
 
 
-if [ -z "${SRC_DIR}" ]; then
+if [ -z "${SRC}" ]; then
     echo "missing path-to-source operand" >&2
     help
     exit 2
 fi
 
-SRC_DIR=`readlink -m ${SRC_DIR}`
+SRC=`readlink -m ${SRC}`
 
-if [ ! -f ${SRC_DIR}/CMakeLists.txt ]; then
-    echo "The source directory \"${SRC_DIR}\" does not appear to contain CMakeLists.txt."
-    echo "Please run this script from root source dir ... as last argument"
-    exit 2
+if [ -d "${SRC}" ]; then
+  SRC_TYPE="DIR"
+else
+  SRC_TYPE="FILE"
+fi
+
+if [ ${SRC_TYPE} = "DIR" ]; then
+    if [ ! -f ${SRC}/CMakeLists.txt ]; then
+        echo "The source directory \"${SRC}\" does not appear to contain CMakeLists.txt."
+        echo "Please run this script from root source dir ... as last argument"
+        exit 2
+    fi
 fi
 
 if [ -z "${RELEASE}" ]; then
@@ -289,11 +306,17 @@ if [ -z "${DISTRIB}" ]; then
     exit 2
 fi
 
-
 if [ -z "$VER" ]; then
-    MAJOR_VER=`awk -F'[)( ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-    MINOR_VER=`awk -F'[)( ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
-    PATCH_VER=`awk -F'[)( ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC_DIR}/CMakeLists.txt`
+    if [ ${SRC_TYPE} = "DIR" ]; then
+      MAJOR_VER=$(awk -F'[() ]' '/set\s*\(MAJOR_VERSION / {print($3)}' ${SRC}/CMakeLists.txt)
+      MINOR_VER=$(awk -F'[() ]' '/set\s*\(MINOR_VERSION / {print($3)}' ${SRC}/CMakeLists.txt)
+      PATCH_VER=$(awk -F'[() ]' '/set\s*\(PATCH_VERSION / {print($3)}' ${SRC}/CMakeLists.txt)
+    else
+      MAJOR_VER=$(echo "${SRC}" | awk -F '[-_]' '{print($2)}' | awk -F '.' '{print($1)}')
+      MINOR_VER=$(echo "${SRC}" | awk -F '[-_]' '{print($2)}' | awk -F '.' '{print($2)}')
+      PATCH_VER=$(echo "${SRC}" | awk -F '[-_]' '{print($2)}' | awk -F '.' '{print($3)}')
+    fi
+
     VER="${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 fi
 
@@ -317,9 +340,11 @@ echo " Ver:  ${VER}"
 [ "${TYPE}" = "Debug" ] && echo " Type: debug"
 echo " Distrib: ${DISTRIB}"
 echo " Release: ${RELEASE}"
-echo " Src dir: ${SRC_DIR}"
+echo " Source:  ${SRC}"
 echo " Out dir: ${OUT_DIR}"
+[ -n "${DEB_DIR}" ] && echo " Debian dir: ${DEB_DIR}"
 echo "*******************************"
+
 
 OUT_DIR=`readlink -m ${OUT_DIR}`
 mkdir -p ${OUT_DIR} || exit 2
@@ -327,16 +352,25 @@ mkdir -p ${OUT_DIR} || exit 2
 DIR=${OUT_DIR}/${NAME}-${VER}
 rm -rf ${DIR}
 
-if [ -z "$DEBUG" ]; then
-  cp -r ${SRC_DIR} ${DIR}
-  rm -rf ${DIR}/.git \
-         ${DIR}/build
-
-  cd ${DIR}/.. && tar cjf ${NAME}_${VER}.orig.tar.bz2 ${NAME}-${VER}
-else
-  mkdir -p ${DIR}/distr
-  cp -r ${SRC_DIR}/distr/ ${DIR}
+if [ -z "${DEB_DIR}" ]; then
+    DEB_DIR=${DIR}/distr/deb/debian
 fi
+
+if [ -z "$DEBUG" ]; then
+    if [ ${SRC_TYPE} = "DIR" ]; then
+        cp -r ${SRC} ${DIR}
+        rm -rf ${DIR}/.git \
+               ${DIR}/build
+
+        cd ${DIR}/.. && tar cjf ${NAME}_${VER}.orig.tar.bz2 ${NAME}-${VER}
+
+    else
+        cp "${SRC}" ${OUT_DIR}/${NAME}_${VER}.orig.tar.bz2
+        cd ${OUT_DIR} && tar xvf ${NAME}_${VER}.orig.tar.bz2 ${NAME}-${VER}
+
+    fi
+fi
+
 
 for RELEASE in ${RELEASE}; do
     # Debin directory .....................
@@ -346,10 +380,10 @@ for RELEASE in ${RELEASE}; do
     DATE=`date -R`
 
     clearVariables
-    prepareFile ${DIR}/distr/deb/debian/control > ${DIR}/debian/control
+    prepareFile ${DEB_DIR}/control > ${DIR}/debian/control
 
-    for src in `find ${DIR}/distr/deb/debian -type f \! -name "control"`; do
-        dest=`echo $src | sed -e's|/distr/deb||'`
+    for src in `find ${DEB_DIR} -type f \! -name "control"`; do
+        dest=$(echo $src | sed -e"s|${DEB_DIR}|${DIR}/debian|")
         prepareFile "${src}" > ${dest}
         chmod --reference "${src}" ${dest}
     done
