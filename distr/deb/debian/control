@@ -45,7 +45,7 @@ Build-Depends: pkg-config,
     %if RELEASE oneiric
         liblightdm-qt-1-dev,
         %set LIGHTDM yes
-    %elsif RELEASE precise quantal
+    %elsif RELEASE precise quantal raring
         liblightdm-qt-2-dev,
         %set LIGHTDM yes
     %endif
