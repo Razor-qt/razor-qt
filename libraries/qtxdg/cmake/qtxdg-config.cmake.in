@@ -1,0 +1,38 @@
+# - Find the QtXdg include and library dirs and define a some macros
+#
+# The module defines the following variables
+#  QTXDG_FOUND         - Set to TRUE if all of the above has been found
+#
+#  QTXDG_INCLUDE_DIR   - The QtXdg include directory
+#
+#  QTXDG_INCLUDE_DIRS  - The QtXdg include directory
+#
+#  QTXDG_LIBRARIES     - The libraries needed to use QtXdg
+#
+#  QTXDG_USE_FILE      - The variable QTXDG_USE_FILE is set which is the path to a CMake file that
+#                        can be included to compile qtxdg applications and libraries. It sets up
+#                        the compilation environment for include directories and populates a
+#                        QTXDG_LIBRARIES variable.
+#
+# Typical usage could be something like:
+#   find_package(QTXDG REQUIRED)
+#   include(${QTXDG_USE_FILE})
+#
+#   add_executable(myexe main.cpp)
+#   target_link_libraries(myexe ${QTXDG_LIBRARIES})
+
+set(QTXDG_INCLUDE_DIR   @QTXDG_INCLUDE_DIR@)
+set(QTXDG_LIBRARY       qtxdg)
+
+set(QTXDG_LIBRARIES     ${QTXDG_LIBRARY})
+set(QTXDG_INCLUDE_DIRS  ${QTXDG_INCLUDE_DIR})
+
+set(QTXDG_USE_FILE      ${CMAKE_CURRENT_LIST_DIR}/qtxdg_use.cmake)
+set(QTXDG_FOUND 1)
+
+set(QTXDG_MAJOR_VERSION @QTXDG_MAJOR_VERSION@)
+set(QTXDG_MINOR_VERSION @QTXDG_MINOR_VERSION@)
+set(QTXDG_PATCH_VERSION @QTXDG_PATCH_VERSION@)
+set(QTXDG_VERSION @QTXDG_MAJOR_VERSION@.@QTXDG_MINOR_VERSION@.@QTXDG_PATCH_VERSION@)
+
+mark_as_advanced(QTXDG_LIBRARY QTXDG_INCLUDE_DIR)
