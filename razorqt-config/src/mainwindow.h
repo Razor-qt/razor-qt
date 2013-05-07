@@ -58,6 +58,7 @@ private:
     void builGroup(const QDomElement& xml);
 
 private slots:
+    void load();
     void activateItem(const QModelIndex &index);
 };
 

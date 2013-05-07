@@ -27,6 +27,7 @@
 
 #include <QtCore/QDirIterator>
 #include <QtGui/QLineEdit>
+#include <QTimer>
 
 #include "mainwindow.h"
 #include <QtDebug>
@@ -92,7 +93,6 @@ public:
         {
             this->builGroup(it.next());
         }
-
     }
 
     void builGroup(const QDomElement& xml)
@@ -206,6 +206,16 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     view->setUniformItemSizes(true);
     view->setCategoryDrawer(new QCategoryDrawerV3(view));
 
+    connect(view, SIGNAL(activated(const QModelIndex&)),
+            this, SLOT(activateItem(const QModelIndex&)));
+
+    QTimer::singleShot(1, this, SLOT(load()));
+}
+
+void RazorConfig::MainWindow::load()
+{
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
     proxyModel = new QCategorizedSortFilterProxyModel();
     proxyModel->setCategorizedModel(true);
     proxyModel->setSourceModel(model);
@@ -213,8 +223,7 @@ RazorConfig::MainWindow::MainWindow() : QMainWindow()
     view->setModel(proxyModel);
     view->setItemDelegate(new ConfigItemDelegate(view));
 
-    connect(view, SIGNAL(activated(const QModelIndex&)),
-            this, SLOT(activateItem(const QModelIndex&)));
+    QApplication::restoreOverrideCursor();
 }
 
 void RazorConfig::MainWindow::activateItem(const QModelIndex &index)
