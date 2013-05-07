@@ -10,13 +10,10 @@ if(NOT CMAKE_BUILD_TYPE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 add_definitions(-Wall)
-find_package(Qt4 REQUIRED)
 
-include( ${QT_USE_FILE} )
 include_directories(
     ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-    ${QT_QTCORE_INCLUDE_DIR} 
-    ${CMAKE_SOURCE_DIR}/libraries/
+    ${QT_QTCORE_INCLUDE_DIR}
 )
 
 set(${PROJECT_NAME}_HEADERS
@@ -34,13 +31,13 @@ set(${PROJECT_NAME}_MOCS
     rzwatcher.h
 )
 
-set(LIBRARIES
-    qtxdg
-)
+find_package(QTXDG REQUIRED)
+include(${QTXDG_USE_FILE})
+
 qt4_wrap_cpp(${PROJECT_NAME}_MOCSCXX ${${PROJECT_NAME}_MOCS})
 
 add_executable ( ${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HEADERS} ${${PROJECT_NAME}_MOCSCXX})
-target_link_libraries ( ${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${LIBRARIES} )
+target_link_libraries ( ${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QTXDG_LIBRARIES})
 add_dependencies(${PROJECT_NAME} razorqt)
 INSTALL(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 
