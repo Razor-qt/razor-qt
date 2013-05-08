@@ -1,5 +1,5 @@
+cmake_minimum_required( VERSION 2.6 )
 project(razor-about)
-
 
 set(razor-about_H_FILES
 )
@@ -19,17 +19,15 @@ set(razor-about_QRC_FILES
 
 )
 
-set(razor-about_LIBRARIES
-    razorqt
-    qtxdg
-)
+
+find_package(RAZOR REQUIRED)
+include(${RAZOR_USE_FILE})
 
 # Translations **********************************
-include(RazorTranslate)
 razor_translate_ts(razor-about_QM_FILES
     SOURCES
         ${razor-about_H_FILES}
-        ${razor-about_CPP_FILES} 
+        ${razor-about_CPP_FILES}
         ${razor-about_UI_FILES}
 )
 
@@ -56,7 +54,6 @@ add_definitions(-Wall)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
-
 set(RAZOR_SHARE_DIR ${CMAKE_INSTALL_PREFIX}/share/razor)
 set(APP_SHARE_DIR ${RAZOR_SHARE_DIR}/${PROJECT_NAME})
 
@@ -67,17 +64,17 @@ qt4_wrap_cpp(razor-about_MOC_SOURCES ${razor-about_MOC_FILES})
 qt4_wrap_ui(razor-about_UI_HEADERS ${razor-about_UI_FILES})
 qt4_add_resources(razor-about_QRC_SOURCES ${razor-about_QRC_FILES})
 
-add_executable(${PROJECT_NAME} 
-    ${razor-about_CPP_FILES} 
-    ${razor-about_UI_FILES} 
-    ${razor-about_RESOURCES} 
-    ${razor-about_QRC_SOURCES} 
-    ${razor-about_QM_FILES} 
-    ${razor-about_MOC_SOURCES} 
+add_executable(${PROJECT_NAME}
+    ${razor-about_CPP_FILES}
+    ${razor-about_UI_FILES}
+    ${razor-about_RESOURCES}
+    ${razor-about_QRC_SOURCES}
+    ${razor-about_QM_FILES}
+    ${razor-about_MOC_SOURCES}
     ${razor-about_DESKTOP_FILES}
 )
 add_dependencies(${PROJECT_NAME} razorqt)
-target_link_libraries(${PROJECT_NAME}  ${razor-about_LIBRARIES} ${QT_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${RAZOR_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 install(FILES   ${CONFIG_FILES}    DESTINATION ${APP_SHARE_DIR})

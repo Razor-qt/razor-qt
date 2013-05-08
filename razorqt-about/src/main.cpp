@@ -27,7 +27,7 @@
 
 
 #include <razorqt/razorapplication.h>
-#include <razorqt/aboutdialog/razoraboutdlg.h>
+#include <RazorAboutDialog>
 #include "razortranslate.h"
 
 
