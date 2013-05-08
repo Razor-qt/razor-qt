@@ -25,6 +25,10 @@ message(STATUS "")
 message(STATUS "Razor-qt version: ${RAZOR_VERSION}")
 message(STATUS "")
 
+# On in-tree build we are use XXX-config.cmake files from
+# <BUILD>/cmake directory
+set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR}/cmake ${CMAKE_PREFIX_PATH})
+
 link_directories(/usr/local/lib/)
 
 add_definitions ( -Wall )
