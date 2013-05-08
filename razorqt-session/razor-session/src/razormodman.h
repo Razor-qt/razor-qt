@@ -38,6 +38,7 @@
 
 class RazorModule;
 class RazorSettings;
+class QFileSystemWatcher;
 
 typedef QMap<QString,RazorModule*> ModulesMap;
 typedef QMapIterator<QString,RazorModule*> ModulesMapIterator;
@@ -49,6 +50,8 @@ and which modules of razor are about to load.
 
 RazorModuleManager handles the session management (logout/restart/shutdown)
 as well.
+
+Also it watches the current theme to react if it was removed or modified.
 
 Processes in RazorModuleManager are started as follows:
  - run razor-confupdate
@@ -119,6 +122,10 @@ private:
      */
     ModulesCrashReport mCrashReport;
 
+    //! \brief file system watcher to react on theme modifications
+    QFileSystemWatcher *mThemeWatcher;
+    QString mCurrentThemePath;
+
 private slots:
     //! \brief Read configuration and start processes
     void startup();
@@ -142,6 +149,10 @@ private slots:
     /*! Clear m_crashReport after some amount of time
      */
     void resetCrashReport();
+
+    void themeFolderChanged(const QString&);
+
+    void themeChanged();
 };
 
 

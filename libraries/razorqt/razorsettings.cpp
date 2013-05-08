@@ -74,7 +74,8 @@ class GlobalRazorSettingsPrivate
 {
 public:
     GlobalRazorSettingsPrivate(GlobalRazorSettings *parent):
-        mParent(parent)
+        mParent(parent),
+        mThemeUpdated(0ull)
     {
 
     }
@@ -82,6 +83,7 @@ public:
     GlobalRazorSettings *mParent;
     QString mIconTheme;
     QString mRazorTheme;
+    qulonglong mThemeUpdated;
 
 };
 
@@ -646,7 +648,8 @@ void GlobalRazorSettings::fileChanged()
     }
 
     QString rt = value("theme").toString();
-    if (d->mRazorTheme != rt)
+    qint64 themeUpdated = value("__theme_updated__").toLongLong();
+    if ((d->mRazorTheme != rt) || (d->mThemeUpdated != themeUpdated))
     {
         d->mRazorTheme = rt;
         emit razorThemeChanged();

@@ -28,6 +28,7 @@
 #include "razormodman.h"
 #include <razorqt/razorsettings.h>
 #include <qtxdg/xdgautostart.h>
+#include <qtxdg/xdgdirs.h>
 #include <unistd.h>
 
 #include <QtCore/QtDebug>
@@ -35,6 +36,8 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QSystemTrayIcon>
 #include <QtCore/QFileInfo>
+#include <QFileSystemWatcher>
+#include <QDateTime>
 #include "wmselectdialog.h"
 #include <razorqt/xfitman.h>
 #include "windowmanager.h"
@@ -49,10 +52,15 @@ RazorModuleManager::RazorModuleManager(const QString & config, const QString & w
     : QObject(parent),
       mConfig(config),
       mWindowManager(windowManager),
-      mWmProcess(new QProcess(this))
+      mWmProcess(new QProcess(this)),
+      mThemeWatcher(new QFileSystemWatcher(this))
 {
     if (mConfig.isEmpty())
         mConfig = "session";
+
+    connect(mThemeWatcher, SIGNAL(directoryChanged(QString)), SLOT(themeFolderChanged(QString)));
+
+    connect(RazorSettings::globalSettings(), SIGNAL(razorThemeChanged()), SLOT(themeChanged()));
 
     // Wait until the event loop starts
     QTimer::singleShot(0, this, SLOT(startup()));
@@ -111,6 +119,64 @@ void RazorModuleManager::startup()
 
         foreach (XdgDesktopFile* f, trayApps)
             startProcess(*f);
+    }
+
+
+    QStringList paths;
+    paths << XdgDirs::dataHome(false);
+    paths << XdgDirs::dataDirs();
+
+    foreach(QString path, paths)
+    {
+        QFileInfo fi(QString("%1/razor/themes").arg(path));
+        if (fi.exists())
+            mThemeWatcher->addPath(fi.absoluteFilePath());
+    }
+
+    themeChanged();
+}
+
+void RazorModuleManager::themeFolderChanged(const QString& /*path*/)
+{
+    QString newTheme;
+    if (!QFileInfo(mCurrentThemePath).exists())
+    {
+        const QList<RazorTheme> &allThemes = razorTheme.allThemes();
+        if (!allThemes.isEmpty())
+        {
+            newTheme = allThemes[0].name();
+        }
+        else
+        {
+            return;
+        }
+    }
+    else
+    {
+        newTheme = razorTheme.currentTheme().name();
+    }
+
+    RazorSettings settings("razor");
+    if (newTheme == settings.value("theme"))
+    { // force the same theme to be updated
+        settings.setValue("__theme_updated__", QDateTime::currentMSecsSinceEpoch());
+    }
+    else
+    {
+        settings.setValue("theme", newTheme);
+    }
+    sync();
+}
+
+void RazorModuleManager::themeChanged()
+{
+    if (!mCurrentThemePath.isEmpty())
+        mThemeWatcher->removePath(mCurrentThemePath);
+
+    if (razorTheme.currentTheme().isValid())
+    {
+        mCurrentThemePath = razorTheme.currentTheme().path();
+        mThemeWatcher->addPath(mCurrentThemePath);
     }
 }
 
