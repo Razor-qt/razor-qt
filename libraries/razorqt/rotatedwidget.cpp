@@ -147,39 +147,35 @@ void RotatedWidget::paintEvent(QPaintEvent */*event*/)
         return;
 
     QSize sz = mContent->size();
-    QImage image(sz, QImage::Format_ARGB32);
-    image.fill(Qt::transparent);
 
     QPainter painter(this);
-    mContent->render(&image, QPoint(), QRegion(), RenderFlags(DrawChildren));
 
     QTransform transform;
-    QPointF originPoint;
+    QPoint originPoint;
     switch (mOrigin)
     {
     case Qt::TopLeftCorner:
 //        transform.rotate(0.0);
-//        originPoint = QPointF(0.0, 0.0);
+//        originPoint = QPoint(0.0, 0.0);
         break;
 
     case Qt::TopRightCorner:
         transform.rotate(90.0);
-        originPoint = QPointF(0.0, -sz.height());
+        originPoint = QPoint(0.0, -sz.height());
         break;
 
     case Qt::BottomRightCorner:
         transform.rotate(180.0);
-        originPoint = QPointF(-sz.width(), -sz.height());
+        originPoint = QPoint(-sz.width(), -sz.height());
         break;
 
     case Qt::BottomLeftCorner:
         transform.rotate(270.0);
-        originPoint = QPointF(-sz.width(), 0.0);
+        originPoint = QPoint(-sz.width(), 0.0);
         break;
     }
-
     painter.setTransform(transform);
-    painter.drawImage(originPoint, image);
+    mContent->render(&painter, originPoint, QRegion(), RenderFlags(DrawChildren));
 }
 
 void RotatedWidget::mousePressEvent(QMouseEvent *event)
