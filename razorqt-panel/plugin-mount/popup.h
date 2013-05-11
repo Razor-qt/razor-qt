@@ -30,7 +30,7 @@
 #ifndef POPUP_H
 #define POPUP_H
 
-#include <QFrame>
+#include <QDialog>
 #include "../panel/irazorpanelplugin.h"
 
 class RazorMountManager;
@@ -38,7 +38,7 @@ class RazorMountDevice;
 class MenuDiskItem;
 class QLabel;
 
-class Popup: public QFrame
+class Popup: public QDialog
 {
     Q_OBJECT
 public:

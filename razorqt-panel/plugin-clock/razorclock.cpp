@@ -337,7 +337,7 @@ void RazorClock::activated(ActivationReason reason)
     {
         mCalendarDialog = new QDialog(mContent);
         //mCalendarDialog->setAttribute(Qt::WA_DeleteOnClose, true);
-        mCalendarDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        mCalendarDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::X11BypassWindowManagerHint);
         mCalendarDialog->setLayout(new QHBoxLayout(mCalendarDialog));
         mCalendarDialog->layout()->setMargin(1);
 

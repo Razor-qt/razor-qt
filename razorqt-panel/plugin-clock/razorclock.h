@@ -36,7 +36,6 @@
 #include <razorqt/rotatedwidget.h>
 
 #include <QtCore/QString>
-#include <QtGui/QFrame>
 
 class QLabel;
 class QDialog;

@@ -40,7 +40,7 @@
 #include <QtCore/QProcess>
 
 VolumePopup::VolumePopup(QWidget* parent):
-    QWidget(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
+    QDialog(parent, Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
     m_pos(0,0),
     m_anchor(Qt::TopLeftCorner),
     m_device(0)

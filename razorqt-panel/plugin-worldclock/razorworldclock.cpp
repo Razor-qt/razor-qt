@@ -42,6 +42,7 @@
 #include <QtGui/QWheelEvent>
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QDialog>
 #include <QHBoxLayout>
 
 #include <time.h>
@@ -354,7 +355,7 @@ void RazorWorldClock::activated(ActivationReason reason)
     {        UErrorCode status = U_ZERO_ERROR;
 
         mPopup = new QDialog(mContent);
-        mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::X11BypassWindowManagerHint);
         mPopup->setLayout(new QHBoxLayout(mPopup));
 
         if (reason == IRazorPanelPlugin::Trigger)
