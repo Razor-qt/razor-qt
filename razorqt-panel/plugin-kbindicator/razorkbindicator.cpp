@@ -31,6 +31,7 @@
 
 #include <QtGui/QLabel>
 #include <QtGui/QX11Info>
+#include <QTimer>
 
 Q_EXPORT_PLUGIN2(panelkbindicator, RazorKbIndicatorLibrary)
 
@@ -54,13 +55,18 @@ RazorKbIndicator::RazorKbIndicator(const IRazorPanelPluginStartupInfo &startupIn
             if (XkbUseExtension(mDisplay, &major, &minor))
                 XkbSelectEvents(mDisplay, XkbUseCoreKbd, XkbIndicatorStateNotifyMask, XkbIndicatorStateNotifyMask);
 
-    settingsChanged();
-    realign();
+    QTimer::singleShot(0, this, SLOT(delayedInit()));
 }
 
 RazorKbIndicator::~RazorKbIndicator()
 {
     delete mContent;
+}
+
+void RazorKbIndicator::delayedInit()
+{
+    settingsChanged();
+    realign();
 }
 
 QWidget *RazorKbIndicator::widget()
@@ -82,7 +88,10 @@ QDialog *RazorKbIndicator::configureDialog()
 
 void RazorKbIndicator::realign()
 {
-    mContent->setMinimumSize(panel()->lineSize(), panel()->lineSize());
+    if (panel()->isHorizontal())
+        mContent->setMinimumSize(0, panel()->lineSize());
+    else
+        mContent->setMinimumSize(panel()->lineSize(), 0);
 }
 
 void RazorKbIndicator::setIndicators(unsigned int changed, unsigned int state)
