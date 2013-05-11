@@ -56,9 +56,9 @@ public:
     */
     enum StretchFlag
     {
-        NoStretch       = 0,   ///< No justifies items
-        StretchHoriz    = 1,   ///< Justifies items in the available horizontal space
-        StretchVert     = 2    ///< Justifies items in the available vertical space
+        NoStretch         = 0,   ///< No justifies items
+        StretchHorizontal = 1,   ///< Justifies items in the available horizontal space
+        StretchVertical   = 2    ///< Justifies items in the available vertical space
     };
     Q_DECLARE_FLAGS(Stretch, StretchFlag)
 

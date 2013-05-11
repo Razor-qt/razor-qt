@@ -329,13 +329,13 @@ void RazorTaskBar::realign()
 
         if (mButtonStyle == Qt::ToolButtonIconOnly)
         {
-            mLayout->setStretch(RazorGridLayout::StretchVert);
+            mLayout->setStretch(RazorGridLayout::StretchVertical);
             minSize.rwidth() = maxSize.height();
             maxSize.rwidth() = maxSize.height();
         }
         else
         {
-            mLayout->setStretch(RazorGridLayout::StretchHoriz | RazorGridLayout::StretchVert);
+            mLayout->setStretch(RazorGridLayout::StretchHorizontal | RazorGridLayout::StretchVertical);
             maxSize.rwidth() = mButtonWidth;
         }
     }
