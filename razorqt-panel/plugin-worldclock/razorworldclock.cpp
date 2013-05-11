@@ -359,6 +359,8 @@ void RazorWorldClock::activated(ActivationReason reason)
 
         if (reason == IRazorPanelPlugin::Trigger)
         {
+            mPopup->setObjectName(QString());
+
             mPopup->layout()->setContentsMargins(0, 0, 0, 0);
             QCalendarWidget *calendarWidget = new QCalendarWidget(mPopup);
             mPopup->layout()->addWidget(calendarWidget);
@@ -376,8 +378,9 @@ void RazorWorldClock::activated(ActivationReason reason)
         }
         else
         {
+            mPopup->setObjectName("WorldClockPopup");
+
             QLabel *content = new QLabel(mPopup);
-            content->setObjectName("WorldClockPopup");
             mPopup->layout()->addWidget(content);
 
             QStringList allTimeZones;
