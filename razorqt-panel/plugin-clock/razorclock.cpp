@@ -77,6 +77,9 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
     mTimeLabel->setObjectName("TimeLabel");
     mDateLabel->setObjectName("DateLabel");
 
+    mTimeLabel->setAlignment(Qt::AlignCenter);
+    mDateLabel->setAlignment(Qt::AlignCenter);
+
     QVBoxLayout *contentLayout = new QVBoxLayout(mContent);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(1);
