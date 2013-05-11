@@ -38,7 +38,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QDate>
-#include <QtCore/QDebug>
+//#include <QtCore/QDebug>
 #include <QtGui/QWheelEvent>
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDesktopWidget>
