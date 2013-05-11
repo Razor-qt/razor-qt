@@ -81,7 +81,7 @@ RazorPanelPlugin > QToolButton:hover {
     margin-right: 2px;
 }
 
-#QuckLaunchPlaceHolder {
+#QuickLaunchPlaceHolder {
     color: #AAAAAA;
 }
 

@@ -63,7 +63,7 @@ Plugin > QToolButton:hover{
     border: 1px solid #7f7f7f;
 }
 
-#QuckLaunchPlaceHolder {
+#QuickLaunchPlaceHolder {
     color: #777777;
 }
 
