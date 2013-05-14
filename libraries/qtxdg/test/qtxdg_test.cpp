@@ -3,6 +3,8 @@
 #include "qtxdg/xdgdesktopfile.h"
 #include "qtxdg/xdgdirs.h"
 
+#include <QtTest>
+
 #include <QDir>
 #include <QFileInfo>
 #include <QProcess>
@@ -69,7 +71,7 @@ bool readDesktopFile(QIODevice & device, QSettings::SettingsMap & map);
 bool writeDesktopFile(QIODevice & device, const QSettings::SettingsMap & map);
 
 
-bool QtXdgTest::testCustomFormat()
+void QtXdgTest::testCustomFormat()
 {
     QSettings::Format desktopFormat = QSettings::registerFormat("list", readDesktopFile, writeDesktopFile);
     QFile::remove("/tmp/test.list");
@@ -87,25 +89,23 @@ bool QtXdgTest::testCustomFormat()
     QFile::copy("/tmp/test.list", "/tmp/test2.list");
 
     QSettings test2("/tmp/test2.list", desktopFormat);
-    if (test2.allKeys().size() != 4) return false;
+    QVERIFY(test2.allKeys().size() == 4);
 
     test2.beginGroup("Default Applications");
-    qDebug() << test2.value("text/plain");
-    if (test2.value("text/plain") != QString("gvim.desktop")) return false;
+//    qDebug() << test2.value("text/plain");
+    QVERIFY(test2.value("text/plain") == QString("gvim.desktop"));
 
-    qDebug() << test2.value("text/html");
-    if (test2.value("text/html") != QString("firefox.desktop")) return false;
+//    qDebug() << test2.value("text/html");
+    QVERIFY(test2.value("text/html") == QString("firefox.desktop"));
     test2.endGroup();
 
     test2.beginGroup("Other Applications");
-    qDebug() << test2.value("application/pdf");
-    if (test2.value("application/pdf") != QString("qpdfview.desktop")) return false;
+//    qDebug() << test2.value("application/pdf");
+    QVERIFY(test2.value("application/pdf") == QString("qpdfview.desktop"));
 
-    qDebug() << test2.value("image/svg+xml");
-    if (test2.value("image/svg+xml") != QString("inkscape.desktop")) return false;
+//    qDebug() << test2.value("image/svg+xml");
+    QVERIFY(test2.value("image/svg+xml") == QString("inkscape.desktop"));
     test2.endGroup();
-
-    return true;
 }
 
 
@@ -132,3 +132,15 @@ QString QtXdgTest::xdgUtilDefaultApp(QString mimetype)
     xdg_mime.waitForFinished(1000);
     return QString(xdg_mime.readAll()).trimmed();
 }
+
+#if 0
+int main(int argc, char** args)
+{
+//    QtXdgTest().testDefaultApp();
+//      qDebug() << "Default for text/html:" << QtXdgTest().xdgDesktopFileDefaultApp("text/html");
+//    QtXdgTest().testMeldComparison();
+    qDebug() << QtXdgTest().testCustomFormat();
+};
+#endif // 0
+
+QTEST_MAIN(QtXdgTest)
