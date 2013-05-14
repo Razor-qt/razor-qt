@@ -35,3 +35,4 @@ add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${UIS} ${RSCS} ${TRS} ${M
 target_link_libraries ( ${PROJECT_NAME} ${QT_LIBRARIES}  ${LIBRARIES} )
 add_dependencies(${PROJECT_NAME} razorqt)
 
+add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})

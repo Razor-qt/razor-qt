@@ -156,5 +156,6 @@ if (${CMAKE_CURRENT_BINARY_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 if(BUILD_TESTS STREQUAL "Yes")
+    enable_testing()
     add_subdirectory(test)
 endif()
