@@ -30,24 +30,19 @@
 #include "razorpanel.h"
 #include <razorqt/razorsettings.h>
 #include <QtDebug>
+#include <QUuid>
 #include <X11/Xlib.h>
 
 
-/************************************************
-
- ************************************************/
 RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
     : RazorApplication(argc, argv)
 {
     RazorSettings s("panel");
     QStringList panels = s.value("panels").toStringList();
-    qDebug() << "PANELS" << panels;
 
     Q_FOREACH(QString i, panels)
     {
-        qDebug() << "PANEL" << i;
-        RazorPanel *panel = new RazorPanel(i);
-        mPanels << panel;
+        addPanel(i);
     }
 }
 
@@ -56,12 +51,42 @@ RazorPanelApplication::~RazorPanelApplication()
     qDeleteAll(mPanels);
 }
 
-/************************************************
+void RazorPanelApplication::addNewPanel()
+{
+    QString name("panel_" + QUuid::createUuid().toString());
+    addPanel(name);
+    
+    RazorSettings s("panel");
+    QStringList panels = s.value("panels").toStringList();
+    panels << name;
+    s.setValue("panels", panels);
+}
 
- ************************************************/
+void RazorPanelApplication::addPanel(const QString &name)
+{
+    RazorPanel *panel = new RazorPanel(name);
+    mPanels << panel;
+    connect(panel, SIGNAL(deletedByUser(RazorPanel*)),
+            this, SLOT(removePanel(RazorPanel*)));
+}
+
 bool RazorPanelApplication::x11EventFilter(XEvent * event)
 {
     foreach(RazorPanel *i, mPanels)
         i->x11EventFilter(event);
     return false;
+}
+
+void RazorPanelApplication::removePanel(RazorPanel* panel)
+{
+    Q_ASSERT(mPanels.contains(panel));
+
+    mPanels.removeAll(panel);
+    
+    RazorSettings s("panel");
+    QStringList panels = s.value("panels").toStringList();
+    panels.removeAll(panel->name());
+    s.setValue("panels", panels);
+    
+    panel->deleteLater();
 }

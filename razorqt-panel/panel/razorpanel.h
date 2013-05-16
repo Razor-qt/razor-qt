@@ -57,6 +57,8 @@ public:
 
     RazorPanel(const QString &configGroup, QWidget *parent = 0);
     virtual ~RazorPanel();
+    
+    QString name() { return mConfigGroup; }
 
     void readSettings();
 
@@ -100,6 +102,7 @@ public slots:
 
 signals:
     void realigned();
+    void deletedByUser(RazorPanel *self);
     
 protected:
     bool event(QEvent *event);
@@ -113,6 +116,7 @@ private slots:
     void realign();
     void removePlugin();
     void pluginMoved();
+    void userRequestForDeletion();
 
 private:
     RazorPanelLayout* mLayout;

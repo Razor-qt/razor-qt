@@ -41,8 +41,18 @@ public:
     ~RazorPanelApplication();
     virtual bool x11EventFilter(XEvent* event);
 
+    int count() { return mPanels.count(); }
+
+public slots:
+    void addNewPanel();
+
 private:
     QList<RazorPanel*> mPanels;
+
+    void addPanel(const QString &name);
+
+private slots:
+    void removePanel(RazorPanel* panel);
 };
 
 
