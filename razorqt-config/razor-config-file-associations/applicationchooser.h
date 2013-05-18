@@ -36,13 +36,14 @@ class ApplicationChooser : public QDialog
 {
     Q_OBJECT
 public:
-    ApplicationChooser(XdgMimeInfo* mimeInfo, QSettings *defaultsList, QObject* parent, QString url = QString());
+    ApplicationChooser(XdgMimeInfo* mimeInfo, bool showUseAlwaysCheckBox = false);
     virtual ~ApplicationChooser();
 
     void fillApplicationListWidget();
 
+    XdgDesktopFile* DefaultApplication() const { return m_CurrentDefaultApplication; }
+
 private slots:
-    void ok();
     void selectionChanged();
 
 private:
@@ -51,7 +52,6 @@ private:
                                                 QSet<XdgDesktopFile*> & alreadyAdded);
     XdgMimeInfo* m_MimeInfo;
     Ui::ApplicationChooser widget;
-    QSettings *m_DefaultsList;
     XdgDesktopFile* m_CurrentDefaultApplication;
 };
 

@@ -162,8 +162,15 @@ void MimetypeViewer::chooseApplication()
 {
     if (m_CurrentMime)
     {
-        ApplicationChooser(m_CurrentMime, mDefaultsList, this).exec();    
-        currentMimetypeChanged();
+        ApplicationChooser applicationChooser(m_CurrentMime);
+        if (applicationChooser.exec() && applicationChooser.DefaultApplication())
+        {
+            QString fileNameNoPath = QFileInfo(applicationChooser.DefaultApplication()->fileName()).fileName();
+            mDefaultsList->beginGroup("Default Applications");
+            mDefaultsList->setValue(m_CurrentMime->mimeType(), fileNameNoPath);
+            mDefaultsList->endGroup();   
+            currentMimetypeChanged();
+        }
         widget.mimetypeTreeView->setFocus();
     }
 }
