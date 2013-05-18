@@ -62,7 +62,14 @@ void ApplicationChooser::fillApplicationListWidget()
         QSet<XdgDesktopFile*> addedApps; 
         QList<XdgDesktopFile*> applicationsThatHandleThisMimetype = XdgDesktopFileCache::getApps(m_MimeInfo->mimeType());
         QList<XdgDesktopFile*> otherApplications;
-       
+
+        qDebug() << "######## applicationsThatHandle...";
+        foreach (XdgDesktopFile* df, applicationsThatHandleThisMimetype)
+        {
+            qDebug() << "    " << df->fileName();
+        }
+
+        qDebug() << "######## other...";
         for (XdgMimeInfo* mimeInfo = XdgMimeInfoCache::xdgMimeInfo(m_MimeInfo->subClassOf());
              mimeInfo; 
              mimeInfo =XdgMimeInfoCache::xdgMimeInfo(mimeInfo->subClassOf()))
@@ -70,6 +77,14 @@ void ApplicationChooser::fillApplicationListWidget()
             otherApplications.append(XdgDesktopFileCache::getApps(mimeInfo->mimeType()));
         }
         otherApplications.append(XdgDesktopFileCache::getAllFiles());
+        foreach (XdgDesktopFile* df, otherApplications)
+        {
+            qDebug() << "    " << df->fileName();
+        }
+
+        qDebug() << "-------------";
+        qDebug() << "Adding to tree:";
+
 
         qDebug() << "Adding applications1, size:"  << applicationsThatHandleThisMimetype.size();
         QTreeWidgetItem* headingItem = new QTreeWidgetItem(widget.applicationTreeWidget);
@@ -113,18 +128,30 @@ void ApplicationChooser::addApplicationsToApplicationListWidget(QTreeWidgetItem*
     // Insert applications in the listwidget, skipping already added applications
     foreach (XdgDesktopFile* desktopFile, applications) 
     {
+        qDebug() << "consider:"  << desktopFile->fileName();
         if (alreadyAdded.contains(desktopFile)) 
+        {
+            qDebug() << "Already there";
             continue;
+        } 
         
         // Only applications
         if (desktopFile->type() != XdgDesktopFile::ApplicationType)  
+        {
+            qDebug() << "Not of applicationType";
             continue;
-
+        }
+        
         // The application should be able to open documents, so it should accept a file or uri argument, or
         // else we cannot use it
-        QString exec = desktopFile->value("Exec").toString();
-        if (! ((exec.contains("%f") || exec.contains("%F") || exec.contains("%u") || exec.contains("%U")))) 
-            continue;
+        //well actually, xdg-mime query default, doesn't seem to care, so we don't perform the check either
+        
+//        QString exec = desktopFile->value("Exec").toString();
+//        if (! ((exec.contains("%f") || exec.contains("%F") || exec.contains("%u") || exec.contains("%U")))) 
+//        {
+//            qDebug() << "Wrong url:" << desktopFile->value("Exec").toString();
+//            continue;
+//        }
 
         QTreeWidgetItem *item = new QTreeWidgetItem(parent);
         item->setIcon(0, desktopFile->icon());
