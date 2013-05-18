@@ -45,7 +45,6 @@ ApplicationChooser::ApplicationChooser(XdgMimeInfo* mimeInfo, bool showUseAlways
     widget.alwaysUseCheckBox->setVisible(showUseAlwaysCheckBox);
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     fillApplicationListWidget();
-    connect(widget.buttonBox, SIGNAL(accepted()), this, SLOT(ok()));
     connect(widget.applicationTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(selectionChanged()));
 }
 
