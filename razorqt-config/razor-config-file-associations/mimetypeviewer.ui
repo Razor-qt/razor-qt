@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
-    <height>395</height>
+    <width>566</width>
+    <height>398</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,7 +20,7 @@
    <string>Mimetypes</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
+   <item row="4" column="1">
     <widget class="QTreeView" name="mimetypeTreeView">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -57,15 +57,8 @@
      </attribute>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QDialogButtonBox" name="dialogButtonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="label">
+   <item row="1" column="0" colspan="3">
+    <widget class="QLabel" name="headingLabel">
      <property name="font">
       <font>
        <pointsize>12</pointsize>
@@ -82,15 +75,8 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLineEdit" name="searchTermLineEdit">
-     <property name="placeholderText">
-      <string>Search...</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1" rowspan="2">
-    <widget class="QFrame" name="frame">
+   <item row="3" column="2" rowspan="2">
+    <widget class="QFrame" name="mimeFrame">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -264,6 +250,29 @@
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="searchTermLineEdit">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>Type mimetype or file ending...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1" colspan="2">
+    <widget class="QDialogButtonBox" name="dialogButtonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
+     </property>
     </widget>
    </item>
   </layout>

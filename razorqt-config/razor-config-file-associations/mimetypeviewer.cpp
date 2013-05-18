@@ -76,7 +76,8 @@ void MimetypeViewer::initializeMimeTreeWidget()
     m_MimetypeFilterItemModel.setSourceModel(new MimetypeItemModel(&m_MimetypeFilterItemModel));
 
     widget.mimetypeTreeView->setModel(&m_MimetypeFilterItemModel);
-    widget.searchTermLineEdit->setFocus();
+    currentMimetypeChanged();
+    widget.mimetypeTreeView->setFocus();
 }
 
 void MimetypeViewer::currentMimetypeChanged()
