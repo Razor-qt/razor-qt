@@ -62,7 +62,6 @@ MimetypeViewer::MimetypeViewer( QWidget *parent) :
     connect(widget.dialogButtonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonBoxClicked(QAbstractButton*)));
 
     QString defaultsListPath(XdgDirs::dataHome(true) + "/applications/defaults.list");
-    qDebug() << "defaultsListPath:" << defaultsListPath;
     mDefaultsList = new QSettings(defaultsListPath, XdgDesktopFileCache::desktopFileSettingsFormat(), this);
     mSettingsCache = new RazorSettingsCache(mDefaultsList);
     mSettingsCache->loadFromSettings();
@@ -147,7 +146,6 @@ void MimetypeViewer::currentMimetypeChanged()
 
 void MimetypeViewer::autoExpandOnSearch()
 {
-    qDebug() << "Ind i autoExpandOnSearch...";
     for (int i = 0; i < m_MimetypeFilterItemModel.rowCount(); i++) 
     {
         QModelIndex mediatypeIndex = m_MimetypeFilterItemModel.index(i, 0);

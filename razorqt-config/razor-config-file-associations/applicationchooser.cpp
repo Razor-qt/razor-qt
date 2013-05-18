@@ -117,7 +117,6 @@ void ApplicationChooser::addApplicationsToApplicationListWidget(QTreeWidgetItem*
             // Insert applications in the listwidget, skipping already added applications
             foreach (XdgDesktopFile* desktopFile, applications) 
             {
-                qDebug() << "consider:"  << desktopFile->fileName();
                 if (alreadyAdded.contains(desktopFile)) 
                     continue;
                 
