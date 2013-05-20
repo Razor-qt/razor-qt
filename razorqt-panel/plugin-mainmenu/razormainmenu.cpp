@@ -152,7 +152,8 @@ void RazorMainMenu::showMenu()
     // There are two solutions:
     //  activate window with Qt call and then execute menu 1ms later using timer,
     //  or use native X11 API calls:
-    xfitMan().raiseWindow(mButton.effectiveWinId());
+    //xfitMan().raiseWindow(mButton.effectiveWinId());
+    mButton.activateWindow();
     mMenu->exec(QPoint(x, y));
 }
 
