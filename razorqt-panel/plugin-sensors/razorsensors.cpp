@@ -54,6 +54,7 @@ RazorSensors::RazorSensors(IRazorPanelPlugin *plugin, QWidget* parent):
 
     mLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
     mLayout->setSpacing(0);
+    mLayout->setContentsMargins(0, 0, 0, 0);
 
     QString chipFeatureLabel;
 
