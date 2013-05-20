@@ -93,9 +93,8 @@ void ApplicationChooser::fillApplicationListWidget()
                 break;
         }
         
-        widget.applicationTreeWidget->setFocus();
-        selectionChanged();
     }
+    widget.applicationTreeWidget->setFocus();
 }
 
 void ApplicationChooser::addApplicationsToApplicationListWidget(QTreeWidgetItem* parent, 
@@ -127,8 +126,12 @@ void ApplicationChooser::addApplicationsToApplicationListWidget(QTreeWidgetItem*
                 item->setIcon(0, desktopFile->icon());
                 item->setText(0, desktopFile->name());
                 item->setData(0, 32, QVariant::fromValue<XdgDesktopFile*>(desktopFile));
-                item->setSelected(desktopFile == m_CurrentDefaultApplication);
-
+                
+                if (desktopFile == m_CurrentDefaultApplication)
+                {
+                    widget.applicationTreeWidget->setCurrentItem(item);
+                }
+                
                 alreadyAdded.insert(desktopFile);
             }
         }
