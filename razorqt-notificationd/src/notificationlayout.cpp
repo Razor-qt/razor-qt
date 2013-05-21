@@ -175,7 +175,9 @@ void NotificationLayout::checkHeight()
     while (it.hasNext())
     {
         it.next();
-        h +=it.value()->height() + m_layout->spacing();
+        // *2 is mandatory here to prevent cropping of widgets
+        //  with enforced small height
+        h += it.value()->height() + m_layout->spacing() * 2;
     }
 
     setMinimumSize(width(), h);

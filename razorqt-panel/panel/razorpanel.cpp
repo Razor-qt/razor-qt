@@ -213,7 +213,7 @@ void RazorPanel::screensChangeds()
 RazorPanel::~RazorPanel()
 {
     mLayout->setEnabled(false);
-    saveSettings();
+    // do not save settings because of "user deleted panel" functionality saveSettings();
     qDeleteAll(mPlugins);
 }
 
@@ -745,22 +745,22 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
                    this, SLOT(showAddPluginDialog())
                   );
 
-    // Annoying sub-menu:
-//    QMenu* pluginsMenu = menu.addMenu(tr("Plugins"));
-//    foreach (RazorPanelPlugin* p, mPlugins)
-//    {
-//        QMenu *m = p->popupMenu();
-//        if (m)
-//        {
-//            pluginsMenu->addMenu(m);
-//            pluginsMenus.append(m);
-//        }
-//    }
+    RazorPanelApplication *a = reinterpret_cast<RazorPanelApplication*>(qApp);
+    menu.addAction(tr("Add panel"),
+                   a, SLOT(addNewPanel())
+                  );
 
-//#ifdef DEBUG
+    if (a->count() > 1)
+    {
+        menu.addAction(tr("Delete panel"),
+                       this, SLOT(userRequestForDeletion())
+                      );
+    }
+
+#ifdef DEBUG
     menu.addSeparator();
     menu.addAction("Exit (debug only)", qApp, SLOT(quit()));
-//#endif
+#endif
 
     menu.exec(QCursor::pos());
     qDeleteAll(pluginsMenus);
@@ -850,22 +850,8 @@ QString RazorPanel::qssPosition() const
  ************************************************/
 QString RazorPanel::findNewPluginSettingsGroup(const QString &pluginType) const
 {
-    QSet<QString> loadedPlugins;
-    foreach(Plugin* plugin, mPlugins)
-        loadedPlugins << plugin->settingsGroup();
-
     QStringList groups = mSettings->childGroups();
     groups.sort();
-
-    // Search free section name .................
-    foreach(const QString &group, groups)
-    {
-        if (!loadedPlugins.contains(group) &&
-            mSettings->value(group + "/type") == pluginType)
-        {
-            return group;
-        }
-    }
 
     // Generate new section name ................
     for (int i=2; true; ++i)
@@ -905,4 +891,18 @@ void RazorPanel::pluginMoved()
             mPlugins << plugin;
     }
     saveSettings();
+}
+
+void RazorPanel::userRequestForDeletion()
+{
+    mSettings->beginGroup(mConfigGroup);
+    QStringList plugins = mSettings->value("plugins").toStringList();
+    mSettings->endGroup();
+    
+    Q_FOREACH(QString i, plugins)
+        mSettings->remove(i);
+    
+    mSettings->remove(mConfigGroup);
+
+    emit deletedByUser(this);
 }
