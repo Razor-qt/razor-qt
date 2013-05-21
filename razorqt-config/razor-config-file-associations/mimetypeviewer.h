@@ -50,6 +50,7 @@ private slots:
     void dialogButtonBoxClicked(QAbstractButton *button);
 
 private:
+    void addSearchIcon();
     Ui::mimetypeviewer widget;
     MimetypeFilterItemModel m_MimetypeFilterItemModel;
     XdgMimeInfo* m_CurrentMime;

@@ -209,7 +209,7 @@
       <string/>
      </property>
      <property name="placeholderText">
-      <string>Type mimetype or file ending...</string>
+      <string>Mimetype or file ending...</string>
      </property>
     </widget>
    </item>
