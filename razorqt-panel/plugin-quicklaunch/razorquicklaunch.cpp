@@ -79,6 +79,12 @@ RazorQuickLaunch::RazorQuickLaunch(IRazorPanelPlugin *plugin, QWidget* parent) :
                 qDebug() << "XdgDesktopFile" << desktop << "is not valid";
                 continue;
             }
+            if (!xdg->isApplicable())
+            {
+                qDebug() << "XdgDesktopFile" << desktop << "is not applicable";
+                continue;
+            }
+
             addButton(new QuickLaunchAction(xdg, this));
         }
         else if (! file.isEmpty())
@@ -200,7 +206,8 @@ void RazorQuickLaunch::dropEvent(QDropEvent *e)
 
         if (xdg->isValid())
         {
-            addButton(new QuickLaunchAction(xdg, this));
+            if (xdg->isApplicable())
+                addButton(new QuickLaunchAction(xdg, this));
         }
         else if (fi.exists() && fi.isExecutable() && !fi.isDir())
         {
