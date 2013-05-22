@@ -51,7 +51,7 @@ QString RazorMountDevice::sizeToString(qulonglong size)
 
     n = size / (1024.0);
     if (n >= 1.0)
-        return QObject::tr("%1 KB").arg(n, 0, 'f', 1);
+        return QObject::tr("%1 kB").arg(n, 0, 'f', 1);
 
     return QObject::tr("%1 B").arg(size);
 }
