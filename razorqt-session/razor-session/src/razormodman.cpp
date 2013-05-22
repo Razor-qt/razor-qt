@@ -159,7 +159,11 @@ void RazorModuleManager::themeFolderChanged(const QString& /*path*/)
     RazorSettings settings("razor");
     if (newTheme == settings.value("theme"))
     { // force the same theme to be updated
+#if QT_VERSION < QT_VERSION_CHECK(4, 7, 0)
+        settings.setValue("__theme_updated__", QDateTime::currentDateTime().toTime_t() * 1000);
+#else
         settings.setValue("__theme_updated__", QDateTime::currentMSecsSinceEpoch());
+#endif
     }
     else
     {
