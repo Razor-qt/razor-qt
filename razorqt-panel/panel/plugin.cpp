@@ -271,7 +271,7 @@ void Plugin::mousePressEvent(QMouseEvent *event)
         mPlugin->activated(IRazorPanelPlugin::Trigger);
         break;
 
-    case Qt::MiddleButton:
+    case Qt::MidButton:
         mPlugin->activated(IRazorPanelPlugin::MiddleClick);
         break;
 
