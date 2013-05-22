@@ -195,6 +195,19 @@
        </item>
       </layout>
      </widget>
+     <widget class="QDialogButtonBox" name="dialogButtonBox">
+      <property name="geometry">
+       <rect>
+        <x>-280</x>
+        <y>310</y>
+        <width>547</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
+      </property>
+     </widget>
     </widget>
    </item>
    <item row="2" column="0">
@@ -207,16 +220,6 @@
      </property>
      <property name="text">
       <string/>
-     </property>
-     <property name="placeholderText">
-      <string>Mimetype or file ending...</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QDialogButtonBox" name="dialogButtonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
      </property>
     </widget>
    </item>
@@ -263,7 +266,6 @@
   <tabstop>searchTermLineEdit</tabstop>
   <tabstop>mimetypeTreeView</tabstop>
   <tabstop>chooseApplicationsButton</tabstop>
-  <tabstop>dialogButtonBox</tabstop>
  </tabstops>
  <resources/>
  <connections/>
