@@ -52,6 +52,7 @@ Qt::DayOfWeek firstDayOfWeek()
 #elif defined HAVE__NL_TIME_FIRST_WEEKDAY
 
 #include <langinfo.h>
+#include <locale.h>
 #include <QtCore/QDebug>
 
 Qt::DayOfWeek firstDayOfWeek()

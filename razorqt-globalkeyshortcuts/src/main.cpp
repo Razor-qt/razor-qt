@@ -39,6 +39,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <syslog.h>
+#include <stdlib.h>
 
 
 #define DEFAULT_CONFIG ".config/razor/globalkeyshortcuts.conf"
