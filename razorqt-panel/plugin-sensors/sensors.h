@@ -29,7 +29,7 @@
 #define SENSORS_H
 
 #include "chip.h"
-#include <vector>
+#include <QList>
 #include <sensors/sensors.h>
 
 /**
@@ -41,10 +41,10 @@ class Sensors
 public:
     Sensors();
     ~Sensors();
-    const std::vector<Chip>& getDetectedChips() const;
+    const QList<Chip>& getDetectedChips() const;
 
 private:
-    static std::vector<Chip> mDetectedChips;
+    static QList<Chip> mDetectedChips;
 
     /**
      * lm_sensors library can be initialized only once so this will tell us when to init

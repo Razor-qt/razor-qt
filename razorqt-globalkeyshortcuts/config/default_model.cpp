@@ -319,7 +319,10 @@ void DefaultModel::actionsSwapped(qulonglong id1, qulonglong id2)
         int row1 = qBinaryFind(keys, id1) - keys.constBegin();
         int row2 = qBinaryFind(keys, id2) - keys.constBegin();
 
-        std::swap(mContent[id1], mContent[id2]);
+        // swap
+        GeneralActionInfo tmp = mContent[id1];
+        mContent[id1] = mContent[id2];
+        mContent[id2] = tmp;
 
         emit dataChanged(index(row1, 0), index(row1, 3));
         emit dataChanged(index(row2, 0), index(row2, 3));

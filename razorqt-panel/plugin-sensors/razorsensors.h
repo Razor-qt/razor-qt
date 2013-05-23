@@ -33,7 +33,7 @@
 #include <QtCore/QTimer>
 #include <QProgressBar>
 #include <sensors/sensors.h>
-#include <set>
+#include <QSet>
 
 class ProgressBar: public QProgressBar
 {
@@ -70,10 +70,10 @@ private:
     // How often warning time should fire in ms
     int mWarningAboutHighTemperatureTimerFreq;
     Sensors mSensors;
-    std::vector<Chip> mDetectedChips;
-    std::vector<ProgressBar*> mTemperatureProgressBars;
+    QList<Chip> mDetectedChips;
+    QList<ProgressBar*> mTemperatureProgressBars;
     // With set we can handle updates in very easy way :)
-    std::set<ProgressBar*> mHighTemperatureProgressBars;
+    QSet<ProgressBar*> mHighTemperatureProgressBars;
     double celsiusToFahrenheit(double celsius);
     void initDefaultSettings();
     QSettings *mSettings;
