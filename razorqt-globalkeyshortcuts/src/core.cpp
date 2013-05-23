@@ -2898,7 +2898,9 @@ void Core::getAllActionIds(QList<qulonglong> &result) const
     QMutexLocker lock(&mDataMutex);
 
     result.clear();
+#if QT_VERSION >= QT_VERSION_CHECK(4, 7, 0)
     result.reserve(mShortcutAndActionById.size());
+#endif
 
     ShortcutAndActionById::const_iterator lastShortcutAndActionById = mShortcutAndActionById.end();
     for (ShortcutAndActionById::const_iterator shortcutAndActionById = mShortcutAndActionById.begin(); shortcutAndActionById != lastShortcutAndActionById; ++shortcutAndActionById)
