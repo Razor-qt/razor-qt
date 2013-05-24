@@ -8,6 +8,22 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 
+find_package(X11)
+
+include_directories(${X11_INCLUDE_DIR})
+
+
+find_package(Qt4 COMPONENTS QtCore QtDBus)
+
+include(${QT_USE_FILE})
+
+if(QTVERSION VERSION_LESS "4.8.2")
+	set(QT_DBUS_PREFIX "com.trolltech")
+else()
+	set(QT_DBUS_PREFIX "org.qtproject")
+endif()
+
+
 
 include_directories(
 	"${PROJECT_SOURCE_DIR}"
@@ -59,26 +75,32 @@ set(${PROJECT_NAME}_RESOURCES
 set(${PROJECT_NAME}_TRANSLATIONS
 )
 
-set(${PROJECT_NAME}_DBUS_ADAPTERS
+set(${PROJECT_NAME}_DBUS_ADAPTORS
 	org.razorqt.global_key_shortcuts.daemon.xml
 	org.razorqt.global_key_shortcuts.native.xml
 )
 
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES PARENT daemon_adaptor.h)
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES PARENT_CLASSNAME DaemonAdaptor)
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.daemon)
-set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionDaemonAdaptor)
+set_source_files_properties(org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES
+	INCLUDE daemon_adaptor.h
+	PARENT_CLASSNAME DaemonAdaptor
+	BASENAME org.razorqt.global_key_shortcuts.daemon
+	CLASSNAME OrgRazorqtGlobalActionDaemonAdaptor
+)
 
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES PARENT native_adaptor.h)
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES PARENT_CLASSNAME NativeAdaptor)
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.native)
-set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES CLASSNAME OrgRazorqtGlobalActionNativeAdaptor)
+set_source_files_properties(org.razorqt.global_key_shortcuts.native.xml PROPERTIES
+	INCLUDE native_adaptor.h
+	PARENT_CLASSNAME NativeAdaptor
+	BASENAME org.razorqt.global_key_shortcuts.native
+	CLASSNAME OrgRazorqtGlobalActionNativeAdaptor
+)
 
-set(${PROJECT_NAME}_DBUS_PROXYS
+set(${PROJECT_NAME}_DBUS_INTERFACES
 	org.razorqt.global_key_shortcuts.client.xml
 )
 
-set_source_files_properties(org.razorqt.global_key_shortcuts.client.xml PROPERTIES BASENAME org.razorqt.global_key_shortcuts.client)
+set_source_files_properties(org.razorqt.global_key_shortcuts.client.xml PROPERTIES
+	BASENAME org.razorqt.global_key_shortcuts.client
+)
 
 
 
@@ -95,33 +117,45 @@ set(${PROJECT_NAME}_TRANSLATABLE
 
 
 
-find_package(X11)
-include_directories(${X11_INCLUDE_DIR})
-
-
-find_package(Qt4 COMPONENTS QtCore QtDBus)
-
-include(${QT_USE_FILE})
-
-foreach(DBUS_ADAPTOR ${${PROJECT_NAME}_DBUS_ADAPTERS})
-	get_source_file_property(DBUS_ADAPTOR_INCLUDE ${DBUS_ADAPTOR} PARENT)
+foreach(DBUS_ADAPTOR ${${PROJECT_NAME}_DBUS_ADAPTORS})
+	get_filename_component(DBUS_ADAPTOR_FILENAME ${DBUS_ADAPTOR} NAME)
+	configure_file(
+		${DBUS_ADAPTOR}
+		${CMAKE_CURRENT_BINARY_DIR}/${DBUS_ADAPTOR_FILENAME}
+		@ONLY
+	)
+	get_source_file_property(DBUS_ADAPTOR_INCLUDE ${DBUS_ADAPTOR} INCLUDE)
 	get_source_file_property(DBUS_ADAPTOR_PARENT_CLASSNAME ${DBUS_ADAPTOR} PARENT_CLASSNAME)
 	get_source_file_property(DBUS_ADAPTOR_BASENAME ${DBUS_ADAPTOR} BASENAME)
 	get_source_file_property(DBUS_ADAPTOR_CLASSNAME ${DBUS_ADAPTOR} CLASSNAME)
 	if(DBUS_ADAPTOR_BASENAME)
 		if(DBUS_ADAPTOR_CLASSNAME)
-			qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME} ${DBUS_ADAPTOR_CLASSNAME})
+			qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${CMAKE_CURRENT_BINARY_DIR}/${DBUS_ADAPTOR_FILENAME} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME} ${DBUS_ADAPTOR_CLASSNAME})
 		else()
-			qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME})
+			qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${CMAKE_CURRENT_BINARY_DIR}/${DBUS_ADAPTOR_FILENAME} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME} ${DBUS_ADAPTOR_BASENAME})
 		endif()
 	else()
-		qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${DBUS_ADAPTOR} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME})
+		qt4_add_dbus_adaptor(${PROJECT_NAME}_DBUS_ADAPTOR_FILES ${CMAKE_CURRENT_BINARY_DIR}/${DBUS_ADAPTOR_FILENAME} ${DBUS_ADAPTOR_INCLUDE} ${DBUS_ADAPTOR_PARENT_CLASSNAME})
 	endif()
 endforeach()
 
-foreach(DBUS_INTERFACE ${${PROJECT_NAME}_DBUS_PROXYS})
+foreach(DBUS_INTERFACE ${${PROJECT_NAME}_DBUS_INTERFACES})
+	get_filename_component(DBUS_INTERFACE_FILENAME ${DBUS_INTERFACE} NAME)
+	configure_file(
+		${DBUS_INTERFACE}
+		${CMAKE_CURRENT_BINARY_DIR}/${DBUS_INTERFACE_FILENAME}
+		@ONLY
+	)
 	get_source_file_property(DBUS_INTERFACE_BASENAME ${DBUS_INTERFACE} BASENAME)
-	qt4_add_dbus_interface(${PROJECT_NAME}_DBUS_INTERFACE_FILES ${DBUS_INTERFACE} ${DBUS_INTERFACE_BASENAME})
+	get_source_file_property(DBUS_INTERFACE_INCLUDE ${DBUS_INTERFACE} INCLUDE)
+	get_source_file_property(DBUS_INTERFACE_CLASSNAME ${DBUS_INTERFACE} CLASSNAME)
+	get_source_file_property(DBUS_INTERFACE_NO_NAMESPACE ${DBUS_INTERFACE} NO_NAMESPACE)
+	set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/${DBUS_INTERFACE_FILENAME} PROPERTIES
+		INCLUDE ${DBUS_INTERFACE_INCLUDE}
+		CLASSNAME ${DBUS_INTERFACE_CLASSNAME}
+		NO_NAMESPACE ${DBUS_INTERFACE_NO_NAMESPACE}
+	)
+	qt4_add_dbus_interface(${PROJECT_NAME}_DBUS_INTERFACE_FILES ${CMAKE_CURRENT_BINARY_DIR}/${DBUS_INTERFACE_FILENAME} ${DBUS_INTERFACE_BASENAME})
 endforeach()
 
 qt4_wrap_cpp(${PROJECT_NAME}_MOC_FILES ${${PROJECT_NAME}_QT_HEADERS})
