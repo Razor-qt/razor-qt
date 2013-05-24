@@ -27,7 +27,6 @@
 
 #include "feature.h"
 #include <QtCore/QDebug>
-#include <cstdlib>
 
 Feature::Feature(const sensors_chip_name* sensorsChipName, const sensors_feature* sensorsFeature)
     : mSensorsChipName(sensorsChipName),
@@ -41,11 +40,11 @@ Feature::Feature(const sensors_chip_name* sensorsChipName, const sensors_feature
         free(featureLabel);
     }
 
-    qDebug() << "Detected feature:" << QString::fromStdString(std::string(sensorsFeature->name))
-             << "(" << QString::fromStdString(mLabel) << ")";
+    qDebug() << "Detected feature:" << QString::fromAscii(sensorsFeature->name)
+             << "(" << mLabel << ")";
 }
 
-const std::string& Feature::getLabel() const
+const QString& Feature::getLabel() const
 {
     return mLabel;
 }

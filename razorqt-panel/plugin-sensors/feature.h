@@ -28,9 +28,8 @@
 #ifndef FEATURE_H
 #define FEATURE_H
 
-#include <string>
-#include <vector>
-#include <utility>
+#include <QString>
+#include <QList>
 #include <sensors/sensors.h>
 
 /**
@@ -41,8 +40,8 @@ class Feature
 {
 public:
     Feature(const sensors_chip_name*, const sensors_feature*);
-    const std::string& getName() const;
-    const std::string& getLabel() const;
+    const QString& getName() const;
+    const QString& getLabel() const;
     double getValue(sensors_subfeature_type) const;
     sensors_feature_type getType() const;
 private:
@@ -52,9 +51,9 @@ private:
     const sensors_feature* mSensorsFeature;
 
     // "Printable" feature label
-    std::string mLabel;
+    QString mLabel;
 
-    std::vector<const sensors_subfeature*> mSubFeatures;
+    QList<const sensors_subfeature*> mSubFeatures;
 };
 
 #endif // CHIP_H

@@ -111,7 +111,7 @@
 		</signal>
 
 		<method name="getAllActionIds">
-			<annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QList&lt;qulonglong&gt;"/>
+			<annotation name="@QT_DBUS_PREFIX@.QtDBus.QtTypeName.Out0" value="QList&lt;qulonglong&gt;"/>
 			<arg type="at" direction="out"/>
 		</method>
 		<method name="getActionById">
@@ -124,7 +124,7 @@
 			<arg name="info" type="s" direction="out"/>
 		</method>
 		<method name="getAllActions">
-			<annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="QMap_qulonglong_GeneralActionInfo"/> <!-- QMap<qulonglong,GeneralActionInfo> -->
+			<annotation name="@QT_DBUS_PREFIX@.QtDBus.QtTypeName.Out0" value="QMap_qulonglong_GeneralActionInfo"/> <!-- QMap<qulonglong,GeneralActionInfo> -->
 			<arg name="info" type="a{t(ssbss)}" direction="out"/>
 			<!-- GeneralActionInfo = s:shortcut, s:description, b:enabled, s:type, s:info -->
 		</method>

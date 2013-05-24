@@ -28,7 +28,7 @@
 #include "sensors.h"
 #include <QtCore/QDebug>
 
-std::vector<Chip> Sensors::mDetectedChips = std::vector<Chip>();
+QList<Chip> Sensors::mDetectedChips = QList<Chip>();
 int Sensors::mInstanceCounter = 0;
 bool Sensors::mSensorsInitialized = false;
 
@@ -68,7 +68,7 @@ Sensors::~Sensors()
     }
 }
 
-const std::vector<Chip>& Sensors::getDetectedChips() const
+const QList<Chip>& Sensors::getDetectedChips() const
 {
     return mDetectedChips;
 }

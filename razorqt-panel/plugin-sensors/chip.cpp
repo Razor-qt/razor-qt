@@ -35,10 +35,10 @@ Chip::Chip(const sensors_chip_name* sensorsChipName)
     char buf[BUF_SIZE];
     if (sensors_snprintf_chip_name(buf, BUF_SIZE, mSensorsChipName) > 0)
     {
-        mName = std::string(buf);
+        mName = QString::fromAscii(buf);
     }
 
-    qDebug() << "Detected chip:" << QString::fromStdString(mName);
+    qDebug() << "Detected chip:" << mName;
 
     const sensors_feature* feature;
     int featureNr = 0;
@@ -49,12 +49,12 @@ Chip::Chip(const sensors_chip_name* sensorsChipName)
     }
 }
 
-const std::string& Chip::getName() const
+const QString& Chip::getName() const
 {
     return mName;
 }
 
-const std::vector<Feature>& Chip::getFeatures() const
+const QList<Feature>& Chip::getFeatures() const
 {
     return mFeatures;
 }

@@ -29,9 +29,8 @@
 #define CHIP_H
 
 #include "feature.h"
-#include <string>
-#include <vector>
-#include <utility>
+#include <QString>
+#include <QList>
 #include <sensors/sensors.h>
 
 /**
@@ -42,17 +41,17 @@ class Chip
 {
 public:
     Chip(const sensors_chip_name*);
-    const std::string& getName() const;
-    const std::vector<Feature>& getFeatures() const;
+    const QString& getName() const;
+    const QList<Feature>& getFeatures() const;
 
 private:
     // Do not try to change these chip names, as they point to internal structures of lm_sensors!
     const sensors_chip_name* mSensorsChipName;
 
     // "Printable" chip name
-    std::string mName;
+    QString mName;
 
-    std::vector<Feature> mFeatures;
+    QList<Feature> mFeatures;
 };
 
 #endif // CHIP_H

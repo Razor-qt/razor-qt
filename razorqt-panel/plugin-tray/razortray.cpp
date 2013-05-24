@@ -44,6 +44,9 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/Xrender.h>
 #include <X11/extensions/Xdamage.h>
+
+#undef Bool // defined as int in X11/Xlib.h
+
 #include "razorqt/xfitman.h"
 #include <QtCore/QTimer>
 #include "../panel/irazorpanelplugin.h"

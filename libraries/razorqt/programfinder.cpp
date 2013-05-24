@@ -58,7 +58,7 @@ QStringList ProgramFinder::findPrograms(const QStringList& programs)
 QString ProgramFinder::programName(const QString& command)
 {
     wordexp_t we;
-    if (wordexp(command.toStdString().c_str(), &we, WRDE_NOCMD) == 0)
+    if (wordexp(command.toLocal8Bit().constData(), &we, WRDE_NOCMD) == 0)
         if (we.we_wordc > 0)
             return QString(we.we_wordv[0]);
     return QString();

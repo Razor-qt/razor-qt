@@ -60,16 +60,16 @@ RazorSensors::RazorSensors(IRazorPanelPlugin *plugin, QWidget* parent):
 
     mSettings->beginGroup("chips");
 
-    for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
+    for (int i = 0; i < mDetectedChips.size(); ++i)
     {
-        mSettings->beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
-        const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
+        mSettings->beginGroup(mDetectedChips[i].getName());
+        const QList<Feature>& features = mDetectedChips[i].getFeatures();
 
-        for (unsigned int j = 0; j < features.size(); ++j)
+        for (int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
-                chipFeatureLabel = QString::fromStdString(features[j].getLabel());
+                chipFeatureLabel = features[j].getLabel();
                 mSettings->beginGroup(chipFeatureLabel);
 
                 pg = new ProgressBar(this);
@@ -137,18 +137,18 @@ void RazorSensors::updateSensorReadings()
     bool highTemperature = false;
 
     // Iterator for temperature progress bars
-    std::vector<ProgressBar*>::iterator temperatureProgressBarsIt =
+    QList<ProgressBar*>::iterator temperatureProgressBarsIt =
         mTemperatureProgressBars.begin();
 
-    for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
+    for (int i = 0; i < mDetectedChips.size(); ++i)
     {
-        const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
+        const QList<Feature>& features = mDetectedChips[i].getFeatures();
 
-        for (unsigned int j = 0; j < features.size(); ++j)
+        for (int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
-                tooltip = QString::fromStdString(features[j].getLabel()) + " (" + QChar(0x00B0);
+                tooltip = features[j].getLabel() + " (" + QChar(0x00B0);
 
                 if (mSettings->value("useFahrenheitScale").toBool())
                 {
@@ -187,7 +187,7 @@ void RazorSensors::updateSensorReadings()
                 }
                 else
                 {
-                    mHighTemperatureProgressBars.erase(*temperatureProgressBarsIt);
+                    mHighTemperatureProgressBars.remove(*temperatureProgressBarsIt);
 
                     highTemperature = false;
                 }
@@ -233,7 +233,7 @@ void RazorSensors::updateSensorReadings()
 void RazorSensors::warningAboutHighTemperature()
 {
     // Iterator for temperature progress bars
-    std::set<ProgressBar*>::iterator temperatureProgressBarsIt =
+    QSet<ProgressBar*>::iterator temperatureProgressBarsIt =
         mHighTemperatureProgressBars.begin();
 
     int curValue;
@@ -264,21 +264,21 @@ void RazorSensors::settingsChanged()
     mUpdateSensorReadingsTimer.setInterval(mSettings->value("updateInterval").toInt() * 1000);
 
     // Iterator for temperature progress bars
-    std::vector<ProgressBar*>::iterator temperatureProgressBarsIt =
+    QList<ProgressBar*>::iterator temperatureProgressBarsIt =
         mTemperatureProgressBars.begin();
 
     mSettings->beginGroup("chips");
 
-    for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
+    for (int i = 0; i < mDetectedChips.size(); ++i)
     {
-        mSettings->beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
-        const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
+        mSettings->beginGroup(mDetectedChips[i].getName());
+        const QList<Feature>& features = mDetectedChips[i].getFeatures();
 
-        for (unsigned int j = 0; j < features.size(); ++j)
+        for (int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
-                mSettings->beginGroup(QString::fromStdString(features[j].getLabel()));
+                mSettings->beginGroup(features[j].getLabel());
 
                 if (mSettings->value("enabled").toBool())
                 {
@@ -357,7 +357,7 @@ void RazorSensors::realign()
         break;
     }
 
-    for (unsigned int i = 0; i < mTemperatureProgressBars.size(); ++i)
+    for (int i = 0; i < mTemperatureProgressBars.size(); ++i)
     {
         mTemperatureProgressBars[i]->setOrientation(cur_orient);
         mTemperatureProgressBars[i]->setLayoutDirection(cur_layout_dir);
@@ -401,16 +401,16 @@ void RazorSensors::initDefaultSettings()
     mSettings->beginGroup("chips");
 
     // Initialize default sensors settings
-    for (unsigned int i = 0; i < mDetectedChips.size(); ++i)
+    for (int i = 0; i < mDetectedChips.size(); ++i)
     {
-        mSettings->beginGroup(QString::fromStdString(mDetectedChips[i].getName()));
-        const std::vector<Feature>& features = mDetectedChips[i].getFeatures();
+        mSettings->beginGroup(mDetectedChips[i].getName());
+        const QList<Feature>& features = mDetectedChips[i].getFeatures();
 
-        for (unsigned int j = 0; j < features.size(); ++j)
+        for (int j = 0; j < features.size(); ++j)
         {
             if (features[j].getType() == SENSORS_FEATURE_TEMP)
             {
-                mSettings->beginGroup(QString::fromStdString(features[j].getLabel()));
+                mSettings->beginGroup(features[j].getLabel());
                 if (!mSettings->contains("enabled"))
                 {
                     mSettings->setValue("enabled", true);
