@@ -83,7 +83,7 @@ public:
     GlobalRazorSettings *mParent;
     QString mIconTheme;
     QString mRazorTheme;
-    qulonglong mThemeUpdated;
+    qlonglong mThemeUpdated;
 
 };
 
@@ -648,7 +648,7 @@ void GlobalRazorSettings::fileChanged()
     }
 
     QString rt = value("theme").toString();
-    qint64 themeUpdated = value("__theme_updated__").toLongLong();
+    qlonglong themeUpdated = value("__theme_updated__").toLongLong();
     if ((d->mRazorTheme != rt) || (d->mThemeUpdated != themeUpdated))
     {
         d->mRazorTheme = rt;
