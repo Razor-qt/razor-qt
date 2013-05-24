@@ -38,15 +38,16 @@ class ApplicationChooser : public QDialog
 public:
     ApplicationChooser(XdgMimeInfo* mimeInfo, bool showUseAlwaysCheckBox = false);
     virtual ~ApplicationChooser();
-
-    void fillApplicationListWidget();
-
     XdgDesktopFile* DefaultApplication() const { return m_CurrentDefaultApplication; }
+
+    virtual int exec();
 
 private slots:
     void selectionChanged();
 
 private:
+    void fillApplicationListWidget();
+
     void addApplicationsToApplicationListWidget(QTreeWidgetItem* parent, 
                                                 QList<XdgDesktopFile*> applications, 
                                                 QSet<XdgDesktopFile*> & alreadyAdded);

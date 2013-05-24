@@ -28,7 +28,9 @@
 
 #include <QDialog>
 #include <QModelIndex>
+
 #include "ui_mimetypeviewer.h"
+#include "busyindicator.h"
 #include "mimetypeitemmodel.h"
 
 class QSettings;
@@ -41,9 +43,12 @@ class MimetypeViewer : public QDialog {
 public:
     MimetypeViewer(QWidget *parent = 0);
     virtual ~MimetypeViewer();
-    void initializeMimeTreeWidget();
+
+protected:
+    void resizeEvent(QResizeEvent* event);
 
 private slots:
+    void initializeMimetypeTreeView();
     void currentMimetypeChanged();
     void autoExpandOnSearch();
     void chooseApplication();
@@ -56,6 +61,8 @@ private:
     XdgMimeInfo* m_CurrentMime;
     QSettings* mDefaultsList;
     RazorSettingsCache *mSettingsCache;
+    QFutureWatcher<void> *mFutureWatcher;
+    BusyIndicator* mBusyIndicator;
 };
 
 #endif	/* _MIMETYPEVIEWER_H */

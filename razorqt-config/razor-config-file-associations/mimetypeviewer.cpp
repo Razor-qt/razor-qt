@@ -29,6 +29,8 @@
 #include <QPixmap>
 #include <QListWidget>
 #include <QSortFilterProxyModel>
+#include <QtConcurrentRun>
+#include <qt4/QtCore/qdatetime.h>
 
 #include "qtxdg/xdgmime.h"
 #include "qtxdg/xdgdesktopfile.h"
@@ -39,25 +41,36 @@
 #include "mimetypeviewer.h"
 #include "applicationchooser.h"
 #include "mimetypeitemmodel.h"
+#include "busyindicator.h"
+
+void initializeMimeInfoCache()
+{
+    XdgMimeInfoCache::mediatypes();
+}
 
 MimetypeViewer::MimetypeViewer( QWidget *parent) : 
         m_MimetypeFilterItemModel(this),
-        m_CurrentMime(0)
+        m_CurrentMime(0),
+        mFutureWatcher(0),
+        mBusyIndicator(0)
+
  {
     widget.setupUi(this);
     addSearchIcon();
+    widget.searchTermLineEdit->setEnabled(false);
 
-    initializeMimeTreeWidget();
-
+    // initialize XdgMimeInfoCache asynchronously while putting a busyindicator on the mimeTypeTreeview
+    mBusyIndicator = new BusyIndicator(widget.mimetypeTreeView);
+    mFutureWatcher = new QFutureWatcher<void>(this);
+    connect(mFutureWatcher, SIGNAL(finished()), this, SLOT(initializeMimetypeTreeView()));
+    mFutureWatcher->setFuture(QtConcurrent::run(initializeMimeInfoCache));
+    
     connect(widget.searchTermLineEdit, SIGNAL(textChanged(const QString&)), 
             &m_MimetypeFilterItemModel, SLOT(setFilterFixedString(const QString&)));
     
     connect(widget.searchTermLineEdit, SIGNAL(textChanged(const QString&)), 
             this, SLOT(autoExpandOnSearch()));
             
-    connect(widget.mimetypeTreeView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), 
-            this, SLOT(currentMimetypeChanged()));
-
 
     connect(widget.chooseApplicationsButton, SIGNAL(clicked()), this, SLOT(chooseApplication()));    
     connect(widget.dialogButtonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(dialogButtonBoxClicked(QAbstractButton*)));
@@ -91,13 +104,26 @@ void MimetypeViewer::addSearchIcon()
 }
 
 
-void MimetypeViewer::initializeMimeTreeWidget()
+void MimetypeViewer::initializeMimetypeTreeView()
 {
     m_MimetypeFilterItemModel.setSourceModel(new MimetypeItemModel(&m_MimetypeFilterItemModel));
 
     widget.mimetypeTreeView->setModel(&m_MimetypeFilterItemModel);
     currentMimetypeChanged();
     widget.mimetypeTreeView->setFocus();
+    widget.searchTermLineEdit->setEnabled(true);
+    
+    connect(widget.mimetypeTreeView->selectionModel(), SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), 
+            this, SLOT(currentMimetypeChanged()));
+
+    delete mBusyIndicator;
+    mBusyIndicator = 0;
+}
+
+void MimetypeViewer::resizeEvent(QResizeEvent* event)
+{
+    if (mBusyIndicator)
+        mBusyIndicator->resize(widget.mimetypeTreeView->size());
 }
 
 void MimetypeViewer::currentMimetypeChanged()

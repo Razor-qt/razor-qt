@@ -44,19 +44,26 @@ ApplicationChooser::ApplicationChooser(XdgMimeInfo* mimeInfo, bool showUseAlways
     widget.mimetypeLabel->setText(m_MimeInfo->comment());
     widget.alwaysUseCheckBox->setVisible(showUseAlwaysCheckBox);
     widget.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    fillApplicationListWidget();
-    connect(widget.applicationTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(selectionChanged()));
 }
 
 ApplicationChooser::~ApplicationChooser()
 {
 }
 
+int ApplicationChooser::exec()
+{
+    show();
+    fillApplicationListWidget(); 
+
+    return QDialog::exec();
+}
+
+
+
 bool lessThan(XdgDesktopFile* a, XdgDesktopFile* b)
 {   
     return a && b && a->name().toLower() < b->name().toLower();
 }
-
 
 void ApplicationChooser::fillApplicationListWidget()
 {
@@ -94,6 +101,7 @@ void ApplicationChooser::fillApplicationListWidget()
         }
         
     }
+    connect(widget.applicationTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), this, SLOT(selectionChanged()));
     widget.applicationTreeWidget->setFocus();
 }
 
@@ -133,6 +141,7 @@ void ApplicationChooser::addApplicationsToApplicationListWidget(QTreeWidgetItem*
                 }
                 
                 alreadyAdded.insert(desktopFile);
+                QCoreApplication::processEvents();
             }
         }
 }

@@ -11,17 +11,20 @@ set(H_FILES
     mimetypeviewer.h
     applicationchooser.h
     mimetypeitemmodel.h
+    busyindicator.h
 )
 
 set(MOC_FILES
     mimetypeviewer.h
     applicationchooser.h
+    busyindicator.h
 )
 
 set(CPP_FILES
     mimetypeviewer.cpp
     applicationchooser.cpp
     mimetypeitemmodel.cpp
+    busyindicator.cpp
     main.cpp
 )
 
