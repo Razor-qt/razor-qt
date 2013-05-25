@@ -93,7 +93,7 @@ if (ENABLE_LIGHTDM_GREETER)
                             ${QM_FILES}
                             ${MOCS}
                     )
-        target_link_libraries ( razor-lightdm-greeter  razorqt ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${LIGHTDM_QT_LIBRARIES} )
+        target_link_libraries ( razor-lightdm-greeter  razorqt qtxdg ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTDBUS_LIBRARY} ${QT_QTNETWORK_LIBRARY} ${LIGHTDM_QT_LIBRARIES} )
 
         file(GLOB DESKTOP_FILES resources/*.desktop)
         file(GLOB CONFIG_FILES resources/*.conf)
