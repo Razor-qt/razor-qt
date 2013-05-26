@@ -989,8 +989,25 @@ bool XfitMan::getShowingDesktop() const
     return show;
 }
 
-void XfitMan::setShowingDesktop(bool show)
+void XfitMan::setShowingDesktop(bool show) const
 {
     clientMessage(QX11Info::appRootWindow(), atom("_NET_SHOWING_DESKTOP"), show ? 1 : 0);
+}
+
+void XfitMan::setIconGeometry(Window _wid, QRect* rect) const
+{
+    Atom net_wm_icon_geometry = atom("_NET_WM_ICON_GEOMETRY");
+    if(!rect)
+        XDeleteProperty(QX11Info::display(), _wid, net_wm_icon_geometry);
+    else
+    {
+        long data[4];
+        data[0] = rect->x();
+        data[1] = rect->y();
+        data[2] = rect->width();
+        data[3] = rect->height();
+        XChangeProperty(QX11Info::display(), _wid, net_wm_icon_geometry,
+                        XA_CARDINAL, 32, PropModeReplace, (unsigned char*)data, 4);
+    }
 }
 
