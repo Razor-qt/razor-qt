@@ -974,3 +974,23 @@ bool XfitMan::isWindowManagerActive() const
     }
     return false;
 }
+
+bool XfitMan::getShowingDesktop() const
+{
+    bool show = false;
+    unsigned long resultLen;
+    unsigned char* result = NULL;
+    if(getRootWindowProperty(atom("_NET_SHOWING_DESKTOP"), XA_CARDINAL, &resultLen, &result))
+    {
+        show = *reinterpret_cast<long*>(result) ? true : false;
+        if(result)
+            XFree(result);
+    }
+    return show;
+}
+
+void XfitMan::setShowingDesktop(bool show)
+{
+    clientMessage(QX11Info::appRootWindow(), atom("_NET_SHOWING_DESKTOP"), show ? 1 : 0);
+}
+
