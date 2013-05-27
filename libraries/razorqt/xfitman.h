@@ -110,6 +110,13 @@ public:
         MaximizeBoth
     };
 
+    enum WMState
+    {
+        WMStateWithdrawn = 0,
+        WMStateNormal = 1,
+        WMStateIconic = 3
+    };
+
     ~XfitMan();
     XfitMan();
     void moveWindow(Window _win, int _x, int _y) const;
@@ -151,6 +158,12 @@ public:
     void setShowingDesktop(bool show) const;
 
     void setIconGeometry(Window _wid, QRect* rect = 0) const;
+
+
+    /*!
+     * Returns ICCCM WM_STATE
+     */
+    WMState getWMState(Window _wid) const;
 
     /*!
      * Returns the names of all virtual desktops. This is a list of UTF-8 encoding strings.
