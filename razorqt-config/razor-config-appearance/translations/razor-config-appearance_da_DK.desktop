@@ -1,10 +1,10 @@
 [Desktop Entry]
 X-SuSE-translate=true
-OnlyShowIn=X-RAZOR;
+OnlyShowIn=Razor;
 Type=Application
 Exec=razor-config-appearance
 Terminal=false
-Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Categories=Settings;DesktopSettings;Qt;Razor;
 Icon=preferences-desktop-theme
 Name=Razor Appearance Configuration
 Comment=Configure appearance of Razor desktop

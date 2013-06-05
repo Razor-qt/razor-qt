@@ -240,7 +240,10 @@
             <Directory>razor-settings-razor.directory</Directory>
             <Include>
                 <And>
-                    <Category>X-RAZOR</Category>
+                    <Or>
+                        <Category>Razor</Category>
+                        <Category>X-RAZOR</Category>
+                    </Or>
                     <Or>
                         <Category>Settings</Category>
                         <Category>PackageManager</Category>

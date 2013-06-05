@@ -3,8 +3,8 @@ Type=Application
 Exec=razor-about
 Icon=help-about
 Terminal=false
-OnlyShowIn=X-RAZOR;
-Categories=Qt;System;X-RAZOR;DesktopSettings;Settings;
+OnlyShowIn=Razor;
+Categories=Qt;System;Razor;DesktopSettings;Settings;
 Name=About Razor
 GenericName=Learn more about Razor-qt
 

@@ -1,10 +1,10 @@
 [Desktop Entry]
 X-SuSE-translate=true
-OnlyShowIn=X-RAZOR;
+OnlyShowIn=Razor;
 Type=Application
 Exec=razor-config-notificationd
 Terminal=false
-Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Categories=Settings;DesktopSettings;Qt;Razor;
 Icon=preferences-desktop-theme
 Name=Razor Freedesktop Notifications Configuration
 Comment=Configure freedesktop notifications in Razor desktop

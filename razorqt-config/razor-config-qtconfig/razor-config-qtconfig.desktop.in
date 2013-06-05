@@ -1,10 +1,10 @@
 [Desktop Entry]
-OnlyShowIn=X-RAZOR;
+OnlyShowIn=Razor;
 Type=Application
 Exec=qtconfig
 TryExec=qtconfig
 Terminal=false
-Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Categories=Settings;DesktopSettings;Qt;Razor;
 Icon=preferences-system
 Name=Qt Configuration
 Comment=Configure Qt

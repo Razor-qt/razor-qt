@@ -1,9 +1,9 @@
 [Desktop Entry]
-OnlyShowIn=X-RAZOR;
+OnlyShowIn=Razor;
 Type=Application
 Exec=razor-config
 Terminal=false
-Categories=Settings;DesktopSettings;Qt;X-RAZOR;
+Categories=Settings;DesktopSettings;Qt;Razor;
 Icon=preferences-system
 Name=Razor Configuration Center
 Comment=Configure Razor-Qt modules

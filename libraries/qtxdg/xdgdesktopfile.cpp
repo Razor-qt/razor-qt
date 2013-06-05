@@ -1055,7 +1055,7 @@ bool XdgDesktopFile::isApplicable(bool excludeHidden, const QString& environment
     // OnlyShowIn ........
     if (contains("OnlyShowIn"))
     {
-        QString s = ";" + value("OnlyShowIn").toString() + ";";
+        QStringList s = value("OnlyShowIn").toString().split(';');
         if (!s.contains(environment))
             return false;
     }
@@ -1063,7 +1063,7 @@ bool XdgDesktopFile::isApplicable(bool excludeHidden, const QString& environment
     // NotShowIn .........
     if (contains("NotShowIn"))
     {
-        QString s = ";" + value("NotShowIn").toString() + ";";
+        QStringList s = value("NotShowIn").toString().split(';');
         if (s.contains(environment))
             return false;
     }

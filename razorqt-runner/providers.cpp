@@ -221,7 +221,7 @@ AppLinkProvider::AppLinkProvider():
         CommandProvider(),
         mXdgMenu( new XdgMenu())
 {
-    mXdgMenu->setEnvironments("X-RAZOR");
+    mXdgMenu->setEnvironments(QStringList() << "X-RAZOR" << "Razor");
     connect(mXdgMenu, SIGNAL(changed()), this, SLOT(update()));
     mXdgMenu->read(XdgMenu::getMenuFileName());
     update();

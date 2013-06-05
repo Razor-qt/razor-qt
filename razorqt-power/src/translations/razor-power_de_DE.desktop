@@ -3,8 +3,8 @@ Type=Application
 Exec=razor-power
 Icon=system-shutdown
 Terminal=false
-OnlyShowIn=X-RAZOR;
-Categories=Qt;System;X-RAZOR;
+OnlyShowIn=Razor;
+Categories=Qt;System;Razor;
 Name=Leave
 GenericName=Leave the system
 
