@@ -72,6 +72,7 @@ private:
     void handlePropertyNotify(XPropertyEvent* event);
     void wheelEvent(QWheelEvent* event);
     IRazorPanelPlugin *mPlugin;
+    QWidget *mPlaceHolder;
 };
 
 #endif // RAZORTASKBAR_H

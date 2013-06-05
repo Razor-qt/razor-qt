@@ -38,10 +38,11 @@
 #include <QtCore/QTimer>
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QDate>
-#include <QtCore/QDebug>
+//#include <QtCore/QDebug>
 #include <QtGui/QWheelEvent>
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QDesktopWidget>
+#include <QtGui/QDialog>
 #include <QHBoxLayout>
 
 #include <time.h>
@@ -354,11 +355,13 @@ void RazorWorldClock::activated(ActivationReason reason)
     {        UErrorCode status = U_ZERO_ERROR;
 
         mPopup = new QDialog(mContent);
-        mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        mPopup->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::X11BypassWindowManagerHint);
         mPopup->setLayout(new QHBoxLayout(mPopup));
 
         if (reason == IRazorPanelPlugin::Trigger)
         {
+            mPopup->setObjectName(QString());
+
             mPopup->layout()->setContentsMargins(0, 0, 0, 0);
             QCalendarWidget *calendarWidget = new QCalendarWidget(mPopup);
             mPopup->layout()->addWidget(calendarWidget);
@@ -376,8 +379,9 @@ void RazorWorldClock::activated(ActivationReason reason)
         }
         else
         {
+            mPopup->setObjectName("WorldClockPopup");
+
             QLabel *content = new QLabel(mPopup);
-            content->setObjectName("WorldClockPopup");
             mPopup->layout()->addWidget(content);
 
             QStringList allTimeZones;

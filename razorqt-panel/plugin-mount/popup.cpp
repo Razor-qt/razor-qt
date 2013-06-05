@@ -35,7 +35,7 @@
 
 
 Popup::Popup(RazorMountManager *manager, IRazorPanelPlugin *plugin, QWidget* parent):
-    QFrame(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
+    QDialog(parent,  Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint | Qt::X11BypassWindowManagerHint),
     mManager(manager),
     mPlugin(plugin),
     mDisplayCount(0)

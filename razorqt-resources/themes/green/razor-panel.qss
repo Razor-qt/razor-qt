@@ -75,7 +75,7 @@ RazorPanel[position="1"] #DesktopSwitch QToolButton
     border: 1px solid #80a8d3;
 }
 
-#QuckLaunchPlaceHolder {
+#QuickLaunchPlaceHolder {
     color: #555555;
 }
 
@@ -255,12 +255,12 @@ TrayIcon {
 /*
  * WorldClock
  */
-#WorldClockContent{
+#WorldClockContent {
     font-size: 10pt;
     color: #606060;
 }
 
-#WorldClockPopup{
+#WorldClockPopup > QLabel {
     font-size: 12pt;
     color: #606060;
 }

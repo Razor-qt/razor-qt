@@ -28,14 +28,14 @@
 #ifndef VOLUMEPOPUP_H
 #define VOLUMEPOPUP_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QDialog>
 
 class QSlider;
 class QPushButton;
 class AudioDevice;
 class QLabel;
 
-class VolumePopup : public QWidget
+class VolumePopup : public QDialog
 {
     Q_OBJECT
 public:

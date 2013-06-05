@@ -60,12 +60,15 @@ RazorTaskBar::RazorTaskBar(IRazorPanelPlugin *plugin, QWidget *parent) :
     QFrame(parent),
     mButtonStyle(Qt::ToolButtonTextBesideIcon),
     mShowOnlyCurrentDesktopTasks(false),
-    mPlugin(plugin)
+    mPlugin(plugin),
+    mPlaceHolder(new QWidget(this))
 {
     mLayout = new RazorGridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);
     realign();
+    mLayout->addWidget(mPlaceHolder);
+    mPlaceHolder->setMinimumSize(1, 1);
 
     mRootWindow = QX11Info::appRootWindow();
 
@@ -159,12 +162,16 @@ void RazorTaskBar::refreshTaskList()
  ************************************************/
 void RazorTaskBar::refreshButtonVisibility()
 {
+    bool haveVisibleWindow = false;
     QHashIterator<Window, RazorTaskButton*> i(mButtonsHash);
     while (i.hasNext())
     {
         i.next();
-        i.value()->setHidden(!windowOnActiveDesktop(i.key()));
+        bool isVisible = windowOnActiveDesktop(i.key());
+        haveVisibleWindow |= isVisible;
+        i.value()->setVisible(isVisible);
     }
+    mPlaceHolder->setVisible(!haveVisibleWindow);
 }
 
 
@@ -313,39 +320,30 @@ void RazorTaskBar::realign()
     mLayout->setEnabled(false);
     IRazorPanel *panel = mPlugin->panel();
 
-    QSize maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    QSize minSize = QSize(0, 0);
-
-    maxSize.setHeight(panel->lineSize());
-    minSize.setHeight(maxSize.height());
+    QSize maxSize = QSize(QWIDGETSIZE_MAX, panel->lineSize());
+    QSize minSize = QSize(0, panel->lineSize());
 
     if (panel->isHorizontal())
     {
         mLayout->setRowCount(panel->lineCount());
         mLayout->setColumnCount(0);
 
-        minSize.rheight() = panel->lineSize();
-        maxSize.rheight() = panel->lineSize();
-
         if (mButtonStyle == Qt::ToolButtonIconOnly)
         {
-            mLayout->setStretch(RazorGridLayout::StretchVert);
-            minSize.rwidth() = maxSize.height();
+            mLayout->setStretch(RazorGridLayout::StretchVertical);
             maxSize.rwidth() = maxSize.height();
         }
         else
         {
-            mLayout->setStretch(RazorGridLayout::StretchHoriz | RazorGridLayout::StretchVert);
+            mLayout->setStretch(RazorGridLayout::StretchHorizontal | RazorGridLayout::StretchVertical);
             maxSize.rwidth() = mButtonWidth;
         }
+        minSize.rwidth() = maxSize.height();
     }
     else
     {
         mLayout->setRowCount(0);
         mLayout->setStretch(RazorGridLayout::NoStretch);
-
-        minSize.rheight() = panel->lineSize();
-        maxSize.rheight() = panel->lineSize();
 
         if (mButtonStyle == Qt::ToolButtonIconOnly)
         {

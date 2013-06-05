@@ -81,7 +81,7 @@ RazorPanelPlugin > QToolButton:hover {
     margin-right: 2px;
 }
 
-#QuckLaunchPlaceHolder {
+#QuickLaunchPlaceHolder {
     color: #AAAAAA;
 }
 
@@ -292,12 +292,12 @@ TrayIcon {
 /*
  * WorldClock
  */
-#WorldClockContent{
+#WorldClockContent {
     font-size: 10pt;
     color: #cacaca;
 }
 
-#WorldClockPopup{
+#WorldClockPopup > QLabel {
     font-size: 12pt;
     color: #cacaca;
 }

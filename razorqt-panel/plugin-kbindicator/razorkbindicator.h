@@ -57,6 +57,8 @@ protected slots:
 
     void setIndicators(unsigned int, unsigned int);
 
+    void delayedInit();
+
 protected:
     bool getLockStatus(int mBit);
     virtual void x11EventFilter(XEvent* event);

@@ -323,7 +323,8 @@ void RazorQuickLaunch::showPlaceHolder()
     if (!mPlaceHolder)
     {
         mPlaceHolder = new QLabel(this);
-        mPlaceHolder->setObjectName("QuckLaunchPlaceHolder");
+        mPlaceHolder->setAlignment(Qt::AlignCenter);
+        mPlaceHolder->setObjectName("QuickLaunchPlaceHolder");
         mPlaceHolder->setText(tr("Drop application\nicons here"));
     }
 

@@ -77,6 +77,9 @@ RazorClock::RazorClock(const IRazorPanelPluginStartupInfo &startupInfo):
     mTimeLabel->setObjectName("TimeLabel");
     mDateLabel->setObjectName("DateLabel");
 
+    mTimeLabel->setAlignment(Qt::AlignCenter);
+    mDateLabel->setAlignment(Qt::AlignCenter);
+
     QVBoxLayout *contentLayout = new QVBoxLayout(mContent);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(1);
@@ -337,7 +340,7 @@ void RazorClock::activated(ActivationReason reason)
     {
         mCalendarDialog = new QDialog(mContent);
         //mCalendarDialog->setAttribute(Qt::WA_DeleteOnClose, true);
-        mCalendarDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        mCalendarDialog->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog | Qt::X11BypassWindowManagerHint);
         mCalendarDialog->setLayout(new QHBoxLayout(mCalendarDialog));
         mCalendarDialog->layout()->setMargin(1);
 

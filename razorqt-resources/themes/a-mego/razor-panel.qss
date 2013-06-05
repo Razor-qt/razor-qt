@@ -63,7 +63,7 @@ Plugin > QToolButton:hover{
     border: 1px solid #7f7f7f;
 }
 
-#QuckLaunchPlaceHolder {
+#QuickLaunchPlaceHolder {
     color: #777777;
 }
 
@@ -288,12 +288,12 @@ TrayIcon {
 /*
  * WorldClock
  */
-#WorldClockContent{
+#WorldClockContent {
     font-size: 10pt;
     color: #aaaaaa;
 }
 
-#WorldClockPopup{
+#WorldClockPopup > QLabel {
     font-size: 12pt;
     color: #aaaaaa;
 }
