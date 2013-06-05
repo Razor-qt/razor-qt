@@ -1,0 +1,72 @@
+Dialog {
+	border: 1px solid hsv(0, 0, 64);
+	background:hsv(0, 0, 208);
+	padding: 1px;
+	margin: 0px;
+}
+
+QToolButton {
+	margin: 1px;
+	border: 1px solid transparent;
+	padding: 0px;
+	font-size: 9pt;
+	color: hsv(0, 0, 64);
+}
+
+QToolButton:focus {
+	border: 1px solid hsv(0, 0, 160);
+}
+
+QToolButton:hover {
+	border: 1px solid hsv(0, 0, 240);
+}
+
+QToolButton:focus:hover {
+	border: 1px dashed hsv(0, 0, 255);
+}
+
+QToolButton:pressed {
+	background: hsv(0, 0, 160);
+}
+
+
+#hibernateButton,
+#logoutButton,
+#rebootButton,
+#shutdownButton,
+#suspendButton {
+	qproperty-iconSize: 48px;
+	min-width: 120px;
+	min-height: 80px;
+}
+
+#cancelButton {
+	qproperty-iconSize: 16px;
+}
+
+
+#cancelButton {
+	qproperty-icon: url(razor-power/cancel.svg);
+    padding: 4px;
+}
+
+#hibernateButton {
+	qproperty-icon: url(razor-power/hibernate.svg);
+}
+
+#logoutButton {
+	qproperty-icon: url(razor-power/logout.svg);
+}
+
+#rebootButton {
+	qproperty-icon: url(razor-power/reboot.svg);
+}
+
+#shutdownButton {
+	qproperty-icon: url(razor-power/shutdown.svg);
+}
+
+#suspendButton {
+	qproperty-icon: url(razor-power/suspend.svg);
+}
+

@@ -1,0 +1,5 @@
+#AppSwitcher {
+	background:hsv(0, 0, 192);
+	padding: 0px;
+	margin: 0px;
+}

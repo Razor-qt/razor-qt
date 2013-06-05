@@ -1,0 +1,28 @@
+QWidget {
+    border-radius: 5px;
+}
+
+#formFrame { 
+    background-color: rgba(200,200,200, 128); 
+    border-radius: 10px;
+}
+
+QComboBox,
+QPushButton {
+    border: 1px solid silver;
+    background-color: rgb(200, 200, 200);
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 24px;
+}
+
+QComboBox::down-arrow {
+    image: url(razor-lightdm-greeter/dropdown.svg);
+}
+
+#leaveButton {
+    qproperty-iconSize: 25px;
+    qproperty-icon: url(razor-lightdm-greeter/shutdown.svg);
+}

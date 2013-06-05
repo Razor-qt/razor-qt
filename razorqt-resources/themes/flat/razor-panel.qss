@@ -1,0 +1,144 @@
+RazorPanel {
+	background:hsv(0, 0, 192);
+	padding: 0px;
+	margin: 0px;
+}
+
+Plugin {
+	padding: 0px;
+	margin: 0px;
+}
+
+QToolTip {
+	border: 1px solid hsv(0, 0, 64);
+	background:hsv(0, 0, 208);
+	padding: 1px;
+	margin: 0px;
+}
+
+
+QToolButton,
+TrayIcon,
+#RazorMountPopup > MenuDiskItem {
+	margin: 1px;
+	border: 1px solid transparent;
+	padding: 0px;
+	font-size: 9pt;
+	color: hsv(0, 0, 64);
+	qproperty-iconSize: 24px;
+}
+
+QToolButton:hover,
+TrayIcon:hover,
+#RazorMountPopup > MenuDiskItem:hover {
+	border: 1px solid hsv(0, 0, 224);
+}
+
+QToolButton:on,
+TrayIcon:on {
+	background: hsv(0, 0, 176);
+}
+
+QToolButton:pressed,
+TrayIcon:pressed {
+	background: hsv(0, 0, 160);
+}
+
+
+QLabel {
+	font-size: 9pt;
+	color: hsv(0, 0, 64);
+}
+
+#Clock #DateLabel,
+#SysStat > QLabel,
+#QuickLaunchPlaceHolder {
+	font-size: 7pt;
+}
+
+#WorldClockPopup QLabel {
+	font-size: 11pt;
+}
+
+#RazorCpuLoad {
+	qproperty-fontColor: hsv(0, 0, 64);
+}
+
+#QuickLaunch {
+	margin: 0px;
+}
+
+#QuickLaunchPlaceHolder {
+	color:hsv(0, 240, 120);
+}
+
+
+#RazorMountPopup,
+VolumePopup,
+#WorldClockPopup {
+	border: 1px solid hsv(0, 0, 64);
+	background:hsv(0, 0, 208);
+	padding: 2px;
+}
+
+
+#KbIndicator:enabled {
+	background: hsv(0, 0, 176);
+}
+
+#KbIndicator:disabled {
+	color: hsv(0, 0, 128);
+}
+
+
+#QuickLaunch QToolButton {
+	padding: 6px;
+}
+
+#MainMenu {
+	qproperty-icon: url(mainmenu.svg);
+}
+
+
+#RazorMountPopup * {
+	margin: 0px;
+	padding: 0px;
+}
+
+#RazorMountPopup #EjectButton,
+#RazorMountPopup #DiskButton {
+	qproperty-iconSize: 24px;
+	background: transparent;
+	border: none;
+}
+
+#RazorMountPopup #NoDiskLabel {
+	margin: 4px;
+}
+
+
+RazorPanel[position="Top"] #KbIndicator,
+RazorPanel[position="Bottom"] #KbIndicator {
+	padding: 0px 3px;
+}
+
+RazorPanel[position="Left"] #KbIndicator,
+RazorPanel[position="Right"] #KbIndicator {
+	padding: 3px 0px;
+}
+
+#SysStat_Graph {
+	qproperty-gridColor: hsv(0, 0, 128);
+	qproperty-titleColor: hsv(0, 0, 64);
+	qproperty-cpuSystemColor: hsv(0, 160, 128);
+	qproperty-cpuUserColor: hsv(220, 160, 128);
+	qproperty-cpuNiceColor: hsv(180, 160, 128);
+	qproperty-cpuOtherColor: hsv(60, 160, 128);
+	qproperty-frequencyColor: hsv(0, 0, 176);
+	qproperty-memAppsColor: hsv(220, 160, 128);
+	qproperty-memBuffersColor: hsv(180, 160, 128);
+	qproperty-memCachedColor: hsv(60, 160, 128);
+	qproperty-swapUsedColor: hsv(0, 0, 176);
+	qproperty-netReceivedColor: hsv(220, 160, 128);
+	qproperty-netTransmittedColor: hsv(60, 160, 128);
+}

@@ -1,0 +1,51 @@
+#panel {
+	border: 1px solid hsv(0, 0, 64);
+	background:hsv(0, 0, 208);
+	padding: 1px;
+	margin: 0px;
+}
+
+QToolButton {
+	margin: 1px;
+	border: 1px solid transparent;
+	padding: 0px;
+	font-size: 9pt;
+	color: hsv(0, 0, 64);
+}
+
+QToolButton:focus {
+	border: 1px solid hsv(0, 0, 160);
+}
+
+QToolButton:hover {
+	border: 1px solid hsv(0, 0, 240);
+}
+
+QToolButton:focus:hover {
+	border: 1px dashed hsv(0, 0, 255);
+}
+
+QToolButton:pressed {
+	background: hsv(0, 0, 160);
+}
+
+#closeButton {
+	qproperty-icon: url(razor-runner/close.svg);
+	qproperty-iconSize: 16px;
+}
+
+#actionButton {
+	qproperty-iconSize: 16px;
+	font-size: 7pt;
+}
+
+#actionButton::menu-indicator {
+	subcontrol-position: right bottom;
+	subcontrol-origin: margin;
+}
+
+#commandList {
+	border: 1px solid hsv(0, 0, 208);
+	padding: 0px;
+	margin: 0px;
+}
