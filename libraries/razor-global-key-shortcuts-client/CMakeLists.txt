@@ -27,7 +27,7 @@ include_directories(
 
 
 
-set(${PROJECT_NAME}_PATH_TO_DAEMON "../../razorqt-globalkeyshortcuts/src/")
+set(${PROJECT_NAME}_PATH_TO_DAEMON "../../razorqt-globalkeyshortcuts/src")
 
 add_definitions(-DSHARED_EXPORT=Q_DECL_EXPORT)
 
@@ -67,10 +67,10 @@ set(${PROJECT_NAME}_TRANSLATIONS
 )
 
 set(${PROJECT_NAME}_DBUS_ADAPTORS
-	${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml
+	${${PROJECT_NAME}_PATH_TO_DAEMON}/org.razorqt.global_key_shortcuts.client.xml
 )
 
-set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.client.xml PROPERTIES
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}/org.razorqt.global_key_shortcuts.client.xml PROPERTIES
 	INCLUDE action_p.h
 	PARENT_CLASSNAME GlobalKeyShortcut::ActionImpl
 	BASENAME org.razorqt.global_key_shortcuts.client
@@ -78,10 +78,10 @@ set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_
 )
 
 set(${PROJECT_NAME}_DBUS_INTERFACES
-	${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.native.xml
+	${${PROJECT_NAME}_PATH_TO_DAEMON}/org.razorqt.global_key_shortcuts.native.xml
 )
 
-set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}org.razorqt.global_key_shortcuts.native.xml PROPERTIES
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}/org.razorqt.global_key_shortcuts.native.xml PROPERTIES
 	BASENAME org.razorqt.global_key_shortcuts.native
 )
 

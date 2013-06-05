@@ -28,13 +28,15 @@ include_directories(
 
 
 
+set(${PROJECT_NAME}_PATH_TO_DAEMON "../src")
+
 set(${PROJECT_NAME}_SOURCES
 	main.cpp
 	main_window.cpp
 	actions.cpp
 	default_model.cpp
 	shortcut_selector.cpp
-	../src/meta_types.cpp
+	${${PROJECT_NAME}_PATH_TO_DAEMON}/meta_types.cpp
 	edit_action_dialog.cpp
 	shortcut_delegate.cpp
 )
@@ -51,7 +53,7 @@ set(${PROJECT_NAME}_TRANSLATIONS
 )
 
 set(${PROJECT_NAME}_CPP_HEADERS
-	../src/meta_types.h
+	${${PROJECT_NAME}_PATH_TO_DAEMON}/meta_types.h
 )
 
 set(${PROJECT_NAME}_QT_HEADERS
@@ -67,11 +69,11 @@ set(${PROJECT_NAME}_DBUS_ADAPTORS
 )
 
 set(${PROJECT_NAME}_DBUS_INTERFACES
-	../src/org.razorqt.global_key_shortcuts.daemon.xml
+	${${PROJECT_NAME}_PATH_TO_DAEMON}/org.razorqt.global_key_shortcuts.daemon.xml
 )
-set_source_files_properties(../src/org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES
+set_source_files_properties(${${PROJECT_NAME}_PATH_TO_DAEMON}/org.razorqt.global_key_shortcuts.daemon.xml PROPERTIES
 	BASENAME org.razorqt.global_key_shortcuts.daemon
-	INCLUDE ../src/meta_types.h
+	INCLUDE ${${PROJECT_NAME}_PATH_TO_DAEMON}/meta_types.h
 )
 
 
