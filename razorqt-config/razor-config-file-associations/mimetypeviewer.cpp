@@ -30,7 +30,7 @@
 #include <QListWidget>
 #include <QSortFilterProxyModel>
 #include <QtConcurrentRun>
-#include <qt4/QtCore/qdatetime.h>
+#include <QDateTime>
 
 #include "qtxdg/xdgmime.h"
 #include "qtxdg/xdgdesktopfile.h"
