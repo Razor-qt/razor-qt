@@ -29,6 +29,7 @@
 
 
 #include "providers.h"
+#include "yamlparser.h"
 #include <qtxdg/xdgicon.h>
 #include <qtxdg/xdgdesktopfile.h>
 #include <qtxdg/xdgmenu.h>
@@ -45,6 +46,7 @@
 #include <razorqt/powermanager.h>
 #include <razorqt/screensaver.h>
 #include "razorqt-runner/providers.h"
+#include "razorqt-globalkeyshortcuts/config/actions.h"
 #include <wordexp.h>
 
 #define MAX_HISTORY 100
@@ -180,9 +182,10 @@ void AppLinkItem::operator=(const AppLinkItem &other)
  ************************************************/
 unsigned int AppLinkItem::rank(const QString &pattern) const
 {
-    return qMax(stringRank(mProgram, pattern),
-                stringRank(mTitle, pattern)
-               );
+    unsigned int result =  qMax(stringRank(mProgram, pattern),
+                                stringRank(mTitle, pattern)
+                                );
+    return result;
 }
 
 
@@ -785,8 +788,7 @@ unsigned int PowerProviderItem::rank(const QString &pattern) const
     return stringRank(mTitle, pattern);
 }
 
-PowerProvider::PowerProvider()
-    : CommandProvider()
+PowerProvider::PowerProvider() : CommandProvider()
 {
     m_power = new PowerManager(this);
     foreach (QAction *a, m_power->availableActions())
@@ -798,6 +800,94 @@ PowerProvider::PowerProvider()
     foreach (QAction *a, m_screensaver->availableActions())
     {
         append(new PowerProviderItem(a));
+    }
+}
+
+ExternalProviderItem::ExternalProviderItem()
+{
+}
+
+bool ExternalProviderItem::setData(QMap<QString,QString> & data)
+{
+    if (! (data.contains("title") && data.contains("command")))
+    {
+        return false;
+    }
+
+    mTitle = data["title"];
+    mComment = data["comment"];
+    mToolTip = data["tooltip"];
+    mCommand = data["command"];
+    if (data.contains("icon")) 
+        mIcon = XdgIcon::fromTheme(data["icon"]);
+
+    return true;
+}
+
+
+
+bool ExternalProviderItem::run() const
+{
+    return startProcess(mCommand);
+}
+
+unsigned int ExternalProviderItem::rank(const QString& pattern) const
+{
+    return stringRank(title(), pattern);
+}
+
+ExternalProvider::ExternalProvider(const QString name, const QString externalProgram) :
+CommandProvider(), mName(name)
+{
+    mExternalProcess = new QProcess(this);
+    mYamlParser = new YamlParser();
+    connect(mYamlParser, SIGNAL(newListOfMaps(QList<QMap<QString, QString> >)), 
+            this,        SLOT(newListOfMaps(QList<QMap<QString, QString> >))); 
+
+    connect(mExternalProcess, SIGNAL(readyRead()), this, SLOT(readFromProcess()));
+    mExternalProcess->start(externalProgram);
+}
+
+void ExternalProvider::setSearchTerm(const QString searchTerm)
+{
+    mExternalProcess->write(searchTerm.toUtf8());
+    mExternalProcess->write(QString("\n").toUtf8());
+}
+
+void ExternalProvider::newListOfMaps(QList<QMap<QString,QString> > maps)
+{
+    emit aboutToBeChanged();
+    
+    qDeleteAll(*this);
+    clear();
+    
+    QMap<QString, QString> map;
+    foreach(map, maps)
+    {
+        ExternalProviderItem *item  = new ExternalProviderItem();
+        if (item->setData(map))
+            this->append(item);
+        else
+            delete item;
+    }
+   
+    emit changed();
+}
+
+void ExternalProvider::readFromProcess()
+{
+    char ch;
+    while (mExternalProcess->getChar(&ch))
+    {
+        if (ch == '\n') 
+        {
+            mYamlParser->consumeLine(mBuffer);
+            mBuffer.clear();
+        }
+        else 
+        {
+            mBuffer.append(ch);
+        }
     }
 }
 

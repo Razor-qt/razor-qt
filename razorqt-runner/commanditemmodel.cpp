@@ -26,6 +26,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "commanditemmodel.h"
+#include "razorqt/razorsettings.h"
 
 
 #include <qtxdg/xdgicon.h>
@@ -124,10 +125,19 @@ bool CommandItemModel::lessThan(const QModelIndex &left, const QModelIndex &righ
 
     if (mOnlyHistory)
         return left.row() < right.row();
-    else
-        return QSortFilterProxyModel::lessThan(left, right);
-}
+        else
+           return QSortFilterProxyModel::lessThan(left, right); 
+    }
 
+int CommandItemModel::itemType(const QModelIndex &index) const
+{
+    if (index.row() == mSourceModel->customCommandIndex().row())
+        return 1;
+    else if (index.row() < mSourceModel->externalProviderStartIndex().row())
+        return 2;
+    else 
+        return 3;
+}
 
 /************************************************
 
@@ -204,12 +214,28 @@ CommandSourceItemModel::CommandSourceItemModel(QObject *parent) :
 
     mProviders.append(new PowerProvider());
 
+    rebuild();
+    mExternalProviderStartIndex = index(rowCount(), 0);
+
+    RazorSettings settings("razor-runner");
+    int numExternalProviders = settings.beginReadArray("external providers");
+    for (int i = 0; i < numExternalProviders; i++) 
+    {
+        settings.setArrayIndex(i);
+        qDebug() << "Adding external provider:" << settings.value("name") << settings.value("executable");
+        ExternalProvider* externalProvider = new ExternalProvider(settings.value("name").toString(),
+                                                                  settings.value("executable").toString());
+        mProviders.append(externalProvider);
+        mExternalProviders.append(externalProvider);
+    }
+    settings.endArray();
+
     foreach(CommandProvider* provider, mProviders)
     {
         connect(provider, SIGNAL(changed()), this, SIGNAL(layoutChanged()));
         connect(provider, SIGNAL(aboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()));
     }
-
+   
     rebuild();
 }
 
@@ -345,4 +371,17 @@ const CommandProviderItem *CommandSourceItemModel::command(const QModelIndex &in
 void CommandSourceItemModel::addHistoryCommand(const QString &command)
 {
     mHistoryProvider->AddCommand(command);
+}
+
+
+/***********************************************
+ 
+ ***********************************************/
+void CommandSourceItemModel::setCommand(const QString& command)
+{
+    mCustomCommandProvider->setCommand(command); 
+    foreach (ExternalProvider* externalProvider, mExternalProviders)
+    {
+        externalProvider->setSearchTerm(command);
+    }
 }

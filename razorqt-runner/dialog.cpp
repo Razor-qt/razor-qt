@@ -88,6 +88,7 @@ Dialog::Dialog(QWidget *parent) :
     ui->commandList->setEditTriggers(QAbstractItemView::NoEditTriggers);
     connect(ui->commandList, SIGNAL(clicked(QModelIndex)), this, SLOT(runCommand()));
     setFilter("");
+    dataChanged();
 
     ui->commandList->setItemDelegate(new HtmlDelegate(QSize(32, 32), ui->commandList));
 
@@ -119,6 +120,10 @@ Dialog::Dialog(QWidget *parent) :
     connect(mGlobalShortcut, SIGNAL(shortcutChanged(QString,QString)), this, SLOT(shortcutChanged(QString,QString)));
 
     resize(mSettings->value("dialog/width", 400).toInt(), size().height());
+
+
+    // TEST
+    connect(mCommandItemModel, SIGNAL(layoutChanged()), this, SLOT(dataChanged()));
 }
 
 
@@ -354,17 +359,21 @@ void Dialog::shortcutChanged(const QString &/*oldShortcut*/, const QString &newS
  ************************************************/
 void Dialog::setFilter(const QString &text, bool onlyHistory)
 {
+    qDebug() << "Ind i setFilter..."; 
     if (mCommandItemModel->isOutDated())
         mCommandItemModel->rebuild();
 
     mCommandItemModel->setCommand(text);
     mCommandItemModel->showOnlyHistory(onlyHistory);
     mCommandItemModel->setFilterWildcard(text);
+    mCommandItemModel->sort(0);
+}
 
+void Dialog::dataChanged()
+{
     if (mCommandItemModel->rowCount())
     {
-        mCommandItemModel->sort(0);
-        ui->commandList->setCurrentIndex(mCommandItemModel->appropriateItem(text));
+       ui->commandList->setCurrentIndex(mCommandItemModel->appropriateItem(mCommandItemModel->command()));
         ui->commandList->scrollTo(ui->commandList->currentIndex());
         ui->commandList->show();
     }
@@ -372,10 +381,10 @@ void Dialog::setFilter(const QString &text, bool onlyHistory)
     {
         ui->commandList->hide();
     }
-
+    
     adjustSize();
-}
 
+}
 
 /************************************************
 

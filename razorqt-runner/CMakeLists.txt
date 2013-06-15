@@ -6,6 +6,7 @@ set(razor-runner_H_FILES
     commanditemmodel.h
     widgets.h
     providers.h
+    yamlparser.h
     configuredialog/configuredialog.h
 )
 
@@ -15,6 +16,7 @@ set(razor-runner_MOC_FILES
     widgets.h
     configuredialog/configuredialog.h
     providers.h
+    yamlparser.h
 )
 
 set(razor-runner_CPP_FILES
@@ -23,6 +25,7 @@ set(razor-runner_CPP_FILES
     commanditemmodel.cpp
     widgets.cpp
     providers.cpp
+    yamlparser.cpp
     configuredialog/configuredialog.cpp
 )
 

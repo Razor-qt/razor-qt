@@ -310,4 +310,48 @@ private:
     ScreenSaver *m_screensaver;
 };
 
+class ExternalProviderItem: public CommandProviderItem
+{
+    Q_OBJECT
+
+public:
+    ExternalProviderItem();
+
+    bool setData(QMap<QString, QString> & data);
+
+    bool run() const;
+    bool compare(const QRegExp &regExp) const {return true;} // We leave the decision to the external process
+    unsigned int rank(const QString &pattern) const; 
+
+    QString mCommand;
+};
+
+class QProcess;
+class YamlParser;
+class ExternalProvider: public CommandProvider
+{
+    Q_OBJECT
+
+public:
+    ExternalProvider(const QString name, const QString externalProgram);
+  
+    void setSearchTerm(const QString searchTerm);
+    
+signals:
+    void dataChanged();
+
+private slots:
+    void readFromProcess();
+    void newListOfMaps(QList<QMap<QString, QString> > maps);
+    
+private:
+    QString mName; 
+    QProcess *mExternalProcess;
+    QTextStream *mDataToProcess; 
+    YamlParser *mYamlParser; 
+
+    QString mBuffer;
+};
+
+
 #endif // PROVIDERS_H

@@ -85,6 +85,7 @@ private slots:
     void applySettings();
     void showHide();
     void setFilter(const QString &text, bool onlyHistory=false);
+    void dataChanged();
     void runCommand();
     void showConfigDialog();
     void shortcutChanged(const QString &oldShortcut, const QString &newShortcut);
