@@ -43,7 +43,8 @@ BusyIndicator::BusyIndicator(QWidget *busyWidget) : QGraphicsView(busyWidget)
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(100);
-    startTime = QDateTime::currentMSecsSinceEpoch();
+
+    startTime.start();
     pendingResize = true;
 }
 
@@ -68,8 +69,8 @@ void BusyIndicator::update()
         center = QPointF(size().width()/2, size().height()/2);
         pendingResize = false;
     }
-    long timeGone = QDateTime::currentMSecsSinceEpoch() - startTime;
-    float angle = M_PI*timeGone/1000; // 2 seconds -> full circle
+    
+    float angle = M_PI*startTime.elapsed()/1000; // 2 seconds -> full circle
     for (int i = 0; i < numberOfDots; i++)
     {
         moveDot(m_Dots[i], angle);

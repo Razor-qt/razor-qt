@@ -11,6 +11,7 @@
 #include <QList>
 #include <QFutureWatcher>
 #include <QGraphicsView>
+#include <QTime>
 
 class QResizeEvent;
 class QGraphicsEllipseItem;
@@ -33,7 +34,7 @@ private:
    
     QPointF center;   
 
-    long startTime;
+    QTime startTime;
     bool pendingResize;
 
     QList<QGraphicsEllipseItem*> m_Dots;
