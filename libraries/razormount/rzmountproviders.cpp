@@ -57,27 +57,34 @@ UDiskProvider::UDiskProvider(QObject *parent):
         return;
     }
 
-    system.connect("org.freedesktop.UDisks2",
-                    "/org/freedesktop/UDisks2",
-                    "org.freedesktop.DBus.ObjectManager",
-                    "InterfacesAdded",
-                    this,
-                    SLOT(dbusDeviceAdded(QDBusObjectPath, QStringList)));
+    if (!QDBusInterface("org.freedesktop.UDisks",
+                       "/org/freedesktop/UDisks",
+                       "org.freedesktop.UDisks", system).isValid())
+    {
+        qDebug() << "org.freedesktop.UDisks - not exists - " << mIsValid;
+        return;
+    }
 
-    system.connect("org.freedesktop.UDisks2",
-                    "/org/freedesktop/UDisks2",
-                    "org.freedesktop.DBus.ObjectManager",
-                    "InterfacesRemoved",
-                    this,
-                    SLOT(dbusDeviceRemoved(QDBusObjectPath, QStringList)));
-/*
     system.connect("org.freedesktop.UDisks",
-                    "/org/freedesktop/UDisks",
-                    "org.freedesktop.UDisks",
-                    "DeviceChanged",
-                    this,
-                    SLOT(dbusDeviceChanged(QDBusObjectPath)));
-                    */
+                   "/org/freedesktop/UDisks",
+                   "org.freedesktop.UDisks",
+                   "DeviceAdded",
+                   this,
+                   SLOT(dbusDeviceAdded(QDBusObjectPath)));
+
+    system.connect("org.freedesktop.UDisks",
+                   "/org/freedesktop/UDisks",
+                   "org.freedesktop.UDisks",
+                   "DeviceRemoved",
+                   this,
+                   SLOT(dbusDeviceRemoved(QDBusObjectPath)));
+
+    system.connect("org.freedesktop.UDisks",
+                   "/org/freedesktop/UDisks",
+                   "org.freedesktop.UDisks",
+                   "DeviceChanged",
+                   this,
+                   SLOT(dbusDeviceChanged(QDBusObjectPath)));
 
     mIsValid = true;
 }
@@ -166,7 +173,6 @@ void UDiskProvider::delDevice(UDiskMountDevice *device)
 void UDiskProvider::dbusDeviceAdded(const QDBusObjectPath &path)
 {
     UDiskMountDevice *device = new UDiskMountDevice(path);
-
      addDevice(device);
      emit deviceAdded(device);
 }
