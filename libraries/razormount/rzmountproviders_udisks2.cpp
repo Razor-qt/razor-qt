@@ -41,30 +41,28 @@ UDisks2Provider::UDisks2Provider(QObject *parent):
         return;
     }
 
-    bool ret;
-    ret = system.connect("org.freedesktop.UDisks2",
-                         "/org/freedesktop/UDisks2",
-                         "org.freedesktop.UDisks2",
-                         "InterfacesAdded",
-                         this,
-                         SLOT(dbusDeviceAdded(QDBusObjectPath,QVariantMap)));
-    if (!ret)
+
+    if (!QDBusInterface("org.freedesktop.UDisks2",
+                       "/org/freedesktop/UDisks2",
+                       "org.freedesktop.UDisks2", system).isValid())
     {
-        qDebug() << "UDisks2Provider::UDisks2Provider InterfacesAdded connect failed";
+        qDebug() << "org.freedesktop.UDisks2 - not exists - " << mIsValid;
         return;
     }
 
-    ret = system.connect("org.freedesktop.UDisks2",
-                         "/org/freedesktop/UDisks2",
-                         "org.freedesktop.UDisks2",
-                         "InterfacesRemoved",
-                         this,
-                        SLOT(dbusDeviceRemoved(QDBusObjectPath,QStringList)));
-    if (!ret)
-    {
-        qDebug() << "UDisks2Provider::UDisks2Provider InterfacesRemoved connect failed";
-        return;
-    }
+    system.connect("org.freedesktop.UDisks2",
+                   "/org/freedesktop/UDisks2",
+                   "org.freedesktop.UDisks2",
+                   "InterfacesAdded",
+                   this,
+                   SLOT(dbusDeviceAdded(QDBusObjectPath,QVariantMap)));
+
+    system.connect("org.freedesktop.UDisks2",
+                   "/org/freedesktop/UDisks2",
+                   "org.freedesktop.UDisks2",
+                   "InterfacesRemoved",
+                   this,
+                   SLOT(dbusDeviceRemoved(QDBusObjectPath,QStringList)));
 
     mIsValid = true;
     qDebug() << "UDisks2Provider::UDisks2Provider final validity" << mIsValid;

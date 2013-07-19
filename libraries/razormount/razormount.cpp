@@ -112,12 +112,12 @@ const RazorMountDeviceList RazorMountManager::devices() const
 {
     if (mProvider)
     {
-        qDebug() << "RazorMountManager::devices" << mProvider->devices();
+        //qDebug() << "RazorMountManager::devices" << mProvider->devices();
         return mProvider->devices();
     }
     else
     {
-        qDebug() << "RazorMountDeviceList RazorMountManager::devices() no valid provider in use";
+        qWarning() << "RazorMountDeviceList RazorMountManager::devices() no valid provider in use";
         return RazorMountDeviceList();
     }
 }
