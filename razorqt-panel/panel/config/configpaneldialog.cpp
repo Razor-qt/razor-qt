@@ -262,7 +262,6 @@ void ConfigPanelWidget::widthTypeChanged()
         int v = ui->spinBox_length->value() * 100.0 / max;
         ui->spinBox_length->setMaximum(100);
         ui->spinBox_length->setValue(v);
-        ui->spinBox_length->setSingleStep(1);
     }
     else
     {
@@ -270,7 +269,6 @@ void ConfigPanelWidget::widthTypeChanged()
         int v =  max / 100.0 * ui->spinBox_length->value();
         ui->spinBox_length->setMaximum(max);
         ui->spinBox_length->setValue(v);
-        ui->spinBox_length->setSingleStep(10);
     }
 }
 
