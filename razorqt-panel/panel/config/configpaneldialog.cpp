@@ -77,6 +77,7 @@ ConfigPanelDialog::ConfigPanelDialog(RazorPanel *panel, QWidget *parent):
     ConfigPanelWidget* page = new ConfigPanelWidget(panel, this);
     addPage(page, tr("Configure panel"));
     connect(this, SIGNAL(reset()), page, SLOT(reset()));
+    connect(this, SIGNAL(accepted()), panel, SLOT(saveSettings(false)));
 }
 
 
