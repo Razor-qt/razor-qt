@@ -93,11 +93,11 @@ DesktopScene::DesktopScene(QObject * parent)
     connect(m_actAddNewPlugin, SIGNAL(triggered()),
             this, SLOT(showAddPluginDialog()));
 
-    m_actRemovePlugin = new QAction(tr("Remove Plugin..."), this);
+    m_actRemovePlugin = new QAction(tr("Remove Desktop Widget..."), this);
     connect(m_actRemovePlugin, SIGNAL(triggered()),
             this, SLOT(removePlugin()));
 
-    m_actConfigurePlugin = new QAction(tr("Configure Plugin..."), this);
+    m_actConfigurePlugin = new QAction(tr("Configure Desktop Widget..."), this);
     connect(m_actConfigurePlugin, SIGNAL(triggered()),
             this, SLOT(configurePlugin()));
 
