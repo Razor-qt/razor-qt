@@ -737,7 +737,7 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
 
     menu.addTitle(QIcon(), tr("Panel"));
 
-    menu.addAction(tr("Configure panel..."),
+    menu.addAction(tr("Configure Panel..."),
                    this, SLOT(showConfigDialog())
                   );
 
@@ -747,13 +747,13 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
                   );
 
     RazorPanelApplication *a = reinterpret_cast<RazorPanelApplication*>(qApp);
-    menu.addAction(tr("Add panel"),
+    menu.addAction(tr("Add Panel"),
                    a, SLOT(addNewPanel())
                   );
 
     if (a->count() > 1)
     {
-        menu.addAction(tr("Delete panel"),
+        menu.addAction(tr("Delete Panel"),
                        this, SLOT(userRequestForDeletion())
                       );
     }

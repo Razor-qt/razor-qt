@@ -69,13 +69,13 @@ ConfigPanelDialog *ConfigPanelDialog::exec(RazorPanel *panel)
 
  ************************************************/
 ConfigPanelDialog::ConfigPanelDialog(RazorPanel *panel, QWidget *parent):
-    RazorConfigDialog(tr("Configure panel"), panel->settings(), parent)
+    RazorConfigDialog(tr("Configure Panel"), panel->settings(), parent)
 {
     setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_DeleteOnClose);
 
     ConfigPanelWidget* page = new ConfigPanelWidget(panel, this);
-    addPage(page, tr("Configure panel"));
+    addPage(page, tr("Configure Panel"));
     connect(this, SIGNAL(reset()), page, SLOT(reset()));
     connect(this, SIGNAL(accepted()), panel, SLOT(saveSettings(false)));
 }
