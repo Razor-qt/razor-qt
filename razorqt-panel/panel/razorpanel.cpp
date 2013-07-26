@@ -753,7 +753,7 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
 
     if (a->count() > 1)
     {
-        menu.addAction(tr("Delete Panel"),
+        menu.addAction(tr("Remove Panel"),
                        this, SLOT(userRequestForDeletion())
                       );
     }
