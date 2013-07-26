@@ -742,7 +742,7 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
                   );
 
     menu.addAction(XdgIcon::fromTheme("preferences-plugin"),
-                   tr("Add plugins ..."),
+                   tr("Add Panel Widgets..."),
                    this, SLOT(showAddPluginDialog())
                   );
 
