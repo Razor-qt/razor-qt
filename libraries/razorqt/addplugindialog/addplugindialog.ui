@@ -49,7 +49,7 @@
      <item>
       <widget class="QPushButton" name="addButton">
        <property name="text">
-        <string>Add plugin</string>
+        <string>Add Widget</string>
        </property>
       </widget>
      </item>
