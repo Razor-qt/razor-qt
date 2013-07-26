@@ -266,6 +266,7 @@ void DesktopScene::showAddPluginDialog()
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         connect(dlg, SIGNAL(pluginSelected(const RazorPluginInfo&)),
         		this, SLOT(addPlugin(const RazorPluginInfo&)));
+        dlg->setWindowTitle("Add Desktop Widgets");
     }
     
     RazorPluginInfoList pluginsInUse;

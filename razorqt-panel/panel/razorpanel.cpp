@@ -533,6 +533,7 @@ void RazorPanel::showAddPluginDialog()
     if (!dialog)
     {
         dialog = new AddPluginDialog(pluginDesktopDirs(), "RazorPanel/Plugin", "*", this);
+        dialog->setWindowTitle("Add Panel Widgets");
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(dialog, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
