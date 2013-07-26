@@ -89,7 +89,7 @@ DesktopScene::DesktopScene(QObject * parent)
     connect(m_actArrangeWidgets, SIGNAL(toggled(bool)),
             this, SLOT(arrangeWidgets(bool)));
 
-    m_actAddNewPlugin = new QAction(tr("Add New Desktop Widget..."), this);
+    m_actAddNewPlugin = new QAction(tr("Add Desktop Widgets..."), this);
     connect(m_actAddNewPlugin, SIGNAL(triggered()),
             this, SLOT(showAddPluginDialog()));
 
