@@ -533,6 +533,7 @@ void RazorPanel::showAddPluginDialog()
     if (!dialog)
     {
         dialog = new AddPluginDialog(pluginDesktopDirs(), "RazorPanel/Plugin", "*", this);
+        dialog->setWindowTitle(tr("Add Panel Widgets"));
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         connect(dialog, SIGNAL(pluginSelected(const RazorPluginInfo&)), this, SLOT(addPlugin(const RazorPluginInfo&)));
     }
@@ -736,23 +737,23 @@ void RazorPanel::showPopupMenu(Plugin *plugin)
 
     menu.addTitle(QIcon(), tr("Panel"));
 
-    menu.addAction(tr("Configure panel..."),
+    menu.addAction(tr("Configure Panel..."),
                    this, SLOT(showConfigDialog())
                   );
 
     menu.addAction(XdgIcon::fromTheme("preferences-plugin"),
-                   tr("Add plugins ..."),
+                   tr("Add Panel Widgets..."),
                    this, SLOT(showAddPluginDialog())
                   );
 
     RazorPanelApplication *a = reinterpret_cast<RazorPanelApplication*>(qApp);
-    menu.addAction(tr("Add panel"),
+    menu.addAction(tr("Add Panel"),
                    a, SLOT(addNewPanel())
                   );
 
     if (a->count() > 1)
     {
-        menu.addAction(tr("Delete panel"),
+        menu.addAction(tr("Remove Panel"),
                        this, SLOT(userRequestForDeletion())
                       );
     }

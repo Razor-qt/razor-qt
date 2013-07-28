@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add Desktop Widgets</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -49,7 +49,7 @@
      <item>
       <widget class="QPushButton" name="addButton">
        <property name="text">
-        <string>Add plugin</string>
+        <string>Add Widget</string>
        </property>
       </widget>
      </item>
