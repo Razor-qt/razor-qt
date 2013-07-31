@@ -49,9 +49,61 @@ void termSignalHandler(int)
 }
 
 
+void printHelp()
+{
+    QTextStream out(stdout);
+    out << "Usage: razor-panel [options]" << endl;
+    out << endl;
+    out << "Start Razor-qt panel and its plugins" << endl;
+    out << endl;
+    out << "Options:" << endl;
+    out << "  -h, --help                    Show help about options" << endl;
+    out << "  --version                     Show version information" << endl;
+    out << "  -c, --configfile=CONFIGFILE   Use alternate configuration file" << endl;
+}
+
+
+void printVersion()
+{
+    QTextStream out(stdout);
+    out << "razor-confupdate " << RAZOR_VERSION << endl;
+    out << "Copyright (c) 2012 Razor team" << endl;
+    out << endl;
+    out << "License LGPLv2+: GNU Lesser GPL version 2 or later <http://www.gnu.org/licenses/lgpl-2.1.html>." << endl;
+    out << "This is free software: you are free to change and redistribute it." << endl;
+    out << "There is NO WARRANTY, to the extent permitted by law." << endl;
+}
+
+
 int main(int argc, char *argv[])
 {
-    RazorPanelApplication *app = new RazorPanelApplication(argc, argv);
+    QString configFile;
+    for (int i=1; i < argc; ++i)
+    {
+        QString arg = QString::fromLocal8Bit(argv[i]);
+
+        if (arg == "--help" || arg == "-h")
+        {
+            printHelp();
+            return 0;
+        }
+
+        if (arg == "--version")
+        {
+            printVersion();
+            return 0;
+        }
+
+        if (arg == "-c" || arg.startsWith("--conf"))
+        {
+            if (i+1 < argc)
+            {
+                configFile = QString::fromLocal8Bit(argv[i+1]);
+            }
+        }
+    }
+
+    RazorPanelApplication *app = new RazorPanelApplication(argc, argv, configFile);
 
     TRANSLATE_APP;
 

@@ -121,7 +121,8 @@ RazorPanel::RazorPanel(const QString &configGroup, QWidget *parent) :
     connect(RazorSettings::globalSettings(), SIGNAL(settingsChanged()), this, SLOT(update()));
     connect(razorApp, SIGNAL(themeChanged()), this, SLOT(realign()));
 
-    mSettings = new RazorSettings("panel", this);
+    RazorPanelApplication *app = reinterpret_cast<RazorPanelApplication*>(qApp);
+    mSettings = app->settings();
     readSettings();
     loadPlugins();
     

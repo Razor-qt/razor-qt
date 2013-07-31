@@ -34,17 +34,22 @@
 #include <X11/Xlib.h>
 
 
-RazorPanelApplication::RazorPanelApplication(int& argc, char** argv)
+RazorPanelApplication::RazorPanelApplication(int& argc, char** argv, const QString &configFile)
     : RazorApplication(argc, argv)
 {
-    RazorSettings s("panel");
-    QStringList panels = s.value("panels").toStringList();
+    if (configFile.isEmpty())
+        mSettings = new RazorSettings("panel", this);
+    else
+        mSettings = new RazorSettings(configFile, QSettings::IniFormat, this);
+
+    QStringList panels = mSettings->value("panels").toStringList();
 
     Q_FOREACH(QString i, panels)
     {
         addPanel(i);
     }
 }
+
 
 RazorPanelApplication::~RazorPanelApplication()
 {
@@ -56,10 +61,9 @@ void RazorPanelApplication::addNewPanel()
     QString name("panel_" + QUuid::createUuid().toString());
     addPanel(name);
     
-    RazorSettings s("panel");
-    QStringList panels = s.value("panels").toStringList();
+    QStringList panels = mSettings->value("panels").toStringList();
     panels << name;
-    s.setValue("panels", panels);
+    mSettings->setValue("panels", panels);
 }
 
 void RazorPanelApplication::addPanel(const QString &name)
@@ -77,16 +81,16 @@ bool RazorPanelApplication::x11EventFilter(XEvent * event)
     return false;
 }
 
+
 void RazorPanelApplication::removePanel(RazorPanel* panel)
 {
     Q_ASSERT(mPanels.contains(panel));
 
     mPanels.removeAll(panel);
     
-    RazorSettings s("panel");
-    QStringList panels = s.value("panels").toStringList();
+    QStringList panels = mSettings->value("panels").toStringList();
     panels.removeAll(panel->name());
-    s.setValue("panels", panels);
+    mSettings->setValue("panels", panels);
     
     panel->deleteLater();
 }
