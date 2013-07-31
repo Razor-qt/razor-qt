@@ -558,7 +558,7 @@ void RazorGridLayout::setGeometry(const QRect &geometry)
     qDebug() << "Count" << count();
     qDebug() << "Cols:" << d->cols() << "(" << d->mColumnCount << ")";
     qDebug() << "Rows:" << d->rows() << "(" << d->mRowCount << ")";
-    qDebug() << "Stretch:" << "h:" << (d->mStretch.testFlag(StretchHoriz)) << " v:" << (d->mStretch.testFlag(StretchVert));
+    qDebug() << "Stretch:" << "h:" << (d->mStretch.testFlag(StretchHorizontal)) << " v:" << (d->mStretch.testFlag(StretchVertical));
     qDebug() << "Item:" << "h:" << itemHeight << " w:" << itemWidth;
 #endif
 
