@@ -32,16 +32,18 @@
 #include <razorqt/razorapplication.h>
 
 class RazorPanel;
+class RazorSettings;
 
 class RazorPanelApplication : public RazorApplication
 {
     Q_OBJECT
 public:
-    explicit RazorPanelApplication(int& argc, char** argv);
+    explicit RazorPanelApplication(int& argc, char** argv, const QString &configFile);
     ~RazorPanelApplication();
     virtual bool x11EventFilter(XEvent* event);
 
     int count() { return mPanels.count(); }
+    RazorSettings *settings() { return mSettings; }
 
 public slots:
     void addNewPanel();
@@ -53,6 +55,9 @@ private:
 
 private slots:
     void removePanel(RazorPanel* panel);
+
+private:
+    RazorSettings *mSettings;
 };
 
 
