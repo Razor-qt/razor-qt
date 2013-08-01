@@ -76,7 +76,7 @@ TrayIcon::TrayIcon(Window iconId, QWidget* parent):
     mDamage(0)
 {
     setObjectName("TrayIcon");
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mValid = init();
 }
 
@@ -239,22 +239,25 @@ bool TrayIcon::event(QEvent *event)
 {
     switch (event->type())
     {
-        case QEvent::Paint:
-            draw(static_cast<QPaintEvent*>(event));
-            break;
+    case QEvent::Paint:
+        draw(static_cast<QPaintEvent*>(event));
+        break;
 
-        case QEvent::Resize:
-            {
-                QRect rect = iconGeometry();
-                xfitMan().moveWindow(mWindowId, rect.left(), rect.top());
-            }
-            break;
+    case QEvent::Resize:
+    {
+        QRect rect = iconGeometry();
+        xfitMan().moveWindow(mWindowId, rect.left(), rect.top());
+    }
+        break;
 
-            case QEvent::MouseButtonPress:
-                event->accept();
-                break;
-         default:
-            break;
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonRelease:
+    case QEvent::MouseButtonDblClick:
+        event->accept();
+        break;
+
+    default:
+        break;
     }
 
     return QFrame::event(event);

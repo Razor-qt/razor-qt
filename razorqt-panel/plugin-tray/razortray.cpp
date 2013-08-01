@@ -142,8 +142,7 @@ void RazorTray::realign()
     mLayout->setEnabled(false);
     IRazorPanel *panel = mPlugin->panel();
 
-    mLayout->setCellFixedWidth(panel->lineSize());
-    mLayout->setCellFixedHeight(panel->lineSize());
+    mLayout->setCellMinimumSize(QSize(panel->lineSize(), panel->lineSize()));
 
     if (panel->isHorizontal())
     {
