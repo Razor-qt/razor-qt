@@ -69,6 +69,7 @@ Plugin::Plugin(const RazorPluginInfo &desktopFile, const QString &settingsFile, 
     mSettingsHash = calcSettingsHash();
 
     setWindowTitle(desktopFile.name());
+    mName = desktopFile.name();
 
     QStringList dirs;
     dirs << QProcessEnvironment::systemEnvironment().value("RAZORPANEL_PLUGIN_PATH").split(":");
@@ -305,23 +306,23 @@ void Plugin::showEvent(QShowEvent *)
  ************************************************/
 QMenu *Plugin::popupMenu() const
 {
-
+    QString name = this->name().replace("&", "&&");
     QMenu* menu = new QMenu(windowTitle());
 
     if (mPlugin->flags().testFlag(IRazorPanelPlugin::HaveConfigDialog))
     {
-        QAction* configAction = new QAction(tr("Configure"), menu);
+        QAction* configAction = new QAction(tr("Configure \"%1\"").arg(name), menu);
         menu->addAction(configAction);
         connect(configAction, SIGNAL(triggered()), this, SLOT(showConfigureDialog()));
     }
 
-    QAction* moveAction = new QAction(XdgIcon::fromTheme("transform-move"), tr("Move"), menu);
+    QAction* moveAction = new QAction(XdgIcon::fromTheme("transform-move"), tr("Move \"%1\"").arg(name), menu);
     menu->addAction(moveAction);
     connect(moveAction, SIGNAL(triggered()), this, SIGNAL(startMove()));
 
     menu->addSeparator();
 
-    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Remove"), menu);
+    QAction* removeAction = new QAction(XdgIcon::fromTheme("dialog-close"), tr("Remove \"%1\"").arg(name), menu);
     menu->addAction(removeAction);
     connect(removeAction, SIGNAL(triggered()), this, SLOT(requestRemove()));
 

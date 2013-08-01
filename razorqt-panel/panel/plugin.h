@@ -76,6 +76,8 @@ public:
 
     QWidget *widget() { return mPluginWidget; }
 
+    QString name() const { return mName; }
+
     // For QSS properties ..................
     static QColor moveMarkerColor() { return mMoveMarkerColor; }
     static void setMoveMarkerColor(QColor color) { mMoveMarkerColor = color; }
@@ -107,6 +109,7 @@ private:
     RazorPanel *mPanel;
     QByteArray mSettingsHash;
     static QColor mMoveMarkerColor;
+    QString mName;
 
 private slots:
     void settingsChanged();
