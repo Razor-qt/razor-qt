@@ -136,19 +136,21 @@ void RazorQuickLaunch::realign()
 
     if (mPlaceHolder)
     {
-        mLayout->setCellMaximumWidth(QWIDGETSIZE_MAX);
-    }
-
-
-    if (panel->isHorizontal())
-    {
-        mLayout->setRowCount(panel->lineCount());
-        mLayout->setColumnCount(0);
+        mLayout->setColumnCount(1);
+        mLayout->setRowCount(1);
     }
     else
     {
-        mLayout->setColumnCount(panel->lineCount());
-        mLayout->setRowCount(0);
+        if (panel->isHorizontal())
+        {
+            mLayout->setRowCount(panel->lineCount());
+            mLayout->setColumnCount(0);
+        }
+        else
+        {
+            mLayout->setColumnCount(panel->lineCount());
+            mLayout->setRowCount(0);
+        }
     }
     mLayout->setEnabled(true);
 }
