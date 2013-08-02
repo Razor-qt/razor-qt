@@ -8,7 +8,6 @@
 #include <QIODevice>
 #include <QRegExp>
 #include <QDebug>
-#include <qt4/QtCore/qglobal.h>
 
 #include "yamlparser.h"
 
