@@ -47,9 +47,9 @@ ColorPicker::~ColorPicker()
 
 void ColorPicker::realign()
 {
-    mWidget.button()->setFixedHeight(panel()->lineSize());
-    mWidget.button()->setFixedWidth(panel()->lineSize());
-    mWidget.lineEdit()->setFixedHeight(panel()->lineSize());
+    mWidget.button()->setFixedHeight(panel()->iconSize());
+    mWidget.button()->setFixedWidth(panel()->iconSize());
+    mWidget.lineEdit()->setFixedHeight(panel()->iconSize());
 }
 
 

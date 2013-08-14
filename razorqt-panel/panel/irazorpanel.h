@@ -53,7 +53,7 @@ public:
      **/
     virtual Position position() const = 0;
 
-    virtual int lineSize() const = 0;
+    virtual int iconSize() const = 0;
     virtual int lineCount() const = 0;
 
     /**

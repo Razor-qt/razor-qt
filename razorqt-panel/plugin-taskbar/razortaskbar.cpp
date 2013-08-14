@@ -61,14 +61,13 @@ RazorTaskBar::RazorTaskBar(IRazorPanelPlugin *plugin, QWidget *parent) :
     mButtonStyle(Qt::ToolButtonTextBesideIcon),
     mShowOnlyCurrentDesktopTasks(false),
     mPlugin(plugin),
-    mPlaceHolder(new QWidget(this))
+    mPlaceHolder(new RazorTaskButton(0, this))
 {
     mLayout = new RazorGridLayout(this);
     setLayout(mLayout);
     mLayout->setMargin(0);
     realign();
     mLayout->addWidget(mPlaceHolder);
-    mPlaceHolder->setMinimumSize(1, 1);
 
     mRootWindow = QX11Info::appRootWindow();
 
@@ -318,48 +317,79 @@ void RazorTaskBar::settingsChanged()
 void RazorTaskBar::realign()
 {
     mLayout->setEnabled(false);
-    IRazorPanel *panel = mPlugin->panel();
 
-    QSize maxSize = QSize(QWIDGETSIZE_MAX, panel->lineSize());
-    QSize minSize = QSize(0, panel->lineSize());
+    IRazorPanel *panel = mPlugin->panel();
+    QSize maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    QSize minSize = QSize(0, 0);
+
 
     if (panel->isHorizontal())
     {
-        mLayout->setRowCount(panel->lineCount());
-        mLayout->setColumnCount(0);
-
         if (mButtonStyle == Qt::ToolButtonIconOnly)
         {
+            // Horizontal + Icons **************
+            mLayout->setRowCount(panel->lineCount());
+            mLayout->setColumnCount(0);
             mLayout->setStretch(RazorGridLayout::StretchVertical);
-            maxSize.rwidth() = maxSize.height();
+
+            minSize.rheight() = 0;
+            minSize.rwidth()  = 0;
+
+            maxSize.rheight() = QWIDGETSIZE_MAX;
+            maxSize.rwidth()  = mButtonWidth;
         }
         else
         {
+            // Horizontal + Text ***************
+            mLayout->setRowCount(panel->lineCount());
+            mLayout->setColumnCount(0);
             mLayout->setStretch(RazorGridLayout::StretchHorizontal | RazorGridLayout::StretchVertical);
-            maxSize.rwidth() = mButtonWidth;
+
+            minSize.rheight() = 0;
+            minSize.rwidth()  = 0;
+
+            maxSize.rheight() = QWIDGETSIZE_MAX;
+            maxSize.rwidth()  = mButtonWidth;
         }
-        minSize.rwidth() = maxSize.height();
     }
     else
     {
-        mLayout->setRowCount(0);
-        mLayout->setStretch(RazorGridLayout::NoStretch);
-
         if (mButtonStyle == Qt::ToolButtonIconOnly)
         {
+            // Vertical + Icons ****************
+            mLayout->setRowCount(0);
             mLayout->setColumnCount(panel->lineCount());
-            maxSize.rwidth() = maxSize.height();
+            mLayout->setStretch(RazorGridLayout::StretchHorizontal);
+
+            minSize.rheight() = 0;
+            minSize.rwidth()  = 0;
+
+            maxSize.rheight() = QWIDGETSIZE_MAX;
+            maxSize.rwidth()  = QWIDGETSIZE_MAX;
+
         }
         else
         {
+            // Vertical + Text *****************
+            mLayout->setRowCount(0);
             mLayout->setColumnCount(1);
-            maxSize.rwidth() = mButtonWidth;
+            mLayout->setStretch(RazorGridLayout::StretchHorizontal);
+
+            minSize.rheight() = 0;
+            minSize.rwidth()  = mButtonWidth;
+
+            maxSize.rheight() = QWIDGETSIZE_MAX;
+            maxSize.rwidth()  = QWIDGETSIZE_MAX;
         }
-        minSize.rwidth() = maxSize.width();
     }
 
     mLayout->setCellMinimumSize(minSize);
     mLayout->setCellMaximumSize(maxSize);
+
+    if (panel->isHorizontal())
+        mPlaceHolder->setFixedWidth(0);
+    else
+        mPlaceHolder->setFixedHeight(0);
 
     mLayout->setEnabled(true);
 }

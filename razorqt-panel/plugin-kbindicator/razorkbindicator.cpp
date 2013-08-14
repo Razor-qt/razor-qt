@@ -89,9 +89,9 @@ QDialog *RazorKbIndicator::configureDialog()
 void RazorKbIndicator::realign()
 {
     if (panel()->isHorizontal())
-        mContent->setMinimumSize(0, panel()->lineSize());
+        mContent->setMinimumSize(0, panel()->iconSize());
     else
-        mContent->setMinimumSize(panel()->lineSize(), 0);
+        mContent->setMinimumSize(panel()->iconSize(), 0);
 }
 
 void RazorKbIndicator::setIndicators(unsigned int changed, unsigned int state)

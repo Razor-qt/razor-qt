@@ -244,30 +244,4 @@ QDialog *RazorMainMenu::configureDialog()
 }
 
 
-/************************************************
-
- ************************************************/
-void RazorMainMenu::realign()
-{
-    QSize minSize = QSize(0, 0);
-    QSize maxSize = QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-
-    if (panel()->isHorizontal())
-    {
-        minSize.setHeight(panel()->lineCount() * panel()->lineSize());
-        maxSize.setHeight(minSize.height());
-
-        minSize.setWidth(minSize.height());
-    }
-    else
-    {
-        minSize.setWidth(panel()->lineCount() * panel()->lineSize());
-        minSize.setHeight(panel()->lineSize());
-    }
-
-    mButton.setMinimumSize(minSize);
-    mButton.setMaximumSize(maxSize);
-    mButton.updateGeometry();
-}
-
 #undef DEFAULT_SHORTCUT

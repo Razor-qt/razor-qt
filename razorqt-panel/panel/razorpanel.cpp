@@ -47,11 +47,10 @@
 
 #include <qtxdg/xdgdirs.h>
 
-
 // Config keys and groups
 #define CFG_KEY_SCREENNUM   "desktop"
 #define CFG_KEY_POSITION    "position"
-#define CFG_KEY_LINESIZE    "lineSize"
+#define CFG_KEY_ICONSIZE    "iconSize"
 #define CFG_KEY_LINECNT     "lineCount"
 #define CFG_KEY_LENGTH      "width"
 #define CFG_KEY_PERCENT     "width-percent"
@@ -97,8 +96,8 @@ QString RazorPanel::positionToStr(IRazorPanel::Position position)
 RazorPanel::RazorPanel(const QString &configGroup, QWidget *parent) :
     QFrame(parent),
     mConfigGroup(configGroup),
-    mLineSize(22),
-    mLineCount(1)
+    mIconSize(0),
+    mLineCount(0)
 {
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
@@ -125,7 +124,7 @@ RazorPanel::RazorPanel(const QString &configGroup, QWidget *parent) :
     mSettings = app->settings();
     readSettings();
     loadPlugins();
-    
+
     show();
 }
 
@@ -139,8 +138,8 @@ void RazorPanel::readSettings()
     mSettings->beginGroup(mConfigGroup);
 
     // By default we are using size & count from theme.
-    setLineSize(mSettings->value(CFG_KEY_LINESIZE, mLineSize).toInt());
-    setLineCount(mSettings->value(CFG_KEY_LINECNT, mLineCount).toInt());
+    setIconSize(mSettings->value(CFG_KEY_ICONSIZE, PANEL_DEFAULT_ICON_SIZE).toInt());
+    setLineCount(mSettings->value(CFG_KEY_LINECNT, PANEL_DEFAULT_LINE_COUNT).toInt());
 
     setLength(mSettings->value(CFG_KEY_LENGTH, 100).toInt(),
               mSettings->value(CFG_KEY_PERCENT, true).toBool());
@@ -183,7 +182,7 @@ void RazorPanel::saveSettings(bool later)
         mSettings->setValue(CFG_KEY_PLUGINS, pluginsList);
     }
 
-    mSettings->setValue(CFG_KEY_LINESIZE, mLineSize);
+    mSettings->setValue(CFG_KEY_ICONSIZE, mIconSize);
     mSettings->setValue(CFG_KEY_LINECNT,  mLineCount);
 
     mSettings->setValue(CFG_KEY_LENGTH,   mLength);
@@ -285,10 +284,6 @@ Plugin *RazorPanel::loadPlugin(const RazorPluginInfo &desktopFile, const QString
         connect(plugin, SIGNAL(startMove()), mLayout, SLOT(startMovePlugin()));
         connect(plugin, SIGNAL(remove()), this, SLOT(removePlugin()));
         connect(this, SIGNAL(realigned()), plugin, SLOT(realign()));
-        if (!plugin->isSeparate() && plugin->widget())
-        {
-            plugin->widget()->setFixedSize(QSize(mLineSize, mLineSize));
-        }
         mLayout->addWidget(plugin);
         return plugin;
     }
@@ -307,12 +302,12 @@ void RazorPanel::realign()
         return;
 #if 0
     qDebug() << "** Realign *********************";
-    qDebug() << "LineSize:    " << mLineSize;
-    qDebug() << "LineCount:   " << mLineCount;
-    qDebug() << "Length:      " << mLength << (mLengthInPercents ? "%" : "px");
-    qDebug() << "Alignment:   " << (mAlignment == 0 ? "center" : (mAlignment < 0 ? "left" : "right"));
-    qDebug() << "Position:    " << positionToStr(mPosition) << "on" << mScreenNum;
-    qDebug() << "Plugins count" << mPlugins.count();
+    qDebug() << "IconSize:      " << mIconSize;
+    qDebug() << "LineCount:     " << mLineCount;
+    qDebug() << "Length:        " << mLength << (mLengthInPercents ? "%" : "px");
+    qDebug() << "Alignment:     " << (mAlignment == 0 ? "center" : (mAlignment < 0 ? "left" : "right"));
+    qDebug() << "Position:      " << positionToStr(mPosition) << "on" << mScreenNum;
+    qDebug() << "Plugins count: " << mPlugins.count();
 #endif
 
 
@@ -569,22 +564,28 @@ void RazorPanel::addPlugin(const RazorPluginInfo &desktopFile)
 /************************************************
 
  ************************************************/
-void RazorPanel::setLineSize(int value)
+void RazorPanel::updateStyleSheet()
 {
-    if (mLineSize != value)
-    {
-        mLineSize = value;
-        mLayout->setLineSize(mLineSize);
-        foreach(Plugin *plugin, mPlugins)
-        {
-            if (!plugin->isSeparate() && plugin->widget())
-            {
-                plugin->widget()->setFixedSize(QSize(mLineSize, mLineSize));
-            }
-        }
+    QStringList sheet;
+    sheet << QString("Plugin > * { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
+    sheet << QString("Plugin > * > * { qproperty-iconSize: %1px %1px; }").arg(mIconSize);
 
-        realign();
+    setStyleSheet(sheet.join("\n"));
+}
+
+
+
+/************************************************
+
+ ************************************************/
+void RazorPanel::setIconSize(int value)
+{
+    if (mIconSize != value)
+    {
+        mIconSize = value;
+        updateStyleSheet();
         emit realigned();
+        mLayout->setLineSize(mIconSize);
         saveSettings(true);
     }
 }
@@ -635,10 +636,7 @@ void RazorPanel::setPosition(int screen, IRazorPanel::Position position)
 
     mScreenNum = screen;
     mPosition = position;
-
     mLayout->setPosition(mPosition);
-
-    realign();
     emit realigned();
     saveSettings(true);
 }

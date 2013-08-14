@@ -132,8 +132,6 @@ void RazorQuickLaunch::realign()
     mLayout->setEnabled(false);
     IRazorPanel *panel = mPlugin->panel();
 
-    mLayout->setCellMinimumSize(QSize(panel->lineSize(), panel->lineSize()));
-
     if (mPlaceHolder)
     {
         mLayout->setColumnCount(1);

@@ -64,8 +64,6 @@ public:
 
     bool isSeparate() const { return true; }
 
-    void realign();
-
 private:
     QToolButton mButton;
     QString mLogDir;

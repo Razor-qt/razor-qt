@@ -93,7 +93,7 @@ ConfigPanelWidget::ConfigPanelWidget(RazorPanel *panel, QWidget *parent) :
     fillComboBox_position();
     fillComboBox_alignment();
 
-    mOldLineSize  = mPanel->lineSize();
+    mOldIconSize  = mPanel->iconSize();
     mOldLineCount = mPanel->lineCount();
 
     mOldLength = mPanel->length();
@@ -109,7 +109,7 @@ ConfigPanelWidget::ConfigPanelWidget(RazorPanel *panel, QWidget *parent) :
 
     reset();
 
-    connect(ui->spinBox_lineSize,   SIGNAL(valueChanged(int)), this, SLOT(editChanged()));
+    connect(ui->spinBox_iconSize,   SIGNAL(valueChanged(int)), this, SLOT(editChanged()));
     connect(ui->spinBox_lineCount,  SIGNAL(valueChanged(int)), this, SLOT(editChanged()));
 
     connect(ui->spinBox_length,     SIGNAL(valueChanged(int)), this, SLOT(editChanged()));
@@ -125,7 +125,7 @@ ConfigPanelWidget::ConfigPanelWidget(RazorPanel *panel, QWidget *parent) :
  ************************************************/
 void ConfigPanelWidget::reset()
 {
-    ui->spinBox_lineSize->setValue(mOldLineSize);
+    ui->spinBox_iconSize->setValue(mOldIconSize);
     ui->spinBox_lineCount->setValue(mOldLineCount);
 
     ui->comboBox_position->setCurrentIndex(indexForPosition(mOldScreenNum, mOldPosition));
@@ -233,7 +233,7 @@ ConfigPanelWidget::~ConfigPanelWidget()
  ************************************************/
 void ConfigPanelWidget::editChanged()
 {
-    mPanel->setLineSize(ui->spinBox_lineSize->value());
+    mPanel->setIconSize(ui->spinBox_iconSize->value());
     mPanel->setLineCount(ui->spinBox_lineCount->value());
 
     mPanel->setLength(ui->spinBox_length->value(),

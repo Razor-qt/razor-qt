@@ -58,14 +58,14 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_lineSize">
+       <widget class="QLabel" name="label_iconSize">
         <property name="text">
-         <string>Line size:</string>
+         <string>Icon size:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" colspan="2">
-       <widget class="QSpinBox" name="spinBox_lineSize">
+       <widget class="QSpinBox" name="spinBox_iconSize">
         <property name="minimum">
          <number>10</number>
         </property>

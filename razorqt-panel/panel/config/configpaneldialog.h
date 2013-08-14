@@ -86,7 +86,7 @@ private:
     int getMaxLength();
 
     // For reset function
-    int mOldLineSize;
+    int mOldIconSize;
     int mOldLineCount;
     int mOldLength;
     bool mOldLengthInPercents;

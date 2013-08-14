@@ -79,7 +79,7 @@ public:
 
 
     // Settings
-    int lineSize() const { return mLineSize; }
+    int iconSize() const { return mIconSize; }
     int lineCount() const { return mLineCount; }
     int length() const { return mLength; }
     bool lengthInPercents() const { return mLengthInPercents; }
@@ -92,7 +92,7 @@ public slots:
     void show();
 
     // Settings
-    void setLineSize(int value);
+    void setIconSize(int value);
     void setLineCount(int value);
     void setLength(int length, bool inPercents);
     void setPosition(int screen, IRazorPanel::Position position);
@@ -132,7 +132,7 @@ private:
 
     QString findNewPluginSettingsGroup(const QString &pluginType) const;
 
-    int mLineSize;
+    int mIconSize;
     int mLineCount;
 
     int mLength;
@@ -143,6 +143,8 @@ private:
     IRazorPanel::Position mPosition;
     int mScreenNum;
     QTimer mDelaySave;
+
+    void updateStyleSheet();
 };
 
 
