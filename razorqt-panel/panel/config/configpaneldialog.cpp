@@ -261,14 +261,14 @@ void ConfigPanelWidget::widthTypeChanged()
     {
         // Percents .............................
         int v = ui->spinBox_length->value() * 100.0 / max;
-        ui->spinBox_length->setMaximum(100);
+        ui->spinBox_length->setRange(1, 100);
         ui->spinBox_length->setValue(v);
     }
     else
     {
         // Pixels ...............................
         int v =  max / 100.0 * ui->spinBox_length->value();
-        ui->spinBox_length->setMaximum(max);
+        ui->spinBox_length->setRange(-max, max);
         ui->spinBox_length->setValue(v);
     }
 }
