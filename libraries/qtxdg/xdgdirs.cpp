@@ -68,12 +68,13 @@ QString xdgSingleDir(const QString &envVar, const QString &def, bool createDir)
 /************************************************
  Helper func.
  ************************************************/
-QStringList xdgDirList(const QString &envVar)
+QStringList xdgDirList(const QString &envVar, const QString &postfix)
 {
     QStringList dirs = QString(getenv(envVar.toAscii())).split(':', QString::SkipEmptyParts);
     for (QStringList::Iterator i=dirs.begin(); i!=dirs.end(); ++i)
     {
         fixBashShortcuts((*i));
+        *i += postfix;
     }
     return dirs;
 }
@@ -100,13 +101,13 @@ QString XdgDirs::configHome(bool createDir)
 /************************************************
 
  ************************************************/
-QStringList XdgDirs::dataDirs()
+QStringList XdgDirs::dataDirs(const QString &postfix)
 {
-    QStringList dirs = xdgDirList("XDG_DATA_DIRS");
+    QStringList dirs = xdgDirList("XDG_DATA_DIRS", postfix);
     if (dirs.isEmpty())
     {
-        dirs << "/usr/local/share/";
-        dirs << "/usr/share/";
+        dirs << "/usr/local/share/" + postfix;
+        dirs << "/usr/share/" + postfix;
     }
 
     return dirs;
@@ -116,12 +117,12 @@ QStringList XdgDirs::dataDirs()
 /************************************************
 
  ************************************************/
-QStringList XdgDirs::configDirs()
+QStringList XdgDirs::configDirs(const QString &postfix)
 {
-    QStringList dirs = xdgDirList("XDG_CONFIG_DIRS");
+    QStringList dirs = xdgDirList("XDG_CONFIG_DIRS", postfix);
     if (dirs.isEmpty())
     {
-        dirs << "/etc/xdg";
+        dirs << "/etc/xdg" << postfix;
     }
 
     return dirs;
@@ -168,11 +169,11 @@ QString XdgDirs::autostartHome(bool createDir)
 /************************************************
 
  ************************************************/
-QStringList XdgDirs::autostartDirs()
+QStringList XdgDirs::autostartDirs(const QString &postfix)
 {
     QStringList dirs;
     foreach(QString dir, configDirs())
-        dirs << QString("%1/autostart").arg(dir);
+        dirs << QString("%1/autostart").arg(dir) + postfix;
 
     return dirs;
 }

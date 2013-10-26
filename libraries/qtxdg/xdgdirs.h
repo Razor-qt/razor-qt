@@ -66,8 +66,10 @@ public:
      * $XDG_DATA_DIRS defines the preference-ordered set of base directories to search for data
      * files in addition to the $XDG_DATA_HOME base directory. If $XDG_DATA_DIRS is either not set
      * or empty, a value equal to /usr/local/share/:/usr/share/ should be used.
+     *
+     * If the postfix is not empty it will append to end of each returned directory.
      */
-    static QStringList dataDirs();
+    static QStringList dataDirs(const QString &postfix = "");
 
 
 
@@ -75,8 +77,10 @@ public:
      * $XDG_CONFIG_DIRS defines the preference-ordered set of base directories to search for
      * configuration files in addition to the $XDG_CONFIG_HOME base directory. If $XDG_CONFIG_DIRS
      * is either not set or empty, a value equal to /etc/xdg should be used.
+     *
+     * If the postfix is not empty it will append to end of each returned directory.
      */
-    static QStringList configDirs();
+    static QStringList configDirs(const QString &postfix = "");
 
 
     /*! @brief Returns the path to the directory that corresponds to the $XDG_CACHE_HOME.
@@ -107,10 +111,12 @@ public:
      /*! @brief Returns a list of all directories that correspond to $XDG_CONFIG_DIRS/autostart
       * If $XDG_CONFIG_DIRS is not set, the system wide Autostart Directory is /etc/xdg/autostart
       *
+      * If the postfix is not empty it will append to end of each returned directory.
+      *
       * Note: this does not include the user's autostart directory
       * @sa autostartHome()
       */
-     static QStringList autostartDirs();
+     static QStringList autostartDirs(const QString &postfix = "");
 };
 
 #endif // QTXDG_XDGDIRS_H
