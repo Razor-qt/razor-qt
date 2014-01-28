@@ -52,16 +52,9 @@ public:
     PulseAudioEngine(QObject *parent = 0);
     ~PulseAudioEngine();
 
-    virtual const QString backendName() const { return QLatin1String("PulseAudio"); }
+    const QString backendName() const { return QLatin1String("PulseAudio"); }
 
     int volumeMax(AudioDevice */*device*/) const { return m_maximumVolume; }
-
-    void requestSinkInfoUpdate(AudioDevice *device);
-    void addOrUpdateSink(const pa_sink_info *info);
-
-    pa_context_state_t contextState() const { return m_contextState; }
-    bool ready() const { return m_ready; }
-    pa_threaded_mainloop *mainloop() const { return m_mainLoop; }
 
 public slots:
     void commitDeviceVolume(AudioDevice *device);
@@ -93,6 +86,23 @@ private:
     int m_maximumVolume;
 
     QMap<AudioDevice *, pa_cvolume> m_cVolumeMap;
+
+    void waitForOperation(pa_operation *operation);
+
+    static void sinkInfoCallback(pa_context *context, const pa_sink_info *info, int isLast, void *userdata);
+    void sinkInfoHandler(pa_context *context, const pa_sink_info *info, int isLast);
+
+    static void contextSubscriptionCallback(pa_context *context, pa_subscription_event_type_t t, uint32_t idx, void *userdata);
+    void contextSubscriptionHandler(pa_context *context, pa_subscription_event_type_t t, uint32_t idx);
+
+    static void contextStateCallback(pa_context *context, void *userdata);
+    void contextStateHandler(pa_context *context);
+
+    static void contextEventCallback(pa_context *context, const char *name, pa_proplist *p, void *userdata);
+    void contextEventHandler(pa_context *context, const char *name, pa_proplist *p);
+
+    static void contextSuccessCallback(pa_context *context, int success, void *userdata);
+    void contextSuccessHandler(pa_context *context, int success);
 };
 
 #endif // PULSEAUDIOENGINE_H
