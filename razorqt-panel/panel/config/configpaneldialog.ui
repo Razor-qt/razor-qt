@@ -35,6 +35,9 @@
       </item>
       <item row="2" column="3">
        <widget class="QPushButton" name="button_fromTheme">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Set from theme</string>
         </property>
