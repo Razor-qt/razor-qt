@@ -325,7 +325,7 @@ void RazorPanel::realign()
             rect.setWidth(screen.width() * mLength / 100.0);
         else
         {
-            if (mLength <= 0)
+			if (mLength <= 0) // special meaning of negative length: https://github.com/Razor-qt/razor-qt/pull/651
                 rect.setWidth(screen.width() + mLength);
             else
                 rect.setWidth(mLength);
@@ -365,7 +365,7 @@ void RazorPanel::realign()
             rect.setHeight(screen.height() * mLength / 100.0);
         else
         {
-            if (mLength <= 0)
+			if (mLength <= 0) // special meaning of negative length: https://github.com/Razor-qt/razor-qt/pull/651
                 rect.setHeight(screen.height() + mLength);
             else
                 rect.setHeight(mLength);
