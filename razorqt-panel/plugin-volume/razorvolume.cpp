@@ -134,7 +134,6 @@ void RazorVolume::setAudioEngine(AudioEngine *engine)
 
         m_volumeButton->volumePopup()->setDevice(0);
 
-        disconnect(m_engine, 0, 0, 0);
         delete m_engine;
         m_engine = 0;
     }
