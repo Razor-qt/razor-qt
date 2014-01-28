@@ -55,7 +55,8 @@ RazorVolume::RazorVolume(const IRazorPanelPluginStartupInfo &startupInfo):
         IRazorPanelPlugin(startupInfo),
         m_engine(0),
         m_defaultSinkIndex(0),
-        m_defaultSink(0)
+        m_defaultSink(0),
+        m_configWindow(0)
 {
     m_volumeButton = new VolumeButton(this);
 
@@ -180,7 +181,8 @@ void RazorVolume::settingsChanged()
 
 void RazorVolume::updateConfigurationSinkList()
 {
-
+    if (m_configWindow)
+       m_configWindow->setSinkList(m_engine->sinks());
 }
 
 void RazorVolume::handleShortcutVolumeUp()
@@ -221,13 +223,13 @@ void RazorVolume::realign()
 
 QDialog *RazorVolume::configureDialog()
 {
-    RazorVolumeConfiguration *configWindow = new RazorVolumeConfiguration(*settings());
-    configWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+    if (!m_configWindow)
+        m_configWindow = new RazorVolumeConfiguration(*settings());
 
     if (m_engine)
-       configWindow->setSinkList(m_engine->sinks());
+       m_configWindow->setSinkList(m_engine->sinks());
 
-    return configWindow;
+    return m_configWindow;
 }
 
 #undef DEFAULT_UP_SHORTCUT
