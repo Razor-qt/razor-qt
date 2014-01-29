@@ -160,7 +160,7 @@ void PulseAudioEngine::sinkInfoHandler(pa_context *context, const pa_sink_info *
 
     if (isLast < 0) {
         pa_threaded_mainloop_signal(m_mainLoop, 0);
-        qWarning() << QString("Failed to get sink information: %1").arg(pa_strerror(pa_context_errno(context)));
+        qWarning() << QString("Failed to get sink information: %1").arg(QString::fromUtf8(pa_strerror(pa_context_errno(context))));
         return;
     }
 
@@ -209,6 +209,8 @@ void PulseAudioEngine::setupSubscription()
         return;
 
     connect(this, SIGNAL(sinkInfoChanged(AudioDevice*)), this, SLOT(retrieveSinkInfo(AudioDevice*)), Qt::QueuedConnection);
+    connect(this, SIGNAL(retrieveSinksNeeded()), this, SLOT(retrieveSinks()), Qt::QueuedConnection);
+
     pa_context_set_subscribe_callback(m_context, &PulseAudioEngine::contextSubscriptionCallback, this);
 
     MainLoopLocker locker(m_mainLoop); Q_UNUSED(locker)
@@ -224,21 +226,45 @@ void PulseAudioEngine::contextSubscriptionCallback(pa_context *context, pa_subsc
 void PulseAudioEngine::contextSubscriptionHandler(pa_context *context, pa_subscription_event_type_t t, uint32_t idx)
 {
     Q_UNUSED(context)
-    Q_UNUSED(t)
 
-    foreach (AudioDevice *dev, sinks()) {
-        if (dev->index() == idx) {
-            emit sinkInfoChanged(dev);
+    AudioDevice *dev = 0;
+    foreach (AudioDevice *device, sinks())
+    {
+        if (device->index() == idx)
+        {
+            dev = device;
             break;
         }
+    }
+
+    if (!dev)
+    {
+        emit retrieveSinksNeeded();
+        return;
+    }
+
+    switch (t)
+    {
+    case PA_SUBSCRIPTION_EVENT_REMOVE:
+        m_sinks.removeOne(dev);
+        break;
+
+    default:
+        emit sinkInfoChanged(dev);
     }
 }
 
 void PulseAudioEngine::handleContextStateChanged()
 {
-    if (m_contextState == PA_CONTEXT_FAILED || m_contextState == PA_CONTEXT_TERMINATED) {
+    switch (m_contextState)
+    {
+    case PA_CONTEXT_FAILED:
+    case PA_CONTEXT_TERMINATED:
         qWarning("Razor-Volume: Context connection failed or terminated, trying to reconnect");
         m_reconnectionTimer.start();
+        break;
+
+    default:;
     }
 }
 

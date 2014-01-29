@@ -58,23 +58,24 @@ public:
 
 public slots:
     void commitDeviceVolume(AudioDevice *device);
-    void retrieveSinkInfo(AudioDevice *device);
     void setMute(AudioDevice *device, bool state);
-    void setContextState(pa_context_state_t state);
     void setIgnoreMaxVolume(bool ignore);
 
 signals:
     void sinkInfoChanged(AudioDevice *device);
     void contextStateChanged(pa_context_state_t state);
     void readyChanged(bool ready);
+    void retrieveSinksNeeded();
 
 private slots:
     void handleContextStateChanged();
     void connectContext();
+    void retrieveSinkInfo(AudioDevice *device);
+    void retrieveSinks();
 
 private:
-    void retrieveSinks();
     void setupSubscription();
+    void setContextState(pa_context_state_t state);
 
     pa_mainloop_api *m_mainLoopApi;
     pa_threaded_mainloop *m_mainLoop;
