@@ -76,7 +76,7 @@ void RazorTaskbarConfiguration::loadSettings()
     updateControls(ui->buttonStyleCB->currentIndex());
 
     /* Keep buttonWidth loading at the end of this method to prevent errors */
-    ui->buttonWidthSB->setValue(mSettings.value("buttonWidth", 400).toInt());
+    ui->buttonWidthSB->setValue(mSettings.value("buttonWidth", defaultButtonWidth()).toInt());
 }
 
 void RazorTaskbarConfiguration::saveSettings()

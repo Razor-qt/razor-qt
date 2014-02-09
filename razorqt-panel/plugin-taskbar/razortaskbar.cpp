@@ -289,7 +289,7 @@ void RazorTaskBar::setButtonStyle(Qt::ToolButtonStyle buttonStyle)
  ************************************************/
 void RazorTaskBar::settingsChanged()
 {
-    mButtonWidth = mPlugin->settings()->value("buttonWidth", 400).toInt();
+    mButtonWidth = mPlugin->settings()->value("buttonWidth", RazorTaskbarConfiguration::defaultButtonWidth()).toInt();
     QString s = mPlugin->settings()->value("buttonStyle").toString().toUpper();
 
     if (s == "ICON")

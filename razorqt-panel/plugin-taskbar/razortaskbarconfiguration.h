@@ -45,6 +45,8 @@ public:
     explicit RazorTaskbarConfiguration(QSettings &settings, QWidget *parent = 0);
     ~RazorTaskbarConfiguration();
 
+    static int defaultButtonWidth() { return 300; }
+
 private:
     Ui::RazorTaskbarConfiguration *ui;
     QSettings &mSettings;
