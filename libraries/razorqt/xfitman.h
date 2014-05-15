@@ -29,10 +29,11 @@
 #ifndef XFITMAN_H
 #define XFITMAN_H
 
-#include <QtCore/QList>
-#include <QtGui/QPixmap>
-#include <QtCore/QString>
-#include <QtCore/QMap>
+#include <QList>
+#include <QPixmap>
+#include <QString>
+#include <QMap>
+#include <QIcon>
 #include <X11/Xlib.h>
 
 //some net_wm state-operations we need here
@@ -54,37 +55,37 @@ typedef QList<Window> WindowList;
 // See http://standards.freedesktop.org/wm-spec/latest/ar01s05.html#id2569373
 struct WindowAllowedActions
 {
-    bool Move;          // indicates that the window may be moved around the screen.
-    bool Resize;        // indicates that the window may be resized.
-    bool Minimize;      // indicates that the window may be iconified.
-    bool Shade;         // indicates that the window may be shaded.
-    bool Stick;         // indicates that the window may have its sticky state toggled.
-    bool MaximizeHoriz; // indicates that the window may be maximized horizontally.
-    bool MaximizeVert;  // indicates that the window may be maximized vertically.
-    bool FullScreen;    // indicates that the window may be brought to fullscreen state.
-    bool ChangeDesktop; // indicates that the window may be moved between desktops.
-    bool Close;         // indicates that the window may be closed.
-    bool AboveLayer;    // indicates that the window may placed in the "above" layer of windows
-    bool BelowLayer;    // indicates that the window may placed in the "below" layer of windows
+    bool Move : 1;          // indicates that the window may be moved around the screen.
+    bool Resize : 1;        // indicates that the window may be resized.
+    bool Minimize : 1;      // indicates that the window may be iconified.
+    bool Shade : 1;         // indicates that the window may be shaded.
+    bool Stick : 1;         // indicates that the window may have its sticky state toggled.
+    bool MaximizeHoriz : 1; // indicates that the window may be maximized horizontally.
+    bool MaximizeVert : 1;  // indicates that the window may be maximized vertically.
+    bool FullScreen : 1;    // indicates that the window may be brought to fullscreen state.
+    bool ChangeDesktop : 1; // indicates that the window may be moved between desktops.
+    bool Close : 1;         // indicates that the window may be closed.
+    bool AboveLayer : 1;    // indicates that the window may placed in the "above" layer of windows
+    bool BelowLayer : 1;    // indicates that the window may placed in the "below" layer of windows
 };
 
 // A list of hints describing the window state.
 // http://standards.freedesktop.org/wm-spec/latest/ar01s05.html#id2569140
 struct WindowState
 {
-    bool Modal;         // indicates that this is a modal dialog box.
-    bool Sticky;        // indicates that the Window Manager SHOULD keep the window's position
+    bool Modal : 1;         // indicates that this is a modal dialog box.
+    bool Sticky : 1;        // indicates that the Window Manager SHOULD keep the window's position
                         // fixed on the screen, even when the virtual desktop scrolls.
-    bool MaximizedVert; // indicates that the window is vertically maximized.
-    bool MaximizedHoriz;// indicates that the window is horizontally maximized.
-    bool Shaded;        // indicates that the window is shaded.
-    bool SkipTaskBar;   // indicates that the window should not be included on a taskbar.
-    bool SkipPager;     // indicates that the window should not be included on a Pager.
-    bool Hidden;        // indicates that a window would not be visible on the screen
-    bool FullScreen;    // indicates that the window should fill the entire screen.
-    bool AboveLayer;    // indicates that the window should be on top of most windows.
-    bool BelowLayer;    // indicates that the window should be below most windows.
-    bool Attention;     // indicates that some action in or with the window happened.
+    bool MaximizedVert : 1; // indicates that the window is vertically maximized.
+    bool MaximizedHoriz : 1;// indicates that the window is horizontally maximized.
+    bool Shaded : 1;        // indicates that the window is shaded.
+    bool SkipTaskBar : 1;   // indicates that the window should not be included on a taskbar.
+    bool SkipPager : 1;     // indicates that the window should not be included on a Pager.
+    bool Hidden : 1;        // indicates that a window would not be visible on the screen
+    bool FullScreen : 1;    // indicates that the window should fill the entire screen.
+    bool AboveLayer : 1;    // indicates that the window should be on top of most windows.
+    bool BelowLayer : 1;    // indicates that the window should be below most windows.
+    bool Attention : 1;     // indicates that some action in or with the window happened.
 };
 
 
@@ -107,6 +108,13 @@ public:
         MaximizeHoriz,
         MaximizeVert,
         MaximizeBoth
+    };
+
+    enum WMState
+    {
+        WMStateWithdrawn = 0,
+        WMStateNormal = 1,
+        WMStateIconic = 3
     };
 
     ~XfitMan();
@@ -146,6 +154,16 @@ public:
     Window getActiveAppWindow() const;
     Window getActiveWindow() const;
     int getNumDesktop() const;
+    bool getShowingDesktop() const;
+    void setShowingDesktop(bool show) const;
+
+    void setIconGeometry(Window _wid, QRect* rect = 0) const;
+
+
+    /*!
+     * Returns ICCCM WM_STATE
+     */
+    WMState getWMState(Window _wid) const;
 
     /*!
      * Returns the names of all virtual desktops. This is a list of UTF-8 encoding strings.
